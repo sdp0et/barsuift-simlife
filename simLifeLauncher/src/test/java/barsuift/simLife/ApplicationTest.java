@@ -37,7 +37,7 @@ public class ApplicationTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         application = new Application();
-        saveFile = new File("test/testUniverse.xml");
+        saveFile = new File("target/test/testUniverse.xml");
     }
 
     protected void tearDown() throws Exception {
