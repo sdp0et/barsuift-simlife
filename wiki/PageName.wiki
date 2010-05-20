@@ -1,0 +1,19 @@
+#summary Introduction page
+
+= Introduction =
+
+This project aims at simulating a life environment.
+
+
+= Status =
+
+The project is only beginning. More to come soon ...
+
+= Details =
+
+== Technical ==
+
+The project is written in Java, and graphical representation is made through java 3D.
+
+The application itself is using Swing librairies.
+
