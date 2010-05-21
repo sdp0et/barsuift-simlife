@@ -73,4 +73,14 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	<developers>
+		<developer>
+			<id>cyrille.gachot</id>
+			<name>Cyrille GACHOT</name>
+			<email>cyrille.gachot@gmail.com</email>
+			<roles>
+				<role>Main contributor</role>
+			</roles>
+		</developer>
+	</developers>
 </project>
