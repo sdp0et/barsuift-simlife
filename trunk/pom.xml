@@ -7,7 +7,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>simLifeApplication Multi Project</name>
 	<description>Aggregator for the simLife application modules</description>
-	<url>http://maven.apache.org</url>
 	<modules>
 		<module>simLifeUtilities</module>
 		<module>simLifeDisplayAPI</module>
