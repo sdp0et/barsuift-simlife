@@ -14,7 +14,6 @@
 		<module>simLifeCoreAPI</module>
 		<module>simLifeDisplay</module>
 		<module>simLifeCore</module>
-		<module>simLifeLauncher</module>
 		<module>simLifeApplication</module>
 	</modules>
 	<scm>
