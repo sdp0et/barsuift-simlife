@@ -19,10 +19,24 @@
 		</dependency>
 		<dependency>
 			<groupId>barsuift.simLife</groupId>
+			<artifactId>simLifeUtilities</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>barsuift.simLife</groupId>
 			<artifactId>simLifeDisplayAPI</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>barsuift.simLife</groupId>
+			<artifactId>simLifeDisplayAPI</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>test-jar</type>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>barsuift.simLife</groupId>
@@ -33,10 +47,24 @@
 		</dependency>
 		<dependency>
 			<groupId>barsuift.simLife</groupId>
+			<artifactId>simLifeCoreAPI</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>barsuift.simLife</groupId>
 			<artifactId>simLifeDisplay</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>barsuift.simLife</groupId>
+			<artifactId>simLifeDisplay</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>test-jar</type>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>barsuift.simLife</groupId>
@@ -47,12 +75,13 @@
 		</dependency>
 		<dependency>
 			<groupId>barsuift.simLife</groupId>
-			<artifactId>simLifeLauncher</artifactId>
+			<artifactId>simLifeCore</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<type>test-jar</type>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
