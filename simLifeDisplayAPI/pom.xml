@@ -10,14 +10,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeUtilities</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeUtilities</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>test-jar</type>

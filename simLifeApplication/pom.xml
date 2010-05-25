@@ -11,70 +11,70 @@
 	<name>simLife Application</name>
 	<dependencies>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeUtilities</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeUtilities</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeDisplayAPI</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeDisplayAPI</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeCoreAPI</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeCoreAPI</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeDisplay</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeDisplay</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeCore</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>barsuift.simLife</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeCore</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>test-jar</type>
