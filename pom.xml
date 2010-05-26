@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>barsuift.simLife</groupId>
 	<artifactId>barsuift-simlife</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>simLife module aggregator</name>
 	<description>Aggregator for the simLife project modules</description>
 	<url>http://cyrille.gachot.free.fr/</url>
@@ -22,10 +23,10 @@
 		<module>simLifeApplication</module>
 	</modules>
 	<scm>
-		<connection>scm:svn:http://barsuift-simlife.googlecode.com/svn/tags/barsuift-simlife-0.0.1</connection>
-		<developerConnection>scm:svn:https://barsuift-simlife.googlecode.com/svn/tags/barsuift-simlife-0.0.1</developerConnection>
+		<connection>scm:svn:http://barsuift-simlife.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://barsuift-simlife.googlecode.com/svn/trunk/</developerConnection>
 		<tag>HEAD</tag>
-		<url>http://code.google.com/p/barsuift-simlife/source/browse/#svn/tags/barsuift-simlife-0.0.1</url>
+		<url>http://code.google.com/p/barsuift-simlife/source/browse/#svn/trunk/</url>
 	</scm>
 	<build>
 		<plugins>
