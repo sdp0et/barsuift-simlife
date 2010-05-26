@@ -8,6 +8,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>simLifeDisplayAPI</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>simLifeDisplayAPI module</name>
+	<description>API of the display module for the simLife project</description>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

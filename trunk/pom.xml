@@ -2,11 +2,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>barsuift.simLife</groupId>
-	<artifactId>simLifeModules</artifactId>
+	<artifactId>barsuift-simlife</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>simLifeApplication Multi Project</name>
-	<description>Aggregator for the simLife application modules</description>
+	<name>simLife module aggregator</name>
+	<description>Aggregator for the simLife project modules</description>
+	<url>http://cyrille.gachot.free.fr/</url>
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL) v3</name>
+			<url>http://www.gnu.org/licenses/gpl.txt</url>
+		</license>
+	</licenses>
 	<modules>
 		<module>simLifeUtilities</module>
 		<module>simLifeDisplayAPI</module>
@@ -19,7 +26,7 @@
 		<connection>scm:svn:http://barsuift-simlife.googlecode.com/svn/trunk/</connection>
 		<developerConnection>scm:svn:https://barsuift-simlife.googlecode.com/svn/trunk/</developerConnection>
 		<tag>HEAD</tag>
-		<url>http://code.google.com/p/barsuift-simlife/source/browse/</url>
+		<url>http://code.google.com/p/barsuift-simlife/source/browse/#svn/trunk/</url>
 	</scm>
 	<build>
 		<plugins>
@@ -81,4 +88,13 @@
 			</roles>
 		</developer>
 	</developers>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
