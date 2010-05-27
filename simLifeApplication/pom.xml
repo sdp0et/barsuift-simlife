@@ -81,13 +81,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<distributionManagement>
-		<site>
-			<id>cyrille.gachot.free.website</id>
-			<name>Cyrille Gachot Personal Website</name>
-			<url>ftp://ftpperso.free.fr/</url>
-		</site>
-	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -161,6 +154,15 @@
 				<groupId>org.riedelcastro</groupId>
 				<artifactId>gcupload-maven-plugin</artifactId>
 				<version>0.9</version>
+				<executions>
+					<execution>
+						<id>gcupload</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>gcupload</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<projectName>barsuift-simlife</projectName>
 					<uploads>
@@ -170,13 +172,6 @@
 							<labels>Type-Archive,Featured,OpSys-All</labels>
 						</upload>
 					</uploads>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.0</version>
-				<configuration>
-					<goals>site-deploy gcupload:gcupload</goals>
 				</configuration>
 			</plugin>
 		</plugins>
