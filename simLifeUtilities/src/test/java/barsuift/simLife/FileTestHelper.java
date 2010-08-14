@@ -28,7 +28,6 @@ public final class FileTestHelper {
     }
 
     public static void deleteAllFiles(File directory) throws Exception {
-        System.out.println("##### CYRILLE #######");
         File[] files = directory.listFiles();
         if (files == null) {
             return;
