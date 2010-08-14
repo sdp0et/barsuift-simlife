@@ -145,8 +145,8 @@
 			</roles>
 		</developer>
 	</developers>
-	<!-- reporting>
-		<plugins>
+	<reporting>
+		<!-- plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -160,6 +160,6 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
-		</plugins>
-	</reporting-->
+		</plugins-->
+	</reporting>
 </project>
