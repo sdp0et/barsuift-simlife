@@ -169,7 +169,7 @@
 					<uploads>
 						<upload>
 							<postfix>distribution</postfix>
-							<extension>zip</extension>
+							<extensions>zip</extensions>
 							<labels>Type-Archive,Featured,OpSys-All</labels>
 						</upload>
 					</uploads>
