@@ -102,11 +102,11 @@
 			<url>java-net:/maven2-repository/trunk/repository/</url>
 			<uniqueVersion>false</uniqueVersion>
 		</repository>
-		<site>
+		<!--site>
 			<id>cyrille.gachot.free.website</id>
 			<name>Cyrille Gachot Personal Website</name>
 			<url>ftp://ftpperso.free.fr/</url>
-		</site>
+		</site-->
 	</distributionManagement>
 
 	<dependencies>
