@@ -164,6 +164,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<serverId>googlecode</serverId>
 					<projectName>barsuift-simlife</projectName>
 					<uploads>
 						<upload>
