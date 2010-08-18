@@ -3,7 +3,7 @@
 	<groupId>barsuift.simLife</groupId>
 	<artifactId>barsuift-simlife</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>simLife module aggregator</name>
 	<description>Aggregator for the simLife project modules</description>
 	<url>http://cyrille.gachot.free.fr/</url>
@@ -22,9 +22,9 @@
 		<module>simLifeApplication</module>
 	</modules>
 	<scm>
-		<connection>scm:svn:http://barsuift-simlife.googlecode.com/svn/tags/barsuift-simlife-0.0.3</connection>
-		<developerConnection>scm:svn:https://barsuift-simlife.googlecode.com/svn/tags/barsuift-simlife-0.0.3</developerConnection>
-		<url>http://code.google.com/p/barsuift-simlife/source/browse/#svn/tags/barsuift-simlife-0.0.3</url>
+		<connection>scm:svn:http://barsuift-simlife.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://barsuift-simlife.googlecode.com/svn/trunk/</developerConnection>
+		<url>http://code.google.com/p/barsuift-simlife/source/browse/#svn/trunk/</url>
 	</scm>
 
 	<repositories>
