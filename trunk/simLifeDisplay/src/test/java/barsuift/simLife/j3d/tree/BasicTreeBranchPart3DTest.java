@@ -100,7 +100,7 @@ public class BasicTreeBranchPart3DTest extends TestCase {
         assertEquals(part3DState, part3D.getState());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public void testTreeBranchPart3D() {
         BasicTreeBranchPart3D part3D = new BasicTreeBranchPart3D(mockUniverse3D, part3DState, mockBranchPart);
         CompilerHelper.compile(part3D.getGroup());

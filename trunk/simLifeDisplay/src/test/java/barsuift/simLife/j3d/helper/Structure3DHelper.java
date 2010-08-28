@@ -34,7 +34,7 @@ public final class Structure3DHelper extends Assert {
         // private constructor to enforce static access
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public static void assertExactlyOneTransformGroup(BranchGroup branchGroup) {
         Enumeration children = branchGroup.getAllChildren();
         assertTrue(children.hasMoreElements());
@@ -42,7 +42,7 @@ public final class Structure3DHelper extends Assert {
         assertFalse(children.hasMoreElements());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public static void assertExactlyOneBranchGroup(TransformGroup transformGroup) {
         Enumeration children = transformGroup.getAllChildren();
         assertTrue(children.hasMoreElements());
@@ -50,7 +50,7 @@ public final class Structure3DHelper extends Assert {
         assertFalse(children.hasMoreElements());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public static void assertExactlyOneGroup(TransformGroup transformGroup) {
         Enumeration children = transformGroup.getAllChildren();
         assertTrue(children.hasMoreElements());
@@ -58,7 +58,7 @@ public final class Structure3DHelper extends Assert {
         assertFalse(children.hasMoreElements());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public static void assertExactlyOneShape3D(BranchGroup branchGroup) {
         Enumeration children = branchGroup.getAllChildren();
         assertTrue(children.hasMoreElements());
