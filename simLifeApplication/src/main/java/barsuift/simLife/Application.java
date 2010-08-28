@@ -21,71 +21,86 @@ package barsuift.simLife;
 import java.io.File;
 
 import barsuift.simLife.j2d.MainWindow;
+import barsuift.simLife.j3d.universe.BasicUniverse;
 import barsuift.simLife.universe.BasicUniverseFactory;
 import barsuift.simLife.universe.BasicUniverseIO;
 import barsuift.simLife.universe.OpenException;
 import barsuift.simLife.universe.SaveException;
 import barsuift.simLife.universe.Universe;
 
+//TODO 001 check unit test
 public class Application {
 
     private File currentSaveFile;
 
-    private Universe currentUniverse;
+    private BasicUniverse currentUniverseContext;
 
     private MainWindow window;
+
+    private boolean showFps;
 
     public Application() {
         this.window = new MainWindow(this);
         this.window.setVisible(true);
     }
 
-    public Universe createEmptyUniverse() {
+    public BasicUniverse createEmptyUniverse() {
         BasicUniverseFactory factory = new BasicUniverseFactory();
         Universe universe = factory.createEmpty();
-        this.currentUniverse = universe;
+        this.currentUniverseContext = new BasicUniverse(universe);
+        currentUniverseContext.showFps(showFps);
         this.currentSaveFile = null;
-        this.window.changeUniverse(currentUniverse);
-        return currentUniverse;
+        this.window.changeUniverse(currentUniverseContext);
+        return currentUniverseContext;
     }
 
-    public Universe createRandomUniverse() {
+    public BasicUniverse createRandomUniverse() {
         BasicUniverseFactory factory = new BasicUniverseFactory();
         Universe universe = factory.createRandom();
-        this.currentUniverse = universe;
+        this.currentUniverseContext = new BasicUniverse(universe);
+        currentUniverseContext.showFps(showFps);
         this.currentSaveFile = null;
-        this.window.changeUniverse(currentUniverse);
-        return currentUniverse;
+        this.window.changeUniverse(currentUniverseContext);
+        return currentUniverseContext;
     }
 
 
-    public Universe openUniverse(File saveFile) throws OpenException {
+    public BasicUniverse openUniverse(File saveFile) throws OpenException {
         BasicUniverseIO envIO = new BasicUniverseIO(saveFile);
         Universe universe = envIO.read();
-        this.currentUniverse = universe;
-        this.window.changeUniverse(currentUniverse);
+        this.currentUniverseContext = new BasicUniverse(universe);
+        currentUniverseContext.showFps(showFps);
+        this.window.changeUniverse(currentUniverseContext);
         this.currentSaveFile = saveFile;
-        return currentUniverse;
+        return currentUniverseContext;
     }
 
     public void saveUniverse() throws SaveException {
         if (currentSaveFile == null) {
             throw new IllegalStateException("No current save file");
         }
-        if (currentUniverse == null) {
-            throw new IllegalStateException("No current universe to save");
+        if (currentUniverseContext == null) {
+            throw new IllegalStateException("No current universe context to save");
         }
         BasicUniverseIO envIO = new BasicUniverseIO(currentSaveFile);
-        envIO.write(currentUniverse);
+        envIO.write(currentUniverseContext.getUniverse());
     }
 
     public void saveUniverseAs(File saveFile) throws SaveException {
-        if (currentUniverse == null) {
-            throw new IllegalStateException("No current universe to save");
+        if (currentUniverseContext == null) {
+            throw new IllegalStateException("No current universe context to save");
         }
         BasicUniverseIO envIO = new BasicUniverseIO(saveFile);
-        envIO.write(currentUniverse);
+        envIO.write(currentUniverseContext.getUniverse());
         this.currentSaveFile = saveFile;
+    }
+
+    public void showFps(boolean show) {
+        showFps = show;
+        if (currentUniverseContext != null) {
+            currentUniverseContext.showFps(show);
+        }
+
     }
 
 }
