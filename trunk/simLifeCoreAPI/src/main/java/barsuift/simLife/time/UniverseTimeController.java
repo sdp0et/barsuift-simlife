@@ -63,8 +63,12 @@ public class UniverseTimeController {
         // start immediately
         int initialDelay = 0;
         // wakeup every seconds
-        long period = 1;
-        runningProcess = scheduledThreadPool.scheduleAtFixedRate(timeMessenger, initialDelay, period, TimeUnit.SECONDS);
+        // TODO implement a proper speed switch button
+        int speed = 10;
+        long period = 1000;
+        long actualPeriod = period / speed;
+        runningProcess = scheduledThreadPool.scheduleAtFixedRate(timeMessenger, initialDelay, actualPeriod,
+                TimeUnit.MILLISECONDS);
     }
 
     /**
