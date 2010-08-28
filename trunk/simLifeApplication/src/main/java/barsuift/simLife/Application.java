@@ -21,7 +21,7 @@ package barsuift.simLife;
 import java.io.File;
 
 import barsuift.simLife.j2d.MainWindow;
-import barsuift.simLife.j3d.universe.BasicUniverse;
+import barsuift.simLife.j3d.universe.UniverseContext;
 import barsuift.simLife.universe.BasicUniverseFactory;
 import barsuift.simLife.universe.BasicUniverseIO;
 import barsuift.simLife.universe.OpenException;
@@ -33,7 +33,7 @@ public class Application {
 
     private File currentSaveFile;
 
-    private BasicUniverse currentUniverseContext;
+    private UniverseContext currentUniverseContext;
 
     private MainWindow window;
 
@@ -44,20 +44,20 @@ public class Application {
         this.window.setVisible(true);
     }
 
-    public BasicUniverse createEmptyUniverse() {
+    public UniverseContext createEmptyUniverse() {
         BasicUniverseFactory factory = new BasicUniverseFactory();
         Universe universe = factory.createEmpty();
-        this.currentUniverseContext = new BasicUniverse(universe);
+        this.currentUniverseContext = new UniverseContext(universe);
         currentUniverseContext.showFps(showFps);
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         return currentUniverseContext;
     }
 
-    public BasicUniverse createRandomUniverse() {
+    public UniverseContext createRandomUniverse() {
         BasicUniverseFactory factory = new BasicUniverseFactory();
         Universe universe = factory.createRandom();
-        this.currentUniverseContext = new BasicUniverse(universe);
+        this.currentUniverseContext = new UniverseContext(universe);
         currentUniverseContext.showFps(showFps);
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
@@ -65,10 +65,10 @@ public class Application {
     }
 
 
-    public BasicUniverse openUniverse(File saveFile) throws OpenException {
+    public UniverseContext openUniverse(File saveFile) throws OpenException {
         BasicUniverseIO envIO = new BasicUniverseIO(saveFile);
         Universe universe = envIO.read();
-        this.currentUniverseContext = new BasicUniverse(universe);
+        this.currentUniverseContext = new UniverseContext(universe);
         currentUniverseContext.showFps(showFps);
         this.window.changeUniverse(currentUniverseContext);
         this.currentSaveFile = saveFile;

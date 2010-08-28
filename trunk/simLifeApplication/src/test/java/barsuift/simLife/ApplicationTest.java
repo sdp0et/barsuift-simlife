@@ -21,6 +21,7 @@ package barsuift.simLife;
 import java.io.File;
 
 import junit.framework.TestCase;
+import barsuift.simLife.j3d.universe.UniverseContext;
 import barsuift.simLife.universe.BasicUniverseFactory;
 import barsuift.simLife.universe.BasicUniverseIO;
 import barsuift.simLife.universe.OpenException;
@@ -54,7 +55,8 @@ public class ApplicationTest extends TestCase {
         } catch (IllegalStateException e) {
             // OK expected exception
         }
-        Universe universe = application.createEmptyUniverse();
+        UniverseContext universeContext = application.createEmptyUniverse();
+        Universe universe = universeContext.getUniverse();
         // now there is a current universe, but still no current save file
         try {
             application.saveUniverse();
@@ -85,7 +87,8 @@ public class ApplicationTest extends TestCase {
         BasicUniverseIO io = new BasicUniverseIO(saveFile);
         io.write(universe);
         // now try to read it
-        Universe universe2 = application.openUniverse(saveFile);
+        UniverseContext universeContext = application.openUniverse(saveFile);
+        Universe universe2 = universeContext.getUniverse();
         assertEquals(universe, universe2);
     }
 

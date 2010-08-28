@@ -27,7 +27,7 @@ import java.text.MessageFormat;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.J3DGraphics2D;
 
-import barsuift.simLife.j3d.universe.BasicUniverse;
+import barsuift.simLife.j3d.universe.UniverseContext;
 import barsuift.simLife.time.FpsCounter;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
@@ -53,10 +53,10 @@ public class MyCanvas3D extends Canvas3D {
 
     private Font font;
 
-    private BasicUniverse universeContext;
+    private UniverseContext universeContext;
 
 
-    public MyCanvas3D(BasicUniverse universeContext) {
+    public MyCanvas3D(UniverseContext universeContext) {
         super(SimpleUniverse.getPreferredConfiguration());
         this.universeContext = universeContext;
         graphicFps = new FpsCounter();
