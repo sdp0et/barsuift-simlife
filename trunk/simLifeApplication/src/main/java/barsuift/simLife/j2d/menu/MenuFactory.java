@@ -25,21 +25,27 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.j2d.action.FpsAction;
 import barsuift.simLife.j2d.action.NewEmptyAction;
 import barsuift.simLife.j2d.action.NewRandomAction;
 import barsuift.simLife.j2d.action.OpenAction;
 import barsuift.simLife.j2d.action.SaveAction;
 import barsuift.simLife.j2d.action.SaveAsAction;
 
-
+// TODO put mnemonic and accelerator keys in a static class to put them all together
+// TODO 001 unit test
 public class MenuFactory {
 
     public JMenuBar createMenuBar(Application application) {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.add(createFileMenu(application));
+        menuBar.add(createAdminMenu(application));
+        return menuBar;
+    }
 
+    private JMenu createFileMenu(Application application) {
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
-        menuBar.add(fileMenu);
 
         NewEmptyAction newEmptyAction = new NewEmptyAction(application);
         JMenuItem newEmptyItem = new JMenuItem(newEmptyAction);
@@ -60,8 +66,18 @@ public class MenuFactory {
         OpenAction openAction = new OpenAction(application);
         JMenuItem openItem = new JMenuItem(openAction);
         fileMenu.add(openItem);
+        return fileMenu;
+    }
 
-        return menuBar;
+    private JMenu createAdminMenu(Application application) {
+        JMenu adminMenu = new JMenu("Administration");
+        adminMenu.setMnemonic(KeyEvent.VK_A);
+
+        FpsAction fpsAction = new FpsAction(application);
+        JMenuItem fpsItem = new JMenuItem(fpsAction);
+        adminMenu.add(fpsItem);
+
+        return adminMenu;
     }
 
 }

@@ -23,6 +23,7 @@ import java.util.Set;
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.Universe3D;
+import barsuift.simLife.time.FpsCounter;
 import barsuift.simLife.time.TimeCounter;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
@@ -62,5 +63,7 @@ public interface Universe extends LivingPart {
     public Universe3D getUniverse3D();
 
     public UniverseState getState();
+
+    public FpsCounter getFpsCounter();
 
 }

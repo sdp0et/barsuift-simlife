@@ -27,6 +27,7 @@ import barsuift.simLife.environment.BasicEnvironment;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
+import barsuift.simLife.time.FpsCounter;
 import barsuift.simLife.time.TimeCounter;
 import barsuift.simLife.tree.BasicTree;
 import barsuift.simLife.tree.BasicTreeLeaf;
@@ -51,8 +52,11 @@ public class BasicUniverse implements Universe {
 
     private final TimeCounter counter;
 
+    private final FpsCounter fpsCounter;
+
 
     public BasicUniverse(UniverseState state) {
+        this.fpsCounter = new FpsCounter();
         this.counter = new TimeCounter(state.getTimeCounter());
         this.id = state.getId();
         this.age = state.getAge();
@@ -61,7 +65,9 @@ public class BasicUniverse implements Universe {
         this.trees = new HashSet<Tree>();
         Set<TreeState> treeStates = state.getTrees();
         for (TreeState treeState : treeStates) {
-            trees.add(new BasicTree(this, treeState));
+            BasicTree newTree = new BasicTree(this, treeState);
+            trees.add(newTree);
+            System.out.println("nb Leaves=" + newTree.getNbLeaves());
         }
         this.fallenLeaves = new HashSet<TreeLeaf>();
         Set<TreeLeafState> fallenLeafStates = state.getFallenLeaves();
@@ -82,7 +88,13 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
+    public FpsCounter getFpsCounter() {
+        return fpsCounter;
+    }
+
+    @Override
     public void spendTime() {
+        fpsCounter.tick();
         counter.increment();
         age++;
         for (LivingPart livingPart : getLivingParts()) {

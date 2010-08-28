@@ -21,8 +21,8 @@ package barsuift.simLife.j2d.panel;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import barsuift.simLife.j3d.universe.BasicUniverse;
 import barsuift.simLife.time.UniverseTimeController;
-import barsuift.simLife.universe.Universe;
 
 
 public class MainPanel extends JPanel {
@@ -34,24 +34,23 @@ public class MainPanel extends JPanel {
      * 
      * @param universe the universe
      */
-    public MainPanel(Universe universe) {
+    public MainPanel(BasicUniverse universeContext) {
         super();
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 
-        JPanel environmentPanel = new EnvironmentPanel(universe.getEnvironment());
+        JPanel environmentPanel = new EnvironmentPanel(universeContext.getUniverse().getEnvironment());
         rightPanel.add(environmentPanel);
 
-        UniverseTimeController timeController = new UniverseTimeController(universe);
+        UniverseTimeController timeController = new UniverseTimeController(universeContext.getUniverse());
         JPanel controllerPanel = new TimeControllerPanel(timeController);
         rightPanel.add(controllerPanel);
 
         add(rightPanel);
 
-        Universe3DPanel universe3DPanel = new Universe3DPanel(universe.getUniverse3D());
-        universe3DPanel.setAxis();
+        Universe3DPanel universe3DPanel = new Universe3DPanel(universeContext.getCanvas3D());
         add(universe3DPanel);
     }
 
