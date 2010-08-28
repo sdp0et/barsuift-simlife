@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j2d.panel;
+package barsuift.simLife.j3d.universe;
 
 import junit.framework.TestCase;
-import barsuift.simLife.j3d.universe.MockUniverse3D;
-import barsuift.simLife.j3d.universe.Universe3D;
+import barsuift.simLife.universe.MockUniverse;
+import barsuift.simLife.universe.Universe;
 
 
-public class Universe3DPanelTest extends TestCase {
+public class UniverseContextTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -34,12 +34,17 @@ public class Universe3DPanelTest extends TestCase {
     }
 
     public void testUnsetAxis() {
-        Universe3D universe3D = new MockUniverse3D();
-        Universe3DPanel panel = new Universe3DPanel(universe3D);
+        Universe universe = new MockUniverse();
+        UniverseContext panel = new UniverseContext(universe);
+        assertFalse(panel.isAxisShown());
         panel.setAxis();
+        assertTrue(panel.isAxisShown());
         panel.unsetAxis();
+        assertFalse(panel.isAxisShown());
         panel.setAxis();
+        assertTrue(panel.isAxisShown());
         panel.unsetAxis();
+        assertFalse(panel.isAxisShown());
     }
 
 }
