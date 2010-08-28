@@ -37,7 +37,7 @@ import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-//TODO 001 unit test from Universe3DPanel
+// TODO 001 unit test from Universe3DPanel
 public class UniverseContext {
 
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
@@ -53,6 +53,8 @@ public class UniverseContext {
     private final Axis3DGroup axisGroup = new Axis3DGroup();
 
     private boolean showFps;
+
+    private boolean isAxisShown;
 
     public UniverseContext(Universe universe) {
         this.universe = universe;
@@ -147,6 +149,7 @@ public class UniverseContext {
      */
     public void setAxis() {
         root.addChild(axisGroup);
+        isAxisShown = true;
     }
 
     /**
@@ -154,5 +157,11 @@ public class UniverseContext {
      */
     public void unsetAxis() {
         root.removeChild(axisGroup);
+        isAxisShown = false;
     }
+
+    public boolean isAxisShown() {
+        return isAxisShown;
+    }
+
 }
