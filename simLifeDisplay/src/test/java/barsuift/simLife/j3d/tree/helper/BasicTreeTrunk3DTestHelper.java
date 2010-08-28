@@ -39,7 +39,7 @@ public final class BasicTreeTrunk3DTestHelper extends Assert {
         // private constructor to enforce static access
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public static void checkTrunk3D(BasicTreeTrunk3D trunk3D, float expectedHeight, float expectedRadius,
             Point3d expectedLowerBottom, Point3d expectedUpperBottom, Point3d expectedMovedLowerBottom,
             Point3d expectedMovedUpperBottom, Point3d expectedLowerTop, Point3d expectedUpperTop,
