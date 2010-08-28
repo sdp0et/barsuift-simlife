@@ -24,7 +24,7 @@ import javax.swing.JMenuBar;
 import barsuift.simLife.Application;
 import barsuift.simLife.j2d.menu.MenuFactory;
 import barsuift.simLife.j2d.panel.MainPanel;
-import barsuift.simLife.j3d.universe.BasicUniverse;
+import barsuift.simLife.j3d.universe.UniverseContext;
 
 
 public class MainWindow extends JFrame {
@@ -50,7 +50,7 @@ public class MainWindow extends JFrame {
      * 
      * @param universe the new universe to display
      */
-    public void changeUniverse(BasicUniverse universeContext) {
+    public void changeUniverse(UniverseContext universeContext) {
         mainPanel = null;
         mainPanel = new MainPanel(universeContext);
         setContentPane(mainPanel);

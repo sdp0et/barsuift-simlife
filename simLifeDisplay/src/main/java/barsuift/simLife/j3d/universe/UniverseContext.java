@@ -38,7 +38,7 @@ import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
 //TODO 001 unit test from Universe3DPanel
-public class BasicUniverse {
+public class UniverseContext {
 
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
 
@@ -54,7 +54,7 @@ public class BasicUniverse {
 
     private boolean showFps;
 
-    public BasicUniverse(Universe universe) {
+    public UniverseContext(Universe universe) {
         this.universe = universe;
         showFps = false;
         canvas3D = new MyCanvas3D(this);
