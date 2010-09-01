@@ -18,62 +18,69 @@
  */
 package barsuift.simLife.time;
 
-// TODO 001 unit test
 public class FpsCounter {
 
-    private static final int ITERATION_BEFORE_AVERAGE = 10;
+    private static final int COMPUTINGS_BEFORE_AVERAGE = 10;
 
-    private static final int ITERATION_BEFORE_COMPUTING = 10;
+    private static final int TICKS_BEFORE_COMPUTING = 10;
 
     private static final long NANO_TO_MILLI = 1000000;
 
-    private int computingCounter;
+    private short ticksCounter;
 
-    private int avgCounter;
+    private short computingsCounter;
 
-    private double previousTick;
+    private long previousTick;
 
-    private double currentTick;
+    private long currentTick;
 
-    private double lastExecTime;
+    private float execTime;
 
-    private double avgExecTime;
+    private int fps;
 
-    private Double[] lastExecTimes;
+    private float avgExecTime;
+
+    private int avgFps;
+
+    private float[] lastExecTimes;
 
     public FpsCounter() {
-        computingCounter = 0;
-        avgCounter = 0;
+        ticksCounter = 0;
+        computingsCounter = 0;
         previousTick = System.nanoTime();
-        currentTick = previousTick + NANO_TO_MILLI;
-        lastExecTime = 1000;
-        avgExecTime = 1000;
-        lastExecTimes = new Double[ITERATION_BEFORE_AVERAGE];
+        currentTick = previousTick;
+        execTime = 1;
+        fps = 1;
+        avgExecTime = 1;
+        avgFps = 1;
+        lastExecTimes = new float[COMPUTINGS_BEFORE_AVERAGE];
     }
 
     public void tick() {
-        computingCounter++;
-        if (computingCounter == ITERATION_BEFORE_COMPUTING) {
-            computingCounter = 0;
+        ticksCounter++;
+        if (ticksCounter == TICKS_BEFORE_COMPUTING) {
+            ticksCounter = 0;
             previousTick = currentTick;
             currentTick = System.nanoTime();
-            lastExecTime = (currentTick - previousTick) / NANO_TO_MILLI;
-            lastExecTime /= ITERATION_BEFORE_COMPUTING;
-            lastExecTimes[avgCounter] = lastExecTime;
-            avgCounter++;
-            if (avgCounter == ITERATION_BEFORE_AVERAGE) {
-                avgCounter = 0;
+            execTime = (float) (currentTick - previousTick) / NANO_TO_MILLI;
+            execTime /= TICKS_BEFORE_COMPUTING;
+            lastExecTimes[computingsCounter] = execTime;
+            fps = Math.round(1000f / execTime);
+            computingsCounter++;
+            if (computingsCounter == COMPUTINGS_BEFORE_AVERAGE) {
+                computingsCounter = 0;
                 computeAvgExecTime();
             }
         }
     }
 
     private void computeAvgExecTime() {
-        double result = 0;
-        for (Double historicExecTime : lastExecTimes) {
+        float result = 0;
+        for (float historicExecTime : lastExecTimes) {
             result += historicExecTime;
         }
-        avgExecTime = result / ITERATION_BEFORE_AVERAGE;
+        avgExecTime = result / COMPUTINGS_BEFORE_AVERAGE;
+        avgFps = Math.round(1000 / avgExecTime);
     }
 
     /**
@@ -81,8 +88,8 @@ public class FpsCounter {
      * 
      * @return the execution time in milliseconds
      */
-    public double getExecTime() {
-        return lastExecTime;
+    public float getExecTime() {
+        return execTime;
     }
 
     /**
@@ -91,7 +98,7 @@ public class FpsCounter {
      * @return the current FPS
      */
     public int getFps() {
-        return (int) Math.round(1000. / lastExecTime);
+        return fps;
     }
 
     /**
@@ -99,7 +106,7 @@ public class FpsCounter {
      * 
      * @return the average execution time in milliseconds
      */
-    public double getAvgExecTime() {
+    public float getAvgExecTime() {
         return avgExecTime;
     }
 
@@ -109,7 +116,7 @@ public class FpsCounter {
      * @return the average FPS
      */
     public int getAvgFps() {
-        return (int) Math.round(1000. / avgExecTime);
+        return avgFps;
     }
 
 }
