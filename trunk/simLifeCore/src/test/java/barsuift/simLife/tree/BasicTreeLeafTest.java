@@ -52,7 +52,7 @@ public class BasicTreeLeafTest extends TestCase {
 
         leafState = CoreDataCreatorForTests.createSpecificTreeLeafState();
 
-        Percent lightRate = new Percent(70);
+        Percent lightRate = PercentHelper.getDecimalValue(70);
         mockSun = new MockSun();
         mockSun.setLuminosity(lightRate);
         MockEnvironment mockEnv = new MockEnvironment();

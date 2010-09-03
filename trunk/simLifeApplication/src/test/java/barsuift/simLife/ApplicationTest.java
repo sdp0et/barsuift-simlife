@@ -67,7 +67,7 @@ public class ApplicationTest extends TestCase {
         // this should work fine
         application.saveUniverseAs(saveFile);
         // change the universe
-        universe.getEnvironment().getSun().setLuminosity(new Percent(13));
+        universe.getEnvironment().getSun().setLuminosity(PercentHelper.getDecimalValue(13));
         // this should work fine
         application.saveUniverse();
         application.createEmptyUniverse();

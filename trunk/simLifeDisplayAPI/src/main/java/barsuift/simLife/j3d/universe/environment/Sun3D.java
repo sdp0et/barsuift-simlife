@@ -18,10 +18,11 @@
  */
 package barsuift.simLife.j3d.universe.environment;
 
+import java.math.BigDecimal;
+
 import javax.media.j3d.DirectionalLight;
 
 import barsuift.simLife.IObservable;
-import barsuift.simLife.Percent;
 
 
 
@@ -44,7 +45,7 @@ public interface Sun3D extends IObservable {
      * 
      * @return the white factor
      */
-    public Percent getWhiteFactor();
+    public BigDecimal getWhiteFactor();
 
     public DirectionalLight getLight();
 

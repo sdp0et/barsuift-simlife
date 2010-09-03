@@ -27,7 +27,7 @@ import barsuift.simLife.Percent;
 
 public class MockSun3D extends Observable implements Sun3D {
 
-    private Percent whiteFactor = new Percent(100);
+    private Percent whiteFactor = PercentHelper.getDecimalValue(100);
 
     private DirectionalLight light = new DirectionalLight();
 

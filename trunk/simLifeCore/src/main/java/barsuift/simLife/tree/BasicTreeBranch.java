@@ -30,7 +30,7 @@ import barsuift.simLife.universe.Universe;
 
 public class BasicTreeBranch implements TreeBranch {
 
-    private static final Percent ENERGY_RATIO_TO_KEEP = new Percent(0);
+    private static final Percent ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(0);
 
     private final Long id;
 

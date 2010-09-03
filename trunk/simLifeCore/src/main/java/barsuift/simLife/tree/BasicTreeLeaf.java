@@ -33,7 +33,7 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     /**
      * 5% decrease
      */
-    private static final Percent AGING_EFFICIENCY_DECREASE = new Percent(95);
+    private static final Percent AGING_EFFICIENCY_DECREASE = PercentHelper.getDecimalValue(95);
 
     private static final Percent LOWEST_EFFICIENCY_BEFORE_FALLING = new Percent(10);
 

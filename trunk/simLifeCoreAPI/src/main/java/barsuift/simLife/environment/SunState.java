@@ -18,27 +18,27 @@
  */
 package barsuift.simLife.environment;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import java.math.BigDecimal;
 
-import barsuift.simLife.PercentState;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class SunState {
 
-    private PercentState luminosity;
+    private BigDecimal luminosity;
 
-    private PercentState riseAngle;
+    private BigDecimal riseAngle;
 
-    private PercentState zenithAngle;
+    private BigDecimal zenithAngle;
 
     public SunState() {
         super();
-        this.luminosity = new PercentState();
-        this.riseAngle = new PercentState();
-        this.zenithAngle = new PercentState();
+        this.luminosity = new BigDecimal(0);
+        this.riseAngle = new BigDecimal(0);
+        this.zenithAngle = new BigDecimal(0);
     }
 
-    public SunState(PercentState luminosity, PercentState riseAngle, PercentState zenithAngle) {
+    public SunState(BigDecimal luminosity, BigDecimal riseAngle, BigDecimal zenithAngle) {
         super();
         this.luminosity = luminosity;
         this.riseAngle = riseAngle;
@@ -47,32 +47,32 @@ public class SunState {
 
     public SunState(SunState copy) {
         super();
-        this.luminosity = new PercentState(copy.getLuminosity());
-        this.riseAngle = new PercentState(copy.getRiseAngle());
-        this.zenithAngle = new PercentState(copy.getZenithAngle());
+        this.luminosity = copy.getLuminosity();
+        this.riseAngle = copy.getRiseAngle();
+        this.zenithAngle = copy.getZenithAngle();
     }
 
-    public PercentState getLuminosity() {
+    public BigDecimal getLuminosity() {
         return luminosity;
     }
 
-    public void setLuminosity(PercentState luminosity) {
+    public void setLuminosity(BigDecimal luminosity) {
         this.luminosity = luminosity;
     }
 
-    public PercentState getRiseAngle() {
+    public BigDecimal getRiseAngle() {
         return riseAngle;
     }
 
-    public void setRiseAngle(PercentState riseAngle) {
+    public void setRiseAngle(BigDecimal riseAngle) {
         this.riseAngle = riseAngle;
     }
 
-    public PercentState getZenithAngle() {
+    public BigDecimal getZenithAngle() {
         return zenithAngle;
     }
 
-    public void setZenithAngle(PercentState zenithAngle) {
+    public void setZenithAngle(BigDecimal zenithAngle) {
         this.zenithAngle = zenithAngle;
     }
 
