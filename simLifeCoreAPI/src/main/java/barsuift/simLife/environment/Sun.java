@@ -18,8 +18,9 @@
  */
 package barsuift.simLife.environment;
 
+import java.math.BigDecimal;
+
 import barsuift.simLife.IObservable;
-import barsuift.simLife.Percent;
 import barsuift.simLife.j3d.universe.environment.Sun3D;
 
 /**
@@ -29,9 +30,9 @@ public interface Sun extends IObservable {
 
     public Sun3D getSun3D();
 
-    public Percent getLuminosity();
+    public BigDecimal getLuminosity();
 
-    public void setLuminosity(Percent luminosity) throws IllegalArgumentException;
+    public void setLuminosity(BigDecimal luminosity) throws IllegalArgumentException;
 
     /**
      * Rise angle, in percent.
@@ -43,9 +44,9 @@ public interface Sun extends IObservable {
      * </ul>
      * </p>
      */
-    public Percent getRiseAngle();
+    public BigDecimal getRiseAngle();
 
-    public void setRiseAngle(Percent riseAngle);
+    public void setRiseAngle(BigDecimal riseAngle);
 
     /**
      * Zenith angle, in percent.
@@ -57,9 +58,9 @@ public interface Sun extends IObservable {
      * </ul>
      * </p>
      */
-    public Percent getZenithAngle();
+    public BigDecimal getZenithAngle();
 
-    public void setZenithAngle(Percent zenithAngle);
+    public void setZenithAngle(BigDecimal zenithAngle);
 
     public SunState getState();
 

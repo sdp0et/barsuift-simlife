@@ -68,7 +68,7 @@ public class BasicTreeTest extends TestCase {
 
 
     public void testSpendTime() {
-        ((MockSun) universe.getEnvironment().getSun()).setLuminosity(new Percent(70));
+        ((MockSun) universe.getEnvironment().getSun()).setLuminosity(PercentHelper.getDecimalValue(70));
         tree.spendTime();
         assertEquals(16, tree.getAge());
         assertEquals(40, tree.getNbBranches());

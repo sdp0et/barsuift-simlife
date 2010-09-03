@@ -18,9 +18,9 @@
  */
 package barsuift.simLife.environment;
 
+import java.math.BigDecimal;
 import java.util.Observable;
 
-import barsuift.simLife.Percent;
 import barsuift.simLife.j3d.universe.environment.BasicSun3D;
 import barsuift.simLife.j3d.universe.environment.Sun3D;
 
@@ -33,11 +33,11 @@ import barsuift.simLife.j3d.universe.environment.Sun3D;
  */
 public class BasicSun extends Observable implements Sun {
 
-    private Percent luminosity;
+    private BigDecimal luminosity;
 
-    private Percent riseAngle;
+    private BigDecimal riseAngle;
 
-    private Percent zenithAngle;
+    private BigDecimal zenithAngle;
 
     private final Sun3D sun3D;
 
@@ -50,17 +50,17 @@ public class BasicSun extends Observable implements Sun {
         if (state == null) {
             throw new IllegalArgumentException("Null sun state");
         }
-        luminosity = new Percent(state.getLuminosity());
-        riseAngle = new Percent(state.getRiseAngle());
-        zenithAngle = new Percent(state.getZenithAngle());
+        luminosity = state.getLuminosity();
+        riseAngle = state.getRiseAngle();
+        zenithAngle = state.getZenithAngle();
         sun3D = new BasicSun3D(this);
     }
 
-    public Percent getLuminosity() {
+    public BigDecimal getLuminosity() {
         return luminosity;
     }
 
-    public void setLuminosity(Percent luminosity) throws IllegalArgumentException {
+    public void setLuminosity(BigDecimal luminosity) throws IllegalArgumentException {
         if (luminosity == null) {
             throw new IllegalArgumentException("Sun luminosity can not be null");
         }
@@ -71,12 +71,12 @@ public class BasicSun extends Observable implements Sun {
         }
     }
 
-    public Percent getRiseAngle() {
+    public BigDecimal getRiseAngle() {
         return riseAngle;
     }
 
 
-    public void setRiseAngle(Percent riseAngle) {
+    public void setRiseAngle(BigDecimal riseAngle) {
         if (riseAngle == null) {
             throw new IllegalArgumentException("Sun rise angle can not be null");
         }
@@ -87,11 +87,11 @@ public class BasicSun extends Observable implements Sun {
         }
     }
 
-    public Percent getZenithAngle() {
+    public BigDecimal getZenithAngle() {
         return zenithAngle;
     }
 
-    public void setZenithAngle(Percent zenithAngle) {
+    public void setZenithAngle(BigDecimal zenithAngle) {
         if (zenithAngle == null) {
             throw new IllegalArgumentException("Sun zenith angle can not be null");
         }
@@ -104,7 +104,7 @@ public class BasicSun extends Observable implements Sun {
 
     @Override
     public SunState getState() {
-        return new SunState(luminosity.getState(), riseAngle.getState(), zenithAngle.getState());
+        return new SunState(luminosity, riseAngle, zenithAngle);
     }
 
     @Override

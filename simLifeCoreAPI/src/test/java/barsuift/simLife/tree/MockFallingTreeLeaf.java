@@ -25,7 +25,7 @@ import barsuift.simLife.tree.TreeLeaf;
 public class MockFallingTreeLeaf extends MockTreeLeaf implements TreeLeaf {
 
     public MockFallingTreeLeaf() {
-        setEfficiency(new Percent(10));
+        setEfficiency(PercentHelper.getDecimalValue(10));
     }
 
     public void spendTime() {

@@ -52,7 +52,7 @@ public class BasicTreeBranchPartTest extends TestCase {
         universe = new MockUniverse();
         branchPartState = CoreDataCreatorForTests.createSpecificTreeBranchPartState();
         firstLeafState = branchPartState.getLeaveStates().get(0);
-        firstLeafState.setEfficiency(new Percent(10).getState());
+        firstLeafState.setEfficiency(PercentHelper.getDecimalValue(10).getState());
         branchPart = new BasicTreeBranchPart(universe, branchPartState);
     }
 

@@ -29,7 +29,6 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 
-import barsuift.simLife.Percent;
 import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
 
@@ -91,20 +90,20 @@ public class BasicSun3D extends Observable implements Observer, Sun3D {
     }
 
     private void computeZenithAngleData() {
-        double zenithAngle = sun.getZenithAngle().getValue().doubleValue() * Math.PI / 2;
+        double zenithAngle = sun.getZenithAngle().doubleValue() * Math.PI / 2;
         cosinusZenithAngle = (float) Math.cos(zenithAngle);
         sinusZenithAngle = (float) Math.sin(zenithAngle);
     }
 
     private void computeRiseAngleData() {
-        double riseAngle = sun.getRiseAngle().getValue().doubleValue() * Math.PI;
+        double riseAngle = sun.getRiseAngle().doubleValue() * Math.PI;
         cosinusRiseAngle = (float) Math.cos(riseAngle);
         sinusRiseAngle = (float) Math.sin(riseAngle);
     }
 
     private Color3f computeColor() {
-        float luminosity = sun.getLuminosity().getValue().floatValue();
-        float whiteFactor = getWhiteFactor().getValue().floatValue();
+        float luminosity = sun.getLuminosity().floatValue();
+        float whiteFactor = getWhiteFactor().floatValue();
         Color3f color = new Color3f(luminosity, luminosity * whiteFactor, luminosity * whiteFactor);
         setChanged();
         notifyObservers(SunUpdateCode.color);
@@ -112,8 +111,8 @@ public class BasicSun3D extends Observable implements Observer, Sun3D {
     }
 
     @Override
-    public Percent getWhiteFactor() {
-        return new Percent(new BigDecimal(Math.sqrt(Math.abs(sinusRiseAngle * sinusZenithAngle))));
+    public BigDecimal getWhiteFactor() {
+        return new BigDecimal(Math.sqrt(Math.abs(sinusRiseAngle * sinusZenithAngle)));
     }
 
     public DirectionalLight getLight() {

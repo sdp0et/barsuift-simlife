@@ -61,7 +61,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
      */
     private static final BigDecimal INCREASE_LEAF_COST = new BigDecimal(20);
 
-    private static final Percent ENERGY_RATIO_TO_KEEP = new Percent(50);
+    private static final Percent ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(50);
 
     private List<TreeLeaf> leaves;
 

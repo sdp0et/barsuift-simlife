@@ -27,11 +27,11 @@ import barsuift.simLife.j3d.universe.environment.Sun3D;
 
 public class MockSun extends Observable implements Sun {
 
-    private Percent luminosity = new Percent(100);
+    private Percent luminosity = PercentHelper.getDecimalValue(100);
 
-    private Percent riseAngle = new Percent(25);
+    private Percent riseAngle = PercentHelper.getDecimalValue(25);
 
-    private Percent zenithAngle = new Percent(50);
+    private Percent zenithAngle = PercentHelper.getDecimalValue(50);
 
     private Sun3D sunLight = new MockSun3D();
 

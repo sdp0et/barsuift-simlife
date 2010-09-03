@@ -94,7 +94,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
     }
 
     public void testObservers() {
-        mockLeaf.setEfficiency(new Percent(80));
+        mockLeaf.setEfficiency(PercentHelper.getDecimalValue(80));
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
         assertEquals(1, mockLeaf.countObservers());
         // check the observer is the leaf3D
@@ -116,7 +116,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // check the leaves are not culled (transparent) when seen from behind
         assertEquals(PolygonAttributes.CULL_NONE, leafShape3D.getAppearance().getPolygonAttributes().getCullFace());
 
-        mockLeaf.setEfficiency(new Percent(75));
+        mockLeaf.setEfficiency(PercentHelper.getDecimalValue(75));
         leaf3D.update(mockLeaf, LeafUpdateCode.efficiency);
 
         // check that the color has changed as expected
@@ -126,7 +126,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
                 0.05f), new Color3f(0.15f, 0.15f, 0.15f));
 
 
-        mockLeaf.setEfficiency(new Percent(60));
+        mockLeaf.setEfficiency(PercentHelper.getDecimalValue(60));
         leaf3D.update(mockLeaf, null);
 
         // check that the color has NOT changed as expected, because the update code is not the appropriate one
