@@ -1,5 +1,7 @@
 /**
- * barsuift-simlife is a life simulator program * Copyright (C) 2010 Cyrille GACHOT
+ * barsuift-simlife is a life simulator program
+ * 
+ * Copyright (C) 2010 Cyrille GACHOT
  * 
  * This file is part of barsuift-simlife.
  * 
@@ -28,7 +30,7 @@ public class MockFallingTreeLeaf extends MockTreeLeaf implements TreeLeaf {
     public void spendTime() {
         super.spendTime();
         setChanged();
-        notifyObservers(LeafUpdateCode.fall);
+        notifyObservers(LeafUpdateMask.FALL_MASK);
     }
 
 }

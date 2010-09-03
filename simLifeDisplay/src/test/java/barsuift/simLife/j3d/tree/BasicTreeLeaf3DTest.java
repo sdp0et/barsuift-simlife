@@ -40,7 +40,7 @@ import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.util.ColorConstants;
-import barsuift.simLife.tree.LeafUpdateCode;
+import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.MockTreeLeaf;
 
 public class BasicTreeLeaf3DTest extends TestCase {
@@ -117,7 +117,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         assertEquals(PolygonAttributes.CULL_NONE, leafShape3D.getAppearance().getPolygonAttributes().getCullFace());
 
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(75));
-        leaf3D.update(mockLeaf, LeafUpdateCode.efficiency);
+        leaf3D.update(mockLeaf, LeafUpdateMask.EFFICIENCY_MASK);
 
         // check that the color has changed as expected
         expectedColor = new Color3f(ColorConstants.brownYellow);
@@ -127,7 +127,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
 
 
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(60));
-        leaf3D.update(mockLeaf, null);
+        leaf3D.update(mockLeaf, LeafUpdateMask.AGE_MASK);
 
         // check that the color has NOT changed as expected, because the update code is not the appropriate one
         expectedColor = new Color3f(ColorConstants.brownYellow);
@@ -182,7 +182,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         CompilerHelper.addToLocale(branchGroup);
 
         // call to the fall() method
-        leaf3D.update(null, LeafUpdateCode.fall);
+        leaf3D.update(null, LeafUpdateMask.FALL_MASK);
 
         Point3dState newLeafAttachPoint = leaf3D.getState().getLeafAttachPoint();
         double newRotation = leaf3D.getState().getRotation();
