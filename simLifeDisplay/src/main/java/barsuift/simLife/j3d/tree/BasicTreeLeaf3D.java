@@ -43,7 +43,7 @@ import barsuift.simLife.j3d.util.NormalHelper;
 import barsuift.simLife.j3d.util.PointHelper;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 import barsuift.simLife.j3d.util.TransformerHelper;
-import barsuift.simLife.tree.LeafUpdateCode;
+import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.TreeLeaf;
 
 public class BasicTreeLeaf3D implements TreeLeaf3D {
@@ -60,6 +60,12 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private final BranchGroup branchGroup;
 
+    private boolean maxSizeReached;
+
+    private final Point3d maxEndPoint1;
+
+    private final Point3d maxEndPoint2;
+
     public BasicTreeLeaf3D(Universe3D universe3D, TreeLeaf3DState state, TreeLeaf leaf) {
         if (universe3D == null) {
             throw new IllegalArgumentException("Null universe 3D");
@@ -72,6 +78,8 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         }
         this.universe3D = universe3D;
         this.state = new TreeLeaf3DState(state);
+        maxEndPoint1 = computeMaxEndPoint(state.getInitialEndPoint1());
+        maxEndPoint2 = computeMaxEndPoint(state.getInitialEndPoint2());
         leaf.addObserver(this);
         leafShape3D = new Shape3D();
         this.branchGroup = new BranchGroup();
@@ -80,6 +88,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         setColor(leaf.getEfficiency());
         leafShape3D.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         branchGroup.setCapability(BranchGroup.ALLOW_DETACH);
+        maxSizeReached = false;
     }
 
     private void setColor(BigDecimal efficiency) {
@@ -113,25 +122,29 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     @Override
     public boolean isMaxSizeReached() {
-        Point3dState initialEndPoint1 = state.getInitialEndPoint1();
-        double maxX1 = MAX_INCREASE_FACTOR * initialEndPoint1.getX();
-        double maxY1 = MAX_INCREASE_FACTOR * initialEndPoint1.getY();
-        double maxZ1 = MAX_INCREASE_FACTOR * initialEndPoint1.getZ();
+        if (maxSizeReached) {
+            // optimization : if the max size is reached, no need to compute it again
+            return true;
+        }
         Point3d actualEndPoint1 = state.getEndPoint1().toPointValue();
-        boolean areAlmostEquals1 = PointHelper.areAlmostEquals(actualEndPoint1, new Point3d(maxX1, maxY1, maxZ1));
+        boolean areAlmostEquals1 = PointHelper.areAlmostEquals(actualEndPoint1, maxEndPoint1);
         if (!areAlmostEquals1) {
             return false;
         }
-        Point3dState initialEndPoint2 = state.getInitialEndPoint2();
-        double maxX2 = MAX_INCREASE_FACTOR * initialEndPoint2.getX();
-        double maxY2 = MAX_INCREASE_FACTOR * initialEndPoint2.getY();
-        double maxZ2 = MAX_INCREASE_FACTOR * initialEndPoint2.getZ();
         Point3d actualEndPoint2 = state.getEndPoint2().toPointValue();
-        boolean areAlmostEquals2 = PointHelper.areAlmostEquals(actualEndPoint2, new Point3d(maxX2, maxY2, maxZ2));
+        boolean areAlmostEquals2 = PointHelper.areAlmostEquals(actualEndPoint2, maxEndPoint2);
         if (!areAlmostEquals2) {
             return false;
         }
+        maxSizeReached = true;
         return true;
+    }
+
+    private Point3d computeMaxEndPoint(Point3dState initialEndPoint) {
+        double maxX = MAX_INCREASE_FACTOR * initialEndPoint.getX();
+        double maxY = MAX_INCREASE_FACTOR * initialEndPoint.getY();
+        double maxZ = MAX_INCREASE_FACTOR * initialEndPoint.getZ();
+        return new Point3d(maxX, maxY, maxZ);
     }
 
     @Override
@@ -165,11 +178,11 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     @Override
     public void update(Observable observable, Object arg) {
-        if (arg == LeafUpdateCode.efficiency) {
+        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.EFFICIENCY_MASK)) {
             TreeLeaf leaf = (TreeLeaf) observable;
             setColor(leaf.getEfficiency());
         }
-        if (arg == LeafUpdateCode.fall) {
+        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALL_MASK)) {
             fall();
         }
     }
