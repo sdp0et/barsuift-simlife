@@ -18,20 +18,21 @@
  */
 package barsuift.simLife.environment;
 
+import java.math.BigDecimal;
 import java.util.Observable;
 
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.universe.environment.MockSun3D;
 import barsuift.simLife.j3d.universe.environment.Sun3D;
 
 
 public class MockSun extends Observable implements Sun {
 
-    private Percent luminosity = PercentHelper.getDecimalValue(100);
+    private BigDecimal luminosity = PercentHelper.getDecimalValue(100);
 
-    private Percent riseAngle = PercentHelper.getDecimalValue(25);
+    private BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
 
-    private Percent zenithAngle = PercentHelper.getDecimalValue(50);
+    private BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
 
     private Sun3D sunLight = new MockSun3D();
 
@@ -39,32 +40,32 @@ public class MockSun extends Observable implements Sun {
 
 
     @Override
-    public Percent getLuminosity() {
+    public BigDecimal getLuminosity() {
         return luminosity;
     }
 
     @Override
-    public void setLuminosity(Percent luminosity) {
+    public void setLuminosity(BigDecimal luminosity) {
         this.luminosity = luminosity;
     }
 
     @Override
-    public Percent getRiseAngle() {
+    public BigDecimal getRiseAngle() {
         return riseAngle;
     }
 
     @Override
-    public void setRiseAngle(Percent riseAngle) {
+    public void setRiseAngle(BigDecimal riseAngle) {
         this.riseAngle = riseAngle;
     }
 
     @Override
-    public Percent getZenithAngle() {
+    public BigDecimal getZenithAngle() {
         return zenithAngle;
     }
 
     @Override
-    public void setZenithAngle(Percent zenithAngle) {
+    public void setZenithAngle(BigDecimal zenithAngle) {
         this.zenithAngle = zenithAngle;
     }
 

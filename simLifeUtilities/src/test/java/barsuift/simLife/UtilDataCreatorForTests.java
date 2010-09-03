@@ -27,8 +27,8 @@ public final class UtilDataCreatorForTests {
         // private constructor to enforce static access
     }
 
-    public static PercentState createPercentState() {
-        return new PercentState(new BigDecimal(Math.random()));
+    public static BigDecimal createBigDecimal() {
+        return new BigDecimal(Math.random());
     }
 
 }

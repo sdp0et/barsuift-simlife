@@ -18,11 +18,8 @@
  */
 package barsuift.simLife.environment;
 
-import java.math.BigDecimal;
-
 import junit.framework.TestCase;
-import barsuift.simLife.Percent;
-import barsuift.simLife.PercentState;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.time.ObservableTestHelper;
 
 
@@ -58,15 +55,15 @@ public class BasicSunTest extends TestCase {
 
     public void testGetState() {
         assertEquals(sunState, sun.getState());
-        sunState = new SunState(new PercentState(new BigDecimal("0.32")), new PercentState(new BigDecimal("0.47")),
-                new PercentState(new BigDecimal("0.78")));
+        sunState = new SunState(PercentHelper.getDecimalValue(32), PercentHelper.getDecimalValue(47),
+                PercentHelper.getDecimalValue(78));
         sun = new BasicSun(sunState);
         assertEquals(sunState, sun.getState());
     }
 
     public void testGetLuminosity() {
-        sun.setLuminosity(new Percent(30));
-        assertEquals(new Percent(30), sun.getLuminosity());
+        sun.setLuminosity(PercentHelper.getDecimalValue(30));
+        assertEquals(PercentHelper.getDecimalValue(30), sun.getLuminosity());
         try {
             sun.setLuminosity(null);
             fail("Should throw an IllegalArgumentException");
@@ -76,8 +73,8 @@ public class BasicSunTest extends TestCase {
     }
 
     public void testGetRiseAngle() {
-        sun.setRiseAngle(new Percent(30));
-        assertEquals(new Percent(30), sun.getRiseAngle());
+        sun.setRiseAngle(PercentHelper.getDecimalValue(30));
+        assertEquals(PercentHelper.getDecimalValue(30), sun.getRiseAngle());
         try {
             sun.setRiseAngle(null);
             fail("Should throw an IllegalArgumentException");
@@ -87,8 +84,8 @@ public class BasicSunTest extends TestCase {
     }
 
     public void testGetZenithAngle() {
-        sun.setZenithAngle(new Percent(30));
-        assertEquals(new Percent(30), sun.getZenithAngle());
+        sun.setZenithAngle(PercentHelper.getDecimalValue(30));
+        assertEquals(PercentHelper.getDecimalValue(30), sun.getZenithAngle());
         try {
             sun.setZenithAngle(null);
             fail("Should throw an IllegalArgumentException");
@@ -99,58 +96,58 @@ public class BasicSunTest extends TestCase {
 
     public void testObserverLuminosity() {
         observerHelper.addObserver(sun);
-        assertEquals(sunState.getLuminosity().toPercent(), sun.getLuminosity());
-        sun.setLuminosity(new Percent(90));
-        assertEquals(new Percent(90), sun.getLuminosity());
+        assertEquals(sunState.getLuminosity(), sun.getLuminosity());
+        sun.setLuminosity(PercentHelper.getDecimalValue(90));
+        assertEquals(PercentHelper.getDecimalValue(90), sun.getLuminosity());
         assertEquals(1, observerHelper.nbUpdated());
         assertEquals(SunUpdateCode.luminosity, observerHelper.getUpdateObjects().get(0));
     }
 
     public void testObserverLuminosityUnchanged() {
         observerHelper.addObserver(sun);
-        assertEquals(sunState.getLuminosity().toPercent(), sun.getLuminosity());
-        sun.setLuminosity(sunState.getLuminosity().toPercent());
-        assertEquals(sunState.getLuminosity().toPercent(), sun.getLuminosity());
-        assertEquals("The observer should not be notified when setting the same value as before", 0, observerHelper
-                .nbUpdated());
+        assertEquals(sunState.getLuminosity(), sun.getLuminosity());
+        sun.setLuminosity(sunState.getLuminosity());
+        assertEquals(sunState.getLuminosity(), sun.getLuminosity());
+        assertEquals("The observer should not be notified when setting the same value as before", 0,
+                observerHelper.nbUpdated());
         assertEquals(0, observerHelper.getUpdateObjects().size());
     }
 
     public void testObserverRiseAngle() {
         observerHelper.addObserver(sun);
-        assertEquals(sunState.getRiseAngle().toPercent(), sun.getRiseAngle());
-        sun.setRiseAngle(new Percent(50));
-        assertEquals(new Percent(50), sun.getRiseAngle());
+        assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
+        sun.setRiseAngle(PercentHelper.getDecimalValue(50));
+        assertEquals(PercentHelper.getDecimalValue(50), sun.getRiseAngle());
         assertEquals(1, observerHelper.nbUpdated());
         assertEquals(SunUpdateCode.riseAngle, observerHelper.getUpdateObjects().get(0));
     }
 
     public void testObserverRiseAngleUnchanged() {
         observerHelper.addObserver(sun);
-        assertEquals(sunState.getRiseAngle().toPercent(), sun.getRiseAngle());
-        sun.setRiseAngle(sunState.getRiseAngle().toPercent());
-        assertEquals(sunState.getRiseAngle().toPercent(), sun.getRiseAngle());
-        assertEquals("The observer should not be notified when setting the same value as before", 0, observerHelper
-                .nbUpdated());
+        assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
+        sun.setRiseAngle(sunState.getRiseAngle());
+        assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
+        assertEquals("The observer should not be notified when setting the same value as before", 0,
+                observerHelper.nbUpdated());
         assertEquals(0, observerHelper.getUpdateObjects().size());
     }
 
     public void testObserverZenithAngle() {
         observerHelper.addObserver(sun);
-        assertEquals(sunState.getZenithAngle().toPercent(), sun.getZenithAngle());
-        sun.setZenithAngle(new Percent(75));
-        assertEquals(new Percent(75), sun.getZenithAngle());
+        assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
+        sun.setZenithAngle(PercentHelper.getDecimalValue(75));
+        assertEquals(PercentHelper.getDecimalValue(75), sun.getZenithAngle());
         assertEquals(1, observerHelper.nbUpdated());
         assertEquals(SunUpdateCode.zenithAngle, observerHelper.getUpdateObjects().get(0));
     }
 
     public void testObserverZenithAngleUnchanged() {
         observerHelper.addObserver(sun);
-        assertEquals(sunState.getZenithAngle().toPercent(), sun.getZenithAngle());
-        sun.setZenithAngle(sunState.getZenithAngle().toPercent());
-        assertEquals(sunState.getZenithAngle().toPercent(), sun.getZenithAngle());
-        assertEquals("The observer should not be notified when setting the same value as before", 0, observerHelper
-                .nbUpdated());
+        assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
+        sun.setZenithAngle(sunState.getZenithAngle());
+        assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
+        assertEquals("The observer should not be notified when setting the same value as before", 0,
+                observerHelper.nbUpdated());
         assertEquals(0, observerHelper.getUpdateObjects().size());
     }
 

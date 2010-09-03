@@ -49,7 +49,7 @@ public final class CoreDataCreatorForTests {
     }
 
     public static Long createRandomId() {
-         return CURRENT_ID++;
+        return CURRENT_ID++;
     }
 
     public static UniverseState createRandomUniverseState() {
@@ -108,9 +108,9 @@ public final class CoreDataCreatorForTests {
     }
 
     public static SunState createRandomSunState() {
-        PercentState luminosity = UtilDataCreatorForTests.createPercentState();
-        PercentState riseAngle = UtilDataCreatorForTests.createPercentState();
-        PercentState zenithAngle = UtilDataCreatorForTests.createPercentState();
+        BigDecimal luminosity = UtilDataCreatorForTests.createBigDecimal();
+        BigDecimal riseAngle = UtilDataCreatorForTests.createBigDecimal();
+        BigDecimal zenithAngle = UtilDataCreatorForTests.createBigDecimal();
         return new SunState(luminosity, riseAngle, zenithAngle);
     }
 
@@ -125,9 +125,9 @@ public final class CoreDataCreatorForTests {
      * @return
      */
     public static SunState createSpecificSunState() {
-        PercentState luminosity = new PercentState(PercentHelper.getDecimalValue(70));
-        PercentState riseAngle = new PercentState(PercentHelper.getDecimalValue(25));
-        PercentState zenithAngle = new PercentState(PercentHelper.getDecimalValue(50));
+        BigDecimal luminosity = PercentHelper.getDecimalValue(70);
+        BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
+        BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
         return new SunState(luminosity, riseAngle, zenithAngle);
     }
 
@@ -288,7 +288,7 @@ public final class CoreDataCreatorForTests {
     }
 
     public static TreeLeafState createRandomTreeLeafState() {
-        PercentState efficiency = UtilDataCreatorForTests.createPercentState();
+        BigDecimal efficiency = UtilDataCreatorForTests.createBigDecimal();
         TreeLeaf3DState leafd3DState = DisplayDataCreatorForTests.createRandomTreeLeaf3DState();
         int age = Randomizer.randomBetween(0, 100);
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
@@ -310,7 +310,7 @@ public final class CoreDataCreatorForTests {
      * @return
      */
     public static TreeLeafState createSpecificTreeLeafState() {
-        PercentState efficiency = new PercentState(PercentHelper.getDecimalValue(80));
+        BigDecimal efficiency = PercentHelper.getDecimalValue(80);
         int age = 15;
         BigDecimal energy = new BigDecimal(10);
         BigDecimal freeEnergy = new BigDecimal(3);
