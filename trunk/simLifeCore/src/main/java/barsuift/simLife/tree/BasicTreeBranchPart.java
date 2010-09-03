@@ -162,12 +162,13 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         double sumDiffArea = (leavesToIncrease.size() - 1) * sumArea;
 
         // compute ratios
+        // thanks to the use of sumDiffArea, the sum of ratios is equals to 1 (100%)
         Map<TreeLeaf, Double> ratios = new HashMap<TreeLeaf, Double>(areas.size());
         for (Entry<TreeLeaf, Double> entry : areas.entrySet()) {
             ratios.put(entry.getKey(), (sumArea - entry.getValue()) / sumDiffArea);
         }
 
-        // ???
+        // select one leaf
         double random = Math.random();
         double previousMinBound = 0;
         for (Entry<TreeLeaf, Double> entry : ratios.entrySet()) {
