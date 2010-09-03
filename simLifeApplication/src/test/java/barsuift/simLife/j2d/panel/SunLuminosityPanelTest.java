@@ -19,7 +19,7 @@
 package barsuift.simLife.j2d.panel;
 
 import junit.framework.TestCase;
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
 
@@ -43,33 +43,33 @@ public class SunLuminosityPanelTest extends TestCase {
     }
 
     public void testInit() {
-        assertEquals(mockSun.getLuminosity(), new Percent(display.getSlider().getValue()));
-        mockSun.setLuminosity(new Percent(90));
+        assertEquals(mockSun.getLuminosity(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setLuminosity(PercentHelper.getDecimalValue(90));
         display = new SunLuminosityPanel(mockSun);
-        assertEquals(mockSun.getLuminosity(), new Percent(display.getSlider().getValue()));
-        mockSun.setLuminosity(new Percent(80));
+        assertEquals(mockSun.getLuminosity(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setLuminosity(PercentHelper.getDecimalValue(80));
         display = new SunLuminosityPanel(mockSun);
-        assertEquals(mockSun.getLuminosity(), new Percent(display.getSlider().getValue()));
-        mockSun.setLuminosity(new Percent(100));
+        assertEquals(mockSun.getLuminosity(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setLuminosity(PercentHelper.getDecimalValue(100));
         display = new SunLuminosityPanel(mockSun);
-        assertEquals(mockSun.getLuminosity(), new Percent(display.getSlider().getValue()));
+        assertEquals(mockSun.getLuminosity(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
 
     public void testUpdate() {
         assertEquals("Sun luminosity (100.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getLuminosity(), new Percent(display.getSlider().getValue()));
-        mockSun.setLuminosity(new Percent(90));
+        assertEquals(mockSun.getLuminosity(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setLuminosity(PercentHelper.getDecimalValue(90));
         display.update(mockSun, SunUpdateCode.luminosity);
         assertEquals("Sun luminosity (90.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getLuminosity(), new Percent(display.getSlider().getValue()));
-        mockSun.setLuminosity(new Percent(90));
+        assertEquals(mockSun.getLuminosity(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setLuminosity(PercentHelper.getDecimalValue(90));
         display.update(mockSun, SunUpdateCode.luminosity);
         assertEquals("Sun luminosity (90.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getLuminosity(), new Percent(display.getSlider().getValue()));
-        mockSun.setLuminosity(new Percent(100));
+        assertEquals(mockSun.getLuminosity(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setLuminosity(PercentHelper.getDecimalValue(100));
         display.update(mockSun, SunUpdateCode.luminosity);
         assertEquals("Sun luminosity (100.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getLuminosity(), new Percent(display.getSlider().getValue()));
+        assertEquals(mockSun.getLuminosity(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
 
 }

@@ -20,7 +20,7 @@ package barsuift.simLife.environment;
 
 import java.math.BigDecimal;
 
-import barsuift.simLife.PercentState;
+import barsuift.simLife.PercentHelper;
 
 
 public class SunStateFactory {
@@ -34,9 +34,9 @@ public class SunStateFactory {
      * </ul>
      */
     public SunState createSunState() {
-        PercentState luminosity = new PercentState(new BigDecimal("1.00"));
-        PercentState riseAngle = new PercentState(new BigDecimal("0.25"));
-        PercentState zenithAngle = new PercentState(new BigDecimal("0.50"));
+        BigDecimal luminosity = PercentHelper.getDecimalValue(100);
+        BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
+        BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
         return new SunState(luminosity, riseAngle, zenithAngle);
     }
 }

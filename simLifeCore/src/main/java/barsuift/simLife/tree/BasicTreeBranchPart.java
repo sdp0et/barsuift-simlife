@@ -27,12 +27,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Map.Entry;
+import java.util.Observable;
 
 import javax.vecmath.Point3d;
 
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.tree.BasicTreeBranchPart3D;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
@@ -61,7 +61,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
      */
     private static final BigDecimal INCREASE_LEAF_COST = new BigDecimal(20);
 
-    private static final Percent ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(50);
+    private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(50);
 
     private List<TreeLeaf> leaves;
 
@@ -307,7 +307,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         for (TreeLeaf leaf : leaves) {
             freeEnergyCollectedFromLeaf = freeEnergyCollectedFromLeaf.add(leaf.collectFreeEnergy());
         }
-        BigDecimal energyCollectedForBranchPart = freeEnergyCollectedFromLeaf.multiply(ENERGY_RATIO_TO_KEEP.getValue());
+        BigDecimal energyCollectedForBranchPart = freeEnergyCollectedFromLeaf.multiply(ENERGY_RATIO_TO_KEEP);
         BigDecimal freeEnergyCollected = freeEnergyCollectedFromLeaf.subtract(energyCollectedForBranchPart);
         state.setEnergy(getEnergy().add(energyCollectedForBranchPart));
         state.setFreeEnergy(state.getFreeEnergy().add(freeEnergyCollected));

@@ -25,8 +25,7 @@ import javax.media.j3d.TransformGroup;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.Percent;
-import barsuift.simLife.PercentState;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.j3d.universe.physic.MockGravity;
@@ -52,7 +51,7 @@ public class BasicTreeLeafTest extends TestCase {
 
         leafState = CoreDataCreatorForTests.createSpecificTreeLeafState();
 
-        Percent lightRate = PercentHelper.getDecimalValue(70);
+        BigDecimal lightRate = PercentHelper.getDecimalValue(70);
         mockSun = new MockSun();
         mockSun.setLuminosity(lightRate);
         MockEnvironment mockEnv = new MockEnvironment();
@@ -123,7 +122,7 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(4));
 
 
-        assertEquals(0.9021344, leaf.getEfficiency().getValue().doubleValue(), 0.000001);
+        assertEquals(0.9021344, leaf.getEfficiency().doubleValue(), 0.000001);
         assertEquals(0, leaf.getEnergy().doubleValue(), 0.000001);
         assertEquals(5.17056, leaf.collectFreeEnergy().doubleValue(), 0.000001);
         // can not collect the free energy more than once
@@ -132,7 +131,7 @@ public class BasicTreeLeafTest extends TestCase {
     }
 
     public void testSpendTime2() {
-        leafState.setEfficiency(new PercentState(new BigDecimal("0.999999")));
+        leafState.setEfficiency(new BigDecimal("0.999999"));
         leaf = new BasicTreeLeaf(universe, leafState);
         observerHelper.addObserver(leaf);
 
@@ -159,7 +158,7 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(3));
         assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(4));
 
-        assertEquals(new Percent(new BigDecimal("1")), leaf.getEfficiency());
+        assertEquals(1, leaf.getEfficiency().doubleValue(), 0.000001);
         assertEquals(10.2666997332, leaf.getEnergy().doubleValue(), 0.000001);
         assertEquals(5.7131972868, leaf.collectFreeEnergy().doubleValue(), 0.000001);
         // can not collect the free energy more than once
@@ -168,7 +167,7 @@ public class BasicTreeLeafTest extends TestCase {
     }
 
     public void testSpendTime3() {
-        leafState.setEfficiency(new PercentState(new BigDecimal("0.991")));
+        leafState.setEfficiency(new BigDecimal("0.991"));
         leaf = new BasicTreeLeaf(universe, leafState);
         observerHelper.addObserver(leaf);
 
@@ -194,7 +193,7 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(3));
         assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(4));
 
-        assertEquals(new Percent(new BigDecimal("1")), leaf.getEfficiency());
+        assertEquals(1, leaf.getEfficiency().doubleValue(), 0.000001);
         assertEquals(9.3643988, leaf.getEnergy().doubleValue(), 0.000001);
         assertEquals(5.6887812, leaf.collectFreeEnergy().doubleValue(), 0.000001);
         // can not collect the free energy more than once
@@ -204,7 +203,7 @@ public class BasicTreeLeafTest extends TestCase {
 
     public void testFall() {
         // make sure the leaf only has 10% effeciency (limit before falling)
-        leafState.setEfficiency(new Percent(10).getState());
+        leafState.setEfficiency(PercentHelper.getDecimalValue(10));
         leaf = new BasicTreeLeaf(universe, leafState);
         attachLeaf3DIn3dStructure();
         observerHelper.addObserver(leaf);
@@ -213,7 +212,7 @@ public class BasicTreeLeafTest extends TestCase {
 
         leaf.spendTime();
 
-        assertTrue(leaf.getEfficiency().getValue().doubleValue() < 0.1);
+        assertTrue(leaf.getEfficiency().doubleValue() < 0.1);
         assertTrue(leaf.isTooWeak());
         assertEquals(4, observerHelper.nbUpdated());
         assertEquals(LeafUpdateCode.age, observerHelper.getUpdateObjects().get(0));

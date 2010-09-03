@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import barsuift.simLife.PercentState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 
 @XmlRootElement
@@ -30,7 +29,7 @@ public class TreeLeafState {
 
     private Long id;
 
-    private PercentState efficiency;
+    private BigDecimal efficiency;
 
     private int age;
 
@@ -43,14 +42,14 @@ public class TreeLeafState {
     public TreeLeafState() {
         super();
         this.id = new Long(0);
-        this.efficiency = new PercentState();
+        this.efficiency = new BigDecimal(0);
         this.energy = new BigDecimal(0);
         this.freeEnergy = new BigDecimal(0);
         this.age = 0;
         this.leaf3DState = new TreeLeaf3DState();
     }
 
-    public TreeLeafState(Long id, int age, BigDecimal energy, BigDecimal freeEnergy, PercentState efficiency,
+    public TreeLeafState(Long id, int age, BigDecimal energy, BigDecimal freeEnergy, BigDecimal efficiency,
             TreeLeaf3DState leaf3dState) {
         super();
         this.id = id;
@@ -64,7 +63,7 @@ public class TreeLeafState {
     public TreeLeafState(TreeLeafState copy) {
         super();
         this.id = copy.id;
-        this.efficiency = new PercentState(copy.efficiency);
+        this.efficiency = copy.efficiency;
         this.energy = copy.energy;
         this.freeEnergy = copy.freeEnergy;
         this.age = copy.age;
@@ -79,11 +78,11 @@ public class TreeLeafState {
         this.id = id;
     }
 
-    public PercentState getEfficiency() {
+    public BigDecimal getEfficiency() {
         return efficiency;
     }
 
-    public void setEfficiency(PercentState efficiency) {
+    public void setEfficiency(BigDecimal efficiency) {
         this.efficiency = efficiency;
     }
 

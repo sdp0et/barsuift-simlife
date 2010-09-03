@@ -30,7 +30,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.Point3dState;
@@ -103,7 +103,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
     }
 
     public void testAppearance() {
-        mockLeaf.setEfficiency(new Percent(80));
+        mockLeaf.setEfficiency(PercentHelper.getDecimalValue(80));
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
         CompilerHelper.compile(leaf3D.getBranchGroup());
         Shape3D leafShape3D = (Shape3D) leaf3D.getBranchGroup().getChild(0);
@@ -247,12 +247,12 @@ public class BasicTreeLeaf3DTest extends TestCase {
 
         // test state
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
-        expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 3, initialEndPoint1.getY() * 3, initialEndPoint1
-                .getZ() * 3);
+        expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 3, initialEndPoint1.getY() * 3,
+                initialEndPoint1.getZ() * 3);
         PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
         endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
-        expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 3, initialEndPoint2.getY() * 3, initialEndPoint2
-                .getZ() * 3);
+        expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 3, initialEndPoint2.getY() * 3,
+                initialEndPoint2.getZ() * 3);
         PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
         // test geometry
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint1);
@@ -272,12 +272,12 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // test state
         assertTrue(leaf3D.isMaxSizeReached());
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
-        expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10, initialEndPoint1
-                .getZ() * 10);
+        expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
+                initialEndPoint1.getZ() * 10);
         PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
         endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
-        expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10, initialEndPoint2
-                .getZ() * 10);
+        expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
+                initialEndPoint2.getZ() * 10);
         PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
         // test geometry
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint1);
@@ -291,12 +291,12 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // test state
         assertTrue(leaf3D.isMaxSizeReached());
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
-        expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10, initialEndPoint1
-                .getZ() * 10);
+        expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
+                initialEndPoint1.getZ() * 10);
         PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
         endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
-        expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10, initialEndPoint2
-                .getZ() * 10);
+        expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
+                initialEndPoint2.getZ() * 10);
         PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
         // test geometry
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint1);

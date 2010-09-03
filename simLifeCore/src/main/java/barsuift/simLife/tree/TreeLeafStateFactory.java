@@ -23,7 +23,6 @@ import java.math.BigDecimal;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.PercentHelper;
-import barsuift.simLife.PercentState;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DStateFactory;
@@ -45,7 +44,7 @@ public class TreeLeafStateFactory {
      * </ul>
      */
     public TreeLeafState createRandomTreeLeafState(Point3d leafAttachPoint) {
-        PercentState efficiency = new PercentState(PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100)));
+        BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
         int age = Randomizer.randomBetween(0, 100);
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
@@ -65,7 +64,7 @@ public class TreeLeafStateFactory {
      * </ul>
      */
     public TreeLeafState createNewTreeLeafState(Point3d leafAttachPoint, BigDecimal energy) {
-        PercentState efficiency = new PercentState(PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100)));
+        BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
         int age = 0;
         BigDecimal freeEnergy = new BigDecimal(0);
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();

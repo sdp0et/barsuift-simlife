@@ -28,7 +28,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
 
 public class SunRisePanel extends JPanel implements ChangeListener {
@@ -55,7 +55,8 @@ public class SunRisePanel extends JPanel implements ChangeListener {
     }
 
     private JSlider createSlider() {
-        JSlider riseSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX, sun.getRiseAngle().getIntValue());
+        JSlider riseSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX, PercentHelper.getIntValue(sun
+                .getRiseAngle()));
         riseSlider.addChangeListener(this);
         // Turn on labels at major tick marks.
         riseSlider.setMajorTickSpacing(50);
@@ -83,7 +84,7 @@ public class SunRisePanel extends JPanel implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         int riseAngle = (int) source.getValue();
-        sun.setRiseAngle(new Percent(riseAngle));
+        sun.setRiseAngle(PercentHelper.getDecimalValue(riseAngle));
     }
 
     protected JLabel getLabel() {

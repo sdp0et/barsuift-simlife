@@ -19,7 +19,7 @@
 package barsuift.simLife.j2d.panel;
 
 import junit.framework.TestCase;
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 
 
@@ -42,16 +42,16 @@ public class SunRisePanelTest extends TestCase {
     }
 
     public void testInit() {
-        assertEquals(sun.getRiseAngle(), new Percent(display.getSlider().getValue()));
-        sun.setRiseAngle(new Percent(90));
+        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        sun.setRiseAngle(PercentHelper.getDecimalValue(90));
         display = new SunRisePanel(sun);
-        assertEquals(sun.getRiseAngle(), new Percent(display.getSlider().getValue()));
-        sun.setRiseAngle(new Percent(80));
+        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        sun.setRiseAngle(PercentHelper.getDecimalValue(80));
         display = new SunRisePanel(sun);
-        assertEquals(sun.getRiseAngle(), new Percent(display.getSlider().getValue()));
-        sun.setRiseAngle(new Percent(100));
+        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        sun.setRiseAngle(PercentHelper.getDecimalValue(100));
         display = new SunRisePanel(sun);
-        assertEquals(sun.getRiseAngle(), new Percent(display.getSlider().getValue()));
+        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
 
 }

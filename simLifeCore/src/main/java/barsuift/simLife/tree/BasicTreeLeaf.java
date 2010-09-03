@@ -22,8 +22,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Observable;
 
-import barsuift.simLife.Percent;
-import barsuift.simLife.PercentState;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.tree.BasicTreeLeaf3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.universe.Universe;
@@ -33,13 +32,13 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     /**
      * 5% decrease
      */
-    private static final Percent AGING_EFFICIENCY_DECREASE = PercentHelper.getDecimalValue(95);
+    private static final BigDecimal AGING_EFFICIENCY_DECREASE = PercentHelper.getDecimalValue(95);
 
-    private static final Percent LOWEST_EFFICIENCY_BEFORE_FALLING = new Percent(10);
+    private static final BigDecimal LOWEST_EFFICIENCY_BEFORE_FALLING = PercentHelper.getDecimalValue(10);
 
     private static final BigDecimal MAX_ENERGY_TO_COLLECT = new BigDecimal(150);
 
-    private static final Percent ENERGY_RATIO_TO_KEEP = new Percent(66);
+    private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(66);
 
     private TreeLeafState state;
 
@@ -97,8 +96,8 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
         state.setAge(state.getAge() + 1);
         setChanged();
         notifyObservers(LeafUpdateCode.age);
-        BigDecimal newEfficiency = getEfficiency().getValue().multiply(AGING_EFFICIENCY_DECREASE.getValue());
-        state.setEfficiency(new PercentState(newEfficiency));
+        BigDecimal newEfficiency = getEfficiency().multiply(AGING_EFFICIENCY_DECREASE);
+        state.setEfficiency(newEfficiency);
         setChanged();
         notifyObservers(LeafUpdateCode.efficiency);
     }
@@ -110,11 +109,11 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
      * @return the collected energy
      */
     private void collectSolarEnergy() {
-        Percent lightRate = universe.getEnvironment().getSun().getLuminosity();
-        BigDecimal solarEnergyRateCollected = getEfficiency().getValue().multiply(lightRate.getValue());
+        BigDecimal lightRate = universe.getEnvironment().getSun().getLuminosity();
+        BigDecimal solarEnergyRateCollected = getEfficiency().multiply(lightRate);
         BigDecimal energyCollected = solarEnergyRateCollected.multiply(MAX_ENERGY_TO_COLLECT).multiply(
                 new BigDecimal(leaf3D.getArea()));
-        BigDecimal energyCollectedForLeaf = energyCollected.multiply(ENERGY_RATIO_TO_KEEP.getValue());
+        BigDecimal energyCollectedForLeaf = energyCollected.multiply(ENERGY_RATIO_TO_KEEP);
         BigDecimal freeEnergyCollected = energyCollected.subtract(energyCollectedForLeaf);
         state.setEnergy(state.getEnergy().add(energyCollectedForLeaf));
         state.setFreeEnergy(state.getFreeEnergy().add(freeEnergyCollected));
@@ -143,11 +142,10 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     }
 
     private void improveEfficiency() {
-        BigDecimal maxEfficiencyToAdd = new BigDecimal(1).subtract(getEfficiency().getValue());
+        BigDecimal maxEfficiencyToAdd = new BigDecimal(1).subtract(getEfficiency());
         // use all the energy, up to the max efficiency that can be added to get 100
         BigDecimal efficiencyToAdd = maxEfficiencyToAdd.min(getEnergy().movePointLeft(2));
-        state.setEfficiency(new PercentState(getEfficiency().getValue().add(efficiencyToAdd).setScale(10,
-                RoundingMode.HALF_DOWN)));
+        state.setEfficiency(getEfficiency().add(efficiencyToAdd).setScale(10, RoundingMode.HALF_DOWN));
         setChanged();
         notifyObservers(LeafUpdateCode.efficiency);
         state.setEnergy(getEnergy().subtract(efficiencyToAdd.movePointRight(2)).setScale(10, RoundingMode.HALF_DOWN));
@@ -156,8 +154,8 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     }
 
     @Override
-    public Percent getEfficiency() {
-        return state.getEfficiency().toPercent();
+    public BigDecimal getEfficiency() {
+        return state.getEfficiency();
     }
 
     @Override
