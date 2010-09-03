@@ -34,7 +34,7 @@ public class SimLifeCalendarStateTest extends JaxbTestCase {
 
     @Override
     protected String getPackage() {
-        return "barsuift.simLife.date";
+        return "barsuift.simLife.time";
     }
 
     public void testJaxb() throws Exception {
