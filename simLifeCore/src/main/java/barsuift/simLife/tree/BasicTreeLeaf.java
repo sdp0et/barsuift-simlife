@@ -108,7 +108,6 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
         BigDecimal newEfficiency = getEfficiency().multiply(AGING_EFFICIENCY_DECREASE);
         state.setEfficiency(newEfficiency);
         setChanged();
-        notifyObservers(LeafUpdateCode.efficiency);
         updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
     }
 
