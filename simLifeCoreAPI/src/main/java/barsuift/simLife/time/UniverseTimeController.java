@@ -63,7 +63,7 @@ public class UniverseTimeController {
         // start immediately
         int initialDelay = 0;
         // wakeup every seconds
-        // TODO implement a proper speed switch button
+        // TODO 008. implement a proper speed switch button
         int speed = 100;
         long period = 1000;
         long actualPeriod = period / speed;

@@ -22,6 +22,7 @@ import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.regex.Pattern;
 
+// TODO 006. use the calendar system
 public class SimLifeCalendar extends Calendar {
 
     private static final long serialVersionUID = -2239086430259505817L;
