@@ -114,13 +114,11 @@ public class BasicTreeLeafTest extends TestCase {
         // energy after useEnergy = 0
         // age = 16
 
-        assertEquals(5, observerHelper.nbUpdated());
-        assertEquals(LeafUpdateCode.age, observerHelper.getUpdateObjects().get(0));
-        assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(1));
-        assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(2));
-        assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(3));
-        assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(4));
-
+        assertEquals(1, observerHelper.nbUpdated());
+        int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
 
         assertEquals(0.9021344, leaf.getEfficiency().doubleValue(), 0.000001);
         assertEquals(0, leaf.getEnergy().doubleValue(), 0.000001);
@@ -151,12 +149,11 @@ public class BasicTreeLeafTest extends TestCase {
         // energy after useEnergy = 15.2667947332 - 5.000095 = 10.2666997332
         // age = 16
 
-        assertEquals(5, observerHelper.nbUpdated());
-        assertEquals(LeafUpdateCode.age, observerHelper.getUpdateObjects().get(0));
-        assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(1));
-        assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(2));
-        assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(3));
-        assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(4));
+        assertEquals(1, observerHelper.nbUpdated());
+        int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
 
         assertEquals(1, leaf.getEfficiency().doubleValue(), 0.000001);
         assertEquals(10.2666997332, leaf.getEnergy().doubleValue(), 0.000001);
@@ -186,12 +183,11 @@ public class BasicTreeLeafTest extends TestCase {
         // energy after useEnergy = 15.2193988 - 5.855 = 9.3643988
         // age = 16
 
-        assertEquals(5, observerHelper.nbUpdated());
-        assertEquals(LeafUpdateCode.age, observerHelper.getUpdateObjects().get(0));
-        assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(1));
-        assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(2));
-        assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(3));
-        assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(4));
+        assertEquals(1, observerHelper.nbUpdated());
+        int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
 
         assertEquals(1, leaf.getEfficiency().doubleValue(), 0.000001);
         assertEquals(9.3643988, leaf.getEnergy().doubleValue(), 0.000001);
@@ -202,7 +198,7 @@ public class BasicTreeLeafTest extends TestCase {
     }
 
     public void testFall() {
-        // make sure the leaf only has 10% effeciency (limit before falling)
+        // make sure the leaf only has 10% efficiency (limit before falling)
         leafState.setEfficiency(PercentHelper.getDecimalValue(10));
         leaf = new BasicTreeLeaf(universe, leafState);
         attachLeaf3DIn3dStructure();
@@ -214,11 +210,14 @@ public class BasicTreeLeafTest extends TestCase {
 
         assertTrue(leaf.getEfficiency().doubleValue() < 0.1);
         assertTrue(leaf.isTooWeak());
-        assertEquals(4, observerHelper.nbUpdated());
-        assertEquals(LeafUpdateCode.age, observerHelper.getUpdateObjects().get(0));
-        assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(1));
-        assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(2));
-        assertEquals(LeafUpdateCode.fall, observerHelper.getUpdateObjects().get(3));
+
+        assertEquals(1, observerHelper.nbUpdated());
+        int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK));
+
         MockGravity gravity = (MockGravity) universe.getUniverse3D().getPhysics().getGravity();
         assertEquals(bg, gravity.getFallenGroup());
     }

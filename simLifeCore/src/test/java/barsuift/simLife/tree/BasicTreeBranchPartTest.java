@@ -115,27 +115,21 @@ public class BasicTreeBranchPartTest extends TestCase {
         assertEquals(new BigDecimal(0), branchPart.collectFreeEnergy());
         int nbFall = 0;
         for (ObservableTestHelper observerHelper : observerHelpers) {
-            if (observerHelper.nbUpdated() == 4) {
+            assertEquals(1, observerHelper.nbUpdated());
+            int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+            if (LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK)) {
                 // the single falling leaf (the first one)
-                assertEquals(LeafUpdateCode.age, observerHelper.getUpdateObjects().get(0));
-                assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(1));
-                assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(2));
-                assertEquals(LeafUpdateCode.fall, observerHelper.getUpdateObjects().get(3));
+                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
+                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
+                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
+                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK));
                 nbFall++;
                 assertEquals(1, nbFall);
             } else {
-                if (observerHelper.nbUpdated() == 5) {
-                    // all the other leaves
-                    assertEquals(LeafUpdateCode.age, observerHelper.getUpdateObjects().get(0));
-                    assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(1));
-                    assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(2));
-                    assertEquals(LeafUpdateCode.efficiency, observerHelper.getUpdateObjects().get(3));
-                    assertEquals(LeafUpdateCode.energy, observerHelper.getUpdateObjects().get(4));
-                } else {
-                    // error case
-                    fail("all observers should be called at least 4 times and at most 5 times. Here called="
-                            + observerHelper.nbUpdated());
-                }
+                // all the other leaves
+                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
+                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
+                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
             }
         }
         // check one leaf has been removed from the list
@@ -158,8 +152,8 @@ public class BasicTreeBranchPartTest extends TestCase {
             assertFalse(firstLeafState.equals(leaf.getState()));
         }
         // simulate one leaf is aging, but not falling
-        branchPart.update((Observable) branchPart.getLeaves().get(0), LeafUpdateCode.age);
-        branchPart.update((Observable) branchPart.getLeaves().get(0), LeafUpdateCode.efficiency);
+        branchPart.update((Observable) branchPart.getLeaves().get(0), LeafUpdateMask.AGE_MASK);
+        branchPart.update((Observable) branchPart.getLeaves().get(0), LeafUpdateMask.EFFICIENCY_MASK);
         assertEquals("no leaf should have been removed", nbLeaves - 1, branchPart.getNbLeaves());
     }
 
