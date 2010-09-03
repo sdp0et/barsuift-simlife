@@ -32,7 +32,7 @@ import barsuift.simLife.j2d.action.OpenAction;
 import barsuift.simLife.j2d.action.SaveAction;
 import barsuift.simLife.j2d.action.SaveAsAction;
 
-// TODO put mnemonic and accelerator keys in a static class to put them all together
+// TODO 007. put mnemonic and accelerator keys in a static class to put them all together
 // TODO 001 unit test
 public class MenuFactory {
 
