@@ -42,12 +42,14 @@ import barsuift.simLife.universe.UniverseState;
 
 public final class CoreDataCreatorForTests {
 
+    private static long CURRENT_ID = 0;
+
     private CoreDataCreatorForTests() {
         // private constructor to enforce static access
     }
 
     public static Long createRandomId() {
-        return new Long(Randomizer.randomBetween(1, 50));
+         return CURRENT_ID++;
     }
 
     public static UniverseState createRandomUniverseState() {
