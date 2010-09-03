@@ -32,11 +32,6 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
 
-/**
- * 
- * Color change are notified to observers
- * 
- */
 public class BasicSun3D extends Observable implements Observer, Sun3D {
 
     private static BoundingSphere bounds = new BoundingSphere(new Point3d(0, 0, 0), 100);

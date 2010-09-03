@@ -26,10 +26,6 @@ import barsuift.simLife.j3d.universe.environment.Sun3D;
 
 /**
  * Class representing the sun.
- * <p>
- * Its only property is its luminosity, as a Percent instance.
- * </p>
- * 
  */
 public class BasicSun extends Observable implements Sun {
 
