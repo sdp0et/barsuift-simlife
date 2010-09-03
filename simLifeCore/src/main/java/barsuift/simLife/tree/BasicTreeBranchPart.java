@@ -338,7 +338,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     }
 
     public void update(Observable o, Object arg) {
-        if (LeafUpdateCode.fall == arg) {
+        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALL_MASK)) {
             TreeLeaf leaf = (TreeLeaf) o;
             oldLeavesToRemove.add(leaf);
         }
