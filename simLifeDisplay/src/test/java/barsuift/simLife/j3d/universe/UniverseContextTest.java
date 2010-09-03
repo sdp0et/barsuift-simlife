@@ -36,8 +36,6 @@ public class UniverseContextTest extends TestCase {
     public void testUnsetAxis() {
         Universe universe = new MockUniverse();
         UniverseContext panel = new UniverseContext(universe);
-        assertFalse(panel.isAxisShown());
-        panel.setAxis();
         assertTrue(panel.isAxisShown());
         panel.unsetAxis();
         assertFalse(panel.isAxisShown());
