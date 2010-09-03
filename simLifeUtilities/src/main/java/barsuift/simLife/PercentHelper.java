@@ -19,6 +19,7 @@
 package barsuift.simLife;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 public final class PercentHelper {
@@ -39,6 +40,16 @@ public final class PercentHelper {
         }
         BigDecimal tmpValue = new BigDecimal(value);
         return tmpValue.movePointLeft(2);
+    }
+
+    /**
+     * Returns an integer value between 0 and 100 from the given value, which must be comprised between 0 and 1
+     * 
+     * @return an approximated int value, between 0 and 100 (rounded down)
+     */
+    public static int getIntValue(BigDecimal value) {
+        BigDecimal tmpValue = value.movePointRight(2);
+        return tmpValue.setScale(0, RoundingMode.HALF_DOWN).intValueExact();
     }
 
 }

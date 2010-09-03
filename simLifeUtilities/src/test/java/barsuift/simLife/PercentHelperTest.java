@@ -50,4 +50,8 @@ public class PercentHelperTest extends TestCase {
         }
     }
 
+    public void testGetIntValue() {
+        assertEquals(25, PercentHelper.getIntValue(new BigDecimal("0.25")));
+        assertEquals(99, PercentHelper.getIntValue(new BigDecimal("0.99")));
+    }
 }
