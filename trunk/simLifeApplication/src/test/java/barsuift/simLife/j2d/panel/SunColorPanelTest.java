@@ -19,7 +19,7 @@
 package barsuift.simLife.j2d.panel;
 
 import junit.framework.TestCase;
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.universe.environment.MockSun3D;
 
@@ -43,29 +43,29 @@ public class SunColorPanelTest extends TestCase {
     }
 
     public void testInit() {
-        assertEquals(mockSun.getWhiteFactor(), new Percent(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(new Percent(90));
+        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(90));
         display = new SunColorPanel(mockSun);
-        assertEquals(mockSun.getWhiteFactor(), new Percent(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(new Percent(80));
+        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(80));
         display = new SunColorPanel(mockSun);
-        assertEquals(mockSun.getWhiteFactor(), new Percent(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(new Percent(100));
+        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(100));
         display = new SunColorPanel(mockSun);
-        assertEquals(mockSun.getWhiteFactor(), new Percent(display.getSlider().getValue()));
+        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
 
     public void testUpdate() {
-        assertEquals(mockSun.getWhiteFactor(), new Percent(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(new Percent(90));
+        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(90));
         display.update(mockSun, SunUpdateCode.color);
-        assertEquals(mockSun.getWhiteFactor(), new Percent(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(new Percent(90));
+        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(90));
         display.update(mockSun, SunUpdateCode.color);
-        assertEquals(mockSun.getWhiteFactor(), new Percent(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(new Percent(100));
+        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(100));
         display.update(mockSun, SunUpdateCode.color);
-        assertEquals(mockSun.getWhiteFactor(), new Percent(display.getSlider().getValue()));
+        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
 
 }

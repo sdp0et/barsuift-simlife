@@ -18,25 +18,26 @@
  */
 package barsuift.simLife.j3d.universe.environment;
 
+import java.math.BigDecimal;
 import java.util.Observable;
 
 import javax.media.j3d.DirectionalLight;
 
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 
 
 public class MockSun3D extends Observable implements Sun3D {
 
-    private Percent whiteFactor = PercentHelper.getDecimalValue(100);
+    private BigDecimal whiteFactor = PercentHelper.getDecimalValue(100);
 
     private DirectionalLight light = new DirectionalLight();
 
     @Override
-    public Percent getWhiteFactor() {
+    public BigDecimal getWhiteFactor() {
         return whiteFactor;
     }
 
-    public void setWhiteFactor(Percent whiteFactor) {
+    public void setWhiteFactor(BigDecimal whiteFactor) {
         this.whiteFactor = whiteFactor;
     }
 
