@@ -29,6 +29,9 @@ import barsuift.simLife.universe.Universe;
 
 public class BasicTreeLeaf extends Observable implements TreeLeaf {
 
+
+    private static final BigDecimal ONE = new BigDecimal(1);
+
     /**
      * 5% decrease
      */
@@ -46,6 +49,8 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
 
     private final Universe universe;
 
+    private int updateMask;
+
     public BasicTreeLeaf(Universe universe, TreeLeafState leafState) {
         if (universe == null) {
             throw new IllegalArgumentException("null universe");
@@ -56,7 +61,7 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
         this.universe = universe;
         this.state = new TreeLeafState(leafState);
         this.leaf3D = new BasicTreeLeaf3D(universe.getUniverse3D(), leafState.getLeaf3DState(), this);
-
+        this.updateMask = 0;
     }
 
     public Long getId() {
@@ -83,6 +88,7 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
      * </p>
      */
     public void spendTime() {
+        updateMask = 0;
         age();
         collectSolarEnergy();
         if (isTooWeak()) {
@@ -90,16 +96,20 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
         } else {
             useEnergy();
         }
+        if (hasChanged()) {
+            notifyObservers(updateMask);
+        }
     }
 
     private void age() {
         state.setAge(state.getAge() + 1);
         setChanged();
-        notifyObservers(LeafUpdateCode.age);
+        updateMask |= LeafUpdateMask.AGE_MASK;
         BigDecimal newEfficiency = getEfficiency().multiply(AGING_EFFICIENCY_DECREASE);
         state.setEfficiency(newEfficiency);
         setChanged();
         notifyObservers(LeafUpdateCode.efficiency);
+        updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
     }
 
     /**
@@ -118,7 +128,7 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
         state.setEnergy(state.getEnergy().add(energyCollectedForLeaf));
         state.setFreeEnergy(state.getFreeEnergy().add(freeEnergyCollected));
         setChanged();
-        notifyObservers(LeafUpdateCode.energy);
+        updateMask |= LeafUpdateMask.ENERGY_MASK;
     }
 
     /**
@@ -134,7 +144,7 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     private void fall() {
         universe.addFallenLeaf(this);
         setChanged();
-        notifyObservers(LeafUpdateCode.fall);
+        updateMask |= LeafUpdateMask.FALL_MASK;
     }
 
     private void useEnergy() {
@@ -142,15 +152,15 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     }
 
     private void improveEfficiency() {
-        BigDecimal maxEfficiencyToAdd = new BigDecimal(1).subtract(getEfficiency());
+        BigDecimal maxEfficiencyToAdd = ONE.subtract(getEfficiency());
         // use all the energy, up to the max efficiency that can be added to get 100
         BigDecimal efficiencyToAdd = maxEfficiencyToAdd.min(getEnergy().movePointLeft(2));
         state.setEfficiency(getEfficiency().add(efficiencyToAdd).setScale(10, RoundingMode.HALF_DOWN));
         setChanged();
-        notifyObservers(LeafUpdateCode.efficiency);
+        updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
         state.setEnergy(getEnergy().subtract(efficiencyToAdd.movePointRight(2)).setScale(10, RoundingMode.HALF_DOWN));
         setChanged();
-        notifyObservers(LeafUpdateCode.energy);
+        updateMask |= LeafUpdateMask.ENERGY_MASK;
     }
 
     @Override
