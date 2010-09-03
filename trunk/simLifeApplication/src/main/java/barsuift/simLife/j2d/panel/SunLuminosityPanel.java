@@ -30,7 +30,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
 
@@ -62,8 +62,8 @@ public class SunLuminosityPanel extends JPanel implements ChangeListener, Observ
     }
 
     private JSlider createSlider() {
-        JSlider luminositySlider = new JSlider(JSlider.HORIZONTAL, LUMINOSITY_MIN, LUMINOSITY_MAX, sun.getLuminosity()
-                .getIntValue());
+        JSlider luminositySlider = new JSlider(JSlider.HORIZONTAL, LUMINOSITY_MIN, LUMINOSITY_MAX,
+                PercentHelper.getIntValue(sun.getLuminosity()));
         luminositySlider.addChangeListener(this);
         // Turn on labels at major tick marks.
         luminositySlider.setMajorTickSpacing(20);
@@ -81,21 +81,21 @@ public class SunLuminosityPanel extends JPanel implements ChangeListener, Observ
     }
 
     private String createLuminosityLabelText() {
-        return LABEL_FORMAT.format(new Object[] { sun.getLuminosity() });
+        return LABEL_FORMAT.format(new Object[] { PercentHelper.getStringValue(sun.getLuminosity()) });
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         int luminosity = (int) source.getValue();
-        sun.setLuminosity(new Percent(luminosity));
+        sun.setLuminosity(PercentHelper.getDecimalValue(luminosity));
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if (arg == SunUpdateCode.luminosity) {
             sliderLabel.setText(createLuminosityLabelText());
-            luminositySlider.setValue(sun.getLuminosity().getIntValue());
+            luminositySlider.setValue(PercentHelper.getIntValue(sun.getLuminosity()));
         }
     }
 

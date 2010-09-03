@@ -54,4 +54,18 @@ public class PercentHelperTest extends TestCase {
         assertEquals(25, PercentHelper.getIntValue(new BigDecimal("0.25")));
         assertEquals(99, PercentHelper.getIntValue(new BigDecimal("0.99")));
     }
+
+    public void testGetStringValueInt() {
+        assertEquals("25.00%", PercentHelper.getStringValue(25));
+        assertEquals("100.00%", PercentHelper.getStringValue(100));
+        assertEquals("0.00%", PercentHelper.getStringValue(0));
+    }
+
+    public void testGetStringValueBigDecimal() {
+        assertEquals("25.00%", PercentHelper.getStringValue(new BigDecimal("0.25")));
+        assertEquals("100.00%", PercentHelper.getStringValue(new BigDecimal("1")));
+        assertEquals("0.00%", PercentHelper.getStringValue(new BigDecimal("0")));
+        assertEquals("25.12%", PercentHelper.getStringValue(new BigDecimal("0.25123")));
+    }
+
 }

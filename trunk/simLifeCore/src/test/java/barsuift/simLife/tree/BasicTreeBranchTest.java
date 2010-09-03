@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.universe.MockUniverse;
 
@@ -54,13 +54,13 @@ public class BasicTreeBranchTest extends TestCase {
             new BasicTreeBranch(null, branchState);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            // OK expected excpetion
+            // OK expected exception
         }
         try {
             new BasicTreeBranch(universe, null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            // OK expected excpetion
+            // OK expected exception
         }
     }
 

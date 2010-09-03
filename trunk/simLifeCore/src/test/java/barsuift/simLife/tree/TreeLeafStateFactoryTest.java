@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import javax.vecmath.Point3d;
 
 import junit.framework.TestCase;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 
 
@@ -45,8 +46,8 @@ public class TreeLeafStateFactoryTest extends TestCase {
         assertNotNull(id1);
         assertTrue(id1.longValue() > 0);
         assertNotNull(treeLeafState.getLeaf3DState());
-        assertTrue(new BigDecimal("0.90").compareTo(treeLeafState.getEfficiency().getValue()) <= 0);
-        assertTrue(new BigDecimal("1.00").compareTo(treeLeafState.getEfficiency().getValue()) >= 0);
+        assertTrue(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency()) <= 0);
+        assertTrue(PercentHelper.getDecimalValue(100).compareTo(treeLeafState.getEfficiency()) >= 0);
         assertTrue(treeLeafState.getAge() >= 0);
         assertTrue(treeLeafState.getAge() <= 100);
         assertTrue(treeLeafState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
@@ -72,8 +73,8 @@ public class TreeLeafStateFactoryTest extends TestCase {
         // check it is an newly created leaf 3D
         assertEquals(leaf3dState.getInitialEndPoint1(), leaf3dState.getEndPoint1());
         assertEquals(leaf3dState.getInitialEndPoint2(), leaf3dState.getEndPoint2());
-        assertTrue(new BigDecimal("0.90").compareTo(treeLeafState.getEfficiency().getValue()) <= 0);
-        assertTrue(new BigDecimal("1.00").compareTo(treeLeafState.getEfficiency().getValue()) >= 0);
+        assertTrue(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency()) <= 0);
+        assertTrue(PercentHelper.getDecimalValue(100).compareTo(treeLeafState.getEfficiency()) >= 0);
         assertEquals(0, treeLeafState.getAge());
         assertEquals(energy, treeLeafState.getEnergy());
         assertEquals(new BigDecimal(0), treeLeafState.getFreeEnergy());

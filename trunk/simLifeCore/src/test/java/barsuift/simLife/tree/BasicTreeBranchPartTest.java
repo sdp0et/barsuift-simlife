@@ -27,7 +27,7 @@ import javax.vecmath.Point3d;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.j3d.Point3dState;
 import barsuift.simLife.j3d.helper.PointTestHelper;
@@ -52,7 +52,7 @@ public class BasicTreeBranchPartTest extends TestCase {
         universe = new MockUniverse();
         branchPartState = CoreDataCreatorForTests.createSpecificTreeBranchPartState();
         firstLeafState = branchPartState.getLeaveStates().get(0);
-        firstLeafState.setEfficiency(PercentHelper.getDecimalValue(10).getState());
+        firstLeafState.setEfficiency(PercentHelper.getDecimalValue(10));
         branchPart = new BasicTreeBranchPart(universe, branchPartState);
     }
 
@@ -66,7 +66,7 @@ public class BasicTreeBranchPartTest extends TestCase {
 
     public void testObservers() {
         for (TreeLeaf leaf : branchPart.getLeaves()) {
-            // the leaf is observed by itsd 3D counterpart and by the branch part
+            // the leaf is observed by its 3D counterpart and by the branch part
             assertEquals(2, leaf.countObservers());
             leaf.deleteObserver(branchPart);
             // check the branch part is actually one of the observers
@@ -80,18 +80,18 @@ public class BasicTreeBranchPartTest extends TestCase {
             new BasicTreeBranchPart(null, branchPartState);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            // OK expected excpetion
+            // OK expected exception
         }
         try {
             new BasicTreeBranchPart(universe, null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            // OK expected excpetion
+            // OK expected exception
         }
     }
 
     public void testSpendTime() {
-        ((MockSun) universe.getEnvironment().getSun()).setLuminosity(new Percent(70));
+        ((MockSun) universe.getEnvironment().getSun()).setLuminosity(PercentHelper.getDecimalValue(70));
         // add mock observers on each leaf
         List<ObservableTestHelper> observerHelpers = new ArrayList<ObservableTestHelper>();
         for (TreeLeaf leaf : branchPart.getLeaves()) {
@@ -411,8 +411,8 @@ public class BasicTreeBranchPartTest extends TestCase {
         assertFalse(part.canIncreaseOneLeafSize());
 
         // reset the end point 1 of leaf 1, so that it can be increased again
-        partState.getLeaveStates().get(0).getLeaf3DState().setEndPoint1(
-                partState.getLeaveStates().get(0).getLeaf3DState().getInitialEndPoint1());
+        partState.getLeaveStates().get(0).getLeaf3DState()
+                .setEndPoint1(partState.getLeaveStates().get(0).getLeaf3DState().getInitialEndPoint1());
         part = new BasicTreeBranchPart(new MockUniverse(), partState);
         assertTrue(part.canIncreaseOneLeafSize());
     }

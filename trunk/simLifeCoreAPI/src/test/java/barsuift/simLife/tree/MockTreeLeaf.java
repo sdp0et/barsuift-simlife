@@ -21,7 +21,6 @@ package barsuift.simLife.tree;
 import java.math.BigDecimal;
 import java.util.Observable;
 
-import barsuift.simLife.Percent;
 import barsuift.simLife.j3d.tree.MockTreeLeaf3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 
@@ -29,7 +28,7 @@ public class MockTreeLeaf extends Observable implements TreeLeaf {
 
     private Long id = new Long(1);
 
-    private Percent efficiency = new Percent();
+    private BigDecimal efficiency = new BigDecimal(0);
 
     private int age;
 
@@ -54,7 +53,7 @@ public class MockTreeLeaf extends Observable implements TreeLeaf {
     }
 
     @Override
-    public Percent getEfficiency() {
+    public BigDecimal getEfficiency() {
         return efficiency;
     }
 
@@ -71,7 +70,7 @@ public class MockTreeLeaf extends Observable implements TreeLeaf {
         this.nbTilesSpendTimeCalled = 0;
     }
 
-    public void setEfficiency(Percent efficiency) {
+    public void setEfficiency(BigDecimal efficiency) {
         this.efficiency = efficiency;
     }
 

@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.j3d.tree;
 
+import java.math.BigDecimal;
 import java.util.Observable;
 
 import javax.media.j3d.Appearance;
@@ -32,7 +33,6 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
-import barsuift.simLife.Percent;
 import barsuift.simLife.j3d.AppearanceFactory;
 import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.Point3dState;
@@ -82,9 +82,9 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         branchGroup.setCapability(BranchGroup.ALLOW_DETACH);
     }
 
-    private void setColor(Percent efficiency) {
+    private void setColor(BigDecimal efficiency) {
         Color3f leafColor = new Color3f(ColorConstants.brownYellow);
-        leafColor.interpolate(ColorConstants.green, efficiency.getValue().floatValue());
+        leafColor.interpolate(ColorConstants.green, efficiency.floatValue());
 
         Appearance appearance = new Appearance();
         AppearanceFactory.setCullFace(appearance, PolygonAttributes.CULL_NONE);

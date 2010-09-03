@@ -23,14 +23,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.tree.BasicTreeBranch3D;
 import barsuift.simLife.j3d.tree.TreeBranch3D;
 import barsuift.simLife.universe.Universe;
 
 public class BasicTreeBranch implements TreeBranch {
 
-    private static final Percent ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(0);
+    private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(0);
 
     private final Long id;
 
@@ -90,7 +90,7 @@ public class BasicTreeBranch implements TreeBranch {
         for (TreeBranchPart part : parts) {
             freeEnergyCollectedFromParts = freeEnergyCollectedFromParts.add(part.collectFreeEnergy());
         }
-        BigDecimal energyCollectedForBranch = freeEnergyCollectedFromParts.multiply(ENERGY_RATIO_TO_KEEP.getValue());
+        BigDecimal energyCollectedForBranch = freeEnergyCollectedFromParts.multiply(ENERGY_RATIO_TO_KEEP);
         BigDecimal freeEnergyCollected = freeEnergyCollectedFromParts.subtract(energyCollectedForBranch);
         this.energy = energy.add(energyCollectedForBranch);
         this.freeEnergy = freeEnergy.add(freeEnergyCollected);

@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 
 import barsuift.simLife.IObservable;
 import barsuift.simLife.LivingPart;
-import barsuift.simLife.Percent;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 
 public interface TreeLeaf extends LivingPart, IObservable {
@@ -38,7 +37,7 @@ public interface TreeLeaf extends LivingPart, IObservable {
      * 
      * @return the efficiency
      */
-    public Percent getEfficiency();
+    public BigDecimal getEfficiency();
 
     /**
      * Return the energy of the leaf

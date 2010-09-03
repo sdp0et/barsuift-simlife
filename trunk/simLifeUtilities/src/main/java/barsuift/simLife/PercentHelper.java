@@ -20,12 +20,20 @@ package barsuift.simLife;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 
 public final class PercentHelper {
 
     private PercentHelper() {
         // private constructor to enforce static access
+    }
+
+    private static final NumberFormat percentFormat = NumberFormat.getPercentInstance(Locale.US);
+
+    static {
+        percentFormat.setMinimumFractionDigits(2);
     }
 
     /**
@@ -52,4 +60,11 @@ public final class PercentHelper {
         return tmpValue.setScale(0, RoundingMode.HALF_DOWN).intValueExact();
     }
 
+    public static String getStringValue(int value) {
+        return percentFormat.format(getDecimalValue(value));
+    }
+
+    public static String getStringValue(BigDecimal value) {
+        return percentFormat.format(value);
+    }
 }

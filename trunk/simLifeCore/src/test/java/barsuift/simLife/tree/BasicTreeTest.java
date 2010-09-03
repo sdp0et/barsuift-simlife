@@ -20,7 +20,7 @@ package barsuift.simLife.tree;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.universe.MockUniverse;
 
@@ -52,13 +52,13 @@ public class BasicTreeTest extends TestCase {
             new BasicTree(null, treeState);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            // OK expected excpetion
+            // OK expected exception
         }
         try {
             new BasicTree(universe, null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            // OK expected excpetion
+            // OK expected exception
         }
     }
 

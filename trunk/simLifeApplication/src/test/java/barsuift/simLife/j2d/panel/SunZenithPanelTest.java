@@ -19,7 +19,7 @@
 package barsuift.simLife.j2d.panel;
 
 import junit.framework.TestCase;
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 
 
@@ -42,16 +42,16 @@ public class SunZenithPanelTest extends TestCase {
     }
 
     public void testInit() {
-        assertEquals(mockSun.getZenithAngle(), new Percent(display.getSlider().getValue()));
-        mockSun.setZenithAngle(new Percent(90));
+        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setZenithAngle(PercentHelper.getDecimalValue(90));
         display = new SunZenithPanel(mockSun);
-        assertEquals(mockSun.getZenithAngle(), new Percent(display.getSlider().getValue()));
-        mockSun.setZenithAngle(new Percent(80));
+        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setZenithAngle(PercentHelper.getDecimalValue(80));
         display = new SunZenithPanel(mockSun);
-        assertEquals(mockSun.getZenithAngle(), new Percent(display.getSlider().getValue()));
-        mockSun.setZenithAngle(new Percent(100));
+        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
         display = new SunZenithPanel(mockSun);
-        assertEquals(mockSun.getZenithAngle(), new Percent(display.getSlider().getValue()));
+        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
 
 }

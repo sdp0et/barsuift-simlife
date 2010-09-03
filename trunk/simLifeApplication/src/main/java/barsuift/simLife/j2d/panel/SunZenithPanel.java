@@ -29,7 +29,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import barsuift.simLife.Percent;
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
 
 public class SunZenithPanel extends JPanel implements ChangeListener {
@@ -56,7 +56,8 @@ public class SunZenithPanel extends JPanel implements ChangeListener {
     }
 
     private JSlider createSlider() {
-        JSlider zenithSlider = new JSlider(JSlider.VERTICAL, ANGLE_MIN, ANGLE_MAX, sun.getZenithAngle().getIntValue());
+        JSlider zenithSlider = new JSlider(JSlider.VERTICAL, ANGLE_MIN, ANGLE_MAX, PercentHelper.getIntValue(sun
+                .getZenithAngle()));
         zenithSlider.setMaximumSize(new Dimension(80, 180));
         zenithSlider.addChangeListener(this);
         // Turn on labels at major tick marks.
@@ -84,7 +85,7 @@ public class SunZenithPanel extends JPanel implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         int zenithAngle = (int) source.getValue();
-        sun.setZenithAngle(new Percent(zenithAngle));
+        sun.setZenithAngle(PercentHelper.getDecimalValue(zenithAngle));
     }
 
     protected JLabel getLabel() {
