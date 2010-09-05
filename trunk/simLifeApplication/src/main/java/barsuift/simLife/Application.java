@@ -28,7 +28,6 @@ import barsuift.simLife.universe.OpenException;
 import barsuift.simLife.universe.SaveException;
 import barsuift.simLife.universe.Universe;
 
-//TODO 001 check unit test
 public class Application {
 
     private File currentSaveFile;
@@ -69,6 +68,7 @@ public class Application {
         BasicUniverseIO envIO = new BasicUniverseIO(saveFile);
         Universe universe = envIO.read();
         this.currentUniverseContext = new UniverseContext(universe);
+        //TODO 010. load the showFps from file, not from current context
         currentUniverseContext.showFps(showFps);
         this.window.changeUniverse(currentUniverseContext);
         this.currentSaveFile = saveFile;
