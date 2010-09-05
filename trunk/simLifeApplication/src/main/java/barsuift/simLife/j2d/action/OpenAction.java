@@ -19,15 +19,15 @@
 package barsuift.simLife.j2d.action;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
-import javax.swing.KeyStroke;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.j2d.menu.Accelerators;
+import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.universe.OpenException;
 
 
@@ -42,8 +42,8 @@ public class OpenAction extends AbstractAction {
         this.application = application;
         putValue(Action.NAME, "Open");
         putValue(SHORT_DESCRIPTION, "Open another universe");
-        putValue(MNEMONIC_KEY, KeyEvent.VK_O);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        putValue(MNEMONIC_KEY, Mnemonics.FILE_OPEN);
+        putValue(ACCELERATOR_KEY, Accelerators.OPEN);
     }
 
     @Override

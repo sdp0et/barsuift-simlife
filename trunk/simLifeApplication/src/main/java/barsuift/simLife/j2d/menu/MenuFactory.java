@@ -18,8 +18,6 @@
  */
 package barsuift.simLife.j2d.menu;
 
-import java.awt.event.KeyEvent;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -32,7 +30,6 @@ import barsuift.simLife.j2d.action.OpenAction;
 import barsuift.simLife.j2d.action.SaveAction;
 import barsuift.simLife.j2d.action.SaveAsAction;
 
-// TODO 001. put mnemonic and accelerator keys in a static class to put them all together
 public class MenuFactory {
 
     public JMenuBar createMenuBar(Application application) {
@@ -44,7 +41,7 @@ public class MenuFactory {
 
     private JMenu createFileMenu(Application application) {
         JMenu fileMenu = new JMenu("File");
-        fileMenu.setMnemonic(KeyEvent.VK_F);
+        fileMenu.setMnemonic(Mnemonics.FILE);
 
         NewEmptyAction newEmptyAction = new NewEmptyAction(application);
         JMenuItem newEmptyItem = new JMenuItem(newEmptyAction);
@@ -70,7 +67,7 @@ public class MenuFactory {
 
     private JMenu createAdminMenu(Application application) {
         JMenu adminMenu = new JMenu("Window");
-        adminMenu.setMnemonic(KeyEvent.VK_W);
+        adminMenu.setMnemonic(Mnemonics.WINDOW);
 
         FpsAction fpsAction = new FpsAction(application);
         JMenuItem fpsItem = new JMenuItem(fpsAction);
