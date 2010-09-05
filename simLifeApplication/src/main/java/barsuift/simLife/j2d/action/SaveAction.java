@@ -19,13 +19,13 @@
 package barsuift.simLife.j2d.action;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.KeyStroke;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.j2d.menu.Accelerators;
+import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.universe.SaveException;
 
 
@@ -40,8 +40,8 @@ public class SaveAction extends AbstractAction {
         this.application = application;
         putValue(Action.NAME, "Save");
         putValue(SHORT_DESCRIPTION, "Save the current universe");
-        putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        putValue(MNEMONIC_KEY, Mnemonics.FILE_SAVE);
+        putValue(ACCELERATOR_KEY, Accelerators.SAVE);
     }
 
     @Override

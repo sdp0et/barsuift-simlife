@@ -19,13 +19,13 @@
 package barsuift.simLife.j2d.action;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.KeyStroke;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.j2d.menu.Accelerators;
+import barsuift.simLife.j2d.menu.Mnemonics;
 
 
 public class NewRandomAction extends AbstractAction {
@@ -39,8 +39,8 @@ public class NewRandomAction extends AbstractAction {
         this.application = application;
         putValue(Action.NAME, "New (random)");
         putValue(SHORT_DESCRIPTION, "Create a new random universe");
-        putValue(MNEMONIC_KEY, KeyEvent.VK_R);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+        putValue(MNEMONIC_KEY, Mnemonics.FILE_RANDOM);
+        putValue(ACCELERATOR_KEY, Accelerators.RANDOM);
     }
 
     @Override

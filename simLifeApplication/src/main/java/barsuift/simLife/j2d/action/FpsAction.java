@@ -19,13 +19,13 @@
 package barsuift.simLife.j2d.action;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.KeyStroke;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.j2d.menu.Accelerators;
+import barsuift.simLife.j2d.menu.Mnemonics;
 
 public class FpsAction extends AbstractAction {
 
@@ -41,8 +41,8 @@ public class FpsAction extends AbstractAction {
         showFps = false;
         putValue(Action.NAME, "Show FPS");
         putValue(SHORT_DESCRIPTION, "Show the FPS (Frame Per Second)");
-        putValue(MNEMONIC_KEY, KeyEvent.VK_F);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+        putValue(MNEMONIC_KEY, Mnemonics.VIEW_FPS);
+        putValue(ACCELERATOR_KEY, Accelerators.FPS);
     }
 
     private void showFps() {
