@@ -81,7 +81,7 @@ public class ApplicationTest extends TestCase {
     }
 
     public void testOpen() throws OpenException, SaveException {
-        // create a tes file to be read
+        // create a test file to be read
         BasicUniverseFactory factory = new BasicUniverseFactory();
         Universe universe = factory.createRandom();
         BasicUniverseIO io = new BasicUniverseIO(saveFile);
@@ -90,6 +90,21 @@ public class ApplicationTest extends TestCase {
         UniverseContext universeContext = application.openUniverse(saveFile);
         Universe universe2 = universeContext.getUniverse();
         assertEquals(universe, universe2);
+    }
+    
+    public void testShowFps() {
+        UniverseContext universeContext = application.createEmptyUniverse();
+        assertFalse(universeContext.isShowFps());
+        application.showFps(true);
+        assertTrue(universeContext.isShowFps());
+        
+        application = new Application();
+        application.showFps(true);
+        universeContext = application.createEmptyUniverse();
+        assertTrue(universeContext.isShowFps());
+        application.showFps(false);
+        assertFalse(universeContext.isShowFps());
+
     }
 
 }

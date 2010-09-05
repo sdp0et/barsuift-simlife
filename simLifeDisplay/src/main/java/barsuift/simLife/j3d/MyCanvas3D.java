@@ -32,7 +32,6 @@ import barsuift.simLife.time.FpsCounter;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-//TODO 001 unit test
 public class MyCanvas3D extends Canvas3D {
 
     private static final long serialVersionUID = -8802614056574013014L;

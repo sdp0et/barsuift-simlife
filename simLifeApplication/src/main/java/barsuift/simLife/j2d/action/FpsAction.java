@@ -27,7 +27,6 @@ import javax.swing.KeyStroke;
 
 import barsuift.simLife.Application;
 
-// TODO 001 unit test
 public class FpsAction extends AbstractAction {
 
     private static final long serialVersionUID = 8709944906687074411L;
