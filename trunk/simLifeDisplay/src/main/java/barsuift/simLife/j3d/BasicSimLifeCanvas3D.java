@@ -27,12 +27,12 @@ import java.text.MessageFormat;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.J3DGraphics2D;
 
-import barsuift.simLife.j3d.universe.UniverseContext;
 import barsuift.simLife.time.FpsCounter;
+import barsuift.simLife.universe.UniverseContext;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-public class MyCanvas3D extends Canvas3D {
+public class BasicSimLifeCanvas3D extends Canvas3D implements SimLifeCanvas3D {
 
     private static final long serialVersionUID = -8802614056574013014L;
 
@@ -55,7 +55,7 @@ public class MyCanvas3D extends Canvas3D {
     private UniverseContext universeContext;
 
 
-    public MyCanvas3D(UniverseContext universeContext) {
+    public BasicSimLifeCanvas3D(UniverseContext universeContext) {
         super(SimpleUniverse.getPreferredConfiguration());
         this.universeContext = universeContext;
         graphicFps = new FpsCounter();

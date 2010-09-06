@@ -21,12 +21,12 @@ package barsuift.simLife;
 import java.io.File;
 
 import junit.framework.TestCase;
-import barsuift.simLife.j3d.universe.UniverseContext;
-import barsuift.simLife.universe.BasicUniverseFactory;
-import barsuift.simLife.universe.BasicUniverseIO;
+import barsuift.simLife.universe.BasicUniverseContextFactory;
 import barsuift.simLife.universe.OpenException;
 import barsuift.simLife.universe.SaveException;
 import barsuift.simLife.universe.Universe;
+import barsuift.simLife.universe.UniverseContext;
+import barsuift.simLife.universe.UniverseContextIO;
 
 
 public class ApplicationTest extends TestCase {
@@ -82,28 +82,27 @@ public class ApplicationTest extends TestCase {
 
     public void testOpen() throws OpenException, SaveException {
         // create a test file to be read
-        BasicUniverseFactory factory = new BasicUniverseFactory();
-        Universe universe = factory.createRandom();
-        BasicUniverseIO io = new BasicUniverseIO(saveFile);
-        io.write(universe);
+        BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
+        UniverseContext universeContext = factory.createRandom();
+        UniverseContextIO io = new UniverseContextIO(saveFile);
+        io.write(universeContext);
         // now try to read it
-        UniverseContext universeContext = application.openUniverse(saveFile);
-        Universe universe2 = universeContext.getUniverse();
-        assertEquals(universe, universe2);
+        UniverseContext universeContext2 = application.openUniverse(saveFile);
+        assertEquals(universeContext, universeContext2);
     }
-    
+
     public void testShowFps() {
         UniverseContext universeContext = application.createEmptyUniverse();
         assertFalse(universeContext.isShowFps());
         application.showFps(true);
         assertTrue(universeContext.isShowFps());
-        
+
         application = new Application();
         application.showFps(true);
         universeContext = application.createEmptyUniverse();
-        assertTrue(universeContext.isShowFps());
-        application.showFps(false);
         assertFalse(universeContext.isShowFps());
+        application.showFps(true);
+        assertTrue(universeContext.isShowFps());
 
     }
 

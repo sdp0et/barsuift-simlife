@@ -38,6 +38,7 @@ import barsuift.simLife.tree.TreeBranchState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 import barsuift.simLife.tree.TreeTrunkState;
+import barsuift.simLife.universe.UniverseContextState;
 import barsuift.simLife.universe.UniverseState;
 
 public final class CoreDataCreatorForTests {
@@ -50,6 +51,30 @@ public final class CoreDataCreatorForTests {
 
     public static Long createRandomId() {
         return CURRENT_ID++;
+    }
+
+    public static UniverseContextState createRandomUniverseContextState() {
+        UniverseState universeState = createRandomUniverseState();
+        boolean showFps = UtilDataCreatorForTests.createRandomBoolean();
+        boolean isAxisShown = UtilDataCreatorForTests.createRandomBoolean();
+        return new UniverseContextState(universeState, showFps, isAxisShown);
+    }
+
+    /**
+     * Create a specific universe context state with
+     * <ul>
+     * <li>specific universe state made through the {@link #createSpecificUniverseState()} method</li>
+     * <li>showFps = false</li>
+     * <li>isAxisShown = true</li>
+     * </ul>
+     * 
+     * @return
+     */
+    public static UniverseContextState createSpecificUniverseContextState() {
+        UniverseState universeState = createSpecificUniverseState();
+        boolean showFps = false;
+        boolean isAxisShown = true;
+        return new UniverseContextState(universeState, showFps, isAxisShown);
     }
 
     public static UniverseState createRandomUniverseState() {
@@ -74,7 +99,7 @@ public final class CoreDataCreatorForTests {
      * <li>nb trees=3 (made through the {@link #createSpecificTreeState()} method)</li>
      * <li>nb fallen leaves=20 (made through the {@link #createSpecificTreeLeafState()} method)</li>
      * </ul>
-     * The environment is made through the {@link #createSpecificEnvironmentState()} method. The tiem counter is made
+     * The environment is made through the {@link #createSpecificEnvironmentState()} method. The time counter is made
      * through the {@link #createSpecificTimeCounterState()} method.
      * 
      * @return
@@ -99,7 +124,7 @@ public final class CoreDataCreatorForTests {
     }
 
     /**
-     * Create a specific enviroment state. The sun state is made through the {@link #createSpecificSunState()} method.
+     * Create a specific environment state. The sun state is made through the {@link #createSpecificSunState()} method.
      * 
      * @return
      */

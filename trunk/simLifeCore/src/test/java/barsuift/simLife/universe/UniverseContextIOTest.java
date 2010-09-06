@@ -20,22 +20,21 @@ package barsuift.simLife.universe;
 
 import java.io.File;
 
+import junit.framework.TestCase;
 import barsuift.simLife.FileTestHelper;
 
-import junit.framework.TestCase;
 
+public class UniverseContextIOTest extends TestCase {
 
-public class BasicUniverseIOTest extends TestCase {
-
-    private BasicUniverseIO universeIo;
+    private UniverseContextIO universeIo;
 
     private File file;
 
     protected void setUp() throws Exception {
         super.setUp();
-        file = new File("target/test-data/universe.xml");
+        file = new File("target/test-data/simlife.xml");
         FileTestHelper.deleteAllFiles(file.getParentFile());
-        universeIo = new BasicUniverseIO(file);
+        universeIo = new UniverseContextIO(file);
     }
 
     protected void tearDown() throws Exception {
@@ -46,19 +45,19 @@ public class BasicUniverseIOTest extends TestCase {
     }
 
     public void testWriteAndReadRandom() throws Exception {
-        BasicUniverseFactory factory = new BasicUniverseFactory();
-        Universe universe = factory.createRandom();
-        universeIo.write(universe);
-        Universe universe2 = universeIo.read();
-        assertEquals(universe, universe2);
+        BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
+        UniverseContext universeContext = factory.createRandom();
+        universeIo.write(universeContext);
+        UniverseContext universeContext2 = universeIo.read();
+        assertEquals(universeContext, universeContext2);
     }
 
     public void testWriteAndReadEmpty() throws Exception {
-        BasicUniverseFactory factory = new BasicUniverseFactory();
-        Universe universe = factory.createEmpty();
-        universeIo.write(universe);
-        Universe universe2 = universeIo.read();
-        assertEquals(universe, universe2);
+        BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
+        UniverseContext universeContext = factory.createEmpty();
+        universeIo.write(universeContext);
+        UniverseContext universeContext2 = universeIo.read();
+        assertEquals(universeContext, universeContext2);
     }
 
 }
