@@ -16,33 +16,9 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.universe;
-
-import junit.framework.TestCase;
-import barsuift.simLife.universe.MockUniverse;
-import barsuift.simLife.universe.Universe;
+package barsuift.simLife.j3d;
 
 
-public class UniverseContextTest extends TestCase {
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testUnsetAxis() {
-        Universe universe = new MockUniverse();
-        UniverseContext panel = new UniverseContext(universe);
-        assertTrue(panel.isAxisShown());
-        panel.unsetAxis();
-        assertFalse(panel.isAxisShown());
-        panel.setAxis();
-        assertTrue(panel.isAxisShown());
-        panel.unsetAxis();
-        assertFalse(panel.isAxisShown());
-    }
+public interface SimLifeCanvas3D {
 
 }

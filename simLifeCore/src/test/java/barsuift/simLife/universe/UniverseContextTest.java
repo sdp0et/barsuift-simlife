@@ -16,22 +16,30 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j2d.panel;
+package barsuift.simLife.universe;
 
-import java.awt.BorderLayout;
+import junit.framework.TestCase;
 
-import javax.media.j3d.Canvas3D;
-import javax.swing.JPanel;
 
-import barsuift.simLife.j3d.SimLifeCanvas3D;
+public class UniverseContextTest extends TestCase {
 
-public class Universe3DPanel extends JPanel {
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-    private static final long serialVersionUID = -9023573589569686409L;
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
 
-    public Universe3DPanel(SimLifeCanvas3D canvas3D) {
-        setLayout(new BorderLayout());
-        add("Center", (Canvas3D) canvas3D);
+    public void testUnsetAxis() {
+        UniverseContext panel = new BasicUniverseContext(new UniverseContextState());
+        assertTrue(panel.isAxisShown());
+        panel.unsetAxis();
+        assertFalse(panel.isAxisShown());
+        panel.setAxis();
+        assertTrue(panel.isAxisShown());
+        panel.unsetAxis();
+        assertFalse(panel.isAxisShown());
     }
 
 }

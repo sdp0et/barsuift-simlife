@@ -21,12 +21,11 @@ package barsuift.simLife;
 import java.io.File;
 
 import barsuift.simLife.j2d.MainWindow;
-import barsuift.simLife.j3d.universe.UniverseContext;
-import barsuift.simLife.universe.BasicUniverseFactory;
-import barsuift.simLife.universe.BasicUniverseIO;
+import barsuift.simLife.universe.BasicUniverseContextFactory;
 import barsuift.simLife.universe.OpenException;
 import barsuift.simLife.universe.SaveException;
-import barsuift.simLife.universe.Universe;
+import barsuift.simLife.universe.UniverseContext;
+import barsuift.simLife.universe.UniverseContextIO;
 
 public class Application {
 
@@ -36,28 +35,22 @@ public class Application {
 
     private MainWindow window;
 
-    private boolean showFps;
-
     public Application() {
         this.window = new MainWindow(this);
         this.window.setVisible(true);
     }
 
     public UniverseContext createEmptyUniverse() {
-        BasicUniverseFactory factory = new BasicUniverseFactory();
-        Universe universe = factory.createEmpty();
-        this.currentUniverseContext = new UniverseContext(universe);
-        currentUniverseContext.showFps(showFps);
+        BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
+        this.currentUniverseContext = factory.createEmpty();
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         return currentUniverseContext;
     }
 
     public UniverseContext createRandomUniverse() {
-        BasicUniverseFactory factory = new BasicUniverseFactory();
-        Universe universe = factory.createRandom();
-        this.currentUniverseContext = new UniverseContext(universe);
-        currentUniverseContext.showFps(showFps);
+        BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
+        this.currentUniverseContext = factory.createRandom();
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         return currentUniverseContext;
@@ -65,11 +58,8 @@ public class Application {
 
 
     public UniverseContext openUniverse(File saveFile) throws OpenException {
-        BasicUniverseIO envIO = new BasicUniverseIO(saveFile);
-        Universe universe = envIO.read();
-        this.currentUniverseContext = new UniverseContext(universe);
-        //TODO 010. load the showFps from file, not from current context
-        currentUniverseContext.showFps(showFps);
+        UniverseContextIO envIO = new UniverseContextIO(saveFile);
+        this.currentUniverseContext = envIO.read();
         this.window.changeUniverse(currentUniverseContext);
         this.currentSaveFile = saveFile;
         return currentUniverseContext;
@@ -82,21 +72,20 @@ public class Application {
         if (currentUniverseContext == null) {
             throw new IllegalStateException("No current universe context to save");
         }
-        BasicUniverseIO envIO = new BasicUniverseIO(currentSaveFile);
-        envIO.write(currentUniverseContext.getUniverse());
+        UniverseContextIO envIO = new UniverseContextIO(currentSaveFile);
+        envIO.write(currentUniverseContext);
     }
 
     public void saveUniverseAs(File saveFile) throws SaveException {
         if (currentUniverseContext == null) {
             throw new IllegalStateException("No current universe context to save");
         }
-        BasicUniverseIO envIO = new BasicUniverseIO(saveFile);
-        envIO.write(currentUniverseContext.getUniverse());
+        UniverseContextIO envIO = new UniverseContextIO(saveFile);
+        envIO.write(currentUniverseContext);
         this.currentSaveFile = saveFile;
     }
 
     public void showFps(boolean show) {
-        showFps = show;
         if (currentUniverseContext != null) {
             currentUniverseContext.showFps(show);
         }

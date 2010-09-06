@@ -31,4 +31,8 @@ public final class UtilDataCreatorForTests {
         return new BigDecimal(Math.random());
     }
 
+    public static boolean createRandomBoolean() {
+        return Math.random() >= 0.5;
+    }
+
 }

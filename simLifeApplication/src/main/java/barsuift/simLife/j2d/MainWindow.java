@@ -24,7 +24,7 @@ import javax.swing.JMenuBar;
 import barsuift.simLife.Application;
 import barsuift.simLife.j2d.menu.MenuFactory;
 import barsuift.simLife.j2d.panel.MainPanel;
-import barsuift.simLife.j3d.universe.UniverseContext;
+import barsuift.simLife.universe.UniverseContext;
 
 
 public class MainWindow extends JFrame {
