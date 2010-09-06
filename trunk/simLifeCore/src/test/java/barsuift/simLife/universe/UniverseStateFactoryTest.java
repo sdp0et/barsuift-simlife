@@ -20,9 +20,8 @@ package barsuift.simLife.universe;
 
 import java.util.Set;
 
-import barsuift.simLife.Randomizer;
-import barsuift.simLife.tree.TreeState;
 import junit.framework.TestCase;
+import barsuift.simLife.tree.TreeState;
 
 
 public class UniverseStateFactoryTest extends TestCase {
@@ -37,9 +36,12 @@ public class UniverseStateFactoryTest extends TestCase {
 
     public void testCreateRandomUniverseState() {
         UniverseStateFactory factory = new UniverseStateFactory();
-        int nbTrees = Randomizer.randomBetween(1, 4);
-        UniverseState universeState = factory.createRandomUniverseState(nbTrees);
+        UniverseState universeState = factory.createRandomUniverseState();
         assertNotNull(universeState.getEnvironment());
+
+        int nbTrees = universeState.getTrees().size();
+        assertTrue(nbTrees >= 1);
+        assertTrue(nbTrees <= 4);
 
         Set<TreeState> trees = universeState.getTrees();
         for (TreeState treeState : trees) {
@@ -54,7 +56,7 @@ public class UniverseStateFactoryTest extends TestCase {
         Long id1 = universeState.getId();
         assertNotNull(id1);
         assertTrue(id1.longValue() > 0);
-        universeState = factory.createRandomUniverseState(nbTrees);
+        universeState = factory.createRandomUniverseState();
         Long id2 = universeState.getId();
         assertEquals(id1.longValue() + 1, id2.longValue());
     }

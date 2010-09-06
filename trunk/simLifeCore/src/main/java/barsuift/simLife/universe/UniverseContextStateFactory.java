@@ -18,14 +18,12 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.Randomizer;
 
 public class UniverseContextStateFactory {
 
     /**
      * Creates a random UniverseContextState with the following values :
      * <ul>
-     * <li>nb of trees between 1 and 4</li>
      * <li>a random universe state</li>
      * <li>showFps = false</li>
      * <li>isAxisShown = true</li>
@@ -34,9 +32,8 @@ public class UniverseContextStateFactory {
      * @return
      */
     public UniverseContextState createRandomUniverseContextState() {
-        int nbTrees = Randomizer.randomBetween(1, 4);
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
-        UniverseState universeState = universeStateFactory.createRandomUniverseState(nbTrees);
+        UniverseState universeState = universeStateFactory.createRandomUniverseState();
         return new UniverseContextState(universeState, false, true);
     }
 

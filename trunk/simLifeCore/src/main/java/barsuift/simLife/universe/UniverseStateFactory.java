@@ -48,8 +48,17 @@ public class UniverseStateFactory {
         originPoints.put(new Long(3), new Point3d(-4, 0, 2));
     }
 
-    // TODO 007. the nb of trees should be computed in this method, and not passed
-    public UniverseState createRandomUniverseState(int nbTrees) {
+    /**
+     * Creates a random universe state with the following values :
+     * <ul>
+     * <li>nb of trees between 1 and 4</li>
+     * <li>a random environment</li>
+     * </ul>
+     * 
+     * @return
+     */
+    public UniverseState createRandomUniverseState() {
+        int nbTrees = Randomizer.randomBetween(1, 4);
         TreeStateFactory treeStateFactory = new TreeStateFactory();
         Set<TreeState> trees = new HashSet<TreeState>(nbTrees);
         for (int i = 0; i < nbTrees; i++) {
