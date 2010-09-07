@@ -37,8 +37,8 @@ import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-// TODO 008. store the camera position (need to create the Action before)
-// TODO 008. store the showAxis (need to create the Action before)
+// TODO 008. store the camera position (and create the Action and menu item)
+// TODO 008. store the showAxis (and create the Action and menu item)
 // TODO 003. use the Persistent and State interfaces
 public class BasicUniverseContext implements UniverseContext {
 
