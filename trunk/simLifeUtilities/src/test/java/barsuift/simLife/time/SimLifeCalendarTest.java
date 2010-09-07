@@ -20,9 +20,6 @@ package barsuift.simLife.time;
 
 import java.util.Calendar;
 
-import barsuift.simLife.time.SimLifeCalendar;
-import barsuift.simLife.time.SimLifeCalendarState;
-
 import junit.framework.TestCase;
 
 
