@@ -18,7 +18,6 @@
  */
 package barsuift.simLife;
 
-import barsuift.simLife.Randomizer;
 import junit.framework.TestCase;
 
 public class RandomizerTest extends TestCase {

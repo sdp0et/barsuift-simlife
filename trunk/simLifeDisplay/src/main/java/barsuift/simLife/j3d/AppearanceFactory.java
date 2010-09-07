@@ -50,8 +50,8 @@ public final class AppearanceFactory {
      * @param diffuseColor the expected diffuse color
      * @param specularColor the expected specular color
      */
-    public static void setColorWithMaterial(Appearance appearance, Color3f ambientColor,
-            Color3f diffuseColor, Color3f specularColor) {
+    public static void setColorWithMaterial(Appearance appearance, Color3f ambientColor, Color3f diffuseColor,
+            Color3f specularColor) {
         Material material = new Material();
         material.setAmbientColor(ambientColor);
         material.setDiffuseColor(diffuseColor);

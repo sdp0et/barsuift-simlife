@@ -1,6 +1,5 @@
 /**
- * barsuift-simlife is a life simulator program * 
- * Copyright (C) 2010 Cyrille GACHOT
+ * barsuift-simlife is a life simulator program * Copyright (C) 2010 Cyrille GACHOT
  * 
  * This file is part of barsuift-simlife.
  * 
@@ -45,8 +44,7 @@ public interface IObservable {
      * <p>
      * Each observer has its <code>update</code> method called with two arguments: this observable object and
      * <code>null</code>. In other words, this method is equivalent to: <blockquote><tt>
-    * notifyObservers(null)</tt>
-     * </blockquote>
+     * notifyObservers(null)</tt> </blockquote>
      * 
      * @see java.util.Observable#clearChanged()
      * @see java.util.Observable#hasChanged()

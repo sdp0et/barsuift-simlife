@@ -59,9 +59,8 @@ public class TreeBranchStateFactory {
         Point3d startPoint = new Point3d(0, 0, 0);
         double maxDistance = startPoint.distance(branchEndPoint);
         double averagePartLength = maxDistance / nbParts;
-        Point3d partEndPoint = BarycentreHelper.getBarycentre(new Point3d(0, 0, 0), branchEndPoint, (Randomizer
-                .random2() + 1)
-                * averagePartLength);
+        Point3d partEndPoint = BarycentreHelper.getBarycentre(new Point3d(0, 0, 0), branchEndPoint,
+                (Randomizer.random2() + 1) * averagePartLength);
         partEndPoint = PointHelper.shiftPoint(partEndPoint, maxDistance / 10);
         return partEndPoint;
     }

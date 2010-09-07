@@ -32,7 +32,8 @@ public class BasicTreeBranchPartFactory {
 
     public TreeBranchPart createRandom(Point3d branchPartEndPoint) {
         TreeBranchPartStateFactory treeBranchPartStateFactory = new TreeBranchPartStateFactory();
-        TreeBranchPartState treeBranchPartState = treeBranchPartStateFactory.createRandomBranchPartState(branchPartEndPoint);
+        TreeBranchPartState treeBranchPartState = treeBranchPartStateFactory
+                .createRandomBranchPartState(branchPartEndPoint);
         TreeBranchPart treeTreeBranchPart = new BasicTreeBranchPart(universe, treeBranchPartState);
         return treeTreeBranchPart;
     }

@@ -51,8 +51,8 @@ public class TreeBranchPartState {
         this.branchPart3DState = new TreeBranchPart3DState();
     }
 
-    public TreeBranchPartState(Long id, int age, BigDecimal energy, BigDecimal freeEnergy, List<TreeLeafState> leaveStates,
-            TreeBranchPart3DState branchPart3DState) {
+    public TreeBranchPartState(Long id, int age, BigDecimal energy, BigDecimal freeEnergy,
+            List<TreeLeafState> leaveStates, TreeBranchPart3DState branchPart3DState) {
         super();
         this.id = id;
         this.age = age;
