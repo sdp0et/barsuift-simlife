@@ -58,29 +58,22 @@ public final class PointHelper {
     }
 
     public static final boolean isPointWithinBounds(Point3d point, Point3d boundsStartPoint, Point3d boundsEndPoint) {
-        double boundsMinX = Math.min(boundsStartPoint.getX(), boundsEndPoint.getX());
-        double boundsMaxX = Math.max(boundsStartPoint.getX(), boundsEndPoint.getX());
-        double boundsMinY = Math.min(boundsStartPoint.getY(), boundsEndPoint.getY());
-        double boundsMaxY = Math.max(boundsStartPoint.getY(), boundsEndPoint.getY());
-        double boundsMinZ = Math.min(boundsStartPoint.getZ(), boundsEndPoint.getZ());
-        double boundsMaxZ = Math.max(boundsStartPoint.getZ(), boundsEndPoint.getZ());
-
-        if (point.getX() < boundsMinX) {
+        if (point.getX() < Math.min(boundsStartPoint.getX(), boundsEndPoint.getX())) {
             return false;
         }
-        if (point.getX() > boundsMaxX) {
+        if (point.getX() > Math.max(boundsStartPoint.getX(), boundsEndPoint.getX())) {
             return false;
         }
-        if (point.getY() < boundsMinY) {
+        if (point.getY() < Math.min(boundsStartPoint.getY(), boundsEndPoint.getY())) {
             return false;
         }
-        if (point.getY() > boundsMaxY) {
+        if (point.getY() > Math.max(boundsStartPoint.getY(), boundsEndPoint.getY())) {
             return false;
         }
-        if (point.getZ() < boundsMinZ) {
+        if (point.getZ() < Math.min(boundsStartPoint.getZ(), boundsEndPoint.getZ())) {
             return false;
         }
-        if (point.getZ() > boundsMaxZ) {
+        if (point.getZ() > Math.max(boundsStartPoint.getZ(), boundsEndPoint.getZ())) {
             return false;
         }
         return true;

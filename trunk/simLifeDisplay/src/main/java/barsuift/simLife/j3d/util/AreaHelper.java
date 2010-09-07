@@ -23,6 +23,12 @@ import javax.vecmath.Point3d;
 
 public final class AreaHelper {
 
+    private static final Point3d p1 = new Point3d();
+
+    private static final Point3d p2 = new Point3d();
+
+    private static final Point3d p3 = new Point3d();
+
     private AreaHelper() {
         // private constructor to enforce static access
     }
@@ -35,13 +41,22 @@ public final class AreaHelper {
      */
     public static double computeArea(TriangleArray triangle) {
         // retrieve triangle coordinates
-        Point3d p1 = new Point3d();
         triangle.getCoordinate(0, p1);
-        Point3d p2 = new Point3d();
         triangle.getCoordinate(1, p2);
-        Point3d p3 = new Point3d();
         triangle.getCoordinate(2, p3);
 
+        return computeArea(p1, p2, p3);
+    }
+
+    /**
+     * Computes the area of the given triangle, formed by the given 3 points
+     * 
+     * @param p1 first point of the triangle
+     * @param p2 second point of the triangle
+     * @param p3 third point of the triangle
+     * @return the area of the triangle
+     */
+    public static double computeArea(Point3d p1, Point3d p2, Point3d p3) {
         // compute the triangle sides length
         double a = p1.distance(p2);
         double b = p2.distance(p3);
