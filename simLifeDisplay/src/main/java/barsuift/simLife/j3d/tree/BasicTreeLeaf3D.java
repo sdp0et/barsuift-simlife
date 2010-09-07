@@ -66,6 +66,8 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private final Point3d maxEndPoint2;
 
+    private double area;
+
     public BasicTreeLeaf3D(Universe3D universe3D, TreeLeaf3DState state, TreeLeaf leaf) {
         if (universe3D == null) {
             throw new IllegalArgumentException("Null universe 3D");
@@ -106,6 +108,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     private void createLeafGeometry() {
         leafGeometry = new TriangleArray(3, GeometryArray.COORDINATES | GeometryArray.NORMALS);
         leafGeometry.setCapability(TriangleArray.ALLOW_COORDINATE_WRITE);
+        leafGeometry.setCoordinate(0, new Point3d(0, 0, 0));
         resetGeometryPoints();
         leafShape3D.setGeometry(leafGeometry);
 
@@ -117,7 +120,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     }
 
     public double getArea() {
-        return AreaHelper.computeArea(leafGeometry);
+        return area;
     }
 
     @Override
@@ -171,9 +174,9 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
      * Set the startPoint, endPoint1 and endPoint2 points to the leafGeometry
      */
     private void resetGeometryPoints() {
-        leafGeometry.setCoordinate(0, new Point3d(0, 0, 0));
         leafGeometry.setCoordinate(1, state.getEndPoint1().toPointValue());
         leafGeometry.setCoordinate(2, state.getEndPoint2().toPointValue());
+        this.area = AreaHelper.computeArea(leafGeometry);
     }
 
     @Override
