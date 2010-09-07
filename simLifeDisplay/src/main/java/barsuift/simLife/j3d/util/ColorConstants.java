@@ -41,7 +41,7 @@ public final class ColorConstants {
     public static final Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
 
     public static final Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
-    
+
     public static final Color3f grey = new Color3f(0.5f, 0.5f, 0.5f);
 
     public static final Color3f brown = new Color3f(0.57f, 0.36f, 0.15f);

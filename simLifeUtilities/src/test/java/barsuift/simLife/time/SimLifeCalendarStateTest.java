@@ -19,7 +19,6 @@
 package barsuift.simLife.time;
 
 import barsuift.simLife.JaxbTestCase;
-import barsuift.simLife.time.SimLifeCalendarState;
 
 
 public class SimLifeCalendarStateTest extends JaxbTestCase {

@@ -33,7 +33,8 @@ public class BasicTreeBranchFactory {
 
     public TreeBranch createRandom(Vector3d translationVector, Point3d branchEndPoint) {
         TreeBranchStateFactory treeBranchStateFactory = new TreeBranchStateFactory();
-        TreeBranchState treeBranchState = treeBranchStateFactory.createRandomBranchState(translationVector, branchEndPoint);
+        TreeBranchState treeBranchState = treeBranchStateFactory.createRandomBranchState(translationVector,
+                branchEndPoint);
         TreeBranch treeBranch = new BasicTreeBranch(universe, treeBranchState);
         return treeBranch;
     }
