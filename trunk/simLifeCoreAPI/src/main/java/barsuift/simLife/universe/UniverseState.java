@@ -23,13 +23,14 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.time.TimeCounterState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 
 @XmlRootElement
-public class UniverseState {
+public class UniverseState implements State {
 
     private Long id;
 

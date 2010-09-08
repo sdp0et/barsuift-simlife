@@ -20,8 +20,10 @@ package barsuift.simLife.time;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
+
 @XmlRootElement
-public class SimLifeCalendarState {
+public class SimLifeCalendarState implements State {
 
     private long value;
 

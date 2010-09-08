@@ -24,10 +24,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
 
 @XmlRootElement
-public class TreeBranchState {
+public class TreeBranchState implements State {
 
     private Long id;
 

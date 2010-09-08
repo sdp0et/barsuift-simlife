@@ -20,8 +20,10 @@ package barsuift.simLife.time;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
+
 @XmlRootElement
-public class TimeCounterState {
+public class TimeCounterState implements State {
 
     private int seconds;
 
