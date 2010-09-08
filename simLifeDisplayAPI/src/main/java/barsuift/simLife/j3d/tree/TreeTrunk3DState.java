@@ -20,8 +20,10 @@ package barsuift.simLife.j3d.tree;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
+
 @XmlRootElement
-public class TreeTrunk3DState {
+public class TreeTrunk3DState implements State {
 
     public TreeTrunk3DState() {
         super();

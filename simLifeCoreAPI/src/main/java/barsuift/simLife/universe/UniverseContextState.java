@@ -20,8 +20,10 @@ package barsuift.simLife.universe;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
+
 @XmlRootElement
-public class UniverseContextState {
+public class UniverseContextState implements State {
 
     private UniverseState universeState;
 

@@ -21,8 +21,10 @@ package barsuift.simLife.j3d;
 import javax.vecmath.Point3d;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
+
 @XmlRootElement
-public class Point3dState {
+public class Point3dState implements State {
 
     private double x;
 

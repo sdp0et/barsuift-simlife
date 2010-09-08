@@ -20,8 +20,10 @@ package barsuift.simLife.environment;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
+
 @XmlRootElement
-public class EnvironmentState {
+public class EnvironmentState implements State {
 
     private SunState sunState;
 

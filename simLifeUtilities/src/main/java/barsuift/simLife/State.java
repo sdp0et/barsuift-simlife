@@ -18,16 +18,13 @@
  */
 package barsuift.simLife;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * This is the basic interface for State elements.
  * 
- * Its main purpose is to ensure all the State implementing objects will be stored automatically in XML thanks to the
- * XmlRootElement annotation tag.
+ * Its main purpose is to be used in the {@link Persistent} interface.
  * 
  */
-@XmlRootElement
 public interface State {
 
 }

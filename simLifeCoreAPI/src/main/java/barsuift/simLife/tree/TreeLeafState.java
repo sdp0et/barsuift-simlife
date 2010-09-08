@@ -22,10 +22,11 @@ import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 
 @XmlRootElement
-public class TreeLeafState {
+public class TreeLeafState implements State {
 
     private Long id;
 

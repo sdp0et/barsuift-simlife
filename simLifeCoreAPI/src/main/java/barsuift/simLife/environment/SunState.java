@@ -22,8 +22,10 @@ import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
+
 @XmlRootElement
-public class SunState {
+public class SunState implements State {
 
     private BigDecimal luminosity;
 

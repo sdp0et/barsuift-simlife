@@ -20,10 +20,11 @@ package barsuift.simLife.j3d.tree;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
 import barsuift.simLife.j3d.Point3dState;
 
 @XmlRootElement
-public class TreeBranch3DState {
+public class TreeBranch3DState implements State {
 
     private Point3dState translationVector;
 
