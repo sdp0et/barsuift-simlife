@@ -27,6 +27,7 @@ import barsuift.simLife.j3d.tree.BasicTreeLeaf3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.universe.Universe;
 
+// TODO 001. remove everywhere the age and replace with creation time : remove age++, and remove notifyObserver on aging
 public class BasicTreeLeaf extends Observable implements TreeLeaf {
 
 
@@ -43,7 +44,16 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
 
     private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(66);
 
-    private TreeLeafState state;
+    private final TreeLeafState state;
+
+    private BigDecimal efficiency;
+
+    private int age;
+
+    private BigDecimal energy;
+
+    private BigDecimal freeEnergy;
+
 
     private TreeLeaf3D leaf3D;
 
@@ -58,14 +68,15 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
         if (leafState == null) {
             throw new IllegalArgumentException("null leaf state");
         }
+        this.state = leafState;
+        this.efficiency = state.getEfficiency();
+        this.age = state.getAge();
+        this.energy = state.getEnergy();
+        this.freeEnergy = state.getFreeEnergy();
+
         this.universe = universe;
-        this.state = new TreeLeafState(leafState);
         this.leaf3D = new BasicTreeLeaf3D(universe.getUniverse3D(), leafState.getLeaf3DState(), this);
         this.updateMask = 0;
-    }
-
-    public Long getId() {
-        return state.getId();
     }
 
     /**
@@ -102,11 +113,10 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     }
 
     private void age() {
-        state.setAge(state.getAge() + 1);
+        age++;
         setChanged();
         updateMask |= LeafUpdateMask.AGE_MASK;
-        BigDecimal newEfficiency = getEfficiency().multiply(AGING_EFFICIENCY_DECREASE);
-        state.setEfficiency(newEfficiency);
+        efficiency = efficiency.multiply(AGING_EFFICIENCY_DECREASE);
         setChanged();
         updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
     }
@@ -119,13 +129,13 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
      */
     private void collectSolarEnergy() {
         BigDecimal lightRate = universe.getEnvironment().getSun().getLuminosity();
-        BigDecimal solarEnergyRateCollected = getEfficiency().multiply(lightRate);
+        BigDecimal solarEnergyRateCollected = efficiency.multiply(lightRate);
         BigDecimal energyCollected = solarEnergyRateCollected.multiply(MAX_ENERGY_TO_COLLECT).multiply(
                 new BigDecimal(leaf3D.getArea()));
         BigDecimal energyCollectedForLeaf = energyCollected.multiply(ENERGY_RATIO_TO_KEEP);
         BigDecimal freeEnergyCollected = energyCollected.subtract(energyCollectedForLeaf);
-        state.setEnergy(state.getEnergy().add(energyCollectedForLeaf));
-        state.setFreeEnergy(state.getFreeEnergy().add(freeEnergyCollected));
+        energy = energy.add(energyCollectedForLeaf);
+        freeEnergy = freeEnergy.add(freeEnergyCollected).setScale(5, RoundingMode.HALF_DOWN);
         setChanged();
         updateMask |= LeafUpdateMask.ENERGY_MASK;
     }
@@ -134,7 +144,7 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
      * Return true if the leaf efficiency is lower than the lowest acceptable value
      */
     public boolean isTooWeak() {
-        return getEfficiency().compareTo(LOWEST_EFFICIENCY_BEFORE_FALLING) < 0;
+        return efficiency.compareTo(LOWEST_EFFICIENCY_BEFORE_FALLING) < 0;
     }
 
     /**
@@ -151,36 +161,36 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     }
 
     private void improveEfficiency() {
-        BigDecimal maxEfficiencyToAdd = ONE.subtract(getEfficiency());
+        BigDecimal maxEfficiencyToAdd = ONE.subtract(efficiency);
         // use all the energy, up to the max efficiency that can be added to get 100
-        BigDecimal efficiencyToAdd = maxEfficiencyToAdd.min(getEnergy().movePointLeft(2));
-        state.setEfficiency(getEfficiency().add(efficiencyToAdd).setScale(10, RoundingMode.HALF_DOWN));
+        BigDecimal efficiencyToAdd = maxEfficiencyToAdd.min(energy.movePointLeft(2));
+        efficiency = efficiency.add(efficiencyToAdd).setScale(10, RoundingMode.HALF_DOWN);
         setChanged();
         updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
-        state.setEnergy(getEnergy().subtract(efficiencyToAdd.movePointRight(2)).setScale(10, RoundingMode.HALF_DOWN));
+        energy = energy.subtract(efficiencyToAdd.movePointRight(2)).setScale(5, RoundingMode.HALF_DOWN);
         setChanged();
         updateMask |= LeafUpdateMask.ENERGY_MASK;
     }
 
     @Override
     public BigDecimal getEfficiency() {
-        return state.getEfficiency();
+        return efficiency;
     }
 
     @Override
     public BigDecimal getEnergy() {
-        return state.getEnergy();
+        return energy;
     }
 
     @Override
     public BigDecimal collectFreeEnergy() {
-        BigDecimal freeEnergy = state.getFreeEnergy();
-        state.setFreeEnergy(new BigDecimal(0));
-        return freeEnergy;
+        BigDecimal currentFreeEnergy = freeEnergy;
+        freeEnergy = new BigDecimal(0);
+        return currentFreeEnergy;
     }
 
     public int getAge() {
-        return state.getAge();
+        return age;
     }
 
     public TreeLeaf3D getTreeLeaf3D() {
@@ -189,39 +199,17 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
 
     @Override
     public TreeLeafState getState() {
-        state.setLeaf3DState(leaf3D.getState());
-        return new TreeLeafState(state);
+        synchronize();
+        return state;
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((state == null) ? 0 : state.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicTreeLeaf other = (BasicTreeLeaf) obj;
-        if (state == null) {
-            if (other.state != null)
-                return false;
-        } else
-            if (!state.equals(other.state))
-                return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "BasicTreeLeaf [state=" + state + "]";
+    public void synchronize() {
+        state.setEfficiency(efficiency);
+        state.setAge(age);
+        state.setEnergy(energy);
+        state.setFreeEnergy(freeEnergy);
+        leaf3D.synchronize();
     }
 
 }

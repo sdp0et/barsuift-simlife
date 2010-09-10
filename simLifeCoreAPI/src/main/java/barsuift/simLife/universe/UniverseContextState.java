@@ -35,7 +35,7 @@ public class UniverseContextState implements State {
         super();
         this.universeState = new UniverseState();
         this.showFps = false;
-        this.isAxisShown = false;
+        this.isAxisShown = true;
     }
 
     public UniverseContextState(UniverseState universeState, boolean showFps, boolean isAxisShown) {

@@ -28,8 +28,6 @@ import barsuift.simLife.j3d.tree.TreeBranch3D;
 
 public class MockTreeBranch extends MockObserver implements TreeBranch {
 
-    private Long id = new Long(1);
-
     private int age = 0;
 
     private BigDecimal energy = new BigDecimal(0);
@@ -48,13 +46,7 @@ public class MockTreeBranch extends MockObserver implements TreeBranch {
 
     private TreeBranchState state = new TreeBranchState();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private int synchronizedCalled;
 
     public int getAge() {
         return age;
@@ -143,4 +135,14 @@ public class MockTreeBranch extends MockObserver implements TreeBranch {
     public void setState(TreeBranchState state) {
         this.state = state;
     }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
+    }
+
 }

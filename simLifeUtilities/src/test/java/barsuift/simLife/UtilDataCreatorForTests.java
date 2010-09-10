@@ -27,7 +27,7 @@ public final class UtilDataCreatorForTests {
         // private constructor to enforce static access
     }
 
-    public static BigDecimal createBigDecimal() {
+    public static BigDecimal createRandomBigDecimal() {
         return new BigDecimal(Math.random());
     }
 

@@ -24,12 +24,11 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
@@ -54,7 +53,7 @@ public class BasicTree3DTest extends TestCase {
         nbBranches = 5;
         for (int index = 0; index < nbBranches; index++) {
             MockTreeBranch mockBranch = new MockTreeBranch();
-            Point3dState translationVector = DisplayDataCreatorForTests.createRandomPointState();
+            Tuple3dState translationVector = DisplayDataCreatorForTests.createRandomTupleState();
             MockTreeBranch3D mockBranch3D = (MockTreeBranch3D) mockBranch.getBranch3D();
             mockBranch3D.getState().setTranslationVector(translationVector);
             mockTree.addBranch(mockBranch);
@@ -95,6 +94,7 @@ public class BasicTree3DTest extends TestCase {
     public void testGetState() {
         BasicTree3D tree3D = new BasicTree3D(mockUniverse3D, tree3DState, mockTree);
         assertEquals(tree3DState, tree3D.getState());
+        assertSame(tree3DState, tree3D.getState());
     }
 
     @SuppressWarnings("rawtypes")
@@ -120,9 +120,7 @@ public class BasicTree3DTest extends TestCase {
                 Vector3d translationVector = new Vector3d();
                 transform3D.get(translationVector);
                 TreeBranch treeBranch = mockTree.getBranches().get(nbBranchesFound);
-                Point3d branchTranslationPoint = treeBranch.getBranch3D().getState().getTranslationVector()
-                        .toPointValue();
-                Vector3d expectedTranslationVector = new Vector3d(branchTranslationPoint);
+                Vector3d expectedTranslationVector = treeBranch.getBranch3D().getTranslationVector();
                 VectorTestHelper.assertVectorEquals(expectedTranslationVector, translationVector);
 
                 // test one branch found

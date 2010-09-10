@@ -22,9 +22,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import barsuift.simLife.LivingPart;
+import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.tree.Tree3D;
 
-public interface Tree extends LivingPart {
+public interface Tree extends LivingPart, Persistent<TreeState> {
 
     public float getHeight();
 
@@ -37,8 +38,6 @@ public interface Tree extends LivingPart {
     public TreeTrunk getTrunk();
 
     public Tree3D getTree3D();
-
-    public TreeState getState();
 
     /**
      * Return the energy of the tree

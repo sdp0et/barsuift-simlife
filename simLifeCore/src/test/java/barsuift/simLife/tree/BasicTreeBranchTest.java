@@ -81,14 +81,20 @@ public class BasicTreeBranchTest extends TestCase {
         // collected energy from parts = 3 * 15.9264 = 47.7792
         // energy = 47.7792 * 0 + 10 = 10
         // free energy = 47.7792 - 0 + 3 = 50.7792
-        assertEquals(10, branch.getEnergy().doubleValue(), 0.000001);
-        assertEquals(50.7792, branch.collectFreeEnergy().doubleValue(), 0.000001);
+        assertEquals(10, branch.getEnergy().doubleValue(), 0.00001);
+        assertEquals(50.7792, branch.collectFreeEnergy().doubleValue(), 0.00001);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), branch.collectFreeEnergy());
     }
 
     public void testGetState() {
         assertEquals(branchState, branch.getState());
+        assertSame(branchState, branch.getState());
+        assertEquals(15, branch.getState().getAge());
+        branch.spendTime();
+        assertEquals(branchState, branch.getState());
+        assertSame(branchState, branch.getState());
+        assertEquals(16, branch.getState().getAge());
     }
 
 }

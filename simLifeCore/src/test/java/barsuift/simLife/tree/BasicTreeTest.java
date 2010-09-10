@@ -64,6 +64,12 @@ public class BasicTreeTest extends TestCase {
 
     public void testGetState() {
         assertEquals(treeState, tree.getState());
+        assertSame(treeState, tree.getState());
+        assertEquals(15, tree.getState().getAge());
+        tree.spendTime();
+        assertEquals(treeState, tree.getState());
+        assertSame(treeState, tree.getState());
+        assertEquals(16, tree.getState().getAge());
     }
 
 
@@ -75,7 +81,7 @@ public class BasicTreeTest extends TestCase {
         // as computed in BasicTreeBranchTest#testSpendTime
         // -> freeEnergy in branches=50.7792
         // collected energy from branches = 40 * 50.7792 + 10 = 2041.168
-        assertEquals(2041.168, tree.getEnergy().doubleValue(), 0.0001);
+        assertEquals(2041.168, tree.getEnergy().doubleValue(), 0.00001);
     }
 
 }

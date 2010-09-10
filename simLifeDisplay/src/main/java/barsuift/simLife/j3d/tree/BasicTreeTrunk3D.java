@@ -34,6 +34,8 @@ import com.sun.j3d.utils.geometry.Cylinder;
 
 public class BasicTreeTrunk3D implements TreeTrunk3D {
 
+    private final TreeTrunk3DState state;
+
     private Cylinder trunkCylinder;
 
     private final Group group;
@@ -54,6 +56,7 @@ public class BasicTreeTrunk3D implements TreeTrunk3D {
         if (state == null) {
             throw new IllegalArgumentException("Null tree trunk 3D state");
         }
+        this.state = state;
         Appearance trunkAppearance = new Appearance();
         AppearanceFactory.setColorWithMaterial(trunkAppearance, ColorConstants.brown, new Color3f(0.15f, 0.15f, 0.15f),
                 new Color3f(0.05f, 0.05f, 0.05f));
@@ -73,39 +76,18 @@ public class BasicTreeTrunk3D implements TreeTrunk3D {
 
     @Override
     public TreeTrunk3DState getState() {
-        return new TreeTrunk3DState();
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        // nothing to do
     }
 
     @Override
     public Group getGroup() {
         return group;
-    }
-
-    @Override
-    public String toString() {
-        return "BasicTreeTrunk3D [getState()=" + getState() + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + getState().hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicTreeTrunk3D other = (BasicTreeTrunk3D) obj;
-        if (!getState().equals(other.getState()))
-            return false;
-        return true;
     }
 
 }

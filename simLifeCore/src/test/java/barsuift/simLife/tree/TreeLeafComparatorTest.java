@@ -38,17 +38,6 @@ public class TreeLeafComparatorTest extends TestCase {
         comparator = null;
     }
 
-    // The implementor must ensure that sgn(compare(x, y)) == -sgn(compare(y, x)) for all x and y. (This implies that
-    // compare(x, y) must throw an exception if and only if compare(y, x) throws an exception.)
-    //
-    // The implementor must also ensure that the relation is transitive: ((compare(x, y)>0) && (compare(y, z)>0))
-    // implies compare(x, z)>0.
-    //
-    // Finally, the implementor must ensure that compare(x, y)==0 implies that sgn(compare(x, z))==sgn(compare(y, z))
-    // for all z.
-    //
-    // It is generally the case, but not strictly required that (compare(x, y)==0) == (x.equals(y)).
-
     public void testCompare() {
         MockTreeLeaf o1 = new MockTreeLeaf();
         ((MockTreeLeaf3D) o1.getTreeLeaf3D()).setAttachPoint(new Point3d(2, 0, 0));

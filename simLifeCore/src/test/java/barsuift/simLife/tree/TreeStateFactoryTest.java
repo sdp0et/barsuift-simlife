@@ -56,17 +56,10 @@ public class TreeStateFactoryTest extends TestCase {
         assertEquals(height / 8, trunkState.getRadius());
         assertNotNull(treeState.getTree3DState());
 
-        Long id1 = treeState.getId();
-        assertNotNull(id1);
-        assertTrue(id1.longValue() > 0);
         assertTrue(treeState.getAge() >= 0);
         assertTrue(treeState.getAge() <= 100);
         assertTrue(treeState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
         assertTrue(treeState.getEnergy().compareTo(new BigDecimal(100)) <= 0);
-
-        treeState = factory.createRandomTreeState(translationVector, nbBranches, height);
-        Long id2 = treeState.getId();
-        assertEquals(id1.longValue() + 1, id2.longValue());
     }
 
     public void testComputeBranchTranslationVector() {

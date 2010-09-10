@@ -35,10 +35,6 @@ public class TimeCounterState implements State {
         this.seconds = seconds;
     }
 
-    public TimeCounterState(TimeCounterState copy) {
-        this.seconds = copy.seconds;
-    }
-
     public int getSeconds() {
         return seconds;
     }

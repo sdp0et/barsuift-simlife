@@ -30,8 +30,6 @@ import barsuift.simLife.j3d.tree.Tree3DState;
 @XmlRootElement
 public class TreeState implements State {
 
-    private Long id;
-
     private int age;
 
     private BigDecimal energy;
@@ -46,7 +44,6 @@ public class TreeState implements State {
 
     public TreeState() {
         super();
-        this.id = new Long(0);
         this.age = 0;
         this.energy = new BigDecimal(0);
         this.branches = new ArrayList<TreeBranchState>();
@@ -55,38 +52,15 @@ public class TreeState implements State {
         this.tree3DState = new Tree3DState();
     }
 
-    public TreeState(Long id, int age, BigDecimal energy, List<TreeBranchState> branches, TreeTrunkState trunkState,
+    public TreeState(int age, BigDecimal energy, List<TreeBranchState> branches, TreeTrunkState trunkState,
             float height, Tree3DState tree3dState) {
         super();
-        this.id = id;
         this.age = age;
         this.energy = energy;
         this.branches = branches;
         this.trunkState = trunkState;
         this.height = height;
         this.tree3DState = tree3dState;
-    }
-
-    public TreeState(TreeState copy) {
-        super();
-        this.id = copy.id;
-        this.age = copy.age;
-        this.energy = copy.energy;
-        this.branches = new ArrayList<TreeBranchState>(copy.branches.size());
-        for (TreeBranchState branchState : copy.branches) {
-            branches.add(new TreeBranchState(branchState));
-        }
-        this.trunkState = new TreeTrunkState(copy.trunkState);
-        this.height = copy.height;
-        this.tree3DState = new Tree3DState(copy.tree3DState);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public int getAge() {
@@ -143,7 +117,6 @@ public class TreeState implements State {
         int result = 1;
         result = prime * result + ((branches == null) ? 0 : branches.hashCode());
         result = prime * result + Float.floatToIntBits(height);
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + age;
         result = prime * result + ((energy == null) ? 0 : energy.hashCode());
         result = prime * result + ((tree3DState == null) ? 0 : tree3DState.hashCode());
@@ -168,12 +141,6 @@ public class TreeState implements State {
                 return false;
         if (Float.floatToIntBits(height) != Float.floatToIntBits(other.height))
             return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else
-            if (!id.equals(other.id))
-                return false;
         if (age != other.age)
             return false;
         if (energy == null) {
@@ -199,8 +166,8 @@ public class TreeState implements State {
 
     @Override
     public String toString() {
-        return "TreeState [branches=" + branches + ", height=" + height + ", id=" + id + ", age=" + age + ", energy="
-                + energy + ", tree3DState=" + tree3DState + ", trunkState=" + trunkState + "]";
+        return "TreeState [branches=" + branches + ", height=" + height + ", age=" + age + ", energy=" + energy
+                + ", tree3DState=" + tree3DState + ", trunkState=" + trunkState + "]";
     }
 
 }

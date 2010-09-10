@@ -23,10 +23,9 @@ import java.util.List;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.Tree;
@@ -35,11 +34,14 @@ import barsuift.simLife.tree.TreeBranch;
 // TODO 999. ??? the trunk should be a special instance of a branch
 public class BasicTree3D implements Tree3D {
 
+    private final Tree3DState state;
+
+    private Vector3d translationVector;
+
+
     private Tree tree;
 
     private final BranchGroup branchGroup;
-
-    private Point3d translationVector;
 
     public BasicTree3D(Universe3D universe3D, Tree3DState state, Tree tree) {
         super();
@@ -52,9 +54,10 @@ public class BasicTree3D implements Tree3D {
         if (tree == null) {
             throw new IllegalArgumentException("Null tree");
         }
+        this.state = state;
+        this.translationVector = state.getTranslationVector().toVectorValue();
         this.tree = tree;
         this.branchGroup = new BranchGroup();
-        this.translationVector = state.getTranslationVector().toPointValue();
         createTrunkAndBranchesBG();
     }
 
@@ -70,9 +73,8 @@ public class BasicTree3D implements Tree3D {
     }
 
     private BranchGroup createBranch(TreeBranch3D branch3D) {
-        Vector3d translationVector = new Vector3d(branch3D.getState().getTranslationVector().toPointValue());
         BranchGroup branchBG = new BranchGroup();
-        TransformGroup transformGroup = TransformerHelper.getTranslationTransformGroup(translationVector);
+        TransformGroup transformGroup = TransformerHelper.getTranslationTransformGroup(branch3D.getTranslationVector());
         branchBG.addChild(transformGroup);
 
         transformGroup.addChild(branch3D.getGroup());
@@ -95,7 +97,13 @@ public class BasicTree3D implements Tree3D {
 
     @Override
     public Tree3DState getState() {
-        return new Tree3DState(new Point3dState(translationVector));
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setTranslationVector(new Tuple3dState(translationVector));
     }
 
     @Override

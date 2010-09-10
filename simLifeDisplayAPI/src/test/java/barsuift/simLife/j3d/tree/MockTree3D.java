@@ -34,6 +34,8 @@ public class MockTree3D implements Tree3D {
 
     private TreeTrunk3D trunk3D = new MockTreeTrunk3D();
 
+    private int synchronizedCalled;
+
     @Override
     public BranchGroup getBranchGroup() {
         return bg;
@@ -72,6 +74,15 @@ public class MockTree3D implements Tree3D {
 
     public void setTrunk(TreeTrunk3D trunk3D) {
         this.trunk3D = trunk3D;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

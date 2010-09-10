@@ -35,6 +35,8 @@ public class MockTreeBranchPart3D implements TreeBranchPart3D {
 
     private TreeBranchPart3DState part3DState = new TreeBranchPart3DState();
 
+    private int synchronizedCalled;
+
     @Override
     public Point3d getEndPoint() {
         return endPoint;
@@ -74,6 +76,15 @@ public class MockTreeBranchPart3D implements TreeBranchPart3D {
 
     public void setState(TreeBranchPart3DState part3DState) {
         this.part3DState = part3DState;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

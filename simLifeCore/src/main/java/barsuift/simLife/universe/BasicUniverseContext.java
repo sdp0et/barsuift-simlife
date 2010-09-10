@@ -39,12 +39,18 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 
 // TODO 008. store the camera position (and create the Action and menu item)
 // TODO 008. store the showAxis (and create the Action and menu item)
-// TODO 003. use the Persistent and State interfaces
+// TODO 002. showFps should be stored in BasicUniverse and Canvas3D. The context should not be passed to Canvas
 public class BasicUniverseContext implements UniverseContext {
 
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
 
     private final UniverseContextState state;
+
+    private boolean showFps;
+
+    private boolean isAxisShown;
+
+
 
     private final Universe universe;
 
@@ -58,12 +64,15 @@ public class BasicUniverseContext implements UniverseContext {
 
     public BasicUniverseContext(UniverseContextState state) {
         this.state = state;
+        this.showFps = state.isShowFps();
+        this.isAxisShown = state.isAxisShown();
+
         this.universe = new BasicUniverse(state.getUniverseState());
         canvas3D = new BasicSimLifeCanvas3D(this);
         simpleU = new SimpleUniverse(canvas3D);
 
-        // limit to graphic to 50 FPS (interval = 1000ms / 50 = 20)
-        simpleU.getViewer().getView().setMinimumFrameCycleTime(20);
+        // limit to graphic to 40 FPS (interval = 1000ms / 40 = 25)
+        simpleU.getViewer().getView().setMinimumFrameCycleTime(25);
 
         root = new BranchGroup();
         // allow to add children to the root
@@ -94,34 +103,42 @@ public class BasicUniverseContext implements UniverseContext {
 
     @Override
     public void showFps(boolean show) {
-        state.setShowFps(show);
+        this.showFps = show;
     }
 
     @Override
     public boolean isShowFps() {
-        return state.isShowFps();
+        return showFps;
     }
 
     @Override
     public void setAxis() {
         root.addChild(axisGroup);
-        state.setAxisShown(true);
+        isAxisShown = true;
     }
 
     @Override
     public void unsetAxis() {
         root.removeChild(axisGroup);
-        state.setAxisShown(false);
+        isAxisShown = false;
     }
 
     @Override
     public boolean isAxisShown() {
-        return state.isAxisShown();
+        return isAxisShown;
     }
 
     @Override
     public UniverseContextState getState() {
+        synchronize();
         return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setAxisShown(isAxisShown);
+        state.setShowFps(showFps);
+        universe.synchronize();
     }
 
     private void addNavigators(TransformGroup viewTransform) {
@@ -168,38 +185,6 @@ public class BasicUniverseContext implements UniverseContext {
         mouseZoomNavigator.setTransformGroup(viewTransform);
         mouseZoomNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
         return mouseZoomNavigator;
-    }
-
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((state == null) ? 0 : state.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicUniverseContext other = (BasicUniverseContext) obj;
-        if (state == null) {
-            if (other.state != null)
-                return false;
-        } else
-            if (!state.equals(other.state))
-                return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "BasicUniverseContext [state=" + state + "]";
     }
 
 }

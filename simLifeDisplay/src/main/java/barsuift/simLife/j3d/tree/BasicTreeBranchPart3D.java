@@ -34,7 +34,7 @@ import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.AppearanceFactory;
 import barsuift.simLife.j3d.Axis;
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.j3d.util.TransformerHelper;
@@ -42,6 +42,8 @@ import barsuift.simLife.tree.TreeBranchPart;
 import barsuift.simLife.tree.TreeLeaf;
 
 public class BasicTreeBranchPart3D implements TreeBranchPart3D {
+
+    private final TreeBranchPart3DState state;
 
     private final Point3d endPoint;
 
@@ -59,8 +61,9 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
         if (branchPart == null) {
             throw new IllegalArgumentException("Null tree branch part");
         }
-        this.branchPart = branchPart;
+        this.state = state;
         this.endPoint = state.getEndPoint().toPointValue();
+        this.branchPart = branchPart;
         this.group = new Group();
         group.setCapability(Group.ALLOW_CHILDREN_WRITE);
         group.setCapability(Group.ALLOW_CHILDREN_EXTEND);
@@ -115,7 +118,13 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
 
     @Override
     public TreeBranchPart3DState getState() {
-        return new TreeBranchPart3DState(new Point3dState(endPoint));
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setEndPoint(new Tuple3dState(endPoint));
     }
 
     @Override

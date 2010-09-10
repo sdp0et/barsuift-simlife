@@ -63,13 +63,21 @@ public class BasicTreeBranchPart implements TreeBranchPart {
 
     private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(50);
 
+
+
+    private final TreeBranchPartState state;
+
+    private int age;
+
+    private BigDecimal energy;
+
+    private BigDecimal freeEnergy;
+
     private List<TreeLeaf> leaves;
 
     private Collection<TreeLeaf> oldLeavesToRemove = new HashSet<TreeLeaf>();
 
     private TreeBranchPart3D branchPart3D;
-
-    private TreeBranchPartState state;
 
     private final Universe universe;
 
@@ -81,7 +89,10 @@ public class BasicTreeBranchPart implements TreeBranchPart {
             throw new IllegalArgumentException("null branch part state");
         }
         this.universe = universe;
-        this.state = new TreeBranchPartState(state);
+        this.state = state;
+        this.age = state.getAge();
+        this.energy = state.getEnergy();
+        this.freeEnergy = state.getFreeEnergy();
         List<TreeLeafState> leaveStates = state.getLeaveStates();
         this.leaves = new ArrayList<TreeLeaf>(leaveStates.size());
         for (TreeLeafState treeLeafState : leaveStates) {
@@ -92,12 +103,8 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         branchPart3D = new BasicTreeBranchPart3D(universe.getUniverse3D(), state.getBranchPart3DState(), this);
     }
 
-    public Long getId() {
-        return state.getId();
-    }
-
     public int getAge() {
-        return state.getAge();
+        return age;
     }
 
     /**
@@ -105,7 +112,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
      */
     @Override
     public void spendTime() {
-        state.setAge(state.getAge() + 1);
+        age++;
         for (TreeLeaf leaf : leaves) {
             leaf.spendTime();
         }
@@ -125,7 +132,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     protected void increaseOneLeafSize() {
         TreeLeaf leaf = getRandomLeafToIncrease();
         leaf.getTreeLeaf3D().increaseSize();
-        state.setEnergy(getEnergy().subtract(INCREASE_LEAF_COST));
+        energy = energy.subtract(INCREASE_LEAF_COST);
     }
 
     /**
@@ -185,40 +192,46 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     }
 
     protected boolean canIncreaseOneLeafSize() {
-        boolean atLeastOneLeafToIncrease = false;
-        for (TreeLeaf leaf : leaves) {
-            atLeastOneLeafToIncrease |= !leaf.getTreeLeaf3D().isMaxSizeReached();
-        }
-        if (!atLeastOneLeafToIncrease) {
-            // all leaves have reached their maximum size
+        if (energy.compareTo(INCREASE_LEAF_COST) < 0) {
+            // there is not enough energy to increase a leaf size
             return false;
         }
-        if (getEnergy().compareTo(INCREASE_LEAF_COST) < 0) {
-            // there is not enough energy to increase a leaf size
+        if (!hasAtLeastOneLeafToIncrease()) {
+            // all leaves have reached their maximum size
             return false;
         }
         return true;
     }
 
+    private boolean hasAtLeastOneLeafToIncrease() {
+        for (TreeLeaf leaf : leaves) {
+            if (!leaf.getTreeLeaf3D().isMaxSizeReached()) {
+                return true;
+            }
+        }
+        // all leaves have reached their maximum size
+        return false;
+    }
+
     /**
      * Test if we should increase a leaf size or not. The result is a random function with :
      * <ol>
-     * <li>0% odd to be true if energy <= 20</li>
-     * <li>100% odd to be true if energy >= 5 * 20</li>
+     * <li>0% odd to be true if energy <= increaseLeafCost</li>
+     * <li>100% odd to be true if energy >= 5 * increaseLeafCost</li>
      * <li>a linear progression between the two values</li>
      * </ol>
      */
     protected boolean shouldIncreaseOneLeafSize() {
-        if (getEnergy().compareTo(INCREASE_LEAF_COST) <= 0) {
+        if (energy.compareTo(INCREASE_LEAF_COST) <= 0) {
             // there is not enough energy to increase a leaf size
             return false;
         }
         BigDecimal maxBound = INCREASE_LEAF_COST.multiply(new BigDecimal(5));
-        if (getEnergy().compareTo(maxBound) >= 0) {
+        if (energy.compareTo(maxBound) >= 0) {
             // there is enough energy to increase 5 leaves size, so we should at least increase one
             return true;
         }
-        BigDecimal remainingEnergy = getEnergy().subtract(INCREASE_LEAF_COST);
+        BigDecimal remainingEnergy = energy.subtract(INCREASE_LEAF_COST);
         BigDecimal increaseLength = maxBound.subtract(INCREASE_LEAF_COST);
         BigDecimal ratio = remainingEnergy.divide(increaseLength, 4, RoundingMode.HALF_UP);
         return ratio.compareTo(new BigDecimal(Math.random())) >= 0;
@@ -229,7 +242,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
             // there is no more leaves to create
             return false;
         }
-        if (getEnergy().compareTo(NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED)) < 0) {
+        if (energy.compareTo(NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED)) < 0) {
             // there is not enough energy to create a new leaf
             return false;
         }
@@ -239,22 +252,22 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     /**
      * Test if we should create a new leaf or not. The result is a random function with :
      * <ol>
-     * <li>0% odd to be true if energy < 90</li>
-     * <li>100% odd to be true if energy >= 2 * 90</li>
+     * <li>0% odd to be true if energy < totalLeafCreationCost</li>
+     * <li>100% odd to be true if energy >= 2 * totalLeafCreationCost</li>
      * <li>a linear progression between the two values</li>
      * </ol>
      */
     protected boolean shouldCreateOneNewLeaf() {
         BigDecimal totalCostOfLeafCreation = NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED);
-        if (getEnergy().compareTo(totalCostOfLeafCreation) <= 0) {
+        if (energy.compareTo(totalCostOfLeafCreation) <= 0) {
             // there is not enough energy to create a new leaf
             return false;
         }
-        if (getEnergy().compareTo(totalCostOfLeafCreation.multiply(new BigDecimal(2))) >= 0) {
+        if (energy.compareTo(totalCostOfLeafCreation.multiply(new BigDecimal(2))) >= 0) {
             // there is enough energy to create 2 leaves, so we should at least create one
             return true;
         }
-        BigDecimal remainingEnergy = getEnergy().subtract(totalCostOfLeafCreation);
+        BigDecimal remainingEnergy = energy.subtract(totalCostOfLeafCreation);
         BigDecimal ratio = remainingEnergy.divide(totalCostOfLeafCreation, 4, RoundingMode.HALF_UP);
         return ratio.compareTo(new BigDecimal(Math.random())) >= 0;
     }
@@ -267,7 +280,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         leaves.add(leaf);
         branchPart3D.addLeaf(leaf.getTreeLeaf3D());
         BigDecimal totalLeafCreationCost = NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED);
-        state.setEnergy(getEnergy().subtract(totalLeafCreationCost));
+        energy = energy.subtract(totalLeafCreationCost);
     }
 
     protected Point3d computeAttachPointForNewLeaf() {
@@ -279,6 +292,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         List<TreeLeaf> sortedLeaves = new ArrayList<TreeLeaf>(leaves);
         Collections.sort(sortedLeaves, new TreeLeafComparator());
 
+        // compute which couple of leaves are the most distant
         for (TreeLeaf leaf : sortedLeaves) {
             Point3d attachPoint = leaf.getTreeLeaf3D().getAttachPoint();
             distance = previousAttachPoint.distance(attachPoint);
@@ -296,7 +310,8 @@ public class BasicTreeBranchPart implements TreeBranchPart {
             saveAttachPoint1 = previousAttachPoint;
             saveAttachPoint2 = attachPoint;
         }
-        previousAttachPoint = attachPoint;
+
+        // once this couple is found, place the new leaf approximately in the middle +/-20%
         Point3d newLeafAttachPoint = new Point3d();
         newLeafAttachPoint.interpolate(saveAttachPoint1, saveAttachPoint2, 0.5 + Randomizer.random1());
         return newLeafAttachPoint;
@@ -309,23 +324,20 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         }
         BigDecimal energyCollectedForBranchPart = freeEnergyCollectedFromLeaf.multiply(ENERGY_RATIO_TO_KEEP);
         BigDecimal freeEnergyCollected = freeEnergyCollectedFromLeaf.subtract(energyCollectedForBranchPart);
-        state.setEnergy(getEnergy().add(energyCollectedForBranchPart));
-        state.setFreeEnergy(state.getFreeEnergy().add(freeEnergyCollected));
+        energy = energy.add(energyCollectedForBranchPart);
+        freeEnergy = freeEnergy.add(freeEnergyCollected);
     }
 
-    /**
-     * Return the sum of leaves energies
-     */
     @Override
     public BigDecimal getEnergy() {
-        return state.getEnergy();
+        return energy;
     }
 
     @Override
     public BigDecimal collectFreeEnergy() {
-        BigDecimal freeEnergy = state.getFreeEnergy();
-        state.setFreeEnergy(new BigDecimal(0));
-        return freeEnergy;
+        BigDecimal currentFreeEnergy = freeEnergy;
+        freeEnergy = new BigDecimal(0);
+        return currentFreeEnergy;
     }
 
     public int getNbLeaves() {
@@ -346,49 +358,24 @@ public class BasicTreeBranchPart implements TreeBranchPart {
 
     @Override
     public TreeBranchPartState getState() {
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(leaves.size());
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setAge(age);
+        state.setEnergy(energy);
+        state.setFreeEnergy(freeEnergy);
         for (TreeLeaf leaf : leaves) {
-            leaveStates.add(leaf.getState());
+            leaf.synchronize();
         }
-        state.setLeaveStates(leaveStates);
-        state.setBranchPart3DState(branchPart3D.getState());
-        return new TreeBranchPartState(state);
+        branchPart3D.synchronize();
     }
 
     @Override
     public TreeBranchPart3D getBranchPart3D() {
         return branchPart3D;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((state == null) ? 0 : state.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicTreeBranchPart other = (BasicTreeBranchPart) obj;
-        if (state == null) {
-            if (other.state != null)
-                return false;
-        } else
-            if (!state.equals(other.state))
-                return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "BasicTreeBranchPart [state=" + state + "]";
     }
 
 }

@@ -63,19 +63,12 @@ public class TreeBranchStateFactoryTest extends TestCase {
             assertNotNull(treeBranchPartState);
             checkEndPoint(treeBranchPartState.getBranchPart3DState().getEndPoint().toPointValue());
         }
-        Long id1 = branchState.getId();
-        assertNotNull(id1);
-        assertTrue(id1.longValue() > 0);
         assertTrue(branchState.getAge() >= 0);
         assertTrue(branchState.getAge() <= 100);
         assertTrue(branchState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
         assertTrue(branchState.getEnergy().compareTo(new BigDecimal(100)) <= 0);
         assertTrue(branchState.getFreeEnergy().compareTo(new BigDecimal(0)) >= 0);
         assertTrue(branchState.getFreeEnergy().compareTo(new BigDecimal(50)) <= 0);
-
-        branchState = factory.createRandomBranchState(translationVector, branchEndPoint);
-        Long id2 = branchState.getId();
-        assertEquals(id1.longValue() + 1, id2.longValue());
     }
 
     public void testComputeBranchPartEndPoint() {

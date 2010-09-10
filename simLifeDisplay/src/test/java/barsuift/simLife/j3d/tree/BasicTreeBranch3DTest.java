@@ -30,7 +30,7 @@ import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
@@ -49,18 +49,18 @@ public class BasicTreeBranch3DTest extends TestCase {
 
     private TreeBranch3DState branch3DState;
 
-    private List<Point3dState> previousPartEndPoints;
+    private List<Tuple3dState> previousPartEndPoints;
 
     protected void setUp() throws Exception {
         super.setUp();
         mockBranch = new MockTreeBranch();
         nbParts = 5;
-        previousPartEndPoints = new ArrayList<Point3dState>();
-        Point3dState partEndPoint = new Point3dState();
+        previousPartEndPoints = new ArrayList<Tuple3dState>();
+        Tuple3dState partEndPoint = new Tuple3dState();
         for (int index = 0; index < nbParts; index++) {
             previousPartEndPoints.add(partEndPoint);
             MockTreeBranchPart mockBranchPart = new MockTreeBranchPart();
-            partEndPoint = DisplayDataCreatorForTests.createRandomPointState();
+            partEndPoint = DisplayDataCreatorForTests.createRandomTupleState();
             MockTreeBranchPart3D mockBranchPart3D = (MockTreeBranchPart3D) mockBranchPart.getBranchPart3D();
             mockBranchPart3D.getState().setEndPoint(partEndPoint);
             mockBranchPart3D.setEndPoint(partEndPoint.toPointValue());
@@ -103,6 +103,7 @@ public class BasicTreeBranch3DTest extends TestCase {
     public void testGetState() {
         BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
         assertEquals(branch3DState, branch3D.getState());
+        assertSame(branch3DState, branch3D.getState());
     }
 
     public void testTreeBranch3D() {

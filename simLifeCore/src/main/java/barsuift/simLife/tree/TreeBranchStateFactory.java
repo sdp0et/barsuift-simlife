@@ -33,8 +33,6 @@ import barsuift.simLife.j3d.util.PointHelper;
 
 public class TreeBranchStateFactory {
 
-    private static long BRANCH_COUNT = 1;
-
     public TreeBranchState createRandomBranchState(Vector3d translationVector, Point3d branchEndPoint) {
         int age = Randomizer.randomBetween(0, 100);
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
@@ -52,7 +50,7 @@ public class TreeBranchStateFactory {
         TreeBranch3DStateFactory branch3DStateFactory = new TreeBranch3DStateFactory();
         TreeBranch3DState branch3DState = branch3DStateFactory.createRandomTreeBranch3DState(translationVector);
 
-        return new TreeBranchState(BRANCH_COUNT++, age, energy, freeEnergy, treeBranchPartStates, branch3DState);
+        return new TreeBranchState(age, energy, freeEnergy, treeBranchPartStates, branch3DState);
     }
 
     protected Point3d computeBranchPartEndPoint(Point3d branchEndPoint, int nbParts) {

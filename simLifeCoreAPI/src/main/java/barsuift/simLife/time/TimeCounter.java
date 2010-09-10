@@ -21,10 +21,15 @@ package barsuift.simLife.time;
 import java.text.MessageFormat;
 import java.util.Observable;
 
-public class TimeCounter extends Observable implements Comparable<TimeCounter> {
+import barsuift.simLife.Persistent;
+
+public class TimeCounter extends Observable implements Comparable<TimeCounter>, Persistent<TimeCounterState> {
 
     private static final MessageFormat TO_STRING = new MessageFormat(
             "{0} days {1,number,00}:{2,number,00}:{3,number,00}");
+
+
+    private final TimeCounterState state;
 
     private int seconds;
 
@@ -35,6 +40,7 @@ public class TimeCounter extends Observable implements Comparable<TimeCounter> {
         if (state.getSeconds() < 0) {
             throw new IllegalArgumentException("The seconds are negative");
         }
+        this.state = state;
         this.seconds = state.getSeconds();
     }
 
@@ -83,8 +89,15 @@ public class TimeCounter extends Observable implements Comparable<TimeCounter> {
         return seconds / 86400;
     }
 
+    @Override
     public TimeCounterState getState() {
-        return new TimeCounterState(seconds);
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setSeconds(seconds);
     }
 
     /**

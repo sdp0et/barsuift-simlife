@@ -26,13 +26,11 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.Randomizer;
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.Tree3DStateFactory;
 
 public class TreeStateFactory {
-
-    private static long TREE_COUNT = 1;
 
     public static final int HEIGHT_RADIUS_RATIO = 8;
 
@@ -53,9 +51,9 @@ public class TreeStateFactory {
         TreeTrunkState trunkState = trunkStateFactory.createRandomTreeTrunkState(radius, height);
 
         Tree3DStateFactory tree3DStateFactory = new Tree3DStateFactory();
-        Tree3DState tree3dState = tree3DStateFactory.createRandomTree3DState(new Point3dState(translationVector));
+        Tree3DState tree3dState = tree3DStateFactory.createRandomTree3DState(new Tuple3dState(translationVector));
 
-        return new TreeState(TREE_COUNT++, age, energy, branches, trunkState, height, tree3dState);
+        return new TreeState(age, energy, branches, trunkState, height, tree3dState);
     }
 
     protected TreeBranchState computeRandomBranchState(float treeRadius, float treeHeight) {
@@ -91,7 +89,7 @@ public class TreeStateFactory {
     /**
      * Compute the branch end point.
      * <p>
-     * The end pôint is computed as follows :
+     * The end point is computed as follows :
      * <ul>
      * <li>x=[0-1] * HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight</li>
      * <li>y=[0-1] * treeHeight</li>

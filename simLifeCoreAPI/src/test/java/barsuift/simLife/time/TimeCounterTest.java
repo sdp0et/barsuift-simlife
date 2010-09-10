@@ -150,6 +150,12 @@ public class TimeCounterTest extends TestCase {
         TimeCounterState state = new TimeCounterState(47);
         TimeCounter counter = new TimeCounter(state);
         assertEquals(state, counter.getState());
+        assertSame(state, counter.getState());
+        assertEquals(47, counter.getState().getSeconds());
+        counter.increment();
+        assertEquals(state, counter.getState());
+        assertSame(state, counter.getState());
+        assertEquals(48, counter.getState().getSeconds());
     }
 
 }

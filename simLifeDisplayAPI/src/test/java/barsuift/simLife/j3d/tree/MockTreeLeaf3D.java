@@ -38,6 +38,8 @@ public class MockTreeLeaf3D extends MockObserver implements TreeLeaf3D {
 
     private boolean isMaxSizeReached = false;
 
+    private int synchronizedCalled;
+
     @Override
     public double getArea() {
         return area;
@@ -89,6 +91,15 @@ public class MockTreeLeaf3D extends MockObserver implements TreeLeaf3D {
 
     public void setMaxSizeReached(boolean isMaxSizeReached) {
         this.isMaxSizeReached = isMaxSizeReached;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

@@ -29,6 +29,8 @@ import barsuift.simLife.j3d.universe.environment.Sun3D;
  */
 public class BasicSun extends Observable implements Sun {
 
+    private final SunState state;
+
     private BigDecimal luminosity;
 
     private BigDecimal riseAngle;
@@ -46,6 +48,7 @@ public class BasicSun extends Observable implements Sun {
         if (state == null) {
             throw new IllegalArgumentException("Null sun state");
         }
+        this.state = state;
         luminosity = state.getLuminosity();
         riseAngle = state.getRiseAngle();
         zenithAngle = state.getZenithAngle();
@@ -100,57 +103,20 @@ public class BasicSun extends Observable implements Sun {
 
     @Override
     public SunState getState() {
-        return new SunState(luminosity, riseAngle, zenithAngle);
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setLuminosity(luminosity);
+        state.setRiseAngle(riseAngle);
+        state.setZenithAngle(zenithAngle);
     }
 
     @Override
     public Sun3D getSun3D() {
         return sun3D;
-    }
-
-    @Override
-    public String toString() {
-        return "BasicSun [luminosity=" + luminosity + ", riseAngle=" + riseAngle + ", zenithAngle=" + zenithAngle + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((luminosity == null) ? 0 : luminosity.hashCode());
-        result = prime * result + ((riseAngle == null) ? 0 : riseAngle.hashCode());
-        result = prime * result + ((zenithAngle == null) ? 0 : zenithAngle.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicSun other = (BasicSun) obj;
-        if (luminosity == null) {
-            if (other.luminosity != null)
-                return false;
-        } else
-            if (!luminosity.equals(other.luminosity))
-                return false;
-        if (riseAngle == null) {
-            if (other.riseAngle != null)
-                return false;
-        } else
-            if (!riseAngle.equals(other.riseAngle))
-                return false;
-        if (zenithAngle == null) {
-            if (other.zenithAngle != null)
-                return false;
-        } else
-            if (!zenithAngle.equals(other.zenithAngle))
-                return false;
-        return true;
     }
 
 }

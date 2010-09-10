@@ -21,7 +21,7 @@ package barsuift.simLife.j3d.universe.physic;
 import javax.media.j3d.BranchGroup;
 
 
-
+// TODO 015. leaves should stop falling when time si stopped
 public interface Gravity {
 
     /**

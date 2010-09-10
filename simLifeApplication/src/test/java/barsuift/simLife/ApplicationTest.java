@@ -88,7 +88,7 @@ public class ApplicationTest extends TestCase {
         io.write(universeContext);
         // now try to read it
         UniverseContext universeContext2 = application.openUniverse(saveFile);
-        assertEquals(universeContext, universeContext2);
+        assertEquals(universeContext.getState(), universeContext2.getState());
     }
 
     public void testShowFps() {

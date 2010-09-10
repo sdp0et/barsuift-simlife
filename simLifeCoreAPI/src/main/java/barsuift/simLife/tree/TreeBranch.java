@@ -22,17 +22,16 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import barsuift.simLife.LivingPart;
+import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.tree.TreeBranch3D;
 
-public interface TreeBranch extends LivingPart {
+public interface TreeBranch extends LivingPart, Persistent<TreeBranchState> {
 
     public int getNbLeaves();
 
     public List<TreeBranchPart> getParts();
 
     public int getNbParts();
-
-    public TreeBranchState getState();
 
     public TreeBranch3D getBranch3D();
 

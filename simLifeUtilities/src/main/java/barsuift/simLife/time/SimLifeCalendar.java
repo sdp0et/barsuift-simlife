@@ -22,8 +22,10 @@ import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.regex.Pattern;
 
+import barsuift.simLife.Persistent;
+
 // TODO 009. use the calendar system
-public class SimLifeCalendar extends Calendar {
+public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalendarState> {
 
     private static final long serialVersionUID = -2239086430259505817L;
 
@@ -158,6 +160,9 @@ public class SimLifeCalendar extends Calendar {
             0 // DST_OFFSET (historical least maximum)
     };
 
+
+    private final SimLifeCalendarState state;
+
     public SimLifeCalendar() {
         time = 0;
         set(YEAR, 1);
@@ -165,18 +170,23 @@ public class SimLifeCalendar extends Calendar {
         set(DAY_OF_MONTH, 1);
         set(MINUTE, 0);
         set(SECOND, 0);
+        this.state = new SimLifeCalendarState(getTimeInMillis());
     }
 
     public SimLifeCalendar(String date) {
         setTime(date);
+        this.state = new SimLifeCalendarState(getTimeInMillis());
     }
 
     public SimLifeCalendar(long millis) {
         setTimeInMillis(millis);
+        this.state = new SimLifeCalendarState(millis);
     }
 
     public SimLifeCalendar(SimLifeCalendar copy) {
-        setTimeInMillis(copy.getTimeInMillis());
+        long timeInMillis = copy.getTimeInMillis();
+        setTimeInMillis(timeInMillis);
+        this.state = new SimLifeCalendarState(timeInMillis);
     }
 
     public SimLifeCalendar(SimLifeCalendarState calendarState) {
@@ -184,10 +194,17 @@ public class SimLifeCalendar extends Calendar {
             throw new IllegalArgumentException("calendar state is null");
         }
         setTimeInMillis(calendarState.getValue());
+        this.state = calendarState;
     }
 
     public SimLifeCalendarState getState() {
-        return new SimLifeCalendarState(getTimeInMillis());
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setValue(getTimeInMillis());
     }
 
     @Override
@@ -197,7 +214,6 @@ public class SimLifeCalendar extends Calendar {
         result = result * SECOND_PER_MINUTE + internalGet(SECOND); // time in seconds
         result = result * MS_PER_SECOND + internalGet(MILLISECOND); // time in milliseconds
         time = result;
-        isTimeSet = true;
     }
 
     private long computeTimeInDays() {

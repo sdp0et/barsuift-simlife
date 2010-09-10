@@ -35,10 +35,6 @@ public class EnvironmentState implements State {
         this.sunState = sunState;
     }
 
-    public EnvironmentState(EnvironmentState copy) {
-        this.sunState = new SunState(copy.sunState);
-    }
-
     public void setSunState(SunState sunState) {
         this.sunState = sunState;
     }

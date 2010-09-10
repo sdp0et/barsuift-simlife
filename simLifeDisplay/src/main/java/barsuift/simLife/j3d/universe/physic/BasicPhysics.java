@@ -36,35 +36,4 @@ public class BasicPhysics implements Physics {
         return gravity;
     }
 
-    @Override
-    public String toString() {
-        return "BasicPhysics [gravity=" + gravity + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((gravity == null) ? 0 : gravity.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicPhysics other = (BasicPhysics) obj;
-        if (gravity == null) {
-            if (other.gravity != null)
-                return false;
-        } else
-            if (!gravity.equals(other.gravity))
-                return false;
-        return true;
-    }
-
 }

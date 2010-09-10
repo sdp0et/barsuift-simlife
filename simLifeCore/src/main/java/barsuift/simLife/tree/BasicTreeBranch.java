@@ -32,7 +32,7 @@ public class BasicTreeBranch implements TreeBranch {
 
     private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(0);
 
-    private final Long id;
+    private final TreeBranchState state;
 
     private List<TreeBranchPart> parts;
 
@@ -44,29 +44,25 @@ public class BasicTreeBranch implements TreeBranch {
 
     private BigDecimal freeEnergy;
 
-    public BasicTreeBranch(Universe universe, TreeBranchState branchState) {
+    public BasicTreeBranch(Universe universe, TreeBranchState state) {
         if (universe == null) {
             throw new IllegalArgumentException("null universe");
         }
-        if (branchState == null) {
+        if (state == null) {
             throw new IllegalArgumentException("null branch state");
         }
-        this.id = branchState.getId();
-        this.age = branchState.getAge();
-        this.energy = branchState.getEnergy();
-        this.freeEnergy = branchState.getFreeEnergy();
-        List<TreeBranchPartState> partStates = branchState.getBranchPartStates();
+        this.state = state;
+        this.age = state.getAge();
+        this.energy = state.getEnergy();
+        this.freeEnergy = state.getFreeEnergy();
+        List<TreeBranchPartState> partStates = state.getBranchPartStates();
         this.parts = new ArrayList<TreeBranchPart>(partStates.size());
         for (TreeBranchPartState treeBranchPartState : partStates) {
             BasicTreeBranchPart branchPart = new BasicTreeBranchPart(universe, treeBranchPartState);
             parts.add(branchPart);
         }
-        branch3D = new BasicTreeBranch3D(universe.getUniverse3D(), branchState.getBranch3DState(), this);
+        branch3D = new BasicTreeBranch3D(universe.getUniverse3D(), state.getBranch3DState(), this);
 
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public int getAge() {
@@ -106,9 +102,9 @@ public class BasicTreeBranch implements TreeBranch {
 
     @Override
     public BigDecimal collectFreeEnergy() {
-        BigDecimal freeEnergy = this.freeEnergy;
-        this.freeEnergy = new BigDecimal(0);
-        return freeEnergy;
+        BigDecimal currentFreeEnergy = freeEnergy;
+        freeEnergy = new BigDecimal(0);
+        return currentFreeEnergy;
     }
 
     public int getNbLeaves() {
@@ -129,72 +125,24 @@ public class BasicTreeBranch implements TreeBranch {
 
     @Override
     public TreeBranchState getState() {
-        List<TreeBranchPartState> partStates = new ArrayList<TreeBranchPartState>(parts.size());
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setAge(age);
+        state.setEnergy(energy);
+        state.setFreeEnergy(freeEnergy);
         for (TreeBranchPart branchPart : parts) {
-            partStates.add(branchPart.getState());
+            branchPart.synchronize();
         }
-        return new TreeBranchState(id, age, energy, freeEnergy, partStates, branch3D.getState());
+        branch3D.synchronize();
     }
 
     @Override
     public TreeBranch3D getBranch3D() {
         return branch3D;
-    }
-
-    @Override
-    public String toString() {
-        return "BasicTreeBranch [age=" + age + ", energy=" + energy + ", freeEnergy=" + freeEnergy + ", id=" + id
-                + ", parts=" + parts + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + age;
-        result = prime * result + ((energy == null) ? 0 : energy.hashCode());
-        result = prime * result + ((freeEnergy == null) ? 0 : freeEnergy.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((parts == null) ? 0 : parts.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicTreeBranch other = (BasicTreeBranch) obj;
-        if (age != other.age)
-            return false;
-        if (energy == null) {
-            if (other.energy != null)
-                return false;
-        } else
-            if (!energy.equals(other.energy))
-                return false;
-        if (freeEnergy == null) {
-            if (other.freeEnergy != null)
-                return false;
-        } else
-            if (!freeEnergy.equals(other.freeEnergy))
-                return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else
-            if (!id.equals(other.id))
-                return false;
-        if (parts == null) {
-            if (other.parts != null)
-                return false;
-        } else
-            if (!parts.equals(other.parts))
-                return false;
-        return true;
     }
 
 }

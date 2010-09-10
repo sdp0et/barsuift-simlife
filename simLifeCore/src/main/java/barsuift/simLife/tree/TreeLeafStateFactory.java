@@ -30,12 +30,9 @@ import barsuift.simLife.j3d.tree.TreeLeaf3DStateFactory;
 
 public class TreeLeafStateFactory {
 
-    private static long LEAF_COUNT = 1;
-
     /**
      * Create a random tree leaf state with following values :
      * <ul>
-     * <li>id incremented from a sequence</li>
      * <li>efficiency between 90 and 100</li>
      * <li>energy between 0 and 100</li>
      * <li>freeEnergy between 0 and 50</li>
@@ -50,13 +47,12 @@ public class TreeLeafStateFactory {
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
         TreeLeaf3DState leaf3dState = leaf3DStateFactory.createRandomTreeLeaf3DState(leafAttachPoint);
-        return new TreeLeafState(LEAF_COUNT++, age, energy, freeEnergy, efficiency, leaf3dState);
+        return new TreeLeafState(age, energy, freeEnergy, efficiency, leaf3dState);
     }
 
     /**
      * Create a new tree leaf state with following values :
      * <ul>
-     * <li>id incremented from a sequence</li>
      * <li>efficiency between 90 and 100</li>
      * <li>freeEnergy = 0</li>
      * <li>age = 0</li>
@@ -69,7 +65,7 @@ public class TreeLeafStateFactory {
         BigDecimal freeEnergy = new BigDecimal(0);
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
         TreeLeaf3DState leaf3dState = leaf3DStateFactory.createNewTreeLeaf3DState(leafAttachPoint);
-        return new TreeLeafState(LEAF_COUNT++, age, energy, freeEnergy, efficiency, leaf3dState);
+        return new TreeLeafState(age, energy, freeEnergy, efficiency, leaf3dState);
     }
 
 }

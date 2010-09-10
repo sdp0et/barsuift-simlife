@@ -28,17 +28,17 @@ import barsuift.simLife.universe.Universe;
 
 public class BasicTree implements Tree {
 
-    private final Long id;
+    private final TreeState state;
 
     private int age;
 
     private BigDecimal energy;
 
+    private float height;
+
     private List<TreeBranch> branches;
 
     private TreeTrunk trunk;
-
-    private float height;
 
     private Tree3D tree3D;
 
@@ -49,7 +49,7 @@ public class BasicTree implements Tree {
         if (state == null) {
             throw new IllegalArgumentException("null tree state");
         }
-        this.id = state.getId();
+        this.state = state;
         this.age = state.getAge();
         this.energy = state.getEnergy();
         this.height = state.getHeight();
@@ -60,10 +60,6 @@ public class BasicTree implements Tree {
         }
         this.trunk = new BasicTreeTrunk(universe, state.getTrunkState());
         this.tree3D = new BasicTree3D(universe.getUniverse3D(), state.getTree3DState(), this);
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public int getAge() {
@@ -125,11 +121,20 @@ public class BasicTree implements Tree {
 
     @Override
     public TreeState getState() {
-        List<TreeBranchState> branchStates = new ArrayList<TreeBranchState>();
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setAge(age);
+        state.setEnergy(energy);
+        state.setHeight(height);
         for (TreeBranch treeBranch : branches) {
-            branchStates.add(treeBranch.getState());
+            treeBranch.synchronize();
         }
-        return new TreeState(id, age, energy, branchStates, trunk.getState(), height, tree3D.getState());
+        trunk.synchronize();
+        tree3D.synchronize();
     }
 
     @Override
@@ -140,65 +145,6 @@ public class BasicTree implements Tree {
     @Override
     public TreeTrunk getTrunk() {
         return trunk;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + age;
-        result = prime * result + ((branches == null) ? 0 : branches.hashCode());
-        result = prime * result + ((energy == null) ? 0 : energy.hashCode());
-        result = prime * result + Float.floatToIntBits(height);
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((trunk == null) ? 0 : trunk.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicTree other = (BasicTree) obj;
-        if (age != other.age)
-            return false;
-        if (branches == null) {
-            if (other.branches != null)
-                return false;
-        } else
-            if (!branches.equals(other.branches))
-                return false;
-        if (energy == null) {
-            if (other.energy != null)
-                return false;
-        } else
-            if (!energy.equals(other.energy))
-                return false;
-        if (Float.floatToIntBits(height) != Float.floatToIntBits(other.height))
-            return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else
-            if (!id.equals(other.id))
-                return false;
-        if (trunk == null) {
-            if (other.trunk != null)
-                return false;
-        } else
-            if (!trunk.equals(other.trunk))
-                return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "BasicTree [age=" + age + ", branches=" + branches + ", energy=" + energy + ", height=" + height
-                + ", id=" + id + ", trunk=" + trunk + "]";
     }
 
 }
