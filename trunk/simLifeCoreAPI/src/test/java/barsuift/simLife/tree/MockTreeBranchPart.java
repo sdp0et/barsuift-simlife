@@ -45,7 +45,7 @@ public class MockTreeBranchPart extends MockObserver implements TreeBranchPart {
 
     private BigDecimal freeEnergy = new BigDecimal(0);
 
-    private Long id = new Long(1);
+    private int synchronizedCalled;
 
     @Override
     public TreeBranchPart3D getBranchPart3D() {
@@ -114,15 +114,6 @@ public class MockTreeBranchPart extends MockObserver implements TreeBranchPart {
     }
 
     @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
     public void spendTime() {
         spendTimeCalled++;
     }
@@ -133,6 +124,15 @@ public class MockTreeBranchPart extends MockObserver implements TreeBranchPart {
 
     public void resetSpendTimeCalled() {
         this.spendTimeCalled = 0;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

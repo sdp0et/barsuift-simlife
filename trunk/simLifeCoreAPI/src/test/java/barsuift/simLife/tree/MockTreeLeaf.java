@@ -26,8 +26,6 @@ import barsuift.simLife.j3d.tree.TreeLeaf3D;
 
 public class MockTreeLeaf extends Observable implements TreeLeaf {
 
-    private Long id = new Long(1);
-
     private BigDecimal efficiency = new BigDecimal(0);
 
     private int age;
@@ -44,13 +42,7 @@ public class MockTreeLeaf extends Observable implements TreeLeaf {
 
     private TreeLeafState state = new TreeLeafState();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private int synchronizedCalled;
 
     @Override
     public BigDecimal getEfficiency() {
@@ -120,6 +112,15 @@ public class MockTreeLeaf extends Observable implements TreeLeaf {
 
     public void setState(TreeLeafState state) {
         this.state = state;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

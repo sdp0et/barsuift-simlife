@@ -557,4 +557,16 @@ public class SimLifeCalendarTest extends TestCase {
         assertEquals(78373000, calendar.getTimeInMillis());
     }
 
+    public void testGetState() {
+        SimLifeCalendarState state = new SimLifeCalendarState(123);
+        calendar = new SimLifeCalendar(state);
+        assertEquals(state, calendar.getState());
+        assertSame(state, calendar.getState());
+        assertEquals(123, calendar.getState().getValue());
+        calendar.add(Calendar.MILLISECOND, 1);
+        assertEquals(state, calendar.getState());
+        assertSame(state, calendar.getState());
+        assertEquals(124, calendar.getState().getValue());
+    }
+
 }

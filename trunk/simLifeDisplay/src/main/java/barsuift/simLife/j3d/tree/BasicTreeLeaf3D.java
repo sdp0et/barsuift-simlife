@@ -35,7 +35,7 @@ import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
 import barsuift.simLife.j3d.Axis;
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.AreaHelper;
 import barsuift.simLife.j3d.util.ColorConstants;
@@ -48,13 +48,51 @@ import barsuift.simLife.tree.TreeLeaf;
 
 public class BasicTreeLeaf3D implements TreeLeaf3D {
 
+    private static final Color3f SPECULAR_COLOR = new Color3f(0.05f, 0.05f, 0.05f);
+
+    private static final Color3f DIFFUSE_COLOR = new Color3f(0.15f, 0.15f, 0.15f);
+
     private static final int MAX_INCREASE_FACTOR = 10;
+
+
+
+    private final TreeLeaf3DState state;
+
+    /**
+     * Leaf attach point, relative to the branch part
+     */
+    private Point3d leafAttachPoint;
+
+    /**
+     * End point 1 at the creation of the leaf (its birth end point 1). The point is relative to the attach point.
+     */
+    private Point3d initialEndPoint1;
+
+    /**
+     * End point 2 at the creation of the leaf (its birth end point 2). The point is relative to the attach point.
+     */
+    private Point3d initialEndPoint2;
+
+    /**
+     * Current end point 1. The point is relative to the attach point.
+     */
+    private Point3d endPoint1;
+
+    /**
+     * Current end point 2. The point is relative to the attach point.
+     */
+    private Point3d endPoint2;
+
+    /**
+     * Leaf rotation (in radian)
+     */
+    private double rotation;
+
+
 
     private TriangleArray leafGeometry;
 
     private Shape3D leafShape3D;
-
-    private TreeLeaf3DState state;
 
     private Universe3D universe3D;
 
@@ -79,9 +117,17 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
             throw new IllegalArgumentException("Null tree leaf 3D state");
         }
         this.universe3D = universe3D;
-        this.state = new TreeLeaf3DState(state);
-        maxEndPoint1 = computeMaxEndPoint(state.getInitialEndPoint1());
-        maxEndPoint2 = computeMaxEndPoint(state.getInitialEndPoint2());
+        this.state = state;
+        this.leafAttachPoint = state.getLeafAttachPoint().toPointValue();
+        this.initialEndPoint1 = state.getInitialEndPoint1().toPointValue();
+        this.initialEndPoint2 = state.getInitialEndPoint2().toPointValue();
+        this.endPoint1 = state.getEndPoint1().toPointValue();
+        this.endPoint2 = state.getEndPoint2().toPointValue();
+        this.rotation = state.getRotation();
+
+
+        maxEndPoint1 = computeMaxEndPoint(initialEndPoint1);
+        maxEndPoint2 = computeMaxEndPoint(initialEndPoint2);
         leaf.addObserver(this);
         leafShape3D = new Shape3D();
         this.branchGroup = new BranchGroup();
@@ -99,8 +145,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
         Appearance appearance = new Appearance();
         AppearanceFactory.setCullFace(appearance, PolygonAttributes.CULL_NONE);
-        AppearanceFactory.setColorWithMaterial(appearance, leafColor, new Color3f(0.15f, 0.15f, 0.15f), new Color3f(
-                0.05f, 0.05f, 0.05f));
+        AppearanceFactory.setColorWithMaterial(appearance, leafColor, DIFFUSE_COLOR, SPECULAR_COLOR);
 
         leafShape3D.setAppearance(appearance);
     }
@@ -112,8 +157,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         resetGeometryPoints();
         leafShape3D.setGeometry(leafGeometry);
 
-        Vector3f polygonNormal = NormalHelper.computeNormal(new Point3d(0, 0, 0), state.getEndPoint1().toPointValue(),
-                state.getEndPoint2().toPointValue());
+        Vector3f polygonNormal = NormalHelper.computeNormal(new Point3d(0, 0, 0), endPoint1, endPoint2);
         leafGeometry.setNormal(0, polygonNormal);
         leafGeometry.setNormal(1, polygonNormal);
         leafGeometry.setNormal(2, polygonNormal);
@@ -129,21 +173,17 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
             // optimization : if the max size is reached, no need to compute it again
             return true;
         }
-        Point3d actualEndPoint1 = state.getEndPoint1().toPointValue();
-        boolean areAlmostEquals1 = PointHelper.areAlmostEquals(actualEndPoint1, maxEndPoint1);
-        if (!areAlmostEquals1) {
+        if (!PointHelper.areAlmostEquals(endPoint1, maxEndPoint1)) {
             return false;
         }
-        Point3d actualEndPoint2 = state.getEndPoint2().toPointValue();
-        boolean areAlmostEquals2 = PointHelper.areAlmostEquals(actualEndPoint2, maxEndPoint2);
-        if (!areAlmostEquals2) {
+        if (!PointHelper.areAlmostEquals(endPoint2, maxEndPoint2)) {
             return false;
         }
         maxSizeReached = true;
         return true;
     }
 
-    private Point3d computeMaxEndPoint(Point3dState initialEndPoint) {
+    private Point3d computeMaxEndPoint(Point3d initialEndPoint) {
         double maxX = MAX_INCREASE_FACTOR * initialEndPoint.getX();
         double maxY = MAX_INCREASE_FACTOR * initialEndPoint.getY();
         double maxZ = MAX_INCREASE_FACTOR * initialEndPoint.getZ();
@@ -155,27 +195,26 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         if (isMaxSizeReached()) {
             return;
         }
-        state.getEndPoint1().setX(state.getEndPoint1().getX() + state.getInitialEndPoint1().getX());
-        state.getEndPoint1().setY(state.getEndPoint1().getY() + state.getInitialEndPoint1().getY());
-        state.getEndPoint1().setZ(state.getEndPoint1().getZ() + state.getInitialEndPoint1().getZ());
+        endPoint1.x += initialEndPoint1.x;
+        endPoint1.y += initialEndPoint1.y;
+        endPoint1.z += initialEndPoint1.z;
 
-        state.getEndPoint2().setX(state.getEndPoint2().getX() + state.getInitialEndPoint2().getX());
-        state.getEndPoint2().setY(state.getEndPoint2().getY() + state.getInitialEndPoint2().getY());
-        state.getEndPoint2().setZ(state.getEndPoint2().getZ() + state.getInitialEndPoint2().getZ());
+        endPoint2.x += initialEndPoint2.x;
+        endPoint2.y += initialEndPoint2.y;
+        endPoint2.z += initialEndPoint2.z;
 
         resetGeometryPoints();
     }
 
     public Point3d getAttachPoint() {
-        return state.getLeafAttachPoint().toPointValue();
+        return leafAttachPoint;
     }
 
     /**
      * Set the startPoint, endPoint1 and endPoint2 points to the leafGeometry
      */
     private void resetGeometryPoints() {
-        leafGeometry.setCoordinate(1, state.getEndPoint1().toPointValue());
-        leafGeometry.setCoordinate(2, state.getEndPoint2().toPointValue());
+        leafGeometry.setCoordinates(1, new Point3d[] { endPoint1, endPoint2 });
         this.area = AreaHelper.computeArea(leafGeometry);
     }
 
@@ -195,52 +234,32 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         branchGroup.getLocalToVworld(globalTransform);
         Vector3d translationVector = new Vector3d();
         globalTransform.get(translationVector);
-        Point3d projectionPoint = ProjectionHelper.getProjectionPoint(new Point3d(translationVector));
-        state.setLeafAttachPoint(new Point3dState(projectionPoint));
-        double angle = TransformerHelper.getRotationFromTransform(globalTransform, Axis.Y);
-        state.setRotation(angle);
+        // project the leaf attache point to the ground
+        leafAttachPoint = ProjectionHelper.getProjectionPoint(new Point3d(translationVector));
+        // the rotation is now global and not related to the tree or the branch
+        rotation = TransformerHelper.getRotationFromTransform(globalTransform, Axis.Y);
         universe3D.getPhysics().getGravity().fall((BranchGroup) branchGroup.getParent().getParent());
     }
 
     @Override
     public TreeLeaf3DState getState() {
-        return new TreeLeaf3DState(state);
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setLeafAttachPoint(new Tuple3dState(leafAttachPoint));
+        state.setInitialEndPoint1(new Tuple3dState(initialEndPoint1));
+        state.setInitialEndPoint2(new Tuple3dState(initialEndPoint2));
+        state.setEndPoint1(new Tuple3dState(endPoint1));
+        state.setEndPoint2(new Tuple3dState(endPoint2));
+        state.setRotation(rotation);
     }
 
     @Override
     public BranchGroup getBranchGroup() {
         return branchGroup;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((state == null) ? 0 : state.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicTreeLeaf3D other = (BasicTreeLeaf3D) obj;
-        if (state == null) {
-            if (other.state != null)
-                return false;
-        } else
-            if (!state.equals(other.state))
-                return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "BasicTreeLeaf3D [state=" + state + "]";
     }
 
 }

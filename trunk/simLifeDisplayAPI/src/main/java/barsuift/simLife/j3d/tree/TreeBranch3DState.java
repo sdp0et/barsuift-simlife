@@ -21,33 +21,28 @@ package barsuift.simLife.j3d.tree;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 
 @XmlRootElement
 public class TreeBranch3DState implements State {
 
-    private Point3dState translationVector;
+    private Tuple3dState translationVector;
 
     public TreeBranch3DState() {
         super();
-        this.translationVector = new Point3dState();
+        this.translationVector = new Tuple3dState();
     }
 
-    public TreeBranch3DState(Point3dState translationVector) {
+    public TreeBranch3DState(Tuple3dState translationVector) {
         super();
         this.translationVector = translationVector;
     }
 
-    public TreeBranch3DState(TreeBranch3DState copy) {
-        super();
-        this.translationVector = new Point3dState(copy.translationVector);
-    }
-
-    public Point3dState getTranslationVector() {
+    public Tuple3dState getTranslationVector() {
         return translationVector;
     }
 
-    public void setTranslationVector(Point3dState translationVector) {
+    public void setTranslationVector(Tuple3dState translationVector) {
         this.translationVector = translationVector;
     }
 

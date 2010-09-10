@@ -25,6 +25,8 @@ public class MockEnvironment implements Environment {
 
     private EnvironmentState state = new EnvironmentState();
 
+    private int synchronizedCalled;
+
     @Override
     public Sun getSun() {
         return sun;
@@ -41,6 +43,15 @@ public class MockEnvironment implements Environment {
 
     public void setEnvironmentState(EnvironmentState state) {
         this.state = state;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

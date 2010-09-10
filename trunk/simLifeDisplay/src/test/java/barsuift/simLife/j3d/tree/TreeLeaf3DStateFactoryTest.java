@@ -21,7 +21,7 @@ package barsuift.simLife.j3d.tree;
 import javax.vecmath.Point3d;
 
 import junit.framework.TestCase;
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 
 
@@ -40,11 +40,11 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
         Point3d leafAttachPoint = new Point3d(0.32, 0.33, 0.34);
         TreeLeaf3DState leaf3DState = factory.createRandomTreeLeaf3DState(leafAttachPoint);
 
-        Point3dState actualStartPoint = leaf3DState.getLeafAttachPoint();
-        Point3dState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
-        Point3dState actualInitialEndPoint2 = leaf3DState.getInitialEndPoint2();
-        Point3dState actualEndPoint1 = leaf3DState.getEndPoint1();
-        Point3dState actualEndPoint2 = leaf3DState.getEndPoint2();
+        Tuple3dState actualStartPoint = leaf3DState.getLeafAttachPoint();
+        Tuple3dState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
+        Tuple3dState actualInitialEndPoint2 = leaf3DState.getInitialEndPoint2();
+        Tuple3dState actualEndPoint1 = leaf3DState.getEndPoint1();
+        Tuple3dState actualEndPoint2 = leaf3DState.getEndPoint2();
 
         // test point 1 position
         PointTestHelper.assertPointEquals(leafAttachPoint, actualStartPoint.toPointValue());
@@ -88,11 +88,11 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
         Point3d leafAttachPoint = new Point3d(0.32, 0.33, 0.34);
         TreeLeaf3DState leaf3DState = factory.createNewTreeLeaf3DState(leafAttachPoint);
 
-        Point3dState actualStartPoint = leaf3DState.getLeafAttachPoint();
-        Point3dState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
-        Point3dState actualInitialEndPoint2 = leaf3DState.getInitialEndPoint2();
-        Point3dState actualEndPoint1 = leaf3DState.getEndPoint1();
-        Point3dState actualEndPoint2 = leaf3DState.getEndPoint2();
+        Tuple3dState actualStartPoint = leaf3DState.getLeafAttachPoint();
+        Tuple3dState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
+        Tuple3dState actualInitialEndPoint2 = leaf3DState.getInitialEndPoint2();
+        Tuple3dState actualEndPoint1 = leaf3DState.getEndPoint1();
+        Tuple3dState actualEndPoint2 = leaf3DState.getEndPoint2();
 
         // test point 1 position
         PointTestHelper.assertPointEquals(leafAttachPoint, actualStartPoint.toPointValue());

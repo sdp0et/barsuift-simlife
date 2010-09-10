@@ -35,10 +35,6 @@ public class SimLifeCalendarState implements State {
         this.value = value;
     }
 
-    public SimLifeCalendarState(SimLifeCalendarState copy) {
-        value = copy.value;
-    }
-
     public long getValue() {
         return value;
     }

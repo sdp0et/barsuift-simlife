@@ -32,8 +32,6 @@ import barsuift.simLife.tree.TreeState;
 @XmlRootElement
 public class UniverseState implements State {
 
-    private Long id;
-
     private int age;
 
     private Set<TreeState> trees;
@@ -46,7 +44,6 @@ public class UniverseState implements State {
 
     public UniverseState() {
         super();
-        this.id = new Long(0);
         this.age = 0;
         this.trees = new HashSet<TreeState>();
         this.fallenLeaves = new HashSet<TreeLeafState>();
@@ -54,39 +51,14 @@ public class UniverseState implements State {
         this.timeCounter = new TimeCounterState();
     }
 
-    public UniverseState(Long id, int age, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves,
-            EnvironmentState environment, TimeCounterState timeCounter) {
+    public UniverseState(int age, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves, EnvironmentState environment,
+            TimeCounterState timeCounter) {
         super();
-        this.id = id;
         this.age = age;
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
         this.timeCounter = timeCounter;
-    }
-
-    public UniverseState(UniverseState copy) {
-        super();
-        this.id = copy.id;
-        this.age = copy.age;
-        this.trees = new HashSet<TreeState>();
-        for (TreeState treeState : copy.trees) {
-            trees.add(new TreeState(treeState));
-        }
-        this.fallenLeaves = new HashSet<TreeLeafState>();
-        for (TreeLeafState treeLeafState : copy.fallenLeaves) {
-            fallenLeaves.add(new TreeLeafState(treeLeafState));
-        }
-        this.environment = new EnvironmentState(copy.environment);
-        this.timeCounter = copy.timeCounter;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public int getAge() {
@@ -135,7 +107,6 @@ public class UniverseState implements State {
         int result = 1;
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
         result = prime * result + ((timeCounter == null) ? 0 : timeCounter.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime + age;
         result = prime * result + ((trees == null) ? 0 : trees.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
@@ -163,12 +134,6 @@ public class UniverseState implements State {
         } else
             if (!timeCounter.equals(other.timeCounter))
                 return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else
-            if (!id.equals(other.id))
-                return false;
         if (age != other.age)
             return false;
         if (trees == null) {
@@ -188,8 +153,8 @@ public class UniverseState implements State {
 
     @Override
     public String toString() {
-        return "UniverseState [environment=" + environment + ", timeCounter=" + timeCounter + ", id=" + id + ", age="
-                + age + ", trees=" + trees + ", fallenLeaves=" + fallenLeaves + "]";
+        return "UniverseState [environment=" + environment + ", timeCounter=" + timeCounter + ", age=" + age
+                + ", trees=" + trees + ", fallenLeaves=" + fallenLeaves + "]";
     }
 
 }

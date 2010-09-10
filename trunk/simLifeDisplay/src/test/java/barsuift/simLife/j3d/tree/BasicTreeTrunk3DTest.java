@@ -40,7 +40,7 @@ public class BasicTreeTrunk3DTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         TreeTrunk3DStateFactory stateFactory = new TreeTrunk3DStateFactory();
-        trunk3DState = stateFactory.createRandomTreeTrunk3DState();
+        trunk3DState = stateFactory.createSpecificTreeTrunk3DState();
         mockTrunk = new MockTreeTrunk();
         mockUniverse3D = new MockUniverse3D();
     }
@@ -77,6 +77,7 @@ public class BasicTreeTrunk3DTest extends TestCase {
     public void testGetState() {
         BasicTreeTrunk3D trunk3D = new BasicTreeTrunk3D(mockUniverse3D, trunk3DState, mockTrunk);
         assertEquals(trunk3DState, trunk3D.getState());
+        assertSame(trunk3DState, trunk3D.getState());
     }
 
     public void testCreateTrunk() {

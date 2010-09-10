@@ -42,9 +42,6 @@ public class TreeLeafStateFactoryTest extends TestCase {
         Point3d leafAttachPoint = new Point3d(Math.random(), Math.random(), Math.random());
         TreeLeafState treeLeafState = factory.createRandomTreeLeafState(leafAttachPoint);
         assertNotNull(treeLeafState);
-        Long id1 = treeLeafState.getId();
-        assertNotNull(id1);
-        assertTrue(id1.longValue() > 0);
         assertNotNull(treeLeafState.getLeaf3DState());
         assertTrue(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency()) <= 0);
         assertTrue(PercentHelper.getDecimalValue(100).compareTo(treeLeafState.getEfficiency()) >= 0);
@@ -54,9 +51,6 @@ public class TreeLeafStateFactoryTest extends TestCase {
         assertTrue(treeLeafState.getEnergy().compareTo(new BigDecimal(100)) <= 0);
         assertTrue(treeLeafState.getFreeEnergy().compareTo(new BigDecimal(0)) >= 0);
         assertTrue(treeLeafState.getFreeEnergy().compareTo(new BigDecimal(50)) <= 0);
-        TreeLeafState treeLeafState2 = factory.createRandomTreeLeafState(leafAttachPoint);
-        Long id2 = treeLeafState2.getId();
-        assertEquals(id1.longValue() + 1, id2.longValue());
     }
 
     public void testCreateNewTreeLeafState() {
@@ -65,9 +59,6 @@ public class TreeLeafStateFactoryTest extends TestCase {
         BigDecimal energy = new BigDecimal(30);
         TreeLeafState treeLeafState = factory.createNewTreeLeafState(leafAttachPoint, energy);
         assertNotNull(treeLeafState);
-        Long id1 = treeLeafState.getId();
-        assertNotNull(id1);
-        assertTrue(id1.longValue() > 0);
         TreeLeaf3DState leaf3dState = treeLeafState.getLeaf3DState();
         assertNotNull(leaf3dState);
         // check it is an newly created leaf 3D
@@ -78,9 +69,6 @@ public class TreeLeafStateFactoryTest extends TestCase {
         assertEquals(0, treeLeafState.getAge());
         assertEquals(energy, treeLeafState.getEnergy());
         assertEquals(new BigDecimal(0), treeLeafState.getFreeEnergy());
-        TreeLeafState treeLeafState2 = factory.createNewTreeLeafState(leafAttachPoint, energy);
-        Long id2 = treeLeafState2.getId();
-        assertEquals(id1.longValue() + 1, id2.longValue());
     }
 
 }

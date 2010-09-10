@@ -18,9 +18,10 @@
  */
 package barsuift.simLife.universe;
 
+import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
 
-public interface UniverseContext {
+public interface UniverseContext extends Persistent<UniverseContextState> {
 
     public SimLifeCanvas3D getCanvas3D();
 
@@ -41,7 +42,5 @@ public interface UniverseContext {
     public void unsetAxis();
 
     public boolean isAxisShown();
-
-    public UniverseContextState getState();
 
 }

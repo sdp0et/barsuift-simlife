@@ -21,7 +21,7 @@ package barsuift.simLife.j3d.tree;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 
 @XmlRootElement
 public class TreeLeaf3DState implements State {
@@ -29,27 +29,27 @@ public class TreeLeaf3DState implements State {
     /**
      * Leaf attach point, relative to the branch part
      */
-    private Point3dState leafAttachPoint;
+    private Tuple3dState leafAttachPoint;
 
     /**
      * End point 1 at the creation of the leaf (its birth end point 1). The point is relative to the attach point.
      */
-    private Point3dState initialEndPoint1;
+    private Tuple3dState initialEndPoint1;
 
     /**
      * End point 2 at the creation of the leaf (its birth end point 2). The point is relative to the attach point.
      */
-    private Point3dState initialEndPoint2;
+    private Tuple3dState initialEndPoint2;
 
     /**
      * Current end point 1. The point is relative to the attach point.
      */
-    private Point3dState endPoint1;
+    private Tuple3dState endPoint1;
 
     /**
      * Current end point 2. The point is relative to the attach point.
      */
-    private Point3dState endPoint2;
+    private Tuple3dState endPoint2;
 
     /**
      * Leaf rotation (in radian)
@@ -58,16 +58,16 @@ public class TreeLeaf3DState implements State {
 
     public TreeLeaf3DState() {
         super();
-        this.leafAttachPoint = new Point3dState();
-        this.initialEndPoint1 = new Point3dState();
-        this.initialEndPoint2 = new Point3dState();
-        this.endPoint1 = new Point3dState();
-        this.endPoint2 = new Point3dState();
+        this.leafAttachPoint = new Tuple3dState();
+        this.initialEndPoint1 = new Tuple3dState();
+        this.initialEndPoint2 = new Tuple3dState();
+        this.endPoint1 = new Tuple3dState();
+        this.endPoint2 = new Tuple3dState();
         this.rotation = 0;
     }
 
-    public TreeLeaf3DState(Point3dState leafAttachPoint, Point3dState initialEndPoint1, Point3dState initialEndPoint2,
-            Point3dState endPoint1, Point3dState endPoint2, double rotation) {
+    public TreeLeaf3DState(Tuple3dState leafAttachPoint, Tuple3dState initialEndPoint1, Tuple3dState initialEndPoint2,
+            Tuple3dState endPoint1, Tuple3dState endPoint2, double rotation) {
         super();
         this.leafAttachPoint = leafAttachPoint;
         this.initialEndPoint1 = initialEndPoint1;
@@ -77,53 +77,43 @@ public class TreeLeaf3DState implements State {
         this.rotation = rotation;
     }
 
-    public TreeLeaf3DState(TreeLeaf3DState copy) {
-        super();
-        this.leafAttachPoint = new Point3dState(copy.leafAttachPoint);
-        this.initialEndPoint1 = new Point3dState(copy.initialEndPoint1);
-        this.initialEndPoint2 = new Point3dState(copy.initialEndPoint2);
-        this.endPoint1 = new Point3dState(copy.endPoint1);
-        this.endPoint2 = new Point3dState(copy.endPoint2);
-        this.rotation = copy.rotation;
-    }
-
-    public Point3dState getLeafAttachPoint() {
+    public Tuple3dState getLeafAttachPoint() {
         return leafAttachPoint;
     }
 
-    public void setLeafAttachPoint(Point3dState leafAttachPoint) {
+    public void setLeafAttachPoint(Tuple3dState leafAttachPoint) {
         this.leafAttachPoint = leafAttachPoint;
     }
 
-    public Point3dState getInitialEndPoint1() {
+    public Tuple3dState getInitialEndPoint1() {
         return initialEndPoint1;
     }
 
-    public void setInitialEndPoint1(Point3dState initialEndPoint1) {
+    public void setInitialEndPoint1(Tuple3dState initialEndPoint1) {
         this.initialEndPoint1 = initialEndPoint1;
     }
 
-    public Point3dState getInitialEndPoint2() {
+    public Tuple3dState getInitialEndPoint2() {
         return initialEndPoint2;
     }
 
-    public void setInitialEndPoint2(Point3dState initialEndPoint2) {
+    public void setInitialEndPoint2(Tuple3dState initialEndPoint2) {
         this.initialEndPoint2 = initialEndPoint2;
     }
 
-    public Point3dState getEndPoint1() {
+    public Tuple3dState getEndPoint1() {
         return endPoint1;
     }
 
-    public void setEndPoint1(Point3dState endPoint1) {
+    public void setEndPoint1(Tuple3dState endPoint1) {
         this.endPoint1 = endPoint1;
     }
 
-    public Point3dState getEndPoint2() {
+    public Tuple3dState getEndPoint2() {
         return endPoint2;
     }
 
-    public void setEndPoint2(Point3dState endPoint2) {
+    public void setEndPoint2(Tuple3dState endPoint2) {
         this.endPoint2 = endPoint2;
     }
 

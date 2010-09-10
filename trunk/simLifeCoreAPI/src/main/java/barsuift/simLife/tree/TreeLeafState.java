@@ -28,8 +28,6 @@ import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 @XmlRootElement
 public class TreeLeafState implements State {
 
-    private Long id;
-
     private BigDecimal efficiency;
 
     private int age;
@@ -42,7 +40,6 @@ public class TreeLeafState implements State {
 
     public TreeLeafState() {
         super();
-        this.id = new Long(0);
         this.efficiency = new BigDecimal(0);
         this.energy = new BigDecimal(0);
         this.freeEnergy = new BigDecimal(0);
@@ -50,33 +47,14 @@ public class TreeLeafState implements State {
         this.leaf3DState = new TreeLeaf3DState();
     }
 
-    public TreeLeafState(Long id, int age, BigDecimal energy, BigDecimal freeEnergy, BigDecimal efficiency,
+    public TreeLeafState(int age, BigDecimal energy, BigDecimal freeEnergy, BigDecimal efficiency,
             TreeLeaf3DState leaf3dState) {
         super();
-        this.id = id;
         this.efficiency = efficiency;
         this.energy = energy;
         this.freeEnergy = freeEnergy;
         this.age = age;
         this.leaf3DState = leaf3dState;
-    }
-
-    public TreeLeafState(TreeLeafState copy) {
-        super();
-        this.id = copy.id;
-        this.efficiency = copy.efficiency;
-        this.energy = copy.energy;
-        this.freeEnergy = copy.freeEnergy;
-        this.age = copy.age;
-        this.leaf3DState = new TreeLeaf3DState(copy.leaf3DState);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public BigDecimal getEfficiency() {
@@ -127,7 +105,6 @@ public class TreeLeafState implements State {
         result = prime * result + ((efficiency == null) ? 0 : efficiency.hashCode());
         result = prime * result + ((energy == null) ? 0 : energy.hashCode());
         result = prime * result + ((freeEnergy == null) ? 0 : freeEnergy.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((leaf3DState == null) ? 0 : leaf3DState.hashCode());
         return result;
     }
@@ -161,12 +138,6 @@ public class TreeLeafState implements State {
         } else
             if (!freeEnergy.equals(other.freeEnergy))
                 return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else
-            if (!id.equals(other.id))
-                return false;
         if (leaf3DState == null) {
             if (other.leaf3DState != null)
                 return false;
@@ -179,7 +150,7 @@ public class TreeLeafState implements State {
     @Override
     public String toString() {
         return "TreeLeafState [age=" + age + ", efficiency=" + efficiency + ", energy=" + energy + ", freeEnergy="
-                + freeEnergy + ", id=" + id + ", leaf3DState=" + leaf3DState + "]";
+                + freeEnergy + ", leaf3DState=" + leaf3DState + "]";
     }
 
 }

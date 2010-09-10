@@ -59,7 +59,7 @@ public class BasicTreeBranchPart3DTest extends TestCase {
         for (int index = 0; index < nbLeaves; index++) {
             MockTreeLeaf mockLeaf = new MockTreeLeaf();
             mockLeaf.getTreeLeaf3D().getState().setRotation(Randomizer.randomRotation());
-            mockLeaf.getTreeLeaf3D().getState().setLeafAttachPoint(DisplayDataCreatorForTests.createRandomPointState());
+            mockLeaf.getTreeLeaf3D().getState().setLeafAttachPoint(DisplayDataCreatorForTests.createRandomTupleState());
             mockBranchPart.addLeaf(mockLeaf);
         }
         mockUniverse3D = new MockUniverse3D();
@@ -98,6 +98,7 @@ public class BasicTreeBranchPart3DTest extends TestCase {
     public void testGetState() {
         BasicTreeBranchPart3D part3D = new BasicTreeBranchPart3D(mockUniverse3D, part3DState, mockBranchPart);
         assertEquals(part3DState, part3D.getState());
+        assertSame(part3DState, part3D.getState());
     }
 
     @SuppressWarnings("rawtypes")

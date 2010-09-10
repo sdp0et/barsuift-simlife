@@ -18,8 +18,9 @@
  */
 package barsuift.simLife.universe;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import barsuift.simLife.LivingPart;
@@ -38,13 +39,13 @@ import barsuift.simLife.tree.TreeState;
 
 public class BasicUniverse implements Universe {
 
-    private final Long id;
+    private final UniverseState state;
 
     private int age;
 
-    private final Set<Tree> trees;
+    private final List<Tree> trees;
 
-    private final Set<TreeLeaf> fallenLeaves;
+    private final List<TreeLeaf> fallenLeaves;
 
     private Environment environment;
 
@@ -56,30 +57,25 @@ public class BasicUniverse implements Universe {
 
 
     public BasicUniverse(UniverseState state) {
+        this.state = state;
         this.fpsCounter = new FpsCounter();
         this.counter = new TimeCounter(state.getTimeCounter());
-        this.id = state.getId();
         this.age = state.getAge();
         this.universe3D = new BasicUniverse3D();
         this.environment = new BasicEnvironment(state.getEnvironment());
-        this.trees = new HashSet<Tree>();
+        this.trees = new ArrayList<Tree>();
         Set<TreeState> treeStates = state.getTrees();
         for (TreeState treeState : treeStates) {
             BasicTree newTree = new BasicTree(this, treeState);
             trees.add(newTree);
             System.out.println("nb Leaves=" + newTree.getNbLeaves());
         }
-        this.fallenLeaves = new HashSet<TreeLeaf>();
+        this.fallenLeaves = new ArrayList<TreeLeaf>();
         Set<TreeLeafState> fallenLeafStates = state.getFallenLeaves();
         for (TreeLeafState fallenLeafState : fallenLeafStates) {
             fallenLeaves.add(new BasicTreeLeaf(this, fallenLeafState));
         }
         this.universe3D.initFromUniverse(this);
-    }
-
-    @Override
-    public Long getId() {
-        return id;
     }
 
     @Override
@@ -94,6 +90,7 @@ public class BasicUniverse implements Universe {
 
     @Override
     public void spendTime() {
+        // TODO 003. do not tick if showFps is false
         fpsCounter.tick();
         counter.increment();
         age++;
@@ -103,15 +100,15 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public Set<LivingPart> getLivingParts() {
-        Set<LivingPart> livingParts = new HashSet<LivingPart>();
+    public List<LivingPart> getLivingParts() {
+        List<LivingPart> livingParts = new ArrayList<LivingPart>();
         livingParts.addAll(trees);
-        return Collections.unmodifiableSet(livingParts);
+        return Collections.unmodifiableList(livingParts);
     }
 
     @Override
-    public Set<Tree> getTrees() {
-        return Collections.unmodifiableSet(trees);
+    public List<Tree> getTrees() {
+        return Collections.unmodifiableList(trees);
     }
 
     @Override
@@ -120,8 +117,8 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public Set<TreeLeaf> getFallenLeaves() {
-        return Collections.unmodifiableSet(fallenLeaves);
+    public List<TreeLeaf> getFallenLeaves() {
+        return Collections.unmodifiableList(fallenLeaves);
     }
 
     @Override
@@ -141,76 +138,26 @@ public class BasicUniverse implements Universe {
 
     @Override
     public UniverseState getState() {
-        Set<TreeState> treeStates = new HashSet<TreeState>();
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setAge(age);
         for (Tree tree : trees) {
-            treeStates.add(tree.getState());
+            tree.synchronize();
         }
-        Set<TreeLeafState> fallenLeafStates = new HashSet<TreeLeafState>();
-        for (TreeLeaf fallenLeaf : fallenLeaves) {
-            fallenLeafStates.add(fallenLeaf.getState());
+        for (TreeLeaf leaf : fallenLeaves) {
+            leaf.synchronize();
         }
-        return new UniverseState(id, age, treeStates, fallenLeafStates, environment.getState(), counter.getState());
+        environment.synchronize();
+        counter.synchronize();
     }
 
     @Override
     public Universe3D getUniverse3D() {
         return universe3D;
-    }
-
-    @Override
-    public String toString() {
-        return "BasicUniverse [environment=" + environment + ", id=" + id + ", age=" + age + ", trees=" + trees
-                + ", fallenLeaves=" + fallenLeaves + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((environment == null) ? 0 : environment.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime + age;
-        result = prime * result + ((trees == null) ? 0 : trees.hashCode());
-        result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BasicUniverse other = (BasicUniverse) obj;
-        if (environment == null) {
-            if (other.environment != null)
-                return false;
-        } else
-            if (!environment.equals(other.environment))
-                return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else
-            if (!id.equals(other.id))
-                return false;
-        if (age != other.age)
-            return false;
-        if (trees == null) {
-            if (other.trees != null)
-                return false;
-        } else
-            if (!trees.equals(other.trees))
-                return false;
-        if (fallenLeaves == null) {
-            if (other.fallenLeaves != null)
-                return false;
-        } else
-            if (!fallenLeaves.equals(other.fallenLeaves))
-                return false;
-        return true;
     }
 
 }

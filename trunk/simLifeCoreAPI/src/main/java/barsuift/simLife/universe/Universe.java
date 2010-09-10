@@ -18,9 +18,10 @@
  */
 package barsuift.simLife.universe;
 
-import java.util.Set;
+import java.util.List;
 
 import barsuift.simLife.LivingPart;
+import barsuift.simLife.Persistent;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.FpsCounter;
@@ -29,21 +30,21 @@ import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 
 
-public interface Universe extends LivingPart {
+public interface Universe extends LivingPart, Persistent<UniverseState> {
 
     /**
      * Return an unmodifiable Set of all living parts
      * 
      * @return all the universe living parts
      */
-    public Set<LivingPart> getLivingParts();
+    public List<LivingPart> getLivingParts();
 
     /**
      * Return an unmodifiable Set of trees
      * 
      * @return the trees
      */
-    public Set<Tree> getTrees();
+    public List<Tree> getTrees();
 
     public void addTree(Tree tree);
 
@@ -52,7 +53,7 @@ public interface Universe extends LivingPart {
      * 
      * @return the fallen leaves
      */
-    public Set<TreeLeaf> getFallenLeaves();
+    public List<TreeLeaf> getFallenLeaves();
 
     public void addFallenLeaf(TreeLeaf treeLeaf);
 
@@ -61,8 +62,6 @@ public interface Universe extends LivingPart {
     public TimeCounter getCounter();
 
     public Universe3D getUniverse3D();
-
-    public UniverseState getState();
 
     public FpsCounter getFpsCounter();
 

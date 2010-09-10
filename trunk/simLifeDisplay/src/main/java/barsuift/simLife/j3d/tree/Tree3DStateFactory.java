@@ -18,13 +18,13 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 
 
 
 public class Tree3DStateFactory {
 
-    public Tree3DState createRandomTree3DState(Point3dState translationVector) {
+    public Tree3DState createRandomTree3DState(Tuple3dState translationVector) {
         return new Tree3DState(translationVector);
     }
 }

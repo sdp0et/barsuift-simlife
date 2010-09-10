@@ -27,7 +27,7 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.TreeBranch;
@@ -35,9 +35,11 @@ import barsuift.simLife.tree.TreeBranchPart;
 
 public class BasicTreeBranch3D implements TreeBranch3D {
 
+    private final TreeBranch3DState state;
+
     private TreeBranch treeBranch;
 
-    private Point3d translationVector;
+    private Vector3d translationVector;
 
     private final Group group;
 
@@ -60,8 +62,9 @@ public class BasicTreeBranch3D implements TreeBranch3D {
         if (treeBranch == null) {
             throw new IllegalArgumentException("Null tree branch");
         }
+        this.state = state;
+        this.translationVector = state.getTranslationVector().toVectorValue();
         this.treeBranch = treeBranch;
-        this.translationVector = state.getTranslationVector().toPointValue();
         BranchGroup parts = createParts();
         this.group = new Group();
         group.addChild(parts);
@@ -94,9 +97,19 @@ public class BasicTreeBranch3D implements TreeBranch3D {
         return parts.get(parts.size() - 1).getBranchPart3D().getEndPoint();
     }
 
+    public Vector3d getTranslationVector() {
+        return translationVector;
+    }
+
     @Override
     public TreeBranch3DState getState() {
-        return new TreeBranch3DState(new Point3dState(translationVector));
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setTranslationVector(new Tuple3dState(translationVector));
     }
 
     @Override

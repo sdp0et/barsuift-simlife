@@ -18,11 +18,11 @@
  */
 package barsuift.simLife.environment;
 
+import barsuift.simLife.Persistent;
 
-public interface Environment {
+
+public interface Environment extends Persistent<EnvironmentState> {
 
     public Sun getSun();
-
-    public EnvironmentState getState();
 
 }

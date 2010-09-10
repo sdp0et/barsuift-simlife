@@ -21,7 +21,7 @@ package barsuift.simLife.j3d;
 import barsuift.simLife.JaxbTestCase;
 
 
-public class Point3dStateTest extends JaxbTestCase {
+public class Tuple3dStateTest extends JaxbTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -37,10 +37,10 @@ public class Point3dStateTest extends JaxbTestCase {
     }
 
     public void testJaxb() throws Exception {
-        Point3dState pointState = DisplayDataCreatorForTests.createRandomPointState();
-        write(pointState);
-        Point3dState pointState2 = (Point3dState) read();
-        assertEquals(pointState, pointState2);
+        Tuple3dState tupleState = DisplayDataCreatorForTests.createRandomTupleState();
+        write(tupleState);
+        Tuple3dState tupleState2 = (Tuple3dState) read();
+        assertEquals(tupleState, tupleState2);
     }
 
 }

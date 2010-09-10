@@ -19,12 +19,14 @@
 package barsuift.simLife.j3d;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Tuple3d;
+import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 
 @XmlRootElement
-public class Point3dState implements State {
+public class Tuple3dState implements State {
 
     private double x;
 
@@ -32,36 +34,33 @@ public class Point3dState implements State {
 
     private double z;
 
-    public Point3dState() {
+    public Tuple3dState() {
         super();
         this.x = 0;
         this.y = 0;
         this.z = 0;
     }
 
-    public Point3dState(double x, double y, double z) {
+    public Tuple3dState(double x, double y, double z) {
         super();
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Point3dState(Point3d point) {
+    public Tuple3dState(Tuple3d point) {
         super();
         this.x = point.x;
         this.y = point.y;
         this.z = point.z;
     }
 
-    public Point3dState(Point3dState copy) {
-        super();
-        this.x = copy.x;
-        this.y = copy.y;
-        this.z = copy.z;
-    }
-
     public Point3d toPointValue() {
         return new Point3d(x, y, z);
+    }
+
+    public Vector3d toVectorValue() {
+        return new Vector3d(x, y, z);
     }
 
     public double getX() {
@@ -110,7 +109,7 @@ public class Point3dState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Point3dState other = (Point3dState) obj;
+        Tuple3dState other = (Tuple3dState) obj;
         if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
             return false;
         if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
@@ -122,7 +121,7 @@ public class Point3dState implements State {
 
     @Override
     public String toString() {
-        return "Point3dState [x=" + x + ", y=" + y + ", z=" + z + "]";
+        return "Tuple3dState [x=" + x + ", y=" + y + ", z=" + z + "]";
     }
 
 }

@@ -23,15 +23,14 @@ import java.util.List;
 import java.util.Observer;
 
 import barsuift.simLife.LivingPart;
+import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
 
-public interface TreeBranchPart extends LivingPart, Observer {
+public interface TreeBranchPart extends LivingPart, Observer, Persistent<TreeBranchPartState> {
 
     public int getNbLeaves();
 
     public List<TreeLeaf> getLeaves();
-
-    public TreeBranchPartState getState();
 
     public TreeBranchPart3D getBranchPart3D();
 

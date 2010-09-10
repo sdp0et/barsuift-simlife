@@ -36,8 +36,6 @@ import barsuift.simLife.tree.TreeStateFactory;
 
 public class UniverseStateFactory {
 
-    private static long UNIVERSE_COUNT = 1;
-
     private static final Map<Long, Point3d> originPoints = new HashMap<Long, Point3d>();
 
     static {
@@ -72,7 +70,7 @@ public class UniverseStateFactory {
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
 
-        return new UniverseState(UNIVERSE_COUNT++, 0, trees, fallenLeaves, environment, new TimeCounterState());
+        return new UniverseState(0, trees, fallenLeaves, environment, new TimeCounterState());
     }
 
     public UniverseState createEmptyUniverseState() {
@@ -80,7 +78,7 @@ public class UniverseStateFactory {
         Set<TreeLeafState> fallenLeaves = new HashSet<TreeLeafState>(0);
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
-        return new UniverseState(UNIVERSE_COUNT++, 0, trees, fallenLeaves, environment, new TimeCounterState());
+        return new UniverseState(0, trees, fallenLeaves, environment, new TimeCounterState());
     }
 
 }

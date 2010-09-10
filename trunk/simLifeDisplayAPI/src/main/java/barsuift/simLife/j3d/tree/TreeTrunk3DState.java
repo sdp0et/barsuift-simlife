@@ -29,10 +29,6 @@ public class TreeTrunk3DState implements State {
         super();
     }
 
-    public TreeTrunk3DState(TreeTrunk3DState copy) {
-        super();
-    }
-
     @Override
     public int hashCode() {
         int result = 1;

@@ -43,14 +43,8 @@ import barsuift.simLife.universe.UniverseState;
 
 public final class CoreDataCreatorForTests {
 
-    private static long CURRENT_ID = 0;
-
     private CoreDataCreatorForTests() {
         // private constructor to enforce static access
-    }
-
-    public static Long createRandomId() {
-        return CURRENT_ID++;
     }
 
     public static UniverseContextState createRandomUniverseContextState() {
@@ -88,7 +82,7 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createRandomTreeLeafState());
         }
-        return new UniverseState(createRandomId(), age, trees, fallenLeaves, createRandomEnvironmentState(),
+        return new UniverseState(age, trees, fallenLeaves, createRandomEnvironmentState(),
                 createRandomTimeCounterState());
     }
 
@@ -115,7 +109,7 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createSpecificTreeLeafState());
         }
-        return new UniverseState(createRandomId(), age, trees, fallenLeaves, createSpecificEnvironmentState(),
+        return new UniverseState(age, trees, fallenLeaves, createSpecificEnvironmentState(),
                 createSpecificTimeCounterState());
     }
 
@@ -133,9 +127,9 @@ public final class CoreDataCreatorForTests {
     }
 
     public static SunState createRandomSunState() {
-        BigDecimal luminosity = UtilDataCreatorForTests.createBigDecimal();
-        BigDecimal riseAngle = UtilDataCreatorForTests.createBigDecimal();
-        BigDecimal zenithAngle = UtilDataCreatorForTests.createBigDecimal();
+        BigDecimal luminosity = UtilDataCreatorForTests.createRandomBigDecimal();
+        BigDecimal riseAngle = UtilDataCreatorForTests.createRandomBigDecimal();
+        BigDecimal zenithAngle = UtilDataCreatorForTests.createRandomBigDecimal();
         return new SunState(luminosity, riseAngle, zenithAngle);
     }
 
@@ -180,7 +174,7 @@ public final class CoreDataCreatorForTests {
         TreeTrunkState trunkState = createRandomTreeTrunkState();
         float height = (float) Math.random();
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
-        return new TreeState(createRandomId(), age, energy, branches, trunkState, height, tree3dState);
+        return new TreeState(age, energy, branches, trunkState, height, tree3dState);
     }
 
     /**
@@ -207,7 +201,7 @@ public final class CoreDataCreatorForTests {
         TreeTrunkState trunkState = createSpecificTreeTrunkState();
         float height = (float) 4;
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
-        return new TreeState(createRandomId(), age, energy, branches, trunkState, height, tree3dState);
+        return new TreeState(age, energy, branches, trunkState, height, tree3dState);
     }
 
     public static TreeBranchState createRandomTreeBranchState() {
@@ -220,7 +214,7 @@ public final class CoreDataCreatorForTests {
             branchPartStates.add(createRandomTreeBranchPartState());
         }
         TreeBranch3DState branch3DState = DisplayDataCreatorForTests.createRandomTreeBranch3DState();
-        return new TreeBranchState(createRandomId(), age, energy, freeEnergy, branchPartStates, branch3DState);
+        return new TreeBranchState(age, energy, freeEnergy, branchPartStates, branch3DState);
     }
 
     /**
@@ -245,7 +239,7 @@ public final class CoreDataCreatorForTests {
             branchPartStates.add(createSpecificTreeBranchPartState());
         }
         TreeBranch3DState branch3DState = DisplayDataCreatorForTests.createRandomTreeBranch3DState();
-        return new TreeBranchState(createRandomId(), age, energy, freeEnergy, branchPartStates, branch3DState);
+        return new TreeBranchState(age, energy, freeEnergy, branchPartStates, branch3DState);
     }
 
     public static TreeBranchPartState createRandomTreeBranchPartState() {
@@ -258,7 +252,7 @@ public final class CoreDataCreatorForTests {
             leaveStates.add(createRandomTreeLeafState());
         }
         TreeBranchPart3DState branchPart3DState = DisplayDataCreatorForTests.createRandomTreeBranchPart3DState();
-        return new TreeBranchPartState(createRandomId(), age, energy, freeEnergy, leaveStates, branchPart3DState);
+        return new TreeBranchPartState(age, energy, freeEnergy, leaveStates, branchPart3DState);
     }
 
     /**
@@ -283,7 +277,7 @@ public final class CoreDataCreatorForTests {
             leaveStates.add(createSpecificTreeLeafState());
         }
         TreeBranchPart3DState branchPart3DState = DisplayDataCreatorForTests.createRandomTreeBranchPart3DState();
-        return new TreeBranchPartState(createRandomId(), age, energy, freeEnergy, leaveStates, branchPart3DState);
+        return new TreeBranchPartState(age, energy, freeEnergy, leaveStates, branchPart3DState);
     }
 
     public static TreeTrunkState createRandomTreeTrunkState() {
@@ -291,7 +285,7 @@ public final class CoreDataCreatorForTests {
         float radius = (float) Math.random();
         float height = (float) Math.random();
         TreeTrunk3DState trunk3DState = DisplayDataCreatorForTests.createRandomTreeTrunk3DState();
-        return new TreeTrunkState(createRandomId(), age, radius, height, trunk3DState);
+        return new TreeTrunkState(age, radius, height, trunk3DState);
     }
 
     /**
@@ -309,16 +303,16 @@ public final class CoreDataCreatorForTests {
         float radius = (float) 0.5;
         float height = (float) 4;
         TreeTrunk3DState trunk3DState = DisplayDataCreatorForTests.createRandomTreeTrunk3DState();
-        return new TreeTrunkState(createRandomId(), age, radius, height, trunk3DState);
+        return new TreeTrunkState(age, radius, height, trunk3DState);
     }
 
     public static TreeLeafState createRandomTreeLeafState() {
-        BigDecimal efficiency = UtilDataCreatorForTests.createBigDecimal();
+        BigDecimal efficiency = UtilDataCreatorForTests.createRandomBigDecimal();
         TreeLeaf3DState leafd3DState = DisplayDataCreatorForTests.createRandomTreeLeaf3DState();
         int age = Randomizer.randomBetween(0, 100);
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
-        return new TreeLeafState(createRandomId(), age, energy, freeEnergy, efficiency, leafd3DState);
+        return new TreeLeafState(age, energy, freeEnergy, efficiency, leafd3DState);
     }
 
     /**
@@ -340,7 +334,7 @@ public final class CoreDataCreatorForTests {
         BigDecimal energy = new BigDecimal(10);
         BigDecimal freeEnergy = new BigDecimal(3);
         TreeLeaf3DState leafd3DState = DisplayDataCreatorForTests.createSpecificTreeLeaf3DState();
-        return new TreeLeafState(createRandomId(), age, energy, freeEnergy, efficiency, leafd3DState);
+        return new TreeLeafState(age, energy, freeEnergy, efficiency, leafd3DState);
     }
 
 }

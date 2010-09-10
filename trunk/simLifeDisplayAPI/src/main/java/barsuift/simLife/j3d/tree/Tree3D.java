@@ -22,13 +22,13 @@ import java.util.List;
 
 import javax.media.j3d.BranchGroup;
 
-public interface Tree3D {
+import barsuift.simLife.Persistent;
+
+public interface Tree3D extends Persistent<Tree3DState> {
 
     public TreeTrunk3D getTrunk();
 
     public List<TreeBranch3D> getBranches();
-
-    public Tree3DState getState();
 
     public BranchGroup getBranchGroup();
 

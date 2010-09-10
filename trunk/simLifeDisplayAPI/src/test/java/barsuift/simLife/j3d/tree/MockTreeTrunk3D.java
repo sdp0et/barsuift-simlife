@@ -31,6 +31,8 @@ public class MockTreeTrunk3D implements TreeTrunk3D {
 
     private Cylinder cylinder = new Cylinder();
 
+    private int synchronizedCalled;
+
     @Override
     public Group getGroup() {
         return group;
@@ -56,6 +58,15 @@ public class MockTreeTrunk3D implements TreeTrunk3D {
 
     public void setTrunk(Cylinder cylinder) {
         this.cylinder = cylinder;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

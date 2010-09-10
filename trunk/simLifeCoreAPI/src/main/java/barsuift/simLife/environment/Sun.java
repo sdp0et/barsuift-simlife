@@ -21,12 +21,13 @@ package barsuift.simLife.environment;
 import java.math.BigDecimal;
 
 import barsuift.simLife.IObservable;
+import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.universe.environment.Sun3D;
 
 /**
  * Class representing the sun.
  */
-public interface Sun extends IObservable {
+public interface Sun extends IObservable, Persistent<SunState> {
 
     public Sun3D getSun3D();
 
@@ -61,7 +62,5 @@ public interface Sun extends IObservable {
     public BigDecimal getZenithAngle();
 
     public void setZenithAngle(BigDecimal zenithAngle);
-
-    public SunState getState();
 
 }

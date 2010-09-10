@@ -52,13 +52,6 @@ public class UniverseStateFactoryTest extends TestCase {
             assertTrue(height >= 3);
             assertTrue(height <= 5);
         }
-
-        Long id1 = universeState.getId();
-        assertNotNull(id1);
-        assertTrue(id1.longValue() > 0);
-        universeState = factory.createRandomUniverseState();
-        Long id2 = universeState.getId();
-        assertEquals(id1.longValue() + 1, id2.longValue());
     }
 
 }

@@ -18,8 +18,8 @@
  */
 package barsuift.simLife.universe;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.environment.Environment;
@@ -35,13 +35,11 @@ import barsuift.simLife.tree.TreeLeaf;
 
 public class MockUniverse implements Universe {
 
-    private Set<LivingPart> livingParts = new HashSet<LivingPart>();
+    private List<LivingPart> livingParts = new ArrayList<LivingPart>();
 
-    private Set<Tree> trees = new HashSet<Tree>();
+    private List<Tree> trees = new ArrayList<Tree>();
 
-    private Set<TreeLeaf> fallenLeaves = new HashSet<TreeLeaf>();
-
-    private Long id = new Long(1);
+    private List<TreeLeaf> fallenLeaves = new ArrayList<TreeLeaf>();
 
     private int age = 0;
 
@@ -57,8 +55,10 @@ public class MockUniverse implements Universe {
 
     private FpsCounter fpsCounter;
 
+    private int synchronizedCalled;
+
     @Override
-    public Set<LivingPart> getLivingParts() {
+    public List<LivingPart> getLivingParts() {
         return livingParts;
     }
 
@@ -68,15 +68,6 @@ public class MockUniverse implements Universe {
 
     public void removeLivingPart(LivingPart livingPart) {
         livingParts.remove(livingPart);
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public int getAge() {
@@ -110,7 +101,7 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public Set<Tree> getTrees() {
+    public List<Tree> getTrees() {
         return trees;
     }
 
@@ -124,7 +115,7 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public Set<TreeLeaf> getFallenLeaves() {
+    public List<TreeLeaf> getFallenLeaves() {
         return fallenLeaves;
     }
 
@@ -170,6 +161,15 @@ public class MockUniverse implements Universe {
 
     public void setFpsCounter(FpsCounter fpsCounter) {
         this.fpsCounter = fpsCounter;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

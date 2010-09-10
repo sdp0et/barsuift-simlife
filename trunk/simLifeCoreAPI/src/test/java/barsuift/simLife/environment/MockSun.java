@@ -38,6 +38,8 @@ public class MockSun extends Observable implements Sun {
 
     private SunState state = new SunState();
 
+    private int synchronizedCalled;
+
 
     @Override
     public BigDecimal getLuminosity() {
@@ -85,6 +87,15 @@ public class MockSun extends Observable implements Sun {
 
     public void setSunState(SunState state) {
         this.state = state;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

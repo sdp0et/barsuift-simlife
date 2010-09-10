@@ -36,8 +36,6 @@ public interface LivingPart {
      */
     public void spendTime();
 
-    public Long getId();
-
     public int getAge();
 
 }

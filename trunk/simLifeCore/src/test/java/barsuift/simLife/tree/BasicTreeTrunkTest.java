@@ -19,6 +19,7 @@
 package barsuift.simLife.tree;
 
 import junit.framework.TestCase;
+import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.universe.MockUniverse;
 
 
@@ -48,14 +49,18 @@ public class BasicTreeTrunkTest extends TestCase {
     }
 
     public void testGetState() {
-        TreeTrunkStateFactory factory = new TreeTrunkStateFactory();
-        float radius = 4.2f;
-        float height = 6.8f;
-        TreeTrunkState trunkState = factory.createRandomTreeTrunkState(radius, height);
+        TreeTrunkState trunkState = CoreDataCreatorForTests.createSpecificTreeTrunkState();
         BasicTreeTrunk treeTrunk = new BasicTreeTrunk(new MockUniverse(), trunkState);
-        assertEquals(height, treeTrunk.getHeight());
-        assertEquals(radius, treeTrunk.getRadius());
+        assertEquals(4, treeTrunk.getHeight());
+        assertEquals(0.5, treeTrunk.getRadius());
+
         assertEquals(trunkState, treeTrunk.getState());
+        assertSame(trunkState, treeTrunk.getState());
+        assertEquals(15, treeTrunk.getState().getAge());
+        treeTrunk.spendTime();
+        assertEquals(trunkState, treeTrunk.getState());
+        assertSame(trunkState, treeTrunk.getState());
+        assertEquals(16, treeTrunk.getState().getAge());
     }
 
     public void testSpendTime() {

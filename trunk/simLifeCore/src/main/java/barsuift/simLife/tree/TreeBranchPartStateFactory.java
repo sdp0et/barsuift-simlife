@@ -25,15 +25,13 @@ import java.util.List;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.Randomizer;
-import barsuift.simLife.j3d.Point3dState;
+import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DStateFactory;
 import barsuift.simLife.j3d.util.BarycentreHelper;
 import barsuift.simLife.j3d.util.DistanceHelper;
 
 public class TreeBranchPartStateFactory {
-
-    private static long BRANCH_PART_COUNT = 1;
 
     public TreeBranchPartState createRandomBranchPartState(Point3d branchPartEndPoint) {
         int age = Randomizer.randomBetween(0, 100);
@@ -53,9 +51,9 @@ public class TreeBranchPartStateFactory {
 
         TreeBranchPart3DStateFactory branchPart3DStateFactory = new TreeBranchPart3DStateFactory();
         TreeBranchPart3DState branch3DState = branchPart3DStateFactory
-                .createRandomTreeBranchPart3DState(new Point3dState(branchPartEndPoint));
+                .createRandomTreeBranchPart3DState(new Tuple3dState(branchPartEndPoint));
 
-        return new TreeBranchPartState(BRANCH_PART_COUNT++, age, energy, freeEnergy, leaveStates, branch3DState);
+        return new TreeBranchPartState(age, energy, freeEnergy, leaveStates, branch3DState);
     }
 
 }

@@ -55,10 +55,20 @@ public class BasicSunTest extends TestCase {
 
     public void testGetState() {
         assertEquals(sunState, sun.getState());
-        sunState = new SunState(PercentHelper.getDecimalValue(32), PercentHelper.getDecimalValue(47),
-                PercentHelper.getDecimalValue(78));
-        sun = new BasicSun(sunState);
+        assertSame(sunState, sun.getState());
+        assertEquals(0.0, sun.getState().getLuminosity().doubleValue());
+        assertEquals(0.0, sun.getState().getRiseAngle().doubleValue());
+        assertEquals(0.0, sun.getState().getZenithAngle().doubleValue());
+
+        sun.setLuminosity(PercentHelper.getDecimalValue(32));
+        sun.setRiseAngle(PercentHelper.getDecimalValue(47));
+        sun.setZenithAngle(PercentHelper.getDecimalValue(78));
         assertEquals(sunState, sun.getState());
+        assertSame(sunState, sun.getState());
+        assertEquals(0.32, sun.getState().getLuminosity().doubleValue());
+        assertEquals(0.47, sun.getState().getRiseAngle().doubleValue());
+        assertEquals(0.78, sun.getState().getZenithAngle().doubleValue());
+
     }
 
     public void testGetLuminosity() {

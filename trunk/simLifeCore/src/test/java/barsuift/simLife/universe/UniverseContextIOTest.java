@@ -49,7 +49,7 @@ public class UniverseContextIOTest extends TestCase {
         UniverseContext universeContext = factory.createRandom();
         universeIo.write(universeContext);
         UniverseContext universeContext2 = universeIo.read();
-        assertEquals(universeContext, universeContext2);
+        assertEquals(universeContext.getState(), universeContext2.getState());
     }
 
     public void testWriteAndReadEmpty() throws Exception {
@@ -57,7 +57,7 @@ public class UniverseContextIOTest extends TestCase {
         UniverseContext universeContext = factory.createEmpty();
         universeIo.write(universeContext);
         UniverseContext universeContext2 = universeIo.read();
-        assertEquals(universeContext, universeContext2);
+        assertEquals(universeContext.getState(), universeContext2.getState());
     }
 
 }

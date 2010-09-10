@@ -27,8 +27,6 @@ import barsuift.simLife.j3d.tree.Tree3D;
 
 public class MockTree implements Tree {
 
-    private Long id = new Long(1);
-
     private int age = 0;
 
     private BigDecimal energy = new BigDecimal(0);
@@ -49,13 +47,7 @@ public class MockTree implements Tree {
 
     private TreeTrunk trunk = new MockTreeTrunk();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private int synchronizedCalled;
 
     public int getAge() {
         return age;
@@ -152,6 +144,15 @@ public class MockTree implements Tree {
 
     public void setTreeTrunk(TreeTrunk trunk) {
         this.trunk = trunk;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

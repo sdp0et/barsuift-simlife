@@ -47,13 +47,6 @@ public class SunState implements State {
         this.zenithAngle = zenithAngle;
     }
 
-    public SunState(SunState copy) {
-        super();
-        this.luminosity = copy.getLuminosity();
-        this.riseAngle = copy.getRiseAngle();
-        this.zenithAngle = copy.getZenithAngle();
-    }
-
     public BigDecimal getLuminosity() {
         return luminosity;
     }

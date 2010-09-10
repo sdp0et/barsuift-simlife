@@ -23,16 +23,16 @@ import java.util.List;
 import javax.media.j3d.Group;
 import javax.vecmath.Point3d;
 
+import barsuift.simLife.Persistent;
 
-public interface TreeBranchPart3D {
+
+public interface TreeBranchPart3D extends Persistent<TreeBranchPart3DState> {
 
     public void addLeaf(TreeLeaf3D leaf);
 
     public Point3d getEndPoint();
 
     public List<TreeLeaf3D> getLeaves();
-
-    public TreeBranchPart3DState getState();
 
     public Group getGroup();
 

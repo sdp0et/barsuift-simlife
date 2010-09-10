@@ -16,26 +16,18 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.tree;
+package barsuift.simLife;
 
-import java.util.Observer;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import javax.media.j3d.BranchGroup;
-import javax.vecmath.Point3d;
-
-import barsuift.simLife.Persistent;
-
-
-public interface TreeLeaf3D extends Observer, Persistent<TreeLeaf3DState> {
-
-    public double getArea();
-
-    public boolean isMaxSizeReached();
-
-    public void increaseSize();
-
-    public Point3d getAttachPoint();
-
-    public BranchGroup getBranchGroup();
+/**
+ * This is the basic interface for State elements.
+ * 
+ * Its main purpose is to ensure all the State implementing objects will be stored automatically in XML thanks to the
+ * XmlRootElement annotation tag.
+ * 
+ */
+@XmlRootElement
+public interface State {
 
 }
