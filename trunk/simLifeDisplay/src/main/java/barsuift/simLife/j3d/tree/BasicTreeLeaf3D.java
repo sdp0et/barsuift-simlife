@@ -46,6 +46,7 @@ import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.TreeLeaf;
 
+// TODO 020. try Morph class to grow the leaves instead of moving vertices manually
 public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private static final Color3f SPECULAR_COLOR = new Color3f(0.05f, 0.05f, 0.05f);
