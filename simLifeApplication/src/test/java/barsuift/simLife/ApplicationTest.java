@@ -91,18 +91,18 @@ public class ApplicationTest extends TestCase {
         assertEquals(universeContext.getState(), universeContext2.getState());
     }
 
-    public void testShowFps() {
+    public void testSetFpsShowing() {
         UniverseContext universeContext = application.createEmptyUniverse();
-        assertFalse(universeContext.isShowFps());
-        application.showFps(true);
-        assertTrue(universeContext.isShowFps());
+        assertFalse(universeContext.isFpsShowing());
+        application.setFpsShowing(true);
+        assertTrue(universeContext.isFpsShowing());
 
         application = new Application();
-        application.showFps(true);
+        application.setFpsShowing(true);
         universeContext = application.createEmptyUniverse();
-        assertFalse(universeContext.isShowFps());
-        application.showFps(true);
-        assertTrue(universeContext.isShowFps());
+        assertFalse(universeContext.isFpsShowing());
+        application.setFpsShowing(true);
+        assertTrue(universeContext.isFpsShowing());
 
     }
 

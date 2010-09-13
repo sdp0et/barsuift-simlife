@@ -33,13 +33,13 @@ public class BasicUniverseContextTest extends TestCase {
 
     public void testUnsetAxis() {
         UniverseContext panel = new BasicUniverseContext(new UniverseContextState());
-        assertTrue(panel.isAxisShown());
-        panel.unsetAxis();
-        assertFalse(panel.isAxisShown());
-        panel.setAxis();
-        assertTrue(panel.isAxisShown());
-        panel.unsetAxis();
-        assertFalse(panel.isAxisShown());
+        assertTrue(panel.isAxisShowing());
+        panel.setAxisShowing(false);
+        assertFalse(panel.isAxisShowing());
+        panel.setAxisShowing(true);
+        assertTrue(panel.isAxisShowing());
+        panel.setAxisShowing(false);
+        assertFalse(panel.isAxisShowing());
     }
 
     public void testGetState() {
@@ -48,11 +48,11 @@ public class BasicUniverseContextTest extends TestCase {
         BasicUniverseContext context = new BasicUniverseContext(state);
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
-        assertEquals(false, context.getState().isShowFps());
-        context.showFps(true);
+        assertEquals(false, context.getState().isFpsShowing());
+        context.setFpsShowing(true);
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
-        assertEquals(true, context.getState().isShowFps());
+        assertEquals(true, context.getState().isFpsShowing());
     }
 
 }

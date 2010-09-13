@@ -33,12 +33,12 @@ public class FpsAction extends AbstractAction {
 
     private final Application application;
 
-    private boolean showFps;
+    private boolean fpsShowing;
 
     public FpsAction(Application application) {
         super();
         this.application = application;
-        showFps = false;
+        fpsShowing = false;
         putValue(Action.NAME, "Show FPS");
         putValue(SHORT_DESCRIPTION, "Show the FPS (Frame Per Second)");
         putValue(MNEMONIC_KEY, Mnemonics.VIEW_FPS);
@@ -46,26 +46,26 @@ public class FpsAction extends AbstractAction {
     }
 
     private void showFps() {
-        showFps = true;
+        fpsShowing = true;
         putValue(Action.NAME, "Do not show FPS");
         putValue(SHORT_DESCRIPTION, "Hide the FPS (Frame Per Second)");
-        application.showFps(showFps);
+        application.setFpsShowing(fpsShowing);
     }
 
     private void doNotShowFps() {
-        showFps = false;
+        fpsShowing = false;
         putValue(Action.NAME, "Show FPS");
         putValue(SHORT_DESCRIPTION, "Show the FPS (Frame Per Second)");
-        application.showFps(showFps);
+        application.setFpsShowing(fpsShowing);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (showFps) {
-            // fps are already shown, so we hide it
+        if (fpsShowing) {
+            // fps are already showing, so we hide it
             doNotShowFps();
         } else {
-            // fps is not yet shown, so we show it
+            // fps is not yet showing, so we show it
             showFps();
         }
     }

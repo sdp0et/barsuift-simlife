@@ -46,9 +46,9 @@ public class BasicUniverseContext implements UniverseContext {
 
     private final UniverseContextState state;
 
-    private boolean showFps;
+    private boolean fpsShowing;
 
-    private boolean isAxisShown;
+    private boolean axisShowing;
 
 
 
@@ -64,8 +64,8 @@ public class BasicUniverseContext implements UniverseContext {
 
     public BasicUniverseContext(UniverseContextState state) {
         this.state = state;
-        this.showFps = state.isShowFps();
-        this.isAxisShown = state.isAxisShown();
+        this.fpsShowing = state.isFpsShowing();
+        this.axisShowing = state.isAxisShowing();
 
         this.universe = new BasicUniverse(state.getUniverseState());
         canvas3D = new BasicSimLifeCanvas3D(this);
@@ -88,7 +88,8 @@ public class BasicUniverseContext implements UniverseContext {
 
         root.compile();
         simpleU.addBranchGraph(root);
-        setAxis();
+        // TODO read that from state
+        setAxisShowing(true);
     }
 
     @Override
@@ -102,30 +103,28 @@ public class BasicUniverseContext implements UniverseContext {
     }
 
     @Override
-    public void showFps(boolean show) {
-        this.showFps = show;
+    public void setFpsShowing(boolean fpsShowing) {
+        this.fpsShowing = fpsShowing;
     }
 
     @Override
-    public boolean isShowFps() {
-        return showFps;
+    public boolean isFpsShowing() {
+        return fpsShowing;
     }
 
     @Override
-    public void setAxis() {
-        root.addChild(axisGroup);
-        isAxisShown = true;
+    public void setAxisShowing(boolean axisShowing) {
+        if (axisShowing) {
+            root.addChild(axisGroup);
+        } else {
+            root.removeChild(axisGroup);
+        }
+        this.axisShowing = axisShowing;
     }
 
     @Override
-    public void unsetAxis() {
-        root.removeChild(axisGroup);
-        isAxisShown = false;
-    }
-
-    @Override
-    public boolean isAxisShown() {
-        return isAxisShown;
+    public boolean isAxisShowing() {
+        return axisShowing;
     }
 
     @Override
@@ -136,8 +135,8 @@ public class BasicUniverseContext implements UniverseContext {
 
     @Override
     public void synchronize() {
-        state.setAxisShown(isAxisShown);
-        state.setShowFps(showFps);
+        state.setAxisShowing(axisShowing);
+        state.setFpsShowing(fpsShowing);
         universe.synchronize();
     }
 

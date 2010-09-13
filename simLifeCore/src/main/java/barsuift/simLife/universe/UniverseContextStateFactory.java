@@ -25,8 +25,8 @@ public class UniverseContextStateFactory {
      * Creates a random UniverseContextState with the following values :
      * <ul>
      * <li>a random universe state</li>
-     * <li>showFps = false</li>
-     * <li>isAxisShown = true</li>
+     * <li>fpsShowing = false</li>
+     * <li>axisShowing = true</li>
      * </ul>
      * 
      * @return
@@ -42,8 +42,8 @@ public class UniverseContextStateFactory {
      * <ul>
      * <li>no trees</li>
      * <li>an empty universe state</li>
-     * <li>showFps = false</li>
-     * <li>isAxisShown = true</li>
+     * <li>fpsShowing = false</li>
+     * <li>axisShowing = true</li>
      * </ul>
      * 
      * @return

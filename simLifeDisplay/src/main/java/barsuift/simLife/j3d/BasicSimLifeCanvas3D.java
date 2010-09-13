@@ -66,7 +66,7 @@ public class BasicSimLifeCanvas3D extends Canvas3D implements SimLifeCanvas3D {
     @Override
     public void postRender() {
         super.postRender();
-        if (universeContext.isShowFps()) {
+        if (universeContext.isFpsShowing()) {
             graphicFps.tick();
             drawIm = new BufferedImage(350, 48, BufferedImage.TYPE_4BYTE_ABGR);
             drawg2d = drawIm.createGraphics();

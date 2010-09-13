@@ -86,9 +86,9 @@ public class Application {
         this.currentSaveFile = saveFile;
     }
 
-    public void showFps(boolean show) {
+    public void setFpsShowing(boolean fpsShowing) {
         if (currentUniverseContext != null) {
-            currentUniverseContext.showFps(show);
+            currentUniverseContext.setFpsShowing(fpsShowing);
         }
 
     }
