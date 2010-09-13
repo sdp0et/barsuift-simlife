@@ -48,11 +48,11 @@ public class BasicUniverseContextTest extends TestCase {
         BasicUniverseContext context = new BasicUniverseContext(state);
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
-        assertEquals(false, context.getState().isFpsShowing());
-        context.setFpsShowing(true);
+        assertTrue(context.getState().isAxisShowing());
+        context.setAxisShowing(false);
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
-        assertEquals(true, context.getState().isFpsShowing());
+        assertFalse(context.getState().isAxisShowing());
     }
 
 }

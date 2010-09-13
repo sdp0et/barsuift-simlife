@@ -34,6 +34,8 @@ public class UniverseState implements State {
 
     private int age;
 
+    private boolean fpsShowing;
+
     private Set<TreeState> trees;
 
     private Set<TreeLeafState> fallenLeaves;
@@ -45,16 +47,18 @@ public class UniverseState implements State {
     public UniverseState() {
         super();
         this.age = 0;
+        this.fpsShowing = false;
         this.trees = new HashSet<TreeState>();
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
         this.timeCounter = new TimeCounterState();
     }
 
-    public UniverseState(int age, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves, EnvironmentState environment,
-            TimeCounterState timeCounter) {
+    public UniverseState(int age, boolean fpsShowing, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves,
+            EnvironmentState environment, TimeCounterState timeCounter) {
         super();
         this.age = age;
+        this.fpsShowing = fpsShowing;
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
@@ -67,6 +71,14 @@ public class UniverseState implements State {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public boolean isFpsShowing() {
+        return fpsShowing;
+    }
+
+    public void setFpsShowing(boolean fpsShowing) {
+        this.fpsShowing = fpsShowing;
     }
 
     public Set<TreeState> getTrees() {
@@ -105,11 +117,12 @@ public class UniverseState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + age;
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
-        result = prime * result + ((timeCounter == null) ? 0 : timeCounter.hashCode());
-        result = prime + age;
-        result = prime * result + ((trees == null) ? 0 : trees.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
+        result = prime * result + (fpsShowing ? 1231 : 1237);
+        result = prime * result + ((timeCounter == null) ? 0 : timeCounter.hashCode());
+        result = prime * result + ((trees == null) ? 0 : trees.hashCode());
         return result;
     }
 
@@ -122,25 +135,13 @@ public class UniverseState implements State {
         if (getClass() != obj.getClass())
             return false;
         UniverseState other = (UniverseState) obj;
+        if (age != other.age)
+            return false;
         if (environment == null) {
             if (other.environment != null)
                 return false;
         } else
             if (!environment.equals(other.environment))
-                return false;
-        if (timeCounter == null) {
-            if (other.timeCounter != null)
-                return false;
-        } else
-            if (!timeCounter.equals(other.timeCounter))
-                return false;
-        if (age != other.age)
-            return false;
-        if (trees == null) {
-            if (other.trees != null)
-                return false;
-        } else
-            if (!trees.equals(other.trees))
                 return false;
         if (fallenLeaves == null) {
             if (other.fallenLeaves != null)
@@ -148,13 +149,27 @@ public class UniverseState implements State {
         } else
             if (!fallenLeaves.equals(other.fallenLeaves))
                 return false;
+        if (fpsShowing != other.fpsShowing)
+            return false;
+        if (timeCounter == null) {
+            if (other.timeCounter != null)
+                return false;
+        } else
+            if (!timeCounter.equals(other.timeCounter))
+                return false;
+        if (trees == null) {
+            if (other.trees != null)
+                return false;
+        } else
+            if (!trees.equals(other.trees))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "UniverseState [environment=" + environment + ", timeCounter=" + timeCounter + ", age=" + age
-                + ", trees=" + trees + ", fallenLeaves=" + fallenLeaves + "]";
+        return "UniverseState [age=" + age + ", fpsShowing=" + fpsShowing + ", trees=" + trees + ", fallenLeaves="
+                + fallenLeaves + ", environment=" + environment + ", timeCounter=" + timeCounter + "]";
     }
 
 }

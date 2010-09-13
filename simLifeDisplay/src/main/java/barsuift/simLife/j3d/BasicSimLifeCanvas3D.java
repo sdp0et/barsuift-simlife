@@ -24,15 +24,13 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.text.MessageFormat;
 
-import javax.media.j3d.Canvas3D;
 import javax.media.j3d.J3DGraphics2D;
 
 import barsuift.simLife.time.FpsCounter;
-import barsuift.simLife.universe.UniverseContext;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-public class BasicSimLifeCanvas3D extends Canvas3D implements SimLifeCanvas3D {
+public class BasicSimLifeCanvas3D extends SimLifeCanvas3D {
 
     private static final long serialVersionUID = -8802614056574013014L;
 
@@ -42,7 +40,14 @@ public class BasicSimLifeCanvas3D extends Canvas3D implements SimLifeCanvas3D {
     private static final MessageFormat CORE_FPS_MESSAGE = new MessageFormat(
             "Core FPS={0,number,000} Avg(FPS)={1,number,000}");
 
+
+    private final SimLifeCanvas3DState state;
+
+    private boolean fpsShowing;
+
     private final FpsCounter graphicFps;
+
+    private final FpsCounter coreFps;
 
     private BufferedImage drawIm;
 
@@ -52,12 +57,11 @@ public class BasicSimLifeCanvas3D extends Canvas3D implements SimLifeCanvas3D {
 
     private Font font;
 
-    private UniverseContext universeContext;
-
-
-    public BasicSimLifeCanvas3D(UniverseContext universeContext) {
+    public BasicSimLifeCanvas3D(FpsCounter coreFpsCounter, SimLifeCanvas3DState state) {
         super(SimpleUniverse.getPreferredConfiguration());
-        this.universeContext = universeContext;
+        this.state = state;
+        this.fpsShowing = state.isFpsShowing();
+        this.coreFps = coreFpsCounter;
         graphicFps = new FpsCounter();
         font = new Font(Font.MONOSPACED, Font.BOLD, 18);
         render2d = getGraphics2D();
@@ -66,7 +70,7 @@ public class BasicSimLifeCanvas3D extends Canvas3D implements SimLifeCanvas3D {
     @Override
     public void postRender() {
         super.postRender();
-        if (universeContext.isFpsShowing()) {
+        if (fpsShowing) {
             graphicFps.tick();
             drawIm = new BufferedImage(350, 48, BufferedImage.TYPE_4BYTE_ABGR);
             drawg2d = drawIm.createGraphics();
@@ -75,7 +79,6 @@ public class BasicSimLifeCanvas3D extends Canvas3D implements SimLifeCanvas3D {
 
             String graphicMessage = GRAPHIC_FPS_MESSAGE.format(new Object[] { graphicFps.getFps(),
                     graphicFps.getAvgFps() });
-            FpsCounter coreFps = universeContext.getUniverse().getFpsCounter();
             String coreMessage = CORE_FPS_MESSAGE.format(new Object[] { coreFps.getFps(), coreFps.getAvgFps() });
             // position the left bottom pixel of the first character at (2,18)
             drawg2d.drawString(graphicMessage, 2, 18);
@@ -84,6 +87,26 @@ public class BasicSimLifeCanvas3D extends Canvas3D implements SimLifeCanvas3D {
 
             render2d.drawAndFlushImage(drawIm, 0, 0, this);
         }
+    }
+
+    @Override
+    public void setFpsShowing(boolean fpsShowing) {
+        this.fpsShowing = fpsShowing;
+    }
+
+    public boolean isFpsShowing() {
+        return fpsShowing;
+    }
+
+    @Override
+    public SimLifeCanvas3DState getState() {
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setFpsShowing(fpsShowing);
     }
 
 }

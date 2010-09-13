@@ -39,24 +39,21 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 
 // TODO 008. store the camera position (and create the Action and menu item)
 // TODO 008. store the showAxis (and create the Action and menu item)
-// TODO 002. showFps should be stored in BasicUniverse and Canvas3D. The context should not be passed to Canvas
 public class BasicUniverseContext implements UniverseContext {
 
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
 
     private final UniverseContextState state;
 
-    private boolean fpsShowing;
-
     private boolean axisShowing;
 
-
+    private final BasicSimLifeCanvas3D canvas3D;
 
     private final Universe universe;
 
-    private final SimpleUniverse simpleU;
 
-    private final BasicSimLifeCanvas3D canvas3D;
+
+    private final SimpleUniverse simpleU;
 
     private final BranchGroup root;
 
@@ -64,11 +61,10 @@ public class BasicUniverseContext implements UniverseContext {
 
     public BasicUniverseContext(UniverseContextState state) {
         this.state = state;
-        this.fpsShowing = state.isFpsShowing();
         this.axisShowing = state.isAxisShowing();
 
         this.universe = new BasicUniverse(state.getUniverseState());
-        canvas3D = new BasicSimLifeCanvas3D(this);
+        canvas3D = new BasicSimLifeCanvas3D(universe.getFpsCounter(), state.getCanvasState());
         simpleU = new SimpleUniverse(canvas3D);
 
         // limit to graphic to 40 FPS (interval = 1000ms / 40 = 25)
@@ -88,8 +84,7 @@ public class BasicUniverseContext implements UniverseContext {
 
         root.compile();
         simpleU.addBranchGraph(root);
-        // TODO read that from state
-        setAxisShowing(true);
+        setAxisShowing(state.isAxisShowing());
     }
 
     @Override
@@ -104,12 +99,13 @@ public class BasicUniverseContext implements UniverseContext {
 
     @Override
     public void setFpsShowing(boolean fpsShowing) {
-        this.fpsShowing = fpsShowing;
+        universe.setFpsShowing(fpsShowing);
+        canvas3D.setFpsShowing(fpsShowing);
     }
 
     @Override
     public boolean isFpsShowing() {
-        return fpsShowing;
+        return universe.isFpsShowing() && canvas3D.isFpsShowing();
     }
 
     @Override
@@ -136,7 +132,7 @@ public class BasicUniverseContext implements UniverseContext {
     @Override
     public void synchronize() {
         state.setAxisShowing(axisShowing);
-        state.setFpsShowing(fpsShowing);
+        canvas3D.synchronize();
         universe.synchronize();
     }
 

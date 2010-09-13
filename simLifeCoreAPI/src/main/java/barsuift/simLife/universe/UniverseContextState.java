@@ -21,36 +21,29 @@ package barsuift.simLife.universe;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
+import barsuift.simLife.j3d.SimLifeCanvas3DState;
 
 @XmlRootElement
 public class UniverseContextState implements State {
 
     private UniverseState universeState;
 
-    private boolean fpsShowing;
+    private SimLifeCanvas3DState canvasState;
 
     private boolean axisShowing;
 
     public UniverseContextState() {
         super();
         this.universeState = new UniverseState();
-        this.fpsShowing = false;
+        this.canvasState = new SimLifeCanvas3DState();
         this.axisShowing = true;
     }
 
-    public UniverseContextState(UniverseState universeState, boolean showFps, boolean axisShowing) {
+    public UniverseContextState(UniverseState universeState, SimLifeCanvas3DState canvasState, boolean axisShowing) {
         super();
         this.universeState = universeState;
-        this.fpsShowing = showFps;
+        this.canvasState = canvasState;
         this.axisShowing = axisShowing;
-    }
-
-    public boolean isFpsShowing() {
-        return fpsShowing;
-    }
-
-    public void setFpsShowing(boolean fpsShowing) {
-        this.fpsShowing = fpsShowing;
     }
 
     public boolean isAxisShowing() {
@@ -69,12 +62,20 @@ public class UniverseContextState implements State {
         this.universeState = universeState;
     }
 
+    public SimLifeCanvas3DState getCanvasState() {
+        return canvasState;
+    }
+
+    public void setCanvasState(SimLifeCanvas3DState canvasState) {
+        this.canvasState = canvasState;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + (axisShowing ? 1231 : 1237);
-        result = prime * result + (fpsShowing ? 1231 : 1237);
+        result = prime * result + ((canvasState == null) ? 0 : canvasState.hashCode());
         result = prime * result + ((universeState == null) ? 0 : universeState.hashCode());
         return result;
     }
@@ -90,8 +91,12 @@ public class UniverseContextState implements State {
         UniverseContextState other = (UniverseContextState) obj;
         if (axisShowing != other.axisShowing)
             return false;
-        if (fpsShowing != other.fpsShowing)
-            return false;
+        if (canvasState == null) {
+            if (other.canvasState != null)
+                return false;
+        } else
+            if (!canvasState.equals(other.canvasState))
+                return false;
         if (universeState == null) {
             if (other.universeState != null)
                 return false;
@@ -103,9 +108,8 @@ public class UniverseContextState implements State {
 
     @Override
     public String toString() {
-        return "UniverseContextState [universeState=" + universeState + ", fpsShowing=" + fpsShowing + ", axisShowing="
-                + axisShowing + "]";
+        return "UniverseContextState [universeState=" + universeState + ", canvasState=" + canvasState
+                + ", axisShowing=" + axisShowing + "]";
     }
-
 
 }

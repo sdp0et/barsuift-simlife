@@ -64,4 +64,8 @@ public interface Universe extends LivingPart {
 
     public FpsCounter getFpsCounter();
 
+    public void setFpsShowing(boolean fpsShowing);
+
+    public boolean isFpsShowing();
+
 }

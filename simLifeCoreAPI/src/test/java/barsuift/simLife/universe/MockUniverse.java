@@ -57,6 +57,8 @@ public class MockUniverse implements Universe {
 
     private int synchronizedCalled;
 
+    private boolean fpsShowing = false;
+
     @Override
     public List<LivingPart> getLivingParts() {
         return livingParts;
@@ -170,6 +172,15 @@ public class MockUniverse implements Universe {
 
     public int getNbSynchronize() {
         return synchronizedCalled;
+    }
+
+    @Override
+    public void setFpsShowing(boolean fpsShowing) {
+        this.fpsShowing = fpsShowing;
+    }
+
+    public boolean isFpsShowing() {
+        return fpsShowing;
     }
 
 }

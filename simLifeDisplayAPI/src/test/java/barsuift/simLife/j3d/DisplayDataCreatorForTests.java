@@ -90,4 +90,8 @@ public final class DisplayDataCreatorForTests {
         return new Tree3DState(translationVector);
     }
 
+    public static SimLifeCanvas3DState createSpecificCanvasState() {
+        return new SimLifeCanvas3DState(false);
+    }
+
 }

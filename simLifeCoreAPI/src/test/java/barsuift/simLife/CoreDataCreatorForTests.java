@@ -27,6 +27,7 @@ import java.util.Set;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.SunState;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
@@ -49,16 +50,16 @@ public final class CoreDataCreatorForTests {
 
     public static UniverseContextState createRandomUniverseContextState() {
         UniverseState universeState = createRandomUniverseState();
-        boolean fpsShowing = UtilDataCreatorForTests.createRandomBoolean();
+        SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = UtilDataCreatorForTests.createRandomBoolean();
-        return new UniverseContextState(universeState, fpsShowing, axisShowing);
+        return new UniverseContextState(universeState, canvasState, axisShowing);
     }
 
     /**
      * Create a specific universe context state with
      * <ul>
      * <li>specific universe state made through the {@link #createSpecificUniverseState()} method</li>
-     * <li>fpsShowing = false</li>
+     * <li>specific canvas state made through the {@link DisplayDataCreatorForTests#createSpecificCanvasState()} method</li>
      * <li>axisShowing = true</li>
      * </ul>
      * 
@@ -66,13 +67,14 @@ public final class CoreDataCreatorForTests {
      */
     public static UniverseContextState createSpecificUniverseContextState() {
         UniverseState universeState = createSpecificUniverseState();
-        boolean fpsShowing = false;
+        SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = true;
-        return new UniverseContextState(universeState, fpsShowing, axisShowing);
+        return new UniverseContextState(universeState, canvasState, axisShowing);
     }
 
     public static UniverseState createRandomUniverseState() {
         int age = Randomizer.randomBetween(0, 100);
+        boolean fpsShowing = UtilDataCreatorForTests.createRandomBoolean();
         Set<TreeState> trees = new HashSet<TreeState>();
         trees.add(createRandomTreeState());
         trees.add(createRandomTreeState());
@@ -82,7 +84,7 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createRandomTreeLeafState());
         }
-        return new UniverseState(age, trees, fallenLeaves, createRandomEnvironmentState(),
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(),
                 createRandomTimeCounterState());
     }
 
@@ -90,6 +92,7 @@ public final class CoreDataCreatorForTests {
      * Create a specific universe state with
      * <ul>
      * <li>age=15</li>
+     * <li>fpsShowing = false</li>
      * <li>nb trees=3 (made through the {@link #createSpecificTreeState()} method)</li>
      * <li>nb fallen leaves=20 (made through the {@link #createSpecificTreeLeafState()} method)</li>
      * </ul>
@@ -100,6 +103,7 @@ public final class CoreDataCreatorForTests {
      */
     public static UniverseState createSpecificUniverseState() {
         int age = 15;
+        boolean fpsShowing = false;
         Set<TreeState> trees = new HashSet<TreeState>();
         trees.add(createSpecificTreeState());
         trees.add(createSpecificTreeState());
@@ -109,7 +113,7 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createSpecificTreeLeafState());
         }
-        return new UniverseState(age, trees, fallenLeaves, createSpecificEnvironmentState(),
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(),
                 createSpecificTimeCounterState());
     }
 
