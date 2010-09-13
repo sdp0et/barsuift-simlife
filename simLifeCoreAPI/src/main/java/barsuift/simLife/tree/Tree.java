@@ -22,10 +22,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import barsuift.simLife.LivingPart;
-import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.tree.Tree3D;
 
-public interface Tree extends LivingPart, Persistent<TreeState> {
+public interface Tree extends LivingPart {
 
     public float getHeight();
 

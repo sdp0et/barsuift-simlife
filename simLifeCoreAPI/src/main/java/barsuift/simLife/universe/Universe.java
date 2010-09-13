@@ -21,7 +21,6 @@ package barsuift.simLife.universe;
 import java.util.List;
 
 import barsuift.simLife.LivingPart;
-import barsuift.simLife.Persistent;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.FpsCounter;
@@ -30,7 +29,7 @@ import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 
 
-public interface Universe extends LivingPart, Persistent<UniverseState> {
+public interface Universe extends LivingPart {
 
     /**
      * Return an unmodifiable Set of all living parts
