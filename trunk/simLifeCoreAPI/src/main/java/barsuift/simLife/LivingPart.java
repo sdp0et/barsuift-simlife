@@ -18,7 +18,7 @@
  */
 package barsuift.simLife;
 
-public interface LivingPart {
+public interface LivingPart extends Persistent<State> {
 
     /**
      * Make the living part spend some time.

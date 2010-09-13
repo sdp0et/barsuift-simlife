@@ -22,10 +22,9 @@ import java.math.BigDecimal;
 
 import barsuift.simLife.IObservable;
 import barsuift.simLife.LivingPart;
-import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 
-public interface TreeLeaf extends LivingPart, IObservable, Persistent<TreeLeafState> {
+public interface TreeLeaf extends LivingPart, IObservable {
 
     public boolean isTooWeak();
 

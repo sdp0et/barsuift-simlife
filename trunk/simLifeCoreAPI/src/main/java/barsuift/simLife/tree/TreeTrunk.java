@@ -19,10 +19,9 @@
 package barsuift.simLife.tree;
 
 import barsuift.simLife.LivingPart;
-import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.tree.TreeTrunk3D;
 
-public interface TreeTrunk extends LivingPart, Persistent<TreeTrunkState> {
+public interface TreeTrunk extends LivingPart {
 
     public float getHeight();
 
