@@ -51,8 +51,8 @@ public class BasicTreeTrunkTest extends TestCase {
     public void testGetState() {
         TreeTrunkState trunkState = CoreDataCreatorForTests.createSpecificTreeTrunkState();
         BasicTreeTrunk treeTrunk = new BasicTreeTrunk(new MockUniverse(), trunkState);
-        assertEquals(4, treeTrunk.getHeight());
-        assertEquals(0.5, treeTrunk.getRadius());
+        assertEquals(4.0f, treeTrunk.getHeight());
+        assertEquals(0.5f, treeTrunk.getRadius());
 
         assertEquals(trunkState, treeTrunk.getState());
         assertSame(trunkState, treeTrunk.getState());
