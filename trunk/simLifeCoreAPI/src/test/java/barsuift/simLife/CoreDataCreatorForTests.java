@@ -49,26 +49,26 @@ public final class CoreDataCreatorForTests {
 
     public static UniverseContextState createRandomUniverseContextState() {
         UniverseState universeState = createRandomUniverseState();
-        boolean showFps = UtilDataCreatorForTests.createRandomBoolean();
-        boolean isAxisShown = UtilDataCreatorForTests.createRandomBoolean();
-        return new UniverseContextState(universeState, showFps, isAxisShown);
+        boolean fpsShowing = UtilDataCreatorForTests.createRandomBoolean();
+        boolean axisShowing = UtilDataCreatorForTests.createRandomBoolean();
+        return new UniverseContextState(universeState, fpsShowing, axisShowing);
     }
 
     /**
      * Create a specific universe context state with
      * <ul>
      * <li>specific universe state made through the {@link #createSpecificUniverseState()} method</li>
-     * <li>showFps = false</li>
-     * <li>isAxisShown = true</li>
+     * <li>fpsShowing = false</li>
+     * <li>axisShowing = true</li>
      * </ul>
      * 
      * @return
      */
     public static UniverseContextState createSpecificUniverseContextState() {
         UniverseState universeState = createSpecificUniverseState();
-        boolean showFps = false;
-        boolean isAxisShown = true;
-        return new UniverseContextState(universeState, showFps, isAxisShown);
+        boolean fpsShowing = false;
+        boolean axisShowing = true;
+        return new UniverseContextState(universeState, fpsShowing, axisShowing);
     }
 
     public static UniverseState createRandomUniverseState() {

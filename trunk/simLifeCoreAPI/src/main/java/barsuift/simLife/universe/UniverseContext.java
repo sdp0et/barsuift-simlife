@@ -27,20 +27,17 @@ public interface UniverseContext extends Persistent<UniverseContextState> {
 
     public Universe getUniverse();
 
-    public void showFps(boolean show);
+    public void setFpsShowing(boolean fpsShowing);
 
-    public boolean isShowFps();
-
-    /**
-     * Add the X-Y-Z axis as 3 segments of 5 meters along X, Y, and Z axis
-     */
-    public void setAxis();
+    public boolean isFpsShowing();
 
     /**
-     * Remove the X-Y-Z axis
+     * Add or remove the X-Y-Z axis as 3 segments of 5 meters along X, Y, and Z axis
+     * 
+     * @param axisShowing
      */
-    public void unsetAxis();
+    public void setAxisShowing(boolean axisShowing);
 
-    public boolean isAxisShown();
+    public boolean isAxisShowing();
 
 }

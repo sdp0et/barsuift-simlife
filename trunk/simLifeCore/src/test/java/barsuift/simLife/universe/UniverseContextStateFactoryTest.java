@@ -34,8 +34,8 @@ public class UniverseContextStateFactoryTest extends TestCase {
     public void testCreateRandomUniverseContextState() {
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = factory.createRandomUniverseContextState();
-        assertTrue(universeContextState.isAxisShown());
-        assertFalse(universeContextState.isShowFps());
+        assertTrue(universeContextState.isAxisShowing());
+        assertFalse(universeContextState.isFpsShowing());
 
         UniverseState universeState = universeContextState.getUniverseState();
         assertNotNull(universeState);

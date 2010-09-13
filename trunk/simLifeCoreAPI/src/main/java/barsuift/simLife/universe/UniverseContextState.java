@@ -27,38 +27,38 @@ public class UniverseContextState implements State {
 
     private UniverseState universeState;
 
-    private boolean showFps;
+    private boolean fpsShowing;
 
-    private boolean isAxisShown;
+    private boolean axisShowing;
 
     public UniverseContextState() {
         super();
         this.universeState = new UniverseState();
-        this.showFps = false;
-        this.isAxisShown = true;
+        this.fpsShowing = false;
+        this.axisShowing = true;
     }
 
-    public UniverseContextState(UniverseState universeState, boolean showFps, boolean isAxisShown) {
+    public UniverseContextState(UniverseState universeState, boolean showFps, boolean axisShowing) {
         super();
         this.universeState = universeState;
-        this.showFps = showFps;
-        this.isAxisShown = isAxisShown;
+        this.fpsShowing = showFps;
+        this.axisShowing = axisShowing;
     }
 
-    public boolean isShowFps() {
-        return showFps;
+    public boolean isFpsShowing() {
+        return fpsShowing;
     }
 
-    public void setShowFps(boolean showFps) {
-        this.showFps = showFps;
+    public void setFpsShowing(boolean fpsShowing) {
+        this.fpsShowing = fpsShowing;
     }
 
-    public boolean isAxisShown() {
-        return isAxisShown;
+    public boolean isAxisShowing() {
+        return axisShowing;
     }
 
-    public void setAxisShown(boolean isAxisShown) {
-        this.isAxisShown = isAxisShown;
+    public void setAxisShowing(boolean axisShowing) {
+        this.axisShowing = axisShowing;
     }
 
     public UniverseState getUniverseState() {
@@ -73,8 +73,8 @@ public class UniverseContextState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (isAxisShown ? 1231 : 1237);
-        result = prime * result + (showFps ? 1231 : 1237);
+        result = prime * result + (axisShowing ? 1231 : 1237);
+        result = prime * result + (fpsShowing ? 1231 : 1237);
         result = prime * result + ((universeState == null) ? 0 : universeState.hashCode());
         return result;
     }
@@ -88,9 +88,9 @@ public class UniverseContextState implements State {
         if (getClass() != obj.getClass())
             return false;
         UniverseContextState other = (UniverseContextState) obj;
-        if (isAxisShown != other.isAxisShown)
+        if (axisShowing != other.axisShowing)
             return false;
-        if (showFps != other.showFps)
+        if (fpsShowing != other.fpsShowing)
             return false;
         if (universeState == null) {
             if (other.universeState != null)
@@ -103,8 +103,8 @@ public class UniverseContextState implements State {
 
     @Override
     public String toString() {
-        return "UniverseContextState [universeState=" + universeState + ", showFps=" + showFps + ", isAxisShown="
-                + isAxisShown + "]";
+        return "UniverseContextState [universeState=" + universeState + ", fpsShowing=" + fpsShowing + ", axisShowing="
+                + axisShowing + "]";
     }
 
 
