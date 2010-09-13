@@ -51,11 +51,13 @@ public class UniverseStateFactory {
      * <ul>
      * <li>nb of trees between 1 and 4</li>
      * <li>a random environment</li>
+     * <li>fpsShowing = false</li>
      * </ul>
      * 
      * @return
      */
     public UniverseState createRandomUniverseState() {
+        boolean fpsShowing = false;
         int nbTrees = Randomizer.randomBetween(1, 4);
         TreeStateFactory treeStateFactory = new TreeStateFactory();
         Set<TreeState> trees = new HashSet<TreeState>(nbTrees);
@@ -70,15 +72,26 @@ public class UniverseStateFactory {
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
 
-        return new UniverseState(0, trees, fallenLeaves, environment, new TimeCounterState());
+        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, new TimeCounterState());
     }
 
+    /**
+     * Creates an empty universe state with the following values :
+     * <ul>
+     * <li>nb of trees = 0</li>
+     * <li>a random environment</li>
+     * <li>fpsShowing = false</li>
+     * </ul>
+     * 
+     * @return
+     */
     public UniverseState createEmptyUniverseState() {
+        boolean fpsShowing = false;
         Set<TreeState> trees = new HashSet<TreeState>(0);
         Set<TreeLeafState> fallenLeaves = new HashSet<TreeLeafState>(0);
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
-        return new UniverseState(0, trees, fallenLeaves, environment, new TimeCounterState());
+        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, new TimeCounterState());
     }
 
 }

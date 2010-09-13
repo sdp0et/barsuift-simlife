@@ -18,6 +18,9 @@
  */
 package barsuift.simLife.universe;
 
+import barsuift.simLife.j3d.SimLifeCanvas3DState;
+import barsuift.simLife.j3d.SimLifeCanvas3DStateFactory;
+
 
 public class UniverseContextStateFactory {
 
@@ -25,7 +28,7 @@ public class UniverseContextStateFactory {
      * Creates a random UniverseContextState with the following values :
      * <ul>
      * <li>a random universe state</li>
-     * <li>fpsShowing = false</li>
+     * <li>a random canvas state</li>
      * <li>axisShowing = true</li>
      * </ul>
      * 
@@ -34,7 +37,9 @@ public class UniverseContextStateFactory {
     public UniverseContextState createRandomUniverseContextState() {
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createRandomUniverseState();
-        return new UniverseContextState(universeState, false, true);
+        SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
+        SimLifeCanvas3DState canvasState = canvasStateFactory.createRandomCanvasState();
+        return new UniverseContextState(universeState, canvasState, true);
     }
 
     /**
@@ -42,7 +47,7 @@ public class UniverseContextStateFactory {
      * <ul>
      * <li>no trees</li>
      * <li>an empty universe state</li>
-     * <li>fpsShowing = false</li>
+     * <li>an empty canvas state</li>
      * <li>axisShowing = true</li>
      * </ul>
      * 
@@ -51,7 +56,9 @@ public class UniverseContextStateFactory {
     public UniverseContextState createEmptyUniverseContextState() {
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createEmptyUniverseState();
-        return new UniverseContextState(universeState, false, true);
+        SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
+        SimLifeCanvas3DState canvasState = canvasStateFactory.createEmptyCanvasState();
+        return new UniverseContextState(universeState, canvasState, true);
     }
 
 }

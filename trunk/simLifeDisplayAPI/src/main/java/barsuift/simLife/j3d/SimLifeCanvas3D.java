@@ -18,7 +18,23 @@
  */
 package barsuift.simLife.j3d;
 
+import java.awt.GraphicsConfiguration;
 
-public interface SimLifeCanvas3D {
+import javax.media.j3d.Canvas3D;
+
+import barsuift.simLife.Persistent;
+
+
+public abstract class SimLifeCanvas3D extends Canvas3D implements Persistent<SimLifeCanvas3DState> {
+
+    private static final long serialVersionUID = 1798827082788909905L;
+
+    public SimLifeCanvas3D(GraphicsConfiguration graphicsConfiguration) {
+        super(graphicsConfiguration);
+    }
+
+    public abstract void setFpsShowing(boolean fpsShowing);
+
+    public abstract boolean isFpsShowing();
 
 }
