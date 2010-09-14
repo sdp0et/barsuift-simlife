@@ -37,8 +37,7 @@ import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-// TODO 008. store the camera position (and create the Action and menu item)
-// TODO 008. store the showAxis (and create the Action and menu item)
+// TODO 001. store the camera position (and create the Action and menu item)
 public class BasicUniverseContext implements UniverseContext {
 
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
