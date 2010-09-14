@@ -39,10 +39,11 @@ public class TreeStateFactory {
      */
     public static final float HEIGHT_BRANCH_RADIAL_LENGTH_RATIO = 0.5f;
 
-    // TODO 001. the height and nb of branches should be computed here
-    public TreeState createRandomTreeState(Point3d translationVector, int nbBranches, float height) {
+    public TreeState createRandomTreeState(Point3d translationVector) {
         int age = Randomizer.randomBetween(0, 100);
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
+        int nbBranches = Randomizer.randomBetween(30, 50);
+        float height = Randomizer.randomBetween(3, 5);
         float radius = height / HEIGHT_RADIUS_RATIO;
         List<TreeBranchState> branches = new ArrayList<TreeBranchState>(nbBranches);
         for (int i = 0; i < nbBranches; i++) {

@@ -25,7 +25,6 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
-import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 
 
@@ -45,13 +44,13 @@ public class TreeStateFactoryTest extends TestCase {
 
     public void testCreateRandomTreeState() {
         Point3d translationVector = new Point3d(Math.random(), Math.random(), Math.random());
-        int nbBranches = Randomizer.randomBetween(40, 60);
-        float height = Randomizer.randomBetween(8, 12);
-        TreeState treeState = factory.createRandomTreeState(translationVector, nbBranches, height);
+        TreeState treeState = factory.createRandomTreeState(translationVector);
         List<TreeBranchState> branches = treeState.getBranches();
-        assertEquals(nbBranches, branches.size());
-
-        assertEquals(height, treeState.getHeight());
+        assertTrue(30 <= branches.size());
+        assertTrue(50 >= branches.size());
+        float height = treeState.getHeight();
+        assertTrue(3 <= height);
+        assertTrue(5 >= height);
         TreeTrunkState trunkState = treeState.getTrunkState();
         assertEquals(height / 8, trunkState.getRadius());
         assertNotNull(treeState.getTree3DState());
