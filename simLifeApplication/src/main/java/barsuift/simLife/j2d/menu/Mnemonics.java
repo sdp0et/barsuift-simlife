@@ -28,6 +28,11 @@ public class Mnemonics {
         // private constructor to enforce static access
     }
 
+    /*
+     * Mnemonics should be unique at a given point of the navigation. They are ordered by menu.
+     */
+
+
     /* File menu */
 
     public static final int FILE = KeyEvent.VK_F;
@@ -49,5 +54,7 @@ public class Mnemonics {
     public static final int WINDOW = KeyEvent.VK_W;
 
     public static final int VIEW_FPS = KeyEvent.VK_F;
+
+    public static final int VIEW_AXIS = KeyEvent.VK_A;
 
 }
