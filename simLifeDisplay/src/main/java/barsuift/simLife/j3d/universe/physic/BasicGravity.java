@@ -1,5 +1,7 @@
 /**
- * barsuift-simlife is a life simulator program * Copyright (C) 2010 Cyrille GACHOT
+ * barsuift-simlife is a life simulator program
+ * 
+ * Copyright (C) 2010 Cyrille GACHOT
  * 
  * This file is part of barsuift-simlife.
  * 
