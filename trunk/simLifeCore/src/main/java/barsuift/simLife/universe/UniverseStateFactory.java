@@ -62,10 +62,8 @@ public class UniverseStateFactory {
         TreeStateFactory treeStateFactory = new TreeStateFactory();
         Set<TreeState> trees = new HashSet<TreeState>(nbTrees);
         for (int i = 0; i < nbTrees; i++) {
-            int nbBranches = Randomizer.randomBetween(30, 50);
-            float height = Randomizer.randomBetween(3, 5);
             Point3d translationVector = originPoints.get(new Long(i));
-            trees.add(treeStateFactory.createRandomTreeState(translationVector, nbBranches, height));
+            trees.add(treeStateFactory.createRandomTreeState(translationVector));
         }
         Set<TreeLeafState> fallenLeaves = new HashSet<TreeLeafState>(0);
 

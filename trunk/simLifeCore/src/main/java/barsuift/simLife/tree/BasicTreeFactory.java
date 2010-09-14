@@ -30,9 +30,9 @@ public class BasicTreeFactory {
         this.universe = universe;
     }
 
-    public Tree createRandom(Point3d translationVector, int nbBranches, float height) {
+    public Tree createRandom(Point3d translationVector) {
         TreeStateFactory treeStateFactory = new TreeStateFactory();
-        TreeState treeState = treeStateFactory.createRandomTreeState(translationVector, nbBranches, height);
+        TreeState treeState = treeStateFactory.createRandomTreeState(translationVector);
         Tree tree = new BasicTree(universe, treeState);
         return tree;
     }
