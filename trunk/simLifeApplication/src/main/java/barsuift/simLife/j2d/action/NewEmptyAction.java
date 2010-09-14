@@ -21,7 +21,6 @@ package barsuift.simLife.j2d.action;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 
 import barsuift.simLife.Application;
 import barsuift.simLife.j2d.menu.Accelerators;
@@ -37,7 +36,7 @@ public class NewEmptyAction extends AbstractAction {
     public NewEmptyAction(Application application) {
         super();
         this.application = application;
-        putValue(Action.NAME, "New (empty)");
+        putValue(NAME, "New (empty)");
         putValue(SHORT_DESCRIPTION, "Create a new empty universe");
         putValue(MNEMONIC_KEY, Mnemonics.FILE_NEW_EMPTY);
         putValue(ACCELERATOR_KEY, Accelerators.NEW_EMPTY);

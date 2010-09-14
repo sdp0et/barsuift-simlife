@@ -28,48 +28,48 @@ import barsuift.simLife.Application;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 
-public class FpsAction extends AbstractAction implements Observer {
+public class AxisAction extends AbstractAction implements Observer {
 
-    private static final long serialVersionUID = 8709944906687074411L;
+    private static final long serialVersionUID = 649806431886707462L;
 
     private final Application application;
 
-    private boolean fpsShowing;
+    private boolean axisShowing;
 
-    public FpsAction(Application application) {
+    public AxisAction(Application application) {
         super();
         this.application = application;
         application.addObserver(this);
-        fpsShowing = application.isFpsShowing();
-        putValue(MNEMONIC_KEY, Mnemonics.VIEW_FPS);
-        putValue(ACCELERATOR_KEY, Accelerators.FPS);
-        updateState(fpsShowing);
+        axisShowing = application.isAxisShowing();
+        putValue(MNEMONIC_KEY, Mnemonics.VIEW_AXIS);
+        putValue(ACCELERATOR_KEY, Accelerators.AXIS);
+        updateState(axisShowing);
         setEnabled(false);
     }
 
-    private void updateState(boolean fpsShowing) {
-        this.fpsShowing = fpsShowing;
-        if (fpsShowing) {
-            // fps is now showing, so next action will be to hide it
-            putValue(NAME, "Do not show FPS");
-            putValue(SHORT_DESCRIPTION, "Hide the FPS (Frame Per Second)");
+    private void updateState(boolean axisShowing) {
+        this.axisShowing = axisShowing;
+        if (axisShowing) {
+            // axis are now showing, so next action will be to hide them
+            putValue(NAME, "Do not show axis");
+            putValue(SHORT_DESCRIPTION, "Hide the axis");
         } else {
-            // fps is now hidden, so next action will be to show it
-            putValue(NAME, "Show FPS");
-            putValue(SHORT_DESCRIPTION, "Show the FPS (Frame Per Second)");
+            // axis are now hidden, so next action will be to show them
+            putValue(NAME, "Show axis");
+            putValue(SHORT_DESCRIPTION, "Show the axis");
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // switch the fpsShowing flag
-        updateState(!fpsShowing);
-        application.setFpsShowing(fpsShowing);
+        // switch the axisShowing flag
+        updateState(!axisShowing);
+        application.setAxisShowing(axisShowing);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        updateState(((Application) o).isFpsShowing());
+        updateState(((Application) o).isAxisShowing());
         setEnabled(true);
     }
 

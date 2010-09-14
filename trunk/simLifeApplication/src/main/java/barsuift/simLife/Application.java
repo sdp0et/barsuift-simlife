@@ -19,6 +19,7 @@
 package barsuift.simLife;
 
 import java.io.File;
+import java.util.Observable;
 
 import barsuift.simLife.j2d.MainWindow;
 import barsuift.simLife.universe.BasicUniverseContextFactory;
@@ -28,7 +29,7 @@ import barsuift.simLife.universe.UniverseContext;
 import barsuift.simLife.universe.UniverseContextIO;
 
 // TODO 005. add a changelog file to trace what is added in a version of the application
-public class Application {
+public class Application extends Observable {
 
     private File currentSaveFile;
 
@@ -46,6 +47,8 @@ public class Application {
         this.currentUniverseContext = factory.createEmpty();
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
+        setChanged();
+        notifyObservers();
         return currentUniverseContext;
     }
 
@@ -54,6 +57,8 @@ public class Application {
         this.currentUniverseContext = factory.createRandom();
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
+        setChanged();
+        notifyObservers();
         return currentUniverseContext;
     }
 
@@ -63,6 +68,8 @@ public class Application {
         this.currentUniverseContext = envIO.read();
         this.window.changeUniverse(currentUniverseContext);
         this.currentSaveFile = saveFile;
+        setChanged();
+        notifyObservers();
         return currentUniverseContext;
     }
 
@@ -90,7 +97,28 @@ public class Application {
         if (currentUniverseContext != null) {
             currentUniverseContext.setFpsShowing(fpsShowing);
         }
+    }
 
+    public boolean isFpsShowing() {
+        if (currentUniverseContext == null) {
+            return false;
+        } else {
+            return currentUniverseContext.isFpsShowing();
+        }
+    }
+
+    public void setAxisShowing(boolean fpsShowing) {
+        if (currentUniverseContext != null) {
+            currentUniverseContext.setAxisShowing(fpsShowing);
+        }
+    }
+
+    public boolean isAxisShowing() {
+        if (currentUniverseContext == null) {
+            return false;
+        } else {
+            return currentUniverseContext.isAxisShowing();
+        }
     }
 
 }

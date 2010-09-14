@@ -23,6 +23,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.j2d.action.AxisAction;
 import barsuift.simLife.j2d.action.FpsAction;
 import barsuift.simLife.j2d.action.NewEmptyAction;
 import barsuift.simLife.j2d.action.NewRandomAction;
@@ -35,7 +36,7 @@ public class MenuFactory {
     public JMenuBar createMenuBar(Application application) {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createFileMenu(application));
-        menuBar.add(createAdminMenu(application));
+        menuBar.add(createWindowMenu(application));
         return menuBar;
     }
 
@@ -65,13 +66,17 @@ public class MenuFactory {
         return fileMenu;
     }
 
-    private JMenu createAdminMenu(Application application) {
+    private JMenu createWindowMenu(Application application) {
         JMenu adminMenu = new JMenu("Window");
         adminMenu.setMnemonic(Mnemonics.WINDOW);
 
         FpsAction fpsAction = new FpsAction(application);
         JMenuItem fpsItem = new JMenuItem(fpsAction);
         adminMenu.add(fpsItem);
+
+        AxisAction axisAction = new AxisAction(application);
+        JMenuItem axisItem = new JMenuItem(axisAction);
+        adminMenu.add(axisItem);
 
         return adminMenu;
     }

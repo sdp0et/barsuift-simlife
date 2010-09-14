@@ -31,6 +31,13 @@ public class Accelerators {
         // private constructor to enforce static access
     }
 
+    /*
+     * Accelerators must be unique : they are ordered by key combinations
+     */
+
+    // Ctrl + A
+    public static final KeyStroke AXIS = KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK);
+
     // Ctrl + F
     public static final KeyStroke FPS = KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK);
 

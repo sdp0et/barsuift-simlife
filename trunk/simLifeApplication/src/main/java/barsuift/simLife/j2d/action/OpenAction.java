@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JFileChooser;
 
 import barsuift.simLife.Application;
@@ -40,7 +39,7 @@ public class OpenAction extends AbstractAction {
     public OpenAction(Application application) {
         super();
         this.application = application;
-        putValue(Action.NAME, "Open");
+        putValue(NAME, "Open");
         putValue(SHORT_DESCRIPTION, "Open another universe");
         putValue(MNEMONIC_KEY, Mnemonics.FILE_OPEN);
         putValue(ACCELERATOR_KEY, Accelerators.OPEN);

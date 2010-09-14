@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JFileChooser;
 
 import barsuift.simLife.Application;
@@ -40,7 +39,7 @@ public class SaveAsAction extends AbstractAction {
     public SaveAsAction(Application application) {
         super();
         this.application = application;
-        putValue(Action.NAME, "Save As ...");
+        putValue(NAME, "Save As ...");
         putValue(SHORT_DESCRIPTION, "Save the current universe in a new file");
         putValue(MNEMONIC_KEY, Mnemonics.FILE_SAVE_AS);
         putValue(ACCELERATOR_KEY, Accelerators.SAVE_AS);
