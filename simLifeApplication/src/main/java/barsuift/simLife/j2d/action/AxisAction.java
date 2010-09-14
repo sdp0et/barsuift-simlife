@@ -25,6 +25,7 @@ import java.util.Observer;
 import javax.swing.AbstractAction;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 
@@ -62,15 +63,20 @@ public class AxisAction extends AbstractAction implements Observer {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // switch the axisShowing flag
-        updateState(!axisShowing);
-        application.setAxisShowing(axisShowing);
+        // switch the axisShowing flag : if it is currently displayed, then the action is to hide it
+        application.setAxisShowing(!axisShowing);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        updateState(((Application) o).isAxisShowing());
-        setEnabled(true);
+        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
+                || arg == ApplicationUpdateCode.NEW_RANDOM) {
+            setEnabled(true);
+        }
+        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
+                || arg == ApplicationUpdateCode.NEW_RANDOM || arg == ApplicationUpdateCode.SHOW_AXIS) {
+            updateState(((Application) o).isAxisShowing());
+        }
     }
 
 }

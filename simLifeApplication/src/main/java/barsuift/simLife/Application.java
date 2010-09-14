@@ -48,7 +48,7 @@ public class Application extends Observable {
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         setChanged();
-        notifyObservers();
+        notifyObservers(ApplicationUpdateCode.NEW_EMPTY);
         return currentUniverseContext;
     }
 
@@ -58,7 +58,7 @@ public class Application extends Observable {
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         setChanged();
-        notifyObservers();
+        notifyObservers(ApplicationUpdateCode.NEW_RANDOM);
         return currentUniverseContext;
     }
 
@@ -69,7 +69,7 @@ public class Application extends Observable {
         this.window.changeUniverse(currentUniverseContext);
         this.currentSaveFile = saveFile;
         setChanged();
-        notifyObservers();
+        notifyObservers(ApplicationUpdateCode.OPEN);
         return currentUniverseContext;
     }
 
@@ -82,6 +82,8 @@ public class Application extends Observable {
         }
         UniverseContextIO envIO = new UniverseContextIO(currentSaveFile);
         envIO.write(currentUniverseContext);
+        setChanged();
+        notifyObservers(ApplicationUpdateCode.SAVE);
     }
 
     public void saveUniverseAs(File saveFile) throws SaveException {
@@ -91,11 +93,15 @@ public class Application extends Observable {
         UniverseContextIO envIO = new UniverseContextIO(saveFile);
         envIO.write(currentUniverseContext);
         this.currentSaveFile = saveFile;
+        setChanged();
+        notifyObservers(ApplicationUpdateCode.SAVE_AS);
     }
 
     public void setFpsShowing(boolean fpsShowing) {
         if (currentUniverseContext != null) {
             currentUniverseContext.setFpsShowing(fpsShowing);
+            setChanged();
+            notifyObservers(ApplicationUpdateCode.SHOW_FPS);
         }
     }
 
@@ -110,6 +116,8 @@ public class Application extends Observable {
     public void setAxisShowing(boolean fpsShowing) {
         if (currentUniverseContext != null) {
             currentUniverseContext.setAxisShowing(fpsShowing);
+            setChanged();
+            notifyObservers(ApplicationUpdateCode.SHOW_AXIS);
         }
     }
 

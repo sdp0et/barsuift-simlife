@@ -19,16 +19,19 @@
 package barsuift.simLife.j2d.action;
 
 import java.awt.event.ActionEvent;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.AbstractAction;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.universe.SaveException;
 
 
-public class SaveAction extends AbstractAction {
+public class SaveAction extends AbstractAction implements Observer {
 
     private static final long serialVersionUID = 8223229157394283604L;
 
@@ -37,10 +40,12 @@ public class SaveAction extends AbstractAction {
     public SaveAction(Application application) {
         super();
         this.application = application;
+        application.addObserver(this);
         putValue(NAME, "Save");
         putValue(SHORT_DESCRIPTION, "Save the current universe");
         putValue(MNEMONIC_KEY, Mnemonics.FILE_SAVE);
         putValue(ACCELERATOR_KEY, Accelerators.SAVE);
+        setEnabled(false);
     }
 
     @Override
@@ -49,6 +54,16 @@ public class SaveAction extends AbstractAction {
             application.saveUniverse();
         } catch (SaveException se) {
             System.out.println("Unable to save the universe to the current save file because " + se.getMessage());
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg == ApplicationUpdateCode.SAVE_AS || arg == ApplicationUpdateCode.OPEN) {
+            setEnabled(true);
+        }
+        if (arg == ApplicationUpdateCode.NEW_EMPTY || arg == ApplicationUpdateCode.NEW_RANDOM) {
+            setEnabled(false);
         }
     }
 
