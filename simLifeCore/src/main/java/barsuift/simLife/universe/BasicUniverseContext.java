@@ -37,7 +37,10 @@ import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-// TODO 001. store the camera position (and create the Action and menu item)
+// TODO 001. 1 store the viewer position
+// TODO 001. 2 menu item to reset the viewer position
+// TODO 001. 3 store the camera view angle
+// TODO 001. 4 menu item to reset the camera view angle (the angle should be the same, but parallel to the ground)
 public class BasicUniverseContext implements UniverseContext {
 
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
