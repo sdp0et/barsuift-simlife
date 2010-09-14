@@ -25,6 +25,7 @@ import java.util.Observer;
 import javax.swing.AbstractAction;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 
@@ -62,15 +63,20 @@ public class FpsAction extends AbstractAction implements Observer {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // switch the fpsShowing flag
-        updateState(!fpsShowing);
-        application.setFpsShowing(fpsShowing);
+        // switch the fpsShowing flag : if it is currently displayed, then the action is to hide it
+        application.setFpsShowing(!fpsShowing);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        updateState(((Application) o).isFpsShowing());
-        setEnabled(true);
+        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
+                || arg == ApplicationUpdateCode.NEW_RANDOM) {
+            setEnabled(true);
+        }
+        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
+                || arg == ApplicationUpdateCode.NEW_RANDOM || arg == ApplicationUpdateCode.SHOW_FPS) {
+            updateState(((Application) o).isFpsShowing());
+        }
     }
 
 }
