@@ -30,7 +30,6 @@ import barsuift.simLife.universe.SaveException;
 import barsuift.simLife.universe.UniverseContext;
 import barsuift.simLife.universe.UniverseContextIO;
 
-// TODO 005. add a changelog file to trace what is added in a version of the application
 public class Application extends Observable {
 
     private File currentSaveFile;
