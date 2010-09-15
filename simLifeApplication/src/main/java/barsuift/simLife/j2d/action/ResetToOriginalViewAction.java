@@ -26,45 +26,29 @@ import javax.swing.AbstractAction;
 
 import barsuift.simLife.Application;
 import barsuift.simLife.ApplicationUpdateCode;
-import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.universe.UniverseContext;
 
-public class AxisAction extends AbstractAction implements Observer {
+public class ResetToOriginalViewAction extends AbstractAction implements Observer {
 
-    private static final long serialVersionUID = 649806431886707462L;
+    private static final long serialVersionUID = -348387892154292590L;
 
-    private final Application application;
+    private UniverseContext universeContext;
 
-    private boolean axisShowing;
-
-    public AxisAction(Application application) {
+    public ResetToOriginalViewAction(Application application) {
         super();
-        this.application = application;
         application.addObserver(this);
-        axisShowing = application.isAxisShowing();
-        putValue(MNEMONIC_KEY, Mnemonics.WINDOW_AXIS);
-        putValue(ACCELERATOR_KEY, Accelerators.AXIS);
-        updateState(axisShowing);
+        this.universeContext = application.getUniverseContext();
+        putValue(NAME, "Reset to original view");
+        putValue(SHORT_DESCRIPTION, "Reset the view angle and position to its original state");
+        putValue(MNEMONIC_KEY, Mnemonics.WINDOW_RESET_TO_ORIGINAL_VIEW);
+        // no accelerator
         setEnabled(false);
-    }
-
-    private void updateState(boolean axisShowing) {
-        this.axisShowing = axisShowing;
-        if (axisShowing) {
-            // axis are now showing, so next action will be to hide them
-            putValue(NAME, "Do not show axis");
-            putValue(SHORT_DESCRIPTION, "Hide the axis");
-        } else {
-            // axis are now hidden, so next action will be to show them
-            putValue(NAME, "Show axis");
-            putValue(SHORT_DESCRIPTION, "Show the axis");
-        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // switch the axisShowing flag : if it is currently displayed, then the action is to hide it
-        application.setAxisShowing(!axisShowing);
+        universeContext.resetToOriginalView();
     }
 
     @Override
@@ -72,11 +56,9 @@ public class AxisAction extends AbstractAction implements Observer {
         if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
                 || arg == ApplicationUpdateCode.NEW_RANDOM) {
             setEnabled(true);
+            this.universeContext = ((Application) o).getUniverseContext();
         }
-        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
-                || arg == ApplicationUpdateCode.NEW_RANDOM || arg == ApplicationUpdateCode.SHOW_AXIS) {
-            updateState(((Application) o).isAxisShowing());
-        }
+
     }
 
 }

@@ -40,4 +40,6 @@ public interface UniverseContext extends Persistent<UniverseContextState> {
 
     public boolean isAxisShowing();
 
+    public void resetToOriginalView();
+
 }

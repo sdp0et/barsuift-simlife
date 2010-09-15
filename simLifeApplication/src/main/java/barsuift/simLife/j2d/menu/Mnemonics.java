@@ -53,8 +53,10 @@ public class Mnemonics {
 
     public static final int WINDOW = KeyEvent.VK_W;
 
-    public static final int VIEW_FPS = KeyEvent.VK_F;
+    public static final int WINDOW_FPS = KeyEvent.VK_F;
 
-    public static final int VIEW_AXIS = KeyEvent.VK_A;
+    public static final int WINDOW_AXIS = KeyEvent.VK_A;
+
+    public static final int WINDOW_RESET_TO_ORIGINAL_VIEW = KeyEvent.VK_O;
 
 }

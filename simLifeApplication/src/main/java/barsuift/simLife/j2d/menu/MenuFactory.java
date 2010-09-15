@@ -28,6 +28,7 @@ import barsuift.simLife.j2d.action.FpsAction;
 import barsuift.simLife.j2d.action.NewEmptyAction;
 import barsuift.simLife.j2d.action.NewRandomAction;
 import barsuift.simLife.j2d.action.OpenAction;
+import barsuift.simLife.j2d.action.ResetToOriginalViewAction;
 import barsuift.simLife.j2d.action.SaveAction;
 import barsuift.simLife.j2d.action.SaveAsAction;
 
@@ -78,6 +79,10 @@ public class MenuFactory {
         AxisAction axisAction = new AxisAction(application);
         JMenuItem axisItem = new JMenuItem(axisAction);
         adminMenu.add(axisItem);
+
+        ResetToOriginalViewAction resetOriginalViewAction = new ResetToOriginalViewAction(application);
+        JMenuItem resetOriginalViewItem = new JMenuItem(resetOriginalViewAction);
+        adminMenu.add(resetOriginalViewItem);
 
         return adminMenu;
     }
