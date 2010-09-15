@@ -21,6 +21,8 @@ package barsuift.simLife;
 import java.io.File;
 import java.util.Observable;
 
+import javax.swing.JFileChooser;
+
 import barsuift.simLife.j2d.MainWindow;
 import barsuift.simLife.universe.BasicUniverseContextFactory;
 import barsuift.simLife.universe.OpenException;
@@ -84,6 +86,15 @@ public class Application extends Observable {
         envIO.write(currentUniverseContext);
         setChanged();
         notifyObservers(ApplicationUpdateCode.SAVE);
+    }
+
+    public void saveUniverseAs() throws SaveException {
+        final JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showSaveDialog(window);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            saveUniverseAs(file);
+        }
     }
 
     public void saveUniverseAs(File saveFile) throws SaveException {

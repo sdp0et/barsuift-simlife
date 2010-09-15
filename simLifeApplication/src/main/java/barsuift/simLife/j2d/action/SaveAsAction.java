@@ -19,18 +19,19 @@
 package barsuift.simLife.j2d.action;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.universe.SaveException;
 
 
-public class SaveAsAction extends AbstractAction {
+public class SaveAsAction extends AbstractAction implements Observer {
 
     private static final long serialVersionUID = -2391532464769897167L;
 
@@ -39,24 +40,28 @@ public class SaveAsAction extends AbstractAction {
     public SaveAsAction(Application application) {
         super();
         this.application = application;
+        application.addObserver(this);
         putValue(NAME, "Save As ...");
         putValue(SHORT_DESCRIPTION, "Save the current universe in a new file");
         putValue(MNEMONIC_KEY, Mnemonics.FILE_SAVE_AS);
         putValue(ACCELERATOR_KEY, Accelerators.SAVE_AS);
+        setEnabled(false);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showSaveDialog(null);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            try {
-                application.saveUniverseAs(file);
-            } catch (SaveException se) {
-                System.out.println("Unable to save the universe to the given file : " + file.getAbsolutePath()
-                        + " because " + se.getMessage());
-            }
+        try {
+            application.saveUniverseAs();
+        } catch (SaveException se) {
+            System.out.println("Unable to save the universe to given file because " + se.getMessage());
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg == ApplicationUpdateCode.NEW_EMPTY || arg == ApplicationUpdateCode.NEW_RANDOM
+                || arg == ApplicationUpdateCode.OPEN) {
+            setEnabled(true);
         }
     }
 

@@ -52,6 +52,10 @@ public class MenuFactory {
         JMenuItem newRandomItem = new JMenuItem(newRandomAction);
         fileMenu.add(newRandomItem);
 
+        OpenAction openAction = new OpenAction(application);
+        JMenuItem openItem = new JMenuItem(openAction);
+        fileMenu.add(openItem);
+
         SaveAction saveAction = new SaveAction(application);
         JMenuItem saveItem = new JMenuItem(saveAction);
         fileMenu.add(saveItem);
@@ -60,9 +64,6 @@ public class MenuFactory {
         JMenuItem saveAsItem = new JMenuItem(saveAsAction);
         fileMenu.add(saveAsItem);
 
-        OpenAction openAction = new OpenAction(application);
-        JMenuItem openItem = new JMenuItem(openAction);
-        fileMenu.add(openItem);
         return fileMenu;
     }
 
