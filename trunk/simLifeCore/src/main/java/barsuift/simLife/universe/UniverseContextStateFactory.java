@@ -24,12 +24,15 @@ import barsuift.simLife.j3d.SimLifeCanvas3DStateFactory;
 
 public class UniverseContextStateFactory {
 
+    public static double[] NOMINAL_VIEWER_TRANSFORM = new double[] { 1, 0, 0, 4, 0, 1, 0, 2, 0, 0, 1, 20, 0, 0, 0, 1 };
+
     /**
      * Creates a random UniverseContextState with the following values :
      * <ul>
      * <li>a random universe state</li>
      * <li>a random canvas state</li>
      * <li>axisShowing = true</li>
+     * <li>viewerTransform3D = identity matrix, 4 meters right, 2 meters high, 20 meters back</li>
      * </ul>
      * 
      * @return
@@ -39,7 +42,7 @@ public class UniverseContextStateFactory {
         UniverseState universeState = universeStateFactory.createRandomUniverseState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createRandomCanvasState();
-        return new UniverseContextState(universeState, canvasState, true);
+        return new UniverseContextState(universeState, canvasState, true, NOMINAL_VIEWER_TRANSFORM);
     }
 
     /**
@@ -49,6 +52,7 @@ public class UniverseContextStateFactory {
      * <li>an empty universe state</li>
      * <li>an empty canvas state</li>
      * <li>axisShowing = true</li>
+     * <li>viewerTransform3D = identity matrix, 4 meters right, 2 meters high, 20 meters back</li>
      * </ul>
      * 
      * @return
@@ -58,7 +62,7 @@ public class UniverseContextStateFactory {
         UniverseState universeState = universeStateFactory.createEmptyUniverseState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createEmptyCanvasState();
-        return new UniverseContextState(universeState, canvasState, true);
+        return new UniverseContextState(universeState, canvasState, true, NOMINAL_VIEWER_TRANSFORM);
     }
 
 }
