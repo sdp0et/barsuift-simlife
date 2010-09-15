@@ -28,20 +28,21 @@ import barsuift.simLife.Application;
 import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.universe.UniverseContext;
 
 public class AxisAction extends AbstractAction implements Observer {
 
     private static final long serialVersionUID = 649806431886707462L;
 
-    private final Application application;
+    private UniverseContext universeContext;
 
     private boolean axisShowing;
 
     public AxisAction(Application application) {
         super();
-        this.application = application;
+        this.universeContext = application.getUniverseContext();
         application.addObserver(this);
-        axisShowing = application.isAxisShowing();
+        axisShowing = universeContext == null ? false : universeContext.isAxisShowing();
         putValue(MNEMONIC_KEY, Mnemonics.WINDOW_AXIS);
         putValue(ACCELERATOR_KEY, Accelerators.AXIS);
         updateState(axisShowing);
@@ -64,7 +65,8 @@ public class AxisAction extends AbstractAction implements Observer {
     @Override
     public void actionPerformed(ActionEvent e) {
         // switch the axisShowing flag : if it is currently displayed, then the action is to hide it
-        application.setAxisShowing(!axisShowing);
+        updateState(!axisShowing);
+        universeContext.setAxisShowing(axisShowing);
     }
 
     @Override
@@ -72,10 +74,8 @@ public class AxisAction extends AbstractAction implements Observer {
         if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
                 || arg == ApplicationUpdateCode.NEW_RANDOM) {
             setEnabled(true);
-        }
-        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
-                || arg == ApplicationUpdateCode.NEW_RANDOM || arg == ApplicationUpdateCode.SHOW_AXIS) {
-            updateState(((Application) o).isAxisShowing());
+            this.universeContext = ((Application) o).getUniverseContext();
+            updateState(((Application) o).getUniverseContext().isAxisShowing());
         }
     }
 

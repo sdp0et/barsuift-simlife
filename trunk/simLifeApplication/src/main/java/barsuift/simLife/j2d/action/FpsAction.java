@@ -28,20 +28,21 @@ import barsuift.simLife.Application;
 import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.universe.UniverseContext;
 
 public class FpsAction extends AbstractAction implements Observer {
 
     private static final long serialVersionUID = 8709944906687074411L;
 
-    private final Application application;
+    private UniverseContext universeContext;
 
     private boolean fpsShowing;
 
     public FpsAction(Application application) {
         super();
-        this.application = application;
+        this.universeContext = application.getUniverseContext();
         application.addObserver(this);
-        fpsShowing = application.isFpsShowing();
+        fpsShowing = universeContext == null ? false : universeContext.isFpsShowing();
         putValue(MNEMONIC_KEY, Mnemonics.WINDOW_FPS);
         putValue(ACCELERATOR_KEY, Accelerators.FPS);
         updateState(fpsShowing);
@@ -64,7 +65,8 @@ public class FpsAction extends AbstractAction implements Observer {
     @Override
     public void actionPerformed(ActionEvent e) {
         // switch the fpsShowing flag : if it is currently displayed, then the action is to hide it
-        application.setFpsShowing(!fpsShowing);
+        updateState(!fpsShowing);
+        universeContext.setFpsShowing(fpsShowing);
     }
 
     @Override
@@ -72,10 +74,8 @@ public class FpsAction extends AbstractAction implements Observer {
         if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
                 || arg == ApplicationUpdateCode.NEW_RANDOM) {
             setEnabled(true);
-        }
-        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
-                || arg == ApplicationUpdateCode.NEW_RANDOM || arg == ApplicationUpdateCode.SHOW_FPS) {
-            updateState(((Application) o).isFpsShowing());
+            this.universeContext = ((Application) o).getUniverseContext();
+            updateState(((Application) o).getUniverseContext().isFpsShowing());
         }
     }
 

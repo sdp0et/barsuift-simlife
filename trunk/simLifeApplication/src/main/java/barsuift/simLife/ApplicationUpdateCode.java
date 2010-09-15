@@ -7,7 +7,6 @@ public enum ApplicationUpdateCode {
     NEW_RANDOM,
     SAVE,
     SAVE_AS,
-    OPEN,
-    SHOW_FPS,
-    SHOW_AXIS;
+    OPEN;
+
 }
