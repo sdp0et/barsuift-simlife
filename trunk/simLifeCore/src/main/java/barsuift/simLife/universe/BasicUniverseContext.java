@@ -35,7 +35,6 @@ import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-// TODO 001. 1 menu item to reset the viewer position
 // TODO 001. 2 menu item to reset the camera view angle (the angle should be the same, but parallel to the ground)
 public class BasicUniverseContext implements UniverseContext {
 
@@ -138,7 +137,7 @@ public class BasicUniverseContext implements UniverseContext {
         universe.synchronize();
     }
 
-    public void resetNominalView() {
+    public void resetToOriginalView() {
         viewTransform.setTransform(new Transform3D(UniverseContextStateFactory.NOMINAL_VIEWER_TRANSFORM));
     }
 

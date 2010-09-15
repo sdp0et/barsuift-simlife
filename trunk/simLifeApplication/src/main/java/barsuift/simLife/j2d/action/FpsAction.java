@@ -42,7 +42,7 @@ public class FpsAction extends AbstractAction implements Observer {
         this.application = application;
         application.addObserver(this);
         fpsShowing = application.isFpsShowing();
-        putValue(MNEMONIC_KEY, Mnemonics.VIEW_FPS);
+        putValue(MNEMONIC_KEY, Mnemonics.WINDOW_FPS);
         putValue(ACCELERATOR_KEY, Accelerators.FPS);
         updateState(fpsShowing);
         setEnabled(false);
