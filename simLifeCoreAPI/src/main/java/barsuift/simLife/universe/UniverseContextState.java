@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.universe;
 
+import java.util.Arrays;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
@@ -32,18 +34,24 @@ public class UniverseContextState implements State {
 
     private boolean axisShowing;
 
+    private double[] viewerTransform3D;
+
     public UniverseContextState() {
         super();
         this.universeState = new UniverseState();
         this.canvasState = new SimLifeCanvas3DState();
         this.axisShowing = true;
+        // identity matrix
+        this.viewerTransform3D = new double[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
     }
 
-    public UniverseContextState(UniverseState universeState, SimLifeCanvas3DState canvasState, boolean axisShowing) {
+    public UniverseContextState(UniverseState universeState, SimLifeCanvas3DState canvasState, boolean axisShowing,
+            double[] viewerTransform3D) {
         super();
         this.universeState = universeState;
         this.canvasState = canvasState;
         this.axisShowing = axisShowing;
+        this.viewerTransform3D = viewerTransform3D;
     }
 
     public boolean isAxisShowing() {
@@ -70,6 +78,14 @@ public class UniverseContextState implements State {
         this.canvasState = canvasState;
     }
 
+    public double[] getViewerTransform3D() {
+        return viewerTransform3D;
+    }
+
+    public void setViewerTransform3D(double[] viewerTransform3D) {
+        this.viewerTransform3D = viewerTransform3D;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -77,6 +93,7 @@ public class UniverseContextState implements State {
         result = prime * result + (axisShowing ? 1231 : 1237);
         result = prime * result + ((canvasState == null) ? 0 : canvasState.hashCode());
         result = prime * result + ((universeState == null) ? 0 : universeState.hashCode());
+        result = prime * result + Arrays.hashCode(viewerTransform3D);
         return result;
     }
 
@@ -103,13 +120,16 @@ public class UniverseContextState implements State {
         } else
             if (!universeState.equals(other.universeState))
                 return false;
+        if (!Arrays.equals(viewerTransform3D, other.viewerTransform3D))
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
         return "UniverseContextState [universeState=" + universeState + ", canvasState=" + canvasState
-                + ", axisShowing=" + axisShowing + "]";
+                + ", axisShowing=" + axisShowing + ", viewerTransform3D=" + Arrays.toString(viewerTransform3D) + "]";
     }
+
 
 }

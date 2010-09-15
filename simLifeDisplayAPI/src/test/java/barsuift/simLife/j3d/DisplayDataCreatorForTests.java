@@ -94,4 +94,11 @@ public final class DisplayDataCreatorForTests {
         return new SimLifeCanvas3DState(false);
     }
 
+    /**
+     * Return an array of double representing an identity matrix of 16 elements
+     */
+    public static double[] createSpecificTransform3D() {
+        return new double[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+    }
+
 }

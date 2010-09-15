@@ -52,7 +52,8 @@ public final class CoreDataCreatorForTests {
         UniverseState universeState = createRandomUniverseState();
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = UtilDataCreatorForTests.createRandomBoolean();
-        return new UniverseContextState(universeState, canvasState, axisShowing);
+        double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
+        return new UniverseContextState(universeState, canvasState, axisShowing, viewerTransform);
     }
 
     /**
@@ -69,7 +70,8 @@ public final class CoreDataCreatorForTests {
         UniverseState universeState = createSpecificUniverseState();
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = true;
-        return new UniverseContextState(universeState, canvasState, axisShowing);
+        double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
+        return new UniverseContextState(universeState, canvasState, axisShowing,viewerTransform);
     }
 
     public static UniverseState createRandomUniverseState() {

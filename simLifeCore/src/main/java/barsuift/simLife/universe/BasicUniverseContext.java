@@ -24,12 +24,10 @@ import javax.media.j3d.Group;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
-import barsuift.simLife.j3d.util.TransformerHelper;
 
 import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
 import com.sun.j3d.utils.behaviors.mouse.MouseBehavior;
@@ -37,10 +35,8 @@ import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-// TODO 001. 1 store the viewer position
-// TODO 001. 2 menu item to reset the viewer position
-// TODO 001. 3 store the camera view angle
-// TODO 001. 4 menu item to reset the camera view angle (the angle should be the same, but parallel to the ground)
+// TODO 001. 1 menu item to reset the viewer position
+// TODO 001. 2 menu item to reset the camera view angle (the angle should be the same, but parallel to the ground)
 public class BasicUniverseContext implements UniverseContext {
 
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
@@ -78,7 +74,7 @@ public class BasicUniverseContext implements UniverseContext {
         root.setCapability(Group.ALLOW_CHILDREN_WRITE);
 
         viewTransform = simpleU.getViewingPlatform().getViewPlatformTransform();
-        moveViewToNominal();
+        viewTransform.setTransform(new Transform3D(state.getViewerTransform3D()));
         addNavigators();
 
         root.addChild(universe.getUniverse3D().getUniverseRoot());
@@ -133,8 +129,17 @@ public class BasicUniverseContext implements UniverseContext {
     @Override
     public void synchronize() {
         state.setAxisShowing(axisShowing);
+        Transform3D transform3D = new Transform3D();
+        viewTransform.getTransform(transform3D);
+        double[] matrix = new double[16];
+        transform3D.get(matrix);
+        state.setViewerTransform3D(matrix);
         canvas3D.synchronize();
         universe.synchronize();
+    }
+
+    public void resetNominalView() {
+        viewTransform.setTransform(new Transform3D(UniverseContextStateFactory.NOMINAL_VIEWER_TRANSFORM));
     }
 
     private void addNavigators() {
@@ -146,13 +151,6 @@ public class BasicUniverseContext implements UniverseContext {
         root.addChild(mouseTranslateNavigator);
         MouseZoom mouseZoomNavigator = createMouseZoomNavigator();
         root.addChild(mouseZoomNavigator);
-    }
-
-    private void moveViewToNominal() {
-        // step back 20 meters, and 4 meters right
-        // view is at 2 meters high
-        Transform3D t3d = TransformerHelper.getTranslationTransform3D(new Vector3d(4, 2, 20));
-        viewTransform.setTransform(t3d);
     }
 
     private KeyNavigatorBehavior createKeyboardNavigator() {
