@@ -37,10 +37,13 @@ public class SaveAction extends AbstractAction implements Observer {
 
     private final Application application;
 
+    private boolean isAbleToSave;
+
     public SaveAction(Application application) {
         super();
         this.application = application;
         application.addObserver(this);
+        isAbleToSave = false;
         putValue(NAME, "Save");
         putValue(SHORT_DESCRIPTION, "Save the current universe");
         putValue(MNEMONIC_KEY, Mnemonics.FILE_SAVE);
@@ -50,10 +53,20 @@ public class SaveAction extends AbstractAction implements Observer {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            application.saveUniverse();
-        } catch (SaveException se) {
-            System.out.println("Unable to save the universe to the current save file because " + se.getMessage());
+        if (isAbleToSave) {
+            // "Save" action
+            try {
+                application.saveUniverse();
+            } catch (SaveException se) {
+                System.out.println("Unable to save the universe to the current save file because " + se.getMessage());
+            }
+        } else {
+            // "Save as" action
+            try {
+                application.saveUniverseAs();
+            } catch (SaveException se) {
+                System.out.println("Unable to save the universe to given file because " + se.getMessage());
+            }
         }
     }
 
@@ -61,9 +74,11 @@ public class SaveAction extends AbstractAction implements Observer {
     public void update(Observable o, Object arg) {
         if (arg == ApplicationUpdateCode.SAVE_AS || arg == ApplicationUpdateCode.OPEN) {
             setEnabled(true);
+            isAbleToSave = true;
         }
         if (arg == ApplicationUpdateCode.NEW_EMPTY || arg == ApplicationUpdateCode.NEW_RANDOM) {
-            setEnabled(false);
+            setEnabled(true);
+            isAbleToSave = false;
         }
     }
 
