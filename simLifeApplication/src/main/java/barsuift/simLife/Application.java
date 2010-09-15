@@ -107,39 +107,6 @@ public class Application extends Observable {
         notifyObservers(ApplicationUpdateCode.SAVE_AS);
     }
 
-    // TODO remove Fps and axis showing from application to universeContext directly
-    public void setFpsShowing(boolean fpsShowing) {
-        if (currentUniverseContext != null) {
-            currentUniverseContext.setFpsShowing(fpsShowing);
-            setChanged();
-            notifyObservers(ApplicationUpdateCode.SHOW_FPS);
-        }
-    }
-
-    public boolean isFpsShowing() {
-        if (currentUniverseContext == null) {
-            return false;
-        } else {
-            return currentUniverseContext.isFpsShowing();
-        }
-    }
-
-    public void setAxisShowing(boolean fpsShowing) {
-        if (currentUniverseContext != null) {
-            currentUniverseContext.setAxisShowing(fpsShowing);
-            setChanged();
-            notifyObservers(ApplicationUpdateCode.SHOW_AXIS);
-        }
-    }
-
-    public boolean isAxisShowing() {
-        if (currentUniverseContext == null) {
-            return false;
-        } else {
-            return currentUniverseContext.isAxisShowing();
-        }
-    }
-
     public UniverseContext getUniverseContext() {
         return currentUniverseContext;
     }
