@@ -54,8 +54,7 @@ public class BasicUniverseContext implements UniverseContext {
     private final Universe universe;
 
 
-
-    private final SimpleUniverse simpleU;
+    private final TransformGroup viewTransform;
 
     private final BranchGroup root;
 
@@ -67,7 +66,7 @@ public class BasicUniverseContext implements UniverseContext {
 
         this.universe = new BasicUniverse(state.getUniverseState());
         canvas3D = new BasicSimLifeCanvas3D(universe.getFpsCounter(), state.getCanvasState());
-        simpleU = new SimpleUniverse(canvas3D);
+        SimpleUniverse simpleU = new SimpleUniverse(canvas3D);
 
         // limit to graphic to 40 FPS (interval = 1000ms / 40 = 25)
         simpleU.getViewer().getView().setMinimumFrameCycleTime(25);
@@ -78,9 +77,9 @@ public class BasicUniverseContext implements UniverseContext {
         // allow the remove children from the root
         root.setCapability(Group.ALLOW_CHILDREN_WRITE);
 
-        TransformGroup viewTransform = simpleU.getViewingPlatform().getViewPlatformTransform();
-        moveView(viewTransform);
-        addNavigators(viewTransform);
+        viewTransform = simpleU.getViewingPlatform().getViewPlatformTransform();
+        moveViewToNominal();
+        addNavigators();
 
         root.addChild(universe.getUniverse3D().getUniverseRoot());
 
@@ -138,31 +137,31 @@ public class BasicUniverseContext implements UniverseContext {
         universe.synchronize();
     }
 
-    private void addNavigators(TransformGroup viewTransform) {
-        KeyNavigatorBehavior navigator = createKeyboardNavigator(viewTransform);
+    private void addNavigators() {
+        KeyNavigatorBehavior navigator = createKeyboardNavigator();
         root.addChild(navigator);
-        // MouseRotate mouseRotateNavigator = createMouseRotateNavigator(viewTransform);
-        // scene.addChild(mouseRotateNavigator);
-        MouseTranslate mouseTranslateNavigator = createMouseTranslateNavigator(viewTransform);
+        // MouseRotate mouseRotateNavigator = createMouseRotateNavigator();
+        // root.addChild(mouseRotateNavigator);
+        MouseTranslate mouseTranslateNavigator = createMouseTranslateNavigator();
         root.addChild(mouseTranslateNavigator);
-        MouseZoom mouseZoomNavigator = createMouseZoomNavigator(viewTransform);
+        MouseZoom mouseZoomNavigator = createMouseZoomNavigator();
         root.addChild(mouseZoomNavigator);
     }
 
-    private void moveView(TransformGroup viewTransform) {
+    private void moveViewToNominal() {
         // step back 20 meters, and 4 meters right
         // view is at 2 meters high
         Transform3D t3d = TransformerHelper.getTranslationTransform3D(new Vector3d(4, 2, 20));
         viewTransform.setTransform(t3d);
     }
 
-    private KeyNavigatorBehavior createKeyboardNavigator(TransformGroup viewTransform) {
+    private KeyNavigatorBehavior createKeyboardNavigator() {
         KeyNavigatorBehavior keyNavigator = new KeyNavigatorBehavior(viewTransform);
         keyNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
         return keyNavigator;
     }
 
-    // private MouseRotate createMouseRotateNavigator(TransformGroup viewTransform) {
+    // private MouseRotate createMouseRotateNavigator() {
     // MouseRotate mouseRotateNavigator = new MouseRotate(MouseBehavior.INVERT_INPUT);
     // mouseRotateNavigator.setTransformGroup(viewTransform);
     // mouseRotateNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
@@ -170,14 +169,14 @@ public class BasicUniverseContext implements UniverseContext {
     // return mouseRotateNavigator;
     // }
 
-    private MouseTranslate createMouseTranslateNavigator(TransformGroup viewTransform) {
+    private MouseTranslate createMouseTranslateNavigator() {
         MouseTranslate mouseTranslateNavigator = new MouseTranslate(MouseBehavior.INVERT_INPUT);
         mouseTranslateNavigator.setTransformGroup(viewTransform);
         mouseTranslateNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
         return mouseTranslateNavigator;
     }
 
-    private MouseZoom createMouseZoomNavigator(TransformGroup viewTransform) {
+    private MouseZoom createMouseZoomNavigator() {
         MouseZoom mouseZoomNavigator = new MouseZoom(MouseBehavior.INVERT_INPUT);
         mouseZoomNavigator.setTransformGroup(viewTransform);
         mouseZoomNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
