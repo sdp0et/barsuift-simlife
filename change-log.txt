@@ -17,6 +17,7 @@ Ability to show/hide FPS (new menu item), stored in save file
 Ability to show/hide the axis (new menu item), stored in save file
 The camera position and angle of view is stored in save file
 Ability to reset the camera to its original point of view (new menu item)
+Ability to reset the camera view angle to nominal one (along Z axis, parallel to the ground, and at 2 meters high)
 Improvement of the "File" menu to prevent potential IllegalStateException
 Improvement of the "File" menu to allow "Save" item to behave as "Save As..." item if no current save file is known
 #### Add a calendar system (not used yet)

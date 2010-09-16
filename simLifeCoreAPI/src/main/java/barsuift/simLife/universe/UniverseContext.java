@@ -40,6 +40,14 @@ public interface UniverseContext extends Persistent<UniverseContextState> {
 
     public boolean isAxisShowing();
 
+    /**
+     * Reset the view along the Z axis, parallel to the (X,Z) plan. Position is (4, 2, 20).
+     */
     public void resetToOriginalView();
+
+    /**
+     * Reset the view along the Z axis, parallel to the (X,Z) plan. Position is (currentX, 2, currentZ).
+     */
+    public void resetToNominalAngleOfView();
 
 }
