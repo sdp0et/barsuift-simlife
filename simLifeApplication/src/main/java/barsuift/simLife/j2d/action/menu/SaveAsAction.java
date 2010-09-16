@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j2d.action;
+package barsuift.simLife.j2d.action.menu;
 
 import java.awt.event.ActionEvent;
 import java.util.Observable;
@@ -26,39 +26,43 @@ import javax.swing.AbstractAction;
 
 import barsuift.simLife.Application;
 import barsuift.simLife.ApplicationUpdateCode;
+import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
-import barsuift.simLife.universe.UniverseContext;
+import barsuift.simLife.universe.SaveException;
 
-public class ResetToNominalViewAngleAction extends AbstractAction implements Observer {
 
-    private static final long serialVersionUID = 1291567621047871503L;
+public class SaveAsAction extends AbstractAction implements Observer {
 
-    private UniverseContext universeContext;
+    private static final long serialVersionUID = -2391532464769897167L;
 
-    public ResetToNominalViewAngleAction(Application application) {
+    private final Application application;
+
+    public SaveAsAction(Application application) {
         super();
+        this.application = application;
         application.addObserver(this);
-        this.universeContext = application.getUniverseContext();
-        putValue(NAME, "Reset to nominal view angle");
-        putValue(SHORT_DESCRIPTION, "Reset the view angle to its nominal state");
-        putValue(MNEMONIC_KEY, Mnemonics.WINDOW_RESET_TO_NOMINAL_VIEW_ANGLE);
-        // no accelerator
+        putValue(NAME, "Save As ...");
+        putValue(SHORT_DESCRIPTION, "Save the current universe in a new file");
+        putValue(MNEMONIC_KEY, Mnemonics.FILE_SAVE_AS);
+        putValue(ACCELERATOR_KEY, Accelerators.SAVE_AS);
         setEnabled(false);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        universeContext.resetToNominalAngleOfView();
+        try {
+            application.saveUniverseAs();
+        } catch (SaveException se) {
+            System.out.println("Unable to save the universe to given file because " + se.getMessage());
+        }
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
-                || arg == ApplicationUpdateCode.NEW_RANDOM) {
+        if (arg == ApplicationUpdateCode.NEW_EMPTY || arg == ApplicationUpdateCode.NEW_RANDOM
+                || arg == ApplicationUpdateCode.OPEN) {
             setEnabled(true);
-            this.universeContext = ((Application) o).getUniverseContext();
         }
-
     }
 
 }

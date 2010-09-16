@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j2d.action;
+package barsuift.simLife.j2d.action.menu;
 
 import java.awt.event.ActionEvent;
 
