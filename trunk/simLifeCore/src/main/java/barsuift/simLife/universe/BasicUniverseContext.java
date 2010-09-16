@@ -30,6 +30,7 @@ import javax.vecmath.Vector3d;
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
+import barsuift.simLife.time.UniverseTimeController;
 
 import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
 import com.sun.j3d.utils.behaviors.mouse.MouseBehavior;
@@ -49,6 +50,8 @@ public class BasicUniverseContext implements UniverseContext {
 
     private final Universe universe;
 
+    private final UniverseTimeController timeController;
+
 
     private final TransformGroup viewTransform;
 
@@ -61,6 +64,7 @@ public class BasicUniverseContext implements UniverseContext {
         this.axisShowing = state.isAxisShowing();
 
         this.universe = new BasicUniverse(state.getUniverseState());
+        timeController = new UniverseTimeController(universe);
         canvas3D = new BasicSimLifeCanvas3D(universe.getFpsCounter(), state.getCanvasState());
         SimpleUniverse simpleU = new SimpleUniverse(canvas3D);
 
@@ -92,6 +96,11 @@ public class BasicUniverseContext implements UniverseContext {
     @Override
     public Universe getUniverse() {
         return universe;
+    }
+
+    @Override
+    public UniverseTimeController getUniverseTimeController() {
+        return timeController;
     }
 
     @Override

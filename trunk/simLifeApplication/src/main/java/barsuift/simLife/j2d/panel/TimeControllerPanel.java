@@ -26,12 +26,18 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import barsuift.simLife.j2d.TimerDisplay;
+import barsuift.simLife.j2d.action.SpeedAction;
+import barsuift.simLife.j2d.menu.Accelerators;
+import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.time.UniverseTimeController;
 
 public class TimeControllerPanel extends JPanel {
@@ -59,12 +65,15 @@ public class TimeControllerPanel extends JPanel {
         super();
         this.controller = timeController;
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        setMaximumSize(new Dimension(220, 80));
+        setMaximumSize(new Dimension(220, 100));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
         timerDisplay = createTimerDisplay();
         timerDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(timerDisplay);
+
+        JPanel speedPanel = createSpeedPanel(timeController);
+        add(speedPanel);
 
         oneStepButton = createOneStepButton();
         startButton = createStartButton();
@@ -82,6 +91,28 @@ public class TimeControllerPanel extends JPanel {
         Border blacklineBorder = BorderFactory.createLineBorder(Color.black);
         TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "Time Control");
         setBorder(titledBorder);
+    }
+
+    private JPanel createSpeedPanel(UniverseTimeController timeController) {
+        JPanel speedPanel = new JPanel();
+        speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));
+        SpeedAction action1 = new SpeedAction(timeController, "1", "1 cycle / sec", Mnemonics.SPEED_1,
+                Accelerators.SPEED_1, "1");
+        JRadioButton speed1 = new JRadioButton(action1);
+        speed1.setSelected(true);
+
+        SpeedAction action10 = new SpeedAction(timeController, "10", "10 cycles / sec", Mnemonics.SPEED_10,
+                Accelerators.SPEED_10, "10");
+        JRadioButton speed10 = new JRadioButton(action10);
+
+        ButtonGroup speedSwitch = new ButtonGroup();
+        speedSwitch.add(speed1);
+        speedSwitch.add(speed10);
+
+        speedPanel.add(new JLabel("Speed"));
+        speedPanel.add(speed1);
+        speedPanel.add(speed10);
+        return speedPanel;
     }
 
     private TimerDisplay createTimerDisplay() {
