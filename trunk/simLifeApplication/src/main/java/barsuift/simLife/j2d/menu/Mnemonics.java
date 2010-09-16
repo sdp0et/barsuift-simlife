@@ -59,4 +59,6 @@ public class Mnemonics {
 
     public static final int WINDOW_RESET_TO_ORIGINAL_VIEW = KeyEvent.VK_O;
 
+    public static final int WINDOW_RESET_TO_NOMINAL_VIEW_ANGLE = KeyEvent.VK_N;
+
 }

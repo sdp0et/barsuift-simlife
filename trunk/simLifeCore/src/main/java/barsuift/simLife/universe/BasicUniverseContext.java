@@ -23,7 +23,9 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
+import javax.vecmath.Matrix3d;
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
@@ -35,7 +37,6 @@ import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-// TODO 001. 2 menu item to reset the camera view angle (the angle should be the same, but parallel to the ground)
 public class BasicUniverseContext implements UniverseContext {
 
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
@@ -120,6 +121,25 @@ public class BasicUniverseContext implements UniverseContext {
     }
 
     @Override
+    public void resetToOriginalView() {
+        viewTransform.setTransform(new Transform3D(UniverseContextStateFactory.NOMINAL_VIEWER_TRANSFORM));
+    }
+
+    @Override
+    public void resetToNominalAngleOfView() {
+        Transform3D viewingTransform = new Transform3D();
+        viewTransform.getTransform(viewingTransform);
+        Matrix3d matrix = new Matrix3d();
+        matrix.setIdentity();
+        viewingTransform.setRotationScale(matrix);
+        Vector3d currentTranslation = new Vector3d();
+        viewingTransform.get(currentTranslation);
+        currentTranslation.y = 2;
+        viewingTransform.setTranslation(currentTranslation);
+        viewTransform.setTransform(viewingTransform);
+    }
+
+    @Override
     public UniverseContextState getState() {
         synchronize();
         return state;
@@ -135,10 +155,6 @@ public class BasicUniverseContext implements UniverseContext {
         state.setViewerTransform3D(matrix);
         canvas3D.synchronize();
         universe.synchronize();
-    }
-
-    public void resetToOriginalView() {
-        viewTransform.setTransform(new Transform3D(UniverseContextStateFactory.NOMINAL_VIEWER_TRANSFORM));
     }
 
     private void addNavigators() {
