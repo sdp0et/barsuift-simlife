@@ -33,13 +33,15 @@ public class MainWindow extends JFrame {
 
     private MainPanel mainPanel;
 
-    public MainWindow(Application application) {
+    public MainWindow() {
         super("SimLife");
         int width = 768;
         int height = 512;
         setBounds(0, 0, width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 
+    public void createMenuBar(Application application) {
         MenuFactory menuFactory = new MenuFactory();
         JMenuBar menuBar = menuFactory.createMenuBar(application);
         setJMenuBar(menuBar);

@@ -61,4 +61,12 @@ public class Mnemonics {
 
     public static final int WINDOW_RESET_TO_NOMINAL_VIEW_ANGLE = KeyEvent.VK_N;
 
+
+
+    /* Help menu */
+
+    public static final int HELP = KeyEvent.VK_H;
+
+    public static final int HELP_NAVIGATION = KeyEvent.VK_N;
+
 }

@@ -39,7 +39,8 @@ public class Application extends Observable {
     private MainWindow window;
 
     public Application() {
-        this.window = new MainWindow(this);
+        this.window = new MainWindow();
+        this.window.createMenuBar(this);
         this.window.setVisible(true);
     }
 
@@ -109,6 +110,10 @@ public class Application extends Observable {
 
     public UniverseContext getUniverseContext() {
         return currentUniverseContext;
+    }
+
+    public MainWindow getMainWindow() {
+        return window;
     }
 
 }
