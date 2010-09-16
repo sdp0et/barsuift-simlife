@@ -24,16 +24,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import barsuift.simLife.Application;
-import barsuift.simLife.j2d.action.AxisAction;
-import barsuift.simLife.j2d.action.FpsAction;
-import barsuift.simLife.j2d.action.HelpNavigationAction;
-import barsuift.simLife.j2d.action.NewEmptyAction;
-import barsuift.simLife.j2d.action.NewRandomAction;
-import barsuift.simLife.j2d.action.OpenAction;
-import barsuift.simLife.j2d.action.ResetToNominalViewAngleAction;
-import barsuift.simLife.j2d.action.ResetToOriginalViewAction;
-import barsuift.simLife.j2d.action.SaveAction;
-import barsuift.simLife.j2d.action.SaveAsAction;
+import barsuift.simLife.j2d.action.menu.AxisAction;
+import barsuift.simLife.j2d.action.menu.FpsAction;
+import barsuift.simLife.j2d.action.menu.HelpNavigationAction;
+import barsuift.simLife.j2d.action.menu.NewEmptyAction;
+import barsuift.simLife.j2d.action.menu.NewRandomAction;
+import barsuift.simLife.j2d.action.menu.OpenAction;
+import barsuift.simLife.j2d.action.menu.ResetToNominalViewAngleAction;
+import barsuift.simLife.j2d.action.menu.ResetToOriginalViewAction;
+import barsuift.simLife.j2d.action.menu.SaveAction;
+import barsuift.simLife.j2d.action.menu.SaveAsAction;
 
 public class MenuFactory {
 

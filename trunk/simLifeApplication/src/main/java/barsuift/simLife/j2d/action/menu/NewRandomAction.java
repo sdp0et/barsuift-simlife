@@ -16,48 +16,35 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j2d.action;
+package barsuift.simLife.j2d.action.menu;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
 
 import barsuift.simLife.Application;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
-import barsuift.simLife.universe.OpenException;
 
 
-public class OpenAction extends AbstractAction {
+public class NewRandomAction extends AbstractAction {
 
-    private static final long serialVersionUID = -7706268023944038274L;
+    private static final long serialVersionUID = -7620926200302148499L;
 
     private final Application application;
 
-    public OpenAction(Application application) {
+    public NewRandomAction(Application application) {
         super();
         this.application = application;
-        putValue(NAME, "Open");
-        putValue(SHORT_DESCRIPTION, "Open another universe");
-        putValue(MNEMONIC_KEY, Mnemonics.FILE_OPEN);
-        putValue(ACCELERATOR_KEY, Accelerators.OPEN);
+        putValue(NAME, "New (random)");
+        putValue(SHORT_DESCRIPTION, "Create a new random universe");
+        putValue(MNEMONIC_KEY, Mnemonics.FILE_RANDOM);
+        putValue(ACCELERATOR_KEY, Accelerators.RANDOM);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog(null);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            try {
-                application.openUniverse(file);
-            } catch (OpenException oe) {
-                System.out.println("Unable to open the given file : " + file.getAbsolutePath() + " because "
-                        + oe.getMessage());
-            }
-        }
+        application.createRandomUniverse();
     }
 
 }
