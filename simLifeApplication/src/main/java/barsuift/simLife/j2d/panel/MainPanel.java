@@ -21,7 +21,6 @@ package barsuift.simLife.j2d.panel;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import barsuift.simLife.time.UniverseTimeController;
 import barsuift.simLife.universe.UniverseContext;
 
 
@@ -44,8 +43,7 @@ public class MainPanel extends JPanel {
         JPanel environmentPanel = new EnvironmentPanel(universeContext.getUniverse().getEnvironment());
         rightPanel.add(environmentPanel);
 
-        UniverseTimeController timeController = new UniverseTimeController(universeContext.getUniverse());
-        JPanel controllerPanel = new TimeControllerPanel(timeController);
+        JPanel controllerPanel = new TimeControllerPanel(universeContext.getUniverseTimeController());
         rightPanel.add(controllerPanel);
 
         add(rightPanel);

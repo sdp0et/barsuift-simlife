@@ -31,6 +31,7 @@ public class UniverseControllerTest extends TestCase {
         super.setUp();
         mockUniverse = new MockUniverse();
         controller = new UniverseTimeController(mockUniverse);
+        controller.setSpeed(10);
     }
 
     protected void tearDown() throws Exception {
@@ -42,11 +43,12 @@ public class UniverseControllerTest extends TestCase {
     public void testStart() {
         assertFalse(controller.isRunning());
         TimeCounterTestHelper.assertEquals(0, 0, 0, 0, controller.getTimeCounter());
+        int speed = controller.getSpeed();
         controller.start();
-        // waiting 2 seconds
+        // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000);
+                this.wait(2000 / speed);
             }
         } catch (InterruptedException e) {
         }
@@ -55,46 +57,47 @@ public class UniverseControllerTest extends TestCase {
     }
 
     public void testPause() {
+        int speed = controller.getSpeed();
         controller.start();
         assertTrue(controller.isRunning());
 
-        // waiting 2 seconds
+        // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000);
+                this.wait(2000 / speed);
             }
         } catch (InterruptedException e) {
         }
         int nbTimeSpent1 = mockUniverse.getNbTimeSpent();
         controller.pause();
 
-        // waiting 2 seconds
+        // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000);
+                this.wait(2000 / speed);
             }
         } catch (InterruptedException e) {
         }
         int nbTimeSpent2 = mockUniverse.getNbTimeSpent();
-        // the controller should be stopped within a second (end of one single run)
+        // the controller should be stopped within a cycle (end of one single run)
         assertTrue(nbTimeSpent2 <= nbTimeSpent1 + 1);
         assertTrue(nbTimeSpent2 >= nbTimeSpent1);
         assertFalse(controller.isRunning());
 
-        // waiting 2 seconds
+        // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000);
+                this.wait(2000 / speed);
             }
         } catch (InterruptedException e) {
         }
         int nbTimeSpent3 = mockUniverse.getNbTimeSpent();
         assertEquals("the counter should not increment anymore", nbTimeSpent2, nbTimeSpent3);
         controller.start();
-        // waiting 2 seconds
+        // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000);
+                this.wait(2000 / speed);
             }
         } catch (InterruptedException e) {
         }
@@ -104,6 +107,7 @@ public class UniverseControllerTest extends TestCase {
     }
 
     public void testIllegalStateException() {
+        int speed = controller.getSpeed();
         try {
             controller.pause();
             fail("IllegalStateException expected");
@@ -111,10 +115,10 @@ public class UniverseControllerTest extends TestCase {
             // OK expected exception
         }
         controller.start();
-        // waiting 2 seconds
+        // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000);
+                this.wait(2000 / speed);
             }
         } catch (InterruptedException e) {
         }
@@ -134,12 +138,13 @@ public class UniverseControllerTest extends TestCase {
     }
 
     public void testOneStep() {
+        int speed = controller.getSpeed();
         controller.oneStep();
         assertEquals(1, mockUniverse.getNbTimeSpent());
-        // waiting 2 seconds
+        // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000);
+                this.wait(2000 / speed);
             }
         } catch (InterruptedException e) {
         }

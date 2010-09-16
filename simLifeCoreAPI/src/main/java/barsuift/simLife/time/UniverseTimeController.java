@@ -39,12 +39,24 @@ public class UniverseTimeController {
 
     private boolean running;
 
+    // TODO 006. store the actual speed in state
+    private int speed;
+
     public UniverseTimeController(Universe universe) {
         super();
         int poolSize = 1;
         this.scheduledThreadPool = Executors.newScheduledThreadPool(poolSize);
         this.timeMessenger = new TimeMessenger(universe);
         this.running = false;
+        this.speed = 1;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 
     /**
@@ -62,13 +74,9 @@ public class UniverseTimeController {
         running = true;
         // start immediately
         int initialDelay = 0;
-        // wakeup every seconds
-        // TODO 005. implement a proper speed switch button (be careful to tests as it assume a speed of 1)
-        // TODO 006. store the actual speed somewhere
-        int speed = 100;
-        long period = 1000;
-        long actualPeriod = period / speed;
-        runningProcess = scheduledThreadPool.scheduleAtFixedRate(timeMessenger, initialDelay, actualPeriod,
+        // wakeup period (speed = cycles / second)
+        long period = 1000 / speed;
+        runningProcess = scheduledThreadPool.scheduleAtFixedRate(timeMessenger, initialDelay, period,
                 TimeUnit.MILLISECONDS);
     }
 

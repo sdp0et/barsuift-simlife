@@ -35,6 +35,12 @@ public class Accelerators {
      * Accelerators must be unique : they are ordered by key combinations
      */
 
+    // Ctrl + 1
+    public static final KeyStroke SPEED_1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.CTRL_MASK);
+
+    // Ctrl + 2
+    public static final KeyStroke SPEED_10 = KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.CTRL_MASK);
+
     // Ctrl + A
     public static final KeyStroke AXIS = KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK);
 
