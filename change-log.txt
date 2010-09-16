@@ -20,6 +20,7 @@ Ability to reset the camera to its original point of view (new menu item)
 Ability to reset the camera view angle to nominal one (along Z axis, parallel to the ground, and at 2 meters high)
 Improvement of the "File" menu to prevent potential IllegalStateException
 Improvement of the "File" menu to allow "Save" item to behave as "Save As..." item if no current save file is known
+Addition of a help menu to display navigation keys
 #### Add a calendar system (not used yet)
 
 
