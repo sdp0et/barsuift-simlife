@@ -48,7 +48,7 @@ public class UniverseControllerTest extends TestCase {
         // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000 / speed);
+                this.wait(2000 / speed + 10);
             }
         } catch (InterruptedException e) {
         }
@@ -64,7 +64,7 @@ public class UniverseControllerTest extends TestCase {
         // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000 / speed);
+                this.wait(2000 / speed + 10);
             }
         } catch (InterruptedException e) {
         }
@@ -74,7 +74,7 @@ public class UniverseControllerTest extends TestCase {
         // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000 / speed);
+                this.wait(2000 / speed + 10);
             }
         } catch (InterruptedException e) {
         }
@@ -87,7 +87,7 @@ public class UniverseControllerTest extends TestCase {
         // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000 / speed);
+                this.wait(2000 / speed + 10);
             }
         } catch (InterruptedException e) {
         }
@@ -97,7 +97,7 @@ public class UniverseControllerTest extends TestCase {
         // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000 / speed);
+                this.wait(2000 / speed + 10);
             }
         } catch (InterruptedException e) {
         }
@@ -118,7 +118,7 @@ public class UniverseControllerTest extends TestCase {
         // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000 / speed);
+                this.wait(2000 / speed + 10);
             }
         } catch (InterruptedException e) {
         }
@@ -144,7 +144,7 @@ public class UniverseControllerTest extends TestCase {
         // waiting 2 cycles
         try {
             synchronized (this) {
-                this.wait(2000 / speed);
+                this.wait(2000 / speed + 10);
             }
         } catch (InterruptedException e) {
         }
