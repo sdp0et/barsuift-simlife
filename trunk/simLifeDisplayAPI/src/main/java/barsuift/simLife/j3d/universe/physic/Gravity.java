@@ -27,7 +27,7 @@ public interface Gravity {
     /**
      * Make the given group fall.
      * 
-     * @param groupToFall
+     * @param groupToFall a BG, containing a TG, containing the leaf 
      * @return the global transform of the group to fall
      */
     public void fall(BranchGroup groupToFall);
