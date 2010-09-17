@@ -39,7 +39,6 @@ public class UniverseTimeController {
 
     private boolean running;
 
-    // TODO 006. store the actual speed in state
     private int speed;
 
     public UniverseTimeController(Universe universe) {
