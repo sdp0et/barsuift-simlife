@@ -28,7 +28,7 @@ import barsuift.simLife.j3d.tree.BasicTreeLeaf3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.universe.Universe;
 
-// TODO 010. remove everywhere the age and replace with creation time : remove age++, and remove notifyObserver on aging
+// TODO 041. remove everywhere the age and replace with creation time : remove age++, and remove notifyObserver on aging
 public class BasicTreeLeaf extends Observable implements TreeLeaf {
 
 
