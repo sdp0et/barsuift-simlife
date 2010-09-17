@@ -27,7 +27,7 @@ Addition of a speed switch radio button
 
 Bug fixes
 ---------
-Fix some tests that were generating errors randomly
+Fix some unit tests that were generating errors randomly
 
 
 --------------------------------------------------
