@@ -67,6 +67,7 @@ public final class TransformerHelper {
      * @param axis
      * @return
      */
+    // TODO 001. test this method to restore camera view angle
     public static double getRotationFromTransform(Transform3D transform3D, Axis axis) {
         Quat4d rotationQuat = new Quat4d();
         transform3D.get(rotationQuat);
