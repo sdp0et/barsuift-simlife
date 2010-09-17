@@ -202,8 +202,14 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         resetGeometryPoints();
     }
 
+    @Override
     public Point3d getAttachPoint() {
         return leafAttachPoint;
+    }
+
+    @Override
+    public double getRotation() {
+        return rotation;
     }
 
     /**
