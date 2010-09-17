@@ -28,6 +28,8 @@ import barsuift.simLife.universe.Universe;
 
 public class BasicTree implements Tree {
 
+    private static final BigDecimal MAX_ENERGY = new BigDecimal(4000);
+
     private final TreeState state;
 
     private int age;
@@ -85,6 +87,8 @@ public class BasicTree implements Tree {
             freeEnergyCollectedFromBranches = freeEnergyCollectedFromBranches.add(branch.collectFreeEnergy());
         }
         this.energy = energy.add(freeEnergyCollectedFromBranches);
+        // limit energy to MAX_ENERGY
+        energy = energy.min(MAX_ENERGY);
     }
 
     @Override

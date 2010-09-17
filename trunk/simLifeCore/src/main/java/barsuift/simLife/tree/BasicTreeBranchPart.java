@@ -38,13 +38,17 @@ import barsuift.simLife.j3d.tree.BasicTreeBranchPart3D;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
 import barsuift.simLife.universe.Universe;
 
-// TODO 010. implement a MAX_ENERGY limit for leaf, branchPart, branch and tree
 public class BasicTreeBranchPart implements TreeBranchPart {
 
     /**
      * The maximum number of leaves per branch part
      */
     private static final int MAX_NB_LEAVES = 4;
+
+    /**
+     * The maximum energy the branch part can stock
+     */
+    private static final BigDecimal MAX_ENERGY = new BigDecimal(200);
 
     /**
      * energy consumed to create a new leaf
@@ -325,6 +329,8 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         BigDecimal energyCollectedForBranchPart = freeEnergyCollectedFromLeaf.multiply(ENERGY_RATIO_TO_KEEP);
         BigDecimal freeEnergyCollected = freeEnergyCollectedFromLeaf.subtract(energyCollectedForBranchPart);
         energy = energy.add(energyCollectedForBranchPart);
+        // limit the branch part energy to MAX_ENERGY
+        energy = energy.min(MAX_ENERGY);
         freeEnergy = freeEnergy.add(freeEnergyCollected);
     }
 

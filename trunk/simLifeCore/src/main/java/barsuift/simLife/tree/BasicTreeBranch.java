@@ -32,6 +32,8 @@ public class BasicTreeBranch implements TreeBranch {
 
     private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(0);
 
+    private static final BigDecimal MAX_ENERGY = new BigDecimal(200);
+
     private final TreeBranchState state;
 
     private List<TreeBranchPart> parts;
@@ -89,6 +91,8 @@ public class BasicTreeBranch implements TreeBranch {
         BigDecimal energyCollectedForBranch = freeEnergyCollectedFromParts.multiply(ENERGY_RATIO_TO_KEEP);
         BigDecimal freeEnergyCollected = freeEnergyCollectedFromParts.subtract(energyCollectedForBranch);
         this.energy = energy.add(energyCollectedForBranch);
+        // limit energy to MAX_ENERGY
+        energy = energy.min(MAX_ENERGY);
         this.freeEnergy = freeEnergy.add(freeEnergyCollected);
     }
 

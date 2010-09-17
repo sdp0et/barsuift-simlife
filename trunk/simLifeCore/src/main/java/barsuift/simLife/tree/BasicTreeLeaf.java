@@ -23,6 +23,7 @@ import java.math.RoundingMode;
 import java.util.Observable;
 
 import barsuift.simLife.PercentHelper;
+import barsuift.simLife.environment.Sun;
 import barsuift.simLife.j3d.tree.BasicTreeLeaf3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.universe.Universe;
@@ -40,9 +41,9 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
 
     private static final BigDecimal LOWEST_EFFICIENCY_BEFORE_FALLING = PercentHelper.getDecimalValue(10);
 
-    private static final BigDecimal MAX_ENERGY_TO_COLLECT = new BigDecimal(150);
-
     private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(66);
+
+    private static final BigDecimal MAX_ENERGY = new BigDecimal(100);
 
     private final TreeLeafState state;
 
@@ -84,18 +85,10 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
      * <p>
      * Concretely, it means :
      * <ol>
-     * <li>age : reduce the efficiency by 5 percent and send a notifying message of LeafUpdateCode.age</li>
+     * <li>reduce the efficiency by 5 percent</li>
      * <li>collect solar energy : add energy based on sun luminosity and leaf efficiency</li>
-     * <li>if the leaf is too weak :
-     * <ul>
-     * <li>fall : send a notifying message of LeafUpdateCode.fall</li>
-     * </ul>
-     * else :
-     * <ul>
-     * <li>use energy : improve the leaf efficiency by using the collected energy</li>
-     * </ul>
+     * <li>if the leaf is too weak, then fall, else, use collected energy to improve the leaf efficiency</li>
      * </ol>
-     * </li>
      * </p>
      */
     public void spendTime() {
@@ -123,18 +116,20 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
 
     /**
      * Compute the new leaf energy. It is the old energy + the collected energy.
-     * <code>collectedEnergy= sunLuminosity * leafEfficiency * 10</code>
+     * <code>collectedEnergy= sunLuminosity * leafEfficiency * energyDensity * leaf Area</code>
      * 
      * @return the collected energy
      */
     private void collectSolarEnergy() {
         BigDecimal lightRate = universe.getEnvironment().getSun().getLuminosity();
         BigDecimal solarEnergyRateCollected = efficiency.multiply(lightRate);
-        BigDecimal energyCollected = solarEnergyRateCollected.multiply(MAX_ENERGY_TO_COLLECT).multiply(
+        BigDecimal energyCollected = solarEnergyRateCollected.multiply(Sun.ENERGY_DENSITY).multiply(
                 new BigDecimal(leaf3D.getArea()));
         BigDecimal energyCollectedForLeaf = energyCollected.multiply(ENERGY_RATIO_TO_KEEP);
         BigDecimal freeEnergyCollected = energyCollected.subtract(energyCollectedForLeaf);
         energy = energy.add(energyCollectedForLeaf);
+        // limit the energy to MAX_ENERGY
+        energy = energy.min(MAX_ENERGY);
         freeEnergy = freeEnergy.add(freeEnergyCollected).setScale(5, RoundingMode.HALF_DOWN);
         setChanged();
         updateMask |= LeafUpdateMask.ENERGY_MASK;
@@ -160,6 +155,8 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
         improveEfficiency();
     }
 
+    // TODO 045. do not use all energy at one time to improve efficiency
+    // energy collected is around 6 in best case, and we can use up to 90 here
     private void improveEfficiency() {
         BigDecimal maxEfficiencyToAdd = ONE.subtract(efficiency);
         // use all the energy, up to the max efficiency that can be added to get 100
