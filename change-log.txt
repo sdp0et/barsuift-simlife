@@ -22,6 +22,7 @@ Improvement of the "File" menu to prevent potential IllegalStateException
 Improvement of the "File" menu to allow "Save" item to behave as "Save As..." item if no current save file is known
 Addition of a help menu to display navigation keys
 Addition of a speed switch radio button
+Addition of a MAX_ENERGY limit for leaf, branchPart, branch and tree
 #### Add a calendar system (not used yet)
 
 

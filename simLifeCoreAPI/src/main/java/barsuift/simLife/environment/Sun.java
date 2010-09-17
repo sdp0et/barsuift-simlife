@@ -29,6 +29,11 @@ import barsuift.simLife.j3d.universe.environment.Sun3D;
  */
 public interface Sun extends IObservable, Persistent<SunState> {
 
+    /**
+     * This is the energy provided by a 100% luminosity sun on 1m²
+     */
+    public static final BigDecimal ENERGY_DENSITY = new BigDecimal(150);
+
     public Sun3D getSun3D();
 
     public BigDecimal getLuminosity();
@@ -41,7 +46,7 @@ public interface Sun extends IObservable, Persistent<SunState> {
      * <ul>
      * <li>0 means sun is full east, enlighting only along the X axis</li>
      * <li>50 means sun is at its zenith position (neither east nor west). no X direction</li>
-     * <li>100 means sun is full west, enlightin only along the reverted X axis</li>
+     * <li>100 means sun is full west, enlighting only along the reverted X axis</li>
      * </ul>
      * </p>
      */
