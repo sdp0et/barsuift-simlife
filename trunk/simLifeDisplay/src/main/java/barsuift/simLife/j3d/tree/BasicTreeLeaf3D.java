@@ -24,6 +24,7 @@ import java.util.Observable;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.GeometryArray;
+import javax.media.j3d.Node;
 import javax.media.j3d.PolygonAttributes;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
@@ -46,7 +47,6 @@ import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.TreeLeaf;
 
-// TODO 020. try Morph class to grow the leaves instead of moving vertices manually
 public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private static final Color3f SPECULAR_COLOR = new Color3f(0.05f, 0.05f, 0.05f);
@@ -97,8 +97,6 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private Universe3D universe3D;
 
-    private final BranchGroup branchGroup;
-
     private boolean maxSizeReached;
 
     private final Point3d maxEndPoint1;
@@ -131,12 +129,9 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         maxEndPoint2 = computeMaxEndPoint(initialEndPoint2);
         leaf.addObserver(this);
         leafShape3D = new Shape3D();
-        this.branchGroup = new BranchGroup();
-        branchGroup.addChild(leafShape3D);
         createLeafGeometry();
         setColor(leaf.getEfficiency());
         leafShape3D.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-        branchGroup.setCapability(BranchGroup.ALLOW_DETACH);
         maxSizeReached = false;
     }
 
@@ -232,14 +227,15 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private void fall() {
         Transform3D globalTransform = new Transform3D();
-        branchGroup.getLocalToVworld(globalTransform);
+        leafShape3D.getLocalToVworld(globalTransform);
         Vector3d translationVector = new Vector3d();
         globalTransform.get(translationVector);
         // project the leaf attache point to the ground
         leafAttachPoint = ProjectionHelper.getProjectionPoint(new Point3d(translationVector));
         // the rotation is now global and not related to the tree or the branch
         rotation = TransformerHelper.getRotationFromTransform(globalTransform, Axis.Y);
-        universe3D.getPhysics().getGravity().fall((BranchGroup) branchGroup.getParent().getParent());
+        // send the leaf Branch group, which contains a TG for the translation along the branch part
+        universe3D.getPhysics().getGravity().fall((BranchGroup) leafShape3D.getParent().getParent());
     }
 
     @Override
@@ -259,8 +255,8 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     }
 
     @Override
-    public BranchGroup getBranchGroup() {
-        return branchGroup;
+    public Node getNode() {
+        return leafShape3D;
     }
 
 }

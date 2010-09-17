@@ -87,6 +87,7 @@ public class BasicUniverse3D implements Universe3D {
         addElement3D(treeBranchGroup);
     }
 
+    // FIXME usage of State ??!!
     private void addFallenLeaf(TreeLeaf treeLeaf) {
         TreeLeaf3D treeLeaf3D = treeLeaf.getTreeLeaf3D();
         Point3d treeLeafOriginPoint = treeLeaf3D.getState().getLeafAttachPoint().toPointValue();
@@ -98,7 +99,7 @@ public class BasicUniverse3D implements Universe3D {
 
         BranchGroup treeLeafBranchGroup = new BranchGroup();
         treeLeafBranchGroup.addChild(transformGroup);
-        transformGroup.addChild(treeLeaf3D.getBranchGroup());
+        transformGroup.addChild(treeLeaf3D.getNode());
 
         addElement3D(treeLeafBranchGroup);
     }
