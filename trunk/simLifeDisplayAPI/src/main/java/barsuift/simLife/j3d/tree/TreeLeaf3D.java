@@ -36,6 +36,8 @@ public interface TreeLeaf3D extends Observer, Persistent<TreeLeaf3DState> {
 
     public Point3d getAttachPoint();
 
+    public double getRotation();
+
     public Node getNode();
 
 }

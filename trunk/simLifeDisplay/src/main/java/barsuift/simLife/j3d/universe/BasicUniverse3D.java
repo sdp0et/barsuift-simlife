@@ -70,7 +70,7 @@ public class BasicUniverse3D implements Universe3D {
         }
 
         for (TreeLeaf treeLeaf : universe.getFallenLeaves()) {
-            addFallenLeaf(treeLeaf);
+            addFallenLeaf(treeLeaf.getTreeLeaf3D());
         }
     }
 
@@ -87,11 +87,9 @@ public class BasicUniverse3D implements Universe3D {
         addElement3D(treeBranchGroup);
     }
 
-    // FIXME usage of State ??!!
-    private void addFallenLeaf(TreeLeaf treeLeaf) {
-        TreeLeaf3D treeLeaf3D = treeLeaf.getTreeLeaf3D();
-        Point3d treeLeafOriginPoint = treeLeaf3D.getState().getLeafAttachPoint().toPointValue();
-        double treeLeafRotation = treeLeaf3D.getState().getRotation();
+    private void addFallenLeaf(TreeLeaf3D treeLeaf3D) {
+        Point3d treeLeafOriginPoint = treeLeaf3D.getAttachPoint();
+        double treeLeafRotation = treeLeaf3D.getRotation();
         Transform3D translation = TransformerHelper.getTranslationTransform3D(new Vector3d(treeLeafOriginPoint));
         Transform3D rotation = TransformerHelper.getRotationTransform3D(treeLeafRotation, Axis.Y);
         translation.mul(rotation);
