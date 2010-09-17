@@ -20,7 +20,7 @@ package barsuift.simLife.j3d.tree;
 
 import java.util.Observer;
 
-import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Node;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.Persistent;
@@ -36,6 +36,6 @@ public interface TreeLeaf3D extends Observer, Persistent<TreeLeaf3DState> {
 
     public Point3d getAttachPoint();
 
-    public BranchGroup getBranchGroup();
+    public Node getNode();
 
 }

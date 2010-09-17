@@ -107,7 +107,7 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
         Transform3D rotation = TransformerHelper.getRotationTransform3D(leaf3DState.getRotation(), Axis.Y);
         translation.mul(rotation);
         transformGroup.setTransform(translation);
-        transformGroup.addChild(leaf.getBranchGroup());
+        transformGroup.addChild(leaf.getNode());
         leafBranchGroup.addChild(transformGroup);
         group.addChild(leafBranchGroup);
     }
