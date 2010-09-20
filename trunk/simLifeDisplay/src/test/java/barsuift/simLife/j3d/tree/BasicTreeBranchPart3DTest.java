@@ -22,6 +22,7 @@ import java.util.Enumeration;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
+import javax.media.j3d.Node;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
@@ -136,9 +137,9 @@ public class BasicTreeBranchPart3DTest extends TestCase {
                 VectorTestHelper.assertVectorEquals(expectedTranslationVector, translationVector);
 
                 // test one leaf found
-                Structure3DHelper.assertExactlyOneBranchGroup(transformGroup);
-                BranchGroup specificLeafBranchGroup = (BranchGroup) transformGroup.getChild(0);
-                assertNotNull(specificLeafBranchGroup);
+                Structure3DHelper.assertExactlyOneShape3D(transformGroup);
+                Node specificLeafNode = (Node) transformGroup.getChild(0);
+                assertNotNull(specificLeafNode);
                 nbLeavesFound++;
             } else {
                 if (child instanceof Shape3D) {

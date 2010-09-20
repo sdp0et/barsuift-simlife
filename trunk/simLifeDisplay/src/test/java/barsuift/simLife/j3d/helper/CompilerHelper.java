@@ -23,7 +23,6 @@ import javax.media.j3d.Group;
 import javax.media.j3d.Light;
 import javax.media.j3d.Locale;
 import javax.media.j3d.Node;
-import javax.media.j3d.Shape3D;
 import javax.media.j3d.VirtualUniverse;
 
 /**
@@ -43,9 +42,9 @@ public final class CompilerHelper {
      * 
      * @param shape a shape to be compiled
      */
-    public static void compile(Shape3D shape) {
+    public static void compile(Node node) {
         BranchGroup bgTemp = new BranchGroup();
-        bgTemp.addChild(shape);
+        bgTemp.addChild(node);
         bgTemp.compile();
     }
 
