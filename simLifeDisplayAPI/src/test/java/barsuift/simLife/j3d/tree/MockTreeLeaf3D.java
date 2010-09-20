@@ -18,7 +18,8 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Node;
+import javax.media.j3d.Shape3D;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.MockObserver;
@@ -30,9 +31,11 @@ public class MockTreeLeaf3D extends MockObserver implements TreeLeaf3D {
 
     private TreeLeaf3DState state = new TreeLeaf3DState();
 
-    private BranchGroup bg = new BranchGroup();
+    private Node node = new Shape3D();
 
     private Point3d attachPoint = new Point3d();
+
+    private double rotation = 0;
 
     private int increaseSizeCalled = 0;
 
@@ -67,12 +70,12 @@ public class MockTreeLeaf3D extends MockObserver implements TreeLeaf3D {
     }
 
     @Override
-    public BranchGroup getBranchGroup() {
-        return bg;
+    public Node getNode() {
+        return node;
     }
 
-    public void setBranchGroup(BranchGroup bg) {
-        this.bg = bg;
+    public void setNode(Node node) {
+        this.node = node;
     }
 
     @Override
@@ -100,6 +103,15 @@ public class MockTreeLeaf3D extends MockObserver implements TreeLeaf3D {
 
     public int getNbSynchronize() {
         return synchronizedCalled;
+    }
+
+    @Override
+    public double getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(double rotation) {
+        this.rotation = rotation;
     }
 
 }

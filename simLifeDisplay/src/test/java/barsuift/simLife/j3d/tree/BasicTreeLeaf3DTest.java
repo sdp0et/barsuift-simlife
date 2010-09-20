@@ -20,6 +20,7 @@ package barsuift.simLife.j3d.tree;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Geometry;
+import javax.media.j3d.Node;
 import javax.media.j3d.PolygonAttributes;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
@@ -37,7 +38,6 @@ import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.helper.ColorTestHelper;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.PointTestHelper;
-import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.tree.LeafUpdateMask;
@@ -118,8 +118,8 @@ public class BasicTreeLeaf3DTest extends TestCase {
     public void testAppearance() {
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(80));
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
-        CompilerHelper.compile(leaf3D.getBranchGroup());
-        Shape3D leafShape3D = (Shape3D) leaf3D.getBranchGroup().getChild(0);
+        CompilerHelper.compile(leaf3D.getNode());
+        Shape3D leafShape3D = (Shape3D) leaf3D.getNode();
 
         Color3f expectedColor = new Color3f(ColorConstants.brownYellow);
         expectedColor.interpolate(ColorConstants.green, 0.8f);
@@ -151,10 +151,9 @@ public class BasicTreeLeaf3DTest extends TestCase {
 
     public void testGeometry() {
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
-        BranchGroup branchGroup = leaf3D.getBranchGroup();
-        CompilerHelper.compile(branchGroup);
-        Structure3DHelper.assertExactlyOneShape3D(branchGroup);
-        Shape3D leafShape3D = (Shape3D) branchGroup.getChild(0);
+        Node node = leaf3D.getNode();
+        CompilerHelper.compile(node);
+        Shape3D leafShape3D = (Shape3D) node;
 
         // test position and geometry
         Geometry leafGeometry = leafShape3D.getGeometry();
@@ -191,7 +190,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         TransformGroup transformGroup = new TransformGroup(transform3D);
         BranchGroup branchGroup = new BranchGroup();
         branchGroup.addChild(transformGroup);
-        transformGroup.addChild(leaf3D.getBranchGroup());
+        transformGroup.addChild(leaf3D.getNode());
         CompilerHelper.addToLocale(branchGroup);
 
         // call to the fall() method
@@ -233,7 +232,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         Tuple3dState initialEndPoint1 = leaf3DState.getInitialEndPoint1();
         Tuple3dState initialEndPoint2 = leaf3DState.getInitialEndPoint2();
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
-        Shape3D leafShape = (Shape3D) leaf3D.getBranchGroup().getChild(0);
+        Shape3D leafShape = (Shape3D) leaf3D.getNode();
         Point3d geomEndPoint1 = new Point3d();
         Point3d geomEndPoint2 = new Point3d();
 

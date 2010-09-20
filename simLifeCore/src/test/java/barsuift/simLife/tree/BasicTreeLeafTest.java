@@ -21,6 +21,7 @@ package barsuift.simLife.tree;
 import java.math.BigDecimal;
 
 import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Node;
 import javax.media.j3d.TransformGroup;
 
 import junit.framework.TestCase;
@@ -65,11 +66,11 @@ public class BasicTreeLeafTest extends TestCase {
     }
 
     private void attachLeaf3DIn3dStructure() {
-        BranchGroup leafBranchGroup = leaf.getTreeLeaf3D().getBranchGroup();
+        Node leafNode = leaf.getTreeLeaf3D().getNode();
         bg = new BranchGroup();
         TransformGroup tg = new TransformGroup();
         bg.addChild(tg);
-        tg.addChild(leafBranchGroup);
+        tg.addChild(leafNode);
     }
 
     protected void tearDown() throws Exception {
