@@ -97,7 +97,7 @@ public class UniverseTimeController {
     /**
      * Pause the controller.
      * <p>
-     * The running process is aksed to stop, once it has completede its current execution.
+     * The running process is asked to stop, once it has completed its current execution.
      * </p>
      * 
      * @throws IllegalStateException if the controller is not running
