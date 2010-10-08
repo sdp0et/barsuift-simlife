@@ -88,9 +88,9 @@ public class BasicUniverse3D implements Universe3D {
     }
 
     private void addFallenLeaf(TreeLeaf3D treeLeaf3D) {
-        Point3d treeLeafOriginPoint = treeLeaf3D.getAttachPoint();
+        Point3d treeLeafAttachPoint = treeLeaf3D.getAttachPoint();
         double treeLeafRotation = treeLeaf3D.getRotation();
-        Transform3D translation = TransformerHelper.getTranslationTransform3D(new Vector3d(treeLeafOriginPoint));
+        Transform3D translation = TransformerHelper.getTranslationTransform3D(new Vector3d(treeLeafAttachPoint));
         Transform3D rotation = TransformerHelper.getRotationTransform3D(treeLeafRotation, Axis.Y);
         translation.mul(rotation);
         TransformGroup transformGroup = new TransformGroup(translation);
