@@ -236,7 +236,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         leafShape3D.getLocalToVworld(globalTransform);
         Vector3d translationVector = new Vector3d();
         globalTransform.get(translationVector);
-        // project the leaf attache point to the ground
+        // project the leaf attach point to the ground
         leafAttachPoint = ProjectionHelper.getProjectionPoint(new Point3d(translationVector));
         // the rotation is now global and not related to the tree or the branch
         rotation = TransformerHelper.getRotationFromTransform(globalTransform, Axis.Y);
