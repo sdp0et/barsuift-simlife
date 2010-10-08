@@ -37,6 +37,7 @@ import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 
+// FIXME added/removed elements in lists are not updated in state objects !!!
 public class BasicUniverse implements Universe {
 
     private final UniverseState state;
