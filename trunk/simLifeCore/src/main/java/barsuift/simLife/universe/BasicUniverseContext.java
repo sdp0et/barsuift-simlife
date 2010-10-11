@@ -23,8 +23,8 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Matrix3d;
 import javax.vecmath.Point3d;
+import javax.vecmath.Quat4d;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Axis3DGroup;
@@ -138,9 +138,13 @@ public class BasicUniverseContext implements UniverseContext {
     public void resetToNominalAngleOfView() {
         Transform3D viewingTransform = new Transform3D();
         viewTransform.getTransform(viewingTransform);
-        Matrix3d matrix = new Matrix3d();
-        matrix.setIdentity();
-        viewingTransform.setRotationScale(matrix);
+        // set viewer angle of view
+        Quat4d rotationQuat = new Quat4d();
+        viewingTransform.get(rotationQuat);
+        rotationQuat.x = 0;
+        rotationQuat.z = 0;
+        viewingTransform.setRotation(rotationQuat);
+        // set viewer position
         Vector3d currentTranslation = new Vector3d();
         viewingTransform.get(currentTranslation);
         currentTranslation.y = 2;
