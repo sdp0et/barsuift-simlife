@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>barsuift-simlife</artifactId>
+		<groupId>barsuift.simLife</groupId>
+		<version>0.0.4</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>simLifeCoreAPI</artifactId>
+	<version>0.0.4</version>
+	<name>simLifeCoreAPI module</name>
+	<description>API of the simLifeCore module for the simLife project</description>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>simLifeUtilities</artifactId>
+			<version>0.0.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>simLifeUtilities</artifactId>
+			<version>0.0.4</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>simLifeDisplayAPI</artifactId>
+			<version>0.0.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>simLifeDisplayAPI</artifactId>
+			<version>0.0.4</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
