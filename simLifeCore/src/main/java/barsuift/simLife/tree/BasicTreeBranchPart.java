@@ -77,11 +77,11 @@ public class BasicTreeBranchPart implements TreeBranchPart {
 
     private BigDecimal freeEnergy;
 
-    private List<TreeLeaf> leaves;
+    private final List<TreeLeaf> leaves;
 
-    private Collection<TreeLeaf> oldLeavesToRemove = new HashSet<TreeLeaf>();
+    private final Collection<TreeLeaf> oldLeavesToRemove = new HashSet<TreeLeaf>();
 
-    private TreeBranchPart3D branchPart3D;
+    private final TreeBranchPart3D branchPart3D;
 
     private final Universe universe;
 
@@ -373,9 +373,11 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         state.setAge(age);
         state.setEnergy(energy);
         state.setFreeEnergy(freeEnergy);
+        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>();
         for (TreeLeaf leaf : leaves) {
-            leaf.synchronize();
+            leaveStates.add((TreeLeafState) leaf.getState());
         }
+        state.setLeaveStates(leaveStates);
         branchPart3D.synchronize();
     }
 

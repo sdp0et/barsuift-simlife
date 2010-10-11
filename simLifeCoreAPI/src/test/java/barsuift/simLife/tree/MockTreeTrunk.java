@@ -66,7 +66,7 @@ public class MockTreeTrunk implements TreeTrunk {
     }
 
     @Override
-    public TreeTrunk3D getTreeTrunkD() {
+    public TreeTrunk3D getTreeTrunk3D() {
         return trunk3D;
     }
 

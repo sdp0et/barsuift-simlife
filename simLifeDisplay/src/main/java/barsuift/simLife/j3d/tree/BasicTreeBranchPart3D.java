@@ -49,7 +49,7 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
 
     private final Group group;
 
-    private TreeBranchPart branchPart;
+    private final TreeBranchPart branchPart;
 
     public BasicTreeBranchPart3D(Universe3D universe3D, TreeBranchPart3DState state, TreeBranchPart branchPart) {
         if (universe3D == null) {

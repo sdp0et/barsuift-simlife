@@ -32,7 +32,7 @@ public class BasicTreeTrunk implements TreeTrunk {
 
     private float height;
 
-    private TreeTrunk3D trunk3D;
+    private final TreeTrunk3D trunk3D;
 
     public BasicTreeTrunk(Universe universe, TreeTrunkState state) {
         if (universe == null) {
@@ -82,7 +82,7 @@ public class BasicTreeTrunk implements TreeTrunk {
     }
 
     @Override
-    public TreeTrunk3D getTreeTrunkD() {
+    public TreeTrunk3D getTreeTrunk3D() {
         return trunk3D;
     }
 

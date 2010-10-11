@@ -22,7 +22,7 @@ public class BasicEnvironment implements Environment {
 
     private final EnvironmentState state;
 
-    private Sun sun;
+    private final Sun sun;
 
     /**
      * Creates the environment with given state

@@ -53,9 +53,9 @@ public class BasicSimLifeCanvas3D extends SimLifeCanvas3D {
 
     private Graphics2D drawg2d;
 
-    private J3DGraphics2D render2d;
+    private final J3DGraphics2D render2d;
 
-    private Font font;
+    private final Font font;
 
     public BasicSimLifeCanvas3D(FpsCounter coreFpsCounter, SimLifeCanvas3DState state) {
         super(SimpleUniverse.getPreferredConfiguration());

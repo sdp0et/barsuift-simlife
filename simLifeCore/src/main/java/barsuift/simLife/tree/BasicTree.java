@@ -38,11 +38,11 @@ public class BasicTree implements Tree {
 
     private float height;
 
-    private List<TreeBranch> branches;
+    private final List<TreeBranch> branches;
 
-    private TreeTrunk trunk;
+    private final TreeTrunk trunk;
 
-    private Tree3D tree3D;
+    private final Tree3D tree3D;
 
     public BasicTree(Universe universe, TreeState state) {
         if (universe == null) {
@@ -134,9 +134,11 @@ public class BasicTree implements Tree {
         state.setAge(age);
         state.setEnergy(energy);
         state.setHeight(height);
+        List<TreeBranchState> treeBranchStates = new ArrayList<TreeBranchState>();
         for (TreeBranch treeBranch : branches) {
-            treeBranch.synchronize();
+            treeBranchStates.add((TreeBranchState) treeBranch.getState());
         }
+        state.setBranches(treeBranchStates);
         trunk.synchronize();
         tree3D.synchronize();
     }

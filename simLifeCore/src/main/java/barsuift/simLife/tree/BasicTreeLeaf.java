@@ -56,7 +56,7 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     private BigDecimal freeEnergy;
 
 
-    private TreeLeaf3D leaf3D;
+    private final TreeLeaf3D leaf3D;
 
     private final Universe universe;
 
