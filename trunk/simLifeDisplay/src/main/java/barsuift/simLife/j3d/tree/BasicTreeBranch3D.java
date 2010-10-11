@@ -37,9 +37,9 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     private final TreeBranch3DState state;
 
-    private TreeBranch treeBranch;
+    private final TreeBranch treeBranch;
 
-    private Vector3d translationVector;
+    private final Vector3d translationVector;
 
     private final Group group;
 
@@ -48,7 +48,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
      * indicative, and the actual branch end point may differ somehow from the given one, as the branch is created with
      * some randomization.
      * 
-     * @apram universe3D the 3D universe
+     * @param universe3D the 3D universe
      * @param endPoint indicative end point for the branch
      * @param treeBranch tree branch data
      */

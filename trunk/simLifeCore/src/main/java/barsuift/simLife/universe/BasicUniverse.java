@@ -20,6 +20,7 @@ package barsuift.simLife.universe;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,7 +38,6 @@ import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 
-// FIXME added/removed elements in lists are not updated in state objects !!!
 public class BasicUniverse implements Universe {
 
     private final UniverseState state;
@@ -50,9 +50,9 @@ public class BasicUniverse implements Universe {
 
     private final List<TreeLeaf> fallenLeaves;
 
-    private Environment environment;
+    private final Environment environment;
 
-    private BasicUniverse3D universe3D;
+    private final BasicUniverse3D universe3D;
 
     private final TimeCounter counter;
 
@@ -160,12 +160,16 @@ public class BasicUniverse implements Universe {
     public void synchronize() {
         state.setAge(age);
         state.setFpsShowing(fpsShowing);
+        Set<TreeState> treeStates = new HashSet<TreeState>();
         for (Tree tree : trees) {
-            tree.synchronize();
+            treeStates.add((TreeState) tree.getState());
         }
+        state.setTrees(treeStates);
+        Set<TreeLeafState> fallenLeaveStates = new HashSet<TreeLeafState>();
         for (TreeLeaf leaf : fallenLeaves) {
-            leaf.synchronize();
+            fallenLeaveStates.add((TreeLeafState) leaf.getState());
         }
+        state.setFallenLeaves(fallenLeaveStates);
         environment.synchronize();
         counter.synchronize();
     }

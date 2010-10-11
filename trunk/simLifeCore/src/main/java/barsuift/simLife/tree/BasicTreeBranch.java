@@ -36,9 +36,9 @@ public class BasicTreeBranch implements TreeBranch {
 
     private final TreeBranchState state;
 
-    private List<TreeBranchPart> parts;
+    private final List<TreeBranchPart> parts;
 
-    private TreeBranch3D branch3D;
+    private final TreeBranch3D branch3D;
 
     private int age;
 
@@ -138,9 +138,11 @@ public class BasicTreeBranch implements TreeBranch {
         state.setAge(age);
         state.setEnergy(energy);
         state.setFreeEnergy(freeEnergy);
+        List<TreeBranchPartState> branchPartStates = new ArrayList<TreeBranchPartState>();
         for (TreeBranchPart branchPart : parts) {
-            branchPart.synchronize();
+            branchPartStates.add((TreeBranchPartState) branchPart.getState());
         }
+        state.setBranchPartStates(branchPartStates);
         branch3D.synchronize();
     }
 

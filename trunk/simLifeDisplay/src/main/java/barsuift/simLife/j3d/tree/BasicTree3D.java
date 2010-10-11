@@ -36,10 +36,10 @@ public class BasicTree3D implements Tree3D {
 
     private final Tree3DState state;
 
-    private Vector3d translationVector;
+    private final Vector3d translationVector;
 
 
-    private Tree tree;
+    private final Tree tree;
 
     private final BranchGroup branchGroup;
 
@@ -62,7 +62,7 @@ public class BasicTree3D implements Tree3D {
     }
 
     private void createTrunkAndBranchesBG() {
-        branchGroup.addChild(tree.getTrunk().getTreeTrunkD().getGroup());
+        branchGroup.addChild(tree.getTrunk().getTreeTrunk3D().getGroup());
 
         List<TreeBranch> branches = tree.getBranches();
         for (TreeBranch branch : branches) {
@@ -92,7 +92,7 @@ public class BasicTree3D implements Tree3D {
 
     @Override
     public TreeTrunk3D getTrunk() {
-        return tree.getTrunk().getTreeTrunkD();
+        return tree.getTrunk().getTreeTrunk3D();
     }
 
     @Override

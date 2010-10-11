@@ -67,12 +67,12 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     /**
      * End point 1 at the creation of the leaf (its birth end point 1). The point is relative to the attach point.
      */
-    private Point3d initialEndPoint1;
+    private final Point3d initialEndPoint1;
 
     /**
      * End point 2 at the creation of the leaf (its birth end point 2). The point is relative to the attach point.
      */
-    private Point3d initialEndPoint2;
+    private final Point3d initialEndPoint2;
 
     /**
      * Current end point 1. The point is relative to the attach point.
@@ -93,9 +93,9 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private TriangleArray leafGeometry;
 
-    private Shape3D leafShape3D;
+    private final Shape3D leafShape3D;
 
-    private Universe3D universe3D;
+    private final Universe3D universe3D;
 
     private boolean maxSizeReached;
 

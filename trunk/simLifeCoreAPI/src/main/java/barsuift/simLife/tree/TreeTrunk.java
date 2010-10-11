@@ -27,6 +27,6 @@ public interface TreeTrunk extends LivingPart {
 
     public float getRadius();
 
-    public TreeTrunk3D getTreeTrunkD();
+    public TreeTrunk3D getTreeTrunk3D();
 
 }
