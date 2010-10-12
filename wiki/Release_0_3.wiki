@@ -1,0 +1,22 @@
+#summary Release 0.3
+
+This is the very first version of barsuift-simlife. Its acts as a proof of concept version.
+
+= New features =
+
+  * Trees are generated randomly
+  * Leaves can grow ?
+  * Leaves are getting older and less efficient with time
+  * Leaves can use solar energy to get back strength (efficiency)
+  * Leaves fall when too weak
+  * Sun can be manually moved in the sky. Its light gets red with sunset and sunrise
+  * A time counter shows the simulation time
+  * The universe can be saved in xml files and loaded from xml files
+  * The application is managed by Maven
+  * The application can generate a distribution zip with the application and required libs
+  * The application generates an exe to run itself
+  * The application is hosted on Google Code and version controlled
+
+= Bug fixes =
+
+  * None, as it is the first version
