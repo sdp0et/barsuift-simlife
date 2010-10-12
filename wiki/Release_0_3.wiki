@@ -1,4 +1,4 @@
-#summary Release 0.3
+#summary The release note for the release 0.3
 
 This is the very first version of barsuift-simlife. Its acts as a proof of concept version.
 
