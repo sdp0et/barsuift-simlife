@@ -17,3 +17,7 @@ The project is written in Java, and graphical representation is made through jav
 
 The application itself is using Swing librairies.
 
+== Releases ==
+
+  * [Release-0.3 0.3]
+  * [Release-0.4 0.4]
