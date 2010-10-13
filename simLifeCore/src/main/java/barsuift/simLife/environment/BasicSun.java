@@ -21,8 +21,8 @@ package barsuift.simLife.environment;
 import java.math.BigDecimal;
 import java.util.Observable;
 
+import barsuift.simLife.j3d.environment.BasicSun3D;
 import barsuift.simLife.j3d.environment.Sun3D;
-import barsuift.simLife.j3d.universe.environment.BasicSun3D;
 
 /**
  * Class representing the sun.

@@ -31,10 +31,10 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Axis;
+import barsuift.simLife.j3d.environment.BasicLights;
 import barsuift.simLife.j3d.environment.Lights;
 import barsuift.simLife.j3d.tree.Tree3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
-import barsuift.simLife.j3d.universe.environment.BasicLights;
 import barsuift.simLife.j3d.universe.physic.BasicPhysics;
 import barsuift.simLife.j3d.universe.physic.Physics;
 import barsuift.simLife.j3d.util.TransformerHelper;
