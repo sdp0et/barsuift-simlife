@@ -19,10 +19,13 @@
 package barsuift.simLife.environment;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.j3d.environment.Environment3D;
 
 
 public interface Environment extends Persistent<EnvironmentState> {
 
     public Sun getSun();
+
+    public Environment3D getEnvironment3D();
 
 }

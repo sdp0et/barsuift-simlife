@@ -31,8 +31,6 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Axis;
-import barsuift.simLife.j3d.environment.BasicLights;
-import barsuift.simLife.j3d.environment.Lights;
 import barsuift.simLife.j3d.tree.Tree3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.j3d.universe.physic.BasicPhysics;
@@ -51,8 +49,6 @@ public class BasicUniverse3D implements Universe3D {
 
     private Physics physics;
 
-    private Lights lights;
-
     public BasicUniverse3D() {
         root = new BranchGroup();
         root.setCapability(Group.ALLOW_CHILDREN_EXTEND);
@@ -62,8 +58,7 @@ public class BasicUniverse3D implements Universe3D {
     }
 
     public void initFromUniverse(Universe universe) {
-        lights = new BasicLights(universe.getEnvironment().getSun().getSun3D());
-        addElement3D(lights.getLightsGroup());
+        addElement3D(universe.getEnvironment().getEnvironment3D().getGroup());
 
         for (Tree tree : universe.getTrees()) {
             addTree(tree);
@@ -114,11 +109,6 @@ public class BasicUniverse3D implements Universe3D {
     @Override
     public Physics getPhysics() {
         return physics;
-    }
-
-    @Override
-    public Lights getLights() {
-        return lights;
     }
 
     @Override
