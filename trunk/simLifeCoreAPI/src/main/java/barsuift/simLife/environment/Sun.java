@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 
 import barsuift.simLife.IObservable;
 import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.universe.environment.Sun3D;
+import barsuift.simLife.j3d.environment.Sun3D;
 
 /**
  * Class representing the sun.

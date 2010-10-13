@@ -22,8 +22,8 @@ import java.math.BigDecimal;
 import java.util.Observable;
 
 import barsuift.simLife.PercentHelper;
-import barsuift.simLife.j3d.universe.environment.MockSun3D;
-import barsuift.simLife.j3d.universe.environment.Sun3D;
+import barsuift.simLife.j3d.environment.MockSun3D;
+import barsuift.simLife.j3d.environment.Sun3D;
 
 
 public class MockSun extends Observable implements Sun {

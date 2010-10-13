@@ -23,7 +23,7 @@ import java.util.Set;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Node;
 
-import barsuift.simLife.j3d.universe.environment.Lights;
+import barsuift.simLife.j3d.environment.Lights;
 import barsuift.simLife.j3d.universe.physic.Physics;
 
 public interface Universe3D {
