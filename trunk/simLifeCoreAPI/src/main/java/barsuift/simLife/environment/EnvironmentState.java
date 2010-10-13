@@ -21,18 +21,23 @@ package barsuift.simLife.environment;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
+import barsuift.simLife.j3d.environment.Environment3DState;
 
 @XmlRootElement
 public class EnvironmentState implements State {
 
     private SunState sunState;
 
+    private Environment3DState environment3DState;
+
     public EnvironmentState() {
         this.sunState = new SunState();
+        this.environment3DState = new Environment3DState();
     }
 
-    public EnvironmentState(SunState sunState) {
+    public EnvironmentState(SunState sunState, Environment3DState environment3DState) {
         this.sunState = sunState;
+        this.environment3DState = environment3DState;
     }
 
     public void setSunState(SunState sunState) {
@@ -43,10 +48,19 @@ public class EnvironmentState implements State {
         return sunState;
     }
 
+    public Environment3DState getEnvironment3DState() {
+        return environment3DState;
+    }
+
+    public void setEnvironment3DState(Environment3DState environment3dState) {
+        environment3DState = environment3dState;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((environment3DState == null) ? 0 : environment3DState.hashCode());
         result = prime * result + ((sunState == null) ? 0 : sunState.hashCode());
         return result;
     }
@@ -60,6 +74,12 @@ public class EnvironmentState implements State {
         if (getClass() != obj.getClass())
             return false;
         EnvironmentState other = (EnvironmentState) obj;
+        if (environment3DState == null) {
+            if (other.environment3DState != null)
+                return false;
+        } else
+            if (!environment3DState.equals(other.environment3DState))
+                return false;
         if (sunState == null) {
             if (other.sunState != null)
                 return false;
@@ -71,7 +91,7 @@ public class EnvironmentState implements State {
 
     @Override
     public String toString() {
-        return "BasicEnvironmentState [sunState=" + sunState + "]";
+        return "EnvironmentState [sunState=" + sunState + ", environment3DState=" + environment3DState + "]";
     }
 
 }

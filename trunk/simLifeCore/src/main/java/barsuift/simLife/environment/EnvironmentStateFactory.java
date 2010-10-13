@@ -18,12 +18,18 @@
  */
 package barsuift.simLife.environment;
 
+import barsuift.simLife.j3d.environment.Environment3DState;
+import barsuift.simLife.j3d.environment.Environment3DStateFactory;
+
 
 public class EnvironmentStateFactory {
 
     public EnvironmentState createEnvironmentState() {
         SunStateFactory sunStateFactory = new SunStateFactory();
         SunState sunState = sunStateFactory.createSunState();
-        return new EnvironmentState(sunState);
+        Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
+        Environment3DState env3DState = env3DStateFactory.createEnvironment3DState();
+        return new EnvironmentState(sunState, env3DState);
     }
+
 }
