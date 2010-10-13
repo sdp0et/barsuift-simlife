@@ -26,6 +26,7 @@ import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
+import barsuift.simLife.j3d.universe.Universe3DState;
 
 
 
@@ -53,6 +54,14 @@ public final class DisplayDataCreatorForTests {
 
     public static Environment3DState createSpecificEnvironment3DState() {
         return new Environment3DState();
+    }
+
+    public static Universe3DState createRandomUniverse3DState() {
+        return new Universe3DState();
+    }
+
+    public static Universe3DState createSpecificUniverse3DState() {
+        return new Universe3DState();
     }
 
     public static TreeLeaf3DState createRandomTreeLeaf3DState() {
