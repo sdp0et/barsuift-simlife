@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.environment.EnvironmentState;
+import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.time.TimeCounterState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
@@ -44,6 +45,8 @@ public class UniverseState implements State {
 
     private TimeCounterState timeCounter;
 
+    private Universe3DState univ3DState;
+
     public UniverseState() {
         super();
         this.age = 0;
@@ -52,10 +55,11 @@ public class UniverseState implements State {
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
         this.timeCounter = new TimeCounterState();
+        this.univ3DState = new Universe3DState();
     }
 
     public UniverseState(int age, boolean fpsShowing, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves,
-            EnvironmentState environment, TimeCounterState timeCounter) {
+            EnvironmentState environment, TimeCounterState timeCounter, Universe3DState univ3DState) {
         super();
         this.age = age;
         this.fpsShowing = fpsShowing;
@@ -63,6 +67,7 @@ public class UniverseState implements State {
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
         this.timeCounter = timeCounter;
+        this.univ3DState = univ3DState;
     }
 
     public int getAge() {
@@ -113,6 +118,14 @@ public class UniverseState implements State {
         this.timeCounter = timeCounter;
     }
 
+    public Universe3DState getUniv3DState() {
+        return univ3DState;
+    }
+
+    public void setUniv3DState(Universe3DState univ3dState) {
+        univ3DState = univ3dState;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -123,6 +136,7 @@ public class UniverseState implements State {
         result = prime * result + (fpsShowing ? 1231 : 1237);
         result = prime * result + ((timeCounter == null) ? 0 : timeCounter.hashCode());
         result = prime * result + ((trees == null) ? 0 : trees.hashCode());
+        result = prime * result + ((univ3DState == null) ? 0 : univ3DState.hashCode());
         return result;
     }
 
@@ -163,13 +177,20 @@ public class UniverseState implements State {
         } else
             if (!trees.equals(other.trees))
                 return false;
+        if (univ3DState == null) {
+            if (other.univ3DState != null)
+                return false;
+        } else
+            if (!univ3DState.equals(other.univ3DState))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
         return "UniverseState [age=" + age + ", fpsShowing=" + fpsShowing + ", trees=" + trees + ", fallenLeaves="
-                + fallenLeaves + ", environment=" + environment + ", timeCounter=" + timeCounter + "]";
+                + fallenLeaves + ", environment=" + environment + ", timeCounter=" + timeCounter + ", univ3DState="
+                + univ3DState + "]";
     }
 
 }

@@ -35,6 +35,7 @@ import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
+import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.time.TimeCounterState;
 import barsuift.simLife.tree.TreeBranchPartState;
 import barsuift.simLife.tree.TreeBranchState;
@@ -88,8 +89,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createRandomTreeLeafState());
         }
+        Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
         return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(),
-                createRandomTimeCounterState());
+                createRandomTimeCounterState(), univ3DState);
     }
 
     /**
@@ -117,8 +119,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createSpecificTreeLeafState());
         }
+        Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
         return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(),
-                createSpecificTimeCounterState());
+                createSpecificTimeCounterState(), univ3DState);
     }
 
     public static EnvironmentState createRandomEnvironmentState() {
