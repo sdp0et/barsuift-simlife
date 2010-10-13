@@ -18,11 +18,16 @@
  */
 package barsuift.simLife.environment;
 
+import barsuift.simLife.j3d.environment.BasicEnvironment3D;
+import barsuift.simLife.j3d.environment.Environment3D;
+
 public class BasicEnvironment implements Environment {
 
     private final EnvironmentState state;
 
     private final Sun sun;
+
+    private final Environment3D env3D;
 
     /**
      * Creates the environment with given state
@@ -36,10 +41,16 @@ public class BasicEnvironment implements Environment {
         }
         this.state = state;
         this.sun = new BasicSun(state.getSunState());
+        this.env3D = new BasicEnvironment3D(state.getEnvironment3DState(), this);
     }
 
     public Sun getSun() {
         return sun;
+    }
+
+    @Override
+    public Environment3D getEnvironment3D() {
+        return env3D;
     }
 
     public EnvironmentState getState() {

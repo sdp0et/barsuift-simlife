@@ -24,8 +24,6 @@ import java.util.Set;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Node;
 
-import barsuift.simLife.j3d.environment.Lights;
-import barsuift.simLife.j3d.environment.MockLights;
 import barsuift.simLife.j3d.universe.physic.MockPhysics;
 import barsuift.simLife.j3d.universe.physic.Physics;
 
@@ -33,8 +31,6 @@ import barsuift.simLife.j3d.universe.physic.Physics;
 public class MockUniverse3D implements Universe3D {
 
     private Set<Node> elements3D = new HashSet<Node>();
-
-    private Lights lights = new MockLights();
 
     private Physics physics = new MockPhysics();
 
@@ -48,15 +44,6 @@ public class MockUniverse3D implements Universe3D {
     @Override
     public Set<Node> getElements3D() {
         return elements3D;
-    }
-
-    @Override
-    public Lights getLights() {
-        return lights;
-    }
-
-    public void setLights(Lights lights) {
-        this.lights = lights;
     }
 
     @Override

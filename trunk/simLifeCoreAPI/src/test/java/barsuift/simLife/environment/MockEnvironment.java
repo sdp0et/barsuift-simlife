@@ -18,6 +18,9 @@
  */
 package barsuift.simLife.environment;
 
+import barsuift.simLife.j3d.environment.Environment3D;
+import barsuift.simLife.j3d.environment.MockEnvironment3D;
+
 
 public class MockEnvironment implements Environment {
 
@@ -26,6 +29,8 @@ public class MockEnvironment implements Environment {
     private EnvironmentState state = new EnvironmentState();
 
     private int synchronizedCalled;
+
+    private Environment3D env3D = new MockEnvironment3D();
 
     @Override
     public Sun getSun() {
@@ -52,6 +57,19 @@ public class MockEnvironment implements Environment {
 
     public int getNbSynchronize() {
         return synchronizedCalled;
+    }
+    
+    public void setNbSynchronize(int nbSynchronize) {
+        this.synchronizedCalled = nbSynchronize;
+    }
+
+    @Override
+    public Environment3D getEnvironment3D() {
+        return env3D;
+    }
+
+    public void setEnvironment3D(Environment3D env3D) {
+        this.env3D = env3D;
     }
 
 }

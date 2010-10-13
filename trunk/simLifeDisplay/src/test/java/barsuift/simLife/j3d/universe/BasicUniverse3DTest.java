@@ -67,7 +67,7 @@ public class BasicUniverse3DTest extends TestCase {
         universe.addTree(tree);
         universe3D.initFromUniverse(universe);
 
-        assertNotNull(universe3D.getLights());
+        universe3D.getElements3D().contains(universe.getEnvironment().getEnvironment3D().getGroup());
 
         Set<Node> elements3d = universe3D.getElements3D();
         assertNotNull(elements3d);
