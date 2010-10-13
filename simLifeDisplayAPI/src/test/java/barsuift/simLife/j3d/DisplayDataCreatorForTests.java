@@ -19,6 +19,7 @@
 package barsuift.simLife.j3d;
 
 import barsuift.simLife.Randomizer;
+import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
@@ -35,6 +36,14 @@ public final class DisplayDataCreatorForTests {
 
     public static Tuple3dState createRandomTupleState() {
         return new Tuple3dState(Math.random(), Math.random(), Math.random());
+    }
+
+    public static Sun3DState createRandomSun3DState() {
+        return new Sun3DState();
+    }
+
+    public static Sun3DState createSpecificSun3DState() {
+        return new Sun3DState();
     }
 
     public static TreeLeaf3DState createRandomTreeLeaf3DState() {

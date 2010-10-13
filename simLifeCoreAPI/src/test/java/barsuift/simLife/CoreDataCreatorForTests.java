@@ -28,6 +28,7 @@ import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.SunState;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
+import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
@@ -71,7 +72,7 @@ public final class CoreDataCreatorForTests {
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = true;
         double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
-        return new UniverseContextState(universeState, canvasState, axisShowing,viewerTransform);
+        return new UniverseContextState(universeState, canvasState, axisShowing, viewerTransform);
     }
 
     public static UniverseState createRandomUniverseState() {
@@ -136,7 +137,8 @@ public final class CoreDataCreatorForTests {
         BigDecimal luminosity = UtilDataCreatorForTests.createRandomBigDecimal();
         BigDecimal riseAngle = UtilDataCreatorForTests.createRandomBigDecimal();
         BigDecimal zenithAngle = UtilDataCreatorForTests.createRandomBigDecimal();
-        return new SunState(luminosity, riseAngle, zenithAngle);
+        Sun3DState sun3DState = DisplayDataCreatorForTests.createRandomSun3DState();
+        return new SunState(luminosity, riseAngle, zenithAngle, sun3DState);
     }
 
     /**
@@ -153,7 +155,8 @@ public final class CoreDataCreatorForTests {
         BigDecimal luminosity = PercentHelper.getDecimalValue(70);
         BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
         BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
-        return new SunState(luminosity, riseAngle, zenithAngle);
+        Sun3DState sun3DState = DisplayDataCreatorForTests.createSpecificSun3DState();
+        return new SunState(luminosity, riseAngle, zenithAngle, sun3DState);
     }
 
     public static TimeCounterState createRandomTimeCounterState() {
