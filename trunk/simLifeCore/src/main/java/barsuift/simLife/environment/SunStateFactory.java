@@ -21,6 +21,8 @@ package barsuift.simLife.environment;
 import java.math.BigDecimal;
 
 import barsuift.simLife.PercentHelper;
+import barsuift.simLife.j3d.environment.Sun3DState;
+import barsuift.simLife.j3d.universe.environment.Sun3DStateFactory;
 
 
 public class SunStateFactory {
@@ -33,10 +35,13 @@ public class SunStateFactory {
      * <li>zenithAngle = 50%</li>
      * </ul>
      */
+    // TODO 010. the sun position should depend on the current date
     public SunState createSunState() {
         BigDecimal luminosity = PercentHelper.getDecimalValue(100);
         BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
         BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
-        return new SunState(luminosity, riseAngle, zenithAngle);
+        Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
+        Sun3DState sun3DState = sun3DStateFactory.createSpecificSun3DState();
+        return new SunState(luminosity, riseAngle, zenithAngle, sun3DState);
     }
 }

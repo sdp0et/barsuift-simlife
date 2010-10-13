@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
+import barsuift.simLife.j3d.environment.Sun3DState;
 
 @XmlRootElement
 public class SunState implements State {
@@ -33,18 +34,22 @@ public class SunState implements State {
 
     private BigDecimal zenithAngle;
 
+    private Sun3DState sun3DState;
+
     public SunState() {
         super();
         this.luminosity = new BigDecimal(0);
         this.riseAngle = new BigDecimal(0);
         this.zenithAngle = new BigDecimal(0);
+        this.sun3DState = new Sun3DState();
     }
 
-    public SunState(BigDecimal luminosity, BigDecimal riseAngle, BigDecimal zenithAngle) {
+    public SunState(BigDecimal luminosity, BigDecimal riseAngle, BigDecimal zenithAngle, Sun3DState sun3DState) {
         super();
         this.luminosity = luminosity;
         this.riseAngle = riseAngle;
         this.zenithAngle = zenithAngle;
+        this.sun3DState = sun3DState;
     }
 
     public BigDecimal getLuminosity() {
@@ -71,12 +76,21 @@ public class SunState implements State {
         this.zenithAngle = zenithAngle;
     }
 
+    public Sun3DState getSun3DState() {
+        return sun3DState;
+    }
+
+    public void setSun3DState(Sun3DState sun3dState) {
+        sun3DState = sun3dState;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((luminosity == null) ? 0 : luminosity.hashCode());
         result = prime * result + ((riseAngle == null) ? 0 : riseAngle.hashCode());
+        result = prime * result + ((sun3DState == null) ? 0 : sun3DState.hashCode());
         result = prime * result + ((zenithAngle == null) ? 0 : zenithAngle.hashCode());
         return result;
     }
@@ -102,6 +116,12 @@ public class SunState implements State {
         } else
             if (!riseAngle.equals(other.riseAngle))
                 return false;
+        if (sun3DState == null) {
+            if (other.sun3DState != null)
+                return false;
+        } else
+            if (!sun3DState.equals(other.sun3DState))
+                return false;
         if (zenithAngle == null) {
             if (other.zenithAngle != null)
                 return false;
@@ -113,8 +133,8 @@ public class SunState implements State {
 
     @Override
     public String toString() {
-        return "BasicSunState [luminosity=" + luminosity + ", riseAngle=" + riseAngle + ", zenithAngle=" + zenithAngle
-                + "]";
+        return "SunState [luminosity=" + luminosity + ", riseAngle=" + riseAngle + ", zenithAngle=" + zenithAngle
+                + ", sun3DState=" + sun3DState + "]";
     }
 
 }
