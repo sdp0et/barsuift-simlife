@@ -30,7 +30,7 @@ import javax.swing.JSlider;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.SunUpdateCode;
-import barsuift.simLife.j3d.universe.environment.Sun3D;
+import barsuift.simLife.j3d.environment.Sun3D;
 
 public class SunColorPanel extends JPanel implements Observer {
 

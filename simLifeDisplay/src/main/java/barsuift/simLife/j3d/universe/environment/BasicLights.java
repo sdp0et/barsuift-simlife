@@ -23,6 +23,8 @@ import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.vecmath.Point3d;
 
+import barsuift.simLife.j3d.environment.Lights;
+import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.j3d.util.ColorConstants;
 
 

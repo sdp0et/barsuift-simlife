@@ -31,6 +31,7 @@ import javax.vecmath.Vector3f;
 
 import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.j3d.environment.Sun3D;
 
 public class BasicSun3D extends Observable implements Observer, Sun3D {
 

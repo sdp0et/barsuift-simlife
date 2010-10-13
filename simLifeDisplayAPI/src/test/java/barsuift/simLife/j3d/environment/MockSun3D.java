@@ -16,37 +16,39 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.universe.environment;
+package barsuift.simLife.j3d.environment;
 
 import java.math.BigDecimal;
+import java.util.Observable;
 
 import javax.media.j3d.DirectionalLight;
 
-import barsuift.simLife.IObservable;
+import barsuift.simLife.PercentHelper;
+import barsuift.simLife.j3d.environment.Sun3D;
 
 
+public class MockSun3D extends Observable implements Sun3D {
 
+    private BigDecimal whiteFactor = PercentHelper.getDecimalValue(100);
 
-public interface Sun3D extends IObservable {
+    private DirectionalLight light = new DirectionalLight();
 
-    /**
-     * Computes the white factor, based on the position (rise and zenith angles). The lower the sun is, the lower the
-     * white factor.
-     * <p>
-     * <ul>
-     * <li>When the white factor is 100%, the sun is white (Red = Green = Blue).</li>
-     * <li>When the white factor is 0%, the sun is red (Red = 100%, Green = Blue = 0%).</li>
-     * </ul>
-     * </p>
-     * <p>
-     * Concretely, here is the computation :<br/>
-     * <code>whiteFactor = sqrt(abs(sinus(riseAngle) * sinus(zenithAngle)))</code>
-     * </p>
-     * 
-     * @return the white factor
-     */
-    public BigDecimal getWhiteFactor();
+    @Override
+    public BigDecimal getWhiteFactor() {
+        return whiteFactor;
+    }
 
-    public DirectionalLight getLight();
+    public void setWhiteFactor(BigDecimal whiteFactor) {
+        this.whiteFactor = whiteFactor;
+    }
+
+    @Override
+    public DirectionalLight getLight() {
+        return light;
+    }
+
+    public void setLight(DirectionalLight light) {
+        this.light = light;
+    }
 
 }

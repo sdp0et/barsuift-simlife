@@ -21,7 +21,7 @@ package barsuift.simLife.j2d.panel;
 import junit.framework.TestCase;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.SunUpdateCode;
-import barsuift.simLife.j3d.universe.environment.MockSun3D;
+import barsuift.simLife.j3d.environment.MockSun3D;
 
 
 public class SunColorPanelTest extends TestCase {
