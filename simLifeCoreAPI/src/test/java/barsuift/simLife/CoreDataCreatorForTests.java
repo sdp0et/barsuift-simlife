@@ -28,6 +28,7 @@ import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.SunState;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
+import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
@@ -121,7 +122,9 @@ public final class CoreDataCreatorForTests {
     }
 
     public static EnvironmentState createRandomEnvironmentState() {
-        return new EnvironmentState(createRandomSunState());
+        SunState sunState = createRandomSunState();
+        Environment3DState env3DState = DisplayDataCreatorForTests.createRandomEnvironment3DState();
+        return new EnvironmentState(sunState, env3DState);
     }
 
     /**
@@ -130,7 +133,9 @@ public final class CoreDataCreatorForTests {
      * @return
      */
     public static EnvironmentState createSpecificEnvironmentState() {
-        return new EnvironmentState(createSpecificSunState());
+        SunState sunState = createSpecificSunState();
+        Environment3DState env3DState = DisplayDataCreatorForTests.createSpecificEnvironment3DState();
+        return new EnvironmentState(sunState, env3DState);
     }
 
     public static SunState createRandomSunState() {
