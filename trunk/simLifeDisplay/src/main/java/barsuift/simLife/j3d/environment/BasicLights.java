@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.universe.environment;
+package barsuift.simLife.j3d.environment;
 
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.BoundingSphere;

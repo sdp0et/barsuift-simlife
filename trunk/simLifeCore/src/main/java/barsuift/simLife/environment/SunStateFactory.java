@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.environment.Sun3DState;
-import barsuift.simLife.j3d.universe.environment.Sun3DStateFactory;
+import barsuift.simLife.j3d.environment.Sun3DStateFactory;
 
 
 public class SunStateFactory {

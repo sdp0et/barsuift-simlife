@@ -1,4 +1,4 @@
-package barsuift.simLife.j3d.universe.environment;
+package barsuift.simLife.j3d.environment;
 
 import barsuift.simLife.j3d.environment.Sun3DState;
 
