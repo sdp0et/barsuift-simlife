@@ -28,7 +28,7 @@ public class BasicEnvironment implements Environment {
      * Creates the environment with given state
      * 
      * @param state the environment state
-     * @throws IllegalArgumentException if the given sun state is null
+     * @throws IllegalArgumentException if the given environment state is null
      */
     public BasicEnvironment(EnvironmentState state) {
         if (state == null) {
