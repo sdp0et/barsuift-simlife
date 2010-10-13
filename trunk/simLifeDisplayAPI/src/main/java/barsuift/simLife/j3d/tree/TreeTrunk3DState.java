@@ -48,7 +48,7 @@ public class TreeTrunk3DState implements State {
 
     @Override
     public String toString() {
-        return "Tree3DState []";
+        return "TreeTrunk3DState []";
     }
 
 }
