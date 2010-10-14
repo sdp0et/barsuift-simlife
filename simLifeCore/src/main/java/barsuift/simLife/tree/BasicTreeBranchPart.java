@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Observable;
 
 import javax.vecmath.Point3d;
 
@@ -36,6 +35,7 @@ import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.tree.BasicTreeBranchPart3D;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
+import barsuift.simLife.message.Publisher;
 import barsuift.simLife.universe.Universe;
 
 public class BasicTreeBranchPart implements TreeBranchPart {
@@ -101,7 +101,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         this.leaves = new ArrayList<TreeLeaf>(leaveStates.size());
         for (TreeLeafState treeLeafState : leaveStates) {
             BasicTreeLeaf leaf = new BasicTreeLeaf(universe, treeLeafState);
-            leaf.addObserver(this);
+            leaf.addSubscriber(this);
             leaves.add(leaf);
         }
         branchPart3D = new BasicTreeBranchPart3D(universe.getUniverse3D(), state.getBranchPart3DState(), this);
@@ -280,7 +280,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         Point3d leafAttachPoint = computeAttachPointForNewLeaf();
         BasicTreeLeafFactory factory = new BasicTreeLeafFactory(universe);
         TreeLeaf leaf = factory.createNew(leafAttachPoint, NEW_LEAF_ENERGY_PROVIDED);
-        leaf.addObserver(this);
+        leaf.addSubscriber(this);
         leaves.add(leaf);
         branchPart3D.addLeaf(leaf.getTreeLeaf3D());
         BigDecimal totalLeafCreationCost = NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED);
@@ -355,9 +355,9 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         return Collections.unmodifiableList(leaves);
     }
 
-    public void update(Observable o, Object arg) {
+    public void update(Publisher publisher, Object arg) {
         if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALL_MASK)) {
-            TreeLeaf leaf = (TreeLeaf) o;
+            TreeLeaf leaf = (TreeLeaf) publisher;
             oldLeavesToRemove.add(leaf);
         }
     }

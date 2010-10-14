@@ -20,16 +20,18 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Observable;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
 import barsuift.simLife.j3d.tree.BasicTreeLeaf3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.universe.Universe;
 
-// TODO 041. remove everywhere the age and replace with creation time : remove age++, and remove notifyObserver on aging
-public class BasicTreeLeaf extends Observable implements TreeLeaf {
+// TODO 041. remove everywhere the age and replace with creation time : remove age++, and remove notifySubscriber on aging
+public class BasicTreeLeaf implements TreeLeaf {
 
 
     private static final BigDecimal ONE = new BigDecimal(1);
@@ -61,6 +63,8 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
     private final Universe universe;
 
     private int updateMask;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     public BasicTreeLeaf(Universe universe, TreeLeafState leafState) {
         if (universe == null) {
@@ -101,7 +105,7 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
             useEnergy();
         }
         if (hasChanged()) {
-            notifyObservers(updateMask);
+            notifySubscribers(updateMask);
         }
     }
 
@@ -207,6 +211,42 @@ public class BasicTreeLeaf extends Observable implements TreeLeaf {
         state.setEnergy(energy);
         state.setFreeEnergy(freeEnergy);
         leaf3D.synchronize();
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
 }

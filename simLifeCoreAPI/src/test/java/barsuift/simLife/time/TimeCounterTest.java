@@ -18,23 +18,24 @@
  */
 package barsuift.simLife.time;
 
+import barsuift.simLife.message.PublisherTestHelper;
 import junit.framework.TestCase;
 
 
 public class TimeCounterTest extends TestCase {
 
-    private ObservableTestHelper observerHelper;
+    private PublisherTestHelper publisherHelper;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        observerHelper = new ObservableTestHelper();
+        publisherHelper = new PublisherTestHelper();
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        observerHelper = null;
+        publisherHelper = null;
     }
 
     public void testIncrement() {
@@ -71,14 +72,14 @@ public class TimeCounterTest extends TestCase {
         TimeCounterTestHelper.assertEquals(1, 0, 0, 0, counter);
     }
 
-    public void testObserver() {
+    public void testSubscriber() {
         TimeCounter counter = new TimeCounter(new TimeCounterState());
-        observerHelper.addObserver(counter);
+        publisherHelper.addSubscriber(counter);
         TimeCounterTestHelper.assertEquals(0, 0, 0, 0, counter);
         counter.increment();
         TimeCounterTestHelper.assertEquals(0, 0, 0, 1, counter);
-        assertEquals(1, observerHelper.nbUpdated());
-        assertEquals(null, observerHelper.getUpdateObjects().get(0));
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
     }
 
     public void testToString() {

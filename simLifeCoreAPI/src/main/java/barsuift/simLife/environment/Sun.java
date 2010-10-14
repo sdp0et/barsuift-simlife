@@ -20,14 +20,14 @@ package barsuift.simLife.environment;
 
 import java.math.BigDecimal;
 
-import barsuift.simLife.IObservable;
 import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.environment.Sun3D;
+import barsuift.simLife.message.Publisher;
 
 /**
  * Class representing the sun.
  */
-public interface Sun extends IObservable, Persistent<SunState> {
+public interface Sun extends Publisher, Persistent<SunState> {
 
     /**
      * This is the energy provided by a 100% luminosity sun on 1m²

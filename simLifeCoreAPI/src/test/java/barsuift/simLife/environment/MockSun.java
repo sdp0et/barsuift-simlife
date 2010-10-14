@@ -19,14 +19,18 @@
 package barsuift.simLife.environment;
 
 import java.math.BigDecimal;
-import java.util.Observable;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.environment.MockSun3D;
 import barsuift.simLife.j3d.environment.Sun3D;
+import barsuift.simLife.message.BasicPublisher;
 
 
-public class MockSun extends Observable implements Sun {
+public class MockSun extends BasicPublisher implements Sun {
+
+    public MockSun() {
+        super(null);
+    }
 
     private BigDecimal luminosity = PercentHelper.getDecimalValue(100);
 

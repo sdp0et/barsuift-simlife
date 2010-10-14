@@ -22,12 +22,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import barsuift.simLife.MockObserver;
 import barsuift.simLife.j3d.tree.MockTreeBranchPart3D;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
+import barsuift.simLife.message.MockSubscriber;
 
 
-public class MockTreeBranchPart extends MockObserver implements TreeBranchPart {
+public class MockTreeBranchPart extends MockSubscriber implements TreeBranchPart {
 
     private int spendTimeCalled = 0;
 

@@ -18,15 +18,14 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import java.util.Observer;
-
 import javax.media.j3d.Node;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.message.Subscriber;
 
 
-public interface TreeLeaf3D extends Observer, Persistent<TreeLeaf3DState> {
+public interface TreeLeaf3D extends Subscriber, Persistent<TreeLeaf3DState> {
 
     public double getArea();
 

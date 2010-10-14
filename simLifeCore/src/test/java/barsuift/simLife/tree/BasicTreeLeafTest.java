@@ -30,14 +30,14 @@ import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.j3d.universe.physic.MockGravity;
-import barsuift.simLife.time.ObservableTestHelper;
+import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
 
 public class BasicTreeLeafTest extends TestCase {
 
     private BasicTreeLeaf leaf;
 
-    private ObservableTestHelper observerHelper;
+    private PublisherTestHelper publisherHelper;
 
     private MockUniverse universe;
 
@@ -61,7 +61,7 @@ public class BasicTreeLeafTest extends TestCase {
         universe.setEnvironment(mockEnv);
 
         leaf = new BasicTreeLeaf(universe, leafState);
-        observerHelper = new ObservableTestHelper();
+        publisherHelper = new PublisherTestHelper();
         attachLeaf3DIn3dStructure();
     }
 
@@ -77,7 +77,7 @@ public class BasicTreeLeafTest extends TestCase {
         super.tearDown();
         mockSun = null;
         leaf = null;
-        observerHelper = null;
+        publisherHelper = null;
         universe = null;
         leafState = null;
         bg = null;
@@ -99,9 +99,9 @@ public class BasicTreeLeafTest extends TestCase {
     }
 
     public void testSpendTime1() {
-        observerHelper.addObserver(leaf);
+        publisherHelper.addSubscriber(leaf);
 
-        assertEquals(0, observerHelper.nbUpdated());
+        assertEquals(0, publisherHelper.nbUpdated());
 
         leaf.spendTime();
         // efficiency after aging = 0.80 * 0.95 = 0.76
@@ -116,8 +116,8 @@ public class BasicTreeLeafTest extends TestCase {
         // energy after useEnergy = 0 (scale 5 -> 0)
         // age = 16
 
-        assertEquals(1, observerHelper.nbUpdated());
-        int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+        assertEquals(1, publisherHelper.nbUpdated());
+        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
@@ -133,9 +133,9 @@ public class BasicTreeLeafTest extends TestCase {
     public void testSpendTime2() {
         leafState.setEfficiency(new BigDecimal("0.999999"));
         leaf = new BasicTreeLeaf(universe, leafState);
-        observerHelper.addObserver(leaf);
+        publisherHelper.addSubscriber(leaf);
 
-        assertEquals(0, observerHelper.nbUpdated());
+        assertEquals(0, publisherHelper.nbUpdated());
 
         leaf.spendTime();
         // efficiency after aging = 0.999999 * 0.95 = 0.94999905
@@ -152,8 +152,8 @@ public class BasicTreeLeafTest extends TestCase {
         // 10.26670)
         // age = 16
 
-        assertEquals(1, observerHelper.nbUpdated());
-        int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+        assertEquals(1, publisherHelper.nbUpdated());
+        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
@@ -169,9 +169,9 @@ public class BasicTreeLeafTest extends TestCase {
     public void testSpendTime3() {
         leafState.setEfficiency(new BigDecimal("0.991"));
         leaf = new BasicTreeLeaf(universe, leafState);
-        observerHelper.addObserver(leaf);
+        publisherHelper.addSubscriber(leaf);
 
-        assertEquals(0, observerHelper.nbUpdated());
+        assertEquals(0, publisherHelper.nbUpdated());
 
         leaf.spendTime();
         // efficiency after aging = 0.991 * 0.95 = 0.94145
@@ -187,8 +187,8 @@ public class BasicTreeLeafTest extends TestCase {
         // energy after useEnergy = 15.21939895555020955583725 - 5.855 = 9.36439895555020955583725 (scale 5 -> 9.36440)
         // age = 16
 
-        assertEquals(1, observerHelper.nbUpdated());
-        int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+        assertEquals(1, publisherHelper.nbUpdated());
+        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
@@ -206,7 +206,7 @@ public class BasicTreeLeafTest extends TestCase {
         leafState.setEfficiency(PercentHelper.getDecimalValue(10));
         leaf = new BasicTreeLeaf(universe, leafState);
         attachLeaf3DIn3dStructure();
-        observerHelper.addObserver(leaf);
+        publisherHelper.addSubscriber(leaf);
 
         assertFalse(leaf.isTooWeak());
 
@@ -215,8 +215,8 @@ public class BasicTreeLeafTest extends TestCase {
         assertTrue(leaf.getEfficiency().doubleValue() < 0.1);
         assertTrue(leaf.isTooWeak());
 
-        assertEquals(1, observerHelper.nbUpdated());
-        int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+        assertEquals(1, publisherHelper.nbUpdated());
+        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));

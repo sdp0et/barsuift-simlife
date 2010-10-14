@@ -21,7 +21,6 @@ package barsuift.simLife.tree;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import javax.vecmath.Point3d;
 
@@ -33,7 +32,8 @@ import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
-import barsuift.simLife.time.ObservableTestHelper;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
 
 
@@ -64,13 +64,13 @@ public class BasicTreeBranchPartTest extends TestCase {
         branchPart = null;
     }
 
-    public void testObservers() {
+    public void testSubscribers() {
         for (TreeLeaf leaf : branchPart.getLeaves()) {
-            // the leaf is observed by its 3D counterpart and by the branch part
-            assertEquals(2, leaf.countObservers());
-            leaf.deleteObserver(branchPart);
-            // check the branch part is actually one of the observers
-            assertEquals(1, leaf.countObservers());
+            // the leaf is subscribed by its 3D counterpart and by the branch part
+            assertEquals(2, leaf.countSubscribers());
+            leaf.deleteSubscriber(branchPart);
+            // check the branch part is actually one of the subscribers
+            assertEquals(1, leaf.countSubscribers());
         }
     }
 
@@ -92,13 +92,13 @@ public class BasicTreeBranchPartTest extends TestCase {
 
     public void testSpendTime() {
         ((MockSun) universe.getEnvironment().getSun()).setLuminosity(PercentHelper.getDecimalValue(70));
-        // add mock observers on each leaf
-        List<ObservableTestHelper> observerHelpers = new ArrayList<ObservableTestHelper>();
+        // add mock subscribers on each leaf
+        List<PublisherTestHelper> publisherHelpers = new ArrayList<PublisherTestHelper>();
         for (TreeLeaf leaf : branchPart.getLeaves()) {
-            ObservableTestHelper observerHelper = new ObservableTestHelper();
-            observerHelpers.add(observerHelper);
-            observerHelper.addIObserver(leaf);
-            assertEquals(0, observerHelper.nbUpdated());
+            PublisherTestHelper publisherHelper = new PublisherTestHelper();
+            publisherHelpers.add(publisherHelper);
+            publisherHelper.addSubscriber(leaf);
+            assertEquals(0, publisherHelper.nbUpdated());
         }
 
         branchPart.spendTime();
@@ -114,9 +114,9 @@ public class BasicTreeBranchPartTest extends TestCase {
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), branchPart.collectFreeEnergy());
         int nbFall = 0;
-        for (ObservableTestHelper observerHelper : observerHelpers) {
-            assertEquals(1, observerHelper.nbUpdated());
-            int updateParam = (Integer) observerHelper.getUpdateObjects().get(0);
+        for (PublisherTestHelper publisherHelper : publisherHelpers) {
+            assertEquals(1, publisherHelper.nbUpdated());
+            int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
             if (LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK)) {
                 // the single falling leaf (the first one)
                 assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
@@ -158,8 +158,8 @@ public class BasicTreeBranchPartTest extends TestCase {
             assertFalse(firstLeafState.equals(leaf.getState()));
         }
         // simulate one leaf is aging, but not falling
-        branchPart.update((Observable) branchPart.getLeaves().get(0), LeafUpdateMask.AGE_MASK);
-        branchPart.update((Observable) branchPart.getLeaves().get(0), LeafUpdateMask.EFFICIENCY_MASK);
+        branchPart.update((Publisher) branchPart.getLeaves().get(0), LeafUpdateMask.AGE_MASK);
+        branchPart.update((Publisher) branchPart.getLeaves().get(0), LeafUpdateMask.EFFICIENCY_MASK);
         assertEquals("no leaf should have been removed", nbLeaves - 1, branchPart.getNbLeaves());
     }
 
@@ -301,10 +301,10 @@ public class BasicTreeBranchPartTest extends TestCase {
         assertEquals(1, part.getNbLeaves());
         assertEquals(1, part.getBranchPart3D().getLeaves().size());
         TreeLeaf newLeaf = part.getLeaves().get(part.getLeaves().size() - 1);
-        // there should be 2 observers, one of which is the part itself (the other one is the leaf3D)
-        assertEquals(2, newLeaf.countObservers());
-        newLeaf.deleteObserver(part);
-        assertEquals(1, newLeaf.countObservers());
+        // there should be 2 subscribers, one of which is the part itself (the other one is the leaf3D)
+        assertEquals(2, newLeaf.countSubscribers());
+        newLeaf.deleteSubscriber(part);
+        assertEquals(1, newLeaf.countSubscribers());
         assertEquals(new BigDecimal(60), part.getEnergy());
     }
 

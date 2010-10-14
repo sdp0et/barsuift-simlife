@@ -20,11 +20,11 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 
-import barsuift.simLife.IObservable;
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
+import barsuift.simLife.message.Publisher;
 
-public interface TreeLeaf extends LivingPart, IObservable {
+public interface TreeLeaf extends LivingPart, Publisher {
 
     public boolean isTooWeak();
 

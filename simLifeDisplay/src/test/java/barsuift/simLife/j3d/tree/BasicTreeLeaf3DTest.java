@@ -106,13 +106,13 @@ public class BasicTreeLeaf3DTest extends TestCase {
         assertEquals(0.0, leaf3D.getState().getEndPoint1().getZ(), 0.00001);
     }
 
-    public void testObservers() {
+    public void testSubscribers() {
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(80));
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
-        assertEquals(1, mockLeaf.countObservers());
-        // check the observer is the leaf3D
-        mockLeaf.deleteObserver(leaf3D);
-        assertEquals(0, mockLeaf.countObservers());
+        assertEquals(1, mockLeaf.countSubscribers());
+        // check the subscriber is the leaf3D
+        mockLeaf.deleteSubscriber(leaf3D);
+        assertEquals(0, mockLeaf.countSubscribers());
     }
 
     public void testAppearance() {

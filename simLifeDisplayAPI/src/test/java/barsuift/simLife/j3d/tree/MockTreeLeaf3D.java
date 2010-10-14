@@ -22,10 +22,10 @@ import javax.media.j3d.Node;
 import javax.media.j3d.Shape3D;
 import javax.vecmath.Point3d;
 
-import barsuift.simLife.MockObserver;
+import barsuift.simLife.message.MockSubscriber;
 
 
-public class MockTreeLeaf3D extends MockObserver implements TreeLeaf3D {
+public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
     private double area = 0;
 

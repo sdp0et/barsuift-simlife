@@ -16,42 +16,30 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.environment;
+package barsuift.simLife.j2d;
 
-import java.math.BigDecimal;
+import javax.swing.JLabel;
 
-import javax.media.j3d.DirectionalLight;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
+import barsuift.simLife.time.SimLifeCalendar;
 
-import barsuift.simLife.PercentHelper;
-import barsuift.simLife.message.BasicPublisher;
+public class CalendarDisplay extends JLabel implements Subscriber {
 
+    private static final long serialVersionUID = 6381218933947453660L;
 
-public class MockSun3D extends BasicPublisher implements Sun3D {
+    private SimLifeCalendar calendar;
 
-    private BigDecimal whiteFactor = PercentHelper.getDecimalValue(100);
-
-    private DirectionalLight light = new DirectionalLight();
-
-    public MockSun3D() {
-        super(null);
-    }
-    
-    @Override
-    public BigDecimal getWhiteFactor() {
-        return whiteFactor;
-    }
-
-    public void setWhiteFactor(BigDecimal whiteFactor) {
-        this.whiteFactor = whiteFactor;
+    public CalendarDisplay(SimLifeCalendar calendar) {
+        calendar.addSubscriber(this);
+        this.calendar = calendar;
+        setText(calendar.toString());
+        setSize(200, 40);
     }
 
     @Override
-    public DirectionalLight getLight() {
-        return light;
-    }
-
-    public void setLight(DirectionalLight light) {
-        this.light = light;
+    public void update(Publisher publisher, Object arg) {
+        setText(calendar.toString());
     }
 
 }
