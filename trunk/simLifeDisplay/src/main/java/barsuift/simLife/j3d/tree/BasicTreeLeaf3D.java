@@ -19,7 +19,6 @@
 package barsuift.simLife.j3d.tree;
 
 import java.math.BigDecimal;
-import java.util.Observable;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
@@ -44,6 +43,7 @@ import barsuift.simLife.j3d.util.NormalHelper;
 import barsuift.simLife.j3d.util.PointHelper;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 import barsuift.simLife.j3d.util.TransformerHelper;
+import barsuift.simLife.message.Publisher;
 import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -127,7 +127,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
         maxEndPoint1 = computeMaxEndPoint(initialEndPoint1);
         maxEndPoint2 = computeMaxEndPoint(initialEndPoint2);
-        leaf.addObserver(this);
+        leaf.addSubscriber(this);
         leafShape3D = new Shape3D();
         createLeafGeometry();
         setColor(leaf.getEfficiency());
@@ -221,9 +221,9 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     }
 
     @Override
-    public void update(Observable observable, Object arg) {
+    public void update(Publisher publisher, Object arg) {
         if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.EFFICIENCY_MASK)) {
-            TreeLeaf leaf = (TreeLeaf) observable;
+            TreeLeaf leaf = (TreeLeaf) publisher;
             setColor(leaf.getEfficiency());
         }
         if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALL_MASK)) {

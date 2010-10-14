@@ -19,11 +19,13 @@
 package barsuift.simLife.time;
 
 import java.text.MessageFormat;
-import java.util.Observable;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-public class TimeCounter extends Observable implements Comparable<TimeCounter>, Persistent<TimeCounterState> {
+public class TimeCounter implements Comparable<TimeCounter>, Persistent<TimeCounterState>, Publisher {
 
     private static final MessageFormat TO_STRING = new MessageFormat(
             "{0} days {1,number,00}:{2,number,00}:{3,number,00}");
@@ -32,6 +34,8 @@ public class TimeCounter extends Observable implements Comparable<TimeCounter>, 
     private final TimeCounterState state;
 
     private int seconds;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     /**
      * Default constructor
@@ -45,12 +49,12 @@ public class TimeCounter extends Observable implements Comparable<TimeCounter>, 
     }
 
     /**
-     * Increment the counter, and notify observers
+     * Increment the counter, and notify subscribers
      */
     public void increment() {
         seconds++;
         setChanged();
-        notifyObservers();
+        notifySubscribers();
     }
 
     /**
@@ -98,6 +102,42 @@ public class TimeCounter extends Observable implements Comparable<TimeCounter>, 
     @Override
     public void synchronize() {
         state.setSeconds(seconds);
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
     /**

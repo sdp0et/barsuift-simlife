@@ -20,8 +20,6 @@ package barsuift.simLife.j2d.panel;
 
 import java.awt.Component;
 import java.util.Hashtable;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -31,8 +29,10 @@ import javax.swing.JSlider;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.environment.Sun3D;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-public class SunColorPanel extends JPanel implements Observer {
+public class SunColorPanel extends JPanel implements Subscriber {
 
     private static final long serialVersionUID = -6493265804580797791L;
 
@@ -48,7 +48,7 @@ public class SunColorPanel extends JPanel implements Observer {
 
     public SunColorPanel(Sun3D sun3D) {
         this.sun3D = sun3D;
-        sun3D.addObserver(this);
+        sun3D.addSubscriber(this);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         sliderLabel = createLabel();
         slider = createSlider();
@@ -90,7 +90,7 @@ public class SunColorPanel extends JPanel implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.color) {
             slider.setValue(PercentHelper.getIntValue(sun3D.getWhiteFactor()));
         }

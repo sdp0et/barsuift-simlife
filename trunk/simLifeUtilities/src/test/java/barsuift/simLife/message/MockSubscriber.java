@@ -16,34 +16,32 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife;
+package barsuift.simLife.message;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-
-public class MockObserver {
+public class MockSubscriber {
 
     private int updateCounter;
 
-    private List<Observable> observableObjectsObserved;
+    private List<Publisher> publisherObjectsSubscribed;
 
     private List<Object> arguments;
 
-    public MockObserver() {
-        resetObserver();
+    public MockSubscriber() {
+        resetSubscriber();
     }
 
-    public void resetObserver() {
+    public void resetSubscriber() {
         updateCounter = 0;
-        observableObjectsObserved = new ArrayList<Observable>();
+        publisherObjectsSubscribed = new ArrayList<Publisher>();
         arguments = new ArrayList<Object>();
     }
 
-    public void update(Observable o, Object arg) {
+    public void update(Publisher publisher, Object arg) {
         updateCounter++;
-        observableObjectsObserved.add(o);
+        publisherObjectsSubscribed.add(publisher);
         arguments.add(arg);
     }
 
@@ -51,11 +49,12 @@ public class MockObserver {
         return arguments;
     }
 
-    public List<Observable> getObservableObjectsObserved() {
-        return observableObjectsObserved;
+    public List<Publisher> getPublisherObjectsSubscribed() {
+        return publisherObjectsSubscribed;
     }
 
     public int getUpdateCounter() {
         return updateCounter;
     }
+
 }

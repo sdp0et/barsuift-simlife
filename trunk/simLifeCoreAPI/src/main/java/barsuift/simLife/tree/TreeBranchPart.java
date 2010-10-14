@@ -20,12 +20,12 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Observer;
 
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
+import barsuift.simLife.message.Subscriber;
 
-public interface TreeBranchPart extends LivingPart, Observer {
+public interface TreeBranchPart extends LivingPart, Subscriber {
 
     public int getNbLeaves();
 

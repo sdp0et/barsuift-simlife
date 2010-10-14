@@ -19,24 +19,28 @@
 package barsuift.simLife;
 
 import java.io.File;
-import java.util.Observable;
 
 import javax.swing.JFileChooser;
 
 import barsuift.simLife.j2d.MainWindow;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.universe.BasicUniverseContextFactory;
 import barsuift.simLife.universe.OpenException;
 import barsuift.simLife.universe.SaveException;
 import barsuift.simLife.universe.UniverseContext;
 import barsuift.simLife.universe.UniverseContextIO;
 
-public class Application extends Observable {
+public class Application implements Publisher {
 
     private File currentSaveFile;
 
     private UniverseContext currentUniverseContext;
 
     private MainWindow window;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     public Application() {
         this.window = new MainWindow();
@@ -50,7 +54,7 @@ public class Application extends Observable {
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         setChanged();
-        notifyObservers(ApplicationUpdateCode.NEW_EMPTY);
+        notifySubscribers(ApplicationUpdateCode.NEW_EMPTY);
         return currentUniverseContext;
     }
 
@@ -60,7 +64,7 @@ public class Application extends Observable {
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         setChanged();
-        notifyObservers(ApplicationUpdateCode.NEW_RANDOM);
+        notifySubscribers(ApplicationUpdateCode.NEW_RANDOM);
         return currentUniverseContext;
     }
 
@@ -71,7 +75,7 @@ public class Application extends Observable {
         this.window.changeUniverse(currentUniverseContext);
         this.currentSaveFile = saveFile;
         setChanged();
-        notifyObservers(ApplicationUpdateCode.OPEN);
+        notifySubscribers(ApplicationUpdateCode.OPEN);
         return currentUniverseContext;
     }
 
@@ -85,7 +89,7 @@ public class Application extends Observable {
         UniverseContextIO envIO = new UniverseContextIO(currentSaveFile);
         envIO.write(currentUniverseContext);
         setChanged();
-        notifyObservers(ApplicationUpdateCode.SAVE);
+        notifySubscribers(ApplicationUpdateCode.SAVE);
     }
 
     public void saveUniverseAs() throws SaveException {
@@ -105,7 +109,7 @@ public class Application extends Observable {
         envIO.write(currentUniverseContext);
         this.currentSaveFile = saveFile;
         setChanged();
-        notifyObservers(ApplicationUpdateCode.SAVE_AS);
+        notifySubscribers(ApplicationUpdateCode.SAVE_AS);
     }
 
     public UniverseContext getUniverseContext() {
@@ -114,6 +118,42 @@ public class Application extends Observable {
 
     public MainWindow getMainWindow() {
         return window;
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
 }

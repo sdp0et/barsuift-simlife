@@ -30,7 +30,7 @@ public class MockFallingTreeLeaf extends MockTreeLeaf implements TreeLeaf {
     public void spendTime() {
         super.spendTime();
         setChanged();
-        notifyObservers(LeafUpdateMask.FALL_MASK);
+        notifySubscribers(LeafUpdateMask.FALL_MASK);
     }
 
 }

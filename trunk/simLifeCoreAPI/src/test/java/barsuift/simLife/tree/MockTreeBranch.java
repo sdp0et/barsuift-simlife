@@ -22,11 +22,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import barsuift.simLife.MockObserver;
 import barsuift.simLife.j3d.tree.MockTreeBranch3D;
 import barsuift.simLife.j3d.tree.TreeBranch3D;
+import barsuift.simLife.message.MockSubscriber;
 
-public class MockTreeBranch extends MockObserver implements TreeBranch {
+public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     private int age = 0;
 

@@ -19,17 +19,17 @@
 package barsuift.simLife.j2d.action.menu;
 
 import java.awt.event.ActionEvent;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.AbstractAction;
 
 import barsuift.simLife.Application;
 import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.universe.UniverseContext;
 
-public class ResetToNominalViewAngleAction extends AbstractAction implements Observer {
+public class ResetToNominalViewAngleAction extends AbstractAction implements Subscriber {
 
     private static final long serialVersionUID = 1291567621047871503L;
 
@@ -37,7 +37,7 @@ public class ResetToNominalViewAngleAction extends AbstractAction implements Obs
 
     public ResetToNominalViewAngleAction(Application application) {
         super();
-        application.addObserver(this);
+        application.addSubscriber(this);
         this.universeContext = application.getUniverseContext();
         putValue(NAME, "Reset to nominal view angle");
         putValue(SHORT_DESCRIPTION, "Reset the view angle to its nominal state");
@@ -52,11 +52,11 @@ public class ResetToNominalViewAngleAction extends AbstractAction implements Obs
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Publisher publisher, Object arg) {
         if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
                 || arg == ApplicationUpdateCode.NEW_RANDOM) {
             setEnabled(true);
-            this.universeContext = ((Application) o).getUniverseContext();
+            this.universeContext = ((Application) publisher).getUniverseContext();
         }
 
     }

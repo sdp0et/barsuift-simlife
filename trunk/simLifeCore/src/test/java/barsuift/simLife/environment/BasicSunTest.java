@@ -20,12 +20,12 @@ package barsuift.simLife.environment;
 
 import junit.framework.TestCase;
 import barsuift.simLife.PercentHelper;
-import barsuift.simLife.time.ObservableTestHelper;
+import barsuift.simLife.message.PublisherTestHelper;
 
 
 public class BasicSunTest extends TestCase {
 
-    private ObservableTestHelper observerHelper;
+    private PublisherTestHelper publisherHelper;
 
     private SunState sunState;
 
@@ -35,13 +35,13 @@ public class BasicSunTest extends TestCase {
         super.setUp();
         sunState = new SunState();
         sun = new BasicSun(sunState);
-        observerHelper = new ObservableTestHelper();
+        publisherHelper = new PublisherTestHelper();
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
         sun = null;
-        observerHelper = null;
+        publisherHelper = null;
     }
 
     public void testConstructor() {
@@ -104,61 +104,61 @@ public class BasicSunTest extends TestCase {
         }
     }
 
-    public void testObserverLuminosity() {
-        observerHelper.addObserver(sun);
+    public void testSubscriberLuminosity() {
+        publisherHelper.addSubscriber(sun);
         assertEquals(sunState.getLuminosity(), sun.getLuminosity());
         sun.setLuminosity(PercentHelper.getDecimalValue(90));
         assertEquals(PercentHelper.getDecimalValue(90), sun.getLuminosity());
-        assertEquals(1, observerHelper.nbUpdated());
-        assertEquals(SunUpdateCode.luminosity, observerHelper.getUpdateObjects().get(0));
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(SunUpdateCode.luminosity, publisherHelper.getUpdateObjects().get(0));
     }
 
-    public void testObserverLuminosityUnchanged() {
-        observerHelper.addObserver(sun);
+    public void testSubscriberLuminosityUnchanged() {
+        publisherHelper.addSubscriber(sun);
         assertEquals(sunState.getLuminosity(), sun.getLuminosity());
         sun.setLuminosity(sunState.getLuminosity());
         assertEquals(sunState.getLuminosity(), sun.getLuminosity());
-        assertEquals("The observer should not be notified when setting the same value as before", 0,
-                observerHelper.nbUpdated());
-        assertEquals(0, observerHelper.getUpdateObjects().size());
+        assertEquals("The subscriber should not be notified when setting the same value as before", 0,
+                publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
-    public void testObserverRiseAngle() {
-        observerHelper.addObserver(sun);
+    public void testSubscriberRiseAngle() {
+        publisherHelper.addSubscriber(sun);
         assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
         sun.setRiseAngle(PercentHelper.getDecimalValue(50));
         assertEquals(PercentHelper.getDecimalValue(50), sun.getRiseAngle());
-        assertEquals(1, observerHelper.nbUpdated());
-        assertEquals(SunUpdateCode.riseAngle, observerHelper.getUpdateObjects().get(0));
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(SunUpdateCode.riseAngle, publisherHelper.getUpdateObjects().get(0));
     }
 
-    public void testObserverRiseAngleUnchanged() {
-        observerHelper.addObserver(sun);
+    public void testSubscriberRiseAngleUnchanged() {
+        publisherHelper.addSubscriber(sun);
         assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
         sun.setRiseAngle(sunState.getRiseAngle());
         assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
-        assertEquals("The observer should not be notified when setting the same value as before", 0,
-                observerHelper.nbUpdated());
-        assertEquals(0, observerHelper.getUpdateObjects().size());
+        assertEquals("The subscriber should not be notified when setting the same value as before", 0,
+                publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
-    public void testObserverZenithAngle() {
-        observerHelper.addObserver(sun);
+    public void testSubscriberZenithAngle() {
+        publisherHelper.addSubscriber(sun);
         assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
         sun.setZenithAngle(PercentHelper.getDecimalValue(75));
         assertEquals(PercentHelper.getDecimalValue(75), sun.getZenithAngle());
-        assertEquals(1, observerHelper.nbUpdated());
-        assertEquals(SunUpdateCode.zenithAngle, observerHelper.getUpdateObjects().get(0));
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(SunUpdateCode.zenithAngle, publisherHelper.getUpdateObjects().get(0));
     }
 
-    public void testObserverZenithAngleUnchanged() {
-        observerHelper.addObserver(sun);
+    public void testSubscriberZenithAngleUnchanged() {
+        publisherHelper.addSubscriber(sun);
         assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
         sun.setZenithAngle(sunState.getZenithAngle());
         assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
-        assertEquals("The observer should not be notified when setting the same value as before", 0,
-                observerHelper.nbUpdated());
-        assertEquals(0, observerHelper.getUpdateObjects().size());
+        assertEquals("The subscriber should not be notified when setting the same value as before", 0,
+                publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
 }

@@ -19,15 +19,17 @@
 package barsuift.simLife.environment;
 
 import java.math.BigDecimal;
-import java.util.Observable;
 
 import barsuift.simLife.j3d.environment.BasicSun3D;
 import barsuift.simLife.j3d.environment.Sun3D;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
 /**
  * Class representing the sun.
  */
-public class BasicSun extends Observable implements Sun {
+public class BasicSun implements Sun {
 
     private final SunState state;
 
@@ -38,6 +40,8 @@ public class BasicSun extends Observable implements Sun {
     private BigDecimal zenithAngle;
 
     private final Sun3D sun3D;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     /**
      * Creates a Sun instance with given state
@@ -66,7 +70,7 @@ public class BasicSun extends Observable implements Sun {
         if (!this.luminosity.equals(luminosity)) {
             this.luminosity = luminosity;
             setChanged();
-            notifyObservers(SunUpdateCode.luminosity);
+            notifySubscribers(SunUpdateCode.luminosity);
         }
     }
 
@@ -82,7 +86,7 @@ public class BasicSun extends Observable implements Sun {
         if (!this.riseAngle.equals(riseAngle)) {
             this.riseAngle = riseAngle;
             setChanged();
-            notifyObservers(SunUpdateCode.riseAngle);
+            notifySubscribers(SunUpdateCode.riseAngle);
         }
     }
 
@@ -97,7 +101,7 @@ public class BasicSun extends Observable implements Sun {
         if (!this.zenithAngle.equals(zenithAngle)) {
             this.zenithAngle = zenithAngle;
             setChanged();
-            notifyObservers(SunUpdateCode.zenithAngle);
+            notifySubscribers(SunUpdateCode.zenithAngle);
         }
     }
 
@@ -117,6 +121,42 @@ public class BasicSun extends Observable implements Sun {
     @Override
     public Sun3D getSun3D() {
         return sun3D;
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
 }

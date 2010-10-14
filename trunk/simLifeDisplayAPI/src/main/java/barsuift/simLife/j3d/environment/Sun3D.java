@@ -22,12 +22,12 @@ import java.math.BigDecimal;
 
 import javax.media.j3d.DirectionalLight;
 
-import barsuift.simLife.IObservable;
+import barsuift.simLife.message.Publisher;
 
 
 
 
-public interface Sun3D extends IObservable {
+public interface Sun3D extends Publisher {
 
     /**
      * Computes the white factor, based on the position (rise and zenith angles). The lower the sun is, the lower the

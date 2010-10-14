@@ -19,8 +19,6 @@
 package barsuift.simLife.j3d.environment;
 
 import java.math.BigDecimal;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.DirectionalLight;
@@ -31,9 +29,11 @@ import javax.vecmath.Vector3f;
 
 import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
-import barsuift.simLife.j3d.environment.Sun3D;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-public class BasicSun3D extends Observable implements Observer, Sun3D {
+public class BasicSun3D implements Subscriber, Sun3D {
 
     private static BoundingSphere bounds = new BoundingSphere(new Point3d(0, 0, 0), 100);
 
@@ -49,10 +49,12 @@ public class BasicSun3D extends Observable implements Observer, Sun3D {
 
     private final DirectionalLight light;
 
+    private final Publisher publisher = new BasicPublisher(this);
+
     public BasicSun3D(Sun sun) {
         super();
         this.sun = sun;
-        sun.addObserver(this);
+        sun.addSubscriber(this);
         computeRiseAngleData();
         computeZenithAngleData();
         light = new DirectionalLight(computeColor(), computeDirection());
@@ -62,7 +64,7 @@ public class BasicSun3D extends Observable implements Observer, Sun3D {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Publisher o, Object arg) {
         if (arg == SunUpdateCode.luminosity) {
             light.setColor(computeColor());
         }
@@ -102,7 +104,7 @@ public class BasicSun3D extends Observable implements Observer, Sun3D {
         float whiteFactor = getWhiteFactor().floatValue();
         Color3f color = new Color3f(luminosity, luminosity * whiteFactor, luminosity * whiteFactor);
         setChanged();
-        notifyObservers(SunUpdateCode.color);
+        notifySubscribers(SunUpdateCode.color);
         return color;
     }
 
@@ -113,6 +115,42 @@ public class BasicSun3D extends Observable implements Observer, Sun3D {
 
     public DirectionalLight getLight() {
         return light;
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
 }

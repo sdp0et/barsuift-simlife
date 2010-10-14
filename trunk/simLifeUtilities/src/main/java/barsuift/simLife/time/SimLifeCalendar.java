@@ -23,9 +23,13 @@ import java.util.Calendar;
 import java.util.regex.Pattern;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
 // TODO 040. use the calendar system
-public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalendarState> {
+// TODO 001. test the publisher behavior
+public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalendarState>, Publisher {
 
     private static final long serialVersionUID = -2239086430259505817L;
 
@@ -162,6 +166,8 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
 
 
     private final SimLifeCalendarState state;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     public SimLifeCalendar() {
         time = 0;
@@ -403,7 +409,7 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
      * <li>day in week is text, starting with an uppercase character</li>
      * <li>day in month is two digits</li>
      * <li>month is text, starting with an uppercase character</li>
-     * <li>year is at least 4 digits, and can be more is needed</li>
+     * <li>year is at least 4 digits, and can be more if needed</li>
      * </ul>
      * </p>
      * 
@@ -435,4 +441,41 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
 
         computeTime();
     }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
+    }
+
 }

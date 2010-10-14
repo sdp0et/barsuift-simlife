@@ -16,24 +16,22 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.time;
+package barsuift.simLife.message;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import junit.framework.Assert;
-import barsuift.simLife.IObservable;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-
-public class ObservableTestHelper extends Assert {
+public class PublisherTestHelper extends Assert {
 
     private int nbUpdated;
 
     private List<Object> updateObjects;
 
-    public ObservableTestHelper() {
+    public PublisherTestHelper() {
         reset();
     }
 
@@ -42,23 +40,11 @@ public class ObservableTestHelper extends Assert {
         updateObjects = new ArrayList<Object>();
     }
 
-    public void addObserver(final Observable obs) {
-        obs.addObserver(new Observer() {
+    public void addSubscriber(final Publisher publisher) {
+        publisher.addSubscriber(new Subscriber() {
 
-            public void update(Observable o, Object arg) {
-                assertEquals(obs, o);
-                nbUpdated++;
-                updateObjects.add(arg);
-            }
-
-        });
-    }
-
-    public void addIObserver(final IObservable obs) {
-        obs.addObserver(new Observer() {
-
-            public void update(Observable o, Object arg) {
-                assertEquals(obs, o);
+            public void update(Publisher publisher_, Object arg) {
+                assertEquals(publisher, publisher_);
                 nbUpdated++;
                 updateObjects.add(arg);
             }

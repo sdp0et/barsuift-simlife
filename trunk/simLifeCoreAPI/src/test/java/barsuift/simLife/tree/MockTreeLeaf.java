@@ -19,12 +19,12 @@
 package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
-import java.util.Observable;
 
 import barsuift.simLife.j3d.tree.MockTreeLeaf3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
+import barsuift.simLife.message.BasicPublisher;
 
-public class MockTreeLeaf extends Observable implements TreeLeaf {
+public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
 
     private BigDecimal efficiency = new BigDecimal(0);
 
@@ -44,6 +44,10 @@ public class MockTreeLeaf extends Observable implements TreeLeaf {
 
     private int synchronizedCalled;
 
+    public MockTreeLeaf() {
+        super(null);
+    }
+    
     @Override
     public BigDecimal getEfficiency() {
         return efficiency;

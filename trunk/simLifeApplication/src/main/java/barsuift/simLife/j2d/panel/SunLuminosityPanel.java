@@ -20,8 +20,6 @@ package barsuift.simLife.j2d.panel;
 
 import java.awt.Component;
 import java.text.MessageFormat;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -33,9 +31,11 @@ import javax.swing.event.ChangeListener;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
 
-public class SunLuminosityPanel extends JPanel implements ChangeListener, Observer {
+public class SunLuminosityPanel extends JPanel implements ChangeListener, Subscriber {
 
     private static final long serialVersionUID = -6102868842517781193L;
 
@@ -53,7 +53,7 @@ public class SunLuminosityPanel extends JPanel implements ChangeListener, Observ
 
     public SunLuminosityPanel(Sun sun) {
         this.sun = sun;
-        sun.addObserver(this);
+        sun.addSubscriber(this);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         sliderLabel = createLabel();
         luminositySlider = createSlider();
@@ -92,7 +92,7 @@ public class SunLuminosityPanel extends JPanel implements ChangeListener, Observ
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.luminosity) {
             sliderLabel.setText(createLuminosityLabelText());
             luminositySlider.setValue(PercentHelper.getIntValue(sun.getLuminosity()));

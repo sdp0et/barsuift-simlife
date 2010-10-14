@@ -26,10 +26,9 @@ import junit.framework.TestCase;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
-import barsuift.simLife.j3d.environment.BasicSun3D;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
-import barsuift.simLife.time.ObservableTestHelper;
+import barsuift.simLife.message.PublisherTestHelper;
 
 
 public class BasicSun3DTest extends TestCase {
@@ -40,7 +39,7 @@ public class BasicSun3DTest extends TestCase {
 
     private DirectionalLight sunLight;
 
-    private ObservableTestHelper observerHelper;
+    private PublisherTestHelper publisherHelper;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -48,7 +47,7 @@ public class BasicSun3DTest extends TestCase {
         sun3D = new BasicSun3D(mockSun);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
-        observerHelper = new ObservableTestHelper();
+        publisherHelper = new PublisherTestHelper();
     }
 
     protected void tearDown() throws Exception {
@@ -56,30 +55,30 @@ public class BasicSun3DTest extends TestCase {
         mockSun = null;
         sun3D = null;
         sunLight = null;
-        observerHelper = null;
+        publisherHelper = null;
     }
 
     /**
-     * Test that the sun3D observes the sun
+     * Test that the sun3D is subscribed to the sun
      */
-    public void testObservers() {
-        assertEquals(1, mockSun.countObservers());
-        // check the observer is the sunLight
-        mockSun.deleteObserver(sun3D);
-        assertEquals(0, mockSun.countObservers());
+    public void testSubscribers() {
+        assertEquals(1, mockSun.countSubscribers());
+        // check the subscriber is the sunLight
+        mockSun.deleteSubscriber(sun3D);
+        assertEquals(0, mockSun.countSubscribers());
     }
 
     /**
-     * Test that the sun3D is observable : it notifies its observers when the color change
+     * Test that the sun3D is a publisher : it notifies its subscribers when the color change
      */
-    public void testObservable() {
-        observerHelper.addObserver(sun3D);
+    public void testPublisher() {
+        publisherHelper.addSubscriber(sun3D);
         // force computation of angles in the sun, and so for color in sun3D
         mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
 
-        assertEquals(1, observerHelper.nbUpdated());
-        assertEquals(SunUpdateCode.color, observerHelper.getUpdateObjects().get(0));
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(SunUpdateCode.color, publisherHelper.getUpdateObjects().get(0));
     }
 
     public void testUpdateLuminosity() {

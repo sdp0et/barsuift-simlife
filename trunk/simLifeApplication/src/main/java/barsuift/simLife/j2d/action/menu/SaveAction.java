@@ -19,8 +19,6 @@
 package barsuift.simLife.j2d.action.menu;
 
 import java.awt.event.ActionEvent;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.AbstractAction;
 
@@ -28,10 +26,12 @@ import barsuift.simLife.Application;
 import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.universe.SaveException;
 
 
-public class SaveAction extends AbstractAction implements Observer {
+public class SaveAction extends AbstractAction implements Subscriber {
 
     private static final long serialVersionUID = 8223229157394283604L;
 
@@ -42,7 +42,7 @@ public class SaveAction extends AbstractAction implements Observer {
     public SaveAction(Application application) {
         super();
         this.application = application;
-        application.addObserver(this);
+        application.addSubscriber(this);
         isAbleToSave = false;
         putValue(NAME, "Save");
         putValue(SHORT_DESCRIPTION, "Save the current universe");
@@ -71,7 +71,7 @@ public class SaveAction extends AbstractAction implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Publisher publisher, Object arg) {
         if (arg == ApplicationUpdateCode.SAVE_AS || arg == ApplicationUpdateCode.OPEN) {
             setEnabled(true);
             isAbleToSave = true;
