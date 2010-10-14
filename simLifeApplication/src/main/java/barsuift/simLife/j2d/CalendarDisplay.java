@@ -24,6 +24,7 @@ import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.time.SimLifeCalendar;
 
+// TODO 001 use and unit test
 public class CalendarDisplay extends JLabel implements Subscriber {
 
     private static final long serialVersionUID = 6381218933947453660L;
@@ -33,13 +34,13 @@ public class CalendarDisplay extends JLabel implements Subscriber {
     public CalendarDisplay(SimLifeCalendar calendar) {
         calendar.addSubscriber(this);
         this.calendar = calendar;
-        setText(calendar.toString());
+        setText(calendar.formatDate());
         setSize(200, 40);
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        setText(calendar.toString());
+        setText(calendar.formatDate());
     }
 
 }
