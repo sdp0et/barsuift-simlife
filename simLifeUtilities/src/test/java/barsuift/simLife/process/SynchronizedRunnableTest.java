@@ -18,7 +18,7 @@ public class SynchronizedRunnableTest extends TestCase {
     public void testRun() throws InterruptedException {
         // make sure the barrier will block after the first and even second run
         CyclicBarrier barrier = new CyclicBarrier(3);
-        MockSynchronizedRunnable synchroRun = new MockSynchronizedRunnable(barrier);
+        MockSynchronizedRunnable synchroRun = new MockSynchronizedRunnable(barrier, new SynchronizedRunnableState());
         (new Thread(synchroRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);

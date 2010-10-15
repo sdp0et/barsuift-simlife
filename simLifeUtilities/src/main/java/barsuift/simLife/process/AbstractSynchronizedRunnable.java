@@ -28,11 +28,14 @@ import java.util.concurrent.CyclicBarrier;
  */
 public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnable {
 
+    private final SynchronizedRunnableState state;
+
     private final CyclicBarrier barrier;
 
     private boolean running;
 
-    public AbstractSynchronizedRunnable(CyclicBarrier barrier) {
+    public AbstractSynchronizedRunnable(CyclicBarrier barrier, SynchronizedRunnableState state) {
+        this.state = state;
         this.barrier = barrier;
         this.running = false;
     }
@@ -72,6 +75,17 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public SynchronizedRunnableState getState() {
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        // nothing to do as the class won't change
     }
 
 }

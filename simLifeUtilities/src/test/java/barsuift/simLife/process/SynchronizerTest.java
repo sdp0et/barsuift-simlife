@@ -10,11 +10,16 @@ public class SynchronizerTest extends TestCase {
 
     private Synchronizer synchro;
 
+    private SynchronizerState state;
+
     protected void setUp() throws Exception {
         super.setUp();
-        List<Class<? extends SynchronizedRunnable>> classes = new ArrayList<Class<? extends SynchronizedRunnable>>();
-        classes.add(MockSynchronizedRunnable.class);
-        synchro = new Synchronizer(classes);
+        List<SynchronizedRunnableState> runnables = new ArrayList<SynchronizedRunnableState>();
+        SynchronizedRunnableState mockRunnableState = new SynchronizedRunnableState(MockSynchronizedRunnable.class);
+        runnables.add(mockRunnableState);
+
+        state = new SynchronizerState(1, runnables);
+        synchro = new Synchronizer(state);
     }
 
     protected void tearDown() throws Exception {
@@ -46,6 +51,16 @@ public class SynchronizerTest extends TestCase {
         synchro.stop();
         Thread.sleep(100);
         assertFalse(synchro.isRunning());
+    }
+
+    public void testGetState() throws InterruptedException {
+        assertEquals(state, synchro.getState());
+        assertSame(state, synchro.getState());
+        assertEquals(1, synchro.getState().getSpeed());
+        synchro.setSpeed(10);
+        assertEquals(state, synchro.getState());
+        assertSame(state, synchro.getState());
+        assertEquals(10, synchro.getState().getSpeed());
     }
 
 }

@@ -29,13 +29,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import barsuift.simLife.Persistent;
+
 /**
  * The synchronizer allows to run the list of given {@link SynchronizedRunnable} at a given rate. A
  * {@link CyclicBarrier} is used to synchronized all the tasks, and a {@link Temporizer}, in a
  * {@link ScheduledExecutorService}, is used to ensure there is always the same delay between two runs.
  * 
  */
-public class Synchronizer {
+public class Synchronizer implements Persistent<SynchronizerState> {
+
+    private final SynchronizerState state;
 
     private boolean running;
 
@@ -56,13 +60,16 @@ public class Synchronizer {
     private final List<SynchronizedRunnable> runnables = new ArrayList<SynchronizedRunnable>();
 
 
-    public Synchronizer(List<Class<? extends SynchronizedRunnable>> classes) throws SynchronizerException {
+    public Synchronizer(SynchronizerState state) throws SynchronizerException {
+        this.state = state;
         this.running = false;
         this.isStopAsked = false;
-        this.speed = 1;
+        this.speed = state.getSpeed();
+
+        List<SynchronizedRunnableState> stateRunnables = state.getRunnables();
 
         int nbScheduledThread = 1;
-        int nbStandardThread = classes.size();
+        int nbStandardThread = stateRunnables.size();
         int totalNbThread = nbScheduledThread + nbStandardThread;
 
         BarrierTask barrierTask = new BarrierTask();
@@ -71,25 +78,26 @@ public class Synchronizer {
         temporizer = new Temporizer(barrier);
         scheduledThreadPool = Executors.newScheduledThreadPool(nbScheduledThread);
 
-        for (Class<? extends SynchronizedRunnable> clazz : classes) {
-            runnables.add(instantiateClass(clazz, barrier));
+        for (SynchronizedRunnableState runState : stateRunnables) {
+            Class<? extends SynchronizedRunnable> clazz = runState.getClazz();
+            runnables.add(instantiateClass(clazz, barrier, runState));
         }
 
         standardThreadPool = Executors.newFixedThreadPool(nbStandardThread);
     }
 
-    private SynchronizedRunnable instantiateClass(Class<? extends SynchronizedRunnable> clazz, CyclicBarrier barrier)
-            throws SynchronizerException {
+    private SynchronizedRunnable instantiateClass(Class<? extends SynchronizedRunnable> clazz, CyclicBarrier barrier,
+            SynchronizedRunnableState runState) throws SynchronizerException {
         Constructor<? extends SynchronizedRunnable> runnableConstructor;
         try {
-            runnableConstructor = clazz.getConstructor(CyclicBarrier.class);
+            runnableConstructor = clazz.getConstructor(CyclicBarrier.class, SynchronizedRunnableState.class);
         } catch (SecurityException e) {
             throw new SynchronizerException("Unable to get the appropriate constructor for " + clazz, e);
         } catch (NoSuchMethodException e) {
             throw new SynchronizerException("Unable to get the appropriate constructor for " + clazz, e);
         }
         try {
-            return runnableConstructor.newInstance(barrier);
+            return runnableConstructor.newInstance(barrier, runState);
         } catch (IllegalArgumentException e) {
             throw new SynchronizerException("Unable to instantiate the constructor for " + clazz, e);
         } catch (InstantiationException e) {
@@ -174,6 +182,24 @@ public class Synchronizer {
             runnable.stop();
         }
     }
+
+    @Override
+    public SynchronizerState getState() {
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setSpeed(speed);
+        List<SynchronizedRunnableState> runnableStates = new ArrayList<SynchronizedRunnableState>();
+        for (SynchronizedRunnable runnable : runnables) {
+            runnableStates.add((SynchronizedRunnableState) runnable.getState());
+        }
+        state.setRunnables(runnableStates);
+
+    }
+
 
     /**
      * This class is used to stop all running process if isStopAsked is set to true.

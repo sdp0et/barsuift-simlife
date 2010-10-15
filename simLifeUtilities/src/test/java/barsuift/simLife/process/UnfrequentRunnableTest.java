@@ -15,7 +15,7 @@ public class UnfrequentRunnableTest extends TestCase {
         super.setUp();
         // make sure the barrier will block after all the run
         CyclicBarrier barrier = new CyclicBarrier(4);
-        state = new UnfrequentRunnableState(3, 0);
+        state = new UnfrequentRunnableState(MockUnfrequentRunnable.class, 3, 0);
         unfrequentRun = new MockUnfrequentRunnable(barrier, state);
     }
 
