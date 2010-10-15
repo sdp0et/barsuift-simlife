@@ -13,6 +13,7 @@ The rest of the application has not changed a lot.
 New features
 ------------
 Use of the calendar system
+Important internal rework to get rid of Observable/Observer and use homemade Publisher/Subscriber instead
 Addition of a synchronization framework to manage concurrent continuous actions (not fully used yet)
 
 
