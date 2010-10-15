@@ -3,7 +3,7 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 
-public class MockSynchronizedRunnable extends SynchronizedRunnable {
+public class MockSynchronizedRunnable extends AbstractSynchronizedRunnable {
 
     private int nbExecuted;
 

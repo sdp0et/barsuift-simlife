@@ -20,6 +20,8 @@ package barsuift.simLife.process;
 
 import java.util.concurrent.CyclicBarrier;
 
+import barsuift.simLife.Persistent;
+
 /**
  * This abstract class represents a task that does no need to run each time it is called.
  * <p>
@@ -28,16 +30,20 @@ import java.util.concurrent.CyclicBarrier;
  * </p>
  */
 // FIXME the count should be given by state, not set to 0 (or some process will never execute)
-public abstract class UnfrequentRunnable extends SynchronizedRunnable {
+// FIXME we should not be able to save the application wile it is running
+public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable implements Persistent<UnfrequentRunnableState> {
+
+    private final UnfrequentRunnableState state;
 
     private final int delay;
 
     private int count;
 
-    public UnfrequentRunnable(CyclicBarrier barrier, int delay) {
+    public UnfrequentRunnable(CyclicBarrier barrier, UnfrequentRunnableState state) {
         super(barrier);
-        this.delay = delay;
-        this.count = 0;
+        this.state = state;
+        this.delay = state.getDelay();
+        this.count = state.getCount();
     }
 
     @Override
@@ -47,6 +53,18 @@ public abstract class UnfrequentRunnable extends SynchronizedRunnable {
             executeUnfrequentStep();
             count = 0;
         }
+    }
+
+    @Override
+    public UnfrequentRunnableState getState() {
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setCount(count);
+        state.setDelay(delay);
     }
 
     public abstract void executeUnfrequentStep();

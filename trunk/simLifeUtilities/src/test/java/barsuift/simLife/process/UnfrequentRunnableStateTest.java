@@ -18,31 +18,29 @@
  */
 package barsuift.simLife.process;
 
+import barsuift.simLife.JaxbTestCase;
 
-/**
- * This class represents a task that can be synchronized with others.
- */
-public interface SynchronizedRunnable extends Runnable {
 
-    /**
-     * Start the process.
-     * 
-     * @throws IllegalStateException if the process is already running.
-     */
-    public abstract void run();
+public class UnfrequentRunnableStateTest extends JaxbTestCase {
 
-    /**
-     * Stop the process.
-     * 
-     * @throws IllegalStateException if the process is not running.
-     */
-    public abstract void stop();
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-    /**
-     * Returns true if the process is running.
-     * 
-     * @return true if the process is running, false otherwise.
-     */
-    public abstract boolean isRunning();
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    @Override
+    protected String getPackage() {
+        return "barsuift.simLife.process";
+    }
+
+    public void testJaxb() throws Exception {
+        UnfrequentRunnableState runnable = new UnfrequentRunnableState(3, 2);
+        write(runnable);
+        UnfrequentRunnableState runnable2 = (UnfrequentRunnableState) read();
+        assertEquals(runnable, runnable2);
+    }
 
 }
