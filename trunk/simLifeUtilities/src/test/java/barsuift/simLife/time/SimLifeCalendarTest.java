@@ -21,64 +21,54 @@ package barsuift.simLife.time;
 import java.util.Calendar;
 
 import junit.framework.TestCase;
+import barsuift.simLife.message.PublisherTestHelper;
 
 
 public class SimLifeCalendarTest extends TestCase {
 
-    private SimLifeCalendar calendar;
-
-    protected void setUp() throws Exception {
-        super.setUp();
-        calendar = new SimLifeCalendar();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        calendar = null;
-    }
-
     public void testConstructorString() {
-        calendar = new SimLifeCalendar("19:59 Firday 04 Sprim 0003");
-        assertEquals("19:59 Firday 04 Sprim 0003", calendar.formatDate());
-        // = 2*86 400 000 + 1*21 600 000 + 3*1 200 000 + 19*60 000 + 59*1000
-        // = 172 800 000 + 21 600 000 + 3 600 000 + 1 140 000 + 59 000
-        // = 199 199 000
-        assertEquals(199199000, calendar.getTimeInMillis());
+        SimLifeCalendar calendar = new SimLifeCalendar("19:59:999 Firday 04 Sprim 0003");
+        assertEquals("19:59:999 Firday 04 Sprim 0003", calendar.formatDate());
+        // = 999 + 2*86 400 000 + 1*21 600 000 + 3*1 200 000 + 19*60 000 + 59*1000
+        // = 999 + 172 800 000 + 21 600 000 + 3 600 000 + 1 140 000 + 59 000
+        // = 199 199 999
+        assertEquals(199199999, calendar.getTimeInMillis());
 
-        calendar = new SimLifeCalendar("06:13 Winday 12 Tom 0001");
-        assertEquals("06:13 Winday 12 Tom 0001", calendar.formatDate());
-        // = 3*21 600 000 + 11*1 200 000 + 6*60 000 + 13*1000
-        // = 64 800 000 + 13 200 000 + 360 000 + 13 000
-        // = 78 373 000
-        assertEquals(78373000, calendar.getTimeInMillis());
+        calendar = new SimLifeCalendar("06:13:158 Winday 12 Tom 0001");
+        assertEquals("06:13:158 Winday 12 Tom 0001", calendar.formatDate());
+        // = 158 + 3*21 600 000 + 11*1 200 000 + 6*60 000 + 13*1000
+        // = 158 + 64 800 000 + 13 200 000 + 360 000 + 13 000
+        // = 78 373 158
+        assertEquals(78373158, calendar.getTimeInMillis());
     }
 
     public void testConstructorCopy() {
-        calendar.setTimeInMillis(199199000);
+        SimLifeCalendar calendar = new SimLifeCalendar();
+        calendar.setTimeInMillis(199199158);
         SimLifeCalendar cal2 = new SimLifeCalendar(calendar);
         assertEquals(calendar, cal2);
-        assertEquals(199199000, cal2.getTimeInMillis());
+        assertEquals(199199158, cal2.getTimeInMillis());
     }
 
     public void testConstructorLong() {
-        calendar = new SimLifeCalendar(199199000);
+        SimLifeCalendar calendar = new SimLifeCalendar(199199000);
         assertEquals(199199000, calendar.getTimeInMillis());
-        assertEquals("19:59 Firday 04 Sprim 0003", calendar.formatDate());
+        assertEquals("19:59:000 Firday 04 Sprim 0003", calendar.formatDate());
 
-        // same with 1 additional second
-        calendar = new SimLifeCalendar(199200000);
-        assertEquals(199200000, calendar.getTimeInMillis());
-        assertEquals("00:00 Thunsday 05 Sprim 0003", calendar.formatDate());
+        // same with 1 additional second and 1 millisecond
+        calendar = new SimLifeCalendar(199200001);
+        assertEquals(199200001, calendar.getTimeInMillis());
+        assertEquals("00:00:001 Thunsday 05 Sprim 0003", calendar.formatDate());
 
         calendar = new SimLifeCalendar(78373000);
         assertEquals(78373000, calendar.getTimeInMillis());
-        assertEquals("06:13 Winday 12 Tom 0001", calendar.formatDate());
+        assertEquals("06:13:000 Winday 12 Tom 0001", calendar.formatDate());
     }
 
     public void testConstructorState() {
         SimLifeCalendarState calendarState = new SimLifeCalendarState();
         calendarState.setValue(199199000);
-        calendar = new SimLifeCalendar(calendarState);
+        SimLifeCalendar calendar = new SimLifeCalendar(calendarState);
         assertEquals(199199000, calendar.getTimeInMillis());
         try {
             new SimLifeCalendar((SimLifeCalendarState) null);
@@ -88,7 +78,29 @@ public class SimLifeCalendarTest extends TestCase {
         }
     }
 
-    public void testAdd() {
+    public void testAddWithBasicConstructor() {
+        internalTestAdd(new SimLifeCalendar());
+    }
+
+    public void testAddWithLongConstructor() {
+        internalTestAdd(new SimLifeCalendar(0));
+    }
+
+    public void testAddWithCalendarConstructor() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
+        internalTestAdd(new SimLifeCalendar(calendar));
+    }
+
+    public void testAddWithStateConstructor() {
+        SimLifeCalendarState calendarState = new SimLifeCalendarState();
+        internalTestAdd(new SimLifeCalendar(calendarState));
+    }
+
+    public void testAddWithStringConstructor() {
+        internalTestAdd(new SimLifeCalendar("00:00:000 Nosday 01 Wim 0001"));
+    }
+
+    public void internalTestAdd(Calendar calendar) {
         assertEquals(0, calendar.getTimeInMillis());
         assertEquals(0, calendar.get(Calendar.MILLISECOND));
         assertEquals(0, calendar.get(Calendar.SECOND));
@@ -228,7 +240,29 @@ public class SimLifeCalendarTest extends TestCase {
         assertEquals(SimLifeCalendar.CURRENT_ERA, calendar.get(Calendar.ERA));
     }
 
-    public void testRoll() {
+    public void testRollWithBasicConstructor() {
+        internalTestRoll(new SimLifeCalendar());
+    }
+
+    public void testRollWithLongConstructor() {
+        internalTestRoll(new SimLifeCalendar(0));
+    }
+
+    public void testRollWithCalendarConstructor() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
+        internalTestRoll(new SimLifeCalendar(calendar));
+    }
+
+    public void testRollWithStateConstructor() {
+        SimLifeCalendarState calendarState = new SimLifeCalendarState();
+        internalTestRoll(new SimLifeCalendar(calendarState));
+    }
+
+    public void testRollWithStringConstructor() {
+        internalTestRoll(new SimLifeCalendar("00:00:000 Nosday 01 Wim 0001"));
+    }
+
+    public void internalTestRoll(Calendar calendar) {
         assertEquals(0, calendar.getTimeInMillis());
         assertEquals(0, calendar.get(Calendar.MILLISECOND));
         assertEquals(0, calendar.get(Calendar.SECOND));
@@ -424,6 +458,7 @@ public class SimLifeCalendarTest extends TestCase {
     }
 
     public void testGetMinimum() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
         assertEquals(SimLifeCalendar.CURRENT_ERA, calendar.getMinimum(SimLifeCalendar.ERA));
         assertEquals(1, calendar.getMinimum(SimLifeCalendar.YEAR));
         assertEquals(SimLifeCalendar.WIM, calendar.getMinimum(SimLifeCalendar.MONTH));
@@ -444,6 +479,7 @@ public class SimLifeCalendarTest extends TestCase {
     }
 
     public void testGetMaximum() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
         assertEquals(SimLifeCalendar.CURRENT_ERA, calendar.getMaximum(SimLifeCalendar.ERA));
         assertEquals(292269054, calendar.getMaximum(SimLifeCalendar.YEAR));
         assertEquals(SimLifeCalendar.TOM, calendar.getMaximum(SimLifeCalendar.MONTH));
@@ -464,6 +500,7 @@ public class SimLifeCalendarTest extends TestCase {
     }
 
     public void testGetGreatestMinimum() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
         assertEquals(SimLifeCalendar.CURRENT_ERA, calendar.getGreatestMinimum(SimLifeCalendar.ERA));
         assertEquals(1, calendar.getGreatestMinimum(SimLifeCalendar.YEAR));
         assertEquals(SimLifeCalendar.WIM, calendar.getGreatestMinimum(SimLifeCalendar.MONTH));
@@ -484,6 +521,7 @@ public class SimLifeCalendarTest extends TestCase {
     }
 
     public void testGetLeastMaximum() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
         assertEquals(SimLifeCalendar.CURRENT_ERA, calendar.getLeastMaximum(SimLifeCalendar.ERA));
         assertEquals(292269054, calendar.getLeastMaximum(SimLifeCalendar.YEAR));
         assertEquals(SimLifeCalendar.TOM, calendar.getLeastMaximum(SimLifeCalendar.MONTH));
@@ -504,62 +542,66 @@ public class SimLifeCalendarTest extends TestCase {
     }
 
     public void testFormatDate() {
-        assertEquals("00:00 Nosday 01 Wim 0001", calendar.formatDate());
+        SimLifeCalendar calendar = new SimLifeCalendar();
+        assertEquals("00:00:000 Nosday 01 Wim 0001", calendar.formatDate());
 
         calendar.set(Calendar.MILLISECOND, 999);
-        assertEquals("00:00 Nosday 01 Wim 0001", calendar.formatDate());
+        assertEquals("00:00:999 Nosday 01 Wim 0001", calendar.formatDate());
 
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.MINUTE, 19);
         calendar.clear(Calendar.MONTH);
+        calendar.clear(Calendar.DAY_OF_YEAR);
         calendar.set(Calendar.DAY_OF_WEEK, SimLifeCalendar.FIRDAY);
-        assertEquals("19:59 Firday 04 Wim 0001", calendar.formatDate());
+        assertEquals("19:59:999 Firday 04 Wim 0001", calendar.formatDate());
 
         calendar = new SimLifeCalendar();
         calendar.set(Calendar.DAY_OF_WEEK, SimLifeCalendar.STOODAY);
         calendar.set(Calendar.DAY_OF_MONTH, 15);
-        assertEquals("00:00 Stooday 15 Wim 0001", calendar.formatDate());
+        assertEquals("00:00:000 Stooday 15 Wim 0001", calendar.formatDate());
 
         calendar.set(Calendar.MONTH, SimLifeCalendar.TOM);
-        assertEquals("00:00 Stooday 15 Tom 0001", calendar.formatDate());
+        assertEquals("00:00:000 Stooday 15 Tom 0001", calendar.formatDate());
 
         calendar.set(Calendar.YEAR, 12);
-        assertEquals("00:00 Stooday 15 Tom 0012", calendar.formatDate());
+        assertEquals("00:00:000 Stooday 15 Tom 0012", calendar.formatDate());
 
         calendar.set(Calendar.YEAR, 499);
-        assertEquals("00:00 Stooday 15 Tom 0499", calendar.formatDate());
+        assertEquals("00:00:000 Stooday 15 Tom 0499", calendar.formatDate());
 
         calendar.set(Calendar.YEAR, 12345);
-        assertEquals("00:00 Stooday 15 Tom 12345", calendar.formatDate());
+        assertEquals("00:00:000 Stooday 15 Tom 12345", calendar.formatDate());
 
         calendar.set(Calendar.YEAR, 123456789);
-        assertEquals("00:00 Stooday 15 Tom 123456789", calendar.formatDate());
+        assertEquals("00:00:000 Stooday 15 Tom 123456789", calendar.formatDate());
 
         calendar = new SimLifeCalendar();
         calendar.clear(Calendar.DAY_OF_MONTH);
+        calendar.clear(Calendar.DAY_OF_YEAR);
         calendar.set(Calendar.DAY_OF_WEEK, SimLifeCalendar.WINDAY);
-        assertEquals("00:00 Winday 06 Wim 0001", calendar.formatDate());
+        assertEquals("00:00:000 Winday 06 Wim 0001", calendar.formatDate());
     }
 
     public void testSetTime() {
-        calendar.setTime("19:59 Firday 04 Sprim 0003");
-        assertEquals("19:59 Firday 04 Sprim 0003", calendar.formatDate());
+        SimLifeCalendar calendar = new SimLifeCalendar();
+        calendar.setTime("19:59:000 Firday 04 Sprim 0003");
+        assertEquals("19:59:000 Firday 04 Sprim 0003", calendar.formatDate());
         // = 2*86 400 000 + 1*21 600 000 + 3*1 200 000 + 19*60 000 + 59*1000
         // = 172 800 000 + 21 600 000 + 3 600 000 + 1 140 000 + 59 000
         // = 199 199 000
         assertEquals(199199000, calendar.getTimeInMillis());
 
-        calendar.setTime("06:13 Winday 12 Tom 0001");
-        assertEquals("06:13 Winday 12 Tom 0001", calendar.formatDate());
-        // = 3*21 600 000 + 11*1 200 000 + 6*60 000 + 13*1000
-        // = 64 800 000 + 13 200 000 + 360 000 + 13 000
-        // = 78 373 000
-        assertEquals(78373000, calendar.getTimeInMillis());
+        calendar.setTime("06:13:001 Winday 12 Tom 0001");
+        assertEquals("06:13:001 Winday 12 Tom 0001", calendar.formatDate());
+        // = 1 + 3*21 600 000 + 11*1 200 000 + 6*60 000 + 13*1000
+        // = 1 + 64 800 000 + 13 200 000 + 360 000 + 13 000
+        // = 78 373 001
+        assertEquals(78373001, calendar.getTimeInMillis());
     }
 
     public void testGetState() {
         SimLifeCalendarState state = new SimLifeCalendarState(123);
-        calendar = new SimLifeCalendar(state);
+        SimLifeCalendar calendar = new SimLifeCalendar(state);
         assertEquals(state, calendar.getState());
         assertSame(state, calendar.getState());
         assertEquals(123, calendar.getState().getValue());
@@ -567,6 +609,23 @@ public class SimLifeCalendarTest extends TestCase {
         assertEquals(state, calendar.getState());
         assertSame(state, calendar.getState());
         assertEquals(124, calendar.getState().getValue());
+    }
+
+    public void testPublisher() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
+        PublisherTestHelper publisherHelper = new PublisherTestHelper();
+        publisherHelper.addSubscriber(calendar);
+        calendar.add(Calendar.MILLISECOND, 1);
+        assertEquals(2, publisherHelper.nbUpdated());
+        assertEquals(2, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+        assertEquals(null, publisherHelper.getUpdateObjects().get(1));
+
+        publisherHelper.reset();
+        calendar.add(Calendar.MILLISECOND, 1);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
     }
 
 }

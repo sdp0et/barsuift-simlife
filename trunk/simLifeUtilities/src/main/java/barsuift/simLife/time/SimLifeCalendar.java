@@ -34,7 +34,7 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
     private static final long serialVersionUID = -2239086430259505817L;
 
     private static final MessageFormat STRING_FORMAT = new MessageFormat(
-            "{0,number,00}:{1,number,00} {2} {3,number,00} {4} {5,number,0000}");
+            "{0,number,00}:{1,number,00}:{2,number,000} {3} {4,number,00} {5} {6,number,0000}");
 
     private static final Pattern spacePattern = Pattern.compile(" ");
 
@@ -220,6 +220,8 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
         result = result * SECOND_PER_MINUTE + internalGet(SECOND); // time in seconds
         result = result * MS_PER_SECOND + internalGet(MILLISECOND); // time in milliseconds
         time = result;
+        setChanged();
+        notifySubscribers();
     }
 
     private long computeTimeInDays() {
@@ -280,6 +282,8 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
         fields[MINUTE] = (int) (relativeTime % ONE_DAY) / ONE_MINUTE;
         fields[SECOND] = (int) (relativeTime % ONE_MINUTE) / ONE_SECOND;
         fields[MILLISECOND] = (int) (relativeTime % ONE_SECOND);
+        setChanged();
+        notifySubscribers();
     }
 
     @Override
@@ -399,13 +403,14 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
     }
 
     /**
-     * Date is formatted with the following pattern : <code>mm:ss DayInWeek DayInMonth Month Year</code>. For example,
-     * it can be <code>19:59 Nosday 18 Tom 0455</code>
+     * Date is formatted with the following pattern : <code>mm:ss:SSS DayInWeek DayInMonth Month Year</code>. For
+     * example, it can be <code>19:59:999 Nosday 18 Tom 0455</code>
      * <p>
      * Here are the rules to be applied when formatting :
      * <ul>
      * <li>minutes are two digits</li>
      * <li>seconds are two digits</li>
+     * <li>milliseconds are three digits</li>
      * <li>day in week is text, starting with an uppercase character</li>
      * <li>day in month is two digits</li>
      * <li>month is text, starting with an uppercase character</li>
@@ -417,7 +422,7 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
      */
     public String formatDate() {
         return STRING_FORMAT.format(new Object[] { get(Calendar.MINUTE), get(Calendar.SECOND),
-                Day.values()[get(Calendar.DAY_OF_WEEK) - 1], get(Calendar.DAY_OF_MONTH),
+                get(Calendar.MILLISECOND), Day.values()[get(Calendar.DAY_OF_WEEK) - 1], get(Calendar.DAY_OF_MONTH),
                 Month.values()[get(Calendar.MONTH) - 1], get(Calendar.YEAR) });
     }
 
@@ -429,11 +434,11 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
      */
     public void setTime(String date) {
         String[] elements = spacePattern.split(date);
-        String minSec = elements[0];
-        String[] minSecElements = colonPattern.split(minSec);
+        String minSecMillisec = elements[0];
+        String[] minSecElements = colonPattern.split(minSecMillisec);
         set(MINUTE, Integer.parseInt(minSecElements[0]));
         set(SECOND, Integer.parseInt(minSecElements[1]));
-        set(MILLISECOND, 0);
+        set(MILLISECOND, Integer.parseInt(minSecElements[2]));
         set(DAY_OF_WEEK, Day.valueOf(elements[1].toUpperCase()).getIndex());
         set(DAY_OF_MONTH, Integer.parseInt(elements[2]));
         set(MONTH, Month.valueOf(elements[3].toUpperCase()).getIndex());
