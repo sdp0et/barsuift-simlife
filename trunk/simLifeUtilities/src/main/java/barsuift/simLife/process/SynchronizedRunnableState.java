@@ -20,47 +20,36 @@ package barsuift.simLife.process;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
+
 @XmlRootElement
-public class UnfrequentRunnableState extends SynchronizedRunnableState {
+public class SynchronizedRunnableState implements State {
 
-    private int delay;
+    private Class<? extends SynchronizedRunnable> clazz;
 
-    private int count;
-
-    public UnfrequentRunnableState() {
+    public SynchronizedRunnableState() {
         super();
-        delay = 1;
-        count = 0;
+        clazz = null;
     }
 
-    public UnfrequentRunnableState(Class<? extends SynchronizedRunnable> clazz, int delay, int count) {
-        super(clazz);
-        this.delay = delay;
-        this.count = count;
+    public SynchronizedRunnableState(Class<? extends SynchronizedRunnable> name) {
+        super();
+        this.clazz = name;
     }
 
-    public int getDelay() {
-        return delay;
+    public Class<? extends SynchronizedRunnable> getClazz() {
+        return clazz;
     }
 
-    public void setDelay(int delay) {
-        this.delay = delay;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
+    public void setClazz(Class<? extends SynchronizedRunnable> clazz) {
+        this.clazz = clazz;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + count;
-        result = prime * result + delay;
+        int result = 1;
+        result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
         return result;
     }
 
@@ -68,21 +57,23 @@ public class UnfrequentRunnableState extends SynchronizedRunnableState {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (!super.equals(obj))
+        if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        UnfrequentRunnableState other = (UnfrequentRunnableState) obj;
-        if (count != other.count)
-            return false;
-        if (delay != other.delay)
-            return false;
+        SynchronizedRunnableState other = (SynchronizedRunnableState) obj;
+        if (clazz == null) {
+            if (other.clazz != null)
+                return false;
+        } else
+            if (!clazz.equals(other.clazz))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "UnfrequentRunnableState [delay=" + delay + ", count=" + count + ", super=" + super.toString() + "]";
+        return "SynchronizedRunnableState [class=" + clazz + "]";
     }
 
 }

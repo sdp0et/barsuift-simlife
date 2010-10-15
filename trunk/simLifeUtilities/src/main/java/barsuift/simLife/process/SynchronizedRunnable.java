@@ -18,11 +18,13 @@
  */
 package barsuift.simLife.process;
 
+import barsuift.simLife.Persistent;
+
 
 /**
  * This class represents a task that can be synchronized with others.
  */
-public interface SynchronizedRunnable extends Runnable {
+public interface SynchronizedRunnable extends Runnable, Persistent<SynchronizedRunnableState> {
 
     /**
      * Start the process.

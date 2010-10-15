@@ -7,8 +7,8 @@ public class MockSynchronizedRunnable extends AbstractSynchronizedRunnable {
 
     private int nbExecuted;
 
-    public MockSynchronizedRunnable(CyclicBarrier barrier) {
-        super(barrier);
+    public MockSynchronizedRunnable(CyclicBarrier barrier, SynchronizedRunnableState state) {
+        super(barrier, state);
         reset();
     }
 
