@@ -6,8 +6,8 @@ public class MockUnfrequentRunnable extends UnfrequentRunnable {
 
     private int nbExecuted;
 
-    public MockUnfrequentRunnable(CyclicBarrier barrier, int delay) {
-        super(barrier, delay);
+    public MockUnfrequentRunnable(CyclicBarrier barrier, UnfrequentRunnableState state) {
+        super(barrier, state);
         reset();
     }
     

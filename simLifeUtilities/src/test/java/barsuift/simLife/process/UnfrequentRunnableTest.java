@@ -7,18 +7,24 @@ import junit.framework.TestCase;
 
 public class UnfrequentRunnableTest extends TestCase {
 
+    private MockUnfrequentRunnable unfrequentRun;
+
+    private UnfrequentRunnableState state;
+
     protected void setUp() throws Exception {
         super.setUp();
+        // make sure the barrier will block after all the run
+        CyclicBarrier barrier = new CyclicBarrier(4);
+        state = new UnfrequentRunnableState(3, 0);
+        unfrequentRun = new MockUnfrequentRunnable(barrier, state);
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
+        unfrequentRun = null;
     }
 
     public void testRun() throws InterruptedException {
-        // make sure the barrier will block after all the run
-        CyclicBarrier barrier = new CyclicBarrier(4);
-        MockUnfrequentRunnable unfrequentRun = new MockUnfrequentRunnable(barrier, 3);
         (new Thread(unfrequentRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
@@ -52,6 +58,18 @@ public class UnfrequentRunnableTest extends TestCase {
         assertTrue(unfrequentRun.isRunning());
         // now it has run once
         assertEquals(1, unfrequentRun.getNbExecuted());
+    }
+
+    public void testGetState() throws InterruptedException {
+        assertEquals(state, unfrequentRun.getState());
+        assertSame(state, unfrequentRun.getState());
+        assertEquals(0, unfrequentRun.getState().getCount());
+        (new Thread(unfrequentRun)).start();
+        // make sure the thread has time to start
+        Thread.sleep(100);
+        assertEquals(state, unfrequentRun.getState());
+        assertSame(state, unfrequentRun.getState());
+        assertEquals(1, unfrequentRun.getState().getCount());
     }
 
 }
