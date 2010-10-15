@@ -23,13 +23,10 @@ import java.util.Calendar;
 import java.util.regex.Pattern;
 
 import barsuift.simLife.Persistent;
-import barsuift.simLife.message.BasicPublisher;
-import barsuift.simLife.message.Publisher;
-import barsuift.simLife.message.Subscriber;
 
 // TODO 040. use the calendar system
 // TODO 001. test the publisher behavior
-public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalendarState>, Publisher {
+public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalendarState> {
 
     private static final long serialVersionUID = -2239086430259505817L;
 
@@ -167,8 +164,6 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
 
     private final SimLifeCalendarState state;
 
-    private final Publisher publisher = new BasicPublisher(this);
-
     public SimLifeCalendar() {
         time = 0;
         set(YEAR, 1);
@@ -220,8 +215,6 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
         result = result * SECOND_PER_MINUTE + internalGet(SECOND); // time in seconds
         result = result * MS_PER_SECOND + internalGet(MILLISECOND); // time in milliseconds
         time = result;
-        setChanged();
-        notifySubscribers();
     }
 
     private long computeTimeInDays() {
@@ -282,8 +275,6 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
         fields[MINUTE] = (int) (relativeTime % ONE_DAY) / ONE_MINUTE;
         fields[SECOND] = (int) (relativeTime % ONE_MINUTE) / ONE_SECOND;
         fields[MILLISECOND] = (int) (relativeTime % ONE_SECOND);
-        setChanged();
-        notifySubscribers();
     }
 
     @Override
@@ -445,42 +436,6 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
         set(YEAR, Integer.parseInt(elements[4]));
 
         computeTime();
-    }
-
-    public void addSubscriber(Subscriber subscriber) {
-        publisher.addSubscriber(subscriber);
-    }
-
-    public void deleteSubscriber(Subscriber subscriber) {
-        publisher.deleteSubscriber(subscriber);
-    }
-
-    public void notifySubscribers() {
-        publisher.notifySubscribers();
-    }
-
-    public void notifySubscribers(Object arg) {
-        publisher.notifySubscribers(arg);
-    }
-
-    public void deleteSubscribers() {
-        publisher.deleteSubscribers();
-    }
-
-    public boolean hasChanged() {
-        return publisher.hasChanged();
-    }
-
-    public int countSubscribers() {
-        return publisher.countSubscribers();
-    }
-
-    public void setChanged() {
-        publisher.setChanged();
-    }
-
-    public void clearChanged() {
-        publisher.clearChanged();
     }
 
 }

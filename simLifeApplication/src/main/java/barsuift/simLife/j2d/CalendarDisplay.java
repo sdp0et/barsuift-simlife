@@ -20,26 +20,22 @@ package barsuift.simLife.j2d;
 
 import javax.swing.JLabel;
 
-import barsuift.simLife.message.Publisher;
-import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.time.SimLifeCalendar;
 
-// TODO 001 use and unit test
-public class CalendarDisplay extends JLabel implements Subscriber {
+// TODO 001 use
+public class CalendarDisplay extends JLabel {
 
     private static final long serialVersionUID = 6381218933947453660L;
 
     private SimLifeCalendar calendar;
 
     public CalendarDisplay(SimLifeCalendar calendar) {
-        calendar.addSubscriber(this);
         this.calendar = calendar;
         setText(calendar.formatDate());
         setSize(200, 40);
     }
 
-    @Override
-    public void update(Publisher publisher, Object arg) {
+    public void update() {
         setText(calendar.formatDate());
     }
 
