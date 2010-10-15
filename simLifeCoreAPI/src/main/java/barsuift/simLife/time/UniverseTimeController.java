@@ -114,8 +114,8 @@ public class UniverseTimeController {
         return running;
     }
 
-    public TimeCounter getTimeCounter() {
-        return timeMessenger.getTimeCounter();
+    public SimLifeCalendar getCalendar() {
+        return timeMessenger.getCalendar();
     }
 
 }

@@ -36,7 +36,6 @@ import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
-import barsuift.simLife.time.TimeCounterState;
 import barsuift.simLife.tree.TreeBranchPartState;
 import barsuift.simLife.tree.TreeBranchState;
 import barsuift.simLife.tree.TreeLeafState;
@@ -91,7 +90,7 @@ public final class CoreDataCreatorForTests {
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
         return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(),
-                createRandomTimeCounterState(), univ3DState);
+                UtilDataCreatorForTests.createRandomCalendarState(), univ3DState);
     }
 
     /**
@@ -102,8 +101,8 @@ public final class CoreDataCreatorForTests {
      * <li>nb trees=3 (made through the {@link #createSpecificTreeState()} method)</li>
      * <li>nb fallen leaves=20 (made through the {@link #createSpecificTreeLeafState()} method)</li>
      * </ul>
-     * The environment is made through the {@link #createSpecificEnvironmentState()} method. The time counter is made
-     * through the {@link #createSpecificTimeCounterState()} method.
+     * The environment is made through the {@link #createSpecificEnvironmentState()} method. The calendar is made
+     * through the {@link UtilDataCreatorForTests#createSpecificCalendarState()} method.
      * 
      * @return
      */
@@ -121,7 +120,7 @@ public final class CoreDataCreatorForTests {
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
         return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(),
-                createSpecificTimeCounterState(), univ3DState);
+                UtilDataCreatorForTests.createSpecificCalendarState(), univ3DState);
     }
 
     public static EnvironmentState createRandomEnvironmentState() {
@@ -165,19 +164,6 @@ public final class CoreDataCreatorForTests {
         BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
         Sun3DState sun3DState = DisplayDataCreatorForTests.createSpecificSun3DState();
         return new SunState(luminosity, riseAngle, zenithAngle, sun3DState);
-    }
-
-    public static TimeCounterState createRandomTimeCounterState() {
-        return new TimeCounterState(Randomizer.randomBetween(0, 60));
-    }
-
-    /**
-     * Create specific time counter state with seconds = 22
-     * 
-     * @return
-     */
-    public static TimeCounterState createSpecificTimeCounterState() {
-        return new TimeCounterState(22);
     }
 
     public static TreeState createRandomTreeState() {

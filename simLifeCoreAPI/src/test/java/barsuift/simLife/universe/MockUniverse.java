@@ -27,8 +27,8 @@ import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.FpsCounter;
-import barsuift.simLife.time.TimeCounter;
-import barsuift.simLife.time.TimeCounterState;
+import barsuift.simLife.time.SimLifeCalendar;
+import barsuift.simLife.time.SimLifeCalendarState;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -51,7 +51,7 @@ public class MockUniverse implements Universe {
 
     private UniverseState state = new UniverseState();
 
-    private TimeCounter timeCounter = new TimeCounter(new TimeCounterState());
+    private SimLifeCalendar calendar = new SimLifeCalendar(new SimLifeCalendarState());
 
     private FpsCounter fpsCounter;
 
@@ -148,12 +148,12 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public TimeCounter getCounter() {
-        return timeCounter;
+    public SimLifeCalendar getCalendar() {
+        return calendar;
     }
 
-    public void setCounter(TimeCounter timeCounter) {
-        this.timeCounter = timeCounter;
+    public void setCalendar(SimLifeCalendar calendar) {
+        this.calendar = calendar;
     }
 
     @Override

@@ -22,7 +22,7 @@ import javax.swing.JLabel;
 
 import barsuift.simLife.time.SimLifeCalendar;
 
-// TODO 001 use
+// FIXME not updated : they appropriate thread should call the update method
 public class CalendarDisplay extends JLabel {
 
     private static final long serialVersionUID = 6381218933947453660L;
