@@ -24,8 +24,6 @@ import java.util.regex.Pattern;
 
 import barsuift.simLife.Persistent;
 
-// TODO 040. use the calendar system
-// TODO 001. test the publisher behavior
 public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalendarState> {
 
     private static final long serialVersionUID = -2239086430259505817L;
