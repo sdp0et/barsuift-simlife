@@ -42,7 +42,7 @@ public class UniverseControllerTest extends TestCase {
 
     public void testStart() {
         assertFalse(controller.isRunning());
-        TimeCounterTestHelper.assertEquals(0, 0, 0, 0, controller.getTimeCounter());
+        assertEquals(new SimLifeCalendar(), controller.getCalendar());
         int speed = controller.getSpeed();
         controller.start();
         // waiting 2 cycles

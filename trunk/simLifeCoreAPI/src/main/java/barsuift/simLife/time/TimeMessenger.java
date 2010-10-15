@@ -33,8 +33,8 @@ public class TimeMessenger implements Runnable {
         universe.spendTime();
     }
 
-    public TimeCounter getTimeCounter() {
-        return universe.getCounter();
+    public SimLifeCalendar getCalendar() {
+        return universe.getCalendar();
     }
 
 }

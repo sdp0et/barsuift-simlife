@@ -34,7 +34,7 @@ import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import barsuift.simLife.j2d.TimerDisplay;
+import barsuift.simLife.j2d.CalendarDisplay;
 import barsuift.simLife.j2d.action.SpeedAction;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
@@ -46,7 +46,7 @@ public class TimeControllerPanel extends JPanel {
 
     private final UniverseTimeController controller;
 
-    private final TimerDisplay timerDisplay;
+    private final CalendarDisplay calendarDisplay;
 
     private final JButton oneStepButton;
 
@@ -68,9 +68,9 @@ public class TimeControllerPanel extends JPanel {
         setMaximumSize(new Dimension(220, 100));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        timerDisplay = createTimerDisplay();
-        timerDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(timerDisplay);
+        calendarDisplay = createCalendarDisplay();
+        calendarDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(calendarDisplay);
 
         JPanel speedPanel = createSpeedPanel(timeController);
         add(speedPanel);
@@ -115,8 +115,8 @@ public class TimeControllerPanel extends JPanel {
         return speedPanel;
     }
 
-    private TimerDisplay createTimerDisplay() {
-        return new TimerDisplay(controller.getTimeCounter());
+    private CalendarDisplay createCalendarDisplay() {
+        return new CalendarDisplay(controller.getCalendar());
     }
 
     private JButton createOneStepButton() {

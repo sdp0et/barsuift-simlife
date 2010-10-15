@@ -44,4 +44,5 @@ public class SunStateFactory {
         Sun3DState sun3DState = sun3DStateFactory.createSpecificSun3DState();
         return new SunState(luminosity, riseAngle, zenithAngle, sun3DState);
     }
+
 }

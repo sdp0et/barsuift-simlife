@@ -19,6 +19,7 @@
 package barsuift.simLife.universe;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +31,7 @@ import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.FpsCounter;
-import barsuift.simLife.time.TimeCounter;
+import barsuift.simLife.time.SimLifeCalendar;
 import barsuift.simLife.tree.BasicTree;
 import barsuift.simLife.tree.BasicTreeLeaf;
 import barsuift.simLife.tree.Tree;
@@ -54,16 +55,15 @@ public class BasicUniverse implements Universe {
 
     private final BasicUniverse3D universe3D;
 
-    private final TimeCounter counter;
+    private final SimLifeCalendar calendar;
 
     private final FpsCounter fpsCounter;
-
 
     public BasicUniverse(UniverseState state) {
         this.state = state;
         this.fpsCounter = new FpsCounter();
         this.fpsShowing = state.isFpsShowing();
-        this.counter = new TimeCounter(state.getTimeCounter());
+        this.calendar = new SimLifeCalendar(state.getCalendar());
         this.age = state.getAge();
         this.universe3D = new BasicUniverse3D();
         this.environment = new BasicEnvironment(state.getEnvironment());
@@ -106,7 +106,7 @@ public class BasicUniverse implements Universe {
         if (fpsShowing) {
             fpsCounter.tick();
         }
-        counter.increment();
+        calendar.add(Calendar.MILLISECOND, 1000);
         age++;
         for (LivingPart livingPart : getLivingParts()) {
             livingPart.spendTime();
@@ -146,8 +146,8 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public TimeCounter getCounter() {
-        return counter;
+    public SimLifeCalendar getCalendar() {
+        return calendar;
     }
 
     @Override
@@ -171,7 +171,7 @@ public class BasicUniverse implements Universe {
         }
         state.setFallenLeaves(fallenLeaveStates);
         environment.synchronize();
-        counter.synchronize();
+        calendar.synchronize();
     }
 
     @Override
