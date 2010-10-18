@@ -161,8 +161,8 @@ public class BasicTimeControllerTest extends TestCase {
         assertEquals(state, controller.getState());
         assertSame(state, controller.getState());
         assertEquals(0, controller.getState().getCalendar().getValue());
-        assertEquals(1, controller.getState().getSynchronizer().getSpeed());
-        int newSpeed = 10;
+        assertEquals(10, controller.getState().getSynchronizer().getSpeed());
+        int newSpeed = 1;
         controller.setSpeed(newSpeed);
         controller.oneStep();
         // waiting 2 cycles

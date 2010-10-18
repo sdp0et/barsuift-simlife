@@ -50,9 +50,6 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
 
     private boolean running;
 
-    // FIXME choose whether speed is in TimeController or Synchronizer
-    private int speed;
-
     public BasicTimeController(Universe universe, TimeControllerState state) throws InitException {
         super();
         this.state = state;
@@ -61,19 +58,18 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
         this.scheduledThreadPool = Executors.newScheduledThreadPool(poolSize);
         this.timeMessenger = new TimeMessenger(universe);
         this.running = false;
-        this.speed = 1;
         this.calendar = new SimLifeCalendar(state.getCalendar());
         this.synchronizer = new Synchronizer(state.getSynchronizer(), this);
     }
 
     @Override
     public void setSpeed(int speed) {
-        this.speed = speed;
+        synchronizer.setSpeed(speed);
     }
 
     @Override
     public int getSpeed() {
-        return speed;
+        return synchronizer.getSpeed();
     }
 
     @Override
@@ -85,7 +81,7 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
         // start immediately
         int initialDelay = 0;
         // wakeup period (speed = cycles / second)
-        long period = 1000 / speed;
+        long period = 1000 / getSpeed();
         runningProcess = scheduledThreadPool.scheduleAtFixedRate(timeMessenger, initialDelay, period,
                 TimeUnit.MILLISECONDS);
         synchronizer.start();
