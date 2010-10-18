@@ -38,13 +38,13 @@ import barsuift.simLife.j2d.CalendarDisplay;
 import barsuift.simLife.j2d.action.SpeedAction;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
-import barsuift.simLife.time.UniverseTimeController;
+import barsuift.simLife.time.TimeController;
 
 public class TimeControllerPanel extends JPanel {
 
     private static final long serialVersionUID = 5530349468986336456L;
 
-    private final UniverseTimeController controller;
+    private final TimeController controller;
 
     private final CalendarDisplay calendarDisplay;
 
@@ -61,14 +61,14 @@ public class TimeControllerPanel extends JPanel {
      * 
      * @param timeController the universe time controller
      */
-    public TimeControllerPanel(UniverseTimeController timeController) {
+    public TimeControllerPanel(TimeController timeController) {
         super();
         this.controller = timeController;
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setMaximumSize(new Dimension(220, 100));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        calendarDisplay = createCalendarDisplay();
+        calendarDisplay = new CalendarDisplay(controller.getCalendar());
         calendarDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(calendarDisplay);
 
@@ -93,7 +93,7 @@ public class TimeControllerPanel extends JPanel {
         setBorder(titledBorder);
     }
 
-    private JPanel createSpeedPanel(UniverseTimeController timeController) {
+    private JPanel createSpeedPanel(TimeController timeController) {
         JPanel speedPanel = new JPanel();
         speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));
         SpeedAction action1 = new SpeedAction(timeController, "1", "1 cycle / sec", Mnemonics.SPEED_1,
@@ -113,10 +113,6 @@ public class TimeControllerPanel extends JPanel {
         speedPanel.add(speed1);
         speedPanel.add(speed10);
         return speedPanel;
-    }
-
-    private CalendarDisplay createCalendarDisplay() {
-        return new CalendarDisplay(controller.getCalendar());
     }
 
     private JButton createOneStepButton() {

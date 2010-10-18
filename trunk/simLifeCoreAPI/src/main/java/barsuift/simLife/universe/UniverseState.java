@@ -26,7 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import barsuift.simLife.State;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.j3d.universe.Universe3DState;
-import barsuift.simLife.time.SimLifeCalendarState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 
@@ -43,8 +42,6 @@ public class UniverseState implements State {
 
     private EnvironmentState environment;
 
-    private SimLifeCalendarState calendar;
-
     private Universe3DState univ3DState;
 
     public UniverseState() {
@@ -54,19 +51,17 @@ public class UniverseState implements State {
         this.trees = new HashSet<TreeState>();
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
-        this.calendar = new SimLifeCalendarState();
         this.univ3DState = new Universe3DState();
     }
 
     public UniverseState(int age, boolean fpsShowing, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves,
-            EnvironmentState environment, SimLifeCalendarState calendar, Universe3DState univ3DState) {
+            EnvironmentState environment, Universe3DState univ3DState) {
         super();
         this.age = age;
         this.fpsShowing = fpsShowing;
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
-        this.calendar = calendar;
         this.univ3DState = univ3DState;
     }
 
@@ -110,14 +105,6 @@ public class UniverseState implements State {
         this.environment = environment;
     }
 
-    public SimLifeCalendarState getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(SimLifeCalendarState calendar) {
-        this.calendar = calendar;
-    }
-
     public Universe3DState getUniv3DState() {
         return univ3DState;
     }
@@ -134,7 +121,6 @@ public class UniverseState implements State {
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
         result = prime * result + (fpsShowing ? 1231 : 1237);
-        result = prime * result + ((calendar == null) ? 0 : calendar.hashCode());
         result = prime * result + ((trees == null) ? 0 : trees.hashCode());
         result = prime * result + ((univ3DState == null) ? 0 : univ3DState.hashCode());
         return result;
@@ -165,12 +151,6 @@ public class UniverseState implements State {
                 return false;
         if (fpsShowing != other.fpsShowing)
             return false;
-        if (calendar == null) {
-            if (other.calendar != null)
-                return false;
-        } else
-            if (!calendar.equals(other.calendar))
-                return false;
         if (trees == null) {
             if (other.trees != null)
                 return false;
@@ -189,8 +169,7 @@ public class UniverseState implements State {
     @Override
     public String toString() {
         return "UniverseState [age=" + age + ", fpsShowing=" + fpsShowing + ", trees=" + trees + ", fallenLeaves="
-                + fallenLeaves + ", environment=" + environment + ", calendar=" + calendar + ", univ3DState="
-                + univ3DState + "]";
+                + fallenLeaves + ", environment=" + environment + ", univ3DState=" + univ3DState + "]";
     }
 
 }

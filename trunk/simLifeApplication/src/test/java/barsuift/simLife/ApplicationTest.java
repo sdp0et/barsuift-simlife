@@ -48,7 +48,7 @@ public class ApplicationTest extends TestCase {
         saveFile = null;
     }
 
-    public void testSaveUniverse() throws SaveException {
+    public void testSaveUniverse() throws SaveException, InitException {
         try {
             application.saveUniverse();
             fail("Should throw an IllegalStateException");
@@ -80,7 +80,7 @@ public class ApplicationTest extends TestCase {
         }
     }
 
-    public void testOpen() throws OpenException, SaveException {
+    public void testOpen() throws OpenException, SaveException, InitException {
         // create a test file to be read
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         UniverseContext universeContext = factory.createRandom();

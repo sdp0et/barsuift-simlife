@@ -29,7 +29,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import barsuift.simLife.InitException;
 import barsuift.simLife.Persistent;
+import barsuift.simLife.time.TimeController;
 
 /**
  * The synchronizer allows to run the list of given {@link SynchronizedRunnable} at a given rate. A
@@ -59,20 +61,22 @@ public class Synchronizer implements Persistent<SynchronizerState> {
 
     private final List<SynchronizedRunnable> runnables = new ArrayList<SynchronizedRunnable>();
 
-
-    public Synchronizer(SynchronizerState state) throws SynchronizerException {
+    public Synchronizer(SynchronizerState state, TimeController timeController) throws InitException {
         this.state = state;
         this.running = false;
         this.isStopAsked = false;
         this.speed = state.getSpeed();
 
-        List<SynchronizedRunnableState> stateRunnables = state.getRunnables();
+        List<SynchronizedRunnableState> stateRunnables = new ArrayList<SynchronizedRunnableState>();
+        stateRunnables.addAll(state.getSynchronizedRunnables());
+        stateRunnables.addAll(state.getUnfrequentRunnables());
 
         int nbScheduledThread = 1;
         int nbStandardThread = stateRunnables.size();
         int totalNbThread = nbScheduledThread + nbStandardThread;
 
         BarrierTask barrierTask = new BarrierTask();
+
         CyclicBarrier barrier = new CyclicBarrier(totalNbThread, barrierTask);
 
         temporizer = new Temporizer(barrier);
@@ -80,33 +84,38 @@ public class Synchronizer implements Persistent<SynchronizerState> {
 
         for (SynchronizedRunnableState runState : stateRunnables) {
             Class<? extends SynchronizedRunnable> clazz = runState.getClazz();
-            runnables.add(instantiateClass(clazz, barrier, runState));
+            runnables.add(instantiateClass(clazz, runState, barrier, timeController));
         }
 
         standardThreadPool = Executors.newFixedThreadPool(nbStandardThread);
     }
 
-    private SynchronizedRunnable instantiateClass(Class<? extends SynchronizedRunnable> clazz, CyclicBarrier barrier,
-            SynchronizedRunnableState runState) throws SynchronizerException {
+
+    private SynchronizedRunnable instantiateClass(Class<? extends SynchronizedRunnable> clazz,
+            SynchronizedRunnableState runState, CyclicBarrier barrier, TimeController timeController)
+            throws InitException {
         Constructor<? extends SynchronizedRunnable> runnableConstructor;
         try {
-            runnableConstructor = clazz.getConstructor(CyclicBarrier.class, SynchronizedRunnableState.class);
+            runnableConstructor = clazz.getConstructor();
         } catch (SecurityException e) {
-            throw new SynchronizerException("Unable to get the appropriate constructor for " + clazz, e);
+            throw new InitException("Unable to get the appropriate constructor for " + clazz, e);
         } catch (NoSuchMethodException e) {
-            throw new SynchronizerException("Unable to get the appropriate constructor for " + clazz, e);
+            throw new InitException("Unable to get the appropriate constructor for " + clazz, e);
         }
+        SynchronizedRunnable result;
         try {
-            return runnableConstructor.newInstance(barrier, runState);
+            result = runnableConstructor.newInstance();
         } catch (IllegalArgumentException e) {
-            throw new SynchronizerException("Unable to instantiate the constructor for " + clazz, e);
+            throw new InitException("Unable to instantiate the constructor for " + clazz, e);
         } catch (InstantiationException e) {
-            throw new SynchronizerException("Unable to instantiate the constructor for " + clazz, e);
+            throw new InitException("Unable to instantiate the constructor for " + clazz, e);
         } catch (IllegalAccessException e) {
-            throw new SynchronizerException("Unable to instantiate the constructor for " + clazz, e);
+            throw new InitException("Unable to instantiate the constructor for " + clazz, e);
         } catch (InvocationTargetException e) {
-            throw new SynchronizerException("Unable to instantiate the constructor for " + clazz, e);
+            throw new InitException("Unable to instantiate the constructor for " + clazz, e);
         }
+        result.init(runState, barrier, timeController);
+        return result;
     }
 
     public void setSpeed(int speed) {
@@ -157,6 +166,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         for (Runnable runnable : runnables) {
             standardThreadPool.submit(runnable);
         }
+
     }
 
     /**
@@ -192,12 +202,17 @@ public class Synchronizer implements Persistent<SynchronizerState> {
     @Override
     public void synchronize() {
         state.setSpeed(speed);
-        List<SynchronizedRunnableState> runnableStates = new ArrayList<SynchronizedRunnableState>();
+        List<SynchronizedRunnableState> synchroRunnableStates = new ArrayList<SynchronizedRunnableState>();
+        List<UnfrequentRunnableState> unfrequentRunnableStates = new ArrayList<UnfrequentRunnableState>();
         for (SynchronizedRunnable runnable : runnables) {
-            runnableStates.add((SynchronizedRunnableState) runnable.getState());
+            if (runnable instanceof UnfrequentRunnable) {
+                unfrequentRunnableStates.add((UnfrequentRunnableState) runnable.getState());
+            } else {
+                synchroRunnableStates.add((SynchronizedRunnableState) runnable.getState());
+            }
         }
-        state.setRunnables(runnableStates);
-
+        state.setSynchronizedRunnables(synchroRunnableStates);
+        state.setUnfrequentRunnables(unfrequentRunnableStates);
     }
 
 

@@ -16,35 +16,19 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.time;
 
-import barsuift.simLife.Persistent;
+import barsuift.simLife.process.SynchronizerState;
+import barsuift.simLife.process.SynchronizerStateFactory;
 
 
-/**
- * This class represents a task that can be synchronized with others.
- */
-public interface SynchronizedRunnable extends Runnable, Persistent<SynchronizedRunnableState> {
+public class TimeControllerStateFactory {
 
-    /**
-     * Start the process.
-     * 
-     * @throws IllegalStateException if the process is already running.
-     */
-    public abstract void run();
-
-    /**
-     * Stop the process.
-     * 
-     * @throws IllegalStateException if the process is not running.
-     */
-    public abstract void stop();
-
-    /**
-     * Returns true if the process is running.
-     * 
-     * @return true if the process is running, false otherwise.
-     */
-    public abstract boolean isRunning();
+    public TimeControllerState createTimeControllerState() {
+        SynchronizerStateFactory synchronizerFactory = new SynchronizerStateFactory();
+        SynchronizerState synchronizer = synchronizerFactory.createSynchronizerState();
+        SimLifeCalendarState calendar = new SimLifeCalendarState();
+        return new TimeControllerState(synchronizer, calendar);
+    }
 
 }

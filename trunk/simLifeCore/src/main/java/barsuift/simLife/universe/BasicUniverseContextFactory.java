@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.universe;
 
+import barsuift.simLife.InitException;
+
 
 public class BasicUniverseContextFactory {
 
@@ -25,8 +27,9 @@ public class BasicUniverseContextFactory {
      * Create a random universe context
      * 
      * @return a new universe context instance
+     * @throws InitException 
      */
-    public UniverseContext createRandom() {
+    public UniverseContext createRandom() throws InitException {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = universeContextStateFactory.createRandomUniverseContextState();
         UniverseContext universeContext = new BasicUniverseContext(universeContextState);
@@ -37,8 +40,9 @@ public class BasicUniverseContextFactory {
      * Create an empty universe context
      * 
      * @return a new universe context instance
+     * @throws InitException 
      */
-    public UniverseContext createEmpty() {
+    public UniverseContext createEmpty() throws InitException {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = universeContextStateFactory.createEmptyUniverseContextState();
         UniverseContext universeContext = new BasicUniverseContext(universeContextState);

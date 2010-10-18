@@ -23,8 +23,12 @@ import java.util.Calendar;
 import java.util.regex.Pattern;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalendarState> {
+//FIXME there seem to be a bug when relaoding a calendar
+public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalendarState>, Publisher {
 
     private static final long serialVersionUID = -2239086430259505817L;
 
@@ -161,6 +165,8 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
 
 
     private final SimLifeCalendarState state;
+
+    private final BasicPublisher publisher = new BasicPublisher(this);
 
     public SimLifeCalendar() {
         time = 0;
@@ -410,9 +416,11 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
      * @return the formatted date
      */
     public String formatDate() {
-        return STRING_FORMAT.format(new Object[] { get(Calendar.MINUTE), get(Calendar.SECOND),
-                get(Calendar.MILLISECOND), Day.values()[get(Calendar.DAY_OF_WEEK) - 1], get(Calendar.DAY_OF_MONTH),
-                Month.values()[get(Calendar.MONTH) - 1], get(Calendar.YEAR) });
+        complete();
+        return STRING_FORMAT.format(new Object[] { internalGet(Calendar.MINUTE), internalGet(Calendar.SECOND),
+                internalGet(Calendar.MILLISECOND), Day.values()[internalGet(Calendar.DAY_OF_WEEK) - 1],
+                internalGet(Calendar.DAY_OF_MONTH), Month.values()[internalGet(Calendar.MONTH) - 1],
+                internalGet(Calendar.YEAR) });
     }
 
     /**
@@ -425,15 +433,70 @@ public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalen
         String[] elements = spacePattern.split(date);
         String minSecMillisec = elements[0];
         String[] minSecElements = colonPattern.split(minSecMillisec);
-        set(MINUTE, Integer.parseInt(minSecElements[0]));
-        set(SECOND, Integer.parseInt(minSecElements[1]));
-        set(MILLISECOND, Integer.parseInt(minSecElements[2]));
-        set(DAY_OF_WEEK, Day.valueOf(elements[1].toUpperCase()).getIndex());
-        set(DAY_OF_MONTH, Integer.parseInt(elements[2]));
+        fields[YEAR] = Integer.parseInt(elements[4]);
         set(MONTH, Month.valueOf(elements[3].toUpperCase()).getIndex());
-        set(YEAR, Integer.parseInt(elements[4]));
-
+        set(DAY_OF_MONTH, Integer.parseInt(elements[2]));
+        fields[DAY_OF_WEEK] = Day.valueOf(elements[1].toUpperCase()).getIndex();
+        fields[MINUTE] = Integer.parseInt(minSecElements[0]);
+        fields[SECOND] = Integer.parseInt(minSecElements[1]);
+        fields[MILLISECOND] = Integer.parseInt(minSecElements[2]);
         computeTime();
+        setChanged();
+        notifySubscribers();
+    }
+
+    @Override
+    public void setTimeInMillis(long millis) {
+        super.setTimeInMillis(millis);
+        setChanged();
+        notifySubscribers();
+    }
+
+    @Override
+    public void set(int field, int value) {
+        super.set(field, value);
+        setChanged();
+        notifySubscribers();
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public int hashCode() {
+        return publisher.hashCode();
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
     }
 
 }

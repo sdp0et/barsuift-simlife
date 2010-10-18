@@ -3,6 +3,8 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
+import barsuift.simLife.time.MockTimeController;
+import barsuift.simLife.time.TimeController;
 
 
 public class SynchronizedRunnableTest extends TestCase {
@@ -18,7 +20,9 @@ public class SynchronizedRunnableTest extends TestCase {
     public void testRun() throws InterruptedException {
         // make sure the barrier will block after the first and even second run
         CyclicBarrier barrier = new CyclicBarrier(3);
-        MockSynchronizedRunnable synchroRun = new MockSynchronizedRunnable(barrier, new SynchronizedRunnableState());
+        TimeController timeController = new MockTimeController();
+        MockSynchronizedRunnable synchroRun = new MockSynchronizedRunnable();
+        synchroRun.init(new SynchronizedRunnableState(), barrier, timeController);
         (new Thread(synchroRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);

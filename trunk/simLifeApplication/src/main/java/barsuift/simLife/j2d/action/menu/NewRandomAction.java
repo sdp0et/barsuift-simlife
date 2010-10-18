@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import barsuift.simLife.Application;
+import barsuift.simLife.InitException;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 
@@ -44,7 +45,11 @@ public class NewRandomAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        application.createRandomUniverse();
+        try {
+            application.createRandomUniverse();
+        } catch (InitException ie) {
+            System.out.println("Unable to create a random universe\n" + ie);
+        }
     }
 
 }

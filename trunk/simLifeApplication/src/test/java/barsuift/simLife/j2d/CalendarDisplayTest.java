@@ -46,16 +46,12 @@ public class CalendarDisplayTest extends TestCase {
     public void testUpdate() {
         assertEquals("00:00:000 Nosday 01 Wim 0001", display.getText());
         calendar.setTime("19:59:999 Winday 18 Tom 0455");
-        display.update();
         assertEquals("19:59:999 Winday 18 Tom 0455", display.getText());
         calendar.add(Calendar.MILLISECOND, 1);
-        display.update();
         assertEquals("00:00:000 Nosday 01 Wim 0456", display.getText());
         calendar.add(Calendar.MILLISECOND, 100);
-        display.update();
         assertEquals("00:00:100 Nosday 01 Wim 0456", display.getText());
         calendar.add(Calendar.SECOND, 1);
-        display.update();
         assertEquals("00:01:100 Nosday 01 Wim 0456", display.getText());
     }
 

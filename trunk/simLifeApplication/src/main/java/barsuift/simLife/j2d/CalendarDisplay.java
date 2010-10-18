@@ -20,10 +20,11 @@ package barsuift.simLife.j2d;
 
 import javax.swing.JLabel;
 
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.time.SimLifeCalendar;
 
-// FIXME not updated : they appropriate thread should call the update method
-public class CalendarDisplay extends JLabel {
+public class CalendarDisplay extends JLabel implements Subscriber {
 
     private static final long serialVersionUID = 6381218933947453660L;
 
@@ -31,11 +32,13 @@ public class CalendarDisplay extends JLabel {
 
     public CalendarDisplay(SimLifeCalendar calendar) {
         this.calendar = calendar;
+        calendar.addSubscriber(this);
         setText(calendar.formatDate());
         setSize(200, 40);
     }
 
-    public void update() {
+    @Override
+    public void update(Publisher publisher, Object arg) {
         setText(calendar.formatDate());
     }
 

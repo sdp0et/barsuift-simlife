@@ -32,9 +32,9 @@ public class SynchronizedRunnableState implements State {
         clazz = null;
     }
 
-    public SynchronizedRunnableState(Class<? extends SynchronizedRunnable> name) {
+    public SynchronizedRunnableState(Class<? extends SynchronizedRunnable> clazz) {
         super();
-        this.clazz = name;
+        this.clazz = clazz;
     }
 
     public Class<? extends SynchronizedRunnable> getClazz() {

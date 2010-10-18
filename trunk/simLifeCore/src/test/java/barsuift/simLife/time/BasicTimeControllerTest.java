@@ -21,16 +21,21 @@ package barsuift.simLife.time;
 import junit.framework.TestCase;
 import barsuift.simLife.universe.MockUniverse;
 
-public class UniverseControllerTest extends TestCase {
+public class BasicTimeControllerTest extends TestCase {
 
-    private UniverseTimeController controller;
+    private TimeController controller;
 
     private MockUniverse mockUniverse;
+
+    private TimeControllerState state;
 
     protected void setUp() throws Exception {
         super.setUp();
         mockUniverse = new MockUniverse();
-        controller = new UniverseTimeController(mockUniverse);
+        TimeControllerStateFactory stateFactory = new TimeControllerStateFactory();
+        state = stateFactory.createTimeControllerState();
+        // state = CoreDataCreatorForTests.createSpecificTimeControllerState();
+        controller = new BasicTimeController(mockUniverse, state);
         controller.setSpeed(10);
     }
 
@@ -150,6 +155,27 @@ public class UniverseControllerTest extends TestCase {
         }
         // the time counter should not have changed
         assertEquals(1, mockUniverse.getNbTimeSpent());
+    }
+
+    public void testGetState() {
+        assertEquals(state, controller.getState());
+        assertSame(state, controller.getState());
+        assertEquals(0, controller.getState().getCalendar().getValue());
+        assertEquals(1, controller.getState().getSynchronizer().getSpeed());
+        int newSpeed = 10;
+        controller.setSpeed(newSpeed);
+        controller.oneStep();
+        // waiting 2 cycles
+        try {
+            synchronized (this) {
+                this.wait(2000 / newSpeed + 10);
+            }
+        } catch (InterruptedException e) {
+        }
+        assertEquals(state, controller.getState());
+        assertSame(state, controller.getState());
+        assertEquals(100, controller.getState().getCalendar().getValue());
+        assertEquals(newSpeed, controller.getState().getSynchronizer().getSpeed());
     }
 
 }

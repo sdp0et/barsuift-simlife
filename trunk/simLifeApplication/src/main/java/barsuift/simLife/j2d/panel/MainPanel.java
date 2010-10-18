@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
         JPanel environmentPanel = new EnvironmentPanel(universeContext.getUniverse().getEnvironment());
         rightPanel.add(environmentPanel);
 
-        JPanel controllerPanel = new TimeControllerPanel(universeContext.getUniverseTimeController());
+        JPanel controllerPanel = new TimeControllerPanel(universeContext.getTimeController());
         rightPanel.add(controllerPanel);
 
         add(rightPanel);

@@ -20,6 +20,9 @@ package barsuift.simLife.process;
 
 import java.util.concurrent.CyclicBarrier;
 
+import barsuift.simLife.time.TimeController;
+
+
 /**
  * This abstract class represents a task that does no need to run each time it is called.
  * <p>
@@ -27,20 +30,22 @@ import java.util.concurrent.CyclicBarrier;
  * If <code>delay=n</code>, the task is executed exactly on the n<sup>th</sup> call, and n call after that, and so on.
  * </p>
  */
-// FIXME we should not be able to save the application wile it is running
+// FIXME we should not be able to save the application while it is running
 public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable {
 
-    private final UnfrequentRunnableState state;
+    private UnfrequentRunnableState state;
 
-    private final int delay;
+    private int delay;
 
     private int count;
 
-    public UnfrequentRunnable(CyclicBarrier barrier, UnfrequentRunnableState state) {
-        super(barrier, state);
-        this.state = state;
-        this.delay = state.getDelay();
-        this.count = state.getCount();
+    @Override
+    public void init(SynchronizedRunnableState state, CyclicBarrier barrier, TimeController timeController) {
+        super.init(state, barrier, timeController);
+        UnfrequentRunnableState unfrequentState = (UnfrequentRunnableState) state;
+        this.state = unfrequentState;
+        this.delay = unfrequentState.getDelay();
+        this.count = unfrequentState.getCount();
     }
 
     @Override

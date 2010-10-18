@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.universe;
 
+import barsuift.simLife.InitException;
 import junit.framework.TestCase;
 
 
@@ -31,8 +32,10 @@ public class BasicUniverseContextTest extends TestCase {
         super.tearDown();
     }
 
-    public void testUnsetAxis() {
-        UniverseContext panel = new BasicUniverseContext(new UniverseContextState());
+    public void testUnsetAxis() throws InitException {
+        UniverseContextStateFactory factory = new UniverseContextStateFactory();
+        UniverseContextState state = factory.createRandomUniverseContextState();
+        UniverseContext panel = new BasicUniverseContext(state);
         assertTrue(panel.isAxisShowing());
         panel.setAxisShowing(false);
         assertFalse(panel.isAxisShowing());
@@ -42,7 +45,7 @@ public class BasicUniverseContextTest extends TestCase {
         assertFalse(panel.isAxisShowing());
     }
 
-    public void testGetState() {
+    public void testGetState() throws InitException {
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
         UniverseContextState state = factory.createRandomUniverseContextState();
         BasicUniverseContext context = new BasicUniverseContext(state);
@@ -56,7 +59,7 @@ public class BasicUniverseContextTest extends TestCase {
     }
 
 
-    public void testSetFpsShowing() {
+    public void testSetFpsShowing() throws InitException {
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
         UniverseContextState state = factory.createRandomUniverseContextState();
         BasicUniverseContext universeContext = new BasicUniverseContext(state);

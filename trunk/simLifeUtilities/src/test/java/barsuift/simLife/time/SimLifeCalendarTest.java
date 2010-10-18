@@ -21,6 +21,7 @@ package barsuift.simLife.time;
 import java.util.Calendar;
 
 import junit.framework.TestCase;
+import barsuift.simLife.message.PublisherTestHelper;
 
 
 public class SimLifeCalendarTest extends TestCase {
@@ -608,6 +609,87 @@ public class SimLifeCalendarTest extends TestCase {
         assertEquals(state, calendar.getState());
         assertSame(state, calendar.getState());
         assertEquals(124, calendar.getState().getValue());
+    }
+
+    public void testPublisherAdd() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
+        PublisherTestHelper publisherHelper = new PublisherTestHelper();
+        publisherHelper.addSubscriber(calendar);
+        calendar.add(Calendar.MILLISECOND, 1);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        calendar.add(Calendar.MILLISECOND, 1);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        calendar.add(Calendar.SECOND, 53);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        calendar.getTimeInMillis();
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
+    }
+
+    public void testPublisherRoll() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
+        PublisherTestHelper publisherHelper = new PublisherTestHelper();
+        publisherHelper.addSubscriber(calendar);
+        calendar.roll(Calendar.MILLISECOND, 1);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        calendar.roll(Calendar.MILLISECOND, 1);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        calendar.roll(Calendar.SECOND, 53);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        calendar.getTimeInMillis();
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
+    }
+
+    public void testPublisherSet() {
+        SimLifeCalendar calendar = new SimLifeCalendar();
+        PublisherTestHelper publisherHelper = new PublisherTestHelper();
+        publisherHelper.addSubscriber(calendar);
+        calendar.set(Calendar.MILLISECOND, 1);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        calendar.set(Calendar.MILLISECOND, 1);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        calendar.set(Calendar.SECOND, 53);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(1, publisherHelper.getUpdateObjects().size());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        calendar.getTimeInMillis();
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
 }

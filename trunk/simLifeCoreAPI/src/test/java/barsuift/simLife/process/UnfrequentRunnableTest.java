@@ -3,6 +3,8 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
+import barsuift.simLife.time.MockTimeController;
+import barsuift.simLife.time.TimeController;
 
 
 public class UnfrequentRunnableTest extends TestCase {
@@ -16,7 +18,9 @@ public class UnfrequentRunnableTest extends TestCase {
         // make sure the barrier will block after all the run
         CyclicBarrier barrier = new CyclicBarrier(4);
         state = new UnfrequentRunnableState(MockUnfrequentRunnable.class, 3, 0);
-        unfrequentRun = new MockUnfrequentRunnable(barrier, state);
+        TimeController timeController = new MockTimeController();
+        unfrequentRun = new MockUnfrequentRunnable();
+        unfrequentRun.init(state, barrier, timeController);
     }
 
     protected void tearDown() throws Exception {
