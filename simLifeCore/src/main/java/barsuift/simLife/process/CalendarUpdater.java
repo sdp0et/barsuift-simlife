@@ -7,7 +7,7 @@ import barsuift.simLife.time.SimLifeCalendar;
 import barsuift.simLife.time.TimeController;
 
 
-public class BasicCalendarUpdater extends AbstractSynchronizedRunnable implements SynchronizedRunnable {
+public class CalendarUpdater extends AbstractSynchronizedRunnable implements SynchronizedRunnable {
 
     private SimLifeCalendar calendar;
 
@@ -19,7 +19,6 @@ public class BasicCalendarUpdater extends AbstractSynchronizedRunnable implement
 
     @Override
     public void executeStep() {
-        System.out.println("Executing CalendarUpdater");
         calendar.add(Calendar.MILLISECOND, 100);
     }
 
