@@ -18,29 +18,29 @@
  */
 package barsuift.simLife.process;
 
-/**
- * This exception denotes an error while initializing the {@link Synchronizer} class. It is thrown if the synchronizer
- * is not able to instantiate the tasks to be synchronized.
- * 
- */
-public class SynchronizerException extends Exception {
+import barsuift.simLife.JaxbTestCase;
 
-    private static final long serialVersionUID = 4602281594175762480L;
 
-    public SynchronizerException() {
-        super();
+public class SynchronizedRunnableStateTest extends JaxbTestCase {
+
+    protected void setUp() throws Exception {
+        super.setUp();
     }
 
-    public SynchronizerException(String message, Throwable cause) {
-        super(message, cause);
+    protected void tearDown() throws Exception {
+        super.tearDown();
     }
 
-    public SynchronizerException(String message) {
-        super(message);
+    @Override
+    protected String getPackage() {
+        return "barsuift.simLife.process";
     }
 
-    public SynchronizerException(Throwable cause) {
-        super(cause);
+    public void testJaxb() throws Exception {
+        SynchronizedRunnableState runnable = new SynchronizedRunnableState(SynchronizedRunnable.class);
+        write(runnable);
+        SynchronizedRunnableState runnable2 = (SynchronizedRunnableState) read();
+        assertEquals(runnable, runnable2);
     }
 
 }

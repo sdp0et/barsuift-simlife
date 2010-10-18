@@ -23,13 +23,24 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import barsuift.simLife.InitException;
+import barsuift.simLife.Persistent;
+import barsuift.simLife.process.Synchronizer;
 import barsuift.simLife.universe.Universe;
 
 /**
  * Controller for time control on the universe.
  * 
  */
-public class UniverseTimeController {
+public class BasicTimeController implements Persistent<TimeControllerState>, TimeController {
+
+    private final TimeControllerState state;
+
+    private final Synchronizer synchronizer;
+
+    private final SimLifeCalendar calendar;
+
+    private final Universe universe;
 
     private final ScheduledExecutorService scheduledThreadPool;
 
@@ -39,33 +50,33 @@ public class UniverseTimeController {
 
     private boolean running;
 
+    // FIXME choose whether speed is in TimeController or Synchronizer
     private int speed;
 
-    public UniverseTimeController(Universe universe) {
+    public BasicTimeController(Universe universe, TimeControllerState state) throws InitException {
         super();
+        this.state = state;
+        this.universe = universe;
         int poolSize = 1;
         this.scheduledThreadPool = Executors.newScheduledThreadPool(poolSize);
         this.timeMessenger = new TimeMessenger(universe);
         this.running = false;
         this.speed = 1;
+        this.calendar = new SimLifeCalendar(state.getCalendar());
+        this.synchronizer = new Synchronizer(state.getSynchronizer(), this);
     }
 
+    @Override
     public void setSpeed(int speed) {
         this.speed = speed;
     }
 
+    @Override
     public int getSpeed() {
         return speed;
     }
 
-    /**
-     * Start the controller.
-     * <p>
-     * A {@link TimeMessenger} instance is scheduled to be run every seconds.
-     * </p>
-     * 
-     * @throws IllegalStateException if the controller is already running
-     */
+    @Override
     public void start() throws IllegalStateException {
         if (running == true) {
             throw new IllegalStateException("The controller is already running");
@@ -77,45 +88,53 @@ public class UniverseTimeController {
         long period = 1000 / speed;
         runningProcess = scheduledThreadPool.scheduleAtFixedRate(timeMessenger, initialDelay, period,
                 TimeUnit.MILLISECONDS);
+        synchronizer.start();
     }
 
-    /**
-     * Execute one step of the controller.
-     * <p>
-     * A {@link TimeMessenger} instance is run once.
-     * </p>
-     * 
-     * @throws IllegalStateException if the controller is already running
-     */
+    @Override
     public void oneStep() {
         if (running == true) {
             throw new IllegalStateException("The controller is already running");
         }
         timeMessenger.run();
+        synchronizer.oneStep();
     }
 
-    /**
-     * Pause the controller.
-     * <p>
-     * The running process is asked to stop, once it has completed its current execution.
-     * </p>
-     * 
-     * @throws IllegalStateException if the controller is not running
-     */
+    @Override
     public void pause() {
         if (running == false) {
             throw new IllegalStateException("The controller is not running");
         }
         running = false;
         runningProcess.cancel(false);
+        synchronizer.stop();
     }
 
+    @Override
     public boolean isRunning() {
         return running;
     }
 
+    @Override
     public SimLifeCalendar getCalendar() {
-        return timeMessenger.getCalendar();
+        return calendar;
+    }
+
+    @Override
+    public Universe getUniverse() {
+        return universe;
+    }
+
+    @Override
+    public TimeControllerState getState() {
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        calendar.synchronize();
+        synchronizer.synchronize();
     }
 
 }

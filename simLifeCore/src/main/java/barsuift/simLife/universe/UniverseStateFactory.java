@@ -30,7 +30,6 @@ import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.EnvironmentStateFactory;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
-import barsuift.simLife.time.SimLifeCalendarState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 import barsuift.simLife.tree.TreeStateFactory;
@@ -75,8 +74,7 @@ public class UniverseStateFactory {
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createRandomUniverse3DState();
 
-        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, new SimLifeCalendarState(),
-                univ3DState);
+        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, univ3DState);
     }
 
     /**
@@ -98,8 +96,7 @@ public class UniverseStateFactory {
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createEmptyUniverse3DState();
 
-        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, new SimLifeCalendarState(),
-                univ3DState);
+        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, univ3DState);
     }
 
 }

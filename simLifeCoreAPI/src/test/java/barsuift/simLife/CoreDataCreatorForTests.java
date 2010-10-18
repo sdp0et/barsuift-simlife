@@ -36,6 +36,13 @@ import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
+import barsuift.simLife.process.MockSynchronizedRunnable;
+import barsuift.simLife.process.MockUnfrequentRunnable;
+import barsuift.simLife.process.SynchronizedRunnableState;
+import barsuift.simLife.process.SynchronizerState;
+import barsuift.simLife.process.UnfrequentRunnableState;
+import barsuift.simLife.time.SimLifeCalendarState;
+import barsuift.simLife.time.TimeControllerState;
 import barsuift.simLife.tree.TreeBranchPartState;
 import barsuift.simLife.tree.TreeBranchState;
 import barsuift.simLife.tree.TreeLeafState;
@@ -55,7 +62,8 @@ public final class CoreDataCreatorForTests {
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = UtilDataCreatorForTests.createRandomBoolean();
         double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
-        return new UniverseContextState(universeState, canvasState, axisShowing, viewerTransform);
+        TimeControllerState timeControllerState = createRandomTimeControllerState();
+        return new UniverseContextState(universeState, timeControllerState, canvasState, axisShowing, viewerTransform);
     }
 
     /**
@@ -73,7 +81,61 @@ public final class CoreDataCreatorForTests {
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = true;
         double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
-        return new UniverseContextState(universeState, canvasState, axisShowing, viewerTransform);
+        TimeControllerState timeControllerState = createSpecificTimeControllerState();
+        return new UniverseContextState(universeState, timeControllerState, canvasState, axisShowing, viewerTransform);
+    }
+
+    public static TimeControllerState createRandomTimeControllerState() {
+        SynchronizerState synchronizer = createRandomSynchronizerState();
+        SimLifeCalendarState calendar = UtilDataCreatorForTests.createRandomCalendarState();
+        return new TimeControllerState(synchronizer, calendar);
+    }
+
+    public static TimeControllerState createSpecificTimeControllerState() {
+        SynchronizerState synchronizer = createSpecificSynchronizerState();
+        SimLifeCalendarState calendar = UtilDataCreatorForTests.createSpecificCalendarState();
+        return new TimeControllerState(synchronizer, calendar);
+    }
+
+    public static SynchronizerState createRandomSynchronizerState() {
+        List<SynchronizedRunnableState> synchroRunnables = new ArrayList<SynchronizedRunnableState>();
+        SynchronizedRunnableState synchroRunnableState = createRandomSynchronizedRunnableState();
+        synchroRunnables.add(synchroRunnableState);
+
+        List<UnfrequentRunnableState> unfrequentRunnables = new ArrayList<UnfrequentRunnableState>();
+        UnfrequentRunnableState unfrequentRunnbaleState = createRandomUnfrequentRunnableState();
+        unfrequentRunnables.add(unfrequentRunnbaleState);
+
+        return new SynchronizerState(Randomizer.randomBetween(1, 20), synchroRunnables, unfrequentRunnables);
+    }
+
+    public static SynchronizerState createSpecificSynchronizerState() {
+        List<SynchronizedRunnableState> synchroRunnables = new ArrayList<SynchronizedRunnableState>();
+        SynchronizedRunnableState synchroRunnableState = createSpecificSynchronizedRunnableState();
+        synchroRunnables.add(synchroRunnableState);
+
+        List<UnfrequentRunnableState> unfrequentRunnables = new ArrayList<UnfrequentRunnableState>();
+        UnfrequentRunnableState unfrequentRunnbaleState = createSpecificUnfrequentRunnableState();
+        unfrequentRunnables.add(unfrequentRunnbaleState);
+
+        return new SynchronizerState(1, synchroRunnables, unfrequentRunnables);
+    }
+
+    public static SynchronizedRunnableState createRandomSynchronizedRunnableState() {
+        return new SynchronizedRunnableState(MockSynchronizedRunnable.class);
+    }
+
+    public static SynchronizedRunnableState createSpecificSynchronizedRunnableState() {
+        return new SynchronizedRunnableState(MockSynchronizedRunnable.class);
+    }
+
+    public static UnfrequentRunnableState createRandomUnfrequentRunnableState() {
+        return new UnfrequentRunnableState(MockUnfrequentRunnable.class, Randomizer.randomBetween(3, 10),
+                Randomizer.randomBetween(0, 2));
+    }
+
+    public static UnfrequentRunnableState createSpecificUnfrequentRunnableState() {
+        return new UnfrequentRunnableState(MockUnfrequentRunnable.class, 5, 2);
     }
 
     public static UniverseState createRandomUniverseState() {
@@ -89,8 +151,7 @@ public final class CoreDataCreatorForTests {
             fallenLeaves.add(createRandomTreeLeafState());
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(),
-                UtilDataCreatorForTests.createRandomCalendarState(), univ3DState);
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(), univ3DState);
     }
 
     /**
@@ -119,8 +180,7 @@ public final class CoreDataCreatorForTests {
             fallenLeaves.add(createSpecificTreeLeafState());
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(),
-                UtilDataCreatorForTests.createSpecificCalendarState(), univ3DState);
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(), univ3DState);
     }
 
     public static EnvironmentState createRandomEnvironmentState() {

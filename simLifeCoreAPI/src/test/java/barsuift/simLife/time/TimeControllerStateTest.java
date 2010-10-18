@@ -18,19 +18,29 @@
  */
 package barsuift.simLife.time;
 
-import barsuift.simLife.universe.Universe;
+import barsuift.simLife.JaxbTestCase;
 
-public class TimeMessenger implements Runnable {
 
-    private final Universe universe;
+public class TimeControllerStateTest extends JaxbTestCase {
 
-    public TimeMessenger(Universe universe) {
-        this.universe = universe;
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Override
-    public void run() {
-        universe.spendTime();
+    protected String getPackage() {
+        return "barsuift.simLife.time";
+    }
+
+    public void testJaxb() throws Exception {
+        TimeControllerState runnable = new TimeControllerState();
+        write(runnable);
+        TimeControllerState runnable2 = (TimeControllerState) read();
+        assertEquals(runnable, runnable2);
     }
 
 }

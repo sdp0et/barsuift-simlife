@@ -16,21 +16,31 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.time;
+package barsuift.simLife.process;
 
-import barsuift.simLife.universe.Universe;
+import barsuift.simLife.JaxbTestCase;
 
-public class TimeMessenger implements Runnable {
 
-    private final Universe universe;
+public class SynchronizerStateTest extends JaxbTestCase {
 
-    public TimeMessenger(Universe universe) {
-        this.universe = universe;
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Override
-    public void run() {
-        universe.spendTime();
+    protected String getPackage() {
+        return "barsuift.simLife.process";
+    }
+
+    public void testJaxb() throws Exception {
+        SynchronizerState synchro = new SynchronizerState();
+        write(synchro);
+        SynchronizerState synchro2 = (SynchronizerState) read();
+        assertEquals(synchro, synchro2);
     }
 
 }

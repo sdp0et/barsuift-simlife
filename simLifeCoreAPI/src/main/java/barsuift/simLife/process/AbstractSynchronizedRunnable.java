@@ -21,6 +21,8 @@ package barsuift.simLife.process;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
+import barsuift.simLife.time.TimeController;
+
 /**
  * The given <code>barrier</code> parameter allows this task to wait for others and then execute again, indefinitely. It
  * can be stopped with the <code>stop</code> method.
@@ -28,20 +30,39 @@ import java.util.concurrent.CyclicBarrier;
  */
 public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnable {
 
-    private final SynchronizedRunnableState state;
+    private SynchronizedRunnableState state;
 
-    private final CyclicBarrier barrier;
+    private CyclicBarrier barrier;
+
+    private TimeController timeController;
 
     private boolean running;
 
-    public AbstractSynchronizedRunnable(CyclicBarrier barrier, SynchronizedRunnableState state) {
+    @Override
+    public void init(SynchronizedRunnableState state, CyclicBarrier barrier, TimeController timeController) {
+        if (this.state != null) {
+            throw new IllegalStateException("The process has already been initialized");
+        }
+        if (state == null) {
+            throw new IllegalArgumentException("no state given to initialize the process");
+        }
+        if (barrier == null) {
+            throw new IllegalArgumentException("no barrier given to initialize the process");
+        }
+        if (timeController == null) {
+            throw new IllegalArgumentException("no time controller given to initialize the process");
+        }
         this.state = state;
         this.barrier = barrier;
+        this.timeController = timeController;
         this.running = false;
     }
 
     @Override
     public final void run() {
+        if (barrier == null) {
+            throw new IllegalStateException("The barrier is not set");
+        }
         if (running == true) {
             throw new IllegalStateException("The process is already running");
         }
@@ -75,6 +96,11 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public TimeController getTimeController() {
+        return timeController;
     }
 
     @Override

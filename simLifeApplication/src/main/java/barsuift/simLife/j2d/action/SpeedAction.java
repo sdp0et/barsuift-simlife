@@ -5,16 +5,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
-import barsuift.simLife.time.UniverseTimeController;
+import barsuift.simLife.time.TimeController;
 
 
 public class SpeedAction extends AbstractAction {
 
     private static final long serialVersionUID = -8115155709776072647L;
 
-    private final UniverseTimeController timeController;
+    private final TimeController timeController;
 
-    public SpeedAction(UniverseTimeController timeController, String name, String description, int mnemonic,
+    public SpeedAction(TimeController timeController, String name, String description, int mnemonic,
             KeyStroke accelerator, String actionCommand) {
         super();
         this.timeController = timeController;

@@ -24,7 +24,6 @@ import barsuift.simLife.LivingPart;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.FpsCounter;
-import barsuift.simLife.time.SimLifeCalendar;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -57,8 +56,6 @@ public interface Universe extends LivingPart {
     public void addFallenLeaf(TreeLeaf treeLeaf);
 
     public Environment getEnvironment();
-
-    public SimLifeCalendar getCalendar();
 
     public Universe3D getUniverse3D();
 

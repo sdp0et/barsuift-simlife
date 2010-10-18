@@ -20,6 +20,8 @@ package barsuift.simLife.universe;
 
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.SimLifeCanvas3DStateFactory;
+import barsuift.simLife.time.TimeControllerState;
+import barsuift.simLife.time.TimeControllerStateFactory;
 
 
 public class UniverseContextStateFactory {
@@ -42,7 +44,9 @@ public class UniverseContextStateFactory {
         UniverseState universeState = universeStateFactory.createRandomUniverseState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createRandomCanvasState();
-        return new UniverseContextState(universeState, canvasState, true, NOMINAL_VIEWER_TRANSFORM);
+        TimeControllerStateFactory timeControllerStateFactory = new TimeControllerStateFactory();
+        TimeControllerState timeControllerState = timeControllerStateFactory.createTimeControllerState();
+        return new UniverseContextState(universeState, timeControllerState, canvasState, true, NOMINAL_VIEWER_TRANSFORM);
     }
 
     /**
@@ -62,7 +66,9 @@ public class UniverseContextStateFactory {
         UniverseState universeState = universeStateFactory.createEmptyUniverseState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createEmptyCanvasState();
-        return new UniverseContextState(universeState, canvasState, true, NOMINAL_VIEWER_TRANSFORM);
+        TimeControllerStateFactory timeControllerStateFactory = new TimeControllerStateFactory();
+        TimeControllerState timeControllerState = timeControllerStateFactory.createTimeControllerState();
+        return new UniverseContextState(universeState, timeControllerState, canvasState, true, NOMINAL_VIEWER_TRANSFORM);
     }
 
 }
