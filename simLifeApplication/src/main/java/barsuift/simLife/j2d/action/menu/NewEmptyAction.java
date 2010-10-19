@@ -26,8 +26,10 @@ import barsuift.simLife.Application;
 import barsuift.simLife.InitException;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.time.TimeController;
+import barsuift.simLife.universe.UniverseContext;
 
-
+// TODO 200. add a confirmation popup before creating the new universe
 public class NewEmptyAction extends AbstractAction {
 
     private static final long serialVersionUID = -7620926200302148499L;
@@ -45,6 +47,21 @@ public class NewEmptyAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        stopApp();
+        createEmptyUniverse();
+    }
+
+    private void stopApp() {
+        UniverseContext universeContext = application.getUniverseContext();
+        if (universeContext != null) {
+            TimeController timeController = universeContext.getTimeController();
+            if (timeController.isRunning()) {
+                timeController.stop();
+            }
+        }
+    }
+
+    private void createEmptyUniverse() {
         try {
             application.createEmptyUniverse();
         } catch (InitException ie) {

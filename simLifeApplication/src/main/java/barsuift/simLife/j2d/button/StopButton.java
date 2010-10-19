@@ -23,7 +23,7 @@ public class StopButton extends JButton implements Subscriber {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                controller.pause();
+                controller.stop();
             }
 
         });

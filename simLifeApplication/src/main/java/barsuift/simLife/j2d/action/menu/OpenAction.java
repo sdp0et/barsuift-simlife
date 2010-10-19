@@ -27,7 +27,9 @@ import javax.swing.JFileChooser;
 import barsuift.simLife.Application;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.time.TimeController;
 import barsuift.simLife.universe.OpenException;
+import barsuift.simLife.universe.UniverseContext;
 
 
 public class OpenAction extends AbstractAction {
@@ -47,6 +49,21 @@ public class OpenAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        stopApp();
+        open();
+    }
+
+    private void stopApp() {
+        UniverseContext universeContext = application.getUniverseContext();
+        if (universeContext != null) {
+            TimeController timeController = universeContext.getTimeController();
+            if (timeController.isRunning()) {
+                timeController.stop();
+            }
+        }
+    }
+
+    private void open() {
         final JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {

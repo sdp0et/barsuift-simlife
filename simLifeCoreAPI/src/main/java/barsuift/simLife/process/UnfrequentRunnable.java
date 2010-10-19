@@ -30,7 +30,6 @@ import barsuift.simLife.time.TimeController;
  * If <code>delay=n</code>, the task is executed exactly on the n<sup>th</sup> call, and n call after that, and so on.
  * </p>
  */
-// FIXME we should not be able to save the application while it is running
 public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable {
 
     private UnfrequentRunnableState state;

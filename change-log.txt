@@ -15,6 +15,7 @@ New features
 Use of the calendar system
 Important internal rework to get rid of Observable/Observer and use homemade Publisher/Subscriber instead
 Important internal rework to add a synchronization framework to manage concurrent continuous actions (currently only used for calendar)
+File menu actions now stop the application before executing
 
 
 Bug fixes

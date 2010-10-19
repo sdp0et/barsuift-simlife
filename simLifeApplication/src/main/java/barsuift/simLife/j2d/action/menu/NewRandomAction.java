@@ -26,6 +26,8 @@ import barsuift.simLife.Application;
 import barsuift.simLife.InitException;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.time.TimeController;
+import barsuift.simLife.universe.UniverseContext;
 
 
 public class NewRandomAction extends AbstractAction {
@@ -45,6 +47,21 @@ public class NewRandomAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        stopApp();
+        createRandomUniverse();
+    }
+
+    private void stopApp() {
+        UniverseContext universeContext = application.getUniverseContext();
+        if (universeContext != null) {
+            TimeController timeController = universeContext.getTimeController();
+            if (timeController.isRunning()) {
+                timeController.stop();
+            }
+        }
+    }
+
+    private void createRandomUniverse() {
         try {
             application.createRandomUniverse();
         } catch (InitException ie) {

@@ -33,14 +33,14 @@ public interface TimeController extends Persistent<TimeControllerState>, Publish
     public void oneStep();
 
     /**
-     * Pause the controller.
+     * Stop the controller.
      * <p>
      * The running process is asked to stop, once it has completed its current execution.
      * </p>
      * 
      * @throws IllegalStateException if the controller is not running
      */
-    public void pause();
+    public void stop();
 
     public boolean isRunning();
 

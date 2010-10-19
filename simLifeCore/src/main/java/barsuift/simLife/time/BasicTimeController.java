@@ -106,8 +106,7 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     }
 
     @Override
-    // TODO rename to stop
-    public void pause() {
+    public void stop() {
         if (running == false) {
             throw new IllegalStateException("The controller is not running");
         }
