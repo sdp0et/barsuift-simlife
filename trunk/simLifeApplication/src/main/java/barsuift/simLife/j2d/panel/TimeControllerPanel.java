@@ -81,6 +81,7 @@ public class TimeControllerPanel extends JPanel {
         setBorder(titledBorder);
     }
 
+    // FIXME display bug : set on 1 at init time even if speed = 10
     private JPanel createSpeedPanel(TimeController timeController) {
         JPanel speedPanel = new JPanel();
         speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));

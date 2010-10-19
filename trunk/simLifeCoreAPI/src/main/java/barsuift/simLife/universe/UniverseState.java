@@ -32,7 +32,7 @@ import barsuift.simLife.tree.TreeState;
 @XmlRootElement
 public class UniverseState implements State {
 
-    private int age;
+    private long creationMillis;
 
     private boolean fpsShowing;
 
@@ -46,7 +46,7 @@ public class UniverseState implements State {
 
     public UniverseState() {
         super();
-        this.age = 0;
+        this.creationMillis = 0;
         this.fpsShowing = false;
         this.trees = new HashSet<TreeState>();
         this.fallenLeaves = new HashSet<TreeLeafState>();
@@ -54,10 +54,10 @@ public class UniverseState implements State {
         this.univ3DState = new Universe3DState();
     }
 
-    public UniverseState(int age, boolean fpsShowing, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves,
-            EnvironmentState environment, Universe3DState univ3DState) {
+    public UniverseState(long creationMillis, boolean fpsShowing, Set<TreeState> trees,
+            Set<TreeLeafState> fallenLeaves, EnvironmentState environment, Universe3DState univ3DState) {
         super();
-        this.age = age;
+        this.creationMillis = creationMillis;
         this.fpsShowing = fpsShowing;
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
@@ -65,12 +65,12 @@ public class UniverseState implements State {
         this.univ3DState = univ3DState;
     }
 
-    public int getAge() {
-        return age;
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setCreationMillis(long creationMillis) {
+        this.creationMillis = creationMillis;
     }
 
     public boolean isFpsShowing() {
@@ -117,7 +117,7 @@ public class UniverseState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + age;
+        result = prime * result + (int) (creationMillis ^ (creationMillis >>> 32));
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
         result = prime * result + (fpsShowing ? 1231 : 1237);
@@ -135,7 +135,7 @@ public class UniverseState implements State {
         if (getClass() != obj.getClass())
             return false;
         UniverseState other = (UniverseState) obj;
-        if (age != other.age)
+        if (creationMillis != other.creationMillis)
             return false;
         if (environment == null) {
             if (other.environment != null)
@@ -168,8 +168,9 @@ public class UniverseState implements State {
 
     @Override
     public String toString() {
-        return "UniverseState [age=" + age + ", fpsShowing=" + fpsShowing + ", trees=" + trees + ", fallenLeaves="
-                + fallenLeaves + ", environment=" + environment + ", univ3DState=" + univ3DState + "]";
+        return "UniverseState [creationMillis=" + creationMillis + ", fpsShowing=" + fpsShowing + ", trees=" + trees
+                + ", fallenLeaves=" + fallenLeaves + ", environment=" + environment + ", univ3DState=" + univ3DState
+                + "]";
     }
 
 }

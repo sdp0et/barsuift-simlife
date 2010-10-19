@@ -30,7 +30,6 @@ import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.universe.Universe;
 
-// TODO 041. remove everywhere the age and replace with creation time : remove age++, and remove notifySubscriber on aging
 public class BasicTreeLeaf implements TreeLeaf {
 
 
@@ -51,7 +50,7 @@ public class BasicTreeLeaf implements TreeLeaf {
 
     private BigDecimal efficiency;
 
-    private int age;
+    private final long creationMillis;
 
     private BigDecimal energy;
 
@@ -75,7 +74,7 @@ public class BasicTreeLeaf implements TreeLeaf {
         }
         this.state = leafState;
         this.efficiency = state.getEfficiency();
-        this.age = state.getAge();
+        this.creationMillis = state.getCreationMillis();
         this.energy = state.getEnergy();
         this.freeEnergy = state.getFreeEnergy();
 
@@ -110,9 +109,6 @@ public class BasicTreeLeaf implements TreeLeaf {
     }
 
     private void age() {
-        age++;
-        setChanged();
-        updateMask |= LeafUpdateMask.AGE_MASK;
         efficiency = efficiency.multiply(AGING_EFFICIENCY_DECREASE);
         setChanged();
         updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
@@ -190,8 +186,9 @@ public class BasicTreeLeaf implements TreeLeaf {
         return currentFreeEnergy;
     }
 
-    public int getAge() {
-        return age;
+    @Override
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
     public TreeLeaf3D getTreeLeaf3D() {
@@ -207,7 +204,6 @@ public class BasicTreeLeaf implements TreeLeaf {
     @Override
     public void synchronize() {
         state.setEfficiency(efficiency);
-        state.setAge(age);
         state.setEnergy(energy);
         state.setFreeEnergy(freeEnergy);
         leaf3D.synchronize();

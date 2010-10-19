@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.tree;
 
+import java.math.BigDecimal;
+
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
@@ -65,18 +67,18 @@ public class BasicTreeTest extends TestCase {
     public void testGetState() {
         assertEquals(treeState, tree.getState());
         assertSame(treeState, tree.getState());
-        assertEquals(15, tree.getState().getAge());
+        BigDecimal energy = tree.getState().getEnergy();
         tree.spendTime();
         assertEquals(treeState, tree.getState());
         assertSame(treeState, tree.getState());
-        assertEquals(16, tree.getState().getAge());
+        // the energy should have change in the state
+        assertFalse(energy.equals(tree.getState().getEnergy()));
     }
 
 
     public void testSpendTime() {
         ((MockSun) universe.getEnvironment().getSun()).setLuminosity(PercentHelper.getDecimalValue(70));
         tree.spendTime();
-        assertEquals(16, tree.getAge());
         assertEquals(40, tree.getNbBranches());
         // as computed in BasicTreeBranchTest#testSpendTime
         // -> freeEnergy in branches=50.7792

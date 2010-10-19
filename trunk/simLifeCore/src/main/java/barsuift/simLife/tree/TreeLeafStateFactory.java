@@ -36,18 +36,18 @@ public class TreeLeafStateFactory {
      * <li>efficiency between 90 and 100</li>
      * <li>energy between 0 and 100</li>
      * <li>freeEnergy between 0 and 50</li>
-     * <li>age between 0 and 100</li>
+     * <li>creationMillis between 0 and 100 000</li>
      * <li>random 3D state</li>
      * </ul>
      */
     public TreeLeafState createRandomTreeLeafState(Point3d leafAttachPoint) {
         BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
-        int age = Randomizer.randomBetween(0, 100);
+        int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
         TreeLeaf3DState leaf3dState = leaf3DStateFactory.createRandomTreeLeaf3DState(leafAttachPoint);
-        return new TreeLeafState(age, energy, freeEnergy, efficiency, leaf3dState);
+        return new TreeLeafState(creationMillis, energy, freeEnergy, efficiency, leaf3dState);
     }
 
     /**
@@ -55,17 +55,17 @@ public class TreeLeafStateFactory {
      * <ul>
      * <li>efficiency between 90 and 100</li>
      * <li>freeEnergy = 0</li>
-     * <li>age = 0</li>
+     * <li>creationMillis = 0</li>
      * <li>new 3D state</li>
      * </ul>
      */
     public TreeLeafState createNewTreeLeafState(Point3d leafAttachPoint, BigDecimal energy) {
         BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
-        int age = 0;
+        int creationMillis = 0;
         BigDecimal freeEnergy = new BigDecimal(0);
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
         TreeLeaf3DState leaf3dState = leaf3DStateFactory.createNewTreeLeaf3DState(leafAttachPoint);
-        return new TreeLeafState(age, energy, freeEnergy, efficiency, leaf3dState);
+        return new TreeLeafState(creationMillis, energy, freeEnergy, efficiency, leaf3dState);
     }
 
 }

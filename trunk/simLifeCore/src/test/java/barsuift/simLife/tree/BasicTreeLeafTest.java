@@ -118,7 +118,6 @@ public class BasicTreeLeafTest extends TestCase {
 
         assertEquals(1, publisherHelper.nbUpdated());
         int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
 
@@ -127,7 +126,6 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(5.17056, leaf.collectFreeEnergy().doubleValue(), 0.00001);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
-        assertEquals(16, leaf.getAge());
     }
 
     public void testSpendTime2() {
@@ -154,7 +152,6 @@ public class BasicTreeLeafTest extends TestCase {
 
         assertEquals(1, publisherHelper.nbUpdated());
         int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
 
@@ -163,7 +160,6 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(5.71320, leaf.collectFreeEnergy().doubleValue(), 0.00001);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
-        assertEquals(16, leaf.getAge());
     }
 
     public void testSpendTime3() {
@@ -189,7 +185,6 @@ public class BasicTreeLeafTest extends TestCase {
 
         assertEquals(1, publisherHelper.nbUpdated());
         int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
 
@@ -198,7 +193,6 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(5.68878, leaf.collectFreeEnergy().doubleValue(), 0.00001);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
-        assertEquals(16, leaf.getAge());
     }
 
     public void testFall() {
@@ -217,7 +211,6 @@ public class BasicTreeLeafTest extends TestCase {
 
         assertEquals(1, publisherHelper.nbUpdated());
         int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK));
@@ -229,11 +222,12 @@ public class BasicTreeLeafTest extends TestCase {
     public void testGetState() {
         assertEquals(leafState, leaf.getState());
         assertSame(leafState, leaf.getState());
-        assertEquals(15, leaf.getState().getAge());
+        BigDecimal energy = leaf.getState().getEnergy();
         leaf.spendTime();
         assertEquals(leafState, leaf.getState());
         assertSame(leafState, leaf.getState());
-        assertEquals(16, leaf.getState().getAge());
+        // the energy should have change in the state
+        assertFalse(energy.equals(leaf.getState().getEnergy()));
     }
 
 }

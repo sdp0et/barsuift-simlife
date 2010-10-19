@@ -72,7 +72,6 @@ public class BasicTreeBranchTest extends TestCase {
 
         // check the list of branch parts has not changed
         assertEquals(3, branch.getNbParts());
-        assertEquals(16, branch.getAge());
         // as computed in BasicTreeLeafTest#testSpendTime1
         // -> freeEnergy in leaves=5.17056
         // -> collected energy in branch part = 5 * 5.17056 = 25.8528
@@ -90,11 +89,12 @@ public class BasicTreeBranchTest extends TestCase {
     public void testGetState() {
         assertEquals(branchState, branch.getState());
         assertSame(branchState, branch.getState());
-        assertEquals(15, branch.getState().getAge());
+        BigDecimal energy = branch.getState().getEnergy();
         branch.spendTime();
         assertEquals(branchState, branch.getState());
         assertSame(branchState, branch.getState());
-        assertEquals(16, branch.getState().getAge());
+        // the energy should have change in the state
+        assertFalse(energy.equals(branch.getState().getEnergy()));
     }
 
 }

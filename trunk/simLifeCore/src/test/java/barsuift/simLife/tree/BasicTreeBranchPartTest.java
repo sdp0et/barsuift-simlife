@@ -103,7 +103,6 @@ public class BasicTreeBranchPartTest extends TestCase {
 
         branchPart.spendTime();
 
-        assertEquals(16, branchPart.getAge());
         // as computed in BasicTreeLeafTest#testSpendTime1
         // -> freeEnergy in leaves should be 5.17056, except for falling leaf 0 (no more in the leaf list)
         // total collected energy = 4 * 5.17056 = 20.68224
@@ -119,7 +118,6 @@ public class BasicTreeBranchPartTest extends TestCase {
             int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
             if (LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK)) {
                 // the single falling leaf (the first one)
-                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
                 assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
                 assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
                 assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK));
@@ -127,7 +125,6 @@ public class BasicTreeBranchPartTest extends TestCase {
                 assertEquals(1, nbFall);
             } else {
                 // all the other leaves
-                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.AGE_MASK));
                 assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
                 assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
             }
@@ -139,11 +136,12 @@ public class BasicTreeBranchPartTest extends TestCase {
     public void testGetState() {
         assertEquals(branchPartState, branchPart.getState());
         assertSame(branchPartState, branchPart.getState());
-        assertEquals(15, branchPart.getState().getAge());
+        BigDecimal energy = branchPart.getState().getEnergy();
         branchPart.spendTime();
         assertEquals(branchPartState, branchPart.getState());
         assertSame(branchPartState, branchPart.getState());
-        assertEquals(16, branchPart.getState().getAge());
+        // the energy should have change in the state
+        assertFalse(energy.equals(branchPart.getState().getEnergy()));
     }
 
     public void testFallingLeaf() {
@@ -158,7 +156,6 @@ public class BasicTreeBranchPartTest extends TestCase {
             assertFalse(firstLeafState.equals(leaf.getState()));
         }
         // simulate one leaf is aging, but not falling
-        branchPart.update((Publisher) branchPart.getLeaves().get(0), LeafUpdateMask.AGE_MASK);
         branchPart.update((Publisher) branchPart.getLeaves().get(0), LeafUpdateMask.EFFICIENCY_MASK);
         assertEquals("no leaf should have been removed", nbLeaves - 1, branchPart.getNbLeaves());
     }

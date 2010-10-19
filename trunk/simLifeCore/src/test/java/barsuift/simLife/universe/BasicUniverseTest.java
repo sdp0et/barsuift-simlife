@@ -19,11 +19,11 @@ public class BasicUniverseTest extends TestCase {
         BasicUniverse universe = new BasicUniverse(state);
         assertEquals(state, universe.getState());
         assertSame(state, universe.getState());
-        assertEquals(0, universe.getState().getAge());
-        universe.spendTime();
+        assertFalse(universe.getState().isFpsShowing());
+        universe.setFpsShowing(true);
         assertEquals(state, universe.getState());
         assertSame(state, universe.getState());
-        assertEquals(1, universe.getState().getAge());
+        assertTrue(universe.getState().isFpsShowing());
     }
 
 }

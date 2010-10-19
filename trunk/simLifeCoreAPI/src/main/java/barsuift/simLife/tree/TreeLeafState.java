@@ -30,7 +30,7 @@ public class TreeLeafState implements State {
 
     private BigDecimal efficiency;
 
-    private int age;
+    private long creationMillis;
 
     private BigDecimal energy;
 
@@ -43,17 +43,17 @@ public class TreeLeafState implements State {
         this.efficiency = new BigDecimal(0);
         this.energy = new BigDecimal(0);
         this.freeEnergy = new BigDecimal(0);
-        this.age = 0;
+        this.creationMillis = 0;
         this.leaf3DState = new TreeLeaf3DState();
     }
 
-    public TreeLeafState(int age, BigDecimal energy, BigDecimal freeEnergy, BigDecimal efficiency,
+    public TreeLeafState(long creationMillis, BigDecimal energy, BigDecimal freeEnergy, BigDecimal efficiency,
             TreeLeaf3DState leaf3dState) {
         super();
         this.efficiency = efficiency;
         this.energy = energy;
         this.freeEnergy = freeEnergy;
-        this.age = age;
+        this.creationMillis = creationMillis;
         this.leaf3DState = leaf3dState;
     }
 
@@ -81,12 +81,12 @@ public class TreeLeafState implements State {
         this.freeEnergy = freeEnergy;
     }
 
-    public int getAge() {
-        return age;
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setCreationMillis(long creationMillis) {
+        this.creationMillis = creationMillis;
     }
 
     public TreeLeaf3DState getLeaf3DState() {
@@ -101,7 +101,7 @@ public class TreeLeafState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + age;
+        result = prime * result + (int) (creationMillis ^ (creationMillis >>> 32));
         result = prime * result + ((efficiency == null) ? 0 : efficiency.hashCode());
         result = prime * result + ((energy == null) ? 0 : energy.hashCode());
         result = prime * result + ((freeEnergy == null) ? 0 : freeEnergy.hashCode());
@@ -118,7 +118,7 @@ public class TreeLeafState implements State {
         if (getClass() != obj.getClass())
             return false;
         TreeLeafState other = (TreeLeafState) obj;
-        if (age != other.age)
+        if (creationMillis != other.creationMillis)
             return false;
         if (efficiency == null) {
             if (other.efficiency != null)
@@ -149,8 +149,8 @@ public class TreeLeafState implements State {
 
     @Override
     public String toString() {
-        return "TreeLeafState [age=" + age + ", efficiency=" + efficiency + ", energy=" + energy + ", freeEnergy="
-                + freeEnergy + ", leaf3DState=" + leaf3DState + "]";
+        return "TreeLeafState [creationMillis=" + creationMillis + ", efficiency=" + efficiency + ", energy=" + energy
+                + ", freeEnergy=" + freeEnergy + ", leaf3DState=" + leaf3DState + "]";
     }
 
 }

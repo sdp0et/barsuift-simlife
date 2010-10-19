@@ -45,8 +45,8 @@ public class TreeLeafStateFactoryTest extends TestCase {
         assertNotNull(treeLeafState.getLeaf3DState());
         assertTrue(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency()) <= 0);
         assertTrue(PercentHelper.getDecimalValue(100).compareTo(treeLeafState.getEfficiency()) >= 0);
-        assertTrue(treeLeafState.getAge() >= 0);
-        assertTrue(treeLeafState.getAge() <= 100);
+        assertTrue(treeLeafState.getCreationMillis() >= 0);
+        assertTrue(treeLeafState.getCreationMillis() <= 100000);
         assertTrue(treeLeafState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
         assertTrue(treeLeafState.getEnergy().compareTo(new BigDecimal(100)) <= 0);
         assertTrue(treeLeafState.getFreeEnergy().compareTo(new BigDecimal(0)) >= 0);
@@ -66,7 +66,6 @@ public class TreeLeafStateFactoryTest extends TestCase {
         assertEquals(leaf3dState.getInitialEndPoint2(), leaf3dState.getEndPoint2());
         assertTrue(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency()) <= 0);
         assertTrue(PercentHelper.getDecimalValue(100).compareTo(treeLeafState.getEfficiency()) >= 0);
-        assertEquals(0, treeLeafState.getAge());
         assertEquals(energy, treeLeafState.getEnergy());
         assertEquals(new BigDecimal(0), treeLeafState.getFreeEnergy());
     }

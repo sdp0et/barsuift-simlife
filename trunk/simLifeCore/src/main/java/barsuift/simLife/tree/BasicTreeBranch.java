@@ -40,7 +40,7 @@ public class BasicTreeBranch implements TreeBranch {
 
     private final TreeBranch3D branch3D;
 
-    private int age;
+    private final long creationMillis;
 
     private BigDecimal energy;
 
@@ -54,7 +54,7 @@ public class BasicTreeBranch implements TreeBranch {
             throw new IllegalArgumentException("null branch state");
         }
         this.state = state;
-        this.age = state.getAge();
+        this.creationMillis = state.getCreationMillis();
         this.energy = state.getEnergy();
         this.freeEnergy = state.getFreeEnergy();
         List<TreeBranchPartState> partStates = state.getBranchPartStates();
@@ -67,8 +67,9 @@ public class BasicTreeBranch implements TreeBranch {
 
     }
 
-    public int getAge() {
-        return age;
+    @Override
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
     /**
@@ -76,7 +77,6 @@ public class BasicTreeBranch implements TreeBranch {
      */
     @Override
     public void spendTime() {
-        age++;
         for (TreeBranchPart branchPart : parts) {
             branchPart.spendTime();
         }
@@ -135,7 +135,6 @@ public class BasicTreeBranch implements TreeBranch {
 
     @Override
     public void synchronize() {
-        state.setAge(age);
         state.setEnergy(energy);
         state.setFreeEnergy(freeEnergy);
         List<TreeBranchPartState> branchPartStates = new ArrayList<TreeBranchPartState>();

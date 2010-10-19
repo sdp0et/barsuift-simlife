@@ -29,10 +29,10 @@ public class TreeTrunkStateFactory {
      * Creates a default tree trunk state with given radius and height and default 3D state.
      */
     public TreeTrunkState createRandomTreeTrunkState(float radius, float height) {
-        int age = Randomizer.randomBetween(0, 100);
+        int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         TreeTrunk3DStateFactory trunk3DStateFactory = new TreeTrunk3DStateFactory();
         TreeTrunk3DState leaf3dState = trunk3DStateFactory.createRandomTreeTrunk3DState();
-        return new TreeTrunkState(age, radius, height, leaf3dState);
+        return new TreeTrunkState(creationMillis, radius, height, leaf3dState);
     }
 
 }

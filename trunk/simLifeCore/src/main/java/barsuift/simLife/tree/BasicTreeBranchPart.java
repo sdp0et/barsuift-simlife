@@ -71,7 +71,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
 
     private final TreeBranchPartState state;
 
-    private int age;
+    private final long creationMillis;
 
     private BigDecimal energy;
 
@@ -94,7 +94,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         }
         this.universe = universe;
         this.state = state;
-        this.age = state.getAge();
+        this.creationMillis = state.getCreationMillis();
         this.energy = state.getEnergy();
         this.freeEnergy = state.getFreeEnergy();
         List<TreeLeafState> leaveStates = state.getLeaveStates();
@@ -107,8 +107,9 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         branchPart3D = new BasicTreeBranchPart3D(universe.getUniverse3D(), state.getBranchPart3DState(), this);
     }
 
-    public int getAge() {
-        return age;
+    @Override
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
     /**
@@ -116,7 +117,6 @@ public class BasicTreeBranchPart implements TreeBranchPart {
      */
     @Override
     public void spendTime() {
-        age++;
         for (TreeLeaf leaf : leaves) {
             leaf.spendTime();
         }
@@ -370,7 +370,6 @@ public class BasicTreeBranchPart implements TreeBranchPart {
 
     @Override
     public void synchronize() {
-        state.setAge(age);
         state.setEnergy(energy);
         state.setFreeEnergy(freeEnergy);
         List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>();
