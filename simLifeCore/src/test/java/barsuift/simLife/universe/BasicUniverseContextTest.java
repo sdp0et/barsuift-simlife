@@ -18,8 +18,8 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.InitException;
 import junit.framework.TestCase;
+import barsuift.simLife.InitException;
 
 
 public class BasicUniverseContextTest extends TestCase {
@@ -52,10 +52,13 @@ public class BasicUniverseContextTest extends TestCase {
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
         assertTrue(context.getState().isAxisShowing());
+        assertEquals(0, context.getState().getTimeControllerState().getCalendar().getValue());
         context.setAxisShowing(false);
+        context.getTimeController().oneStep();
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
         assertFalse(context.getState().isAxisShowing());
+        assertEquals(100, context.getState().getTimeControllerState().getCalendar().getValue());
     }
 
 

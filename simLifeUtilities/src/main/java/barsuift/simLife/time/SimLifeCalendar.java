@@ -27,7 +27,6 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-//FIXME there seem to be a bug when relaoding a calendar
 public class SimLifeCalendar extends Calendar implements Persistent<SimLifeCalendarState>, Publisher {
 
     private static final long serialVersionUID = -2239086430259505817L;
