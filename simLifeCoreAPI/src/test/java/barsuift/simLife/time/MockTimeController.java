@@ -1,11 +1,12 @@
 package barsuift.simLife.time;
 
 import barsuift.simLife.CoreDataCreatorForTests;
+import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.universe.MockUniverse;
 import barsuift.simLife.universe.Universe;
 
 
-public class MockTimeController implements TimeController {
+public class MockTimeController extends BasicPublisher implements TimeController {
 
     private TimeControllerState state;
 
@@ -26,6 +27,7 @@ public class MockTimeController implements TimeController {
     private Universe universe;
 
     public MockTimeController() {
+        super(null);
         reset();
     }
 

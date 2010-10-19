@@ -25,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 
 import barsuift.simLife.InitException;
 import barsuift.simLife.Persistent;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.process.Synchronizer;
 import barsuift.simLife.universe.Universe;
 
@@ -49,6 +52,8 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     private final TimeMessenger timeMessenger;
 
     private boolean running;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     public BasicTimeController(Universe universe, TimeControllerState state) throws InitException {
         super();
@@ -85,6 +90,8 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
         runningProcess = scheduledThreadPool.scheduleAtFixedRate(timeMessenger, initialDelay, period,
                 TimeUnit.MILLISECONDS);
         synchronizer.start();
+        setChanged();
+        notifySubscribers();
     }
 
     @Override
@@ -94,9 +101,12 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
         }
         timeMessenger.run();
         synchronizer.oneStep();
+        setChanged();
+        notifySubscribers();
     }
 
     @Override
+    // TODO rename to stop
     public void pause() {
         if (running == false) {
             throw new IllegalStateException("The controller is not running");
@@ -104,6 +114,8 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
         running = false;
         runningProcess.cancel(false);
         synchronizer.stop();
+        setChanged();
+        notifySubscribers();
     }
 
     @Override
@@ -131,6 +143,42 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     public void synchronize() {
         calendar.synchronize();
         synchronizer.synchronize();
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
 }
