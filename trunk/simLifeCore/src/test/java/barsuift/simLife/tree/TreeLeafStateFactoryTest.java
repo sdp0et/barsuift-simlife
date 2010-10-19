@@ -57,8 +57,10 @@ public class TreeLeafStateFactoryTest extends TestCase {
         TreeLeafStateFactory factory = new TreeLeafStateFactory();
         Point3d leafAttachPoint = new Point3d(Math.random(), Math.random(), Math.random());
         BigDecimal energy = new BigDecimal(30);
-        TreeLeafState treeLeafState = factory.createNewTreeLeafState(leafAttachPoint, energy);
+        long creationMillis = 200;
+        TreeLeafState treeLeafState = factory.createNewTreeLeafState(leafAttachPoint, energy, creationMillis);
         assertNotNull(treeLeafState);
+        assertEquals(creationMillis, treeLeafState.getCreationMillis());
         TreeLeaf3DState leaf3dState = treeLeafState.getLeaf3DState();
         assertNotNull(leaf3dState);
         // check it is an newly created leaf 3D
