@@ -56,19 +56,9 @@ public class BasicTreeTrunkTest extends TestCase {
 
         assertEquals(trunkState, treeTrunk.getState());
         assertSame(trunkState, treeTrunk.getState());
-        assertEquals(15, treeTrunk.getState().getAge());
         treeTrunk.spendTime();
         assertEquals(trunkState, treeTrunk.getState());
         assertSame(trunkState, treeTrunk.getState());
-        assertEquals(16, treeTrunk.getState().getAge());
-    }
-
-    public void testSpendTime() {
-        TreeTrunkState trunkState = new TreeTrunkState();
-        trunkState.setAge(12);
-        BasicTreeTrunk treeTrunk = new BasicTreeTrunk(new MockUniverse(), trunkState);
-        treeTrunk.spendTime();
-        assertEquals(13, treeTrunk.getAge());
     }
 
 }

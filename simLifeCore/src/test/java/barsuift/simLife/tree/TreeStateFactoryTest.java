@@ -55,8 +55,8 @@ public class TreeStateFactoryTest extends TestCase {
         assertEquals(height / 8, trunkState.getRadius());
         assertNotNull(treeState.getTree3DState());
 
-        assertTrue(treeState.getAge() >= 0);
-        assertTrue(treeState.getAge() <= 100);
+        assertTrue(treeState.getCreationMillis() >= 0);
+        assertTrue(treeState.getCreationMillis() <= 100000);
         assertTrue(treeState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
         assertTrue(treeState.getEnergy().compareTo(new BigDecimal(100)) <= 0);
     }

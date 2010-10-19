@@ -39,7 +39,7 @@ public class MockUniverse implements Universe {
 
     private List<TreeLeaf> fallenLeaves = new ArrayList<TreeLeaf>();
 
-    private int age = 0;
+    private long creationMillis = 0;
 
     private int timeSpent = 0;
 
@@ -68,12 +68,12 @@ public class MockUniverse implements Universe {
         livingParts.remove(livingPart);
     }
 
-    public int getAge() {
-        return age;
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setCreationMillis(long creationMillis) {
+        this.creationMillis = creationMillis;
     }
 
     @Override

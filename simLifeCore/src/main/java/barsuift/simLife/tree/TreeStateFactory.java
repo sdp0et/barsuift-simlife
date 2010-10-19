@@ -40,7 +40,7 @@ public class TreeStateFactory {
     public static final float HEIGHT_BRANCH_RADIAL_LENGTH_RATIO = 0.5f;
 
     public TreeState createRandomTreeState(Point3d translationVector) {
-        int age = Randomizer.randomBetween(0, 100);
+        int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         int nbBranches = Randomizer.randomBetween(30, 50);
         float height = Randomizer.randomBetween(3, 5);
@@ -55,7 +55,7 @@ public class TreeStateFactory {
         Tree3DStateFactory tree3DStateFactory = new Tree3DStateFactory();
         Tree3DState tree3dState = tree3DStateFactory.createRandomTree3DState(new Tuple3dState(translationVector));
 
-        return new TreeState(age, energy, branches, trunkState, height, tree3dState);
+        return new TreeState(creationMillis, energy, branches, trunkState, height, tree3dState);
     }
 
     protected TreeBranchState computeRandomBranchState(float treeRadius, float treeHeight) {

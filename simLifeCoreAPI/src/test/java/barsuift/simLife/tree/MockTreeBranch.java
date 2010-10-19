@@ -28,7 +28,7 @@ import barsuift.simLife.message.MockSubscriber;
 
 public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
-    private int age = 0;
+    private long creationMillis = 0;
 
     private BigDecimal energy = new BigDecimal(0);
 
@@ -48,12 +48,13 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     private int synchronizedCalled;
 
-    public int getAge() {
-        return age;
+    @Override
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setCreationMillis(long creationMillis) {
+        this.creationMillis = creationMillis;
     }
 
     @Override

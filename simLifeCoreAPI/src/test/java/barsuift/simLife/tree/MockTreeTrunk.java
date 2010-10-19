@@ -24,7 +24,7 @@ import barsuift.simLife.j3d.tree.TreeTrunk3D;
 
 public class MockTreeTrunk implements TreeTrunk {
 
-    private int age = 0;
+    private long creationMillis = 0;
 
     private float height = 0;
 
@@ -74,12 +74,12 @@ public class MockTreeTrunk implements TreeTrunk {
         this.trunk3D = trunk3D;
     }
 
-    public int getAge() {
-        return age;
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setCreationMillis(long creationMillis) {
+        this.creationMillis = creationMillis;
     }
 
     @Override

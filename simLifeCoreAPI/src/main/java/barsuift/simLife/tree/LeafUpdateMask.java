@@ -7,16 +7,12 @@ public class LeafUpdateMask {
 
     private static final int FALL = 1;
 
-    private static final int AGE = 2;
+    private static final int ENERGY = 2;
 
-    private static final int ENERGY = 3;
-
-    private static final int EFFICIENCY = 4;
+    private static final int EFFICIENCY = 3;
 
 
     public static final int FALL_MASK = 1 << FALL;
-
-    public static final int AGE_MASK = 1 << AGE;
 
     public static final int ENERGY_MASK = 1 << ENERGY;
 

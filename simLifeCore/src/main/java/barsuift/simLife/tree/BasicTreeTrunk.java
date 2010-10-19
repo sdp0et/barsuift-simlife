@@ -26,7 +26,7 @@ public class BasicTreeTrunk implements TreeTrunk {
 
     private final TreeTrunkState state;
 
-    private int age;
+    private final long creationMillis;
 
     private float radius;
 
@@ -42,7 +42,7 @@ public class BasicTreeTrunk implements TreeTrunk {
             throw new IllegalArgumentException("null trunk state");
         }
         this.state = state;
-        this.age = state.getAge();
+        this.creationMillis = state.getCreationMillis();
         this.radius = state.getRadius();
         this.height = state.getHeight();
         this.trunk3D = new BasicTreeTrunk3D(universe.getUniverse3D(), state.getTrunk3DState(), this);
@@ -66,19 +66,19 @@ public class BasicTreeTrunk implements TreeTrunk {
 
     @Override
     public void synchronize() {
-        state.setAge(age);
         state.setHeight(height);
         state.setRadius(radius);
         trunk3D.synchronize();
     }
 
-    public int getAge() {
-        return age;
+    @Override
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
     @Override
     public void spendTime() {
-        age++;
+        // nothing to do
     }
 
     @Override

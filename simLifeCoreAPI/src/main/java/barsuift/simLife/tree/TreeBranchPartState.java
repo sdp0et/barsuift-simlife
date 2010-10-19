@@ -30,7 +30,7 @@ import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 @XmlRootElement
 public class TreeBranchPartState implements State {
 
-    private int age;
+    private long creationMillis;
 
     private BigDecimal energy;
 
@@ -43,28 +43,28 @@ public class TreeBranchPartState implements State {
     public TreeBranchPartState() {
         super();
         this.leaveStates = new ArrayList<TreeLeafState>();
-        this.age = 0;
+        this.creationMillis = 0;
         this.energy = new BigDecimal(0);
         this.freeEnergy = new BigDecimal(0);
         this.branchPart3DState = new TreeBranchPart3DState();
     }
 
-    public TreeBranchPartState(int age, BigDecimal energy, BigDecimal freeEnergy, List<TreeLeafState> leaveStates,
-            TreeBranchPart3DState branchPart3DState) {
+    public TreeBranchPartState(long creationMillis, BigDecimal energy, BigDecimal freeEnergy,
+            List<TreeLeafState> leaveStates, TreeBranchPart3DState branchPart3DState) {
         super();
-        this.age = age;
+        this.creationMillis = creationMillis;
         this.energy = energy;
         this.freeEnergy = freeEnergy;
         this.leaveStates = leaveStates;
         this.branchPart3DState = branchPart3DState;
     }
 
-    public int getAge() {
-        return age;
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setCreationMillis(long creationMillis) {
+        this.creationMillis = creationMillis;
     }
 
     public BigDecimal getEnergy() {
@@ -104,7 +104,7 @@ public class TreeBranchPartState implements State {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((branchPart3DState == null) ? 0 : branchPart3DState.hashCode());
-        result = prime * result + age;
+        result = prime * result + (int) (creationMillis ^ (creationMillis >>> 32));
         result = prime * result + ((energy == null) ? 0 : energy.hashCode());
         result = prime * result + ((freeEnergy == null) ? 0 : freeEnergy.hashCode());
         result = prime * result + ((leaveStates == null) ? 0 : leaveStates.hashCode());
@@ -126,7 +126,7 @@ public class TreeBranchPartState implements State {
         } else
             if (!branchPart3DState.equals(other.branchPart3DState))
                 return false;
-        if (age != other.age)
+        if (creationMillis != other.creationMillis)
             return false;
         if (energy == null) {
             if (other.energy != null)
@@ -151,8 +151,8 @@ public class TreeBranchPartState implements State {
 
     @Override
     public String toString() {
-        return "TreeBranchState [branchPart3DState=" + branchPart3DState + ", age=" + age + ", energy=" + energy
-                + ", freeEnergy=" + freeEnergy + ", leaveStates=" + leaveStates + "]";
+        return "TreeBranchState [branchPart3DState=" + branchPart3DState + ", creationMillis=" + creationMillis
+                + ", energy=" + energy + ", freeEnergy=" + freeEnergy + ", leaveStates=" + leaveStates + "]";
     }
 
 }

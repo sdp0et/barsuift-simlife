@@ -41,7 +41,7 @@ public class BasicUniverse implements Universe {
 
     private final UniverseState state;
 
-    private int age;
+    private final long creationMillis;
 
     private boolean fpsShowing;
 
@@ -59,7 +59,7 @@ public class BasicUniverse implements Universe {
         this.state = state;
         this.fpsCounter = new FpsCounter();
         this.fpsShowing = state.isFpsShowing();
-        this.age = state.getAge();
+        this.creationMillis = state.getCreationMillis();
         this.universe3D = new BasicUniverse3D();
         this.environment = new BasicEnvironment(state.getEnvironment());
         this.trees = new ArrayList<Tree>();
@@ -78,8 +78,8 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public int getAge() {
-        return age;
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
     @Override
@@ -101,7 +101,6 @@ public class BasicUniverse implements Universe {
         if (fpsShowing) {
             fpsCounter.tick();
         }
-        age++;
         for (LivingPart livingPart : getLivingParts()) {
             livingPart.spendTime();
         }
@@ -147,7 +146,6 @@ public class BasicUniverse implements Universe {
 
     @Override
     public void synchronize() {
-        state.setAge(age);
         state.setFpsShowing(fpsShowing);
         Set<TreeState> treeStates = new HashSet<TreeState>();
         for (Tree tree : trees) {

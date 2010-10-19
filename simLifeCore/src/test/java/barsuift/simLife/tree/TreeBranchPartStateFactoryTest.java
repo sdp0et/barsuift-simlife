@@ -56,8 +56,8 @@ public class TreeBranchPartStateFactoryTest extends TestCase {
                     branchPartEndPoint);
         }
 
-        assertTrue(branchPartState.getAge() >= 0);
-        assertTrue(branchPartState.getAge() <= 100);
+        assertTrue(branchPartState.getCreationMillis() >= 0);
+        assertTrue(branchPartState.getCreationMillis() <= 100000);
         assertTrue(branchPartState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
         assertTrue(branchPartState.getEnergy().compareTo(new BigDecimal(100)) <= 0);
         assertTrue(branchPartState.getFreeEnergy().compareTo(new BigDecimal(0)) >= 0);

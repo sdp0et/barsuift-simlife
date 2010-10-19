@@ -28,7 +28,7 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
 
     private BigDecimal efficiency = new BigDecimal(0);
 
-    private int age;
+    private long creationMillis;
 
     private BigDecimal energy = new BigDecimal(0);
 
@@ -47,7 +47,7 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
     public MockTreeLeaf() {
         super(null);
     }
-    
+
     @Override
     public BigDecimal getEfficiency() {
         return efficiency;
@@ -70,12 +70,12 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
         this.efficiency = efficiency;
     }
 
-    public int getAge() {
-        return age;
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setCreationMillis(long creationMillis) {
+        this.creationMillis = creationMillis;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class BasicTree implements Tree {
 
     private final TreeState state;
 
-    private int age;
+    private final long creationMillis;
 
     private BigDecimal energy;
 
@@ -52,7 +52,7 @@ public class BasicTree implements Tree {
             throw new IllegalArgumentException("null tree state");
         }
         this.state = state;
-        this.age = state.getAge();
+        this.creationMillis = state.getCreationMillis();
         this.energy = state.getEnergy();
         this.height = state.getHeight();
         List<TreeBranchState> branchStates = state.getBranches();
@@ -64,8 +64,9 @@ public class BasicTree implements Tree {
         this.tree3D = new BasicTree3D(universe.getUniverse3D(), state.getTree3DState(), this);
     }
 
-    public int getAge() {
-        return age;
+    @Override
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
     /**
@@ -73,7 +74,6 @@ public class BasicTree implements Tree {
      */
     @Override
     public void spendTime() {
-        age++;
         trunk.spendTime();
         for (TreeBranch branch : branches) {
             branch.spendTime();
@@ -131,7 +131,6 @@ public class BasicTree implements Tree {
 
     @Override
     public void synchronize() {
-        state.setAge(age);
         state.setEnergy(energy);
         state.setHeight(height);
         List<TreeBranchState> treeBranchStates = new ArrayList<TreeBranchState>();

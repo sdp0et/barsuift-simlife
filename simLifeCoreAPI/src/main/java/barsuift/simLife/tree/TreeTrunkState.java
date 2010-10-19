@@ -26,7 +26,7 @@ import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 @XmlRootElement
 public class TreeTrunkState implements State {
 
-    private int age;
+    private long creationMillis;
 
     private float radius;
 
@@ -36,26 +36,26 @@ public class TreeTrunkState implements State {
 
     public TreeTrunkState() {
         super();
-        this.age = 0;
+        this.creationMillis = 0;
         this.radius = 0;
         this.height = 0;
         this.trunk3DState = new TreeTrunk3DState();
     }
 
-    public TreeTrunkState(int age, float radius, float height, TreeTrunk3DState trunk3DState) {
+    public TreeTrunkState(long creationMillis, float radius, float height, TreeTrunk3DState trunk3DState) {
         super();
-        this.age = age;
+        this.creationMillis = creationMillis;
         this.radius = radius;
         this.height = height;
         this.trunk3DState = trunk3DState;
     }
 
-    public int getAge() {
-        return age;
+    public long getCreationMillis() {
+        return creationMillis;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setCreationMillis(long creationMillis) {
+        this.creationMillis = creationMillis;
     }
 
     public float getRadius() {
@@ -87,7 +87,7 @@ public class TreeTrunkState implements State {
         final int prime = 31;
         int result = 1;
         result = prime * result + Float.floatToIntBits(height);
-        result = prime * result + age;
+        result = prime * result + (int) (creationMillis ^ (creationMillis >>> 32));
         result = prime * result + Float.floatToIntBits(radius);
         result = prime * result + ((trunk3DState == null) ? 0 : trunk3DState.hashCode());
         return result;
@@ -104,7 +104,7 @@ public class TreeTrunkState implements State {
         TreeTrunkState other = (TreeTrunkState) obj;
         if (Float.floatToIntBits(height) != Float.floatToIntBits(other.height))
             return false;
-        if (age != other.age)
+        if (creationMillis != other.creationMillis)
             return false;
         if (Float.floatToIntBits(radius) != Float.floatToIntBits(other.radius))
             return false;
@@ -119,8 +119,8 @@ public class TreeTrunkState implements State {
 
     @Override
     public String toString() {
-        return "TreeTrunkState [height=" + height + ", age=" + age + ", radius=" + radius + ", trunk3DState="
-                + trunk3DState + "]";
+        return "TreeTrunkState [height=" + height + ", creationMillis=" + creationMillis + ", radius=" + radius
+                + ", trunk3DState=" + trunk3DState + "]";
     }
 
 }
