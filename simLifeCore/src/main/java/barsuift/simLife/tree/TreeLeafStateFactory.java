@@ -42,7 +42,7 @@ public class TreeLeafStateFactory {
      */
     public TreeLeafState createRandomTreeLeafState(Point3d leafAttachPoint) {
         BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
-        int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
+        long creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
@@ -55,13 +55,11 @@ public class TreeLeafStateFactory {
      * <ul>
      * <li>efficiency between 90 and 100</li>
      * <li>freeEnergy = 0</li>
-     * <li>creationMillis = 0</li>
      * <li>new 3D state</li>
      * </ul>
      */
-    public TreeLeafState createNewTreeLeafState(Point3d leafAttachPoint, BigDecimal energy) {
+    public TreeLeafState createNewTreeLeafState(Point3d leafAttachPoint, BigDecimal energy, long creationMillis) {
         BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
-        int creationMillis = 0;
         BigDecimal freeEnergy = new BigDecimal(0);
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
         TreeLeaf3DState leaf3dState = leaf3DStateFactory.createNewTreeLeaf3DState(leafAttachPoint);
