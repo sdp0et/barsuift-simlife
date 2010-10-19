@@ -1,11 +1,12 @@
 package barsuift.simLife.time;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.message.Publisher;
 import barsuift.simLife.universe.Universe;
 
 
 
-public interface TimeController extends Persistent<TimeControllerState> {
+public interface TimeController extends Persistent<TimeControllerState>, Publisher {
 
     public void setSpeed(int speed);
 
@@ -44,7 +45,7 @@ public interface TimeController extends Persistent<TimeControllerState> {
     public boolean isRunning();
 
     public SimLifeCalendar getCalendar();
-    
+
     public Universe getUniverse();
-    
+
 }

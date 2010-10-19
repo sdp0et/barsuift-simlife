@@ -21,13 +21,10 @@ package barsuift.simLife.j2d.panel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -36,6 +33,9 @@ import javax.swing.border.TitledBorder;
 
 import barsuift.simLife.j2d.CalendarDisplay;
 import barsuift.simLife.j2d.action.SpeedAction;
+import barsuift.simLife.j2d.button.OneStepButton;
+import barsuift.simLife.j2d.button.StartButton;
+import barsuift.simLife.j2d.button.StopButton;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.time.TimeController;
@@ -47,14 +47,6 @@ public class TimeControllerPanel extends JPanel {
     private final TimeController controller;
 
     private final CalendarDisplay calendarDisplay;
-
-    private final JButton oneStepButton;
-
-    private final JButton startButton;
-
-    private final JButton pauseButton;
-
-    private final JPanel buttonPanel;
 
     /**
      * Panel with box layout ordered along the PAGE axis
@@ -75,17 +67,13 @@ public class TimeControllerPanel extends JPanel {
         JPanel speedPanel = createSpeedPanel(timeController);
         add(speedPanel);
 
-        oneStepButton = createOneStepButton();
-        startButton = createStartButton();
-        pauseButton = createPauseButton();
-
-        buttonPanel = new JPanel();
+        JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        buttonPanel.add(oneStepButton);
-        buttonPanel.add(startButton);
-        buttonPanel.add(pauseButton);
+        buttonPanel.add(new OneStepButton(controller));
+        buttonPanel.add(new StartButton(controller));
+        buttonPanel.add(new StopButton(controller));
         add(buttonPanel);
 
         Border blacklineBorder = BorderFactory.createLineBorder(Color.black);
@@ -113,51 +101,6 @@ public class TimeControllerPanel extends JPanel {
         speedPanel.add(speed1);
         speedPanel.add(speed10);
         return speedPanel;
-    }
-
-    private JButton createOneStepButton() {
-        JButton button = new JButton("ONE STEP");
-        button.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.oneStep();
-            }
-        });
-        return button;
-    }
-
-    private JButton createStartButton() {
-        JButton button = new JButton("START");
-        button.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                oneStepButton.setEnabled(false);
-                startButton.setVisible(false);
-                controller.start();
-                pauseButton.setVisible(true);
-            }
-
-        });
-        return button;
-    }
-
-    private JButton createPauseButton() {
-        JButton button = new JButton("PAUSE");
-        button.setVisible(false);
-        button.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                pauseButton.setVisible(false);
-                controller.pause();
-                oneStepButton.setEnabled(true);
-                startButton.setVisible(true);
-            }
-
-        });
-        return button;
     }
 
 }
