@@ -22,8 +22,6 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     private boolean running;
 
-    private SimLifeCalendar calendar;
-
     private Universe universe;
 
     public MockTimeController() {
@@ -39,7 +37,6 @@ public class MockTimeController extends BasicPublisher implements TimeController
         oneStepCalled = 0;
         stopCalled = 0;
         running = false;
-        calendar = new SimLifeCalendar();
         universe = new MockUniverse();
     }
 
@@ -105,15 +102,6 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     public void setRunning(boolean running) {
         this.running = running;
-    }
-
-    @Override
-    public SimLifeCalendar getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(SimLifeCalendar calendar) {
-        this.calendar = calendar;
     }
 
     @Override

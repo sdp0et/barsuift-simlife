@@ -44,8 +44,6 @@ public interface TimeController extends Persistent<TimeControllerState>, Publish
 
     public boolean isRunning();
 
-    public SimLifeCalendar getCalendar();
-
     public Universe getUniverse();
 
 }

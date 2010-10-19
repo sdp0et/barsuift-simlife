@@ -87,14 +87,12 @@ public final class CoreDataCreatorForTests {
 
     public static TimeControllerState createRandomTimeControllerState() {
         SynchronizerState synchronizer = createRandomSynchronizerState();
-        SimLifeCalendarState calendar = UtilDataCreatorForTests.createRandomCalendarState();
-        return new TimeControllerState(synchronizer, calendar);
+        return new TimeControllerState(synchronizer);
     }
 
     public static TimeControllerState createSpecificTimeControllerState() {
         SynchronizerState synchronizer = createSpecificSynchronizerState();
-        SimLifeCalendarState calendar = UtilDataCreatorForTests.createSpecificCalendarState();
-        return new TimeControllerState(synchronizer, calendar);
+        return new TimeControllerState(synchronizer);
     }
 
     public static SynchronizerState createRandomSynchronizerState() {
@@ -150,8 +148,10 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createRandomTreeLeafState());
         }
+        SimLifeCalendarState calendar = UtilDataCreatorForTests.createRandomCalendarState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(), univ3DState);
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(), calendar,
+                univ3DState);
     }
 
     /**
@@ -180,7 +180,9 @@ public final class CoreDataCreatorForTests {
             fallenLeaves.add(createSpecificTreeLeafState());
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(), univ3DState);
+        SimLifeCalendarState calendar = UtilDataCreatorForTests.createSpecificCalendarState();
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(), calendar,
+                univ3DState);
     }
 
     public static EnvironmentState createRandomEnvironmentState() {

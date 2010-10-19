@@ -41,8 +41,6 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
 
     private final Synchronizer synchronizer;
 
-    private final SimLifeCalendar calendar;
-
     private final Universe universe;
 
     private final ScheduledExecutorService scheduledThreadPool;
@@ -63,7 +61,6 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
         this.scheduledThreadPool = Executors.newScheduledThreadPool(poolSize);
         this.timeMessenger = new TimeMessenger(universe);
         this.running = false;
-        this.calendar = new SimLifeCalendar(state.getCalendar());
         this.synchronizer = new Synchronizer(state.getSynchronizer(), this);
     }
 
@@ -123,11 +120,6 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     }
 
     @Override
-    public SimLifeCalendar getCalendar() {
-        return calendar;
-    }
-
-    @Override
     public Universe getUniverse() {
         return universe;
     }
@@ -140,7 +132,6 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
 
     @Override
     public void synchronize() {
-        calendar.synchronize();
         synchronizer.synchronize();
     }
 

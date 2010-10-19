@@ -14,7 +14,7 @@ public class CalendarUpdater extends AbstractSynchronizedRunnable implements Syn
     @Override
     public void init(SynchronizedRunnableState state, CyclicBarrier barrier, TimeController timeController) {
         super.init(state, barrier, timeController);
-        this.calendar = timeController.getCalendar();
+        this.calendar = timeController.getUniverse().getCalendar();
     }
 
     @Override

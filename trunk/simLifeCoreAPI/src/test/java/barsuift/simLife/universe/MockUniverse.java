@@ -27,6 +27,7 @@ import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.FpsCounter;
+import barsuift.simLife.time.SimLifeCalendar;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -44,6 +45,8 @@ public class MockUniverse implements Universe {
     private int timeSpent = 0;
 
     private Environment environment = new MockEnvironment();
+
+    private SimLifeCalendar calendar = new SimLifeCalendar();
 
     private Universe3D universe3D = new MockUniverse3D();
 
@@ -96,6 +99,15 @@ public class MockUniverse implements Universe {
 
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+    }
+
+    @Override
+    public SimLifeCalendar getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(SimLifeCalendar calendar) {
+        this.calendar = calendar;
     }
 
     @Override

@@ -60,7 +60,7 @@ public class TimeControllerPanel extends JPanel {
         setMaximumSize(new Dimension(220, 100));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        calendarDisplay = new CalendarDisplay(controller.getCalendar());
+        calendarDisplay = new CalendarDisplay(controller.getUniverse().getCalendar());
         calendarDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(calendarDisplay);
 
