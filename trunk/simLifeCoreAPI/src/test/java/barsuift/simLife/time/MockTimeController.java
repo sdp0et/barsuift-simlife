@@ -18,7 +18,7 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     private int oneStepCalled;
 
-    private int pauseCalled;
+    private int stopCalled;
 
     private boolean running;
 
@@ -37,7 +37,7 @@ public class MockTimeController extends BasicPublisher implements TimeController
         speed = 1;
         startCalled = 0;
         oneStepCalled = 0;
-        pauseCalled = 0;
+        stopCalled = 0;
         running = false;
         calendar = new SimLifeCalendar();
         universe = new MockUniverse();
@@ -90,12 +90,12 @@ public class MockTimeController extends BasicPublisher implements TimeController
     }
 
     @Override
-    public void pause() {
-        pauseCalled++;
+    public void stop() {
+        stopCalled++;
     }
 
-    public int getNbPauseCalled() {
-        return pauseCalled;
+    public int getNbStopCalled() {
+        return stopCalled;
     }
 
     @Override

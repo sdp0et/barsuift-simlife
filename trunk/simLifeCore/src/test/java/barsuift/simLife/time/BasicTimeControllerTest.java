@@ -74,7 +74,7 @@ public class BasicTimeControllerTest extends TestCase {
         } catch (InterruptedException e) {
         }
         int nbTimeSpent1 = mockUniverse.getNbTimeSpent();
-        controller.pause();
+        controller.stop();
 
         // waiting 2 cycles
         try {
@@ -114,7 +114,7 @@ public class BasicTimeControllerTest extends TestCase {
     public void testIllegalStateException() {
         int speed = controller.getSpeed();
         try {
-            controller.pause();
+            controller.stop();
             fail("IllegalStateException expected");
         } catch (IllegalStateException ise) {
             // OK expected exception
