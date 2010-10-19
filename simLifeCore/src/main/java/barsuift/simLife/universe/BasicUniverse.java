@@ -30,6 +30,7 @@ import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.FpsCounter;
+import barsuift.simLife.time.SimLifeCalendar;
 import barsuift.simLife.tree.BasicTree;
 import barsuift.simLife.tree.BasicTreeLeaf;
 import barsuift.simLife.tree.Tree;
@@ -51,6 +52,8 @@ public class BasicUniverse implements Universe {
 
     private final Environment environment;
 
+    private final SimLifeCalendar calendar;
+
     private final BasicUniverse3D universe3D;
 
     private final FpsCounter fpsCounter;
@@ -62,6 +65,7 @@ public class BasicUniverse implements Universe {
         this.creationMillis = state.getCreationMillis();
         this.universe3D = new BasicUniverse3D();
         this.environment = new BasicEnvironment(state.getEnvironment());
+        this.calendar = new SimLifeCalendar(state.getCalendar());
         this.trees = new ArrayList<Tree>();
         Set<TreeState> treeStates = state.getTrees();
         for (TreeState treeState : treeStates) {
@@ -139,6 +143,11 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
+    public SimLifeCalendar getCalendar() {
+        return calendar;
+    }
+
+    @Override
     public UniverseState getState() {
         synchronize();
         return state;
@@ -158,6 +167,7 @@ public class BasicUniverse implements Universe {
         }
         state.setFallenLeaves(fallenLeaveStates);
         environment.synchronize();
+        calendar.synchronize();
     }
 
     @Override

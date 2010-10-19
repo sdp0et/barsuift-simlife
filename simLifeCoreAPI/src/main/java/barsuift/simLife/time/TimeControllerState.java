@@ -10,18 +10,14 @@ public class TimeControllerState implements State {
 
     private SynchronizerState synchronizer;
 
-    private SimLifeCalendarState calendar;
-
     public TimeControllerState() {
         super();
         this.synchronizer = new SynchronizerState();
-        this.calendar = new SimLifeCalendarState();
     }
 
-    public TimeControllerState(SynchronizerState synchronizer, SimLifeCalendarState calendar) {
+    public TimeControllerState(SynchronizerState synchronizer) {
         super();
         this.synchronizer = synchronizer;
-        this.calendar = calendar;
     }
 
     public SynchronizerState getSynchronizer() {
@@ -32,19 +28,10 @@ public class TimeControllerState implements State {
         this.synchronizer = synchronizer;
     }
 
-    public SimLifeCalendarState getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(SimLifeCalendarState calendar) {
-        this.calendar = calendar;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((calendar == null) ? 0 : calendar.hashCode());
         result = prime * result + ((synchronizer == null) ? 0 : synchronizer.hashCode());
         return result;
     }
@@ -58,12 +45,6 @@ public class TimeControllerState implements State {
         if (getClass() != obj.getClass())
             return false;
         TimeControllerState other = (TimeControllerState) obj;
-        if (calendar == null) {
-            if (other.calendar != null)
-                return false;
-        } else
-            if (!calendar.equals(other.calendar))
-                return false;
         if (synchronizer == null) {
             if (other.synchronizer != null)
                 return false;
@@ -75,7 +56,7 @@ public class TimeControllerState implements State {
 
     @Override
     public String toString() {
-        return "TimeControllerState [synchronizer=" + synchronizer + ", calendar=" + calendar + "]";
+        return "TimeControllerState [synchronizer=" + synchronizer + "]";
     }
 
 }

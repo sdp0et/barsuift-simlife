@@ -27,8 +27,7 @@ public class TimeControllerStateFactory {
     public TimeControllerState createTimeControllerState() {
         SynchronizerStateFactory synchronizerFactory = new SynchronizerStateFactory();
         SynchronizerState synchronizer = synchronizerFactory.createSynchronizerState();
-        SimLifeCalendarState calendar = new SimLifeCalendarState();
-        return new TimeControllerState(synchronizer, calendar);
+        return new TimeControllerState(synchronizer);
     }
 
 }
