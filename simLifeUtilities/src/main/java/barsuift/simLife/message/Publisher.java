@@ -31,7 +31,7 @@ import java.util.Observable;
 public interface Publisher {
 
     /**
-     * Adds an subscriber to the set of subscribers for this object, provided that it is not the same as some subscriber
+     * Adds a subscriber to the set of subscribers for this object, provided that it is not the same as some subscriber
      * already in the set. The order in which notifications will be delivered to multiple subscribers is not specified.
      * See the class comment.
      * 
