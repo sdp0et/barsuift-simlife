@@ -170,6 +170,7 @@ public class BasicUniverseContext implements UniverseContext {
         state.setViewerTransform3D(matrix);
         canvas3D.synchronize();
         universe.synchronize();
+        timeController.synchronize();
     }
 
     private void addNavigators() {
