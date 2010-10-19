@@ -81,18 +81,25 @@ public class TimeControllerPanel extends JPanel {
         setBorder(titledBorder);
     }
 
-    // FIXME display bug : set on 1 at init time even if speed = 10
     private JPanel createSpeedPanel(TimeController timeController) {
         JPanel speedPanel = new JPanel();
         speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));
         SpeedAction action1 = new SpeedAction(timeController, "1", "1 cycle / sec", Mnemonics.SPEED_1,
                 Accelerators.SPEED_1, "1");
         JRadioButton speed1 = new JRadioButton(action1);
-        speed1.setSelected(true);
 
         SpeedAction action10 = new SpeedAction(timeController, "10", "10 cycles / sec", Mnemonics.SPEED_10,
                 Accelerators.SPEED_10, "10");
         JRadioButton speed10 = new JRadioButton(action10);
+
+        int speed = timeController.getSpeed();
+        if (speed == 1) {
+            speed1.setSelected(true);
+        } else {
+            if (speed == 10) {
+                speed10.setSelected(true);
+            }
+        }
 
         ButtonGroup speedSwitch = new ButtonGroup();
         speedSwitch.add(speed1);
