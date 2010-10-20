@@ -192,13 +192,13 @@ public class SimLifeDate implements Persistent<SimLifeDateState>, Publisher {
         notifySubscribers();
     }
 
-    public void setTimeInMillis(long millis) {
+    public synchronized void setTimeInMillis(long millis) {
         timeInMillis = millis;
         computeFields();
     }
 
-    public void set(int millisOfSecond, int secondOfMinute, int minuteOfDay, Day dayOfWeek, int weekOfMonth,
-            Month monthOfYear, int year) {
+    public synchronized void set(int millisOfSecond, int secondOfMinute, int minuteOfDay, Day dayOfWeek,
+            int weekOfMonth, Month monthOfYear, int year) {
         this.millisOfSecond = millisOfSecond;
         this.secondOfMinute = secondOfMinute;
         this.minuteOfDay = minuteOfDay;
@@ -209,72 +209,72 @@ public class SimLifeDate implements Persistent<SimLifeDateState>, Publisher {
         computeTime();
     }
 
-    public void setMillisOfSecond(int millis) {
+    public synchronized void setMillisOfSecond(int millis) {
         millisOfSecond = millis;
         computeTime();
     }
 
-    public void setSecondOfMinute(int seconds) {
+    public synchronized void setSecondOfMinute(int seconds) {
         secondOfMinute = seconds;
         computeTime();
     }
 
-    public void setMinuteOfDay(int minutes) {
+    public synchronized void setMinuteOfDay(int minutes) {
         minuteOfDay = minutes;
         computeTime();
     }
 
-    public void setDayOfWeek(Day day) {
+    public synchronized void setDayOfWeek(Day day) {
         dayOfWeek = day;
         computeTime();
     }
 
-    public void setDayOfMonth(int dayOfMonth) {
+    public synchronized void setDayOfMonth(int dayOfMonth) {
         weekOfMonth = (int) ((dayOfMonth - 1) / DAY_PER_WEEK) + 1;
         dayOfWeek = Day.values()[(dayOfMonth - 1) % DAY_PER_WEEK];
         computeTime();
     }
 
-    public void setWeekOfMonth(int weeks) {
+    public synchronized void setWeekOfMonth(int weeks) {
         weekOfMonth = weeks;
         computeTime();
     }
 
-    public void setMonthOfYear(Month month) {
+    public synchronized void setMonthOfYear(Month month) {
         monthOfYear = month;
         computeTime();
     }
 
-    public void setYear(int years) {
+    public synchronized void setYear(int years) {
         year = years;
         computeTime();
     }
 
-    public void addMillis(long millis) {
+    public synchronized void addMillis(long millis) {
         setTimeInMillis(timeInMillis + millis);
     }
 
-    public void addSeconds(long seconds) {
+    public synchronized void addSeconds(long seconds) {
         setTimeInMillis(timeInMillis + (seconds * MS_FOR_ONE_SECOND));
     }
 
-    public void addMinutes(long minutes) {
+    public synchronized void addMinutes(long minutes) {
         setTimeInMillis(timeInMillis + (minutes * MS_FOR_ONE_MINUTE));
     }
 
-    public void addDays(long days) {
+    public synchronized void addDays(long days) {
         setTimeInMillis(timeInMillis + (days * MS_FOR_ONE_DAY));
     }
 
-    public void addWeeks(long weeks) {
+    public synchronized void addWeeks(long weeks) {
         setTimeInMillis(timeInMillis + (weeks * MS_FOR_ONE_WEEK));
     }
 
-    public void addMonths(long months) {
+    public synchronized void addMonths(long months) {
         setTimeInMillis(timeInMillis + (months * MS_FOR_ONE_MONTH));
     }
 
-    public void addYears(long years) {
+    public synchronized void addYears(long years) {
         setTimeInMillis(timeInMillis + (years * MS_FOR_ONE_YEAR));
     }
 
@@ -309,7 +309,7 @@ public class SimLifeDate implements Persistent<SimLifeDateState>, Publisher {
      * @param date the date to parse
      * @throws ParseException
      */
-    public void setTime(String date) throws ParseException {
+    public synchronized void setTime(String date) throws ParseException {
         String[] elements = spacePattern.split(date);
         String minSecMillisec = elements[0];
         String[] minSecElements = colonPattern.split(minSecMillisec);
