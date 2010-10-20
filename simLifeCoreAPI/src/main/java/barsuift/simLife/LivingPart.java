@@ -18,6 +18,7 @@
  */
 package barsuift.simLife;
 
+// TODO 000. remove the spedTime method and replace it with Synchronized runnables to execute the needed tasks
 public interface LivingPart extends Persistent<State> {
 
     /**
