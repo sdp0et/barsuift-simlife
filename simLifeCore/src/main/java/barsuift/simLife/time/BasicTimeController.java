@@ -131,8 +131,6 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     @Override
     public boolean isRunning() {
         return running;
-        // running as long as one of it is running
-        // return !(!running && !synchronizer.isRunning());
     }
 
     @Override
