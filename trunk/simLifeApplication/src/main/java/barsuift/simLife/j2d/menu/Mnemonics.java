@@ -35,6 +35,8 @@ public class Mnemonics {
     public static final int SPEED_1 = KeyEvent.VK_1;
 
     public static final int SPEED_10 = KeyEvent.VK_2;
+    
+    public static final int SPEED_100 = KeyEvent.VK_3;
 
 
     /* File menu */
