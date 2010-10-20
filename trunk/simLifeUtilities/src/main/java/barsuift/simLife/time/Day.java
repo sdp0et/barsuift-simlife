@@ -20,11 +20,35 @@ package barsuift.simLife.time;
 
 
 public enum Day {
+
+    /**
+     * First day of the week
+     */
     NOSDAY(1, "Nosday"),
+
+    /**
+     * Second day of the week
+     */
     WATSDAY(2, "Watsday"),
+
+    /**
+     * Third day of the week
+     */
     STOODAY(3, "Stooday"),
+
+    /**
+     * Fourth day of the week
+     */
     FIRDAY(4, "Firday"),
+
+    /**
+     * Fifth day of the week
+     */
     THUNSDAY(5, "Thunsday"),
+
+    /**
+     * Sixth and last day of the week
+     */
     WINDAY(6, "Winday");
 
     private final int index;

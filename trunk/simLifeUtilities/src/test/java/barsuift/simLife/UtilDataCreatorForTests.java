@@ -20,7 +20,7 @@ package barsuift.simLife;
 
 import java.math.BigDecimal;
 
-import barsuift.simLife.time.SimLifeCalendarState;
+import barsuift.simLife.time.SimLifeDateState;
 
 
 public final class UtilDataCreatorForTests {
@@ -38,21 +38,21 @@ public final class UtilDataCreatorForTests {
     }
 
     /**
-     * Creates a random calendar state, between 0 and 100 seconds
+     * Creates a random date state, between 0 and 100 seconds
      * 
      * @return
      */
-    public static SimLifeCalendarState createRandomCalendarState() {
-        return new SimLifeCalendarState(Randomizer.randomBetween(0, 100) * 1000);
+    public static SimLifeDateState createRandomDateState() {
+        return new SimLifeDateState(Randomizer.randomBetween(0, 100) * 1000);
     }
 
     /**
-     * Creates a specific calendar state, at 100 seconds
+     * Creates a specific date state, at 100 seconds
      * 
      * @return
      */
-    public static SimLifeCalendarState createSpecificCalendarState() {
-        return new SimLifeCalendarState(100000);
+    public static SimLifeDateState createSpecificDateState() {
+        return new SimLifeDateState(100000);
     }
 
 }

@@ -10,8 +10,8 @@ public class SynchronizerStateFactory {
         int speed = 1;
 
         List<SynchronizedRunnableState> synchroRunnables = new ArrayList<SynchronizedRunnableState>();
-        SynchronizedRunnableState calendarUpdaterState = new SynchronizedRunnableState(CalendarUpdater.class);
-        synchroRunnables.add(calendarUpdaterState);
+        SynchronizedRunnableState dateUpdaterState = new SynchronizedRunnableState(DateUpdater.class);
+        synchroRunnables.add(dateUpdaterState);
 
         List<UnfrequentRunnableState> unfrequentRunnables = new ArrayList<UnfrequentRunnableState>();
         UnfrequentRunnableState fakeJobState = new UnfrequentRunnableState(FakeJob.class, 5, 2);

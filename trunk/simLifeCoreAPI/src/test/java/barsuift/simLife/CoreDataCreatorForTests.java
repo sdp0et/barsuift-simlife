@@ -41,7 +41,7 @@ import barsuift.simLife.process.MockUnfrequentRunnable;
 import barsuift.simLife.process.SynchronizedRunnableState;
 import barsuift.simLife.process.SynchronizerState;
 import barsuift.simLife.process.UnfrequentRunnableState;
-import barsuift.simLife.time.SimLifeCalendarState;
+import barsuift.simLife.time.SimLifeDateState;
 import barsuift.simLife.time.TimeControllerState;
 import barsuift.simLife.tree.TreeBranchPartState;
 import barsuift.simLife.tree.TreeBranchState;
@@ -148,9 +148,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createRandomTreeLeafState());
         }
-        SimLifeCalendarState calendar = UtilDataCreatorForTests.createRandomCalendarState();
+        SimLifeDateState date = UtilDataCreatorForTests.createRandomDateState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(), calendar,
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(), date,
                 univ3DState);
     }
 
@@ -162,8 +162,8 @@ public final class CoreDataCreatorForTests {
      * <li>nb trees=3 (made through the {@link #createSpecificTreeState()} method)</li>
      * <li>nb fallen leaves=20 (made through the {@link #createSpecificTreeLeafState()} method)</li>
      * </ul>
-     * The environment is made through the {@link #createSpecificEnvironmentState()} method. The calendar is made
-     * through the {@link UtilDataCreatorForTests#createSpecificCalendarState()} method.
+     * The environment is made through the {@link #createSpecificEnvironmentState()} method. The date is made
+     * through the {@link UtilDataCreatorForTests#createSpecificDateState()} method.
      * 
      * @return
      */
@@ -180,8 +180,8 @@ public final class CoreDataCreatorForTests {
             fallenLeaves.add(createSpecificTreeLeafState());
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
-        SimLifeCalendarState calendar = UtilDataCreatorForTests.createSpecificCalendarState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(), calendar,
+        SimLifeDateState date = UtilDataCreatorForTests.createSpecificDateState();
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(), date,
                 univ3DState);
     }
 

@@ -44,46 +44,31 @@ public class BasicTimeControllerTest extends TestCase {
         mockUniverse = null;
     }
 
-    public void testStart() {
+    public void testStart() throws InterruptedException {
         assertFalse(controller.isRunning());
-        assertEquals(new SimLifeCalendar(), controller.getUniverse().getCalendar());
-        assertEquals(0, controller.getUniverse().getCalendar().getTimeInMillis());
+        assertEquals(new SimLifeDate(), controller.getUniverse().getDate());
+        assertEquals(0, controller.getUniverse().getDate().getTimeInMillis());
         int speed = controller.getSpeed();
         controller.start();
         // waiting 2 cycles
-        try {
-            synchronized (this) {
-                this.wait(2000 / speed + 10);
-            }
-        } catch (InterruptedException e) {
-        }
+        Thread.sleep(2000 / speed + 10);
         assertTrue(mockUniverse.getNbTimeSpent() >= 2);
-        assertTrue(controller.getUniverse().getCalendar().getTimeInMillis() >= 200);
+        assertTrue(controller.getUniverse().getDate().getTimeInMillis() >= 200);
         assertTrue(controller.isRunning());
     }
 
-    public void testPause() {
+    public void testPause() throws InterruptedException {
         int speed = controller.getSpeed();
         controller.start();
         assertTrue(controller.isRunning());
 
         // waiting 2 cycles
-        try {
-            synchronized (this) {
-                this.wait(2000 / speed + 10);
-            }
-        } catch (InterruptedException e) {
-        }
+        Thread.sleep(2000 / speed + 10);
         int nbTimeSpent1 = mockUniverse.getNbTimeSpent();
         controller.stop();
 
         // waiting 2 cycles
-        try {
-            synchronized (this) {
-                this.wait(2000 / speed + 10);
-            }
-        } catch (InterruptedException e) {
-        }
+        Thread.sleep(2000 / speed + 10);
         int nbTimeSpent2 = mockUniverse.getNbTimeSpent();
         // the controller should be stopped within a cycle (end of one single run)
         assertTrue(nbTimeSpent2 <= nbTimeSpent1 + 1);
@@ -91,28 +76,18 @@ public class BasicTimeControllerTest extends TestCase {
         assertFalse(controller.isRunning());
 
         // waiting 2 cycles
-        try {
-            synchronized (this) {
-                this.wait(2000 / speed + 10);
-            }
-        } catch (InterruptedException e) {
-        }
+        Thread.sleep(2000 / speed + 10);
         int nbTimeSpent3 = mockUniverse.getNbTimeSpent();
         assertEquals("the counter should not increment anymore", nbTimeSpent2, nbTimeSpent3);
         controller.start();
         // waiting 2 cycles
-        try {
-            synchronized (this) {
-                this.wait(2000 / speed + 10);
-            }
-        } catch (InterruptedException e) {
-        }
+        Thread.sleep(2000 / speed + 10);
         int nbTimeSpent4 = mockUniverse.getNbTimeSpent();
         assertTrue(nbTimeSpent4 >= nbTimeSpent3 + 2);
         assertTrue(controller.isRunning());
     }
 
-    public void testIllegalStateException() {
+    public void testIllegalStateException() throws InterruptedException {
         int speed = controller.getSpeed();
         try {
             controller.stop();
@@ -122,12 +97,7 @@ public class BasicTimeControllerTest extends TestCase {
         }
         controller.start();
         // waiting 2 cycles
-        try {
-            synchronized (this) {
-                this.wait(2000 / speed + 10);
-            }
-        } catch (InterruptedException e) {
-        }
+        Thread.sleep(2000 / speed + 10);
         try {
             controller.start();
             fail("IllegalStateException expected");
@@ -143,17 +113,12 @@ public class BasicTimeControllerTest extends TestCase {
 
     }
 
-    public void testOneStep() {
+    public void testOneStep() throws InterruptedException {
         int speed = controller.getSpeed();
         controller.oneStep();
         assertEquals(1, mockUniverse.getNbTimeSpent());
         // waiting 2 cycles
-        try {
-            synchronized (this) {
-                this.wait(2000 / speed + 10);
-            }
-        } catch (InterruptedException e) {
-        }
+        Thread.sleep(2000 / speed + 10);
         // the time counter should not have changed
         assertEquals(1, mockUniverse.getNbTimeSpent());
     }

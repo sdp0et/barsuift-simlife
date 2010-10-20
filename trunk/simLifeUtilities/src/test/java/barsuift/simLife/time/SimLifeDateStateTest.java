@@ -16,30 +16,31 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j2d;
+package barsuift.simLife.time;
 
-import javax.swing.JLabel;
+import barsuift.simLife.JaxbTestCase;
 
-import barsuift.simLife.message.Publisher;
-import barsuift.simLife.message.Subscriber;
-import barsuift.simLife.time.SimLifeCalendar;
 
-public class CalendarDisplay extends JLabel implements Subscriber {
+public class SimLifeDateStateTest extends JaxbTestCase {
 
-    private static final long serialVersionUID = 6381218933947453660L;
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-    private SimLifeCalendar calendar;
-
-    public CalendarDisplay(SimLifeCalendar calendar) {
-        this.calendar = calendar;
-        calendar.addSubscriber(this);
-        setText(calendar.formatDate());
-        setSize(200, 40);
+    protected void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Override
-    public void update(Publisher publisher, Object arg) {
-        setText(calendar.formatDate());
+    protected String getPackage() {
+        return "barsuift.simLife.time";
+    }
+
+    public void testJaxb() throws Exception {
+        SimLifeDateState cal1 = new SimLifeDateState(199199000);
+        write(cal1);
+        SimLifeDateState cal2 = (SimLifeDateState) read();
+        assertEquals(cal1, cal2);
     }
 
 }

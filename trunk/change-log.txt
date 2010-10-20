@@ -12,9 +12,9 @@ The rest of the application has not changed a lot.
 
 New features
 ------------
-Use of the calendar system
+Replace the calendar system with a simpler date system
 Important internal rework to get rid of Observable/Observer and use homemade Publisher/Subscriber instead
-Important internal rework to add a synchronization framework to manage concurrent continuous actions (currently only used for calendar)
+Important internal rework to add a synchronization framework to manage concurrent continuous actions (currently only used for date)
 File menu actions now stop the application before executing
 
 
