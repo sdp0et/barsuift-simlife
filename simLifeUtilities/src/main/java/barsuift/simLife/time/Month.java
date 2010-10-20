@@ -21,9 +21,24 @@ package barsuift.simLife.time;
 
 public enum Month {
 
+    /**
+     * First month of the year
+     */
     WIM(1, "Wim"),
+
+    /**
+     * Second month of the year
+     */
     SPRIM(2, "Sprim"),
+
+    /**
+     * third month of the year
+     */
     SUM(3, "Sum"),
+
+    /**
+     * Fourth and last month of the year
+     */
     TOM(4, "Tom");
 
     private final int index;

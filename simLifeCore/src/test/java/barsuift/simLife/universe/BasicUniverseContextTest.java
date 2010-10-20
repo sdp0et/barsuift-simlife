@@ -45,20 +45,22 @@ public class BasicUniverseContextTest extends TestCase {
         assertFalse(panel.isAxisShowing());
     }
 
-    public void testGetState() throws InitException {
+    public void testGetState() throws Exception {
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
         UniverseContextState state = factory.createRandomUniverseContextState();
         BasicUniverseContext context = new BasicUniverseContext(state);
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
         assertTrue(context.getState().isAxisShowing());
-        assertEquals(0, context.getState().getUniverseState().getCalendar().getValue());
+        assertEquals(0, context.getState().getUniverseState().getDate().getValue());
         context.setAxisShowing(false);
         context.getTimeController().oneStep();
+        // wait a little bit to ensure the time controller ends its treatments
+        Thread.sleep(100);
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
         assertFalse(context.getState().isAxisShowing());
-        assertEquals(100, context.getState().getUniverseState().getCalendar().getValue());
+        assertEquals(100, context.getState().getUniverseState().getDate().getValue());
     }
 
 

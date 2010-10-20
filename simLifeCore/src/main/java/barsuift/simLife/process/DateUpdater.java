@@ -1,25 +1,24 @@
 package barsuift.simLife.process;
 
-import java.util.Calendar;
 import java.util.concurrent.CyclicBarrier;
 
-import barsuift.simLife.time.SimLifeCalendar;
+import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.time.TimeController;
 
 
-public class CalendarUpdater extends AbstractSynchronizedRunnable implements SynchronizedRunnable {
+public class DateUpdater extends AbstractSynchronizedRunnable implements SynchronizedRunnable {
 
-    private SimLifeCalendar calendar;
+    private SimLifeDate date;
 
     @Override
     public void init(SynchronizedRunnableState state, CyclicBarrier barrier, TimeController timeController) {
         super.init(state, barrier, timeController);
-        this.calendar = timeController.getUniverse().getCalendar();
+        this.date = timeController.getUniverse().getDate();
     }
 
     @Override
     public void executeStep() {
-        calendar.add(Calendar.MILLISECOND, 100);
+        date.addMillis(100);
     }
 
 }

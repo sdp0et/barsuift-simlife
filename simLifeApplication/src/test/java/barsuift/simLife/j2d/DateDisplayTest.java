@@ -18,40 +18,40 @@
  */
 package barsuift.simLife.j2d;
 
-import java.util.Calendar;
+import java.text.ParseException;
 
 import junit.framework.TestCase;
-import barsuift.simLife.time.SimLifeCalendar;
-import barsuift.simLife.time.SimLifeCalendarState;
+import barsuift.simLife.time.SimLifeDate;
+import barsuift.simLife.time.SimLifeDateState;
 
 
-public class CalendarDisplayTest extends TestCase {
+public class DateDisplayTest extends TestCase {
 
-    private CalendarDisplay display;
+    private DateDisplay display;
 
-    private SimLifeCalendar calendar;
+    private SimLifeDate date;
 
     protected void setUp() throws Exception {
         super.setUp();
-        calendar = new SimLifeCalendar(new SimLifeCalendarState());
-        display = new CalendarDisplay(calendar);
+        date = new SimLifeDate(new SimLifeDateState());
+        display = new DateDisplay(date);
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        calendar = null;
+        date = null;
         display = null;
     }
 
-    public void testUpdate() {
+    public void testUpdate() throws ParseException {
         assertEquals("00:00:000 Nosday 01 Wim 0001", display.getText());
-        calendar.setTime("19:59:999 Winday 18 Tom 0455");
+        date.setTime("19:59:999 Winday 18 Tom 0455");
         assertEquals("19:59:999 Winday 18 Tom 0455", display.getText());
-        calendar.add(Calendar.MILLISECOND, 1);
+        date.addMillis(1);
         assertEquals("00:00:000 Nosday 01 Wim 0456", display.getText());
-        calendar.add(Calendar.MILLISECOND, 100);
+        date.addMillis(100);
         assertEquals("00:00:100 Nosday 01 Wim 0456", display.getText());
-        calendar.add(Calendar.SECOND, 1);
+        date.addSeconds(1);
         assertEquals("00:01:100 Nosday 01 Wim 0456", display.getText());
     }
 

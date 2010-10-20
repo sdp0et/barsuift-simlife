@@ -23,15 +23,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import barsuift.simLife.State;
 
 @XmlRootElement
-public class SimLifeCalendarState implements State {
+public class SimLifeDateState implements State {
 
     private long value;
 
-    public SimLifeCalendarState() {
+    public SimLifeDateState() {
         value = 0;
     }
 
-    public SimLifeCalendarState(long value) {
+    public SimLifeDateState(long value) {
         this.value = value;
     }
 
@@ -43,13 +43,9 @@ public class SimLifeCalendarState implements State {
         this.value = value;
     }
 
-    public SimLifeCalendar toSimLifeCalendar() {
-        return new SimLifeCalendar(value);
-    }
-
     @Override
     public String toString() {
-        return "SimLifeCalendarState [value=" + value + "]";
+        return "SimLifeDateState [value=" + value + "]";
     }
 
     @Override
@@ -68,7 +64,7 @@ public class SimLifeCalendarState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SimLifeCalendarState other = (SimLifeCalendarState) obj;
+        SimLifeDateState other = (SimLifeDateState) obj;
         if (value != other.value)
             return false;
         return true;
