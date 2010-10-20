@@ -24,8 +24,28 @@ public class SpeedAction extends AbstractAction {
     }
 
     @Override
-    // TODO 001. stop the app if running, set the new value, and restart the app if it was running
     public void actionPerformed(ActionEvent e) {
+        boolean wasRunning = stopApp();
+        setSpeed(e);
+        if (wasRunning) {
+            timeController.start();
+        }
+    }
+
+    /**
+     * If the application is running, stop it and return true. Else, simply return false;
+     * 
+     * @return true if the application was running, false otherwise
+     */
+    private boolean stopApp() {
+        if (timeController.isRunning()) {
+            timeController.stop();
+            return true;
+        }
+        return false;
+    }
+
+    private void setSpeed(ActionEvent e) {
         String actionCmd = e.getActionCommand();
         int speed = Integer.valueOf(actionCmd).intValue();
         timeController.setSpeed(speed);
