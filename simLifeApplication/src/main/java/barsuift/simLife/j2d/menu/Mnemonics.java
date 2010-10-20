@@ -32,11 +32,11 @@ public class Mnemonics {
      * Mnemonics should be unique at a given point of the navigation. They are ordered by menu.
      */
 
-    public static final int SPEED_1 = KeyEvent.VK_1;
+    public static final int SPEED_NORMAL = KeyEvent.VK_1;
 
-    public static final int SPEED_10 = KeyEvent.VK_2;
+    public static final int SPEED_FAST = KeyEvent.VK_2;
     
-    public static final int SPEED_100 = KeyEvent.VK_3;
+    public static final int SPEED_VERY_FAST = KeyEvent.VK_3;
 
 
     /* File menu */

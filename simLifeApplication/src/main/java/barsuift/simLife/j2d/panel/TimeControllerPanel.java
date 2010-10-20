@@ -83,37 +83,40 @@ public class TimeControllerPanel extends JPanel {
     private JPanel createSpeedPanel(TimeController timeController) {
         JPanel speedPanel = new JPanel();
         speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));
-        SpeedAction action1 = new SpeedAction(timeController, "1", "1 cycle / sec", Mnemonics.SPEED_1, "1");
-        JRadioButton speed1 = new JRadioButton(action1);
+        SpeedAction actionNormalSpeed = new SpeedAction(timeController, "Normal", "Normal speed",
+                Mnemonics.SPEED_NORMAL, "1");
+        JRadioButton normalSpeed = new JRadioButton(actionNormalSpeed);
 
-        SpeedAction action10 = new SpeedAction(timeController, "10", "10 cycles / sec", Mnemonics.SPEED_10, "10");
-        JRadioButton speed10 = new JRadioButton(action10);
+        SpeedAction actionFastSpeed = new SpeedAction(timeController, "Fast", "Fast speed (about 10 times faster))",
+                Mnemonics.SPEED_FAST, "10");
+        JRadioButton fastSpeed = new JRadioButton(actionFastSpeed);
 
-        SpeedAction action100 = new SpeedAction(timeController, "100", "100 cycles / sec", Mnemonics.SPEED_100, "100");
-        JRadioButton speed100 = new JRadioButton(action100);
+        SpeedAction actionVeryFastSpeed = new SpeedAction(timeController, "Very fast",
+                "Very fast speed (about 100 times faster)", Mnemonics.SPEED_VERY_FAST, "100");
+        JRadioButton veryFastSpeed = new JRadioButton(actionVeryFastSpeed);
 
         int speed = timeController.getSpeed();
         if (speed == 1) {
-            speed1.setSelected(true);
+            normalSpeed.setSelected(true);
         } else {
             if (speed == 10) {
-                speed10.setSelected(true);
+                fastSpeed.setSelected(true);
             } else {
                 if (speed == 100) {
-                    speed100.setSelected(true);
+                    veryFastSpeed.setSelected(true);
                 }
             }
         }
 
         ButtonGroup speedSwitch = new ButtonGroup();
-        speedSwitch.add(speed1);
-        speedSwitch.add(speed10);
-        speedSwitch.add(speed100);
+        speedSwitch.add(normalSpeed);
+        speedSwitch.add(fastSpeed);
+        speedSwitch.add(veryFastSpeed);
 
         speedPanel.add(new JLabel("Speed"));
-        speedPanel.add(speed1);
-        speedPanel.add(speed10);
-        speedPanel.add(speed100);
+        speedPanel.add(normalSpeed);
+        speedPanel.add(fastSpeed);
+        speedPanel.add(veryFastSpeed);
         return speedPanel;
     }
 

@@ -24,6 +24,7 @@ public class SpeedAction extends AbstractAction {
     }
 
     @Override
+    // TODO 001. stop the app if running, set the new value, and restart the app if it was running
     public void actionPerformed(ActionEvent e) {
         String actionCmd = e.getActionCommand();
         int speed = Integer.valueOf(actionCmd).intValue();
