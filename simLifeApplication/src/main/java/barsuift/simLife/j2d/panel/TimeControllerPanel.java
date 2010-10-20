@@ -36,7 +36,6 @@ import barsuift.simLife.j2d.action.SpeedAction;
 import barsuift.simLife.j2d.button.OneStepButton;
 import barsuift.simLife.j2d.button.StartButton;
 import barsuift.simLife.j2d.button.StopButton;
-import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.time.TimeController;
 
@@ -84,13 +83,14 @@ public class TimeControllerPanel extends JPanel {
     private JPanel createSpeedPanel(TimeController timeController) {
         JPanel speedPanel = new JPanel();
         speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));
-        SpeedAction action1 = new SpeedAction(timeController, "1", "1 cycle / sec", Mnemonics.SPEED_1,
-                Accelerators.SPEED_1, "1");
+        SpeedAction action1 = new SpeedAction(timeController, "1", "1 cycle / sec", Mnemonics.SPEED_1, "1");
         JRadioButton speed1 = new JRadioButton(action1);
 
-        SpeedAction action10 = new SpeedAction(timeController, "10", "10 cycles / sec", Mnemonics.SPEED_10,
-                Accelerators.SPEED_10, "10");
+        SpeedAction action10 = new SpeedAction(timeController, "10", "10 cycles / sec", Mnemonics.SPEED_10, "10");
         JRadioButton speed10 = new JRadioButton(action10);
+
+        SpeedAction action100 = new SpeedAction(timeController, "100", "100 cycles / sec", Mnemonics.SPEED_100, "100");
+        JRadioButton speed100 = new JRadioButton(action100);
 
         int speed = timeController.getSpeed();
         if (speed == 1) {
@@ -98,16 +98,22 @@ public class TimeControllerPanel extends JPanel {
         } else {
             if (speed == 10) {
                 speed10.setSelected(true);
+            } else {
+                if (speed == 100) {
+                    speed100.setSelected(true);
+                }
             }
         }
 
         ButtonGroup speedSwitch = new ButtonGroup();
         speedSwitch.add(speed1);
         speedSwitch.add(speed10);
+        speedSwitch.add(speed100);
 
         speedPanel.add(new JLabel("Speed"));
         speedPanel.add(speed1);
         speedPanel.add(speed10);
+        speedPanel.add(speed100);
         return speedPanel;
     }
 
