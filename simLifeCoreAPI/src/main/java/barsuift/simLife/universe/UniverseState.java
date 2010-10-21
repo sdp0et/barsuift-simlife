@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import barsuift.simLife.State;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.j3d.universe.Universe3DState;
-import barsuift.simLife.time.SimLifeDateState;
+import barsuift.simLife.time.TimeControllerState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 
@@ -43,7 +43,7 @@ public class UniverseState implements State {
 
     private EnvironmentState environment;
 
-    private SimLifeDateState date;
+    private TimeControllerState timeControllerState;
 
     private Universe3DState univ3DState;
 
@@ -54,12 +54,12 @@ public class UniverseState implements State {
         this.trees = new HashSet<TreeState>();
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
-        this.date = new SimLifeDateState();
+        this.timeControllerState = new TimeControllerState();
         this.univ3DState = new Universe3DState();
     }
 
     public UniverseState(long creationMillis, boolean fpsShowing, Set<TreeState> trees,
-            Set<TreeLeafState> fallenLeaves, EnvironmentState environment, SimLifeDateState date,
+            Set<TreeLeafState> fallenLeaves, EnvironmentState environment, TimeControllerState timeControllerState,
             Universe3DState univ3DState) {
         super();
         this.creationMillis = creationMillis;
@@ -67,7 +67,7 @@ public class UniverseState implements State {
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
-        this.date = date;
+        this.timeControllerState = timeControllerState;
         this.univ3DState = univ3DState;
     }
 
@@ -111,12 +111,12 @@ public class UniverseState implements State {
         this.environment = environment;
     }
 
-    public SimLifeDateState getDate() {
-        return date;
+    public TimeControllerState getTimeControllerState() {
+        return timeControllerState;
     }
 
-    public void setDate(SimLifeDateState date) {
-        this.date = date;
+    public void setTimeControllerState(TimeControllerState timeControllerState) {
+        this.timeControllerState = timeControllerState;
     }
 
     public Universe3DState getUniv3DState() {
@@ -133,7 +133,7 @@ public class UniverseState implements State {
         int result = 1;
         result = prime * result + (int) (creationMillis ^ (creationMillis >>> 32));
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
-        result = prime * result + ((date == null) ? 0 : date.hashCode());
+        result = prime * result + ((timeControllerState == null) ? 0 : timeControllerState.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
         result = prime * result + (fpsShowing ? 1231 : 1237);
         result = prime * result + ((trees == null) ? 0 : trees.hashCode());
@@ -158,11 +158,11 @@ public class UniverseState implements State {
         } else
             if (!environment.equals(other.environment))
                 return false;
-        if (date == null) {
-            if (other.date != null)
+        if (timeControllerState == null) {
+            if (other.timeControllerState != null)
                 return false;
         } else
-            if (!date.equals(other.date))
+            if (!timeControllerState.equals(other.timeControllerState))
                 return false;
         if (fallenLeaves == null) {
             if (other.fallenLeaves != null)
@@ -190,8 +190,8 @@ public class UniverseState implements State {
     @Override
     public String toString() {
         return "UniverseState [creationMillis=" + creationMillis + ", fpsShowing=" + fpsShowing + ", trees=" + trees
-                + ", fallenLeaves=" + fallenLeaves + ", environment=" + environment + ", date=" + date
-                + ", univ3DState=" + univ3DState + "]";
+                + ", fallenLeaves=" + fallenLeaves + ", environment=" + environment + ", timeControllerState="
+                + timeControllerState + ", univ3DState=" + univ3DState + "]";
     }
 
 }

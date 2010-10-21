@@ -30,7 +30,8 @@ import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.EnvironmentStateFactory;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
-import barsuift.simLife.time.SimLifeDateState;
+import barsuift.simLife.time.TimeControllerState;
+import barsuift.simLife.time.TimeControllerStateFactory;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 import barsuift.simLife.tree.TreeStateFactory;
@@ -71,12 +72,13 @@ public class UniverseStateFactory {
 
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
-        SimLifeDateState date = new SimLifeDateState();
+        TimeControllerStateFactory timeControllerStateFactory = new TimeControllerStateFactory();
+        TimeControllerState timeControllerState = timeControllerStateFactory.createTimeControllerState();
 
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createRandomUniverse3DState();
 
-        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, date, univ3DState);
+        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, timeControllerState, univ3DState);
     }
 
     /**
@@ -95,11 +97,12 @@ public class UniverseStateFactory {
         Set<TreeLeafState> fallenLeaves = new HashSet<TreeLeafState>(0);
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
-        SimLifeDateState date = new SimLifeDateState();
+        TimeControllerStateFactory timeControllerStateFactory = new TimeControllerStateFactory();
+        TimeControllerState timeControllerState = timeControllerStateFactory.createTimeControllerState();
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createEmptyUniverse3DState();
 
-        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, date, univ3DState);
+        return new UniverseState(0, fpsShowing, trees, fallenLeaves, environment, timeControllerState, univ3DState);
     }
 
 }

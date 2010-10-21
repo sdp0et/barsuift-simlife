@@ -54,7 +54,7 @@ public class NewRandomAction extends AbstractAction {
     private void stopApp() {
         UniverseContext universeContext = application.getUniverseContext();
         if (universeContext != null) {
-            TimeController timeController = universeContext.getTimeController();
+            TimeController timeController = universeContext.getUniverse().getTimeController();
             if (timeController.isRunning()) {
                 timeController.stop();
             }

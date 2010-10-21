@@ -57,7 +57,7 @@ public class SaveAction extends AbstractAction implements Subscriber {
         boolean wasRunning = stopApp();
         saveOrSaveAs();
         if (wasRunning) {
-            TimeController timeController = application.getUniverseContext().getTimeController();
+            TimeController timeController = application.getUniverseContext().getUniverse().getTimeController();
             timeController.start();
         }
     }
@@ -86,7 +86,7 @@ public class SaveAction extends AbstractAction implements Subscriber {
      * @return true if the application was running, false otherwise
      */
     private boolean stopApp() {
-        TimeController timeController = application.getUniverseContext().getTimeController();
+        TimeController timeController = application.getUniverseContext().getUniverse().getTimeController();
         if (timeController.isRunning()) {
             timeController.stop();
             return true;

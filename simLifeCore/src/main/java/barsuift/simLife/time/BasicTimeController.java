@@ -39,9 +39,9 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
 
     private final TimeControllerState state;
 
-    private final Synchronizer synchronizer;
+    private final SimLifeDate date;
 
-    private final Universe universe;
+    private final Synchronizer synchronizer;
 
     private final ScheduledExecutorService scheduledThreadPool;
 
@@ -56,12 +56,17 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     public BasicTimeController(Universe universe, TimeControllerState state) throws InitException {
         super();
         this.state = state;
-        this.universe = universe;
+        this.date = new SimLifeDate(state.getDate());
         int poolSize = 1;
         this.scheduledThreadPool = Executors.newScheduledThreadPool(poolSize);
         this.timeMessenger = new TimeMessenger(universe);
         this.running = false;
         this.synchronizer = new Synchronizer(state.getSynchronizer(), this);
+    }
+
+    @Override
+    public SimLifeDate getDate() {
+        return date;
     }
 
     @Override
@@ -134,11 +139,6 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     }
 
     @Override
-    public Universe getUniverse() {
-        return universe;
-    }
-
-    @Override
     public TimeControllerState getState() {
         synchronize();
         return state;
@@ -146,6 +146,7 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
 
     @Override
     public void synchronize() {
+        date.synchronize();
         synchronizer.synchronize();
     }
 

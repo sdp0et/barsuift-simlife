@@ -24,14 +24,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
-import barsuift.simLife.time.TimeControllerState;
 
 @XmlRootElement
 public class UniverseContextState implements State {
 
     private UniverseState universeState;
-
-    private TimeControllerState timeControllerState;
 
     private SimLifeCanvas3DState canvasState;
 
@@ -42,18 +39,16 @@ public class UniverseContextState implements State {
     public UniverseContextState() {
         super();
         this.universeState = new UniverseState();
-        this.timeControllerState = new TimeControllerState();
         this.canvasState = new SimLifeCanvas3DState();
         this.axisShowing = true;
         // identity matrix
         this.viewerTransform3D = new double[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
     }
 
-    public UniverseContextState(UniverseState universeState, TimeControllerState timeControllerState,
-            SimLifeCanvas3DState canvasState, boolean axisShowing, double[] viewerTransform3D) {
+    public UniverseContextState(UniverseState universeState, SimLifeCanvas3DState canvasState, boolean axisShowing,
+            double[] viewerTransform3D) {
         super();
         this.universeState = universeState;
-        this.timeControllerState = timeControllerState;
         this.canvasState = canvasState;
         this.axisShowing = axisShowing;
         this.viewerTransform3D = viewerTransform3D;
@@ -91,14 +86,6 @@ public class UniverseContextState implements State {
         this.viewerTransform3D = viewerTransform3D;
     }
 
-    public TimeControllerState getTimeControllerState() {
-        return timeControllerState;
-    }
-
-    public void setTimeControllerState(TimeControllerState timeControllerState) {
-        this.timeControllerState = timeControllerState;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -106,7 +93,6 @@ public class UniverseContextState implements State {
         result = prime * result + (axisShowing ? 1231 : 1237);
         result = prime * result + ((canvasState == null) ? 0 : canvasState.hashCode());
         result = prime * result + ((universeState == null) ? 0 : universeState.hashCode());
-        result = prime * result + ((timeControllerState == null) ? 0 : timeControllerState.hashCode());
         result = prime * result + Arrays.hashCode(viewerTransform3D);
         return result;
     }
@@ -134,12 +120,6 @@ public class UniverseContextState implements State {
         } else
             if (!universeState.equals(other.universeState))
                 return false;
-        if (timeControllerState == null) {
-            if (other.timeControllerState != null)
-                return false;
-        } else
-            if (!timeControllerState.equals(other.timeControllerState))
-                return false;
         if (!Arrays.equals(viewerTransform3D, other.viewerTransform3D))
             return false;
         return true;
@@ -147,9 +127,8 @@ public class UniverseContextState implements State {
 
     @Override
     public String toString() {
-        return "UniverseContextState [universeState=" + universeState + ", timeControllerState="
-                + timeControllerState + ", canvasState=" + canvasState + ", axisShowing=" + axisShowing
-                + ", viewerTransform3D=" + Arrays.toString(viewerTransform3D) + "]";
+        return "UniverseContextState [universeState=" + universeState + ", canvasState=" + canvasState
+                + ", axisShowing=" + axisShowing + ", viewerTransform3D=" + Arrays.toString(viewerTransform3D) + "]";
     }
 
 

@@ -8,16 +8,28 @@ import barsuift.simLife.process.SynchronizerState;
 @XmlRootElement
 public class TimeControllerState implements State {
 
+    private SimLifeDateState date;
+
     private SynchronizerState synchronizer;
 
     public TimeControllerState() {
         super();
+        this.date = new SimLifeDateState();
         this.synchronizer = new SynchronizerState();
     }
 
-    public TimeControllerState(SynchronizerState synchronizer) {
+    public TimeControllerState(SimLifeDateState date, SynchronizerState synchronizer) {
         super();
+        this.date = date;
         this.synchronizer = synchronizer;
+    }
+
+    public SimLifeDateState getDate() {
+        return date;
+    }
+
+    public void setDate(SimLifeDateState date) {
+        this.date = date;
     }
 
     public SynchronizerState getSynchronizer() {
@@ -32,6 +44,7 @@ public class TimeControllerState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((date == null) ? 0 : date.hashCode());
         result = prime * result + ((synchronizer == null) ? 0 : synchronizer.hashCode());
         return result;
     }
@@ -45,6 +58,12 @@ public class TimeControllerState implements State {
         if (getClass() != obj.getClass())
             return false;
         TimeControllerState other = (TimeControllerState) obj;
+        if (date == null) {
+            if (other.date != null)
+                return false;
+        } else
+            if (!date.equals(other.date))
+                return false;
         if (synchronizer == null) {
             if (other.synchronizer != null)
                 return false;
@@ -56,7 +75,7 @@ public class TimeControllerState implements State {
 
     @Override
     public String toString() {
-        return "TimeControllerState [synchronizer=" + synchronizer + "]";
+        return "TimeControllerState [date=" + date + ", synchronizer=" + synchronizer + "]";
     }
 
 }

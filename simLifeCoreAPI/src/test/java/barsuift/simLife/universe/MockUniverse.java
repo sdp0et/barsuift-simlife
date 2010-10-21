@@ -27,7 +27,8 @@ import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.FpsCounter;
-import barsuift.simLife.time.SimLifeDate;
+import barsuift.simLife.time.MockTimeController;
+import barsuift.simLife.time.TimeController;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -46,7 +47,7 @@ public class MockUniverse implements Universe {
 
     private Environment environment = new MockEnvironment();
 
-    private SimLifeDate date = new SimLifeDate();
+    private TimeController timeController = new MockTimeController();
 
     private Universe3D universe3D = new MockUniverse3D();
 
@@ -57,6 +58,7 @@ public class MockUniverse implements Universe {
     private int synchronizedCalled;
 
     private boolean fpsShowing = false;
+
 
     @Override
     public List<LivingPart> getLivingParts() {
@@ -102,12 +104,12 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public SimLifeDate getDate() {
-        return date;
+    public TimeController getTimeController() {
+        return timeController;
     }
 
-    public void setDate(SimLifeDate date) {
-        this.date = date;
+    public void setTimecontroller(TimeController timeController) {
+        this.timeController = timeController;
     }
 
     @Override

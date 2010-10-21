@@ -20,15 +20,12 @@ package barsuift.simLife.universe;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
-import barsuift.simLife.time.TimeController;
 
 public interface UniverseContext extends Persistent<UniverseContextState> {
 
     public SimLifeCanvas3D getCanvas3D();
 
     public Universe getUniverse();
-
-    public TimeController getTimeController();
 
     public void setFpsShowing(boolean fpsShowing);
 

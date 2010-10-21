@@ -62,8 +62,8 @@ public final class CoreDataCreatorForTests {
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = UtilDataCreatorForTests.createRandomBoolean();
         double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
-        TimeControllerState timeControllerState = createRandomTimeControllerState();
-        return new UniverseContextState(universeState, timeControllerState, canvasState, axisShowing, viewerTransform);
+
+        return new UniverseContextState(universeState, canvasState, axisShowing, viewerTransform);
     }
 
     /**
@@ -81,18 +81,19 @@ public final class CoreDataCreatorForTests {
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = true;
         double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
-        TimeControllerState timeControllerState = createSpecificTimeControllerState();
-        return new UniverseContextState(universeState, timeControllerState, canvasState, axisShowing, viewerTransform);
+        return new UniverseContextState(universeState, canvasState, axisShowing, viewerTransform);
     }
 
     public static TimeControllerState createRandomTimeControllerState() {
+        SimLifeDateState date = UtilDataCreatorForTests.createRandomDateState();
         SynchronizerState synchronizer = createRandomSynchronizerState();
-        return new TimeControllerState(synchronizer);
+        return new TimeControllerState(date, synchronizer);
     }
 
     public static TimeControllerState createSpecificTimeControllerState() {
+        SimLifeDateState date = UtilDataCreatorForTests.createSpecificDateState();
         SynchronizerState synchronizer = createSpecificSynchronizerState();
-        return new TimeControllerState(synchronizer);
+        return new TimeControllerState(date, synchronizer);
     }
 
     public static SynchronizerState createRandomSynchronizerState() {
@@ -148,10 +149,10 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createRandomTreeLeafState());
         }
-        SimLifeDateState date = UtilDataCreatorForTests.createRandomDateState();
+        TimeControllerState timeControllerState = createRandomTimeControllerState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(), date,
-                univ3DState);
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(),
+                timeControllerState, univ3DState);
     }
 
     /**
@@ -162,8 +163,8 @@ public final class CoreDataCreatorForTests {
      * <li>nb trees=3 (made through the {@link #createSpecificTreeState()} method)</li>
      * <li>nb fallen leaves=20 (made through the {@link #createSpecificTreeLeafState()} method)</li>
      * </ul>
-     * The environment is made through the {@link #createSpecificEnvironmentState()} method. The date is made
-     * through the {@link UtilDataCreatorForTests#createSpecificDateState()} method.
+     * The environment is made through the {@link #createSpecificEnvironmentState()} method. The date is made through
+     * the {@link UtilDataCreatorForTests#createSpecificDateState()} method.
      * 
      * @return
      */
@@ -180,9 +181,9 @@ public final class CoreDataCreatorForTests {
             fallenLeaves.add(createSpecificTreeLeafState());
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
-        SimLifeDateState date = UtilDataCreatorForTests.createSpecificDateState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(), date,
-                univ3DState);
+        TimeControllerState timeControllerState = createSpecificTimeControllerState();
+        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(),
+                timeControllerState, univ3DState);
     }
 
     public static EnvironmentState createRandomEnvironmentState() {
