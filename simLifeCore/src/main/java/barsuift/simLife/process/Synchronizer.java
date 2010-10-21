@@ -87,7 +87,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
             runnables.add(instantiateClass(clazz, runState, barrier, timeController));
         }
 
-        standardThreadPool = Executors.newFixedThreadPool(nbStandardThread);
+        standardThreadPool = Executors.newFixedThreadPool(64);
     }
 
 
@@ -137,7 +137,9 @@ public class Synchronizer implements Persistent<SynchronizerState> {
          * WARNING : this algo is not optimum as it requires the synchronized keyword on the method. AND it requires to
          * stop the whole app and restart it again each time a process is added.
          * 
-         * -->Think of a parallel algo to allow multiple additions in the same run
+         * --> Think of a parallel algo to allow multiple additions in the same run
+         * 
+         * --> Use The BarrierTask (use ConcurrentMap to store the runnables to add)
          */
         // stop the app
         // create the new barrier
