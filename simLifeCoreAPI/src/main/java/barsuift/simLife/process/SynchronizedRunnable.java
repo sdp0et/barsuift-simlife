@@ -26,27 +26,27 @@ import barsuift.simLife.time.TimeController;
 
 /**
  * This class represents a task that can be synchronized with others.
- * <p>
- * Implementing classes must have a constructor with the following 3 parameters :
- * <ol>
- * <li>{@link SynchronizedRunnableState}</li>
- * <li>{@link CyclicBarrier}</li>
- * <li>{@link TimeController}</li>
- * </ol>
- * </p>
  */
 public interface SynchronizedRunnable extends Runnable, Persistent<SynchronizedRunnableState> {
+
+    /**
+     * Set the barrier to use for synchronization purpose.
+     * 
+     * @param barrier the cyclic barrier used to synchronize the runnable
+     * @throws IllegalStateException if the process is running
+     * @throws IllegalArgumentException if the given barrier is null
+     */
+    public void setBarrier(CyclicBarrier barrier);
 
     /**
      * Initialize the runnable with given parameters. This method must be called only once.
      * 
      * @param state the state to initialize from
-     * @param barrier the cyclic barrier used to synchronize the runnable
      * @param timeController the time controller to get objects to controlled by the runnable
      * @throws IllegalStateException if this method has already been called before
      * @throws IllegalArgumentException if any of the parameters is null
      */
-    public void init(SynchronizedRunnableState state, CyclicBarrier barrier, TimeController timeController);
+    public void init(SynchronizedRunnableState state, TimeController timeController);
 
     /**
      * Start the process.

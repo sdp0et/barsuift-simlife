@@ -114,7 +114,8 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         } catch (InvocationTargetException e) {
             throw new InitException("Unable to instantiate the constructor for " + clazz, e);
         }
-        result.init(runState, barrier, timeController);
+        result.init(runState, timeController);
+        result.setBarrier(barrier);
         return result;
     }
 
@@ -128,6 +129,16 @@ public class Synchronizer implements Persistent<SynchronizerState> {
 
     public boolean isRunning() {
         return running;
+    }
+
+    public void schedule(SynchronizedRunnable runnable) {
+        // stop the app
+        // create the new barrier
+        // update the barrier for everyone
+        // add the runnable to the list
+        runnables.add(runnable);
+        // restart the app
+
     }
 
     /**

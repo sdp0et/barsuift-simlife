@@ -18,8 +18,6 @@
  */
 package barsuift.simLife.process;
 
-import java.util.concurrent.CyclicBarrier;
-
 import barsuift.simLife.time.TimeController;
 
 
@@ -39,8 +37,8 @@ public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable {
     private int count;
 
     @Override
-    public void init(SynchronizedRunnableState state, CyclicBarrier barrier, TimeController timeController) {
-        super.init(state, barrier, timeController);
+    public void init(SynchronizedRunnableState state, TimeController timeController) {
+        super.init(state, timeController);
         UnfrequentRunnableState unfrequentState = (UnfrequentRunnableState) state;
         this.state = unfrequentState;
         this.delay = unfrequentState.getDelay();
