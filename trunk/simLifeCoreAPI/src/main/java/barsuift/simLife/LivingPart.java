@@ -18,7 +18,15 @@
  */
 package barsuift.simLife;
 
-// TODO 000. remove the spedTime method and replace it with Synchronized runnables to execute the needed tasks
+
+// TODO 001. move the time controller and synchronizer into the universe class
+// TODO 003. refactor the synchronizer to add a schedule method which add a new task to the list
+// TODO 005. move the calendar updater into the calendar class
+// TODO 007. create a Photosynthesis class which collect solar energy for the leaves of one given tree
+// TODO 009. remove the FakeJob class
+// TODO 011. create a TreeGrowth class which manage tree growth (create new leaves, create new branches, ...)
+// TODO 013. remove the LivingPart#spendTime method
+// TODO 015. remove the TimeMessenger class
 public interface LivingPart extends Persistent<State> {
 
     /**
