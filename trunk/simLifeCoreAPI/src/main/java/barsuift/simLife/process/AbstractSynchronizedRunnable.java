@@ -67,6 +67,13 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
         this.running = false;
     }
 
+    /**
+     * This method runs as long as the {@link #stop()} method is not called.
+     * <p>
+     * It calls the {@link #executeStep()} method and then waits for the other synchronized processes. If the
+     * {@code stop} method has not been called in the meantime, then the process continues its loop.
+     * </p>
+     */
     @Override
     public final void run() {
         if (barrier == null) {
@@ -90,6 +97,16 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
         running = false;
     }
 
+    /**
+     * Ask the current process to stop.
+     * <p>
+     * When the {@link #executeStep()} completes, the barrier is passed through and the process actually stops. The
+     * method {@link #isRunning()} will return false only when all these steps are completed, and not as soon as this
+     * method is executed. In particular, the process is still running as long as it has not passed through the barrier.
+     * It stays in its running mode as long as all other synchronized process have not completed their own
+     * {@code executeStep} method.
+     * </p>
+     */
     @Override
     public void stop() {
         if (running == false) {
