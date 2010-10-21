@@ -24,7 +24,7 @@ import barsuift.simLife.LivingPart;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.FpsCounter;
-import barsuift.simLife.time.SimLifeDate;
+import barsuift.simLife.time.TimeController;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -66,6 +66,6 @@ public interface Universe extends LivingPart {
 
     public boolean isFpsShowing();
 
-    public SimLifeDate getDate();
+    public TimeController getTimeController();
 
 }

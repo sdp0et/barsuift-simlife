@@ -24,13 +24,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import barsuift.simLife.InitException;
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.environment.BasicEnvironment;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
+import barsuift.simLife.time.BasicTimeController;
 import barsuift.simLife.time.FpsCounter;
-import barsuift.simLife.time.SimLifeDate;
+import barsuift.simLife.time.TimeController;
 import barsuift.simLife.tree.BasicTree;
 import barsuift.simLife.tree.BasicTreeLeaf;
 import barsuift.simLife.tree.Tree;
@@ -52,20 +54,20 @@ public class BasicUniverse implements Universe {
 
     private final Environment environment;
 
-    private final SimLifeDate date;
+    private final TimeController timeController;
 
     private final BasicUniverse3D universe3D;
 
     private final FpsCounter fpsCounter;
 
-    public BasicUniverse(UniverseState state) {
+    public BasicUniverse(UniverseState state) throws InitException {
         this.state = state;
         this.fpsCounter = new FpsCounter();
         this.fpsShowing = state.isFpsShowing();
         this.creationMillis = state.getCreationMillis();
         this.universe3D = new BasicUniverse3D();
         this.environment = new BasicEnvironment(state.getEnvironment());
-        this.date = new SimLifeDate(state.getDate());
+        this.timeController = new BasicTimeController(this, state.getTimeControllerState());
         this.trees = new ArrayList<Tree>();
         Set<TreeState> treeStates = state.getTrees();
         for (TreeState treeState : treeStates) {
@@ -143,8 +145,8 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public SimLifeDate getDate() {
-        return date;
+    public TimeController getTimeController() {
+        return timeController;
     }
 
     @Override
@@ -167,7 +169,7 @@ public class BasicUniverse implements Universe {
         }
         state.setFallenLeaves(fallenLeaveStates);
         environment.synchronize();
-        date.synchronize();
+        timeController.synchronize();
     }
 
     @Override

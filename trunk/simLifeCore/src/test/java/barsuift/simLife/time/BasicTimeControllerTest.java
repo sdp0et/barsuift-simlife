@@ -46,14 +46,14 @@ public class BasicTimeControllerTest extends TestCase {
 
     public void testStart() throws InterruptedException {
         assertFalse(controller.isRunning());
-        assertEquals(new SimLifeDate(), controller.getUniverse().getDate());
-        assertEquals(0, controller.getUniverse().getDate().getTimeInMillis());
+        assertEquals(new SimLifeDate(), controller.getDate());
+        assertEquals(0, controller.getDate().getTimeInMillis());
         int speed = controller.getSpeed();
         controller.start();
         // waiting 2 cycles
         Thread.sleep(2000 / speed + 10);
         assertTrue(mockUniverse.getNbTimeSpent() >= 2);
-        assertTrue(controller.getUniverse().getDate().getTimeInMillis() >= 200);
+        assertTrue(controller.getDate().getTimeInMillis() >= 200);
         assertTrue(controller.isRunning());
     }
 

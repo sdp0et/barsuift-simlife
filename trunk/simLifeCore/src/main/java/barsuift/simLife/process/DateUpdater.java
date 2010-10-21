@@ -13,7 +13,7 @@ public class DateUpdater extends AbstractSynchronizedRunnable implements Synchro
     @Override
     public void init(SynchronizedRunnableState state, CyclicBarrier barrier, TimeController timeController) {
         super.init(state, barrier, timeController);
-        this.date = timeController.getUniverse().getDate();
+        this.date = timeController.getDate();
     }
 
     @Override

@@ -59,7 +59,7 @@ public class TimeControllerPanel extends JPanel {
         setMaximumSize(new Dimension(220, 100));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        dateDisplay = new DateDisplay(controller.getUniverse().getDate());
+        dateDisplay = new DateDisplay(controller.getDate());
         dateDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(dateDisplay);
 

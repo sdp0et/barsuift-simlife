@@ -2,11 +2,11 @@ package barsuift.simLife.time;
 
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.message.BasicPublisher;
-import barsuift.simLife.universe.MockUniverse;
-import barsuift.simLife.universe.Universe;
 
 
 public class MockTimeController extends BasicPublisher implements TimeController {
+
+    private SimLifeDate date;
 
     private TimeControllerState state;
 
@@ -22,14 +22,13 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     private boolean running;
 
-    private Universe universe;
-
     public MockTimeController() {
         super(null);
         reset();
     }
 
     public void reset() {
+        date = new SimLifeDate();
         state = CoreDataCreatorForTests.createSpecificTimeControllerState();
         synchronizeCalled = 0;
         speed = 1;
@@ -37,7 +36,15 @@ public class MockTimeController extends BasicPublisher implements TimeController
         oneStepCalled = 0;
         stopCalled = 0;
         running = false;
-        universe = new MockUniverse();
+    }
+
+    @Override
+    public SimLifeDate getDate() {
+        return date;
+    }
+
+    public void setDate(SimLifeDate date) {
+        this.date = date;
     }
 
     @Override
@@ -102,15 +109,6 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     public void setRunning(boolean running) {
         this.running = running;
-    }
-
-    @Override
-    public Universe getUniverse() {
-        return universe;
-    }
-
-    public void setUniverse(Universe universe) {
-        this.universe = universe;
     }
 
 }
