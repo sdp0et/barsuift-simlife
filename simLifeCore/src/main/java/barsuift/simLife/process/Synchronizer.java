@@ -131,7 +131,14 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         return running;
     }
 
-    public void schedule(SynchronizedRunnable runnable) {
+    public synchronized void schedule(SynchronizedRunnable runnable) {
+        // FIXME not yet implemented
+        /*
+         * WARNING : this algo is not optimum as it requires the synchronized keyword on the method. AND it requires to
+         * stop the whole app and restart it again each time a process is added.
+         * 
+         * -->Think of a parallel algo to allow multiple additions in the same run
+         */
         // stop the app
         // create the new barrier
         // update the barrier for everyone
