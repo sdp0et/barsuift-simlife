@@ -38,22 +38,31 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
 
     private boolean running;
 
+    private boolean isStopAsked;
+
     @Override
-    public void init(SynchronizedRunnableState state, CyclicBarrier barrier, TimeController timeController) {
+    public void setBarrier(CyclicBarrier barrier) {
+        if (barrier == null) {
+            throw new IllegalArgumentException("barrier is null");
+        }
+        if (running) {
+            throw new IllegalStateException("Unable to change the barrier of a running process");
+        }
+        this.barrier = barrier;
+    }
+
+    @Override
+    public void init(SynchronizedRunnableState state, TimeController timeController) {
         if (this.state != null) {
             throw new IllegalStateException("The process has already been initialized");
         }
         if (state == null) {
             throw new IllegalArgumentException("no state given to initialize the process");
         }
-        if (barrier == null) {
-            throw new IllegalArgumentException("no barrier given to initialize the process");
-        }
         if (timeController == null) {
             throw new IllegalArgumentException("no time controller given to initialize the process");
         }
         this.state = state;
-        this.barrier = barrier;
         this.timeController = timeController;
         this.running = false;
     }
