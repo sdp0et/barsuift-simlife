@@ -35,7 +35,7 @@ public class SunStateFactory {
      * <li>zenithAngle = 50%</li>
      * </ul>
      */
-    // TODO 010. the sun position should depend on the current date
+    // TODO 030. the sun position should depend on the current date
     public SunState createSunState() {
         BigDecimal luminosity = PercentHelper.getDecimalValue(100);
         BigDecimal riseAngle = PercentHelper.getDecimalValue(25);

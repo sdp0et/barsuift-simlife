@@ -9,7 +9,7 @@ import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.time.TimeController;
 
-// TODO 005. once TimeMessenger is removed, the button and action classes should use directly the synchronizer
+// TODO 025. once TimeMessenger is removed, the button and action classes should use directly the synchronizer
 public class OneStepButton extends JButton implements Subscriber {
 
     private static final long serialVersionUID = 1547061708163353428L;
