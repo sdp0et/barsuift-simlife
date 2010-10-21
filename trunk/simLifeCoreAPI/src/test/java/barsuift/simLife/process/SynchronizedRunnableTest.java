@@ -9,8 +9,21 @@ import barsuift.simLife.time.TimeController;
 
 public class SynchronizedRunnableTest extends TestCase {
 
+    private MockSingleRunSynchronizedRunnable barrierReleaser;
+
+    private MockSynchronizedRunnable synchroRun;
+
+    private CyclicBarrier barrier;
+
     protected void setUp() throws Exception {
         super.setUp();
+        barrier = new CyclicBarrier(2);
+        TimeController timeController = new MockTimeController();
+        synchroRun = new MockSynchronizedRunnable();
+        synchroRun.init(new SynchronizedRunnableState(), timeController);
+        synchroRun.setBarrier(barrier);
+        barrierReleaser = new MockSingleRunSynchronizedRunnable();
+        barrierReleaser.setBarrier(barrier);
     }
 
     protected void tearDown() throws Exception {
@@ -18,12 +31,6 @@ public class SynchronizedRunnableTest extends TestCase {
     }
 
     public void testRun() throws InterruptedException {
-        // make sure the barrier will block after the first and even second run
-        CyclicBarrier barrier = new CyclicBarrier(3);
-        TimeController timeController = new MockTimeController();
-        MockSynchronizedRunnable synchroRun = new MockSynchronizedRunnable();
-        synchroRun.init(new SynchronizedRunnableState(), timeController);
-        synchroRun.setBarrier(barrier);
         (new Thread(synchroRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
@@ -40,23 +47,23 @@ public class SynchronizedRunnableTest extends TestCase {
 
         // test we can stop it now
         synchroRun.stop();
+        barrierReleaser.run();
+        // make sure the thread has time to stop
+        Thread.sleep(100);
         assertFalse(synchroRun.isRunning());
 
+        synchroRun.resetNbExecuted();
         // test we can start it again
         (new Thread(synchroRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
         assertTrue(synchroRun.isRunning());
-        assertEquals(2, synchroRun.getNbExecuted());
+        assertEquals(1, synchroRun.getNbExecuted());
     }
 
     public void testSetBarrier() throws Exception {
-        TimeController timeController = new MockTimeController();
-        MockSynchronizedRunnable synchroRun = new MockSynchronizedRunnable();
-        synchroRun.init(new SynchronizedRunnableState(), timeController);
-        synchroRun.setBarrier(new CyclicBarrier(3));
         // the process is not running, so it is still OK to change the barrier
-        synchroRun.setBarrier(new CyclicBarrier(3));
+        synchroRun.setBarrier(barrier);
 
         // start the process
         (new Thread(synchroRun)).start();
@@ -65,7 +72,7 @@ public class SynchronizedRunnableTest extends TestCase {
         assertTrue(synchroRun.isRunning());
         // now, the process is running, so we can't change the barrier
         try {
-            synchroRun.setBarrier(new CyclicBarrier(3));
+            synchroRun.setBarrier(barrier);
             fail("Should throw an IllegalStateException");
         } catch (IllegalStateException ise) {
             // OK expected exception
@@ -73,9 +80,12 @@ public class SynchronizedRunnableTest extends TestCase {
 
         // stop the process
         synchroRun.stop();
+        barrierReleaser.run();
+        // make sure the thread has time to stop
+        Thread.sleep(100);
         assertFalse(synchroRun.isRunning());
         // now, the process is stopped, so we can change again the barrier
-        synchroRun.setBarrier(new CyclicBarrier(3));
+        synchroRun.setBarrier(barrier);
 
         // test with null parameter
         try {

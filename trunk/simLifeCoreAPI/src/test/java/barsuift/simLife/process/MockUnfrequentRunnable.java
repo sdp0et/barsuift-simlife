@@ -10,7 +10,7 @@ public class MockUnfrequentRunnable extends UnfrequentRunnable {
     @Override
     public void init(SynchronizedRunnableState state, TimeController timeController) {
         super.init(state, timeController);
-        reset();
+        resetNbExecuted();
     }
 
     @Override
@@ -22,7 +22,7 @@ public class MockUnfrequentRunnable extends UnfrequentRunnable {
         return nbExecuted;
     }
 
-    public void reset() {
+    public void resetNbExecuted() {
         nbExecuted = 0;
     }
 

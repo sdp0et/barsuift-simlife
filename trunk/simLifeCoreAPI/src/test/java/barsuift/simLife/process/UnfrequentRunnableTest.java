@@ -13,12 +13,16 @@ public class UnfrequentRunnableTest extends TestCase {
 
     private UnfrequentRunnableState state;
 
+    private MockSingleRunSynchronizedRunnable mockSynchroRun;
+
     protected void setUp() throws Exception {
         super.setUp();
-        // make sure the barrier will block after all the run
-        CyclicBarrier barrier = new CyclicBarrier(4);
+        // make sure the barrier will block the process as long as the other mock process is not run
+        CyclicBarrier barrier = new CyclicBarrier(2);
         state = new UnfrequentRunnableState(MockUnfrequentRunnable.class, 3, 0);
         TimeController timeController = new MockTimeController();
+        mockSynchroRun = new MockSingleRunSynchronizedRunnable();
+        mockSynchroRun.setBarrier(barrier);
         unfrequentRun = new MockUnfrequentRunnable();
         unfrequentRun.init(state, timeController);
         unfrequentRun.setBarrier(barrier);
@@ -26,10 +30,9 @@ public class UnfrequentRunnableTest extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        unfrequentRun = null;
     }
 
-    public void testRun() throws InterruptedException {
+    public void testRun() throws Exception {
         (new Thread(unfrequentRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
@@ -47,6 +50,10 @@ public class UnfrequentRunnableTest extends TestCase {
 
         // test we can stop it now
         unfrequentRun.stop();
+        // release the barrier
+        mockSynchroRun.run();
+        // make sure the thread has time to stop
+        Thread.sleep(100);
         assertFalse(unfrequentRun.isRunning());
 
         // test we can start it again
@@ -58,6 +65,10 @@ public class UnfrequentRunnableTest extends TestCase {
         assertEquals(0, unfrequentRun.getNbExecuted());
 
         unfrequentRun.stop();
+        // release the barrier
+        mockSynchroRun.run();
+        // make sure the thread has time to stop
+        Thread.sleep(100);
         (new Thread(unfrequentRun)).start();
         Thread.sleep(100);
         assertTrue(unfrequentRun.isRunning());
