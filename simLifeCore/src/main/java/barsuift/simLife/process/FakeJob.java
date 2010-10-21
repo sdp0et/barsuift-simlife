@@ -5,7 +5,6 @@ import java.util.concurrent.CyclicBarrier;
 import barsuift.simLife.time.TimeController;
 
 
-// FIXME remove this class once another real one is used
 public class FakeJob extends UnfrequentRunnable {
 
     @Override
