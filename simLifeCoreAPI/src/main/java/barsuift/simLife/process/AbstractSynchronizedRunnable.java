@@ -75,8 +75,9 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
         if (running == true) {
             throw new IllegalStateException("The process is already running");
         }
+        isStopAsked = false;
         running = true;
-        while (running) {
+        while (!isStopAsked) {
             executeStep();
             try {
                 barrier.await();
@@ -86,6 +87,7 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
                 return;
             }
         }
+        running = false;
     }
 
     @Override
@@ -93,7 +95,7 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
         if (running == false) {
             throw new IllegalStateException("The process is not running");
         }
-        running = false;
+        isStopAsked = true;
     }
 
     /**

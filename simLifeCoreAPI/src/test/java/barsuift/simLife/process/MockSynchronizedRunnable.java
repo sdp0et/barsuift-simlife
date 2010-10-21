@@ -11,11 +11,16 @@ public class MockSynchronizedRunnable extends AbstractSynchronizedRunnable {
     @Override
     public void init(SynchronizedRunnableState state, TimeController timeController) {
         super.init(state, timeController);
-        reset();
+        resetNbExecuted();
     }
 
     @Override
     public void executeStep() {
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException e) {
+            // nothing to do
+        }
         nbExecuted++;
     }
 
@@ -23,7 +28,7 @@ public class MockSynchronizedRunnable extends AbstractSynchronizedRunnable {
         return nbExecuted;
     }
 
-    public void reset() {
+    public void resetNbExecuted() {
         nbExecuted = 0;
     }
 
