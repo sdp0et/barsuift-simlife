@@ -89,7 +89,6 @@ public class BasicTreeLeaf implements TreeLeaf {
      * Concretely, it means :
      * <ol>
      * <li>reduce the efficiency by 5 percent</li>
-     * <li>collect solar energy : add energy based on sun luminosity and leaf efficiency</li>
      * <li>if the leaf is too weak, then fall, else, use collected energy to improve the leaf efficiency</li>
      * </ol>
      * </p>
@@ -97,7 +96,6 @@ public class BasicTreeLeaf implements TreeLeaf {
     public void spendTime() {
         updateMask = 0;
         age();
-        collectSolarEnergy();
         if (isTooWeak()) {
             fall();
         } else {
