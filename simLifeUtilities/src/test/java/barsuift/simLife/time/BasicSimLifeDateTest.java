@@ -22,17 +22,17 @@ import junit.framework.TestCase;
 import barsuift.simLife.message.PublisherTestHelper;
 
 
-public class SimLifeDateTest extends TestCase {
+public class BasicSimLifeDateTest extends TestCase {
 
     public void testConstructorString() throws Exception {
-        SimLifeDate date = new SimLifeDate("19:59:999 Firday 04 Sprim 0003");
+        SimLifeDate date = new BasicSimLifeDate("19:59:999 Firday 04 Sprim 0003");
         assertEquals("19:59:999 Firday 04 Sprim 0003", date.formatDate());
         // = 999 + 2*86 400 000 + 1*21 600 000 + 3*1 200 000 + 19*60 000 + 59*1000
         // = 999 + 172 800 000 + 21 600 000 + 3 600 000 + 1 140 000 + 59 000
         // = 199 199 999
         assertEquals(199199999, date.getTimeInMillis());
 
-        date = new SimLifeDate("06:13:158 Winday 12 Tom 0001");
+        date = new BasicSimLifeDate("06:13:158 Winday 12 Tom 0001");
         assertEquals("06:13:158 Winday 12 Tom 0001", date.formatDate());
         // = 158 + 3*21 600 000 + 11*1 200 000 + 6*60 000 + 13*1000
         // = 158 + 64 800 000 + 13 200 000 + 360 000 + 13 000
@@ -41,24 +41,24 @@ public class SimLifeDateTest extends TestCase {
     }
 
     public void testConstructorCopy() {
-        SimLifeDate date = new SimLifeDate();
+        SimLifeDate date = new BasicSimLifeDate();
         date.setTimeInMillis(199199158);
-        SimLifeDate cal2 = new SimLifeDate(date);
+        SimLifeDate cal2 = new BasicSimLifeDate(date);
         assertEquals(date, cal2);
         assertEquals(199199158, cal2.getTimeInMillis());
     }
 
     public void testConstructorLong() {
-        SimLifeDate date = new SimLifeDate(199199000);
+        SimLifeDate date = new BasicSimLifeDate(199199000);
         assertEquals(199199000, date.getTimeInMillis());
         assertEquals("19:59:000 Firday 04 Sprim 0003", date.formatDate());
 
         // same with 1 additional second and 1 millisecond
-        date = new SimLifeDate(199200001);
+        date = new BasicSimLifeDate(199200001);
         assertEquals(199200001, date.getTimeInMillis());
         assertEquals("00:00:001 Thunsday 05 Sprim 0003", date.formatDate());
 
-        date = new SimLifeDate(78373000);
+        date = new BasicSimLifeDate(78373000);
         assertEquals(78373000, date.getTimeInMillis());
         assertEquals("06:13:000 Winday 12 Tom 0001", date.formatDate());
     }
@@ -66,10 +66,10 @@ public class SimLifeDateTest extends TestCase {
     public void testConstructorState() {
         SimLifeDateState dateState = new SimLifeDateState();
         dateState.setValue(199199000);
-        SimLifeDate date = new SimLifeDate(dateState);
+        SimLifeDate date = new BasicSimLifeDate(dateState);
         assertEquals(199199000, date.getTimeInMillis());
         try {
-            new SimLifeDate((SimLifeDateState) null);
+            new BasicSimLifeDate((SimLifeDateState) null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
@@ -77,25 +77,25 @@ public class SimLifeDateTest extends TestCase {
     }
 
     public void testAddWithBasicConstructor() {
-        internalTestAdd(new SimLifeDate());
+        internalTestAdd(new BasicSimLifeDate());
     }
 
     public void testAddWithLongConstructor() {
-        internalTestAdd(new SimLifeDate(0));
+        internalTestAdd(new BasicSimLifeDate(0));
     }
 
     public void testAddWithSimLifeDateConstructor() {
-        SimLifeDate date = new SimLifeDate();
-        internalTestAdd(new SimLifeDate(date));
+        SimLifeDate date = new BasicSimLifeDate();
+        internalTestAdd(new BasicSimLifeDate(date));
     }
 
     public void testAddWithStateConstructor() {
         SimLifeDateState dateState = new SimLifeDateState();
-        internalTestAdd(new SimLifeDate(dateState));
+        internalTestAdd(new BasicSimLifeDate(dateState));
     }
 
     public void testAddWithStringConstructor() throws Exception {
-        internalTestAdd(new SimLifeDate("00:00:000 Nosday 01 Wim 0001"));
+        internalTestAdd(new BasicSimLifeDate("00:00:000 Nosday 01 Wim 0001"));
     }
 
     public void internalTestAdd(SimLifeDate date) {
@@ -212,7 +212,7 @@ public class SimLifeDateTest extends TestCase {
     }
 
     public void testFormatDate() throws Exception {
-        SimLifeDate date = new SimLifeDate();
+        SimLifeDate date = new BasicSimLifeDate();
         assertEquals("00:00:000 Nosday 01 Wim 0001", date.formatDate());
 
         date.setMillisOfSecond(999);
@@ -223,7 +223,7 @@ public class SimLifeDateTest extends TestCase {
         date.setDayOfWeek(Day.FIRDAY);
         assertEquals("19:59:999 Firday 04 Wim 0001", date.formatDate());
 
-        date = new SimLifeDate();
+        date = new BasicSimLifeDate();
         date.setDayOfMonth(15);
         assertEquals("00:00:000 Stooday 15 Wim 0001", date.formatDate());
 
@@ -242,13 +242,13 @@ public class SimLifeDateTest extends TestCase {
         date.setYear(123456789);
         assertEquals("00:00:000 Stooday 15 Tom 123456789", date.formatDate());
 
-        date = new SimLifeDate();
+        date = new BasicSimLifeDate();
         date.setDayOfWeek(Day.WINDAY);
         assertEquals("00:00:000 Winday 06 Wim 0001", date.formatDate());
     }
 
     public void testDayOfMonth() {
-        SimLifeDate date = new SimLifeDate();
+        SimLifeDate date = new BasicSimLifeDate();
         date.setDayOfMonth(1);
         assertEquals(1, date.getDayOfMonth());
         date.setDayOfMonth(2);
@@ -276,7 +276,7 @@ public class SimLifeDateTest extends TestCase {
     }
 
     public void testSetTime() throws Exception {
-        SimLifeDate date = new SimLifeDate();
+        SimLifeDate date = new BasicSimLifeDate();
         date.setTime("19:59:000 Firday 04 Sprim 0003");
         assertEquals("19:59:000 Firday 04 Sprim 0003", date.formatDate());
         // = 2*86 400 000 + 1*21 600 000 + 3*1 200 000 + 19*60 000 + 59*1000
@@ -294,7 +294,7 @@ public class SimLifeDateTest extends TestCase {
 
     public void testGetState() {
         SimLifeDateState state = new SimLifeDateState(123);
-        SimLifeDate date = new SimLifeDate(state);
+        SimLifeDate date = new BasicSimLifeDate(state);
         assertEquals(state, date.getState());
         assertSame(state, date.getState());
         assertEquals(123, date.getState().getValue());
@@ -305,7 +305,7 @@ public class SimLifeDateTest extends TestCase {
     }
 
     public void testPublisherAdd() {
-        SimLifeDate date = new SimLifeDate();
+        SimLifeDate date = new BasicSimLifeDate();
         PublisherTestHelper publisherHelper = new PublisherTestHelper();
         publisherHelper.addSubscriber(date);
 
@@ -338,7 +338,7 @@ public class SimLifeDateTest extends TestCase {
     }
 
     public void testPublisherSet() {
-        SimLifeDate date = new SimLifeDate();
+        SimLifeDate date = new BasicSimLifeDate();
         PublisherTestHelper publisherHelper = new PublisherTestHelper();
         publisherHelper.addSubscriber(date);
 
