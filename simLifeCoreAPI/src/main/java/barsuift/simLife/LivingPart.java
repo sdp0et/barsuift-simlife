@@ -18,7 +18,6 @@
  */
 package barsuift.simLife;
 
-// TODO 007. create a Photosynthesis class which collect solar energy for the leaves of one given tree
 // TODO 011. create a TreeGrowth class which manage tree growth (create new leaves, create new branches, ...)
 // TODO 013. remove the LivingPart#spendTime method
 // TODO 015. remove the TimeMessenger class

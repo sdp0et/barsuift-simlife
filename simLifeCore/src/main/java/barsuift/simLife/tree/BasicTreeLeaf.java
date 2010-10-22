@@ -114,12 +114,7 @@ public class BasicTreeLeaf implements TreeLeaf {
         updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
     }
 
-    /**
-     * Compute the new leaf energy. It is the old energy + the collected energy.
-     * <code>collectedEnergy= sunLuminosity * leafEfficiency * energyDensity * leaf Area</code>
-     * 
-     * @return the collected energy
-     */
+    @Override
     public void collectSolarEnergy() {
         BigDecimal lightRate = universe.getEnvironment().getSun().getLuminosity();
         BigDecimal solarEnergyRateCollected = efficiency.multiply(lightRate);

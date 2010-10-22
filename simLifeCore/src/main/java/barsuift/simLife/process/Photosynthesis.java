@@ -1,6 +1,11 @@
 package barsuift.simLife.process;
 
+import java.util.List;
+
 import barsuift.simLife.tree.Tree;
+import barsuift.simLife.tree.TreeBranch;
+import barsuift.simLife.tree.TreeBranchPart;
+import barsuift.simLife.tree.TreeLeaf;
 
 
 public class Photosynthesis extends UnfrequentRunnable {
@@ -14,8 +19,15 @@ public class Photosynthesis extends UnfrequentRunnable {
 
     @Override
     public void executeUnfrequentStep() {
-        System.out.println("Execute Photosynthesis on tree " + tree);
-        // TODO implement photosynthesis
+        List<TreeBranch> branches = tree.getBranches();
+        for (TreeBranch branch : branches) {
+            List<TreeBranchPart> parts = branch.getParts();
+            for (TreeBranchPart part : parts) {
+                List<TreeLeaf> leaves = part.getLeaves();
+                for (TreeLeaf leaf : leaves) {
+                    leaf.collectSolarEnergy();
+                }
+            }
+        }
     }
-
 }
