@@ -1,8 +1,5 @@
 package barsuift.simLife.process;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
@@ -12,23 +9,14 @@ public class SynchronizerState implements State {
 
     private int speed;
 
-    private List<SynchronizedRunnableState> synchroRunnables;
-
-    private List<UnfrequentRunnableState> unfrequentRunnables;
-
     public SynchronizerState() {
         super();
         this.speed = 1;
-        this.synchroRunnables = new ArrayList<SynchronizedRunnableState>();
-        this.unfrequentRunnables = new ArrayList<UnfrequentRunnableState>();
     }
 
-    public SynchronizerState(int speed, List<SynchronizedRunnableState> synchroRunnables,
-            List<UnfrequentRunnableState> unfrequentRunnables) {
+    public SynchronizerState(int speed) {
         super();
         this.speed = speed;
-        this.synchroRunnables = synchroRunnables;
-        this.unfrequentRunnables = unfrequentRunnables;
     }
 
     public int getSpeed() {
@@ -39,28 +27,10 @@ public class SynchronizerState implements State {
         this.speed = speed;
     }
 
-    public List<SynchronizedRunnableState> getSynchronizedRunnables() {
-        return synchroRunnables;
-    }
-
-    public void setSynchronizedRunnables(List<SynchronizedRunnableState> synchroRunnables) {
-        this.synchroRunnables = synchroRunnables;
-    }
-
-    public List<UnfrequentRunnableState> getUnfrequentRunnables() {
-        return unfrequentRunnables;
-    }
-
-    public void setUnfrequentRunnables(List<UnfrequentRunnableState> unfrequentRunnables) {
-        this.unfrequentRunnables = unfrequentRunnables;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((synchroRunnables == null) ? 0 : synchroRunnables.hashCode());
-        result = prime * result + ((unfrequentRunnables == null) ? 0 : unfrequentRunnables.hashCode());
         result = prime * result + speed;
         return result;
     }
@@ -74,18 +44,6 @@ public class SynchronizerState implements State {
         if (getClass() != obj.getClass())
             return false;
         SynchronizerState other = (SynchronizerState) obj;
-        if (synchroRunnables == null) {
-            if (other.synchroRunnables != null)
-                return false;
-        } else
-            if (!synchroRunnables.equals(other.synchroRunnables))
-                return false;
-        if (unfrequentRunnables == null) {
-            if (other.unfrequentRunnables != null)
-                return false;
-        } else
-            if (!unfrequentRunnables.equals(other.unfrequentRunnables))
-                return false;
         if (speed != other.speed)
             return false;
         return true;
@@ -93,8 +51,7 @@ public class SynchronizerState implements State {
 
     @Override
     public String toString() {
-        return "SynchronizerState [speed=" + speed + ", synchroRunnables=" + synchroRunnables
-                + ", unfrequentRunnables=" + unfrequentRunnables + "]";
+        return "SynchronizerState [speed=" + speed + "]";
     }
 
 }

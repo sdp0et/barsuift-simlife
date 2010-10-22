@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.time.TimeController;
+import barsuift.simLife.Persistent;
 
 
 /**
@@ -28,7 +28,8 @@ import barsuift.simLife.time.TimeController;
  * If <code>delay=n</code>, the task is executed exactly on the n<sup>th</sup> call, and n call after that, and so on.
  * </p>
  */
-public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable {
+public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable implements
+        Persistent<UnfrequentRunnableState> {
 
     private UnfrequentRunnableState state;
 
@@ -36,13 +37,11 @@ public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable {
 
     private int count;
 
-    @Override
-    public void init(SynchronizedRunnableState state, TimeController timeController) {
-        super.init(state, timeController);
-        UnfrequentRunnableState unfrequentState = (UnfrequentRunnableState) state;
-        this.state = unfrequentState;
-        this.delay = unfrequentState.getDelay();
-        this.count = unfrequentState.getCount();
+    public UnfrequentRunnable(UnfrequentRunnableState state) {
+        super();
+        this.state = state;
+        this.delay = state.getDelay();
+        this.count = state.getCount();
     }
 
     @Override

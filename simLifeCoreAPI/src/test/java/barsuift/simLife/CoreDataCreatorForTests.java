@@ -36,11 +36,9 @@ import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
-import barsuift.simLife.process.MockSynchronizedRunnable;
-import barsuift.simLife.process.MockUnfrequentRunnable;
-import barsuift.simLife.process.SynchronizedRunnableState;
 import barsuift.simLife.process.SynchronizerState;
 import barsuift.simLife.process.UnfrequentRunnableState;
+import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.time.SimLifeDateState;
 import barsuift.simLife.time.TimeControllerState;
 import barsuift.simLife.tree.TreeBranchPartState;
@@ -84,57 +82,42 @@ public final class CoreDataCreatorForTests {
         return new UniverseContextState(universeState, canvasState, axisShowing, viewerTransform);
     }
 
-    public static TimeControllerState createRandomTimeControllerState() {
+    public static DateHandlerState createRandomDateHandlerState() {
         SimLifeDateState date = UtilDataCreatorForTests.createRandomDateState();
+        return new DateHandlerState(date);
+    }
+
+    public static DateHandlerState createSpecificDateHandlerState() {
+        SimLifeDateState date = UtilDataCreatorForTests.createSpecificDateState();
+        return new DateHandlerState(date);
+    }
+
+    public static TimeControllerState createRandomTimeControllerState() {
+        DateHandlerState dateHandler = createRandomDateHandlerState();
         SynchronizerState synchronizer = createRandomSynchronizerState();
-        return new TimeControllerState(date, synchronizer);
+        return new TimeControllerState(dateHandler, synchronizer);
     }
 
     public static TimeControllerState createSpecificTimeControllerState() {
-        SimLifeDateState date = UtilDataCreatorForTests.createSpecificDateState();
+        DateHandlerState dateHandler = createSpecificDateHandlerState();
         SynchronizerState synchronizer = createSpecificSynchronizerState();
-        return new TimeControllerState(date, synchronizer);
+        return new TimeControllerState(dateHandler, synchronizer);
     }
 
     public static SynchronizerState createRandomSynchronizerState() {
-        List<SynchronizedRunnableState> synchroRunnables = new ArrayList<SynchronizedRunnableState>();
-        SynchronizedRunnableState synchroRunnableState = createRandomSynchronizedRunnableState();
-        synchroRunnables.add(synchroRunnableState);
-
-        List<UnfrequentRunnableState> unfrequentRunnables = new ArrayList<UnfrequentRunnableState>();
-        UnfrequentRunnableState unfrequentRunnbaleState = createRandomUnfrequentRunnableState();
-        unfrequentRunnables.add(unfrequentRunnbaleState);
-
-        return new SynchronizerState(Randomizer.randomBetween(1, 20), synchroRunnables, unfrequentRunnables);
+        return new SynchronizerState(Randomizer.randomBetween(1, 20));
     }
 
     public static SynchronizerState createSpecificSynchronizerState() {
-        List<SynchronizedRunnableState> synchroRunnables = new ArrayList<SynchronizedRunnableState>();
-        SynchronizedRunnableState synchroRunnableState = createSpecificSynchronizedRunnableState();
-        synchroRunnables.add(synchroRunnableState);
-
-        List<UnfrequentRunnableState> unfrequentRunnables = new ArrayList<UnfrequentRunnableState>();
-        UnfrequentRunnableState unfrequentRunnbaleState = createSpecificUnfrequentRunnableState();
-        unfrequentRunnables.add(unfrequentRunnbaleState);
-
-        return new SynchronizerState(1, synchroRunnables, unfrequentRunnables);
-    }
-
-    public static SynchronizedRunnableState createRandomSynchronizedRunnableState() {
-        return new SynchronizedRunnableState(MockSynchronizedRunnable.class);
-    }
-
-    public static SynchronizedRunnableState createSpecificSynchronizedRunnableState() {
-        return new SynchronizedRunnableState(MockSynchronizedRunnable.class);
+        return new SynchronizerState(1);
     }
 
     public static UnfrequentRunnableState createRandomUnfrequentRunnableState() {
-        return new UnfrequentRunnableState(MockUnfrequentRunnable.class, Randomizer.randomBetween(3, 10),
-                Randomizer.randomBetween(0, 2));
+        return new UnfrequentRunnableState(Randomizer.randomBetween(3, 10), Randomizer.randomBetween(0, 2));
     }
 
     public static UnfrequentRunnableState createSpecificUnfrequentRunnableState() {
-        return new UnfrequentRunnableState(MockUnfrequentRunnable.class, 5, 2);
+        return new UnfrequentRunnableState(5, 2);
     }
 
     public static UniverseState createRandomUniverseState() {

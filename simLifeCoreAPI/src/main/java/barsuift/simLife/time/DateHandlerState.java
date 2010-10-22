@@ -16,40 +16,40 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.time;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 
 @XmlRootElement
-public class SynchronizedRunnableState implements State {
+public class DateHandlerState implements State {
 
-    private Class<? extends SynchronizedRunnable> clazz;
+    private SimLifeDateState date;
 
-    public SynchronizedRunnableState() {
+    public DateHandlerState() {
         super();
-        clazz = null;
+        this.date = new SimLifeDateState();
     }
 
-    public SynchronizedRunnableState(Class<? extends SynchronizedRunnable> clazz) {
+    public DateHandlerState(SimLifeDateState date) {
         super();
-        this.clazz = clazz;
+        this.date = date;
     }
 
-    public Class<? extends SynchronizedRunnable> getClazz() {
-        return clazz;
+    public SimLifeDateState getDate() {
+        return date;
     }
 
-    public void setClazz(Class<? extends SynchronizedRunnable> clazz) {
-        this.clazz = clazz;
+    public void setDate(SimLifeDateState date) {
+        this.date = date;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
+        result = prime * result + ((date == null) ? 0 : date.hashCode());
         return result;
     }
 
@@ -61,19 +61,18 @@ public class SynchronizedRunnableState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SynchronizedRunnableState other = (SynchronizedRunnableState) obj;
-        if (clazz == null) {
-            if (other.clazz != null)
+        DateHandlerState other = (DateHandlerState) obj;
+        if (date == null) {
+            if (other.date != null)
                 return false;
         } else
-            if (!clazz.equals(other.clazz))
+            if (!date.equals(other.date))
                 return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "SynchronizedRunnableState [class=" + clazz + "]";
+        return "DateHandlerState [date=" + date + "]";
     }
-
 }

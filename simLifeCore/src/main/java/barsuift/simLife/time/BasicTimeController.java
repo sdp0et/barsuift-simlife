@@ -39,7 +39,7 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
 
     private final TimeControllerState state;
 
-    private final SimLifeDate date;
+    private final DateHandler dateHandler;
 
     private final Synchronizer synchronizer;
 
@@ -56,20 +56,16 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     public BasicTimeController(Universe universe, TimeControllerState state) throws InitException {
         super();
         this.state = state;
-        // pour l'instant la date DOIT etre initialisée avant le synchronizer
-        // une fois que la méthode schedule existera dans le synchronizer,
-        // il faudra que le synchroiznizer soit instancié avant la date
-        this.date = new SimLifeDate(state.getDate());
-        int poolSize = 1;
-        this.scheduledThreadPool = Executors.newScheduledThreadPool(poolSize);
+        this.scheduledThreadPool = Executors.newScheduledThreadPool(1);
         this.timeMessenger = new TimeMessenger(universe);
         this.running = false;
         this.synchronizer = new Synchronizer(state.getSynchronizer(), this);
+        this.dateHandler = new DateHandler(state.getDateHandler(), synchronizer);
     }
 
     @Override
     public SimLifeDate getDate() {
-        return date;
+        return dateHandler.getDate();
     }
 
     @Override
@@ -149,7 +145,7 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
 
     @Override
     public void synchronize() {
-        date.synchronize();
+        dateHandler.synchronize();
         synchronizer.synchronize();
     }
 

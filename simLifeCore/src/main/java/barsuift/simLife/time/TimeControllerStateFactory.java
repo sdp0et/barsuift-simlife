@@ -25,10 +25,10 @@ import barsuift.simLife.process.SynchronizerStateFactory;
 public class TimeControllerStateFactory {
 
     public TimeControllerState createTimeControllerState() {
-        SimLifeDateState date = new SimLifeDateState();
+        DateHandlerState dateHandler = new DateHandlerState();
         SynchronizerStateFactory synchronizerFactory = new SynchronizerStateFactory();
         SynchronizerState synchronizer = synchronizerFactory.createSynchronizerState();
-        return new TimeControllerState(date, synchronizer);
+        return new TimeControllerState(dateHandler, synchronizer);
     }
 
 }

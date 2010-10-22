@@ -20,8 +20,10 @@ package barsuift.simLife.process;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
+
 @XmlRootElement
-public class UnfrequentRunnableState extends SynchronizedRunnableState {
+public class UnfrequentRunnableState implements State {
 
     private int delay;
 
@@ -33,8 +35,8 @@ public class UnfrequentRunnableState extends SynchronizedRunnableState {
         count = 0;
     }
 
-    public UnfrequentRunnableState(Class<? extends SynchronizedRunnable> clazz, int delay, int count) {
-        super(clazz);
+    public UnfrequentRunnableState(int delay, int count) {
+        super();
         this.delay = delay;
         this.count = count;
     }
@@ -58,7 +60,7 @@ public class UnfrequentRunnableState extends SynchronizedRunnableState {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = super.hashCode();
+        int result = 1;
         result = prime * result + count;
         result = prime * result + delay;
         return result;
@@ -68,7 +70,7 @@ public class UnfrequentRunnableState extends SynchronizedRunnableState {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (!super.equals(obj))
+        if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
@@ -82,7 +84,7 @@ public class UnfrequentRunnableState extends SynchronizedRunnableState {
 
     @Override
     public String toString() {
-        return "UnfrequentRunnableState [delay=" + delay + ", count=" + count + ", super=" + super.toString() + "]";
+        return "UnfrequentRunnableState [delay=" + delay + ", count=" + count + "]";
     }
 
 }
