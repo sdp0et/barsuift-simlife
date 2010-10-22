@@ -21,9 +21,9 @@ public class SynchronizedRunnableTest extends TestCase {
         TimeController timeController = new MockTimeController();
         synchroRun = new MockSynchronizedRunnable();
         synchroRun.init(new SynchronizedRunnableState(), timeController);
-        synchroRun.setBarrier(barrier);
+        synchroRun.changeBarrier(barrier);
         barrierReleaser = new MockSingleRunSynchronizedRunnable();
-        barrierReleaser.setBarrier(barrier);
+        barrierReleaser.changeBarrier(barrier);
     }
 
     protected void tearDown() throws Exception {
@@ -63,20 +63,15 @@ public class SynchronizedRunnableTest extends TestCase {
 
     public void testSetBarrier() throws Exception {
         // the process is not running, so it is still OK to change the barrier
-        synchroRun.setBarrier(barrier);
+        synchroRun.changeBarrier(barrier);
 
         // start the process
         (new Thread(synchroRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
         assertTrue(synchroRun.isRunning());
-        // now, the process is running, so we can't change the barrier
-        try {
-            synchroRun.setBarrier(barrier);
-            fail("Should throw an IllegalStateException");
-        } catch (IllegalStateException ise) {
-            // OK expected exception
-        }
+        // now, the process is running, but we can still change the barrier
+        synchroRun.changeBarrier(barrier);
 
         // stop the process
         synchroRun.stop();
@@ -85,11 +80,11 @@ public class SynchronizedRunnableTest extends TestCase {
         Thread.sleep(100);
         assertFalse(synchroRun.isRunning());
         // now, the process is stopped, so we can change again the barrier
-        synchroRun.setBarrier(barrier);
+        synchroRun.changeBarrier(barrier);
 
         // test with null parameter
         try {
-            synchroRun.setBarrier(null);
+            synchroRun.changeBarrier(null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException iae) {
             // OK expected exception

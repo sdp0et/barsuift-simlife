@@ -22,6 +22,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,6 +42,11 @@ import barsuift.simLife.time.TimeController;
  */
 public class Synchronizer implements Persistent<SynchronizerState> {
 
+    /**
+     * Length of a cycle, used to schedule the temporizer, and to know how much to add to the date at each iteration.
+     */
+    public static final int CYCLE_LENGTH_MS = 100;
+
     private final SynchronizerState state;
 
     private boolean running;
@@ -52,14 +58,20 @@ public class Synchronizer implements Persistent<SynchronizerState> {
 
     private final ScheduledExecutorService scheduledThreadPool;
 
-    private final Runnable temporizer;
+    private final Temporizer temporizer;
 
     private ScheduledFuture<?> temporizerFuture;
 
 
+    private CyclicBarrier barrier;
+
     private final ExecutorService standardThreadPool;
 
     private final List<SynchronizedRunnable> runnables = new ArrayList<SynchronizedRunnable>();
+
+
+    private final ConcurrentLinkedQueue<SynchronizedRunnable> newTasksToSchedule = new ConcurrentLinkedQueue<SynchronizedRunnable>();
+
 
     public Synchronizer(SynchronizerState state, TimeController timeController) throws InitException {
         this.state = state;
@@ -75,9 +87,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         int nbStandardThread = stateRunnables.size();
         int totalNbThread = nbScheduledThread + nbStandardThread;
 
-        BarrierTask barrierTask = new BarrierTask();
-
-        CyclicBarrier barrier = new CyclicBarrier(totalNbThread, barrierTask);
+        barrier = new CyclicBarrier(totalNbThread, new BarrierTask());
 
         temporizer = new Temporizer(barrier);
         scheduledThreadPool = Executors.newScheduledThreadPool(nbScheduledThread);
@@ -115,7 +125,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
             throw new InitException("Unable to instantiate the constructor for " + clazz, e);
         }
         result.init(runState, timeController);
-        result.setBarrier(barrier);
+        result.changeBarrier(barrier);
         return result;
     }
 
@@ -131,23 +141,8 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         return running;
     }
 
-    public synchronized void schedule(SynchronizedRunnable runnable) {
-        // FIXME not yet implemented
-        /*
-         * WARNING : this algo is not optimum as it requires the synchronized keyword on the method. AND it requires to
-         * stop the whole app and restart it again each time a process is added.
-         * 
-         * --> Think of a parallel algo to allow multiple additions in the same run
-         * 
-         * --> Use The BarrierTask (use ConcurrentMap to store the runnables to add)
-         */
-        // stop the app
-        // create the new barrier
-        // update the barrier for everyone
-        // add the runnable to the list
-        runnables.add(runnable);
-        // restart the app
-
+    public void schedule(SynchronizedRunnable runnable) {
+        newTasksToSchedule.add(runnable);
     }
 
     /**
@@ -180,13 +175,12 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         running = true;
 
         // wakeup period (speed = cycles / second)
-        long period = 100 / speed;
+        long period = CYCLE_LENGTH_MS / speed;
         temporizerFuture = scheduledThreadPool.scheduleWithFixedDelay(temporizer, 0, period, TimeUnit.MILLISECONDS);
 
         for (Runnable runnable : runnables) {
             standardThreadPool.submit(runnable);
         }
-
     }
 
     /**
@@ -244,6 +238,26 @@ public class Synchronizer implements Persistent<SynchronizerState> {
 
         @Override
         public synchronized void run() {
+            int nbNewTasks = newTasksToSchedule.size();
+            // if there are new tasks to schedule
+            if (nbNewTasks > 0) {
+                // 1. create the new barrier
+                barrier = new CyclicBarrier(barrier.getParties() + nbNewTasks, new BarrierTask());
+                // 2. add the new tasks to the list of executed tasks
+                runnables.addAll(newTasksToSchedule);
+                // 3. update the barrier for everyone
+                for (SynchronizedRunnable runnable : runnables) {
+                    runnable.changeBarrier(barrier);
+                }
+                // 4. also change the temporizer barrier
+                temporizer.changeBarrier(barrier);
+                // if not asked to stop, then start the new tasks. Else, no need to start the new tasks.
+                if (!isStopAsked) {
+                    while (!newTasksToSchedule.isEmpty()) {
+                        standardThreadPool.submit(newTasksToSchedule.poll());
+                    }
+                }
+            }
             if (isStopAsked) {
                 internalStop();
             }

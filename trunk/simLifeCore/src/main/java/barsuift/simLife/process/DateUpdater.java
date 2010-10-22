@@ -16,7 +16,7 @@ public class DateUpdater extends AbstractSynchronizedRunnable implements Synchro
 
     @Override
     public void executeStep() {
-        date.addMillis(100);
+        date.addMillis(Synchronizer.CYCLE_LENGTH_MS);
     }
 
 }

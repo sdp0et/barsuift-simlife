@@ -50,7 +50,7 @@ public class MockSingleRunSynchronizedRunnable implements SynchronizedRunnable {
     }
 
     @Override
-    public void setBarrier(CyclicBarrier barrier) {
+    public void changeBarrier(CyclicBarrier barrier) {
         this.barrier = barrier;
     }
 

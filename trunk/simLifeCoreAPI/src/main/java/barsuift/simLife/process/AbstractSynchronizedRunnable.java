@@ -34,6 +34,8 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
 
     private CyclicBarrier barrier;
 
+    private CyclicBarrier nextBarrier;
+
     private TimeController timeController;
 
     private boolean running;
@@ -41,14 +43,16 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
     private boolean isStopAsked;
 
     @Override
-    public void setBarrier(CyclicBarrier barrier) {
+    public void changeBarrier(CyclicBarrier barrier) {
         if (barrier == null) {
             throw new IllegalArgumentException("barrier is null");
         }
-        if (running) {
-            throw new IllegalStateException("Unable to change the barrier of a running process");
+        if (this.barrier == null) {
+            // it is the first time the barrier is set
+            this.barrier = barrier;
+        } else {
+            this.nextBarrier = barrier;
         }
-        this.barrier = barrier;
     }
 
     @Override
@@ -73,6 +77,11 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
      * It calls the {@link #executeStep()} method and then waits for the other synchronized processes. If the
      * {@code stop} method has not been called in the meantime, then the process continues its loop.
      * </p>
+     * <p>
+     * After executing its step, it checks if it has to switch its current barrier (see
+     * {@link #changeBarrier(CyclicBarrier) changeBarrier}). Its it does (the method has been called at least once
+     * during the execution of this task), then it switch its barrier before waiting on it for other synchronized tasks.
+     * </p>
      */
     @Override
     public final void run() {
@@ -86,6 +95,7 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
         running = true;
         while (!isStopAsked) {
             executeStep();
+            switchBarrier();
             try {
                 barrier.await();
             } catch (InterruptedException e) {
@@ -95,6 +105,13 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
             }
         }
         running = false;
+    }
+
+    private void switchBarrier() {
+        if (nextBarrier != null) {
+            barrier = nextBarrier;
+            nextBarrier = null;
+        }
     }
 
     /**

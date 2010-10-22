@@ -28,7 +28,9 @@ import java.util.concurrent.CyclicBarrier;
  */
 public class Temporizer implements Runnable {
 
-    private final CyclicBarrier barrier;
+    private CyclicBarrier barrier;
+
+    private CyclicBarrier nextBarrier;
 
     public Temporizer(CyclicBarrier barrier) {
         this.barrier = barrier;
@@ -39,11 +41,31 @@ public class Temporizer implements Runnable {
         // there is nothing to do in the temporizer.
         // its sole purpose is to release the barrier at cyclic time, controlled by its scheduledThreadPool
         try {
+            switchBarrier();
             barrier.await();
         } catch (InterruptedException e) {
             return;
         } catch (BrokenBarrierException e) {
             return;
+        }
+    }
+
+    public void changeBarrier(CyclicBarrier barrier) {
+        if (barrier == null) {
+            throw new IllegalArgumentException("barrier is null");
+        }
+        if (this.barrier == null) {
+            // it is the first time the barrier is set
+            this.barrier = barrier;
+        } else {
+            this.nextBarrier = barrier;
+        }
+    }
+
+    private void switchBarrier() {
+        if (nextBarrier != null) {
+            barrier = nextBarrier;
+            nextBarrier = null;
         }
     }
 
