@@ -44,6 +44,8 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
 
     private int synchronizedCalled;
 
+    private int collectSolarEnergyCalled = 0;
+
     public MockTreeLeaf() {
         super(null);
     }
@@ -94,6 +96,15 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
 
     public void setFreeEnergy(BigDecimal freeEnergy) {
         this.freeEnergy = freeEnergy;
+    }
+
+    @Override
+    public void collectSolarEnergy() {
+        collectSolarEnergyCalled++;
+    }
+
+    public int getNbCollectSolarEnergy() {
+        return collectSolarEnergyCalled;
     }
 
     public boolean isTooWeak() {

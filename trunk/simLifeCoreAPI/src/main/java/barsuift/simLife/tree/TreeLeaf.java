@@ -51,4 +51,12 @@ public interface TreeLeaf extends LivingPart, Publisher {
      */
     public BigDecimal collectFreeEnergy();
 
+    /**
+     * Compute the new leaf energy. It is the old energy + the collected energy.
+     * <code>collectedEnergy= sunLuminosity * leafEfficiency * energyDensity * leaf Area</code>
+     * 
+     * @return the collected energy
+     */
+    public void collectSolarEnergy();
+
 }
