@@ -46,7 +46,7 @@ public class BasicTimeControllerTest extends TestCase {
 
     public void testStart() throws InterruptedException {
         assertFalse(controller.isRunning());
-        assertEquals(new BasicSimLifeDate(), controller.getDate());
+        assertEquals(new SimLifeDate(), controller.getDate());
         assertEquals(0, controller.getDate().getTimeInMillis());
         int speed = controller.getSpeed();
         controller.start();

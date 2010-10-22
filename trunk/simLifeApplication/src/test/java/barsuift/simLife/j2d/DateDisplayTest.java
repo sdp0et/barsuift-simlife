@@ -21,7 +21,6 @@ package barsuift.simLife.j2d;
 import java.text.ParseException;
 
 import junit.framework.TestCase;
-import barsuift.simLife.time.BasicSimLifeDate;
 import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.time.SimLifeDateState;
 
@@ -34,7 +33,7 @@ public class DateDisplayTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        date = new BasicSimLifeDate(new SimLifeDateState());
+        date = new SimLifeDate(new SimLifeDateState());
         display = new DateDisplay(date);
     }
 
