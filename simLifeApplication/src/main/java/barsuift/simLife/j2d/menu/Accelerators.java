@@ -47,6 +47,9 @@ public class Accelerators {
     // Ctrl + O
     public static final KeyStroke OPEN = KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK);
 
+    // Ctrl + P
+    public static final KeyStroke PAUSE = KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK);
+
     // Ctrl + R
     public static final KeyStroke RANDOM = KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK);
 

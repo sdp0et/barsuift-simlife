@@ -20,8 +20,6 @@ package barsuift.simLife;
 
 import java.math.BigDecimal;
 
-import barsuift.simLife.time.SimLifeDateState;
-
 
 public final class UtilDataCreatorForTests {
 
@@ -35,24 +33,6 @@ public final class UtilDataCreatorForTests {
 
     public static boolean createRandomBoolean() {
         return Math.random() >= 0.5;
-    }
-
-    /**
-     * Creates a random date state, between 0 and 100 seconds
-     * 
-     * @return
-     */
-    public static SimLifeDateState createRandomDateState() {
-        return new SimLifeDateState(Randomizer.randomBetween(0, 100) * 1000);
-    }
-
-    /**
-     * Creates a specific date state, at 100 seconds
-     * 
-     * @return
-     */
-    public static SimLifeDateState createSpecificDateState() {
-        return new SimLifeDateState(100000);
     }
 
 }
