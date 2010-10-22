@@ -19,7 +19,6 @@
 package barsuift.simLife;
 
 
-// TODO 003. refactor the synchronizer to add a schedule method which add a new task to the list
 // TODO 005. move the calendar updater into the calendar class
 // TODO 007. create a Photosynthesis class which collect solar energy for the leaves of one given tree
 // TODO 009. remove the FakeJob class
