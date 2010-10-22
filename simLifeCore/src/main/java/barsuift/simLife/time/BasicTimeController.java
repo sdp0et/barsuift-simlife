@@ -28,6 +28,7 @@ import barsuift.simLife.Persistent;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
+import barsuift.simLife.process.SynchronizedRunnable;
 import barsuift.simLife.process.Synchronizer;
 import barsuift.simLife.universe.Universe;
 
@@ -66,6 +67,11 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     @Override
     public SimLifeDate getDate() {
         return dateHandler.getDate();
+    }
+
+    @Override
+    public void schedule(SynchronizedRunnable runnable) {
+        synchronizer.schedule(runnable);
     }
 
     @Override

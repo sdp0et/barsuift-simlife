@@ -2,6 +2,7 @@ package barsuift.simLife.time;
 
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.process.SynchronizedRunnable;
 
 
 public class MockTimeController extends BasicPublisher implements TimeController {
@@ -22,6 +23,8 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     private boolean running;
 
+    private int scheduleCalled;
+
     public MockTimeController() {
         super(null);
         reset();
@@ -35,6 +38,7 @@ public class MockTimeController extends BasicPublisher implements TimeController
         startCalled = 0;
         oneStepCalled = 0;
         stopCalled = 0;
+        scheduleCalled = 0;
         running = false;
     }
 
@@ -45,6 +49,14 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     public void setDate(SimLifeDate date) {
         this.date = date;
+    }
+
+    public void schedule(SynchronizedRunnable runnable) {
+        scheduleCalled++;
+    }
+
+    public int getNbScheduleCalled() {
+        return scheduleCalled;
     }
 
     @Override

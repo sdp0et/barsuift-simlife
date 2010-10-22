@@ -2,12 +2,15 @@ package barsuift.simLife.time;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.message.Publisher;
+import barsuift.simLife.process.SynchronizedRunnable;
 
 
 
 public interface TimeController extends Persistent<TimeControllerState>, Publisher {
 
     public SimLifeDate getDate();
+
+    public void schedule(SynchronizedRunnable runnable);
 
     public void setSpeed(int speed);
 

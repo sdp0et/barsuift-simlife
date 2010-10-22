@@ -24,6 +24,7 @@ import java.util.List;
 
 import barsuift.simLife.j3d.tree.BasicTree3D;
 import barsuift.simLife.j3d.tree.Tree3D;
+import barsuift.simLife.process.Photosynthesis;
 import barsuift.simLife.universe.Universe;
 
 public class BasicTree implements Tree {
@@ -31,6 +32,8 @@ public class BasicTree implements Tree {
     private static final BigDecimal MAX_ENERGY = new BigDecimal(4000);
 
     private final TreeState state;
+
+    private final Photosynthesis photosynthesis;
 
     private final long creationMillis;
 
@@ -62,6 +65,8 @@ public class BasicTree implements Tree {
         }
         this.trunk = new BasicTreeTrunk(universe, state.getTrunkState());
         this.tree3D = new BasicTree3D(universe.getUniverse3D(), state.getTree3DState(), this);
+        this.photosynthesis = new Photosynthesis(state.getPhotosynthesis(), this);
+        universe.getTimeController().schedule(photosynthesis);
     }
 
     @Override
@@ -140,6 +145,7 @@ public class BasicTree implements Tree {
         state.setBranches(treeBranchStates);
         trunk.synchronize();
         tree3D.synchronize();
+        photosynthesis.synchronize();
     }
 
     @Override
