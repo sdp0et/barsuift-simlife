@@ -1,52 +1,47 @@
+/**
+ * barsuift-simlife is a life simulator program
+ * 
+ * Copyright (C) 2010 Cyrille GACHOT
+ * 
+ * This file is part of barsuift-simlife.
+ * 
+ * barsuift-simlife is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * barsuift-simlife is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package barsuift.simLife.process;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
-import barsuift.simLife.time.TimeController;
-
-
-
 public class MockSingleRunSynchronizedRunnable implements SynchronizedRunnable {
 
-    private SynchronizedRunnableState state;
-
     private CyclicBarrier barrier;
-
-    private TimeController timeController;
 
     private int nbExecuted;
 
     private boolean running;
 
-    private int synchronizeCalled;
-
     private int stopCalled;
 
-    @Override
-    public void init(SynchronizedRunnableState state, TimeController timeController) {
-        this.state = state;
-        this.timeController = timeController;
-    }
-
-    public int getNbExecuted() {
-        return nbExecuted;
+    public MockSingleRunSynchronizedRunnable() {
+        reset();
     }
 
     public void reset() {
         nbExecuted = 0;
         stopCalled = 0;
-        synchronizeCalled = 0;
     }
 
-    @Override
-    public SynchronizedRunnableState getState() {
-        return state;
-    }
-
-    @Override
-    public void synchronize() {
-        synchronizeCalled++;
+    public int getNbExecuted() {
+        return nbExecuted;
     }
 
     @Override
@@ -82,11 +77,6 @@ public class MockSingleRunSynchronizedRunnable implements SynchronizedRunnable {
 
     public void setRunning(boolean running) {
         this.running = running;
-    }
-
-    @Override
-    public TimeController getTimeController() {
-        return timeController;
     }
 
 }

@@ -3,8 +3,6 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
-import barsuift.simLife.time.MockTimeController;
-import barsuift.simLife.time.TimeController;
 
 
 public class UnfrequentRunnableTest extends TestCase {
@@ -19,12 +17,10 @@ public class UnfrequentRunnableTest extends TestCase {
         super.setUp();
         // make sure the barrier will block the process as long as the other mock process is not run
         CyclicBarrier barrier = new CyclicBarrier(2);
-        state = new UnfrequentRunnableState(MockUnfrequentRunnable.class, 3, 0);
-        TimeController timeController = new MockTimeController();
+        state = new UnfrequentRunnableState(3, 0);
         mockSynchroRun = new MockSingleRunSynchronizedRunnable();
         mockSynchroRun.changeBarrier(barrier);
-        unfrequentRun = new MockUnfrequentRunnable();
-        unfrequentRun.init(state, timeController);
+        unfrequentRun = new MockUnfrequentRunnable(state);
         unfrequentRun.changeBarrier(barrier);
     }
 

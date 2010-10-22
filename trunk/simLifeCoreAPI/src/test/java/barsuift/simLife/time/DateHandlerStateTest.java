@@ -16,28 +16,31 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.time;
 
-public class MockUnfrequentRunnable extends UnfrequentRunnable {
+import barsuift.simLife.JaxbTestCase;
 
-    private int nbExecuted;
 
-    public MockUnfrequentRunnable(UnfrequentRunnableState state) {
-        super(state);
-        resetNbExecuted();
+public class DateHandlerStateTest extends JaxbTestCase {
+
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Override
-    public void executeUnfrequentStep() {
-        nbExecuted++;
+    protected String getPackage() {
+        return "barsuift.simLife.time";
     }
 
-    public int getNbExecuted() {
-        return nbExecuted;
-    }
-
-    public void resetNbExecuted() {
-        nbExecuted = 0;
+    public void testJaxb() throws Exception {
+        DateHandlerState dateHandler = new DateHandlerState();
+        write(dateHandler);
+        DateHandlerState dateHandler2 = (DateHandlerState) read();
+        assertEquals(dateHandler, dateHandler2);
     }
 
 }

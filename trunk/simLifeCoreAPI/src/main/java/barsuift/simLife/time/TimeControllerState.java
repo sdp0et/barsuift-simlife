@@ -1,3 +1,21 @@
+/**
+ * barsuift-simlife is a life simulator program
+ * 
+ * Copyright (C) 2010 Cyrille GACHOT
+ * 
+ * This file is part of barsuift-simlife.
+ * 
+ * barsuift-simlife is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * barsuift-simlife is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 package barsuift.simLife.time;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,28 +26,28 @@ import barsuift.simLife.process.SynchronizerState;
 @XmlRootElement
 public class TimeControllerState implements State {
 
-    private SimLifeDateState date;
+    private DateHandlerState dateHandler;
 
     private SynchronizerState synchronizer;
 
     public TimeControllerState() {
         super();
-        this.date = new SimLifeDateState();
+        this.dateHandler = new DateHandlerState();
         this.synchronizer = new SynchronizerState();
     }
 
-    public TimeControllerState(SimLifeDateState date, SynchronizerState synchronizer) {
+    public TimeControllerState(DateHandlerState dateHandler, SynchronizerState synchronizer) {
         super();
-        this.date = date;
+        this.dateHandler = dateHandler;
         this.synchronizer = synchronizer;
     }
 
-    public SimLifeDateState getDate() {
-        return date;
+    public DateHandlerState getDateHandler() {
+        return dateHandler;
     }
 
-    public void setDate(SimLifeDateState date) {
-        this.date = date;
+    public void setDateHandler(DateHandlerState dateHandler) {
+        this.dateHandler = dateHandler;
     }
 
     public SynchronizerState getSynchronizer() {
@@ -44,7 +62,7 @@ public class TimeControllerState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((date == null) ? 0 : date.hashCode());
+        result = prime * result + ((dateHandler == null) ? 0 : dateHandler.hashCode());
         result = prime * result + ((synchronizer == null) ? 0 : synchronizer.hashCode());
         return result;
     }
@@ -58,11 +76,11 @@ public class TimeControllerState implements State {
         if (getClass() != obj.getClass())
             return false;
         TimeControllerState other = (TimeControllerState) obj;
-        if (date == null) {
-            if (other.date != null)
+        if (dateHandler == null) {
+            if (other.dateHandler != null)
                 return false;
         } else
-            if (!date.equals(other.date))
+            if (!dateHandler.equals(other.dateHandler))
                 return false;
         if (synchronizer == null) {
             if (other.synchronizer != null)
@@ -75,7 +93,7 @@ public class TimeControllerState implements State {
 
     @Override
     public String toString() {
-        return "TimeControllerState [date=" + date + ", synchronizer=" + synchronizer + "]";
+        return "TimeControllerState [dateHandler=" + dateHandler + ", synchronizer=" + synchronizer + "]";
     }
 
 }

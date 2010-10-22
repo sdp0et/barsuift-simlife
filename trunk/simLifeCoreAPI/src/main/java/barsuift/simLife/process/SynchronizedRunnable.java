@@ -20,14 +20,11 @@ package barsuift.simLife.process;
 
 import java.util.concurrent.CyclicBarrier;
 
-import barsuift.simLife.Persistent;
-import barsuift.simLife.time.TimeController;
-
 
 /**
  * This class represents a task that can be synchronized with others.
  */
-public interface SynchronizedRunnable extends Runnable, Persistent<SynchronizedRunnableState> {
+public interface SynchronizedRunnable extends Runnable {
 
     /**
      * Change the barrier to use for synchronization purpose.
@@ -39,16 +36,6 @@ public interface SynchronizedRunnable extends Runnable, Persistent<SynchronizedR
      * @throws IllegalArgumentException if the given barrier is null
      */
     public void changeBarrier(CyclicBarrier barrier);
-
-    /**
-     * Initialize the runnable with given parameters. This method must be called only once.
-     * 
-     * @param state the state to initialize from
-     * @param timeController the time controller to get objects to controlled by the runnable
-     * @throws IllegalStateException if this method has already been called before
-     * @throws IllegalArgumentException if any of the parameters is null
-     */
-    public void init(SynchronizedRunnableState state, TimeController timeController);
 
     /**
      * Start the process.
@@ -70,12 +57,5 @@ public interface SynchronizedRunnable extends Runnable, Persistent<SynchronizedR
      * @return true if the process is running, false otherwise.
      */
     public boolean isRunning();
-
-    /**
-     * Returns the time controller.
-     * 
-     * @return the time controller.
-     */
-    public TimeController getTimeController();
 
 }

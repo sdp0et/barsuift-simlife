@@ -1,8 +1,5 @@
 package barsuift.simLife.process;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.InitException;
@@ -20,18 +17,10 @@ public class SynchronizerTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        List<SynchronizedRunnableState> synchroRunnables = new ArrayList<SynchronizedRunnableState>();
-        SynchronizedRunnableState mockSynchroState = new SynchronizedRunnableState(MockSynchronizedRunnable.class);
-        synchroRunnables.add(mockSynchroState);
-
-        List<UnfrequentRunnableState> unfrequentRunnables = new ArrayList<UnfrequentRunnableState>();
-        UnfrequentRunnableState mockUnfrequentState = new UnfrequentRunnableState(MockUnfrequentRunnable.class, 5, 2);
-        unfrequentRunnables.add(mockUnfrequentState);
-
         TimeControllerState timeControllerState = CoreDataCreatorForTests.createRandomTimeControllerState();
         TimeController timeController = new BasicTimeController(new MockUniverse(), timeControllerState);
 
-        state = new SynchronizerState(1, synchroRunnables, unfrequentRunnables);
+        state = new SynchronizerState(1);
         synchro = new Synchronizer(state, timeController);
     }
 

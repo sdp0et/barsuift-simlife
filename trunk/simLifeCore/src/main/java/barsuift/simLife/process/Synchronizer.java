@@ -18,8 +18,6 @@
  */
 package barsuift.simLife.process;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -78,55 +76,10 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         this.running = false;
         this.isStopAsked = false;
         this.speed = state.getSpeed();
-
-        List<SynchronizedRunnableState> stateRunnables = new ArrayList<SynchronizedRunnableState>();
-        stateRunnables.addAll(state.getSynchronizedRunnables());
-        stateRunnables.addAll(state.getUnfrequentRunnables());
-
-        int nbScheduledThread = 1;
-        int nbStandardThread = stateRunnables.size();
-        int totalNbThread = nbScheduledThread + nbStandardThread;
-
-        barrier = new CyclicBarrier(totalNbThread, new BarrierTask());
-
-        temporizer = new Temporizer(barrier);
-        scheduledThreadPool = Executors.newScheduledThreadPool(nbScheduledThread);
-
-        for (SynchronizedRunnableState runState : stateRunnables) {
-            Class<? extends SynchronizedRunnable> clazz = runState.getClazz();
-            runnables.add(instantiateClass(clazz, runState, barrier, timeController));
-        }
-
-        standardThreadPool = Executors.newFixedThreadPool(64);
-    }
-
-
-    private SynchronizedRunnable instantiateClass(Class<? extends SynchronizedRunnable> clazz,
-            SynchronizedRunnableState runState, CyclicBarrier barrier, TimeController timeController)
-            throws InitException {
-        Constructor<? extends SynchronizedRunnable> runnableConstructor;
-        try {
-            runnableConstructor = clazz.getConstructor();
-        } catch (SecurityException e) {
-            throw new InitException("Unable to get the appropriate constructor for " + clazz, e);
-        } catch (NoSuchMethodException e) {
-            throw new InitException("Unable to get the appropriate constructor for " + clazz, e);
-        }
-        SynchronizedRunnable result;
-        try {
-            result = runnableConstructor.newInstance();
-        } catch (IllegalArgumentException e) {
-            throw new InitException("Unable to instantiate the constructor for " + clazz, e);
-        } catch (InstantiationException e) {
-            throw new InitException("Unable to instantiate the constructor for " + clazz, e);
-        } catch (IllegalAccessException e) {
-            throw new InitException("Unable to instantiate the constructor for " + clazz, e);
-        } catch (InvocationTargetException e) {
-            throw new InitException("Unable to instantiate the constructor for " + clazz, e);
-        }
-        result.init(runState, timeController);
-        result.changeBarrier(barrier);
-        return result;
+        this.barrier = new CyclicBarrier(1, new BarrierTask());
+        this.temporizer = new Temporizer(barrier);
+        this.scheduledThreadPool = Executors.newScheduledThreadPool(1);
+        this.standardThreadPool = Executors.newFixedThreadPool(64);
     }
 
     public void setSpeed(int speed) {
@@ -172,9 +125,10 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         if (running == true) {
             throw new IllegalStateException("The synchronizer is already running");
         }
+        addNewTasks(false);
         running = true;
 
-        // wakeup period (speed = cycles / second)
+        // wake-up period (speed = cycles / second)
         long period = CYCLE_LENGTH_MS / speed;
         temporizerFuture = scheduledThreadPool.scheduleWithFixedDelay(temporizer, 0, period, TimeUnit.MILLISECONDS);
 
@@ -216,17 +170,35 @@ public class Synchronizer implements Persistent<SynchronizerState> {
     @Override
     public void synchronize() {
         state.setSpeed(speed);
-        List<SynchronizedRunnableState> synchroRunnableStates = new ArrayList<SynchronizedRunnableState>();
-        List<UnfrequentRunnableState> unfrequentRunnableStates = new ArrayList<UnfrequentRunnableState>();
-        for (SynchronizedRunnable runnable : runnables) {
-            if (runnable instanceof UnfrequentRunnable) {
-                unfrequentRunnableStates.add((UnfrequentRunnableState) runnable.getState());
+    }
+
+
+    private void addNewTasks(boolean startNewTasks) {
+        int nbNewTasks = newTasksToSchedule.size();
+        // if there are new tasks to schedule
+        if (nbNewTasks > 0) {
+            // 1. create the new barrier
+            barrier = new CyclicBarrier(barrier.getParties() + nbNewTasks, new BarrierTask());
+            // 2. add the new tasks to the list of executed tasks
+            runnables.addAll(newTasksToSchedule);
+            // 3. update the barrier for everyone
+            for (SynchronizedRunnable runnable : runnables) {
+                runnable.changeBarrier(barrier);
+            }
+            // 4. also change the temporizer barrier
+            temporizer.changeBarrier(barrier);
+            // if not asked to stop, then start the new tasks. Else, no need to start the new tasks.
+            if (startNewTasks) {
+                while (!newTasksToSchedule.isEmpty()) {
+                    standardThreadPool.submit(newTasksToSchedule.poll());
+                }
             } else {
-                synchroRunnableStates.add((SynchronizedRunnableState) runnable.getState());
+                // simply purge the list
+                while (!newTasksToSchedule.isEmpty()) {
+                    newTasksToSchedule.poll();
+                }
             }
         }
-        state.setSynchronizedRunnables(synchroRunnableStates);
-        state.setUnfrequentRunnables(unfrequentRunnableStates);
     }
 
 
@@ -238,26 +210,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
 
         @Override
         public synchronized void run() {
-            int nbNewTasks = newTasksToSchedule.size();
-            // if there are new tasks to schedule
-            if (nbNewTasks > 0) {
-                // 1. create the new barrier
-                barrier = new CyclicBarrier(barrier.getParties() + nbNewTasks, new BarrierTask());
-                // 2. add the new tasks to the list of executed tasks
-                runnables.addAll(newTasksToSchedule);
-                // 3. update the barrier for everyone
-                for (SynchronizedRunnable runnable : runnables) {
-                    runnable.changeBarrier(barrier);
-                }
-                // 4. also change the temporizer barrier
-                temporizer.changeBarrier(barrier);
-                // if not asked to stop, then start the new tasks. Else, no need to start the new tasks.
-                if (!isStopAsked) {
-                    while (!newTasksToSchedule.isEmpty()) {
-                        standardThreadPool.submit(newTasksToSchedule.poll());
-                    }
-                }
-            }
+            addNewTasks(true);
             if (isStopAsked) {
                 internalStop();
             }

@@ -16,31 +16,41 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.time;
 
-import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.Persistent;
+import barsuift.simLife.process.DateUpdater;
+import barsuift.simLife.process.Synchronizer;
 
+public class DateHandler implements Persistent<DateHandlerState> {
 
-public class SynchronizedRunnableStateTest extends JaxbTestCase {
+    private DateHandlerState state;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private SimLifeDate date;
+
+    private DateUpdater dateUpdater;
+
+    public DateHandler(DateHandlerState state, Synchronizer synchronizer) {
+        this.state = state;
+        this.date = new SimLifeDate(state.getDate());
+        this.dateUpdater = new DateUpdater(date);
+        synchronizer.schedule(dateUpdater);
+
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    public SimLifeDate getDate() {
+        return date;
     }
 
     @Override
-    protected String getPackage() {
-        return "barsuift.simLife.process";
+    public DateHandlerState getState() {
+        synchronize();
+        return state;
     }
 
-    public void testJaxb() throws Exception {
-        SynchronizedRunnableState runnable = new SynchronizedRunnableState(SynchronizedRunnable.class);
-        write(runnable);
-        SynchronizedRunnableState runnable2 = (SynchronizedRunnableState) read();
-        assertEquals(runnable, runnable2);
+    @Override
+    public void synchronize() {
+        date.synchronize();
     }
 
 }

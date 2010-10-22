@@ -21,8 +21,6 @@ package barsuift.simLife.process;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
-import barsuift.simLife.time.TimeController;
-
 /**
  * The given <code>barrier</code> parameter allows this task to wait for others and then execute again, indefinitely. It
  * can be stopped with the <code>stop</code> method.
@@ -30,17 +28,17 @@ import barsuift.simLife.time.TimeController;
  */
 public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnable {
 
-    private SynchronizedRunnableState state;
-
     private CyclicBarrier barrier;
 
     private CyclicBarrier nextBarrier;
 
-    private TimeController timeController;
-
     private boolean running;
 
     private boolean isStopAsked;
+
+    protected AbstractSynchronizedRunnable() {
+        running = false;
+    }
 
     @Override
     public void changeBarrier(CyclicBarrier barrier) {
@@ -53,22 +51,6 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
         } else {
             this.nextBarrier = barrier;
         }
-    }
-
-    @Override
-    public void init(SynchronizedRunnableState state, TimeController timeController) {
-        if (this.state != null) {
-            throw new IllegalStateException("The process has already been initialized");
-        }
-        if (state == null) {
-            throw new IllegalArgumentException("no state given to initialize the process");
-        }
-        if (timeController == null) {
-            throw new IllegalArgumentException("no time controller given to initialize the process");
-        }
-        this.state = state;
-        this.timeController = timeController;
-        this.running = false;
     }
 
     /**
@@ -141,22 +123,6 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
     @Override
     public boolean isRunning() {
         return running;
-    }
-
-    @Override
-    public TimeController getTimeController() {
-        return timeController;
-    }
-
-    @Override
-    public SynchronizedRunnableState getState() {
-        synchronize();
-        return state;
-    }
-
-    @Override
-    public void synchronize() {
-        // nothing to do as the class won't change
     }
 
 }
