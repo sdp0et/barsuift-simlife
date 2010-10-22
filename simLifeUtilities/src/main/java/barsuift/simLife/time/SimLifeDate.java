@@ -4,10 +4,12 @@ import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.regex.Pattern;
 
+import barsuift.simLife.Persistent;
 import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-public class BasicSimLifeDate implements SimLifeDate {
+public class SimLifeDate implements Persistent<SimLifeDateState>, Publisher {
 
     private static final MessageFormat STRING_FORMAT = new MessageFormat(
             "{0,number,00}:{1,number,00}:{2,number,000} {3} {4,number,00} {5} {6,number,0000}");
@@ -15,6 +17,25 @@ public class BasicSimLifeDate implements SimLifeDate {
     private static final Pattern spacePattern = Pattern.compile(" ");
 
     private static final Pattern colonPattern = Pattern.compile(":");
+
+    public static final int MS_PER_SECOND = 1000;
+
+    public static final int SECOND_PER_MINUTE = 60;
+
+    public static final int MINUTE_PER_DAY = 20;
+
+    public static final int DAY_PER_WEEK = 6;
+
+    public static final int WEEK_PER_MONTH = 3;
+
+    public static final int DAY_PER_MONTH = DAY_PER_WEEK * WEEK_PER_MONTH;
+
+    public static final int MONTH_PER_YEAR = 4;
+
+    public static final int WEEK_PER_YEAR = MONTH_PER_YEAR * WEEK_PER_MONTH;
+
+    public static final int DAY_PER_YEAR = MONTH_PER_YEAR * DAY_PER_MONTH;
+
 
     /* Useful milliseconds constants */
     private static final int MS_FOR_ONE_SECOND = MS_PER_SECOND;
@@ -69,26 +90,26 @@ public class BasicSimLifeDate implements SimLifeDate {
      */
     private int year;
 
-    public BasicSimLifeDate() {
+    public SimLifeDate() {
         this(0);
     }
 
-    public BasicSimLifeDate(String date) throws ParseException {
+    public SimLifeDate(String date) throws ParseException {
         setTime(date);
         this.state = new SimLifeDateState(getTimeInMillis());
     }
 
-    public BasicSimLifeDate(long millis) {
+    public SimLifeDate(long millis) {
         setTimeInMillis(millis);
         computeFields();
         this.state = new SimLifeDateState(millis);
     }
 
-    public BasicSimLifeDate(SimLifeDate copy) {
+    public SimLifeDate(SimLifeDate copy) {
         this(copy.getTimeInMillis());
     }
 
-    public BasicSimLifeDate(SimLifeDateState dateState) {
+    public SimLifeDate(SimLifeDateState dateState) {
         if (dateState == null) {
             throw new IllegalArgumentException("date state is null");
         }
@@ -107,47 +128,38 @@ public class BasicSimLifeDate implements SimLifeDate {
         state.setValue(getTimeInMillis());
     }
 
-    @Override
     public long getTimeInMillis() {
         return timeInMillis;
     }
 
-    @Override
     public int getMillisOfSecond() {
         return millisOfSecond;
     }
 
-    @Override
     public int getSecondOfMinute() {
         return secondOfMinute;
     }
 
-    @Override
     public int getMinuteOfDay() {
         return minuteOfDay;
     }
 
-    @Override
     public Day getDayOfWeek() {
         return dayOfWeek;
     }
 
-    @Override
     public int getDayOfMonth() {
         return (dayOfWeek.getIndex()) + ((weekOfMonth - 1) * DAY_PER_WEEK);
     }
 
-    @Override
     public int getWeekOfMonth() {
         return weekOfMonth;
     }
 
-    @Override
     public Month getMonthOfYear() {
         return monthOfYear;
     }
 
-    @Override
     public int getYear() {
         return year;
     }
@@ -180,13 +192,11 @@ public class BasicSimLifeDate implements SimLifeDate {
         notifySubscribers();
     }
 
-    @Override
     public synchronized void setTimeInMillis(long millis) {
         timeInMillis = millis;
         computeFields();
     }
 
-    @Override
     public synchronized void set(int millisOfSecond, int secondOfMinute, int minuteOfDay, Day dayOfWeek,
             int weekOfMonth, Month monthOfYear, int year) {
         this.millisOfSecond = millisOfSecond;
@@ -199,97 +209,106 @@ public class BasicSimLifeDate implements SimLifeDate {
         computeTime();
     }
 
-    @Override
     public synchronized void setMillisOfSecond(int millis) {
         millisOfSecond = millis;
         computeTime();
     }
 
-    @Override
     public synchronized void setSecondOfMinute(int seconds) {
         secondOfMinute = seconds;
         computeTime();
     }
 
-    @Override
     public synchronized void setMinuteOfDay(int minutes) {
         minuteOfDay = minutes;
         computeTime();
     }
 
-    @Override
     public synchronized void setDayOfWeek(Day day) {
         dayOfWeek = day;
         computeTime();
     }
 
-    @Override
     public synchronized void setDayOfMonth(int dayOfMonth) {
         weekOfMonth = (int) ((dayOfMonth - 1) / DAY_PER_WEEK) + 1;
         dayOfWeek = Day.values()[(dayOfMonth - 1) % DAY_PER_WEEK];
         computeTime();
     }
 
-    @Override
     public synchronized void setWeekOfMonth(int weeks) {
         weekOfMonth = weeks;
         computeTime();
     }
 
-    @Override
     public synchronized void setMonthOfYear(Month month) {
         monthOfYear = month;
         computeTime();
     }
 
-    @Override
     public synchronized void setYear(int years) {
         year = years;
         computeTime();
     }
 
-    @Override
     public synchronized void addMillis(long millis) {
         setTimeInMillis(timeInMillis + millis);
     }
 
-    @Override
     public synchronized void addSeconds(long seconds) {
         setTimeInMillis(timeInMillis + (seconds * MS_FOR_ONE_SECOND));
     }
 
-    @Override
     public synchronized void addMinutes(long minutes) {
         setTimeInMillis(timeInMillis + (minutes * MS_FOR_ONE_MINUTE));
     }
 
-    @Override
     public synchronized void addDays(long days) {
         setTimeInMillis(timeInMillis + (days * MS_FOR_ONE_DAY));
     }
 
-    @Override
     public synchronized void addWeeks(long weeks) {
         setTimeInMillis(timeInMillis + (weeks * MS_FOR_ONE_WEEK));
     }
 
-    @Override
     public synchronized void addMonths(long months) {
         setTimeInMillis(timeInMillis + (months * MS_FOR_ONE_MONTH));
     }
 
-    @Override
     public synchronized void addYears(long years) {
         setTimeInMillis(timeInMillis + (years * MS_FOR_ONE_YEAR));
     }
 
-    @Override
+
+    /**
+     * Date is formatted with the following pattern : <code>mm:ss:SSS DayInWeek DayInMonth Month Year</code>. For
+     * example, it can be <code>19:59:999 Nosday 18 Tom 0455</code>
+     * <p>
+     * Here are the rules to be applied when formatting :
+     * <ul>
+     * <li>minutes are two digits</li>
+     * <li>seconds are two digits</li>
+     * <li>milliseconds are three digits</li>
+     * <li>day in week is text, starting with an uppercase character</li>
+     * <li>day in month is two digits</li>
+     * <li>month is text, starting with an uppercase character</li>
+     * <li>year is at least 4 digits, and can be more if needed</li>
+     * </ul>
+     * </p>
+     * 
+     * @return the formatted date
+     */
     public String formatDate() {
         return STRING_FORMAT.format(new Object[] { minuteOfDay, secondOfMinute, millisOfSecond, dayOfWeek,
                 getDayOfMonth(), monthOfYear, year });
     }
 
-    @Override
+    /**
+     * Parse the given date and set the given values to this date instance. The date must be formatted as the
+     * {@link #formatDate()} method would generate.
+     * 
+     * @param date the date to parse
+     * @throws ParseException
+     */
     public synchronized void setTime(String date) throws ParseException {
         String[] elements = spacePattern.split(date);
         String minSecMillisec = elements[0];
@@ -325,7 +344,7 @@ public class BasicSimLifeDate implements SimLifeDate {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        BasicSimLifeDate other = (BasicSimLifeDate) obj;
+        SimLifeDate other = (SimLifeDate) obj;
         if (timeInMillis != other.timeInMillis)
             return false;
         return true;

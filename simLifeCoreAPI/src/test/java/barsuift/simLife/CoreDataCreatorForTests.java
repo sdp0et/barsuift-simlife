@@ -57,24 +57,6 @@ public final class CoreDataCreatorForTests {
         // private constructor to enforce static access
     }
 
-    /**
-     * Creates a random date state, between 0 and 100 seconds
-     * 
-     * @return
-     */
-    public static SimLifeDateState createRandomDateState() {
-        return new SimLifeDateState(Randomizer.randomBetween(0, 100) * 1000);
-    }
-
-    /**
-     * Creates a specific date state, at 100 seconds
-     * 
-     * @return
-     */
-    public static SimLifeDateState createSpecificDateState() {
-        return new SimLifeDateState(100000);
-    }
-
     public static UniverseContextState createRandomUniverseContextState() {
         UniverseState universeState = createRandomUniverseState();
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
@@ -103,13 +85,13 @@ public final class CoreDataCreatorForTests {
     }
 
     public static TimeControllerState createRandomTimeControllerState() {
-        SimLifeDateState date = createRandomDateState();
+        SimLifeDateState date = UtilDataCreatorForTests.createRandomDateState();
         SynchronizerState synchronizer = createRandomSynchronizerState();
         return new TimeControllerState(date, synchronizer);
     }
 
     public static TimeControllerState createSpecificTimeControllerState() {
-        SimLifeDateState date = createSpecificDateState();
+        SimLifeDateState date = UtilDataCreatorForTests.createSpecificDateState();
         SynchronizerState synchronizer = createSpecificSynchronizerState();
         return new TimeControllerState(date, synchronizer);
     }

@@ -52,7 +52,7 @@ public class SynchronizerTest extends TestCase {
         synchro.oneStep();
         assertTrue(synchro.isRunning());
 
-        Thread.sleep(200);
+        Thread.sleep(100);
         assertFalse(synchro.isRunning());
     }
 
@@ -62,7 +62,7 @@ public class SynchronizerTest extends TestCase {
         assertTrue(synchro.isRunning());
 
         synchro.stop();
-        Thread.sleep(200);
+        Thread.sleep(100);
         assertFalse(synchro.isRunning());
     }
 
