@@ -120,7 +120,7 @@ public class BasicTreeLeaf implements TreeLeaf {
      * 
      * @return the collected energy
      */
-    private void collectSolarEnergy() {
+    public void collectSolarEnergy() {
         BigDecimal lightRate = universe.getEnvironment().getSun().getLuminosity();
         BigDecimal solarEnergyRateCollected = efficiency.multiply(lightRate);
         BigDecimal energyCollected = solarEnergyRateCollected.multiply(Sun.ENERGY_DENSITY).multiply(

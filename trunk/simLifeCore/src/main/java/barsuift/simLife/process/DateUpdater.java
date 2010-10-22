@@ -3,11 +3,12 @@ package barsuift.simLife.process;
 import barsuift.simLife.time.SimLifeDate;
 
 
-public class DateUpdater extends AbstractSynchronizedRunnable implements SynchronizedRunnable {
+public class DateUpdater extends AbstractSynchronizedRunnable {
 
     private final SimLifeDate date;
 
     public DateUpdater(SimLifeDate date) {
+        super();
         this.date = date;
     }
 
