@@ -59,7 +59,7 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
         // pour l'instant la date DOIT etre initialisée avant le synchronizer
         // une fois que la méthode schedule existera dans le synchronizer,
         // il faudra que le synchroiznizer soit instancié avant la date
-        this.date = new SimLifeDate(state.getDate());
+        this.date = new BasicSimLifeDate(state.getDate());
         int poolSize = 1;
         this.scheduledThreadPool = Executors.newScheduledThreadPool(poolSize);
         this.timeMessenger = new TimeMessenger(universe);

@@ -28,7 +28,7 @@ public class MockTimeController extends BasicPublisher implements TimeController
     }
 
     public void reset() {
-        date = new SimLifeDate();
+        date = new BasicSimLifeDate();
         state = CoreDataCreatorForTests.createSpecificTimeControllerState();
         synchronizeCalled = 0;
         speed = 1;
