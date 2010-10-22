@@ -22,10 +22,10 @@ public class UnfrequentRunnableTest extends TestCase {
         state = new UnfrequentRunnableState(MockUnfrequentRunnable.class, 3, 0);
         TimeController timeController = new MockTimeController();
         mockSynchroRun = new MockSingleRunSynchronizedRunnable();
-        mockSynchroRun.setBarrier(barrier);
+        mockSynchroRun.changeBarrier(barrier);
         unfrequentRun = new MockUnfrequentRunnable();
         unfrequentRun.init(state, timeController);
-        unfrequentRun.setBarrier(barrier);
+        unfrequentRun.changeBarrier(barrier);
     }
 
     protected void tearDown() throws Exception {

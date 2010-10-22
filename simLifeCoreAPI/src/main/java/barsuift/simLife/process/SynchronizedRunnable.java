@@ -30,13 +30,15 @@ import barsuift.simLife.time.TimeController;
 public interface SynchronizedRunnable extends Runnable, Persistent<SynchronizedRunnableState> {
 
     /**
-     * Set the barrier to use for synchronization purpose.
+     * Change the barrier to use for synchronization purpose.
+     * <p>
+     * This method can be used even for a running task.
+     * </p>
      * 
-     * @param barrier the cyclic barrier used to synchronize the runnable
-     * @throws IllegalStateException if the process is running
+     * @param barrier the new cyclic barrier used to synchronize the runnable
      * @throws IllegalArgumentException if the given barrier is null
      */
-    public void setBarrier(CyclicBarrier barrier);
+    public void changeBarrier(CyclicBarrier barrier);
 
     /**
      * Initialize the runnable with given parameters. This method must be called only once.
