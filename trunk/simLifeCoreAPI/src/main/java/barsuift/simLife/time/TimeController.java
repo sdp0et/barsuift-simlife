@@ -12,6 +12,8 @@ public interface TimeController extends Persistent<TimeControllerState>, Publish
 
     public void schedule(SynchronizedRunnable runnable);
 
+    public void unschedule(SynchronizedRunnable runnable);
+
     public void setSpeed(int speed);
 
     public int getSpeed();

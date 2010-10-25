@@ -70,6 +70,8 @@ public class Synchronizer implements Persistent<SynchronizerState> {
 
     private final ConcurrentLinkedQueue<SynchronizedRunnable> newTasksToSchedule = new ConcurrentLinkedQueue<SynchronizedRunnable>();
 
+    private final ConcurrentLinkedQueue<SynchronizedRunnable> tasksToUnschedule = new ConcurrentLinkedQueue<SynchronizedRunnable>();
+
 
     public Synchronizer(SynchronizerState state, TimeController timeController) throws InitException {
         this.state = state;
@@ -96,6 +98,17 @@ public class Synchronizer implements Persistent<SynchronizerState> {
 
     public void schedule(SynchronizedRunnable runnable) {
         newTasksToSchedule.add(runnable);
+    }
+
+    public void unschedule(SynchronizedRunnable runnable) {
+        // first try to remove it from the list of tasks to add
+        if (!newTasksToSchedule.remove(runnable)) {
+            if (!runnables.contains(runnable)) {
+                throw new IllegalStateException("The task to unschedule is not acutally scheduled. task=" + runnable);
+            }
+            // if not present in the list to add, add it to the list to remove
+            tasksToUnschedule.add(runnable);
+        }
     }
 
     /**
@@ -125,7 +138,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         if (running == true) {
             throw new IllegalStateException("The synchronizer is already running");
         }
-        addNewTasks(false);
+        updateTaskList(false);
         running = true;
 
         // wake-up period (speed = cycles / second)
@@ -173,21 +186,23 @@ public class Synchronizer implements Persistent<SynchronizerState> {
     }
 
 
-    private void addNewTasks(boolean startNewTasks) {
-        int nbNewTasks = newTasksToSchedule.size();
-        // if there are new tasks to schedule
-        if (nbNewTasks > 0) {
-            // 1. create the new barrier
-            barrier = new CyclicBarrier(barrier.getParties() + nbNewTasks, new BarrierTask());
-            // 2. add the new tasks to the list of executed tasks
+    private void updateTaskList(boolean startNewTasks) {
+        int nbNewTasksToAdd = newTasksToSchedule.size();
+        int nbTasksToRemove = tasksToUnschedule.size();
+        // if there are new tasks to schedule or to unschedule
+        if (nbNewTasksToAdd > 0 || nbTasksToRemove > 0) {
+            // 1. update the new barrier
+            barrier = new CyclicBarrier(barrier.getParties() + nbNewTasksToAdd - nbTasksToRemove, new BarrierTask());
+            // 2. update the list of executed tasks
             runnables.addAll(newTasksToSchedule);
+            runnables.removeAll(tasksToUnschedule);
             // 3. update the barrier for everyone
             for (SynchronizedRunnable runnable : runnables) {
                 runnable.changeBarrier(barrier);
             }
             // 4. also change the temporizer barrier
             temporizer.changeBarrier(barrier);
-            // if not asked to stop, then start the new tasks. Else, no need to start the new tasks.
+            // 5. start the new tasks if needed, or simply purge the list
             if (startNewTasks) {
                 while (!newTasksToSchedule.isEmpty()) {
                     standardThreadPool.submit(newTasksToSchedule.poll());
@@ -198,9 +213,15 @@ public class Synchronizer implements Persistent<SynchronizerState> {
                     newTasksToSchedule.poll();
                 }
             }
+            // 6. stop the old tasks
+            while (!tasksToUnschedule.isEmpty()) {
+                SynchronizedRunnable taskToUnschedule = tasksToUnschedule.poll();
+                if (taskToUnschedule.isRunning()) {
+                    taskToUnschedule.stop();
+                }
+            }
         }
     }
-
 
     /**
      * This class is used to stop all running process if isStopAsked is set to true.
@@ -210,7 +231,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
 
         @Override
         public synchronized void run() {
-            addNewTasks(true);
+            updateTaskList(true);
             if (isStopAsked) {
                 internalStop();
             }

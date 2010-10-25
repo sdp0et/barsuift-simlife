@@ -28,7 +28,11 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     private int scheduleCalled;
 
-    private List<Runnable> runnables;
+    private List<Runnable> runnablesToSchedule;
+
+    private int unscheduleCalled;
+
+    private List<Runnable> runnablesToUnschedule;
 
     public MockTimeController() {
         super(null);
@@ -44,7 +48,9 @@ public class MockTimeController extends BasicPublisher implements TimeController
         oneStepCalled = 0;
         stopCalled = 0;
         scheduleCalled = 0;
-        runnables = new ArrayList<Runnable>();
+        runnablesToSchedule = new ArrayList<Runnable>();
+        unscheduleCalled = 0;
+        runnablesToUnschedule = new ArrayList<Runnable>();
         running = false;
     }
 
@@ -59,7 +65,7 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     public void schedule(SynchronizedRunnable runnable) {
         scheduleCalled++;
-        runnables.add(runnable);
+        runnablesToSchedule.add(runnable);
     }
 
     public int getNbScheduleCalled() {
@@ -67,7 +73,20 @@ public class MockTimeController extends BasicPublisher implements TimeController
     }
 
     public List<Runnable> getScheduledRunnables() {
-        return runnables;
+        return runnablesToSchedule;
+    }
+
+    public void unschedule(SynchronizedRunnable runnable) {
+        unscheduleCalled++;
+        runnablesToUnschedule.add(runnable);
+    }
+
+    public int getNbUnscheduleCalled() {
+        return unscheduleCalled;
+    }
+
+    public List<Runnable> getUnscheduledRunnables() {
+        return runnablesToUnschedule;
     }
 
     @Override

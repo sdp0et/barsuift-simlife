@@ -75,6 +75,11 @@ public class BasicTimeController implements Persistent<TimeControllerState>, Tim
     }
 
     @Override
+    public void unschedule(SynchronizedRunnable runnable) {
+        synchronizer.unschedule(runnable);
+    }
+
+    @Override
     public synchronized void setSpeed(int speed) {
         synchronizer.setSpeed(speed);
     }
