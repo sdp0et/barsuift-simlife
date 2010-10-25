@@ -107,9 +107,6 @@ public class BasicUniverse implements Universe {
         if (fpsShowing) {
             fpsCounter.tick();
         }
-        for (LivingPart livingPart : getLivingParts()) {
-            livingPart.spendTime();
-        }
     }
 
     @Override
