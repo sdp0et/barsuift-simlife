@@ -26,7 +26,6 @@ import barsuift.simLife.environment.Environment;
 import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.time.FpsCounter;
 import barsuift.simLife.time.MockTimeController;
 import barsuift.simLife.time.TimeController;
 import barsuift.simLife.tree.Tree;
@@ -53,11 +52,7 @@ public class MockUniverse implements Universe {
 
     private UniverseState state = new UniverseState();
 
-    private FpsCounter fpsCounter;
-
     private int synchronizedCalled;
-
-    private boolean fpsShowing = false;
 
 
     @Override
@@ -158,30 +153,12 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public FpsCounter getFpsCounter() {
-        return fpsCounter;
-    }
-
-    public void setFpsCounter(FpsCounter fpsCounter) {
-        this.fpsCounter = fpsCounter;
-    }
-
-    @Override
     public void synchronize() {
         this.synchronizedCalled++;
     }
 
     public int getNbSynchronize() {
         return synchronizedCalled;
-    }
-
-    @Override
-    public void setFpsShowing(boolean fpsShowing) {
-        this.fpsShowing = fpsShowing;
-    }
-
-    public boolean isFpsShowing() {
-        return fpsShowing;
     }
 
 }

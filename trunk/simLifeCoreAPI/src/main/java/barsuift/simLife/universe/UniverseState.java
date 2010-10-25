@@ -35,8 +35,6 @@ public class UniverseState implements State {
 
     private long creationMillis;
 
-    private boolean fpsShowing;
-
     private Set<TreeState> trees;
 
     private Set<TreeLeafState> fallenLeaves;
@@ -50,7 +48,6 @@ public class UniverseState implements State {
     public UniverseState() {
         super();
         this.creationMillis = 0;
-        this.fpsShowing = false;
         this.trees = new HashSet<TreeState>();
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
@@ -58,12 +55,10 @@ public class UniverseState implements State {
         this.univ3DState = new Universe3DState();
     }
 
-    public UniverseState(long creationMillis, boolean fpsShowing, Set<TreeState> trees,
-            Set<TreeLeafState> fallenLeaves, EnvironmentState environment, TimeControllerState timeControllerState,
-            Universe3DState univ3DState) {
+    public UniverseState(long creationMillis, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves,
+            EnvironmentState environment, TimeControllerState timeControllerState, Universe3DState univ3DState) {
         super();
         this.creationMillis = creationMillis;
-        this.fpsShowing = fpsShowing;
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
@@ -77,14 +72,6 @@ public class UniverseState implements State {
 
     public void setCreationMillis(long creationMillis) {
         this.creationMillis = creationMillis;
-    }
-
-    public boolean isFpsShowing() {
-        return fpsShowing;
-    }
-
-    public void setFpsShowing(boolean fpsShowing) {
-        this.fpsShowing = fpsShowing;
     }
 
     public Set<TreeState> getTrees() {
@@ -135,7 +122,6 @@ public class UniverseState implements State {
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
         result = prime * result + ((timeControllerState == null) ? 0 : timeControllerState.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
-        result = prime * result + (fpsShowing ? 1231 : 1237);
         result = prime * result + ((trees == null) ? 0 : trees.hashCode());
         result = prime * result + ((univ3DState == null) ? 0 : univ3DState.hashCode());
         return result;
@@ -170,8 +156,6 @@ public class UniverseState implements State {
         } else
             if (!fallenLeaves.equals(other.fallenLeaves))
                 return false;
-        if (fpsShowing != other.fpsShowing)
-            return false;
         if (trees == null) {
             if (other.trees != null)
                 return false;
@@ -189,9 +173,9 @@ public class UniverseState implements State {
 
     @Override
     public String toString() {
-        return "UniverseState [creationMillis=" + creationMillis + ", fpsShowing=" + fpsShowing + ", trees=" + trees
-                + ", fallenLeaves=" + fallenLeaves + ", environment=" + environment + ", timeControllerState="
-                + timeControllerState + ", univ3DState=" + univ3DState + "]";
+        return "UniverseState [creationMillis=" + creationMillis + ", trees=" + trees + ", fallenLeaves="
+                + fallenLeaves + ", environment=" + environment + ", timeControllerState=" + timeControllerState
+                + ", univ3DState=" + univ3DState + "]";
     }
 
 }

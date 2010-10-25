@@ -23,7 +23,6 @@ import java.util.List;
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.time.FpsCounter;
 import barsuift.simLife.time.TimeController;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
@@ -59,12 +58,6 @@ public interface Universe extends LivingPart {
     public Environment getEnvironment();
 
     public Universe3D getUniverse3D();
-
-    public FpsCounter getFpsCounter();
-
-    public void setFpsShowing(boolean fpsShowing);
-
-    public boolean isFpsShowing();
 
     public TimeController getTimeController();
 

@@ -31,7 +31,6 @@ import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.time.BasicTimeController;
-import barsuift.simLife.time.FpsCounter;
 import barsuift.simLife.time.TimeController;
 import barsuift.simLife.tree.BasicTree;
 import barsuift.simLife.tree.BasicTreeLeaf;
@@ -46,8 +45,6 @@ public class BasicUniverse implements Universe {
 
     private final long creationMillis;
 
-    private boolean fpsShowing;
-
     private final List<Tree> trees;
 
     private final List<TreeLeaf> fallenLeaves;
@@ -58,12 +55,9 @@ public class BasicUniverse implements Universe {
 
     private final BasicUniverse3D universe3D;
 
-    private final FpsCounter fpsCounter;
 
     public BasicUniverse(UniverseState state) throws InitException {
         this.state = state;
-        this.fpsCounter = new FpsCounter();
-        this.fpsShowing = state.isFpsShowing();
         this.creationMillis = state.getCreationMillis();
         this.universe3D = new BasicUniverse3D();
         this.environment = new BasicEnvironment(state.getEnvironment());
@@ -89,24 +83,8 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public FpsCounter getFpsCounter() {
-        return fpsCounter;
-    }
-
-    @Override
-    public void setFpsShowing(boolean fpsShowing) {
-        this.fpsShowing = fpsShowing;
-    }
-
-    public boolean isFpsShowing() {
-        return fpsShowing;
-    }
-
-    @Override
     public void spendTime() {
-        if (fpsShowing) {
-            fpsCounter.tick();
-        }
+        // nothing to do
     }
 
     @Override
@@ -154,7 +132,6 @@ public class BasicUniverse implements Universe {
 
     @Override
     public void synchronize() {
-        state.setFpsShowing(fpsShowing);
         Set<TreeState> treeStates = new HashSet<TreeState>();
         for (Tree tree : trees) {
             treeStates.add((TreeState) tree.getState());

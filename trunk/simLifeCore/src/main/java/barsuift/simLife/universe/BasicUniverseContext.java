@@ -31,6 +31,8 @@ import barsuift.simLife.InitException;
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
+import barsuift.simLife.process.FpsTicker;
+import barsuift.simLife.time.FpsCounter;
 
 import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
 import com.sun.j3d.utils.behaviors.mouse.MouseBehavior;
@@ -43,6 +45,8 @@ public class BasicUniverseContext implements UniverseContext {
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
 
     private final UniverseContextState state;
+
+    private boolean fpsShowing;
 
     private boolean axisShowing;
 
@@ -57,12 +61,17 @@ public class BasicUniverseContext implements UniverseContext {
 
     private final Axis3DGroup axisGroup = new Axis3DGroup();
 
+    private final FpsCounter fpsCounter = new FpsCounter();
+
+    private FpsTicker fpsTicker;
+
     public BasicUniverseContext(UniverseContextState state) throws InitException {
         this.state = state;
         this.axisShowing = state.isAxisShowing();
+        this.fpsShowing = state.isFpsShowing();
 
         this.universe = new BasicUniverse(state.getUniverseState());
-        canvas3D = new BasicSimLifeCanvas3D(universe.getFpsCounter(), state.getCanvasState());
+        canvas3D = new BasicSimLifeCanvas3D(fpsCounter, state.getCanvasState());
         SimpleUniverse simpleU = new SimpleUniverse(canvas3D);
 
         // limit to graphic to 40 FPS (interval = 1000ms / 40 = 25)
@@ -97,13 +106,20 @@ public class BasicUniverseContext implements UniverseContext {
 
     @Override
     public void setFpsShowing(boolean fpsShowing) {
-        universe.setFpsShowing(fpsShowing);
+        this.fpsShowing = fpsShowing;
+        if (fpsShowing) {
+            fpsCounter.reset();
+            fpsTicker = new FpsTicker(fpsCounter);
+            universe.getTimeController().schedule(fpsTicker);
+        } else {
+            universe.getTimeController().unschedule(fpsTicker);
+        }
         canvas3D.setFpsShowing(fpsShowing);
     }
 
     @Override
     public boolean isFpsShowing() {
-        return universe.isFpsShowing() && canvas3D.isFpsShowing();
+        return fpsShowing && canvas3D.isFpsShowing();
     }
 
     @Override
@@ -153,6 +169,7 @@ public class BasicUniverseContext implements UniverseContext {
     @Override
     public void synchronize() {
         state.setAxisShowing(axisShowing);
+        state.setFpsShowing(fpsShowing);
         Transform3D transform3D = new Transform3D();
         viewTransform.getTransform(transform3D);
         double[] matrix = new double[16];

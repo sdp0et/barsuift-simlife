@@ -2,6 +2,7 @@ package barsuift.simLife.universe;
 
 import junit.framework.TestCase;
 import barsuift.simLife.InitException;
+import barsuift.simLife.tree.MockTree;
 
 
 public class BasicUniverseTest extends TestCase {
@@ -20,11 +21,11 @@ public class BasicUniverseTest extends TestCase {
         BasicUniverse universe = new BasicUniverse(state);
         assertEquals(state, universe.getState());
         assertSame(state, universe.getState());
-        assertFalse(universe.getState().isFpsShowing());
-        universe.setFpsShowing(true);
+        int nbTrees = universe.getState().getTrees().size();
+        universe.addTree(new MockTree());
         assertEquals(state, universe.getState());
         assertSame(state, universe.getState());
-        assertTrue(universe.getState().isFpsShowing());
+        assertEquals(nbTrees + 1, universe.getState().getTrees().size());
     }
 
 }
