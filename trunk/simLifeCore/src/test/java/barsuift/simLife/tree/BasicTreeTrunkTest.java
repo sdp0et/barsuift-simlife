@@ -56,7 +56,7 @@ public class BasicTreeTrunkTest extends TestCase {
 
         assertEquals(trunkState, treeTrunk.getState());
         assertSame(trunkState, treeTrunk.getState());
-        treeTrunk.spendTime();
+        // nothing to do here
         assertEquals(trunkState, treeTrunk.getState());
         assertSame(trunkState, treeTrunk.getState());
     }

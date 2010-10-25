@@ -37,42 +37,39 @@ import barsuift.simLife.j2d.button.OneStepButton;
 import barsuift.simLife.j2d.button.StartButton;
 import barsuift.simLife.j2d.button.StopButton;
 import barsuift.simLife.j2d.menu.Mnemonics;
-import barsuift.simLife.time.TimeController;
+import barsuift.simLife.process.Synchronizer;
 
 public class TimeControllerPanel extends JPanel {
 
     private static final long serialVersionUID = 5530349468986336456L;
-
-    private final TimeController controller;
 
     private final DateDisplay dateDisplay;
 
     /**
      * Panel with box layout ordered along the PAGE axis
      * 
-     * @param timeController the universe time controller
+     * @param synchronizer the synchronizer
      */
-    public TimeControllerPanel(TimeController timeController) {
+    public TimeControllerPanel(Synchronizer synchronizer) {
         super();
-        this.controller = timeController;
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setMaximumSize(new Dimension(220, 100));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        dateDisplay = new DateDisplay(controller.getDate());
+        dateDisplay = new DateDisplay(synchronizer.getDate());
         dateDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(dateDisplay);
 
-        JPanel speedPanel = createSpeedPanel(timeController);
+        JPanel speedPanel = createSpeedPanel(synchronizer);
         add(speedPanel);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        buttonPanel.add(new OneStepButton(controller));
-        buttonPanel.add(new StartButton(controller));
-        buttonPanel.add(new StopButton(controller));
+        buttonPanel.add(new OneStepButton(synchronizer));
+        buttonPanel.add(new StartButton(synchronizer));
+        buttonPanel.add(new StopButton(synchronizer));
         add(buttonPanel);
 
         Border blacklineBorder = BorderFactory.createLineBorder(Color.black);
@@ -80,22 +77,22 @@ public class TimeControllerPanel extends JPanel {
         setBorder(titledBorder);
     }
 
-    private JPanel createSpeedPanel(TimeController timeController) {
+    private JPanel createSpeedPanel(Synchronizer synchronizer) {
         JPanel speedPanel = new JPanel();
         speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));
-        SpeedAction actionNormalSpeed = new SpeedAction(timeController, "Normal", "Normal speed",
-                Mnemonics.SPEED_NORMAL, "1");
+        SpeedAction actionNormalSpeed = new SpeedAction(synchronizer, "Normal", "Normal speed", Mnemonics.SPEED_NORMAL,
+                "1");
         JRadioButton normalSpeed = new JRadioButton(actionNormalSpeed);
 
-        SpeedAction actionFastSpeed = new SpeedAction(timeController, "Fast", "Fast speed (about 10 times faster))",
+        SpeedAction actionFastSpeed = new SpeedAction(synchronizer, "Fast", "Fast speed (about 10 times faster))",
                 Mnemonics.SPEED_FAST, "10");
         JRadioButton fastSpeed = new JRadioButton(actionFastSpeed);
 
-        SpeedAction actionVeryFastSpeed = new SpeedAction(timeController, "Very fast",
+        SpeedAction actionVeryFastSpeed = new SpeedAction(synchronizer, "Very fast",
                 "Very fast speed (about 100 times faster)", Mnemonics.SPEED_VERY_FAST, "100");
         JRadioButton veryFastSpeed = new JRadioButton(actionVeryFastSpeed);
 
-        int speed = timeController.getSpeed();
+        int speed = synchronizer.getSpeed();
         if (speed == 1) {
             normalSpeed.setSelected(true);
         } else {

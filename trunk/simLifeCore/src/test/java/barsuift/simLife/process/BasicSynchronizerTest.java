@@ -1,27 +1,23 @@
 package barsuift.simLife.process;
 
 import junit.framework.TestCase;
-import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.InitException;
-import barsuift.simLife.time.BasicTimeController;
-import barsuift.simLife.time.TimeController;
-import barsuift.simLife.time.TimeControllerState;
-import barsuift.simLife.universe.MockUniverse;
+import barsuift.simLife.message.PublisherTestHelper;
+import barsuift.simLife.time.DateHandlerState;
+import barsuift.simLife.time.SimLifeDate;
 
 
-public class SynchronizerTest extends TestCase {
+public class BasicSynchronizerTest extends TestCase {
 
-    private Synchronizer synchro;
+    private BasicSynchronizer synchro;
 
     private SynchronizerState state;
 
     protected void setUp() throws Exception {
         super.setUp();
-        TimeControllerState timeControllerState = CoreDataCreatorForTests.createRandomTimeControllerState();
-        TimeController timeController = new BasicTimeController(new MockUniverse(), timeControllerState);
 
-        state = new SynchronizerState(1);
-        synchro = new Synchronizer(state, timeController);
+        state = new SynchronizerState(1, new DateHandlerState());
+        synchro = new BasicSynchronizer(state);
     }
 
     protected void tearDown() throws Exception {
@@ -46,13 +42,69 @@ public class SynchronizerTest extends TestCase {
     }
 
     public void testStart() throws InterruptedException {
+        assertFalse(synchro.isRunning());
+        assertEquals(new SimLifeDate(), synchro.getDate());
+        assertEquals(0, synchro.getDate().getTimeInMillis());
+
         synchro.start();
         Thread.sleep(100);
         assertTrue(synchro.isRunning());
+        assertTrue(synchro.getDate().getTimeInMillis() > 0);
 
         synchro.stop();
         Thread.sleep(100);
         assertFalse(synchro.isRunning());
+        long time = synchro.getDate().getTimeInMillis();
+        Thread.sleep(100);
+        // assert the time does not change anymore once stopped
+        assertEquals(time, synchro.getDate().getTimeInMillis());
+    }
+
+    public void testPublisher() throws Exception {
+        PublisherTestHelper publisherHelper = new PublisherTestHelper();
+        publisherHelper.addSubscriberTo(synchro);
+
+        synchro.start();
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertNull(publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        Thread.sleep(100);
+        synchro.stop();
+        Thread.sleep(100);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertNull(publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
+        synchro.oneStep();
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertNull(publisherHelper.getUpdateObjects().get(0));
+    }
+
+
+    public void testIllegalStateException() throws InterruptedException {
+        int speed = synchro.getSpeed();
+        try {
+            synchro.stop();
+            fail("IllegalStateException expected");
+        } catch (IllegalStateException ise) {
+            // OK expected exception
+        }
+        synchro.start();
+        // waiting 2 cycles
+        Thread.sleep(200 / speed + 10);
+        try {
+            synchro.start();
+            fail("IllegalStateException expected");
+        } catch (IllegalStateException ise) {
+            // OK expected exception
+        }
+        try {
+            synchro.oneStep();
+            fail("IllegalStateException expected");
+        } catch (IllegalStateException ise) {
+            // OK expected exception
+        }
     }
 
     public void testGetState() throws InterruptedException {
@@ -94,7 +146,7 @@ public class SynchronizerTest extends TestCase {
         assertEquals(1, mockRun1.getNbExecuted());
         assertEquals(0, mockRun2.getNbExecuted());
         assertEquals(0, mockRun3.getNbExecuted());
-        
+
         mockRun1.resetNbExecuted();
         synchro.schedule(mockRun2);
         synchro.oneStep();

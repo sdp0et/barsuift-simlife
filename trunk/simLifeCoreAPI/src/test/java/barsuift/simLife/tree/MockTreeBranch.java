@@ -36,8 +36,6 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     private int collectSolarEnergyCalled = 0;
 
-    private int spendTimeCalled = 0;
-
     private int nbLeaves = 0;
 
     private TreeBranch3D branch3D = new MockTreeBranch3D();
@@ -93,19 +91,6 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     public int getNbCollectSolarEnergyCalled() {
         return collectSolarEnergyCalled;
-    }
-
-    @Override
-    public void spendTime() {
-        spendTimeCalled++;
-    }
-
-    public int howManyTimesSpendTimeCalled() {
-        return spendTimeCalled;
-    }
-
-    public void resetSpendTimeCalled() {
-        this.spendTimeCalled = 0;
     }
 
     @Override

@@ -29,8 +29,6 @@ import barsuift.simLife.message.MockSubscriber;
 
 public class MockTreeBranchPart extends MockSubscriber implements TreeBranchPart {
 
-    private int spendTimeCalled = 0;
-
     private TreeBranchPart3D branchPart3D = new MockTreeBranchPart3D();
 
     private List<TreeLeaf> leaves = new ArrayList<TreeLeaf>();
@@ -124,19 +122,6 @@ public class MockTreeBranchPart extends MockSubscriber implements TreeBranchPart
 
     public int getNbCollectSolarEnergyCalled() {
         return collectSolarEnergyCalled;
-    }
-
-    @Override
-    public void spendTime() {
-        spendTimeCalled++;
-    }
-
-    public int howManyTimesSpendTimeCalled() {
-        return spendTimeCalled;
-    }
-
-    public void resetSpendTimeCalled() {
-        this.spendTimeCalled = 0;
     }
 
     @Override

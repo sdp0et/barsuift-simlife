@@ -29,8 +29,11 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import barsuift.simLife.InitException;
-import barsuift.simLife.Persistent;
-import barsuift.simLife.time.TimeController;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
+import barsuift.simLife.time.DateHandler;
+import barsuift.simLife.time.SimLifeDate;
 
 /**
  * The synchronizer allows to run the list of given {@link SynchronizedRunnable} at a given rate. A
@@ -38,7 +41,7 @@ import barsuift.simLife.time.TimeController;
  * {@link ScheduledExecutorService}, is used to ensure there is always the same delay between two runs.
  * 
  */
-public class Synchronizer implements Persistent<SynchronizerState> {
+public class BasicSynchronizer implements Synchronizer {
 
     /**
      * Length of a cycle, used to schedule the temporizer, and to know how much to add to the date at each iteration.
@@ -46,6 +49,8 @@ public class Synchronizer implements Persistent<SynchronizerState> {
     public static final int CYCLE_LENGTH_MS = 100;
 
     private final SynchronizerState state;
+
+    private final DateHandler dateHandler;
 
     private boolean running;
 
@@ -73,33 +78,49 @@ public class Synchronizer implements Persistent<SynchronizerState> {
     private final ConcurrentLinkedQueue<SynchronizedRunnable> tasksToUnschedule = new ConcurrentLinkedQueue<SynchronizedRunnable>();
 
 
-    public Synchronizer(SynchronizerState state, TimeController timeController) throws InitException {
+    private final Publisher publisher = new BasicPublisher(this);
+
+
+    public BasicSynchronizer(SynchronizerState state) throws InitException {
         this.state = state;
         this.running = false;
         this.isStopAsked = false;
         this.speed = state.getSpeed();
+        this.dateHandler = new DateHandler(state.getDateHandler());
         this.barrier = new CyclicBarrier(1, new BarrierTask());
         this.temporizer = new Temporizer(barrier);
         this.scheduledThreadPool = Executors.newScheduledThreadPool(1);
         this.standardThreadPool = Executors.newFixedThreadPool(64);
+        DateUpdater dateUpdater = new DateUpdater(dateHandler.getDate());
+        schedule(dateUpdater);
     }
 
+    @Override
+    public SimLifeDate getDate() {
+        return dateHandler.getDate();
+    }
+
+    @Override
     public void setSpeed(int speed) {
         this.speed = speed;
     }
 
+    @Override
     public int getSpeed() {
         return speed;
     }
 
+    @Override
     public boolean isRunning() {
         return running;
     }
 
+    @Override
     public void schedule(SynchronizedRunnable runnable) {
         newTasksToSchedule.add(runnable);
     }
 
+    @Override
     public void unschedule(SynchronizedRunnable runnable) {
         // first try to remove it from the list of tasks to add
         if (!newTasksToSchedule.remove(runnable)) {
@@ -116,6 +137,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
      * 
      * @throws IllegalStateException if the synchronizer is already running
      */
+    @Override
     public synchronized void oneStep() {
         isStopAsked = true;
         internalStart();
@@ -129,6 +151,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
      * 
      * @throws IllegalStateException if the synchronizer is already running
      */
+    @Override
     public synchronized void start() {
         isStopAsked = false;
         internalStart();
@@ -148,6 +171,8 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         for (Runnable runnable : runnables) {
             standardThreadPool.submit(runnable);
         }
+        setChanged();
+        notifySubscribers();
     }
 
     /**
@@ -158,8 +183,23 @@ public class Synchronizer implements Persistent<SynchronizerState> {
      * 
      * @throws IllegalStateException if the synchronizer is not running
      */
+    @Override
     public synchronized void stop() {
+        if (running == false) {
+            throw new IllegalStateException("The synchronizer is not running");
+        }
         isStopAsked = true;
+    }
+
+    public synchronized void stopAndWait() {
+        stop();
+        while (isRunning()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ie) {
+                return;
+            }
+        }
     }
 
     private void internalStop() {
@@ -172,6 +212,8 @@ public class Synchronizer implements Persistent<SynchronizerState> {
         for (SynchronizedRunnable runnable : runnables) {
             runnable.stop();
         }
+        setChanged();
+        notifySubscribers();
     }
 
     @Override
@@ -183,6 +225,7 @@ public class Synchronizer implements Persistent<SynchronizerState> {
     @Override
     public void synchronize() {
         state.setSpeed(speed);
+        dateHandler.synchronize();
     }
 
 
@@ -221,6 +264,42 @@ public class Synchronizer implements Persistent<SynchronizerState> {
                 }
             }
         }
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
     /**

@@ -30,8 +30,6 @@ public class MockTreeTrunk implements TreeTrunk {
 
     private float radius = 0;
 
-    private int spendTimeCalled = 0;
-
     private TreeTrunkState state = new TreeTrunkState();
 
     private TreeTrunk3D trunk3D = new MockTreeTrunk3D();
@@ -80,19 +78,6 @@ public class MockTreeTrunk implements TreeTrunk {
 
     public void setCreationMillis(long creationMillis) {
         this.creationMillis = creationMillis;
-    }
-
-    @Override
-    public void spendTime() {
-        spendTimeCalled++;
-    }
-
-    public int howManyTimesSpendTimeCalled() {
-        return spendTimeCalled;
-    }
-
-    public void resetSpendTimeCalled() {
-        this.spendTimeCalled = 0;
     }
 
     @Override

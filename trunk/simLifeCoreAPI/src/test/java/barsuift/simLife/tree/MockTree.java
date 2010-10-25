@@ -43,8 +43,6 @@ public class MockTree implements Tree {
 
     private int nbLeaves = 0;
 
-    private int spendTimeCalled = 0;
-
     private TreeState state = new TreeState();
 
     private Tree3D tree3D = new MockTree3D();
@@ -126,19 +124,6 @@ public class MockTree implements Tree {
 
     public int getNbCollectSolarEnergyCalled() {
         return collectSolarEnergyCalled;
-    }
-
-    public int howManyTimesSpendTimeCalled() {
-        return spendTimeCalled;
-    }
-
-    public void resetSpendTimeCalled() {
-        this.spendTimeCalled = 0;
-    }
-
-    @Override
-    public void spendTime() {
-        spendTimeCalled++;
     }
 
     @Override

@@ -72,24 +72,16 @@ public class BasicTree implements Tree {
         this.trunk = new BasicTreeTrunk(universe, state.getTrunkState());
         this.tree3D = new BasicTree3D(universe.getUniverse3D(), state.getTree3DState(), this);
         this.photosynthesis = new Photosynthesis(state.getPhotosynthesis(), this);
-        universe.getTimeController().schedule(photosynthesis);
+        universe.getSynchronizer().schedule(photosynthesis);
         this.aging = new AgingTree(state.getAging(), this);
-        universe.getTimeController().schedule(aging);
+        universe.getSynchronizer().schedule(aging);
         this.growth = new TreeGrowth(state.getGrowth(), this);
-        universe.getTimeController().schedule(growth);
+        universe.getSynchronizer().schedule(growth);
     }
 
     @Override
     public long getCreationMillis() {
         return creationMillis;
-    }
-
-    /**
-     * Make all branches spend time
-     */
-    @Override
-    public void spendTime() {
-        // nothing to do
     }
 
     @Override

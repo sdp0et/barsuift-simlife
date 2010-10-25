@@ -80,10 +80,6 @@ public class BasicTreeLeaf implements TreeLeaf {
         this.leaf3D = new BasicTreeLeaf3D(universe.getUniverse3D(), leafState.getLeaf3DState(), this);
     }
 
-    public void spendTime() {
-        // nothing to do
-    }
-
     /**
      * Reduce the efficiency by 5 percent, and notify subscribers. If the leaf is too weak, then fall (notify
      * subscribers).

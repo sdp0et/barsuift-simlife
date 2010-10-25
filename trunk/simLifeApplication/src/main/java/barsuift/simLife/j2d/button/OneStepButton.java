@@ -7,29 +7,28 @@ import javax.swing.JButton;
 
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
-import barsuift.simLife.time.TimeController;
+import barsuift.simLife.process.Synchronizer;
 
-// TODO 025. once TimeMessenger is removed, the button and action classes should use directly the synchronizer
 public class OneStepButton extends JButton implements Subscriber {
 
     private static final long serialVersionUID = 1547061708163353428L;
 
-    public OneStepButton(final TimeController controller) {
+    public OneStepButton(final Synchronizer synchronizer) {
         super("ONE STEP");
-        controller.addSubscriber(this);
+        synchronizer.addSubscriber(this);
         addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 setEnabled(false);
-                controller.oneStep();
+                synchronizer.oneStep();
             }
         });
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (((TimeController) publisher).isRunning()) {
+        if (((Synchronizer) publisher).isRunning()) {
             setEnabled(false);
         } else {
             setEnabled(true);

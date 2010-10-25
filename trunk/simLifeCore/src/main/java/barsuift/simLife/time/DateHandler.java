@@ -19,8 +19,6 @@
 package barsuift.simLife.time;
 
 import barsuift.simLife.Persistent;
-import barsuift.simLife.process.DateUpdater;
-import barsuift.simLife.process.Synchronizer;
 
 public class DateHandler implements Persistent<DateHandlerState> {
 
@@ -28,14 +26,9 @@ public class DateHandler implements Persistent<DateHandlerState> {
 
     private SimLifeDate date;
 
-    private DateUpdater dateUpdater;
-
-    public DateHandler(DateHandlerState state, Synchronizer synchronizer) {
+    public DateHandler(DateHandlerState state) {
         this.state = state;
         this.date = new SimLifeDate(state.getDate());
-        this.dateUpdater = new DateUpdater(date);
-        synchronizer.schedule(dateUpdater);
-
     }
 
     public SimLifeDate getDate() {

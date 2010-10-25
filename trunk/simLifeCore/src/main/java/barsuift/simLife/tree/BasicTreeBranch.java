@@ -73,14 +73,6 @@ public class BasicTreeBranch implements TreeBranch {
     }
 
     /**
-     * Make all parts spend time.
-     */
-    @Override
-    public void spendTime() {
-        // nothing to do
-    }
-
-    /**
      * Return the sum of branch parts energies
      */
     @Override

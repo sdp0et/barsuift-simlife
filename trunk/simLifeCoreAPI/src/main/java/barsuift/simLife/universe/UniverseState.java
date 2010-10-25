@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import barsuift.simLife.State;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.j3d.universe.Universe3DState;
-import barsuift.simLife.time.TimeControllerState;
+import barsuift.simLife.process.SynchronizerState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 
@@ -41,7 +41,7 @@ public class UniverseState implements State {
 
     private EnvironmentState environment;
 
-    private TimeControllerState timeControllerState;
+    private SynchronizerState synchronizerState;
 
     private Universe3DState univ3DState;
 
@@ -51,18 +51,18 @@ public class UniverseState implements State {
         this.trees = new HashSet<TreeState>();
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
-        this.timeControllerState = new TimeControllerState();
+        this.synchronizerState = new SynchronizerState();
         this.univ3DState = new Universe3DState();
     }
 
     public UniverseState(long creationMillis, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves,
-            EnvironmentState environment, TimeControllerState timeControllerState, Universe3DState univ3DState) {
+            EnvironmentState environment, SynchronizerState synchronizerState, Universe3DState univ3DState) {
         super();
         this.creationMillis = creationMillis;
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
-        this.timeControllerState = timeControllerState;
+        this.synchronizerState = synchronizerState;
         this.univ3DState = univ3DState;
     }
 
@@ -98,12 +98,12 @@ public class UniverseState implements State {
         this.environment = environment;
     }
 
-    public TimeControllerState getTimeControllerState() {
-        return timeControllerState;
+    public SynchronizerState getSynchronizerState() {
+        return synchronizerState;
     }
 
-    public void setTimeControllerState(TimeControllerState timeControllerState) {
-        this.timeControllerState = timeControllerState;
+    public void setSynchronizerState(SynchronizerState synchronizerState) {
+        this.synchronizerState = synchronizerState;
     }
 
     public Universe3DState getUniv3DState() {
@@ -120,7 +120,7 @@ public class UniverseState implements State {
         int result = 1;
         result = prime * result + (int) (creationMillis ^ (creationMillis >>> 32));
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
-        result = prime * result + ((timeControllerState == null) ? 0 : timeControllerState.hashCode());
+        result = prime * result + ((synchronizerState == null) ? 0 : synchronizerState.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
         result = prime * result + ((trees == null) ? 0 : trees.hashCode());
         result = prime * result + ((univ3DState == null) ? 0 : univ3DState.hashCode());
@@ -144,11 +144,11 @@ public class UniverseState implements State {
         } else
             if (!environment.equals(other.environment))
                 return false;
-        if (timeControllerState == null) {
-            if (other.timeControllerState != null)
+        if (synchronizerState == null) {
+            if (other.synchronizerState != null)
                 return false;
         } else
-            if (!timeControllerState.equals(other.timeControllerState))
+            if (!synchronizerState.equals(other.synchronizerState))
                 return false;
         if (fallenLeaves == null) {
             if (other.fallenLeaves != null)
@@ -174,7 +174,7 @@ public class UniverseState implements State {
     @Override
     public String toString() {
         return "UniverseState [creationMillis=" + creationMillis + ", trees=" + trees + ", fallenLeaves="
-                + fallenLeaves + ", environment=" + environment + ", timeControllerState=" + timeControllerState
+                + fallenLeaves + ", environment=" + environment + ", synchronizerState=" + synchronizerState
                 + ", univ3DState=" + univ3DState + "]";
     }
 

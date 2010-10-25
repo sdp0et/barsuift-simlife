@@ -77,11 +77,6 @@ public class BasicTreeTrunk implements TreeTrunk {
     }
 
     @Override
-    public void spendTime() {
-        // nothing to do
-    }
-
-    @Override
     public TreeTrunk3D getTreeTrunk3D() {
         return trunk3D;
     }

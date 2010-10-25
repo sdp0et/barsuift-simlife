@@ -30,8 +30,8 @@ import barsuift.simLife.environment.BasicEnvironment;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.time.BasicTimeController;
-import barsuift.simLife.time.TimeController;
+import barsuift.simLife.process.BasicSynchronizer;
+import barsuift.simLife.process.Synchronizer;
 import barsuift.simLife.tree.BasicTree;
 import barsuift.simLife.tree.BasicTreeLeaf;
 import barsuift.simLife.tree.Tree;
@@ -51,7 +51,7 @@ public class BasicUniverse implements Universe {
 
     private final Environment environment;
 
-    private final TimeController timeController;
+    private final BasicSynchronizer synchronizer;
 
     private final BasicUniverse3D universe3D;
 
@@ -61,7 +61,7 @@ public class BasicUniverse implements Universe {
         this.creationMillis = state.getCreationMillis();
         this.universe3D = new BasicUniverse3D();
         this.environment = new BasicEnvironment(state.getEnvironment());
-        this.timeController = new BasicTimeController(this, state.getTimeControllerState());
+        this.synchronizer = new BasicSynchronizer(state.getSynchronizerState());
         this.trees = new ArrayList<Tree>();
         Set<TreeState> treeStates = state.getTrees();
         for (TreeState treeState : treeStates) {
@@ -80,11 +80,6 @@ public class BasicUniverse implements Universe {
     @Override
     public long getCreationMillis() {
         return creationMillis;
-    }
-
-    @Override
-    public void spendTime() {
-        // nothing to do
     }
 
     @Override
@@ -120,8 +115,8 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public TimeController getTimeController() {
-        return timeController;
+    public Synchronizer getSynchronizer() {
+        return synchronizer;
     }
 
     @Override
@@ -143,7 +138,7 @@ public class BasicUniverse implements Universe {
         }
         state.setFallenLeaves(fallenLeaveStates);
         environment.synchronize();
-        timeController.synchronize();
+        synchronizer.synchronize();
     }
 
     @Override

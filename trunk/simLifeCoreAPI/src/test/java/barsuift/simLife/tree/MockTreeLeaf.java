@@ -34,8 +34,6 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
 
     private BigDecimal freeEnergy = new BigDecimal(0);
 
-    private int nbTilesSpendTimeCalled;
-
     private boolean isTooWeak;
 
     private TreeLeaf3D treeLeaf3D = new MockTreeLeaf3D();
@@ -57,19 +55,6 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
     @Override
     public BigDecimal getEfficiency() {
         return efficiency;
-    }
-
-    @Override
-    public void spendTime() {
-        nbTilesSpendTimeCalled++;
-    }
-
-    public int getNbTilesSpendTimeCalled() {
-        return nbTilesSpendTimeCalled;
-    }
-
-    public void resetNbTilesSpendTimeCalled() {
-        this.nbTilesSpendTimeCalled = 0;
     }
 
     public void setEfficiency(BigDecimal efficiency) {
