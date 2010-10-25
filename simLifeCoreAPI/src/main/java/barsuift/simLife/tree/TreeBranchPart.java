@@ -27,6 +27,11 @@ import barsuift.simLife.message.Subscriber;
 
 public interface TreeBranchPart extends LivingPart, Photosynthetic, Subscriber {
 
+    /**
+     * Potentially create new leaves, or increase size of existing ones.
+     */
+    public void grow();
+
     public int getNbLeaves();
 
     public Collection<TreeLeaf> getLeaves();

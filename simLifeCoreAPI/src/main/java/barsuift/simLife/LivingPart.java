@@ -20,6 +20,7 @@ package barsuift.simLife;
 
 // TODO 013. remove the LivingPart#spendTime method
 // TODO 015. remove the TimeMessenger class
+// TODO 017. add age method to LivingPart. Make Universe does not implement this interface
 public interface LivingPart extends Persistent<State> {
 
     /**
