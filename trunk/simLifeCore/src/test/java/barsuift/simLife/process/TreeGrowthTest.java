@@ -48,6 +48,8 @@ public class TreeGrowthTest extends TestCase {
         treeGrowth.executeUnfrequentStep();
 
         assertEquals(1, mockLeaf.getNbImproveEfficiencyCalled());
+
+        assertEquals(1, mockBranchPart.getNbGrowCalled());
     }
 
 }

@@ -25,6 +25,7 @@ public class TreeGrowth extends UnfrequentRunnable {
         for (TreeBranch branch : branches) {
             List<TreeBranchPart> parts = branch.getParts();
             for (TreeBranchPart part : parts) {
+                part.grow();
                 Collection<TreeLeaf> leaves = part.getLeaves();
                 for (TreeLeaf leaf : leaves) {
                     leaf.improveEfficiency();

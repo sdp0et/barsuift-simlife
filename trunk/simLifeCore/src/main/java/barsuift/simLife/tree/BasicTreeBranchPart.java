@@ -110,11 +110,12 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         return creationMillis;
     }
 
-    /**
-     * Make all leaves spend time.
-     */
-    @Override
     public void spendTime() {
+        // nothing to do
+    }
+
+    @Override
+    public void grow() {
         if (shouldCreateOneNewLeaf() && canCreateOneNewLeaf()) {
             createOneNewLeaf();
         }

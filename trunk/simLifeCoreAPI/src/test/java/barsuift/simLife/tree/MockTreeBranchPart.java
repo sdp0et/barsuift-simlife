@@ -47,7 +47,9 @@ public class MockTreeBranchPart extends MockSubscriber implements TreeBranchPart
 
     private int collectSolarEnergyCalled = 0;
 
-    private int synchronizedCalled;
+    private int synchronizedCalled = 0;
+
+    private int growCalled = 0;
 
     @Override
     public TreeBranchPart3D getBranchPart3D() {
@@ -135,6 +137,15 @@ public class MockTreeBranchPart extends MockSubscriber implements TreeBranchPart
 
     public void resetSpendTimeCalled() {
         this.spendTimeCalled = 0;
+    }
+
+    @Override
+    public void grow() {
+        growCalled++;
+    }
+
+    public int getNbGrowCalled() {
+        return growCalled;
     }
 
     @Override
