@@ -61,8 +61,6 @@ public class BasicTreeLeaf implements TreeLeaf {
 
     private final Universe universe;
 
-    private int updateMask;
-
     private final Publisher publisher = new BasicPublisher(this);
 
     public BasicTreeLeaf(Universe universe, TreeLeafState leafState) {
@@ -80,7 +78,6 @@ public class BasicTreeLeaf implements TreeLeaf {
 
         this.universe = universe;
         this.leaf3D = new BasicTreeLeaf3D(universe.getUniverse3D(), leafState.getLeaf3DState(), this);
-        this.updateMask = 0;
     }
 
     /**
@@ -88,28 +85,26 @@ public class BasicTreeLeaf implements TreeLeaf {
      * <p>
      * Concretely, it means :
      * <ol>
-     * <li>reduce the efficiency by 5 percent</li>
-     * <li>if the leaf is too weak, then fall, else, use collected energy to improve the leaf efficiency</li>
+     * <li>use collected energy to improve the leaf efficiency</li>
      * </ol>
      * </p>
      */
     public void spendTime() {
-        updateMask = 0;
-        age();
-        if (isTooWeak()) {
-            fall();
-        } else {
-            useEnergy();
-        }
-        if (hasChanged()) {
-            notifySubscribers(updateMask);
-        }
+        useEnergy();
     }
 
-    private void age() {
+    /**
+     * Reduce the efficiency by 5 percent, and notify subscribers. If the leaf is too weak, then fall (notify
+     * subscribers).
+     */
+    @Override
+    public void age() {
         efficiency = efficiency.multiply(AGING_EFFICIENCY_DECREASE);
         setChanged();
-        updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
+        notifySubscribers(LeafUpdateMask.EFFICIENCY_MASK);
+        if (isTooWeak()) {
+            fall();
+        }
     }
 
     @Override
@@ -139,7 +134,7 @@ public class BasicTreeLeaf implements TreeLeaf {
     private void fall() {
         universe.addFallenLeaf(this);
         setChanged();
-        updateMask |= LeafUpdateMask.FALL_MASK;
+        notifySubscribers(LeafUpdateMask.FALL_MASK);
     }
 
     private void useEnergy() {
@@ -157,8 +152,8 @@ public class BasicTreeLeaf implements TreeLeaf {
         BigDecimal efficiencyToAdd = maxEfficiencyToAdd.min(energy.movePointLeft(2));
         efficiency = efficiency.add(efficiencyToAdd).setScale(10, RoundingMode.HALF_DOWN);
         setChanged();
-        updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
         energy = energy.subtract(efficiencyToAdd.movePointRight(2)).setScale(5, RoundingMode.HALF_DOWN);
+        notifySubscribers(LeafUpdateMask.EFFICIENCY_MASK);
     }
 
     @Override

@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
-import barsuift.simLife.message.Publisher;
-import barsuift.simLife.message.Subscriber;
 
 public class PublisherTestHelper extends Assert {
 
@@ -40,7 +38,7 @@ public class PublisherTestHelper extends Assert {
         updateObjects = new ArrayList<Object>();
     }
 
-    public void addSubscriber(final Publisher publisher) {
+    public void addSubscriberTo(final Publisher publisher) {
         publisher.addSubscriber(new Subscriber() {
 
             public void update(Publisher publisher_, Object arg) {

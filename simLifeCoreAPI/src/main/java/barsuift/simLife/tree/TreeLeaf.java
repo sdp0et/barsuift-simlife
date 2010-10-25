@@ -59,4 +59,10 @@ public interface TreeLeaf extends LivingPart, Publisher {
      */
     public void collectSolarEnergy();
 
+    /**
+     * Make the leaf older than it was. Depending, on implementations, the consequences may vary. Typical consequence is
+     * the leaf efficiency is reduced.
+     */
+    public void age();
+
 }

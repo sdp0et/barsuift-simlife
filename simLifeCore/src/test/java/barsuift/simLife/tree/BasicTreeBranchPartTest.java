@@ -97,7 +97,7 @@ public class BasicTreeBranchPartTest extends TestCase {
         for (TreeLeaf leaf : branchPart.getLeaves()) {
             PublisherTestHelper publisherHelper = new PublisherTestHelper();
             publisherHelpers.add(publisherHelper);
-            publisherHelper.addSubscriber(leaf);
+            publisherHelper.addSubscriberTo(leaf);
             assertEquals(0, publisherHelper.nbUpdated());
         }
 
@@ -146,7 +146,10 @@ public class BasicTreeBranchPartTest extends TestCase {
         branchPart = new BasicTreeBranchPart(universe, branchPartState);
         int nbLeaves = branchPart.getNbLeaves();
 
-        branchPart.spendTime();
+        // branchPart.spendTime();
+        for (TreeLeaf leaf : branchPart.getLeaves()) {
+            leaf.age();
+        }
 
         assertEquals("one leaf should have been removed", nbLeaves - 1, branchPart.getNbLeaves());
         for (TreeLeaf leaf : branchPart.getLeaves()) {
@@ -154,7 +157,7 @@ public class BasicTreeBranchPartTest extends TestCase {
             assertFalse(firstLeafState.equals(leaf.getState()));
         }
         // simulate one leaf is aging, but not falling
-        branchPart.update((Publisher) branchPart.getLeaves().get(0), LeafUpdateMask.EFFICIENCY_MASK);
+        branchPart.update((Publisher) branchPart.getLeaves().toArray()[0], LeafUpdateMask.EFFICIENCY_MASK);
         assertEquals("no leaf should have been removed", nbLeaves - 1, branchPart.getNbLeaves());
     }
 
@@ -295,7 +298,7 @@ public class BasicTreeBranchPartTest extends TestCase {
 
         assertEquals(1, part.getNbLeaves());
         assertEquals(1, part.getBranchPart3D().getLeaves().size());
-        TreeLeaf newLeaf = part.getLeaves().get(part.getLeaves().size() - 1);
+        TreeLeaf newLeaf = (TreeLeaf) part.getLeaves().toArray()[part.getLeaves().size() - 1];
         // there should be 2 subscribers, one of which is the part itself (the other one is the leaf3D)
         assertEquals(2, newLeaf.countSubscribers());
         newLeaf.deleteSubscriber(part);
@@ -486,16 +489,16 @@ public class BasicTreeBranchPartTest extends TestCase {
         part.increaseOneLeafSize();
 
 
-        PointTestHelper.assertPointEquals(firstInitialEndPoint1, part.getLeaves().get(0).getTreeLeaf3D().getState()
-                .getEndPoint1().toPointValue());
+        PointTestHelper.assertPointEquals(firstInitialEndPoint1, ((TreeLeaf) part.getLeaves().toArray()[0])
+                .getTreeLeaf3D().getState().getEndPoint1().toPointValue());
         assertEquals(new BigDecimal(130), part.getEnergy());
 
         part.increaseOneLeafSize();
 
         Point3d expectedEndPoint = new Point3d(firstInitialEndPoint1.getX() * 2, firstInitialEndPoint1.getY() * 2,
                 firstInitialEndPoint1.getZ() * 2);
-        PointTestHelper.assertPointEquals(expectedEndPoint, part.getLeaves().get(0).getTreeLeaf3D().getState()
-                .getEndPoint1().toPointValue());
+        PointTestHelper.assertPointEquals(expectedEndPoint, ((TreeLeaf) part.getLeaves().toArray()[0]).getTreeLeaf3D()
+                .getState().getEndPoint1().toPointValue());
         assertEquals(new BigDecimal(110), part.getEnergy());
     }
 

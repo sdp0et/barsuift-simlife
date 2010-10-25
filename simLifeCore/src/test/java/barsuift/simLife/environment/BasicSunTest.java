@@ -105,7 +105,7 @@ public class BasicSunTest extends TestCase {
     }
 
     public void testSubscriberLuminosity() {
-        publisherHelper.addSubscriber(sun);
+        publisherHelper.addSubscriberTo(sun);
         assertEquals(sunState.getLuminosity(), sun.getLuminosity());
         sun.setLuminosity(PercentHelper.getDecimalValue(90));
         assertEquals(PercentHelper.getDecimalValue(90), sun.getLuminosity());
@@ -114,7 +114,7 @@ public class BasicSunTest extends TestCase {
     }
 
     public void testSubscriberLuminosityUnchanged() {
-        publisherHelper.addSubscriber(sun);
+        publisherHelper.addSubscriberTo(sun);
         assertEquals(sunState.getLuminosity(), sun.getLuminosity());
         sun.setLuminosity(sunState.getLuminosity());
         assertEquals(sunState.getLuminosity(), sun.getLuminosity());
@@ -124,7 +124,7 @@ public class BasicSunTest extends TestCase {
     }
 
     public void testSubscriberRiseAngle() {
-        publisherHelper.addSubscriber(sun);
+        publisherHelper.addSubscriberTo(sun);
         assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
         sun.setRiseAngle(PercentHelper.getDecimalValue(50));
         assertEquals(PercentHelper.getDecimalValue(50), sun.getRiseAngle());
@@ -133,7 +133,7 @@ public class BasicSunTest extends TestCase {
     }
 
     public void testSubscriberRiseAngleUnchanged() {
-        publisherHelper.addSubscriber(sun);
+        publisherHelper.addSubscriberTo(sun);
         assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
         sun.setRiseAngle(sunState.getRiseAngle());
         assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
@@ -143,7 +143,7 @@ public class BasicSunTest extends TestCase {
     }
 
     public void testSubscriberZenithAngle() {
-        publisherHelper.addSubscriber(sun);
+        publisherHelper.addSubscriberTo(sun);
         assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
         sun.setZenithAngle(PercentHelper.getDecimalValue(75));
         assertEquals(PercentHelper.getDecimalValue(75), sun.getZenithAngle());
@@ -152,7 +152,7 @@ public class BasicSunTest extends TestCase {
     }
 
     public void testSubscriberZenithAngleUnchanged() {
-        publisherHelper.addSubscriber(sun);
+        publisherHelper.addSubscriberTo(sun);
         assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
         sun.setZenithAngle(sunState.getZenithAngle());
         assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());

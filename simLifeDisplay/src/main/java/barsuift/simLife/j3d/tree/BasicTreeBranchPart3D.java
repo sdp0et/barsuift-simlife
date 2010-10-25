@@ -19,6 +19,7 @@
 package barsuift.simLife.j3d.tree;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.media.j3d.Appearance;
@@ -135,7 +136,7 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
     @Override
     public List<TreeLeaf3D> getLeaves() {
         List<TreeLeaf3D> result = new ArrayList<TreeLeaf3D>();
-        List<TreeLeaf> leaves = branchPart.getLeaves();
+        Collection<TreeLeaf> leaves = branchPart.getLeaves();
         for (TreeLeaf leaf : leaves) {
             result.add(leaf.getTreeLeaf3D());
         }

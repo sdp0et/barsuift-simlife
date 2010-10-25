@@ -115,8 +115,25 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
     }
 
+    public void testAge() {
+        publisherHelper.addSubscriberTo(leaf);
+        assertEquals(0, publisherHelper.nbUpdated());
+
+        // efficiency before aging = 0.80
+        assertEquals(0.80, leaf.getEfficiency().doubleValue(), 0.0000000001);
+
+        leaf.age();
+
+        // /efficiency after aging = 0.80 * 0.95 = 0.76
+        assertEquals(0.76, leaf.getEfficiency().doubleValue(), 0.0000000001);
+
+        assertEquals(1, publisherHelper.nbUpdated());
+        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
+    }
+
     public void testSpendTime1() {
-        publisherHelper.addSubscriber(leaf);
+        publisherHelper.addSubscriberTo(leaf);
 
         assertEquals(0, publisherHelper.nbUpdated());
 
@@ -147,7 +164,7 @@ public class BasicTreeLeafTest extends TestCase {
     public void testSpendTime2() {
         leafState.setEfficiency(new BigDecimal("0.999999"));
         leaf = new BasicTreeLeaf(universe, leafState);
-        publisherHelper.addSubscriber(leaf);
+        publisherHelper.addSubscriberTo(leaf);
 
         assertEquals(0, publisherHelper.nbUpdated());
 
@@ -180,7 +197,7 @@ public class BasicTreeLeafTest extends TestCase {
     public void testSpendTime3() {
         leafState.setEfficiency(new BigDecimal("0.991"));
         leaf = new BasicTreeLeaf(universe, leafState);
-        publisherHelper.addSubscriber(leaf);
+        publisherHelper.addSubscriberTo(leaf);
 
         assertEquals(0, publisherHelper.nbUpdated());
 
@@ -214,19 +231,22 @@ public class BasicTreeLeafTest extends TestCase {
         leafState.setEfficiency(PercentHelper.getDecimalValue(10));
         leaf = new BasicTreeLeaf(universe, leafState);
         attachLeaf3DIn3dStructure();
-        publisherHelper.addSubscriber(leaf);
+        publisherHelper.addSubscriberTo(leaf);
 
         assertFalse(leaf.isTooWeak());
 
-        leaf.spendTime();
+        leaf.age();
 
         assertTrue(leaf.getEfficiency().doubleValue() < 0.1);
         assertTrue(leaf.isTooWeak());
 
-        assertEquals(1, publisherHelper.nbUpdated());
-        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK));
+        assertEquals(2, publisherHelper.nbUpdated());
+        // first the age method notifies about efficiency
+        int updateParam1 = (Integer) publisherHelper.getUpdateObjects().get(0);
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam1, LeafUpdateMask.EFFICIENCY_MASK));
+        // then the fall method notifies about fall
+        int updateParam2 = (Integer) publisherHelper.getUpdateObjects().get(1);
+        assertTrue(LeafUpdateMask.isFieldSet(updateParam2, LeafUpdateMask.FALL_MASK));
 
         MockGravity gravity = (MockGravity) universe.getUniverse3D().getPhysics().getGravity();
         assertEquals(bg, gravity.getFallenGroup());
