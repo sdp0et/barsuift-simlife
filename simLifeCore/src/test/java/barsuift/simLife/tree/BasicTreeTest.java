@@ -24,6 +24,10 @@ import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
+import barsuift.simLife.process.AgingTree;
+import barsuift.simLife.process.Photosynthesis;
+import barsuift.simLife.process.TreeGrowth;
+import barsuift.simLife.time.MockTimeController;
 import barsuift.simLife.universe.MockUniverse;
 
 public class BasicTreeTest extends TestCase {
@@ -62,6 +66,12 @@ public class BasicTreeTest extends TestCase {
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
+        MockTimeController timeController = (MockTimeController) universe.getTimeController();
+        assertEquals(3, timeController.getNbScheduleCalled());
+        assertEquals(3, timeController.getScheduledRunnables().size());
+        assertEquals(Photosynthesis.class, timeController.getScheduledRunnables().get(0).getClass());
+        assertEquals(AgingTree.class, timeController.getScheduledRunnables().get(1).getClass());
+        assertEquals(TreeGrowth.class, timeController.getScheduledRunnables().get(2).getClass());
     }
 
     public void testGetState() {

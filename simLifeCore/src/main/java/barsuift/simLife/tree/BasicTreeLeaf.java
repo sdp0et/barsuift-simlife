@@ -90,7 +90,6 @@ public class BasicTreeLeaf implements TreeLeaf {
      * </p>
      */
     public void spendTime() {
-        useEnergy();
     }
 
     /**
@@ -137,16 +136,13 @@ public class BasicTreeLeaf implements TreeLeaf {
         notifySubscribers(LeafUpdateMask.FALL_MASK);
     }
 
-    private void useEnergy() {
-        improveEfficiency();
-    }
-
     // TODO 045. do not use all energy at one time to improve efficiency
     // energy collected is around 6 in best case, and we can use up to 90 here
     /**
-     * One energy point allows to gain 1% of energy
+     * Use leaf energy to get more efficiency. One energy point allows to gain 1% of energy.
      */
-    private void improveEfficiency() {
+    @Override
+    public void improveEfficiency() {
         BigDecimal maxEfficiencyToAdd = ONE.subtract(efficiency);
         // use all the energy, up to the max efficiency that can be added to get 100
         BigDecimal efficiencyToAdd = maxEfficiencyToAdd.min(energy.movePointLeft(2));

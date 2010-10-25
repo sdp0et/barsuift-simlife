@@ -256,11 +256,13 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(leafState, leaf.getState());
         assertSame(leafState, leaf.getState());
         BigDecimal energy = leaf.getState().getEnergy();
-        leaf.spendTime();
+        BigDecimal efficiency = leaf.getState().getEfficiency();
+        leaf.improveEfficiency();
         assertEquals(leafState, leaf.getState());
         assertSame(leafState, leaf.getState());
-        // the energy should have change in the state
+        // the energy and efficiency should have change in the state
         assertFalse(energy.equals(leaf.getState().getEnergy()));
+        assertFalse(efficiency.equals(leaf.getState().getEfficiency()));
     }
 
 }

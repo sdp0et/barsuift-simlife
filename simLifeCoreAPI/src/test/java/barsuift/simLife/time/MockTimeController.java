@@ -1,5 +1,8 @@
 package barsuift.simLife.time;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.process.SynchronizedRunnable;
@@ -25,6 +28,8 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     private int scheduleCalled;
 
+    private List<Runnable> runnables;
+
     public MockTimeController() {
         super(null);
         reset();
@@ -39,6 +44,7 @@ public class MockTimeController extends BasicPublisher implements TimeController
         oneStepCalled = 0;
         stopCalled = 0;
         scheduleCalled = 0;
+        runnables = new ArrayList<Runnable>();
         running = false;
     }
 
@@ -53,10 +59,15 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     public void schedule(SynchronizedRunnable runnable) {
         scheduleCalled++;
+        runnables.add(runnable);
     }
 
     public int getNbScheduleCalled() {
         return scheduleCalled;
+    }
+
+    public List<Runnable> getScheduledRunnables() {
+        return runnables;
     }
 
     @Override

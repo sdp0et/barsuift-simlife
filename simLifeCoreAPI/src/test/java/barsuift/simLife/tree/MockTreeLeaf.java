@@ -48,6 +48,8 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
 
     private int ageCalled = 0;
 
+    private int improveEfficiencyCalled = 0;
+
     public MockTreeLeaf() {
         super(null);
     }
@@ -116,6 +118,15 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
 
     public int getNbAgeCalled() {
         return ageCalled;
+    }
+
+    @Override
+    public void improveEfficiency() {
+        improveEfficiencyCalled++;
+    }
+
+    public int getNbImproveEfficiencyCalled() {
+        return improveEfficiencyCalled;
     }
 
     public boolean isTooWeak() {

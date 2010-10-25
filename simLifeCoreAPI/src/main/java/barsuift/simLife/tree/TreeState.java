@@ -41,6 +41,8 @@ public class TreeState implements State {
 
     private UnfrequentRunnableState aging;
 
+    private UnfrequentRunnableState growth;
+
     private TreeTrunkState trunkState;
 
     private float height;
@@ -57,17 +59,19 @@ public class TreeState implements State {
         this.tree3DState = new Tree3DState();
         this.photosynthesis = new UnfrequentRunnableState();
         this.aging = new UnfrequentRunnableState();
+        this.growth = new UnfrequentRunnableState();
     }
 
     public TreeState(long creationMillis, BigDecimal energy, List<TreeBranchState> branches,
-            UnfrequentRunnableState photosynthesis, UnfrequentRunnableState aging, TreeTrunkState trunkState,
-            float height, Tree3DState tree3dState) {
+            UnfrequentRunnableState photosynthesis, UnfrequentRunnableState aging, UnfrequentRunnableState growth,
+            TreeTrunkState trunkState, float height, Tree3DState tree3dState) {
         super();
         this.creationMillis = creationMillis;
         this.energy = energy;
         this.branches = branches;
         this.photosynthesis = photosynthesis;
         this.aging = aging;
+        this.growth = growth;
         this.trunkState = trunkState;
         this.height = height;
         this.tree3DState = tree3dState;
@@ -113,6 +117,14 @@ public class TreeState implements State {
         this.aging = aging;
     }
 
+    public UnfrequentRunnableState getGrowth() {
+        return growth;
+    }
+
+    public void setGrowth(UnfrequentRunnableState growth) {
+        this.growth = growth;
+    }
+
     public TreeTrunkState getTrunkState() {
         return trunkState;
     }
@@ -147,6 +159,7 @@ public class TreeState implements State {
         result = prime * result + ((energy == null) ? 0 : energy.hashCode());
         result = prime * result + ((photosynthesis == null) ? 0 : photosynthesis.hashCode());
         result = prime * result + ((aging == null) ? 0 : aging.hashCode());
+        result = prime * result + ((growth == null) ? 0 : growth.hashCode());
         result = prime * result + ((tree3DState == null) ? 0 : tree3DState.hashCode());
         result = prime * result + ((trunkState == null) ? 0 : trunkState.hashCode());
         return result;
@@ -189,6 +202,12 @@ public class TreeState implements State {
         } else
             if (!aging.equals(other.aging))
                 return false;
+        if (growth == null) {
+            if (other.growth != null)
+                return false;
+        } else
+            if (!growth.equals(other.growth))
+                return false;
         if (tree3DState == null) {
             if (other.tree3DState != null)
                 return false;
@@ -207,8 +226,8 @@ public class TreeState implements State {
     @Override
     public String toString() {
         return "TreeState [branches=" + branches + ", height=" + height + ", creationMillis=" + creationMillis
-                + ", energy=" + energy + ", photosynthesis=" + photosynthesis + ", aging=" + aging + ", tree3DState="
-                + tree3DState + ", trunkState=" + trunkState + "]";
+                + ", energy=" + energy + ", photosynthesis=" + photosynthesis + ", aging=" + aging + ", growth="
+                + growth + ", tree3DState=" + tree3DState + ", trunkState=" + trunkState + "]";
     }
 
 }
