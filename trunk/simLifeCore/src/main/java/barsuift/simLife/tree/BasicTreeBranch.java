@@ -80,20 +80,6 @@ public class BasicTreeBranch implements TreeBranch {
         for (TreeBranchPart branchPart : parts) {
             branchPart.spendTime();
         }
-        collectFreeEnergyFromParts();
-    }
-
-    private void collectFreeEnergyFromParts() {
-        BigDecimal freeEnergyCollectedFromParts = new BigDecimal(0);
-        for (TreeBranchPart part : parts) {
-            freeEnergyCollectedFromParts = freeEnergyCollectedFromParts.add(part.collectFreeEnergy());
-        }
-        BigDecimal energyCollectedForBranch = freeEnergyCollectedFromParts.multiply(ENERGY_RATIO_TO_KEEP);
-        BigDecimal freeEnergyCollected = freeEnergyCollectedFromParts.subtract(energyCollectedForBranch);
-        this.energy = energy.add(energyCollectedForBranch);
-        // limit energy to MAX_ENERGY
-        energy = energy.min(MAX_ENERGY);
-        this.freeEnergy = freeEnergy.add(freeEnergyCollected);
     }
 
     /**
@@ -109,6 +95,21 @@ public class BasicTreeBranch implements TreeBranch {
         BigDecimal currentFreeEnergy = freeEnergy;
         freeEnergy = new BigDecimal(0);
         return currentFreeEnergy;
+    }
+
+    @Override
+    public void collectSolarEnergy() {
+        BigDecimal freeEnergyCollectedFromParts = new BigDecimal(0);
+        for (TreeBranchPart part : parts) {
+            part.collectSolarEnergy();
+            freeEnergyCollectedFromParts = freeEnergyCollectedFromParts.add(part.collectFreeEnergy());
+        }
+        BigDecimal energyCollectedForBranch = freeEnergyCollectedFromParts.multiply(ENERGY_RATIO_TO_KEEP);
+        BigDecimal freeEnergyCollected = freeEnergyCollectedFromParts.subtract(energyCollectedForBranch);
+        this.energy = energy.add(energyCollectedForBranch);
+        // limit energy to MAX_ENERGY
+        energy = energy.min(MAX_ENERGY);
+        this.freeEnergy = freeEnergy.add(freeEnergyCollected);
     }
 
     public int getNbLeaves() {

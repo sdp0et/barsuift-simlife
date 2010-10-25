@@ -31,6 +31,10 @@ public class MockTree implements Tree {
 
     private BigDecimal energy = new BigDecimal(0);
 
+    private BigDecimal freeEnergy = new BigDecimal(0);
+
+    private int collectSolarEnergyCalled = 0;
+
     private List<TreeBranch> branches = new ArrayList<TreeBranch>();
 
     private float height = 0;
@@ -104,6 +108,24 @@ public class MockTree implements Tree {
 
     public void setEnergy(BigDecimal energy) {
         this.energy = energy;
+    }
+
+    @Override
+    public BigDecimal collectFreeEnergy() {
+        return freeEnergy;
+    }
+
+    public void setFreeEnergy(BigDecimal freeEnergy) {
+        this.freeEnergy = freeEnergy;
+    }
+
+    @Override
+    public void collectSolarEnergy() {
+        collectSolarEnergyCalled++;
+    }
+
+    public int getNbCollectSolarEnergyCalled() {
+        return collectSolarEnergyCalled;
     }
 
     public int howManyTimesSpendTimeCalled() {

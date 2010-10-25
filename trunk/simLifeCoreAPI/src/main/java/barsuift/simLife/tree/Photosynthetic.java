@@ -20,39 +20,31 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 
-import barsuift.simLife.LivingPart;
-import barsuift.simLife.j3d.tree.TreeLeaf3D;
-import barsuift.simLife.message.Publisher;
-
-public interface TreeLeaf extends LivingPart, Photosynthetic, Publisher {
-
-    public boolean isTooWeak();
-
-    public TreeLeaf3D getTreeLeaf3D();
+/**
+ * A photosynthetic element can collect solar energy. This collected energy is then divided in two parts : energy for
+ * the element itself, and free energy that can be collected by another element, typically, the one containing the
+ * photosynthetic element.
+ * 
+ */
+public interface Photosynthetic {
 
     /**
-     * Return the efficiency of the leaf. This efficiency impacts the amount of solar energy which can be collected.
+     * Return the free energy, and reset its value to 0. Thus, the free energy is entirely collected, and be be
+     * collected only once.
      * 
-     * @return the efficiency
+     * @return the free energy
      */
-    public BigDecimal getEfficiency();
+    public BigDecimal collectFreeEnergy();
 
     /**
-     * Return the energy of the leaf
+     * Collect solar energy.
+     * <p>
+     * If this instance contains other photosynthetic elements, it calls the {@code collectSolarEnergy()} method of
+     * these elements, immediately followed by the {@code collectFreeEnergy()} method.
+     * </p>
      * 
-     * @return the energy
+     * @return the collected energy
      */
-    public BigDecimal getEnergy();
-
-    /**
-     * Make the leaf older than it was. Depending, on implementations, the consequences may vary. Typical consequence is
-     * the leaf efficiency is reduced.
-     */
-    public void age();
-
-    /**
-     * Uses collected energy to improve the leaf efficiency.
-     */
-    public void improveEfficiency();
+    public void collectSolarEnergy();
 
 }

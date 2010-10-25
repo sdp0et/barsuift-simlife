@@ -25,7 +25,7 @@ import barsuift.simLife.LivingPart;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
 import barsuift.simLife.message.Subscriber;
 
-public interface TreeBranchPart extends LivingPart, Subscriber {
+public interface TreeBranchPart extends LivingPart, Photosynthetic, Subscriber {
 
     public int getNbLeaves();
 
@@ -39,12 +39,5 @@ public interface TreeBranchPart extends LivingPart, Subscriber {
      * @return the energy
      */
     public BigDecimal getEnergy();
-
-    /**
-     * Return the free energy in the branch part, and set its value to 0
-     * 
-     * @return the free energy
-     */
-    public BigDecimal collectFreeEnergy();
 
 }

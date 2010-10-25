@@ -24,7 +24,7 @@ import java.util.List;
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.j3d.tree.Tree3D;
 
-public interface Tree extends LivingPart {
+public interface Tree extends LivingPart, Photosynthetic {
 
     public float getHeight();
 

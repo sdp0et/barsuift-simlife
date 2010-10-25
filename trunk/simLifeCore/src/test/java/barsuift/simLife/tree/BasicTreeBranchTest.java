@@ -64,24 +64,22 @@ public class BasicTreeBranchTest extends TestCase {
         }
     }
 
-    public void testSpendTime() {
+    public void testCollectSolarEnergy() {
         ((MockSun) universe.getEnvironment().getSun()).setLuminosity(PercentHelper.getDecimalValue(70));
         assertEquals(3, branch.getNbParts());
-
-        branch.spendTime();
+        branch.collectSolarEnergy();
 
         // check the list of branch parts has not changed
         assertEquals(3, branch.getNbParts());
-        // as computed in BasicTreeLeafTest#testSpendTime1
-        // -> freeEnergy in leaves=5.17056
-        // -> collected energy in branch part = 5 * 5.17056 = 25.8528
-        // energy for branch part = 25.8528 * 0.50 = 12.9264
-        // free energy in branch part = 25.8528 - 12.9264 + 3 = 15.9264
-        // collected energy from parts = 3 * 15.9264 = 47.7792
-        // energy = 47.7792 * 0 + 10 = 10
-        // free energy = 47.7792 - 0 + 3 = 50.7792
+
+        // as computed in BasicTreeBranchPartTest#testCollectSolarEnergy
+        // free energy in branch parts = 16.212
+        // collected energy from parts = 3 * 16.212 = 48.636
+        // energy = 48.636 * 0 + 10 = 10
+        // free energy = 48.636 - 0 + 3 = 51.636
+
         assertEquals(10, branch.getEnergy().doubleValue(), 0.00001);
-        assertEquals(50.7792, branch.collectFreeEnergy().doubleValue(), 0.00001);
+        assertEquals(51.636, branch.collectFreeEnergy().doubleValue(), 0.00001);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), branch.collectFreeEnergy());
     }
@@ -90,7 +88,7 @@ public class BasicTreeBranchTest extends TestCase {
         assertEquals(branchState, branch.getState());
         assertSame(branchState, branch.getState());
         BigDecimal energy = branch.getState().getEnergy();
-        branch.spendTime();
+        branch.collectSolarEnergy();
         assertEquals(branchState, branch.getState());
         assertSame(branchState, branch.getState());
         // the energy should have change in the state

@@ -18,7 +18,6 @@
  */
 package barsuift.simLife;
 
-// TODO 012. fix the broken tests
 // TODO 013. remove the LivingPart#spendTime method
 // TODO 015. remove the TimeMessenger class
 public interface LivingPart extends Persistent<State> {
