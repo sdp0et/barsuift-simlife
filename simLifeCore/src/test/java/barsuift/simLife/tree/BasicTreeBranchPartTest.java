@@ -119,14 +119,12 @@ public class BasicTreeBranchPartTest extends TestCase {
             if (LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK)) {
                 // the single falling leaf (the first one)
                 assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
                 assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK));
                 nbFall++;
                 assertEquals(1, nbFall);
             } else {
                 // all the other leaves
                 assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
             }
         }
         // check one leaf has been removed from the list
