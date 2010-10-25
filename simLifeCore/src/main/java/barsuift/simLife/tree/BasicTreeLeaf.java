@@ -120,7 +120,7 @@ public class BasicTreeLeaf implements TreeLeaf {
                 new BigDecimal(leaf3D.getArea()));
         BigDecimal energyCollectedForLeaf = energyCollected.multiply(ENERGY_RATIO_TO_KEEP);
         BigDecimal freeEnergyCollected = energyCollected.subtract(energyCollectedForLeaf);
-        energy = energy.add(energyCollectedForLeaf);
+        energy = energy.add(energyCollectedForLeaf).setScale(10, RoundingMode.HALF_DOWN);
         // limit the energy to MAX_ENERGY
         energy = energy.min(MAX_ENERGY);
         freeEnergy = freeEnergy.add(freeEnergyCollected).setScale(5, RoundingMode.HALF_DOWN);
