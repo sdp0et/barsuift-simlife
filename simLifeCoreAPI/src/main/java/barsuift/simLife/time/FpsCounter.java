@@ -45,6 +45,10 @@ public class FpsCounter {
     private float[] lastExecTimes;
 
     public FpsCounter() {
+        reset();
+    }
+
+    public void reset() {
         ticksCounter = 0;
         computingsCounter = 0;
         previousTick = System.nanoTime();

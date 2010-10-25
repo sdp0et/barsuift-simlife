@@ -36,6 +36,7 @@ public class UniverseContextStateFactoryTest extends TestCase {
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = factory.createRandomUniverseContextState();
         assertTrue(universeContextState.isAxisShowing());
+        assertFalse(universeContextState.isFpsShowing());
 
         SimLifeCanvas3DState canvasState = universeContextState.getCanvasState();
         assertNotNull(canvasState);

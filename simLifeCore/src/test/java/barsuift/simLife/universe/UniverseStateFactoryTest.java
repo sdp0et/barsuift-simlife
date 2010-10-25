@@ -37,7 +37,6 @@ public class UniverseStateFactoryTest extends TestCase {
     public void testCreateRandomUniverseState() {
         UniverseStateFactory factory = new UniverseStateFactory();
         UniverseState universeState = factory.createRandomUniverseState();
-        assertFalse(universeState.isFpsShowing());
         assertNotNull(universeState.getEnvironment());
 
         int nbTrees = universeState.getTrees().size();

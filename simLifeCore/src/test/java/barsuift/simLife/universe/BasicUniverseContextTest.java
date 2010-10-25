@@ -73,16 +73,10 @@ public class BasicUniverseContextTest extends TestCase {
 
         assertFalse(universeContext.isFpsShowing());
         assertFalse(universeContext.getCanvas3D().isFpsShowing());
-        assertFalse(universeContext.getUniverse().isFpsShowing());
+
         universeContext.setFpsShowing(true);
         assertTrue(universeContext.isFpsShowing());
         assertTrue(universeContext.getCanvas3D().isFpsShowing());
-        assertTrue(universeContext.getUniverse().isFpsShowing());
-
-        universeContext.getUniverse().setFpsShowing(false);
-        assertFalse(universeContext.isFpsShowing());
-        assertTrue(universeContext.getCanvas3D().isFpsShowing());
-        assertFalse(universeContext.getUniverse().isFpsShowing());
     }
 
 }

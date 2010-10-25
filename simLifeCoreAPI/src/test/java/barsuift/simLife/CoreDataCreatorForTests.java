@@ -59,9 +59,10 @@ public final class CoreDataCreatorForTests {
         UniverseState universeState = createRandomUniverseState();
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = UtilDataCreatorForTests.createRandomBoolean();
+        boolean fpsShowing = UtilDataCreatorForTests.createRandomBoolean();
         double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
 
-        return new UniverseContextState(universeState, canvasState, axisShowing, viewerTransform);
+        return new UniverseContextState(universeState, canvasState, axisShowing, fpsShowing, viewerTransform);
     }
 
     /**
@@ -70,6 +71,7 @@ public final class CoreDataCreatorForTests {
      * <li>specific universe state made through the {@link #createSpecificUniverseState()} method</li>
      * <li>specific canvas state made through the {@link DisplayDataCreatorForTests#createSpecificCanvasState()} method</li>
      * <li>axisShowing = true</li>
+     * <li>fpsShowing = false</li>
      * </ul>
      * 
      */
@@ -77,8 +79,9 @@ public final class CoreDataCreatorForTests {
         UniverseState universeState = createSpecificUniverseState();
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = true;
+        boolean fpsShowing = false;
         double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
-        return new UniverseContextState(universeState, canvasState, axisShowing, viewerTransform);
+        return new UniverseContextState(universeState, canvasState, axisShowing, fpsShowing, viewerTransform);
     }
 
     public static DateHandlerState createRandomDateHandlerState() {
@@ -129,7 +132,6 @@ public final class CoreDataCreatorForTests {
 
     public static UniverseState createRandomUniverseState() {
         int age = Randomizer.randomBetween(0, 100);
-        boolean fpsShowing = UtilDataCreatorForTests.createRandomBoolean();
         Set<TreeState> trees = new HashSet<TreeState>();
         trees.add(createRandomTreeState());
         trees.add(createRandomTreeState());
@@ -141,15 +143,14 @@ public final class CoreDataCreatorForTests {
         }
         TimeControllerState timeControllerState = createRandomTimeControllerState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createRandomEnvironmentState(),
-                timeControllerState, univ3DState);
+        return new UniverseState(age, trees, fallenLeaves, createRandomEnvironmentState(), timeControllerState,
+                univ3DState);
     }
 
     /**
      * Create a specific universe state with
      * <ul>
      * <li>age=15</li>
-     * <li>fpsShowing = false</li>
      * <li>nb trees=3 (made through the {@link #createSpecificTreeState()} method)</li>
      * <li>nb fallen leaves=20 (made through the {@link #createSpecificTreeLeafState()} method)</li>
      * </ul>
@@ -160,7 +161,6 @@ public final class CoreDataCreatorForTests {
      */
     public static UniverseState createSpecificUniverseState() {
         int age = 15;
-        boolean fpsShowing = false;
         Set<TreeState> trees = new HashSet<TreeState>();
         trees.add(createSpecificTreeState());
         trees.add(createSpecificTreeState());
@@ -172,8 +172,8 @@ public final class CoreDataCreatorForTests {
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
         TimeControllerState timeControllerState = createSpecificTimeControllerState();
-        return new UniverseState(age, fpsShowing, trees, fallenLeaves, createSpecificEnvironmentState(),
-                timeControllerState, univ3DState);
+        return new UniverseState(age, trees, fallenLeaves, createSpecificEnvironmentState(), timeControllerState,
+                univ3DState);
     }
 
     public static EnvironmentState createRandomEnvironmentState() {

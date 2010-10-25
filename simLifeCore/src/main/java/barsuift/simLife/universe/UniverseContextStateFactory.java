@@ -32,17 +32,20 @@ public class UniverseContextStateFactory {
      * <li>a random universe state</li>
      * <li>a random canvas state</li>
      * <li>axisShowing = true</li>
+     * <li>fpsShowing = false</li>
      * <li>viewerTransform3D = identity matrix, 4 meters right, 2 meters high, 20 meters back</li>
      * </ul>
      * 
      * @return
      */
     public UniverseContextState createRandomUniverseContextState() {
+        boolean axisShowing = true;
+        boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createRandomUniverseState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createRandomCanvasState();
-        return new UniverseContextState(universeState, canvasState, true, NOMINAL_VIEWER_TRANSFORM);
+        return new UniverseContextState(universeState, canvasState, axisShowing, fpsShowing, NOMINAL_VIEWER_TRANSFORM);
     }
 
     /**
@@ -52,17 +55,20 @@ public class UniverseContextStateFactory {
      * <li>an empty universe state</li>
      * <li>an empty canvas state</li>
      * <li>axisShowing = true</li>
+     * <li>fpsShowing = false</li>
      * <li>viewerTransform3D = identity matrix, 4 meters right, 2 meters high, 20 meters back</li>
      * </ul>
      * 
      * @return
      */
     public UniverseContextState createEmptyUniverseContextState() {
+        boolean axisShowing = true;
+        boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createEmptyUniverseState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createEmptyCanvasState();
-        return new UniverseContextState(universeState, canvasState, true, NOMINAL_VIEWER_TRANSFORM);
+        return new UniverseContextState(universeState, canvasState, axisShowing, fpsShowing, NOMINAL_VIEWER_TRANSFORM);
     }
 
 }
