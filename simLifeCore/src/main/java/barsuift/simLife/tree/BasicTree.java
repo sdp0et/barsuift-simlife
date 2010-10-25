@@ -24,6 +24,7 @@ import java.util.List;
 
 import barsuift.simLife.j3d.tree.BasicTree3D;
 import barsuift.simLife.j3d.tree.Tree3D;
+import barsuift.simLife.process.AgingTree;
 import barsuift.simLife.process.Photosynthesis;
 import barsuift.simLife.universe.Universe;
 
@@ -34,6 +35,8 @@ public class BasicTree implements Tree {
     private final TreeState state;
 
     private final Photosynthesis photosynthesis;
+
+    private final AgingTree aging;
 
     private final long creationMillis;
 
@@ -67,6 +70,8 @@ public class BasicTree implements Tree {
         this.tree3D = new BasicTree3D(universe.getUniverse3D(), state.getTree3DState(), this);
         this.photosynthesis = new Photosynthesis(state.getPhotosynthesis(), this);
         universe.getTimeController().schedule(photosynthesis);
+        this.aging = new AgingTree(state.getAging(), this);
+        universe.getTimeController().schedule(aging);
     }
 
     @Override
@@ -146,6 +151,7 @@ public class BasicTree implements Tree {
         trunk.synchronize();
         tree3D.synchronize();
         photosynthesis.synchronize();
+        aging.synchronize();
     }
 
     @Override

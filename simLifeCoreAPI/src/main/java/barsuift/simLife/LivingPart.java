@@ -19,7 +19,6 @@
 package barsuift.simLife;
 
 // TODO 001. fix the broken tests due to not calling the collectSolarEnergy in spendTime method
-// TODO 003. implement a task to call the age method, at most as often as the photosynthesis task
 // TODO 011. create a TreeGrowth class which manage tree growth (create new leaves, create new branches, ...)
 // TODO 013. remove the LivingPart#spendTime method
 // TODO 015. remove the TimeMessenger class
