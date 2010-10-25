@@ -140,7 +140,8 @@ public class BasicTreeLeaf3DTest extends TestCase {
 
 
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(60));
-        leaf3D.update(mockLeaf, LeafUpdateMask.ENERGY_MASK);
+        // 4 does not correspond to any valid update code
+        leaf3D.update(mockLeaf, 4);
 
         // check that the color has NOT changed as expected, because the update code is not the appropriate one
         expectedColor = new Color3f(ColorConstants.brownYellow);

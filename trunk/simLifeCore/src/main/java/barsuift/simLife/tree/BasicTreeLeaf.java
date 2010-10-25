@@ -124,8 +124,6 @@ public class BasicTreeLeaf implements TreeLeaf {
         // limit the energy to MAX_ENERGY
         energy = energy.min(MAX_ENERGY);
         freeEnergy = freeEnergy.add(freeEnergyCollected).setScale(5, RoundingMode.HALF_DOWN);
-        setChanged();
-        updateMask |= LeafUpdateMask.ENERGY_MASK;
     }
 
     /**
@@ -161,8 +159,6 @@ public class BasicTreeLeaf implements TreeLeaf {
         setChanged();
         updateMask |= LeafUpdateMask.EFFICIENCY_MASK;
         energy = energy.subtract(efficiencyToAdd.movePointRight(2)).setScale(5, RoundingMode.HALF_DOWN);
-        setChanged();
-        updateMask |= LeafUpdateMask.ENERGY_MASK;
     }
 
     @Override

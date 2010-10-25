@@ -119,7 +119,6 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(1, publisherHelper.nbUpdated());
         int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
 
         assertEquals(0.9021344013, leaf.getEfficiency().doubleValue(), 0.0000000001);
         assertEquals(0, leaf.getEnergy().doubleValue(), 0.00001);
@@ -153,7 +152,6 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(1, publisherHelper.nbUpdated());
         int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
 
         assertEquals(1, leaf.getEfficiency().doubleValue(), 0.0000000001);
         assertEquals(10.26670, leaf.getEnergy().doubleValue(), 0.00001);
@@ -186,7 +184,6 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(1, publisherHelper.nbUpdated());
         int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
 
         assertEquals(1, leaf.getEfficiency().doubleValue(), 0.0000000001);
         assertEquals(9.36440, leaf.getEnergy().doubleValue(), 0.00001);
@@ -212,7 +209,6 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(1, publisherHelper.nbUpdated());
         int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.ENERGY_MASK));
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK));
 
         MockGravity gravity = (MockGravity) universe.getUniverse3D().getPhysics().getGravity();
