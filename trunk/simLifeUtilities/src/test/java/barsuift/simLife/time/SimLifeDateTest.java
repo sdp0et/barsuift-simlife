@@ -307,7 +307,7 @@ public class SimLifeDateTest extends TestCase {
     public void testPublisherAdd() {
         SimLifeDate date = new SimLifeDate();
         PublisherTestHelper publisherHelper = new PublisherTestHelper();
-        publisherHelper.addSubscriber(date);
+        publisherHelper.addSubscriberTo(date);
 
         date.addMillis(1);
         assertEquals(1, publisherHelper.nbUpdated());
@@ -340,7 +340,7 @@ public class SimLifeDateTest extends TestCase {
     public void testPublisherSet() {
         SimLifeDate date = new SimLifeDate();
         PublisherTestHelper publisherHelper = new PublisherTestHelper();
-        publisherHelper.addSubscriber(date);
+        publisherHelper.addSubscriberTo(date);
 
         date.setMillisOfSecond(1);
         assertEquals(1, publisherHelper.nbUpdated());

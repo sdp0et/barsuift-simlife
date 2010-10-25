@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.vecmath.Point3d;
 
@@ -77,9 +77,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
 
     private BigDecimal freeEnergy;
 
-    private final List<TreeLeaf> leaves;
-
-    private final Collection<TreeLeaf> oldLeavesToRemove = new HashSet<TreeLeaf>();
+    private final ConcurrentLinkedQueue<TreeLeaf> leaves;
 
     private final TreeBranchPart3D branchPart3D;
 
@@ -98,7 +96,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         this.energy = state.getEnergy();
         this.freeEnergy = state.getFreeEnergy();
         List<TreeLeafState> leaveStates = state.getLeaveStates();
-        this.leaves = new ArrayList<TreeLeaf>(leaveStates.size());
+        this.leaves = new ConcurrentLinkedQueue<TreeLeaf>();
         for (TreeLeafState treeLeafState : leaveStates) {
             BasicTreeLeaf leaf = new BasicTreeLeaf(universe, treeLeafState);
             leaf.addSubscriber(this);
@@ -119,10 +117,6 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     public void spendTime() {
         for (TreeLeaf leaf : leaves) {
             leaf.spendTime();
-        }
-        if (oldLeavesToRemove.size() != 0) {
-            leaves.removeAll(oldLeavesToRemove);
-            oldLeavesToRemove.clear();
         }
         collectFreeEnergyFromLeaves();
         if (shouldCreateOneNewLeaf() && canCreateOneNewLeaf()) {
@@ -352,14 +346,14 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     }
 
     @Override
-    public List<TreeLeaf> getLeaves() {
-        return Collections.unmodifiableList(leaves);
+    public Collection<TreeLeaf> getLeaves() {
+        return Collections.unmodifiableCollection(leaves);
     }
 
     public void update(Publisher publisher, Object arg) {
         if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALL_MASK)) {
             TreeLeaf leaf = (TreeLeaf) publisher;
-            oldLeavesToRemove.add(leaf);
+            leaves.remove(leaf);
         }
     }
 

@@ -72,7 +72,7 @@ public class BasicSun3DTest extends TestCase {
      * Test that the sun3D is a publisher : it notifies its subscribers when the color change
      */
     public void testPublisher() {
-        publisherHelper.addSubscriber(sun3D);
+        publisherHelper.addSubscriberTo(sun3D);
         // force computation of angles in the sun, and so for color in sun3D
         mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);

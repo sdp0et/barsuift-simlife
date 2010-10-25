@@ -46,6 +46,8 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
 
     private int collectSolarEnergyCalled = 0;
 
+    private int ageCalled = 0;
+
     public MockTreeLeaf() {
         super(null);
     }
@@ -103,8 +105,17 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
         collectSolarEnergyCalled++;
     }
 
-    public int getNbCollectSolarEnergy() {
+    public int getNbCollectSolarEnergyCalled() {
         return collectSolarEnergyCalled;
+    }
+
+    @Override
+    public void age() {
+        ageCalled++;
+    }
+
+    public int getNbAgeCalled() {
+        return ageCalled;
     }
 
     public boolean isTooWeak() {

@@ -1,5 +1,6 @@
 package barsuift.simLife.process;
 
+import java.util.Collection;
 import java.util.List;
 
 import barsuift.simLife.tree.Tree;
@@ -23,7 +24,7 @@ public class Photosynthesis extends UnfrequentRunnable {
         for (TreeBranch branch : branches) {
             List<TreeBranchPart> parts = branch.getParts();
             for (TreeBranchPart part : parts) {
-                List<TreeLeaf> leaves = part.getLeaves();
+                Collection<TreeLeaf> leaves = part.getLeaves();
                 for (TreeLeaf leaf : leaves) {
                     leaf.collectSolarEnergy();
                 }

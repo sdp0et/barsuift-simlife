@@ -47,7 +47,7 @@ public class PhotosynthesisTest extends TestCase {
                 CoreDataCreatorForTests.createSpecificUnfrequentRunnableState(), mockTree);
         photosynthesis.executeUnfrequentStep();
 
-        assertEquals(1, mockLeaf.getNbCollectSolarEnergy());
+        assertEquals(1, mockLeaf.getNbCollectSolarEnergyCalled());
     }
 
 }

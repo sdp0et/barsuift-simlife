@@ -19,7 +19,7 @@
 package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Collection;
 
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
@@ -29,7 +29,7 @@ public interface TreeBranchPart extends LivingPart, Subscriber {
 
     public int getNbLeaves();
 
-    public List<TreeLeaf> getLeaves();
+    public Collection<TreeLeaf> getLeaves();
 
     public TreeBranchPart3D getBranchPart3D();
 
