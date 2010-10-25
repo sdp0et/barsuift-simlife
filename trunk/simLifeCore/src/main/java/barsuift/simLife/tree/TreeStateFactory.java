@@ -31,6 +31,7 @@ import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.Tree3DStateFactory;
 import barsuift.simLife.process.AgingTree;
 import barsuift.simLife.process.Photosynthesis;
+import barsuift.simLife.process.TreeGrowth;
 import barsuift.simLife.process.UnfrequentRunnableState;
 import barsuift.simLife.process.UnfrequentRunnableStateFactory;
 
@@ -57,6 +58,7 @@ public class TreeStateFactory {
         UnfrequentRunnableState photosynthesis = unfrequentRunnableStateFactory
                 .createUnfrequentRunnableState(Photosynthesis.class);
         UnfrequentRunnableState aging = unfrequentRunnableStateFactory.createUnfrequentRunnableState(AgingTree.class);
+        UnfrequentRunnableState growth = unfrequentRunnableStateFactory.createUnfrequentRunnableState(TreeGrowth.class);
         TreeTrunkStateFactory trunkStateFactory = new TreeTrunkStateFactory();
         TreeTrunkState trunkState = trunkStateFactory.createRandomTreeTrunkState(radius, height);
 
@@ -64,7 +66,8 @@ public class TreeStateFactory {
         Tree3DState tree3dState = tree3DStateFactory.createRandomTree3DState(new Tuple3dState(translationVector));
 
 
-        return new TreeState(creationMillis, energy, branches, photosynthesis, aging, trunkState, height, tree3dState);
+        return new TreeState(creationMillis, energy, branches, photosynthesis, aging, growth, trunkState, height,
+                tree3dState);
     }
 
     protected TreeBranchState computeRandomBranchState(float treeRadius, float treeHeight) {

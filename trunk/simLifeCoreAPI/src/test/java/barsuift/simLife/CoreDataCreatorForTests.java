@@ -72,7 +72,6 @@ public final class CoreDataCreatorForTests {
      * <li>axisShowing = true</li>
      * </ul>
      * 
-     * @return
      */
     public static UniverseContextState createSpecificUniverseContextState() {
         UniverseState universeState = createSpecificUniverseState();
@@ -116,6 +115,14 @@ public final class CoreDataCreatorForTests {
         return new UnfrequentRunnableState(Randomizer.randomBetween(3, 10), Randomizer.randomBetween(0, 2));
     }
 
+    /**
+     * Creates a specific UnfrequentRunnableState with
+     * <ul>
+     * <li>delay=5</li>
+     * <li>count=2</li>
+     * </ul>
+     * 
+     */
     public static UnfrequentRunnableState createSpecificUnfrequentRunnableState() {
         return new UnfrequentRunnableState(5, 2);
     }
@@ -222,10 +229,11 @@ public final class CoreDataCreatorForTests {
         }
         UnfrequentRunnableState photosynthesis = createRandomUnfrequentRunnableState();
         UnfrequentRunnableState aging = createRandomUnfrequentRunnableState();
+        UnfrequentRunnableState growth = createRandomUnfrequentRunnableState();
         TreeTrunkState trunkState = createRandomTreeTrunkState();
         float height = (float) Math.random();
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
-        return new TreeState(age, energy, branches, photosynthesis, aging, trunkState, height, tree3dState);
+        return new TreeState(age, energy, branches, photosynthesis, aging, growth, trunkState, height, tree3dState);
     }
 
     /**
@@ -251,10 +259,11 @@ public final class CoreDataCreatorForTests {
         }
         UnfrequentRunnableState photosynthesis = createSpecificUnfrequentRunnableState();
         UnfrequentRunnableState aging = createSpecificUnfrequentRunnableState();
+        UnfrequentRunnableState growth = createSpecificUnfrequentRunnableState();
         TreeTrunkState trunkState = createSpecificTreeTrunkState();
         float height = (float) 4;
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
-        return new TreeState(age, energy, branches, photosynthesis, aging, trunkState, height, tree3dState);
+        return new TreeState(age, energy, branches, photosynthesis, aging, growth, trunkState, height, tree3dState);
     }
 
     public static TreeBranchState createRandomTreeBranchState() {

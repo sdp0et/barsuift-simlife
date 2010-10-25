@@ -65,4 +65,9 @@ public interface TreeLeaf extends LivingPart, Publisher {
      */
     public void age();
 
+    /**
+     * Uses collected energy to improve the leaf efficiency.
+     */
+    public void improveEfficiency();
+
 }

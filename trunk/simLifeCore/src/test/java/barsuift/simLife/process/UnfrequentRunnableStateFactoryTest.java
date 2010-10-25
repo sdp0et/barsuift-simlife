@@ -38,6 +38,10 @@ public class UnfrequentRunnableStateFactoryTest extends TestCase {
         assertEquals(1200, agingTreeState.getDelay());
         assertEquals(0, agingTreeState.getCount());
 
+        UnfrequentRunnableState treeGrowthState = factory.createUnfrequentRunnableState(TreeGrowth.class);
+        assertEquals(3000, treeGrowthState.getDelay());
+        assertEquals(0, treeGrowthState.getCount());
+
         UnfrequentRunnableState unknownState = factory.createUnfrequentRunnableState(MockUnfrequentRunnable.class);
         assertEquals(1, unknownState.getDelay());
         assertEquals(0, unknownState.getCount());
