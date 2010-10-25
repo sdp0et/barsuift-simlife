@@ -65,4 +65,61 @@ public class SynchronizerTest extends TestCase {
         assertEquals(10, synchro.getState().getSpeed());
     }
 
+    public void testSchedule() throws Exception {
+        MockSynchronizedRunnable mockRun1 = new MockSynchronizedRunnable();
+        MockSynchronizedRunnable mockRun2 = new MockSynchronizedRunnable();
+        MockSynchronizedRunnable mockRun3 = new MockSynchronizedRunnable();
+
+        try {
+            synchro.unschedule(mockRun1);
+            fail("Should throw an IllegalStateException");
+        } catch (IllegalStateException ise) {
+            // OK expected Exception
+        }
+
+        synchro.schedule(mockRun1);
+        synchro.oneStep();
+        Thread.sleep(100);
+
+        assertEquals(1, mockRun1.getNbExecuted());
+        assertEquals(0, mockRun2.getNbExecuted());
+        assertEquals(0, mockRun3.getNbExecuted());
+
+        mockRun1.resetNbExecuted();
+        synchro.schedule(mockRun2);
+        synchro.unschedule(mockRun2);
+        synchro.oneStep();
+        Thread.sleep(100);
+
+        assertEquals(1, mockRun1.getNbExecuted());
+        assertEquals(0, mockRun2.getNbExecuted());
+        assertEquals(0, mockRun3.getNbExecuted());
+        
+        mockRun1.resetNbExecuted();
+        synchro.schedule(mockRun2);
+        synchro.oneStep();
+        Thread.sleep(100);
+        synchro.unschedule(mockRun2);
+        synchro.oneStep();
+        Thread.sleep(100);
+
+        assertEquals(2, mockRun1.getNbExecuted());
+        assertEquals(1, mockRun2.getNbExecuted());
+        assertEquals(0, mockRun3.getNbExecuted());
+
+        mockRun1.resetNbExecuted();
+        mockRun2.resetNbExecuted();
+        synchro.schedule(mockRun3);
+        synchro.unschedule(mockRun1);
+        synchro.start();
+        Thread.sleep(100);
+        synchro.stop();
+        Thread.sleep(100);
+
+        assertEquals(0, mockRun1.getNbExecuted());
+        assertEquals(0, mockRun2.getNbExecuted());
+        assertTrue(mockRun3.getNbExecuted() > 0);
+
+    }
+
 }
