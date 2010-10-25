@@ -68,7 +68,6 @@ public class BasicUniverseContext implements UniverseContext {
     public BasicUniverseContext(UniverseContextState state) throws InitException {
         this.state = state;
         this.axisShowing = state.isAxisShowing();
-        this.fpsShowing = state.isFpsShowing();
 
         this.universe = new BasicUniverse(state.getUniverseState());
         canvas3D = new BasicSimLifeCanvas3D(fpsCounter, state.getCanvasState());
@@ -92,6 +91,7 @@ public class BasicUniverseContext implements UniverseContext {
         root.compile();
         simpleU.addBranchGraph(root);
         setAxisShowing(state.isAxisShowing());
+        setFpsShowing(state.isFpsShowing());
     }
 
     @Override
@@ -106,15 +106,18 @@ public class BasicUniverseContext implements UniverseContext {
 
     @Override
     public void setFpsShowing(boolean fpsShowing) {
-        this.fpsShowing = fpsShowing;
         if (fpsShowing) {
             fpsCounter.reset();
             fpsTicker = new FpsTicker(fpsCounter);
             universe.getTimeController().schedule(fpsTicker);
         } else {
-            universe.getTimeController().unschedule(fpsTicker);
+            if (this.fpsShowing) {
+                // only unschedule the fpsTicker if it was previously scheduled
+                universe.getTimeController().unschedule(fpsTicker);
+            }
         }
         canvas3D.setFpsShowing(fpsShowing);
+        this.fpsShowing = fpsShowing;
     }
 
     @Override
