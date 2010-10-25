@@ -81,6 +81,7 @@ public class BasicTreeLeaf implements TreeLeaf {
     }
 
     public void spendTime() {
+        // nothing to do
     }
 
     /**

@@ -89,9 +89,7 @@ public class BasicTree implements Tree {
      */
     @Override
     public void spendTime() {
-        for (TreeBranch branch : branches) {
-            branch.spendTime();
-        }
+        // nothing to do
     }
 
     @Override
