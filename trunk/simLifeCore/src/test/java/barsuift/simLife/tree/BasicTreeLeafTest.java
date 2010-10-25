@@ -98,6 +98,23 @@ public class BasicTreeLeafTest extends TestCase {
         }
     }
 
+    public void testCollectSolarEnergy() {
+        leaf.collectSolarEnergy();
+        // efficiency at the beginning = 0.80
+        // area = 0.08000000238418585
+        // collected energy = 0.80 * 0.70 * 150 * 0.08000000238418585 = 6.7200002002716114
+        // energy for leaf = 6.7200002002716114 * 0.66 = 4.435200132179263524
+        // total energy = 10 + 4.435200132179263524 = 14.435200132179263524 (scale 10 -> 14.43520013)
+        // free energy = 6.7200002002716114 - 4.435200132179263524 = 2.284800068092347876
+        // total free energy = 3 + 2.284800068092347876 = 5.284800068092347876 (scale 5 -> 5.2848)
+
+        assertEquals(0.80, leaf.getEfficiency().doubleValue(), 0.0000000001);
+        assertEquals(14.43520013, leaf.getEnergy().doubleValue(), 0.00001);
+        assertEquals(5.2848, leaf.collectFreeEnergy().doubleValue(), 0.00001);
+        // can not collect the free energy more than once
+        assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
+    }
+
     public void testSpendTime1() {
         publisherHelper.addSubscriber(leaf);
 
