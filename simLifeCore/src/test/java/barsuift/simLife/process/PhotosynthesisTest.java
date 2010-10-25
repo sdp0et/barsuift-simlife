@@ -21,30 +21,16 @@ package barsuift.simLife.process;
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.tree.MockTree;
-import barsuift.simLife.tree.MockTreeBranch;
-import barsuift.simLife.tree.MockTreeBranchPart;
-import barsuift.simLife.tree.MockTreeLeaf;
 
 
 public class PhotosynthesisTest extends TestCase {
 
     public void testExecuteUnfrequentStep() {
-        MockTreeLeaf mockLeaf = new MockTreeLeaf();
-
-        MockTreeBranchPart mockBranchPart = new MockTreeBranchPart();
-        mockBranchPart.addLeaf(mockLeaf);
-
-        MockTreeBranch mockBranch = new MockTreeBranch();
-        mockBranch.addPart(mockBranchPart);
-
         MockTree mockTree = new MockTree();
-        mockTree.addBranch(mockBranch);
-
         Photosynthesis photosynthesis = new Photosynthesis(
                 CoreDataCreatorForTests.createSpecificUnfrequentRunnableState(), mockTree);
         photosynthesis.executeUnfrequentStep();
-
-        assertEquals(1, mockLeaf.getNbCollectSolarEnergyCalled());
+        assertEquals(1, mockTree.getNbCollectSolarEnergyCalled());
     }
 
 }

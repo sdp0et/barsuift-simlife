@@ -33,7 +33,6 @@ import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.message.Publisher;
-import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
 
 
@@ -45,20 +44,15 @@ public class BasicTreeBranchPartTest extends TestCase {
 
     private BasicTreeBranchPart branchPart;
 
-    private TreeLeafState firstLeafState;
-
     protected void setUp() throws Exception {
         super.setUp();
         universe = new MockUniverse();
         branchPartState = CoreDataCreatorForTests.createSpecificTreeBranchPartState();
-        firstLeafState = branchPartState.getLeaveStates().get(0);
-        firstLeafState.setEfficiency(PercentHelper.getDecimalValue(10));
         branchPart = new BasicTreeBranchPart(universe, branchPartState);
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        firstLeafState = null;
         universe = null;
         branchPartState = null;
         branchPart = null;
@@ -90,52 +84,28 @@ public class BasicTreeBranchPartTest extends TestCase {
         }
     }
 
-    public void testSpendTime() {
+    public void testCollectSolarEnergy() {
         ((MockSun) universe.getEnvironment().getSun()).setLuminosity(PercentHelper.getDecimalValue(70));
-        // add mock subscribers on each leaf
-        List<PublisherTestHelper> publisherHelpers = new ArrayList<PublisherTestHelper>();
-        for (TreeLeaf leaf : branchPart.getLeaves()) {
-            PublisherTestHelper publisherHelper = new PublisherTestHelper();
-            publisherHelpers.add(publisherHelper);
-            publisherHelper.addSubscriberTo(leaf);
-            assertEquals(0, publisherHelper.nbUpdated());
-        }
+        assertEquals(5, branchPart.getNbLeaves());
+        branchPart.collectSolarEnergy();
 
-        branchPart.spendTime();
+        // as computed in BasicTreeLeafTest#testCollectSolarEnergy
+        // -> freeEnergy in leaves should be 5.2848
+        // total collected energy = 5 * 5.2848 = 26.424
+        // energy = 26.424 * 0.50 + 10 = 23.212
+        // free energy = 26.424 - 13.212 + 3 = 16.212
 
-        // as computed in BasicTreeLeafTest#testSpendTime1
-        // -> freeEnergy in leaves should be 5.17056, except for falling leaf 0 (no more in the leaf list)
-        // total collected energy = 4 * 5.17056 = 20.68224
-        // energy = 20.68224 * 0.50 + 10 = 20.34112
-        // free energy = 20.68224 - 10.34112 + 3 = 13.34112
-        assertEquals(20.34112, branchPart.getEnergy().doubleValue(), 0.00001);
-        assertEquals(13.34112, branchPart.collectFreeEnergy().doubleValue(), 0.00001);
+        assertEquals(23.212, branchPart.getEnergy().doubleValue(), 0.00001);
+        assertEquals(16.212, branchPart.collectFreeEnergy().doubleValue(), 0.00001);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), branchPart.collectFreeEnergy());
-        int nbFall = 0;
-        for (PublisherTestHelper publisherHelper : publisherHelpers) {
-            assertEquals(1, publisherHelper.nbUpdated());
-            int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-            if (LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK)) {
-                // the single falling leaf (the first one)
-                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.FALL_MASK));
-                nbFall++;
-                assertEquals(1, nbFall);
-            } else {
-                // all the other leaves
-                assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-            }
-        }
-        // check one leaf has been removed from the list
-        assertEquals(branchPartState.getLeaveStates().size() - 1, branchPart.getLeaves().size());
     }
 
     public void testGetState() {
         assertEquals(branchPartState, branchPart.getState());
         assertSame(branchPartState, branchPart.getState());
         BigDecimal energy = branchPart.getState().getEnergy();
-        branchPart.spendTime();
+        branchPart.collectSolarEnergy();
         assertEquals(branchPartState, branchPart.getState());
         assertSame(branchPartState, branchPart.getState());
         // the energy should have change in the state
@@ -143,10 +113,11 @@ public class BasicTreeBranchPartTest extends TestCase {
     }
 
     public void testFallingLeaf() {
+        TreeLeafState firstLeafState = branchPartState.getLeaveStates().get(0);
+        firstLeafState.setEfficiency(PercentHelper.getDecimalValue(10));
         branchPart = new BasicTreeBranchPart(universe, branchPartState);
         int nbLeaves = branchPart.getNbLeaves();
 
-        // branchPart.spendTime();
         for (TreeLeaf leaf : branchPart.getLeaves()) {
             leaf.age();
         }
@@ -470,6 +441,7 @@ public class BasicTreeBranchPartTest extends TestCase {
     }
 
     public void testIncreaseOneLeafSize() {
+        TreeLeafState firstLeafState = branchPartState.getLeaveStates().get(0);
         Point3d firstInitialEndPoint1 = firstLeafState.getLeaf3DState().getInitialEndPoint1().toPointValue();
         branchPartState.setEnergy(new BigDecimal(150));
         // set all the leaves at their maximum size, so that they can not be increased anymore

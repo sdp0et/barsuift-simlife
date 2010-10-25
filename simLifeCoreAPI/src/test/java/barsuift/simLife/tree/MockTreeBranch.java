@@ -34,6 +34,8 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     private BigDecimal freeEnergy = new BigDecimal(0);
 
+    private int collectSolarEnergyCalled = 0;
+
     private int spendTimeCalled = 0;
 
     private int nbLeaves = 0;
@@ -82,6 +84,15 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     public void setFreeEnergy(BigDecimal freeEnergy) {
         this.freeEnergy = freeEnergy;
+    }
+
+    @Override
+    public void collectSolarEnergy() {
+        collectSolarEnergyCalled++;
+    }
+
+    public int getNbCollectSolarEnergyCalled() {
+        return collectSolarEnergyCalled;
     }
 
     @Override

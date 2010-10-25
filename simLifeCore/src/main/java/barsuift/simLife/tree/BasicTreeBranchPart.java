@@ -115,10 +115,6 @@ public class BasicTreeBranchPart implements TreeBranchPart {
      */
     @Override
     public void spendTime() {
-        for (TreeLeaf leaf : leaves) {
-            leaf.spendTime();
-        }
-        collectFreeEnergyFromLeaves();
         if (shouldCreateOneNewLeaf() && canCreateOneNewLeaf()) {
             createOneNewLeaf();
         }
@@ -316,19 +312,6 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         return newLeafAttachPoint;
     }
 
-    private void collectFreeEnergyFromLeaves() {
-        BigDecimal freeEnergyCollectedFromLeaf = new BigDecimal(0);
-        for (TreeLeaf leaf : leaves) {
-            freeEnergyCollectedFromLeaf = freeEnergyCollectedFromLeaf.add(leaf.collectFreeEnergy());
-        }
-        BigDecimal energyCollectedForBranchPart = freeEnergyCollectedFromLeaf.multiply(ENERGY_RATIO_TO_KEEP);
-        BigDecimal freeEnergyCollected = freeEnergyCollectedFromLeaf.subtract(energyCollectedForBranchPart);
-        energy = energy.add(energyCollectedForBranchPart);
-        // limit the branch part energy to MAX_ENERGY
-        energy = energy.min(MAX_ENERGY);
-        freeEnergy = freeEnergy.add(freeEnergyCollected);
-    }
-
     @Override
     public BigDecimal getEnergy() {
         return energy;
@@ -339,6 +322,21 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         BigDecimal currentFreeEnergy = freeEnergy;
         freeEnergy = new BigDecimal(0);
         return currentFreeEnergy;
+    }
+
+    @Override
+    public void collectSolarEnergy() {
+        BigDecimal freeEnergyCollectedFromLeaf = new BigDecimal(0);
+        for (TreeLeaf leaf : leaves) {
+            leaf.collectSolarEnergy();
+            freeEnergyCollectedFromLeaf = freeEnergyCollectedFromLeaf.add(leaf.collectFreeEnergy());
+        }
+        BigDecimal energyCollectedForBranchPart = freeEnergyCollectedFromLeaf.multiply(ENERGY_RATIO_TO_KEEP);
+        BigDecimal freeEnergyCollected = freeEnergyCollectedFromLeaf.subtract(energyCollectedForBranchPart);
+        energy = energy.add(energyCollectedForBranchPart);
+        // limit the branch part energy to MAX_ENERGY
+        energy = energy.min(MAX_ENERGY);
+        freeEnergy = freeEnergy.add(freeEnergyCollected);
     }
 
     public int getNbLeaves() {

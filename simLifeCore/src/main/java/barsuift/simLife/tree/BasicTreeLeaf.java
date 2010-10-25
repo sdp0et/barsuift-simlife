@@ -80,15 +80,6 @@ public class BasicTreeLeaf implements TreeLeaf {
         this.leaf3D = new BasicTreeLeaf3D(universe.getUniverse3D(), leafState.getLeaf3DState(), this);
     }
 
-    /**
-     * Make the leaf older than it was.
-     * <p>
-     * Concretely, it means :
-     * <ol>
-     * <li>use collected energy to improve the leaf efficiency</li>
-     * </ol>
-     * </p>
-     */
     public void spendTime() {
     }
 
@@ -106,6 +97,10 @@ public class BasicTreeLeaf implements TreeLeaf {
         }
     }
 
+    /**
+     * Compute the new leaf energy. It is the old energy + the collected energy.
+     * <code>collectedEnergy= sunLuminosity * leafEfficiency * energyDensity * leaf Area</code>
+     */
     @Override
     public void collectSolarEnergy() {
         BigDecimal lightRate = universe.getEnvironment().getSun().getLuminosity();
@@ -147,8 +142,8 @@ public class BasicTreeLeaf implements TreeLeaf {
         // use all the energy, up to the max efficiency that can be added to get 100
         BigDecimal efficiencyToAdd = maxEfficiencyToAdd.min(energy.movePointLeft(2));
         efficiency = efficiency.add(efficiencyToAdd).setScale(10, RoundingMode.HALF_DOWN);
-        setChanged();
         energy = energy.subtract(efficiencyToAdd.movePointRight(2)).setScale(5, RoundingMode.HALF_DOWN);
+        setChanged();
         notifySubscribers(LeafUpdateMask.EFFICIENCY_MASK);
     }
 

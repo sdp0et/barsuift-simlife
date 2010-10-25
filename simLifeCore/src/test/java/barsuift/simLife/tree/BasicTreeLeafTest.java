@@ -113,6 +113,12 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(5.2848, leaf.collectFreeEnergy().doubleValue(), 0.00001);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
+
+        leafState.setEnergy(new BigDecimal("99"));
+        leaf = new BasicTreeLeaf(universe, leafState);
+        leaf.collectSolarEnergy();
+        // the energy would be more than 100, so it will be capped
+        assertEquals(100, leaf.getEnergy().doubleValue(), 0.00001);
     }
 
     public void testAge() {
@@ -132,98 +138,20 @@ public class BasicTreeLeafTest extends TestCase {
         assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
     }
 
-    public void testSpendTime1() {
+    public void testImproveEfficiency() {
         publisherHelper.addSubscriberTo(leaf);
+        assertEquals(0.80, leaf.getEfficiency().doubleValue(), 0.0000000001);
+        assertEquals(10, leaf.getEnergy().doubleValue(), 0.00001);
 
-        assertEquals(0, publisherHelper.nbUpdated());
-
-        leaf.spendTime();
-        // efficiency after aging = 0.80 * 0.95 = 0.76
-        // area = 0.08000000238418585
-        // collected energy = 0.76 * 0.70 * 150 * 0.08000000238418585 = 6.38400019025803083
-        // energy for leaf = 6.38400019025803083 * 0.66 = 4.2134401255703003478
-        // total energy = 10 + 4.2134401255703003478 = 14.2134401255703003478
-        // free energy = 6.384 - 4.2134401255703003478 = 2.1705598744296996522
-        // total free energy = 3 + 2.1705598744296996522 = 5.1705598744296996522 (scale 5 -> 5.17056)
-        // efficiency after useEnergy : 0.76 + 0.142134401255703003478 = 0.902134401255703003478 (scale 10 ->
-        // 0.9021344013)
-        // energy after useEnergy = 0 (scale 5 -> 0)
-        // age = 16
-
-        assertEquals(1, publisherHelper.nbUpdated());
-        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-
-        assertEquals(0.9021344013, leaf.getEfficiency().doubleValue(), 0.0000000001);
+        leaf.improveEfficiency();
+        assertEquals(0.90, leaf.getEfficiency().doubleValue(), 0.0000000001);
         assertEquals(0, leaf.getEnergy().doubleValue(), 0.00001);
-        assertEquals(5.17056, leaf.collectFreeEnergy().doubleValue(), 0.00001);
-        // can not collect the free energy more than once
-        assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
-    }
 
-    public void testSpendTime2() {
-        leafState.setEfficiency(new BigDecimal("0.999999"));
+        leafState.setEnergy(new BigDecimal("35"));
         leaf = new BasicTreeLeaf(universe, leafState);
-        publisherHelper.addSubscriberTo(leaf);
-
-        assertEquals(0, publisherHelper.nbUpdated());
-
-        leaf.spendTime();
-        // efficiency after aging = 0.999999 * 0.95 = 0.94999905
-        // area = 0.08000000238418585
-        // collected energy = 0.94999905 * 0.70 * 150 * 0.08000000238418585 = 7.9799922578223007149614625
-        // energy for leaf = 7.9799922578223007149614625 * 0.66 = 5.26679489016271847187456525
-        // total energy = 10 + 5.26679489016271847187456525 = 15.26679489016271847187456525
-        // free energy = 7.9799922578223007149614625 - 5.26679489016271847187456525 = 2.713197367659582232621581
-        // total free energy = 3 + 2.713197367659582232621581 = 5.713197367659582232621581 (scale 5 -> 5.71320)
-        // max efficiency to add = 1 - 0.94999905 = 0.05000095
-        // efficiency to add = min(0.05000095,0.1526679489016271847187456525) = 0.05000095
-        // efficiency after useEnergy : 0.94999905 + 0.05000095 = 1 (scale 10 -> 1)
-        // energy after useEnergy = 15.26679489016271847187456525 - 5.000095 = 10.26669989016271847187456525 (scale 5 ->
-        // 10.26670)
-        // age = 16
-
-        assertEquals(1, publisherHelper.nbUpdated());
-        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-
-        assertEquals(1, leaf.getEfficiency().doubleValue(), 0.0000000001);
-        assertEquals(10.26670, leaf.getEnergy().doubleValue(), 0.00001);
-        assertEquals(5.71320, leaf.collectFreeEnergy().doubleValue(), 0.00001);
-        // can not collect the free energy more than once
-        assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
-    }
-
-    public void testSpendTime3() {
-        leafState.setEfficiency(new BigDecimal("0.991"));
-        leaf = new BasicTreeLeaf(universe, leafState);
-        publisherHelper.addSubscriberTo(leaf);
-
-        assertEquals(0, publisherHelper.nbUpdated());
-
-        leaf.spendTime();
-        // efficiency after aging = 0.991 * 0.95 = 0.94145
-        // area = 0.08000000238418585
-        // collected energy = 0.94145 * 0.70 * 150 * 0.08000000238418585 = 7.9081802356821356906625
-        // energy for leaf = 7.9081802356821356906625 * 0.66 = 5.21939895555020955583725
-        // total energy = 10 + 5.21939895555020955583725 = 15.21939895555020955583725
-        // free energy = 7.9081802356821356906625 - 5.21939895555020955583725 = 2.68878128013192613482525
-        // total free energy = 3 + 2.68878128013192613482525 = 5.68878128013192613482525 (scale 5 -> 5.68878)
-        // max efficiency to add = 1 - 0.94145 = 0.05855
-        // efficiency to add = min(0.05855,0.1521939895555020955583725) = 0.05855
-        // efficiency after useEnergy : 0.94145 + 0.05855 = 1 (scale 10 -> 1)
-        // energy after useEnergy = 15.21939895555020955583725 - 5.855 = 9.36439895555020955583725 (scale 5 -> 9.36440)
-        // age = 16
-
-        assertEquals(1, publisherHelper.nbUpdated());
-        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
-
-        assertEquals(1, leaf.getEfficiency().doubleValue(), 0.0000000001);
-        assertEquals(9.36440, leaf.getEnergy().doubleValue(), 0.00001);
-        assertEquals(5.68878, leaf.collectFreeEnergy().doubleValue(), 0.00001);
-        // can not collect the free energy more than once
-        assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
+        leaf.improveEfficiency();
+        assertEquals(1.00, leaf.getEfficiency().doubleValue(), 0.0000000001);
+        assertEquals(15, leaf.getEnergy().doubleValue(), 0.00001);
     }
 
     public void testFall() {

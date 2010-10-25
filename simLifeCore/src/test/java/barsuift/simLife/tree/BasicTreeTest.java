@@ -78,7 +78,7 @@ public class BasicTreeTest extends TestCase {
         assertEquals(treeState, tree.getState());
         assertSame(treeState, tree.getState());
         BigDecimal energy = tree.getState().getEnergy();
-        tree.spendTime();
+        tree.collectSolarEnergy();
         assertEquals(treeState, tree.getState());
         assertSame(treeState, tree.getState());
         // the energy should have change in the state
@@ -86,14 +86,19 @@ public class BasicTreeTest extends TestCase {
     }
 
 
-    public void testSpendTime() {
+    public void testCollectSolarEnergy() {
         ((MockSun) universe.getEnvironment().getSun()).setLuminosity(PercentHelper.getDecimalValue(70));
-        tree.spendTime();
+        tree.collectSolarEnergy();
         assertEquals(40, tree.getNbBranches());
-        // as computed in BasicTreeBranchTest#testSpendTime
-        // -> freeEnergy in branches=50.7792
-        // collected energy from branches = 40 * 50.7792 + 10 = 2041.168
-        assertEquals(2041.168, tree.getEnergy().doubleValue(), 0.00001);
+
+        // as computed in BasicTreeBranchTest#testCollectSolarEnergy
+        // -> freeEnergy in branches = 51.636
+        // collected energy from branches = 40 * 51.636 + 10 = 2077.44
+
+        assertEquals(2075.44, tree.getEnergy().doubleValue(), 0.00001);
+        assertEquals(0, tree.collectFreeEnergy().doubleValue(), 0.00001);
+        // can not collect the free energy more than once
+        assertEquals(new BigDecimal(0), tree.collectFreeEnergy());
     }
 
 }

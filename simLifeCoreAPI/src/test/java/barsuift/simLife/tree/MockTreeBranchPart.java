@@ -45,6 +45,8 @@ public class MockTreeBranchPart extends MockSubscriber implements TreeBranchPart
 
     private BigDecimal freeEnergy = new BigDecimal(0);
 
+    private int collectSolarEnergyCalled = 0;
+
     private int synchronizedCalled;
 
     @Override
@@ -111,6 +113,15 @@ public class MockTreeBranchPart extends MockSubscriber implements TreeBranchPart
 
     public void setFreeEnergy(BigDecimal freeEnergy) {
         this.freeEnergy = freeEnergy;
+    }
+
+    @Override
+    public void collectSolarEnergy() {
+        collectSolarEnergyCalled++;
+    }
+
+    public int getNbCollectSolarEnergyCalled() {
+        return collectSolarEnergyCalled;
     }
 
     @Override

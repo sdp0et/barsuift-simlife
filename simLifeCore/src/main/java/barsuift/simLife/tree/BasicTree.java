@@ -89,16 +89,21 @@ public class BasicTree implements Tree {
      */
     @Override
     public void spendTime() {
-        trunk.spendTime();
         for (TreeBranch branch : branches) {
             branch.spendTime();
         }
-        collectFreeEnergyFromBranches();
     }
 
-    private void collectFreeEnergyFromBranches() {
+    @Override
+    public BigDecimal collectFreeEnergy() {
+        return BigDecimal.ZERO;
+    }
+
+    @Override
+    public void collectSolarEnergy() {
         BigDecimal freeEnergyCollectedFromBranches = new BigDecimal(0);
         for (TreeBranch branch : branches) {
+            branch.collectSolarEnergy();
             freeEnergyCollectedFromBranches = freeEnergyCollectedFromBranches.add(branch.collectFreeEnergy());
         }
         this.energy = energy.add(freeEnergyCollectedFromBranches);
