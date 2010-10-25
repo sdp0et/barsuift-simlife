@@ -109,11 +109,11 @@ public class BasicUniverseContext implements UniverseContext {
         if (fpsShowing) {
             fpsCounter.reset();
             fpsTicker = new FpsTicker(fpsCounter);
-            universe.getTimeController().schedule(fpsTicker);
+            universe.getSynchronizer().schedule(fpsTicker);
         } else {
             if (this.fpsShowing) {
                 // only unschedule the fpsTicker if it was previously scheduled
-                universe.getTimeController().unschedule(fpsTicker);
+                universe.getSynchronizer().unschedule(fpsTicker);
             }
         }
         canvas3D.setFpsShowing(fpsShowing);

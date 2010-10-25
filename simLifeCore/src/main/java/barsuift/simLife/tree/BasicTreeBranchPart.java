@@ -110,10 +110,6 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         return creationMillis;
     }
 
-    public void spendTime() {
-        // nothing to do
-    }
-
     @Override
     public void grow() {
         if (shouldCreateOneNewLeaf() && canCreateOneNewLeaf()) {
@@ -270,7 +266,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     protected void createOneNewLeaf() {
         Point3d leafAttachPoint = computeAttachPointForNewLeaf();
         BasicTreeLeafFactory factory = new BasicTreeLeafFactory(universe);
-        TreeLeaf leaf = factory.createNew(leafAttachPoint, NEW_LEAF_ENERGY_PROVIDED, universe.getTimeController()
+        TreeLeaf leaf = factory.createNew(leafAttachPoint, NEW_LEAF_ENERGY_PROVIDED, universe.getSynchronizer()
                 .getDate().getTimeInMillis());
         leaf.addSubscriber(this);
         leaves.add(leaf);

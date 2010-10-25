@@ -23,7 +23,7 @@ import java.util.List;
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.time.TimeController;
+import barsuift.simLife.process.Synchronizer;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -59,6 +59,6 @@ public interface Universe extends LivingPart {
 
     public Universe3D getUniverse3D();
 
-    public TimeController getTimeController();
+    public Synchronizer getSynchronizer();
 
 }

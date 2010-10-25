@@ -26,8 +26,8 @@ import barsuift.simLife.environment.Environment;
 import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.time.MockTimeController;
-import barsuift.simLife.time.TimeController;
+import barsuift.simLife.process.MockSynchronizer;
+import barsuift.simLife.process.Synchronizer;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -42,11 +42,9 @@ public class MockUniverse implements Universe {
 
     private long creationMillis = 0;
 
-    private int timeSpent = 0;
-
     private Environment environment = new MockEnvironment();
 
-    private TimeController timeController = new MockTimeController();
+    private Synchronizer synchronizer = new MockSynchronizer();
 
     private Universe3D universe3D = new MockUniverse3D();
 
@@ -77,19 +75,6 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public void spendTime() {
-        timeSpent++;
-    }
-
-    public int getNbTimeSpent() {
-        return timeSpent;
-    }
-
-    public void resetNbTimeSpent() {
-        timeSpent = 0;
-    }
-
-    @Override
     public Environment getEnvironment() {
         return environment;
     }
@@ -99,12 +84,12 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public TimeController getTimeController() {
-        return timeController;
+    public Synchronizer getSynchronizer() {
+        return synchronizer;
     }
 
-    public void setTimecontroller(TimeController timeController) {
-        this.timeController = timeController;
+    public void setSynchronizer(Synchronizer synchronizer) {
+        this.synchronizer = synchronizer;
     }
 
     @Override

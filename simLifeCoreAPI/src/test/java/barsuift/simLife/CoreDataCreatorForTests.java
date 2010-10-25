@@ -40,7 +40,6 @@ import barsuift.simLife.process.SynchronizerState;
 import barsuift.simLife.process.UnfrequentRunnableState;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.time.SimLifeDateState;
-import barsuift.simLife.time.TimeControllerState;
 import barsuift.simLife.tree.TreeBranchPartState;
 import barsuift.simLife.tree.TreeBranchState;
 import barsuift.simLife.tree.TreeLeafState;
@@ -94,24 +93,14 @@ public final class CoreDataCreatorForTests {
         return new DateHandlerState(date);
     }
 
-    public static TimeControllerState createRandomTimeControllerState() {
-        DateHandlerState dateHandler = createRandomDateHandlerState();
-        SynchronizerState synchronizer = createRandomSynchronizerState();
-        return new TimeControllerState(dateHandler, synchronizer);
-    }
-
-    public static TimeControllerState createSpecificTimeControllerState() {
-        DateHandlerState dateHandler = createSpecificDateHandlerState();
-        SynchronizerState synchronizer = createSpecificSynchronizerState();
-        return new TimeControllerState(dateHandler, synchronizer);
-    }
-
     public static SynchronizerState createRandomSynchronizerState() {
-        return new SynchronizerState(Randomizer.randomBetween(1, 20));
+        DateHandlerState dateHandler = createRandomDateHandlerState();
+        return new SynchronizerState(Randomizer.randomBetween(1, 20), dateHandler);
     }
 
     public static SynchronizerState createSpecificSynchronizerState() {
-        return new SynchronizerState(1);
+        DateHandlerState dateHandler = createSpecificDateHandlerState();
+        return new SynchronizerState(1, dateHandler);
     }
 
     public static UnfrequentRunnableState createRandomUnfrequentRunnableState() {
@@ -141,9 +130,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createRandomTreeLeafState());
         }
-        TimeControllerState timeControllerState = createRandomTimeControllerState();
+        SynchronizerState synchronizerState = createRandomSynchronizerState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(age, trees, fallenLeaves, createRandomEnvironmentState(), timeControllerState,
+        return new UniverseState(age, trees, fallenLeaves, createRandomEnvironmentState(), synchronizerState,
                 univ3DState);
     }
 
@@ -171,8 +160,8 @@ public final class CoreDataCreatorForTests {
             fallenLeaves.add(createSpecificTreeLeafState());
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
-        TimeControllerState timeControllerState = createSpecificTimeControllerState();
-        return new UniverseState(age, trees, fallenLeaves, createSpecificEnvironmentState(), timeControllerState,
+        SynchronizerState synchronizerState = createSpecificSynchronizerState();
+        return new UniverseState(age, trees, fallenLeaves, createSpecificEnvironmentState(), synchronizerState,
                 univ3DState);
     }
 

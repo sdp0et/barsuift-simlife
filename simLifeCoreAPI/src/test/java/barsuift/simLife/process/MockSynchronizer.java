@@ -1,28 +1,18 @@
-package barsuift.simLife.time;
+package barsuift.simLife.process;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.message.BasicPublisher;
-import barsuift.simLife.process.SynchronizedRunnable;
+import barsuift.simLife.time.SimLifeDate;
 
 
-public class MockTimeController extends BasicPublisher implements TimeController {
+public class MockSynchronizer extends BasicPublisher implements Synchronizer {
 
     private SimLifeDate date;
 
-    private TimeControllerState state;
-
-    private int synchronizeCalled;
-
     private int speed;
-
-    private int startCalled;
-
-    private int oneStepCalled;
-
-    private int stopCalled;
 
     private boolean running;
 
@@ -34,24 +24,37 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     private List<Runnable> runnablesToUnschedule;
 
-    public MockTimeController() {
+    private int startCalled;
+
+    private int oneStepCalled;
+
+    private int stopCalled;
+
+    private int stopAndWaitCalled;
+
+    private SynchronizerState state;
+
+    private int synchronizeCalled;
+
+    public MockSynchronizer() {
         super(null);
         reset();
     }
 
     public void reset() {
         date = new SimLifeDate();
-        state = CoreDataCreatorForTests.createSpecificTimeControllerState();
-        synchronizeCalled = 0;
         speed = 1;
-        startCalled = 0;
-        oneStepCalled = 0;
-        stopCalled = 0;
+        running = false;
         scheduleCalled = 0;
         runnablesToSchedule = new ArrayList<Runnable>();
         unscheduleCalled = 0;
         runnablesToUnschedule = new ArrayList<Runnable>();
-        running = false;
+        startCalled = 0;
+        oneStepCalled = 0;
+        stopCalled = 0;
+        stopAndWaitCalled = 0;
+        state = CoreDataCreatorForTests.createSpecificSynchronizerState();
+        synchronizeCalled = 0;
     }
 
     @Override
@@ -61,6 +64,25 @@ public class MockTimeController extends BasicPublisher implements TimeController
 
     public void setDate(SimLifeDate date) {
         this.date = date;
+    }
+
+    @Override
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    @Override
+    public int getSpeed() {
+        return speed;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     public void schedule(SynchronizedRunnable runnable) {
@@ -89,33 +111,6 @@ public class MockTimeController extends BasicPublisher implements TimeController
         return runnablesToUnschedule;
     }
 
-    @Override
-    public TimeControllerState getState() {
-        return state;
-    }
-
-    public void setTimeControllerState(TimeControllerState state) {
-        this.state = state;
-    }
-
-    @Override
-    public void synchronize() {
-        synchronizeCalled++;
-    }
-
-    public int getNbSynchronizeCalled() {
-        return synchronizeCalled;
-    }
-
-    @Override
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    @Override
-    public int getSpeed() {
-        return speed;
-    }
 
     @Override
     public void start() throws IllegalStateException {
@@ -145,12 +140,30 @@ public class MockTimeController extends BasicPublisher implements TimeController
     }
 
     @Override
-    public boolean isRunning() {
-        return running;
+    public void stopAndWait() {
+        stopAndWaitCalled++;
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
+    public int getNbStopAndWaitCalled() {
+        return stopAndWaitCalled;
+    }
+
+    @Override
+    public SynchronizerState getState() {
+        return state;
+    }
+
+    public void setState(SynchronizerState state) {
+        this.state = state;
+    }
+
+    @Override
+    public void synchronize() {
+        synchronizeCalled++;
+    }
+
+    public int getNbSynchronizeCalled() {
+        return synchronizeCalled;
     }
 
 }

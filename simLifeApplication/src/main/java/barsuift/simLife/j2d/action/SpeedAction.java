@@ -4,19 +4,18 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import barsuift.simLife.time.TimeController;
+import barsuift.simLife.process.Synchronizer;
 
 
 public class SpeedAction extends AbstractAction {
 
     private static final long serialVersionUID = -8115155709776072647L;
 
-    private final TimeController timeController;
+    private final Synchronizer synchronizer;
 
-    public SpeedAction(TimeController timeController, String name, String description, int mnemonic,
-            String actionCommand) {
+    public SpeedAction(Synchronizer synchronizer, String name, String description, int mnemonic, String actionCommand) {
         super();
-        this.timeController = timeController;
+        this.synchronizer = synchronizer;
         putValue(MNEMONIC_KEY, mnemonic);
         putValue(ACTION_COMMAND_KEY, actionCommand);
         putValue(NAME, name);
@@ -28,7 +27,7 @@ public class SpeedAction extends AbstractAction {
         boolean wasRunning = stopApp();
         setSpeed(e);
         if (wasRunning) {
-            timeController.start();
+            synchronizer.start();
         }
     }
 
@@ -38,8 +37,8 @@ public class SpeedAction extends AbstractAction {
      * @return true if the application was running, false otherwise
      */
     private boolean stopApp() {
-        if (timeController.isRunning()) {
-            timeController.stop();
+        if (synchronizer.isRunning()) {
+            synchronizer.stopAndWait();
             return true;
         }
         return false;
@@ -48,7 +47,7 @@ public class SpeedAction extends AbstractAction {
     private void setSpeed(ActionEvent e) {
         String actionCmd = e.getActionCommand();
         int speed = Integer.valueOf(actionCmd).intValue();
-        timeController.setSpeed(speed);
+        synchronizer.setSpeed(speed);
     }
 
 }

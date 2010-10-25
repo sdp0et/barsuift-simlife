@@ -27,8 +27,8 @@ public class MockFallingTreeLeaf extends MockTreeLeaf implements TreeLeaf {
         setEfficiency(PercentHelper.getDecimalValue(10));
     }
 
-    public void spendTime() {
-        super.spendTime();
+    public void age() {
+        super.age();
         setChanged();
         notifySubscribers(LeafUpdateMask.FALL_MASK);
     }
