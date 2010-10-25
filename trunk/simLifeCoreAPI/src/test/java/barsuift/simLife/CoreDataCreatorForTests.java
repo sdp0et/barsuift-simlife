@@ -221,10 +221,11 @@ public final class CoreDataCreatorForTests {
             branches.add(createRandomTreeBranchState());
         }
         UnfrequentRunnableState photosynthesis = createRandomUnfrequentRunnableState();
+        UnfrequentRunnableState aging = createRandomUnfrequentRunnableState();
         TreeTrunkState trunkState = createRandomTreeTrunkState();
         float height = (float) Math.random();
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
-        return new TreeState(age, energy, branches, photosynthesis, trunkState, height, tree3dState);
+        return new TreeState(age, energy, branches, photosynthesis, aging, trunkState, height, tree3dState);
     }
 
     /**
@@ -249,10 +250,11 @@ public final class CoreDataCreatorForTests {
             branches.add(createSpecificTreeBranchState());
         }
         UnfrequentRunnableState photosynthesis = createSpecificUnfrequentRunnableState();
+        UnfrequentRunnableState aging = createSpecificUnfrequentRunnableState();
         TreeTrunkState trunkState = createSpecificTreeTrunkState();
         float height = (float) 4;
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
-        return new TreeState(age, energy, branches, photosynthesis, trunkState, height, tree3dState);
+        return new TreeState(age, energy, branches, photosynthesis, aging, trunkState, height, tree3dState);
     }
 
     public static TreeBranchState createRandomTreeBranchState() {

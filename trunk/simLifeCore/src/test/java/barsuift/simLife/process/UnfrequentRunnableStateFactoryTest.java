@@ -31,8 +31,12 @@ public class UnfrequentRunnableStateFactoryTest extends TestCase {
         UnfrequentRunnableStateFactory factory = new UnfrequentRunnableStateFactory();
 
         UnfrequentRunnableState photosynthesisState = factory.createUnfrequentRunnableState(Photosynthesis.class);
-        assertEquals(50, photosynthesisState.getDelay());
+        assertEquals(300, photosynthesisState.getDelay());
         assertEquals(0, photosynthesisState.getCount());
+
+        UnfrequentRunnableState agingTreeState = factory.createUnfrequentRunnableState(AgingTree.class);
+        assertEquals(1200, agingTreeState.getDelay());
+        assertEquals(0, agingTreeState.getCount());
 
         UnfrequentRunnableState unknownState = factory.createUnfrequentRunnableState(MockUnfrequentRunnable.class);
         assertEquals(1, unknownState.getDelay());

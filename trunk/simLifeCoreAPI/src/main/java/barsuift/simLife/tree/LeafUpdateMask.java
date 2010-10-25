@@ -5,9 +5,9 @@ package barsuift.simLife.tree;
  */
 public class LeafUpdateMask {
 
-    private static final int FALL = 1;
+    private static final int FALL = 0;
 
-    private static final int EFFICIENCY = 2;
+    private static final int EFFICIENCY = 1;
 
 
     public static final int FALL_MASK = 1 << FALL;
