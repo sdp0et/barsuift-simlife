@@ -77,9 +77,7 @@ public class BasicTreeBranch implements TreeBranch {
      */
     @Override
     public void spendTime() {
-        for (TreeBranchPart branchPart : parts) {
-            branchPart.spendTime();
-        }
+        // nothing to do
     }
 
     /**
