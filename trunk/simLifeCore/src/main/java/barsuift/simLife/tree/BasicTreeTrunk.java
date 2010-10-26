@@ -76,6 +76,10 @@ public class BasicTreeTrunk implements TreeTrunk {
         return creationMillis;
     }
 
+    public void age() {
+        // nothing to do
+    }
+
     @Override
     public TreeTrunk3D getTreeTrunk3D() {
         return trunk3D;

@@ -26,6 +26,8 @@ public class MockTreeTrunk implements TreeTrunk {
 
     private long creationMillis = 0;
 
+    private int ageCalled = 0;
+
     private float height = 0;
 
     private float radius = 0;
@@ -78,6 +80,15 @@ public class MockTreeTrunk implements TreeTrunk {
 
     public void setCreationMillis(long creationMillis) {
         this.creationMillis = creationMillis;
+    }
+
+    @Override
+    public void age() {
+        ageCalled++;
+    }
+
+    public int getNbAgeCalled() {
+        return ageCalled;
     }
 
     @Override

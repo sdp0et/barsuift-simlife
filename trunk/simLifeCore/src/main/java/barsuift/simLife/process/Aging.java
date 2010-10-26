@@ -16,37 +16,22 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.tree;
-
-import java.math.BigDecimal;
+package barsuift.simLife.process;
 
 import barsuift.simLife.LivingPart;
-import barsuift.simLife.j3d.tree.TreeLeaf3D;
-import barsuift.simLife.message.Publisher;
 
-public interface TreeLeaf extends LivingPart, Photosynthetic, Publisher {
 
-    public boolean isTooWeak();
+public class Aging extends UnfrequentRunnable {
 
-    public TreeLeaf3D getTreeLeaf3D();
+    private final LivingPart livingPart;
 
-    /**
-     * Return the efficiency of the leaf. This efficiency impacts the amount of solar energy which can be collected.
-     * 
-     * @return the efficiency
-     */
-    public BigDecimal getEfficiency();
+    public Aging(UnfrequentRunnableState state, LivingPart livingPart) {
+        super(state);
+        this.livingPart = livingPart;
+    }
 
-    /**
-     * Return the energy of the leaf
-     * 
-     * @return the energy
-     */
-    public BigDecimal getEnergy();
-
-    /**
-     * Uses collected energy to improve the leaf efficiency.
-     */
-    public void improveEfficiency();
-
+    @Override
+    public void executeUnfrequentStep() {
+        livingPart.age();
+    }
 }

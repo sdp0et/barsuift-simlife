@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
-import barsuift.simLife.process.AgingTree;
+import barsuift.simLife.process.Aging;
 import barsuift.simLife.process.MockSynchronizer;
 import barsuift.simLife.process.Photosynthesis;
 import barsuift.simLife.process.TreeGrowth;
@@ -70,7 +70,7 @@ public class BasicTreeTest extends TestCase {
         assertEquals(3, synchronizer.getNbScheduleCalled());
         assertEquals(3, synchronizer.getScheduledRunnables().size());
         assertEquals(Photosynthesis.class, synchronizer.getScheduledRunnables().get(0).getClass());
-        assertEquals(AgingTree.class, synchronizer.getScheduledRunnables().get(1).getClass());
+        assertEquals(Aging.class, synchronizer.getScheduledRunnables().get(1).getClass());
         assertEquals(TreeGrowth.class, synchronizer.getScheduledRunnables().get(2).getClass());
     }
 

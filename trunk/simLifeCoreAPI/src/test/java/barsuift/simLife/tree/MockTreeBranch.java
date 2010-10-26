@@ -30,6 +30,8 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     private long creationMillis = 0;
 
+    private int ageCalled = 0;
+
     private BigDecimal energy = new BigDecimal(0);
 
     private BigDecimal freeEnergy = new BigDecimal(0);
@@ -55,6 +57,15 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     public void setCreationMillis(long creationMillis) {
         this.creationMillis = creationMillis;
+    }
+
+    @Override
+    public void age() {
+        ageCalled++;
+    }
+
+    public int getNbAgeCalled() {
+        return ageCalled;
     }
 
     @Override

@@ -34,7 +34,7 @@ public class UnfrequentRunnableStateFactoryTest extends TestCase {
         assertEquals(300, photosynthesisState.getDelay());
         assertEquals(0, photosynthesisState.getCount());
 
-        UnfrequentRunnableState agingTreeState = factory.createUnfrequentRunnableState(AgingTree.class);
+        UnfrequentRunnableState agingTreeState = factory.createUnfrequentRunnableState(Aging.class);
         assertEquals(1200, agingTreeState.getDelay());
         assertEquals(0, agingTreeState.getCount());
 
