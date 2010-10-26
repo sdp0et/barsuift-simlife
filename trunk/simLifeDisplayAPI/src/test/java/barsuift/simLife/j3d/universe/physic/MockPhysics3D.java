@@ -18,43 +18,62 @@
  */
 package barsuift.simLife.j3d.universe.physic;
 
-import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.universe.physic.Physics;
 
+public class MockPhysics3D implements Physics3D {
 
-public class BasicPhysics3D implements Physics3D {
+    private Physics3DState state;
 
-    private final Physics3DState state;
+    private int synchronizeCalled;
 
-    private final GravityInterpolator gravity;
+    private GravityInterpolator gravity;
 
-    private final Physics physics;
+    private Gravity3D gravity3D;
 
-    public BasicPhysics3D(Universe3D universe3D, Physics3DState state, Physics physics) {
-        this.state = state;
-        this.physics = physics;
-        this.gravity = new BasicGravityInterpolator(universe3D);
-
+    public MockPhysics3D() {
+        reset();
     }
 
-    public GravityInterpolator getGravityInterpolator() {
-        return gravity;
-    }
-
-    @Override
-    public Gravity3D getGravity3D() {
-        return physics.getGravity().getGravity3D();
+    public void reset() {
+        state = new Physics3DState();
+        synchronizeCalled = 0;
+        gravity = new MockGravityInterpolator();
+        gravity3D = new MockGravity3D();
     }
 
     @Override
     public Physics3DState getState() {
-        synchronize();
         return state;
+    }
+
+    public void setState(Physics3DState state) {
+        this.state = state;
     }
 
     @Override
     public void synchronize() {
-        // nothing to do
+        synchronizeCalled++;
+    }
+
+    public int getNbSynchronizeCalled() {
+        return synchronizeCalled;
+    }
+
+    @Override
+    public GravityInterpolator getGravityInterpolator() {
+        return gravity;
+    }
+
+    public void setGravity(GravityInterpolator gravity) {
+        this.gravity = gravity;
+    }
+
+    @Override
+    public Gravity3D getGravity3D() {
+        return gravity3D;
+    }
+
+    public void setGravity3D(Gravity3D gravity3D) {
+        this.gravity3D = gravity3D;
     }
 
 }

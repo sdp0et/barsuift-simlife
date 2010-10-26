@@ -27,6 +27,8 @@ import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
+import barsuift.simLife.j3d.universe.physic.Gravity3DState;
+import barsuift.simLife.j3d.universe.physic.Physics3DState;
 
 
 
@@ -34,6 +36,22 @@ public final class DisplayDataCreatorForTests {
 
     private DisplayDataCreatorForTests() {
         // private constructor to enforce static access
+    }
+
+    public static Physics3DState createRandomPhysics3DState() {
+        return new Physics3DState();
+    }
+
+    public static Physics3DState createSpecificPhysics3DState() {
+        return new Physics3DState();
+    }
+
+    public static Gravity3DState createRandomGravity3DState() {
+        return new Gravity3DState();
+    }
+
+    public static Gravity3DState createSpecificGravity3DState() {
+        return new Gravity3DState();
     }
 
     public static Tuple3dState createRandomTupleState() {

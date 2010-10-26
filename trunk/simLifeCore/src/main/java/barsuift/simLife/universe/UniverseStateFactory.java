@@ -35,6 +35,8 @@ import barsuift.simLife.process.SynchronizerStateFactory;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 import barsuift.simLife.tree.TreeStateFactory;
+import barsuift.simLife.universe.physic.PhysicsState;
+import barsuift.simLife.universe.physic.PhysicsStateFactory;
 
 
 public class UniverseStateFactory {
@@ -70,13 +72,15 @@ public class UniverseStateFactory {
 
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
+        PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
+        PhysicsState physics = physicsStateFactory.createPhysicsState();
         SynchronizerStateFactory synchronizerStateFactory = new SynchronizerStateFactory();
         SynchronizerState synchronizerState = synchronizerStateFactory.createSynchronizerState();
 
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createRandomUniverse3DState();
 
-        return new UniverseState(trees, fallenLeaves, environment, synchronizerState, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, univ3DState);
     }
 
     /**
@@ -93,12 +97,14 @@ public class UniverseStateFactory {
         Set<TreeLeafState> fallenLeaves = new HashSet<TreeLeafState>(0);
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
+        PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
+        PhysicsState physics = physicsStateFactory.createPhysicsState();
         SynchronizerStateFactory synchronizerStateFactory = new SynchronizerStateFactory();
         SynchronizerState synchronizerState = synchronizerStateFactory.createSynchronizerState();
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createEmptyUniverse3DState();
 
-        return new UniverseState(trees, fallenLeaves, environment, synchronizerState, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, univ3DState);
     }
 
 }

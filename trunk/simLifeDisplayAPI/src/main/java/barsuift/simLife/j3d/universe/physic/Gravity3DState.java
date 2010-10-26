@@ -1,14 +1,13 @@
-package barsuift.simLife.j3d.universe;
+package barsuift.simLife.j3d.universe.physic;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 
 @XmlRootElement
-public class Universe3DState implements State {
+public class Gravity3DState implements State {
 
-    public Universe3DState() {
-        super();
+    public Gravity3DState() {
     }
 
     @Override
@@ -30,7 +29,6 @@ public class Universe3DState implements State {
 
     @Override
     public String toString() {
-        return "Universe3DState []";
+        return "Gravity3DState []";
     }
-
 }

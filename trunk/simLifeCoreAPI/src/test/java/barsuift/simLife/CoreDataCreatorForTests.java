@@ -36,6 +36,8 @@ import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
+import barsuift.simLife.j3d.universe.physic.Gravity3DState;
+import barsuift.simLife.j3d.universe.physic.Physics3DState;
 import barsuift.simLife.process.SynchronizerState;
 import barsuift.simLife.process.UnfrequentRunnableState;
 import barsuift.simLife.time.DateHandlerState;
@@ -47,6 +49,8 @@ import barsuift.simLife.tree.TreeState;
 import barsuift.simLife.tree.TreeTrunkState;
 import barsuift.simLife.universe.UniverseContextState;
 import barsuift.simLife.universe.UniverseState;
+import barsuift.simLife.universe.physic.GravityState;
+import barsuift.simLife.universe.physic.PhysicsState;
 
 public final class CoreDataCreatorForTests {
 
@@ -81,6 +85,28 @@ public final class CoreDataCreatorForTests {
         boolean fpsShowing = false;
         double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
         return new UniverseContextState(universeState, canvasState, axisShowing, fpsShowing, viewerTransform);
+    }
+
+    public static PhysicsState createRandomPhysicsState() {
+        GravityState gravity = createRandomGravityState();
+        Physics3DState physics3D = DisplayDataCreatorForTests.createRandomPhysics3DState();
+        return new PhysicsState(gravity, physics3D);
+    }
+
+    public static PhysicsState createSpecificPhysicsState() {
+        GravityState gravity = createSpecificGravityState();
+        Physics3DState physics3D = DisplayDataCreatorForTests.createSpecificPhysics3DState();
+        return new PhysicsState(gravity, physics3D);
+    }
+
+    public static GravityState createRandomGravityState() {
+        Gravity3DState gravity3D = DisplayDataCreatorForTests.createRandomGravity3DState();
+        return new GravityState(gravity3D);
+    }
+
+    public static GravityState createSpecificGravityState() {
+        Gravity3DState gravity3D = DisplayDataCreatorForTests.createSpecificGravity3DState();
+        return new GravityState(gravity3D);
     }
 
     public static DateHandlerState createRandomDateHandlerState() {
@@ -129,9 +155,11 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createRandomTreeLeafState());
         }
+        EnvironmentState environmentState = createRandomEnvironmentState();
+        PhysicsState physicsState = createRandomPhysicsState();
         SynchronizerState synchronizerState = createRandomSynchronizerState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(trees, fallenLeaves, createRandomEnvironmentState(), synchronizerState, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchronizerState, univ3DState);
     }
 
     /**
@@ -155,9 +183,11 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbFallenLeaves; i++) {
             fallenLeaves.add(createSpecificTreeLeafState());
         }
+        EnvironmentState environmentState = createSpecificEnvironmentState();
+        PhysicsState physicsState = createSpecificPhysicsState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
         SynchronizerState synchronizerState = createSpecificSynchronizerState();
-        return new UniverseState(trees, fallenLeaves, createSpecificEnvironmentState(), synchronizerState, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchronizerState, univ3DState);
     }
 
     public static EnvironmentState createRandomEnvironmentState() {

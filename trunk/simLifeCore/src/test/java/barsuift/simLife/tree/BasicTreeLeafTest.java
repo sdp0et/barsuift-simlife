@@ -29,7 +29,7 @@ import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.environment.MockSun;
-import barsuift.simLife.j3d.universe.physic.MockGravity;
+import barsuift.simLife.j3d.universe.physic.MockGravityInterpolator;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
 
@@ -176,7 +176,7 @@ public class BasicTreeLeafTest extends TestCase {
         int updateParam2 = (Integer) publisherHelper.getUpdateObjects().get(1);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam2, LeafUpdateMask.FALL_MASK));
 
-        MockGravity gravity = (MockGravity) universe.getUniverse3D().getPhysics().getGravity();
+        MockGravityInterpolator gravity = (MockGravityInterpolator) universe.getUniverse3D().getPhysics3D().getGravityInterpolator();
         assertEquals(bg, gravity.getFallenGroup());
     }
 

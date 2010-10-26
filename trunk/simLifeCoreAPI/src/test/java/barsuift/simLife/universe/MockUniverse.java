@@ -30,6 +30,8 @@ import barsuift.simLife.process.MockSynchronizer;
 import barsuift.simLife.process.Synchronizer;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
+import barsuift.simLife.universe.physic.MockPhysics;
+import barsuift.simLife.universe.physic.Physics;
 
 
 public class MockUniverse implements Universe {
@@ -44,13 +46,15 @@ public class MockUniverse implements Universe {
 
     private Environment environment = new MockEnvironment();
 
+    private Physics physics = new MockPhysics();
+
     private Synchronizer synchronizer = new MockSynchronizer();
 
     private Universe3D universe3D = new MockUniverse3D();
 
     private UniverseState state = new UniverseState();
 
-    private int synchronizedCalled;
+    private int synchronizedCalled = 0;
 
 
     @Override
@@ -81,6 +85,15 @@ public class MockUniverse implements Universe {
 
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+    }
+
+    @Override
+    public Physics getPhysics() {
+        return physics;
+    }
+
+    public void setPhysics(Physics physics) {
+        this.physics = physics;
     }
 
     @Override

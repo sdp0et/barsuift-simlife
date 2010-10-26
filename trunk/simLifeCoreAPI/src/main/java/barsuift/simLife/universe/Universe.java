@@ -27,6 +27,7 @@ import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.process.Synchronizer;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
+import barsuift.simLife.universe.physic.Physics;
 
 
 public interface Universe extends Persistent<UniverseState> {
@@ -57,6 +58,8 @@ public interface Universe extends Persistent<UniverseState> {
     public void addFallenLeaf(TreeLeaf treeLeaf);
 
     public Environment getEnvironment();
+
+    public Physics getPhysics();
 
     public Universe3D getUniverse3D();
 

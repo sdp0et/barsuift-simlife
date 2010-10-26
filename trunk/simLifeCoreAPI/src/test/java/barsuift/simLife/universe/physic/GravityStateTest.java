@@ -16,24 +16,32 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.universe;
+package barsuift.simLife.universe.physic;
 
-import java.util.Set;
+import barsuift.simLife.CoreDataCreatorForTests;
+import barsuift.simLife.JaxbTestCase;
 
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Node;
 
-import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.universe.physic.Physics3D;
+public class GravityStateTest extends JaxbTestCase {
 
-public interface Universe3D extends Persistent<Universe3DState> {
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-    public BranchGroup getUniverseRoot();
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
 
-    public void addElement3D(Node element3D);
+    @Override
+    protected String getPackage() {
+        return "barsuift.simLife.universe.physic";
+    }
 
-    public Set<Node> getElements3D();
-
-    public Physics3D getPhysics3D();
+    public void testJaxb() throws Exception {
+        GravityState gravityState = CoreDataCreatorForTests.createRandomGravityState();
+        write(gravityState);
+        GravityState gravityState2 = (GravityState) read();
+        assertEquals(gravityState, gravityState2);
+    }
 
 }

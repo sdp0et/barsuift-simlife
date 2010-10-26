@@ -40,7 +40,7 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
 
     private TreeLeafState state = new TreeLeafState();
 
-    private int synchronizedCalled;
+    private int synchronizedCalled = 0;
 
     private int collectSolarEnergyCalled = 0;
 

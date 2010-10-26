@@ -47,9 +47,9 @@ public class BasicUniverse3DTest extends TestCase {
     }
 
     public void testBasicUniverse3D() {
-        BasicUniverse3D universe3D = new BasicUniverse3D();
+        BasicUniverse3D universe3D = new BasicUniverse3D(new Universe3DState(), new MockUniverse());
         assertNotNull(universe3D.getElements3D());
-        assertNotNull(universe3D.getPhysics());
+        assertNotNull(universe3D.getPhysics3D());
         BranchGroup root = universe3D.getUniverseRoot();
         assertNotNull(root);
         assertEquals(0, root.numChildren());
@@ -57,7 +57,7 @@ public class BasicUniverse3DTest extends TestCase {
     }
 
     public void testInitFromUniverse() {
-        BasicUniverse3D universe3D = new BasicUniverse3D();
+        BasicUniverse3D universe3D = new BasicUniverse3D(new Universe3DState(), new MockUniverse());
         Universe universe = new MockUniverse();
         MockTreeLeaf treeLeaf = new MockTreeLeaf();
         treeLeaf.setState(CoreDataCreatorForTests.createSpecificTreeLeafState());
@@ -80,7 +80,7 @@ public class BasicUniverse3DTest extends TestCase {
     }
 
     public void testAddElement3D() {
-        BasicUniverse3D universe3D = new BasicUniverse3D();
+        BasicUniverse3D universe3D = new BasicUniverse3D(new Universe3DState(), new MockUniverse());
         TreeLeaf3DStateFactory stateFactory = new TreeLeaf3DStateFactory();
         Point3d leafAttachPoint = new Point3d(Math.random(), Math.random(), Math.random());
         TreeLeaf3DState leaf3dState = stateFactory.createRandomTreeLeaf3DState(leafAttachPoint);

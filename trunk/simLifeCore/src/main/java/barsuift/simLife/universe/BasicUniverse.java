@@ -38,6 +38,8 @@ import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
+import barsuift.simLife.universe.physic.BasicPhysics;
+import barsuift.simLife.universe.physic.Physics;
 
 public class BasicUniverse implements Universe {
 
@@ -49,6 +51,8 @@ public class BasicUniverse implements Universe {
 
     private final Environment environment;
 
+    private final Physics physics;
+
     private final BasicSynchronizer synchronizer;
 
     private final BasicUniverse3D universe3D;
@@ -56,8 +60,9 @@ public class BasicUniverse implements Universe {
 
     public BasicUniverse(UniverseState state) throws InitException {
         this.state = state;
-        this.universe3D = new BasicUniverse3D();
+        this.universe3D = new BasicUniverse3D(state.getUniv3DState(), this);
         this.environment = new BasicEnvironment(state.getEnvironment());
+        this.physics = new BasicPhysics(this, state.getPhysics());
         this.synchronizer = new BasicSynchronizer(state.getSynchronizerState());
         this.trees = new ArrayList<Tree>();
         Set<TreeState> treeStates = state.getTrees();
@@ -107,6 +112,11 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
+    public Physics getPhysics() {
+        return physics;
+    }
+
+    @Override
     public Synchronizer getSynchronizer() {
         return synchronizer;
     }
@@ -130,6 +140,7 @@ public class BasicUniverse implements Universe {
         }
         state.setFallenLeaves(fallenLeaveStates);
         environment.synchronize();
+        physics.synchronize();
         synchronizer.synchronize();
     }
 

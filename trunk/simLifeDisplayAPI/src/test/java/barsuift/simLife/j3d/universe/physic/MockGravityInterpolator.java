@@ -18,18 +18,20 @@
  */
 package barsuift.simLife.j3d.universe.physic;
 
+import javax.media.j3d.BranchGroup;
 
-public class MockPhysics implements Physics3D {
 
-    private GravityInterpolator gravity = new MockGravity();
+public class MockGravityInterpolator implements GravityInterpolator {
+
+    private BranchGroup fallenGroup;
 
     @Override
-    public GravityInterpolator getGravity() {
-        return gravity;
+    public void fall(BranchGroup groupToFall) {
+        this.fallenGroup = groupToFall;
     }
 
-    public void setGravity(GravityInterpolator gravity) {
-        this.gravity = gravity;
+    public BranchGroup getFallenGroup() {
+        return fallenGroup;
     }
 
 }

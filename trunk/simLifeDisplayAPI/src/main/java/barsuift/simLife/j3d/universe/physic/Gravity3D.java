@@ -20,18 +20,15 @@ package barsuift.simLife.j3d.universe.physic;
 
 import javax.media.j3d.BranchGroup;
 
+import barsuift.simLife.Persistent;
 
-public class MockGravity implements GravityInterpolator {
+public interface Gravity3D extends Persistent<Gravity3DState> {
 
-    private BranchGroup fallenGroup;
-
-    @Override
-    public void fall(BranchGroup groupToFall) {
-        this.fallenGroup = groupToFall;
-    }
-
-    public BranchGroup getFallenGroup() {
-        return fallenGroup;
-    }
+    /**
+     * Make the given group fall.
+     * 
+     * @param groupToFall a BG, containing a TG, containing the element to fall
+     */
+    public void fall(BranchGroup groupToFall);
 
 }
