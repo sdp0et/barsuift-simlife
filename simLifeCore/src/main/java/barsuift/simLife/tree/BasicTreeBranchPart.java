@@ -110,6 +110,12 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         return creationMillis;
     }
 
+    public void age() {
+        for (TreeLeaf leaf : leaves) {
+            leaf.age();
+        }
+    }
+
     @Override
     public void grow() {
         if (shouldCreateOneNewLeaf() && canCreateOneNewLeaf()) {

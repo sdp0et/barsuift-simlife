@@ -18,9 +18,17 @@
  */
 package barsuift.simLife;
 
-// TODO 017. add age method to LivingPart. Update Aging process.
 public interface LivingPart extends Persistent<State> {
 
     public long getCreationMillis();
+
+    /**
+     * Make the living part older than it was. Depending, on implementations, the consequences may vary.
+     * 
+     * <p>
+     * Typical consequence is a loss of efficiency or energy.
+     * </p>
+     */
+    public void age();
 
 }

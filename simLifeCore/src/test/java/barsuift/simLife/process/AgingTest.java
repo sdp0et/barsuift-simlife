@@ -21,29 +21,17 @@ package barsuift.simLife.process;
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.tree.MockTree;
-import barsuift.simLife.tree.MockTreeBranch;
-import barsuift.simLife.tree.MockTreeBranchPart;
-import barsuift.simLife.tree.MockTreeLeaf;
 
 
-public class AgingTreeTest extends TestCase {
+public class AgingTest extends TestCase {
 
     public void testExecuteUnfrequentStep() {
-        MockTreeLeaf mockLeaf = new MockTreeLeaf();
-
-        MockTreeBranchPart mockBranchPart = new MockTreeBranchPart();
-        mockBranchPart.addLeaf(mockLeaf);
-
-        MockTreeBranch mockBranch = new MockTreeBranch();
-        mockBranch.addPart(mockBranchPart);
-
         MockTree mockTree = new MockTree();
-        mockTree.addBranch(mockBranch);
 
-        AgingTree aging = new AgingTree(CoreDataCreatorForTests.createSpecificUnfrequentRunnableState(), mockTree);
+        Aging aging = new Aging(CoreDataCreatorForTests.createSpecificUnfrequentRunnableState(), mockTree);
         aging.executeUnfrequentStep();
 
-        assertEquals(1, mockLeaf.getNbAgeCalled());
+        assertEquals(1, mockTree.getNbAgeCalled());
     }
 
 }

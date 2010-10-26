@@ -13,7 +13,6 @@ public class Photosynthesis extends UnfrequentRunnable {
 
     @Override
     public void executeUnfrequentStep() {
-        System.out.println("Executing Photosynthesis");
         photosynthetic.collectSolarEnergy();
     }
 }

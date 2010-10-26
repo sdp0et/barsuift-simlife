@@ -72,6 +72,12 @@ public class BasicTreeBranch implements TreeBranch {
         return creationMillis;
     }
 
+    public void age() {
+        for (TreeBranchPart part : parts) {
+            part.age();
+        }
+    }
+
     /**
      * Return the sum of branch parts energies
      */
