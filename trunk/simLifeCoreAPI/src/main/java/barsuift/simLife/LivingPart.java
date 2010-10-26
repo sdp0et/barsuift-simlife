@@ -18,7 +18,7 @@
  */
 package barsuift.simLife;
 
-// TODO 017. add age method to LivingPart. Make Universe does not implement this interface
+// TODO 017. add age method to LivingPart. Update Aging process.
 public interface LivingPart extends Persistent<State> {
 
     public long getCreationMillis();
