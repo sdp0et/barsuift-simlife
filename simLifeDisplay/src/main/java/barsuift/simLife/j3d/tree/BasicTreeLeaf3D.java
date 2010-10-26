@@ -241,7 +241,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         // the rotation is now global and not related to the tree or the branch
         rotation = TransformerHelper.getRotationFromTransform(globalTransform, Axis.Y);
         // send the leaf Branch group, which contains a TG for the translation along the branch part
-        universe3D.getPhysics().getGravity().fall((BranchGroup) leafShape3D.getParent().getParent());
+        universe3D.getPhysics3D().getGravityInterpolator().fall((BranchGroup) leafShape3D.getParent().getParent());
     }
 
     @Override

@@ -24,7 +24,7 @@ import java.util.Set;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Node;
 
-import barsuift.simLife.j3d.universe.physic.MockPhysics;
+import barsuift.simLife.j3d.universe.physic.MockPhysics3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
 
 
@@ -32,9 +32,13 @@ public class MockUniverse3D implements Universe3D {
 
     private Set<Node> elements3D = new HashSet<Node>();
 
-    private Physics3D physics = new MockPhysics();
+    private Physics3D physics3D = new MockPhysics3D();
 
     private BranchGroup branchGroup = new BranchGroup();
+
+    private Universe3DState state = new Universe3DState();
+
+    private int synchronizedCalled = 0;
 
     @Override
     public void addElement3D(Node element3d) {
@@ -47,12 +51,12 @@ public class MockUniverse3D implements Universe3D {
     }
 
     @Override
-    public Physics3D getPhysics() {
-        return physics;
+    public Physics3D getPhysics3D() {
+        return physics3D;
     }
 
     public void setPhysics(Physics3D physics) {
-        this.physics = physics;
+        this.physics3D = physics;
     }
 
     @Override
@@ -62,6 +66,24 @@ public class MockUniverse3D implements Universe3D {
 
     public void setBranchGroup(BranchGroup branchGroup) {
         this.branchGroup = branchGroup;
+    }
+
+    @Override
+    public Universe3DState getState() {
+        return state;
+    }
+
+    public void setState(Universe3DState state) {
+        this.state = state;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }

@@ -33,30 +33,31 @@ import javax.vecmath.Vector3d;
 import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.tree.Tree3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
-import barsuift.simLife.j3d.universe.physic.BasicPhysics3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.universe.Universe;
 
-
 public class BasicUniverse3D implements Universe3D {
+
+    private final Universe3DState state;
 
     private BranchGroup root;
 
     private Set<Node> elements3D;
 
-    private Physics3D physics;
+    private final Universe universe;
 
-    public BasicUniverse3D() {
+    public BasicUniverse3D(Universe3DState state, Universe universe) {
+        this.state = state;
+        this.universe = universe;
         root = new BranchGroup();
         root.setCapability(Group.ALLOW_CHILDREN_EXTEND);
-
         elements3D = new HashSet<Node>();
-        physics = new BasicPhysics3D(this);
     }
 
+    // TODO 888 see if this can be improved
     public void initFromUniverse(Universe universe) {
         addElement3D(universe.getEnvironment().getEnvironment3D().getGroup());
 
@@ -107,13 +108,24 @@ public class BasicUniverse3D implements Universe3D {
     }
 
     @Override
-    public Physics3D getPhysics() {
-        return physics;
+    public Physics3D getPhysics3D() {
+        return universe.getPhysics().getPhysics3D();
     }
 
     @Override
     public BranchGroup getUniverseRoot() {
         return root;
+    }
+
+    @Override
+    public Universe3DState getState() {
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        // nothing to do
     }
 
 }

@@ -29,6 +29,7 @@ import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.process.SynchronizerState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
+import barsuift.simLife.universe.physic.PhysicsState;
 
 @XmlRootElement
 public class UniverseState implements State {
@@ -39,6 +40,8 @@ public class UniverseState implements State {
 
     private EnvironmentState environment;
 
+    private PhysicsState physics;
+
     private SynchronizerState synchronizerState;
 
     private Universe3DState univ3DState;
@@ -48,16 +51,18 @@ public class UniverseState implements State {
         this.trees = new HashSet<TreeState>();
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
+        this.physics = new PhysicsState();
         this.synchronizerState = new SynchronizerState();
         this.univ3DState = new Universe3DState();
     }
 
     public UniverseState(Set<TreeState> trees, Set<TreeLeafState> fallenLeaves, EnvironmentState environment,
-            SynchronizerState synchronizerState, Universe3DState univ3DState) {
+            PhysicsState physics, SynchronizerState synchronizerState, Universe3DState univ3DState) {
         super();
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
+        this.physics = physics;
         this.synchronizerState = synchronizerState;
         this.univ3DState = univ3DState;
     }
@@ -86,6 +91,14 @@ public class UniverseState implements State {
         this.environment = environment;
     }
 
+    public PhysicsState getPhysics() {
+        return physics;
+    }
+
+    public void setPhysics(PhysicsState physics) {
+        this.physics = physics;
+    }
+
     public SynchronizerState getSynchronizerState() {
         return synchronizerState;
     }
@@ -107,6 +120,7 @@ public class UniverseState implements State {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
+        result = prime * result + ((physics == null) ? 0 : physics.hashCode());
         result = prime * result + ((synchronizerState == null) ? 0 : synchronizerState.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
         result = prime * result + ((trees == null) ? 0 : trees.hashCode());
@@ -128,6 +142,12 @@ public class UniverseState implements State {
                 return false;
         } else
             if (!environment.equals(other.environment))
+                return false;
+        if (physics == null) {
+            if (other.physics != null)
+                return false;
+        } else
+            if (!physics.equals(other.physics))
                 return false;
         if (synchronizerState == null) {
             if (other.synchronizerState != null)
@@ -159,7 +179,8 @@ public class UniverseState implements State {
     @Override
     public String toString() {
         return "UniverseState [trees=" + trees + ", fallenLeaves=" + fallenLeaves + ", environment=" + environment
-                + ", synchronizerState=" + synchronizerState + ", univ3DState=" + univ3DState + "]";
+                + ", physics=" + physics + ", synchronizerState=" + synchronizerState + ", univ3DState=" + univ3DState
+                + "]";
     }
 
 }
