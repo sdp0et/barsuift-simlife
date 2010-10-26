@@ -21,7 +21,9 @@ package barsuift.simLife.j3d.universe.physic;
 import javax.media.j3d.BranchGroup;
 
 
-// TODO 001. leaves should stop falling when time is stopped, and follow application speed
+// TODO 003. leaves should stop falling when time is stopped, and follow application speed
+// TODO 002. Create a Synchronizer3D instead to synchronize Alphas
+// TODO 001. refactor GravityInterpolator to use Gravity and Gravity3D instead
 public interface GravityInterpolator {
 
     /**
