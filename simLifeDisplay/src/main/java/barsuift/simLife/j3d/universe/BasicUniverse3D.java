@@ -33,8 +33,8 @@ import javax.vecmath.Vector3d;
 import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.tree.Tree3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
-import barsuift.simLife.j3d.universe.physic.BasicPhysics;
-import barsuift.simLife.j3d.universe.physic.Physics;
+import barsuift.simLife.j3d.universe.physic.BasicPhysics3D;
+import barsuift.simLife.j3d.universe.physic.Physics3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
@@ -47,14 +47,14 @@ public class BasicUniverse3D implements Universe3D {
 
     private Set<Node> elements3D;
 
-    private Physics physics;
+    private Physics3D physics;
 
     public BasicUniverse3D() {
         root = new BranchGroup();
         root.setCapability(Group.ALLOW_CHILDREN_EXTEND);
 
         elements3D = new HashSet<Node>();
-        physics = new BasicPhysics(this);
+        physics = new BasicPhysics3D(this);
     }
 
     public void initFromUniverse(Universe universe) {
@@ -107,7 +107,7 @@ public class BasicUniverse3D implements Universe3D {
     }
 
     @Override
-    public Physics getPhysics() {
+    public Physics3D getPhysics() {
         return physics;
     }
 

@@ -19,16 +19,16 @@
 package barsuift.simLife.j3d.universe.physic;
 
 
-public class MockPhysics implements Physics {
+public class MockPhysics implements Physics3D {
 
-    private Gravity gravity = new MockGravity();
+    private GravityInterpolator gravity = new MockGravity();
 
     @Override
-    public Gravity getGravity() {
+    public GravityInterpolator getGravity() {
         return gravity;
     }
 
-    public void setGravity(Gravity gravity) {
+    public void setGravity(GravityInterpolator gravity) {
         this.gravity = gravity;
     }
 

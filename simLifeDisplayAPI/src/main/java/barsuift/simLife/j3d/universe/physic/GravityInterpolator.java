@@ -18,10 +18,18 @@
  */
 package barsuift.simLife.j3d.universe.physic;
 
+import javax.media.j3d.BranchGroup;
 
 
-public interface Physics {
+// TODO 001. leaves should stop falling when time is stopped, and follow application speed
+public interface GravityInterpolator {
 
-    public Gravity getGravity();
+    /**
+     * Make the given group fall.
+     * 
+     * @param groupToFall a BG, containing a TG, containing the leaf
+     * @return the global transform of the group to fall
+     */
+    public void fall(BranchGroup groupToFall);
 
 }

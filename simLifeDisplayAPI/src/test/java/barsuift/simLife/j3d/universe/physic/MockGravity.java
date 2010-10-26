@@ -21,7 +21,7 @@ package barsuift.simLife.j3d.universe.physic;
 import javax.media.j3d.BranchGroup;
 
 
-public class MockGravity implements Gravity {
+public class MockGravity implements GravityInterpolator {
 
     private BranchGroup fallenGroup;
 

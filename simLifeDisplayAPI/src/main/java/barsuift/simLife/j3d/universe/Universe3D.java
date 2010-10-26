@@ -23,7 +23,7 @@ import java.util.Set;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Node;
 
-import barsuift.simLife.j3d.universe.physic.Physics;
+import barsuift.simLife.j3d.universe.physic.Physics3D;
 
 public interface Universe3D {
 
@@ -33,6 +33,6 @@ public interface Universe3D {
 
     public Set<Node> getElements3D();
 
-    public Physics getPhysics();
+    public Physics3D getPhysics();
 
 }
