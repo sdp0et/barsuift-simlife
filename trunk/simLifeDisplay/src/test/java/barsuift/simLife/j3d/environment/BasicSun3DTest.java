@@ -81,7 +81,7 @@ public class BasicSun3DTest extends TestCase {
         assertEquals(SunUpdateCode.color, publisherHelper.getUpdateObjects().get(0));
     }
 
-    public void testUpdateLuminosity() {
+    public void testUpdateBrightness() {
         mockSun.setRiseAngle(PercentHelper.getDecimalValue(50));
         mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
@@ -91,14 +91,14 @@ public class BasicSun3DTest extends TestCase {
         sunLight.getColor(actualSunColor);
         assertEquals(new Color3f(1, 1, 1), actualSunColor);
 
-        mockSun.setLuminosity(PercentHelper.getDecimalValue(40));
-        sun3D.update(mockSun, SunUpdateCode.luminosity);
+        mockSun.setBrightness(PercentHelper.getDecimalValue(40));
+        sun3D.update(mockSun, SunUpdateCode.brightness);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
         assertEquals(new Color3f(0.4f, 0.4f, 0.4f), actualSunColor);
 
-        mockSun.setLuminosity(PercentHelper.getDecimalValue(70));
-        sun3D.update(mockSun, SunUpdateCode.luminosity);
+        mockSun.setBrightness(PercentHelper.getDecimalValue(70));
+        sun3D.update(mockSun, SunUpdateCode.brightness);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
         assertEquals(new Color3f(0.7f, 0.7f, 0.7f), actualSunColor);
@@ -110,15 +110,15 @@ public class BasicSun3DTest extends TestCase {
         sunLight.getColor(actualSunColor);
         assertEquals(new Color3f(1f, (float) Math.sqrt(2) / 2, (float) Math.sqrt(2) / 2), actualSunColor);
 
-        mockSun.setLuminosity(PercentHelper.getDecimalValue(50));
-        sun3D.update(mockSun, SunUpdateCode.luminosity);
+        mockSun.setBrightness(PercentHelper.getDecimalValue(50));
+        sun3D.update(mockSun, SunUpdateCode.brightness);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
         assertEquals(new Color3f(0.5f, (float) (0.5 * Math.sqrt(2) / 2), (float) (0.5 * Math.sqrt(2) / 2)),
                 actualSunColor);
 
-        mockSun.setLuminosity(PercentHelper.getDecimalValue(100));
-        sun3D.update(mockSun, SunUpdateCode.luminosity);
+        mockSun.setBrightness(PercentHelper.getDecimalValue(100));
+        sun3D.update(mockSun, SunUpdateCode.brightness);
         mockSun.setRiseAngle(PercentHelper.getDecimalValue(0));
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         actualSunColor = new Color3f();

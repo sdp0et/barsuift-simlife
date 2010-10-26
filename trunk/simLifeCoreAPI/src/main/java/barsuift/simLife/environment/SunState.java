@@ -28,7 +28,7 @@ import barsuift.simLife.j3d.environment.Sun3DState;
 @XmlRootElement
 public class SunState implements State {
 
-    private BigDecimal luminosity;
+    private BigDecimal brightness;
 
     private BigDecimal riseAngle;
 
@@ -38,26 +38,26 @@ public class SunState implements State {
 
     public SunState() {
         super();
-        this.luminosity = new BigDecimal(0);
+        this.brightness = new BigDecimal(0);
         this.riseAngle = new BigDecimal(0);
         this.zenithAngle = new BigDecimal(0);
         this.sun3DState = new Sun3DState();
     }
 
-    public SunState(BigDecimal luminosity, BigDecimal riseAngle, BigDecimal zenithAngle, Sun3DState sun3DState) {
+    public SunState(BigDecimal brightness, BigDecimal riseAngle, BigDecimal zenithAngle, Sun3DState sun3DState) {
         super();
-        this.luminosity = luminosity;
+        this.brightness = brightness;
         this.riseAngle = riseAngle;
         this.zenithAngle = zenithAngle;
         this.sun3DState = sun3DState;
     }
 
-    public BigDecimal getLuminosity() {
-        return luminosity;
+    public BigDecimal getBrightness() {
+        return brightness;
     }
 
-    public void setLuminosity(BigDecimal luminosity) {
-        this.luminosity = luminosity;
+    public void setBrightness(BigDecimal brightness) {
+        this.brightness = brightness;
     }
 
     public BigDecimal getRiseAngle() {
@@ -88,7 +88,7 @@ public class SunState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((luminosity == null) ? 0 : luminosity.hashCode());
+        result = prime * result + ((brightness == null) ? 0 : brightness.hashCode());
         result = prime * result + ((riseAngle == null) ? 0 : riseAngle.hashCode());
         result = prime * result + ((sun3DState == null) ? 0 : sun3DState.hashCode());
         result = prime * result + ((zenithAngle == null) ? 0 : zenithAngle.hashCode());
@@ -104,11 +104,11 @@ public class SunState implements State {
         if (getClass() != obj.getClass())
             return false;
         SunState other = (SunState) obj;
-        if (luminosity == null) {
-            if (other.luminosity != null)
+        if (brightness == null) {
+            if (other.brightness != null)
                 return false;
         } else
-            if (!luminosity.equals(other.luminosity))
+            if (!brightness.equals(other.brightness))
                 return false;
         if (riseAngle == null) {
             if (other.riseAngle != null)
@@ -133,7 +133,7 @@ public class SunState implements State {
 
     @Override
     public String toString() {
-        return "SunState [luminosity=" + luminosity + ", riseAngle=" + riseAngle + ", zenithAngle=" + zenithAngle
+        return "SunState [brightness=" + brightness + ", riseAngle=" + riseAngle + ", zenithAngle=" + zenithAngle
                 + ", sun3DState=" + sun3DState + "]";
     }
 

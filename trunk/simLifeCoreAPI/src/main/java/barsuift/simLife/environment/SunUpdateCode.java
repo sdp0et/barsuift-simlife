@@ -23,7 +23,7 @@ package barsuift.simLife.environment;
  */
 public enum SunUpdateCode {
 
-    luminosity,
+    brightness,
     riseAngle,
     zenithAngle,
     color;

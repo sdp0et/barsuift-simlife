@@ -65,7 +65,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     @Override
     public void update(Publisher o, Object arg) {
-        if (arg == SunUpdateCode.luminosity) {
+        if (arg == SunUpdateCode.brightness) {
             light.setColor(computeColor());
         }
         if (arg == SunUpdateCode.riseAngle) {
@@ -100,9 +100,9 @@ public class BasicSun3D implements Subscriber, Sun3D {
     }
 
     private Color3f computeColor() {
-        float luminosity = sun.getLuminosity().floatValue();
+        float brightness = sun.getBrightness().floatValue();
         float whiteFactor = getWhiteFactor().floatValue();
-        Color3f color = new Color3f(luminosity, luminosity * whiteFactor, luminosity * whiteFactor);
+        Color3f color = new Color3f(brightness, brightness * whiteFactor, brightness * whiteFactor);
         setChanged();
         notifySubscribers(SunUpdateCode.color);
         return color;

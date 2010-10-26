@@ -32,7 +32,7 @@ public class MockSun extends BasicPublisher implements Sun {
         super(null);
     }
 
-    private BigDecimal luminosity = PercentHelper.getDecimalValue(100);
+    private BigDecimal brightness = PercentHelper.getDecimalValue(100);
 
     private BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
 
@@ -46,13 +46,13 @@ public class MockSun extends BasicPublisher implements Sun {
 
 
     @Override
-    public BigDecimal getLuminosity() {
-        return luminosity;
+    public BigDecimal getBrightness() {
+        return brightness;
     }
 
     @Override
-    public void setLuminosity(BigDecimal luminosity) {
-        this.luminosity = luminosity;
+    public void setBrightness(BigDecimal brightness) {
+        this.brightness = brightness;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class BasicSun implements Sun {
 
     private final SunState state;
 
-    private BigDecimal luminosity;
+    private BigDecimal brightness;
 
     private BigDecimal riseAngle;
 
@@ -53,24 +53,24 @@ public class BasicSun implements Sun {
             throw new IllegalArgumentException("Null sun state");
         }
         this.state = state;
-        luminosity = state.getLuminosity();
+        brightness = state.getBrightness();
         riseAngle = state.getRiseAngle();
         zenithAngle = state.getZenithAngle();
         sun3D = new BasicSun3D(this);
     }
 
-    public BigDecimal getLuminosity() {
-        return luminosity;
+    public BigDecimal getBrightness() {
+        return brightness;
     }
 
-    public void setLuminosity(BigDecimal luminosity) throws IllegalArgumentException {
-        if (luminosity == null) {
-            throw new IllegalArgumentException("Sun luminosity can not be null");
+    public void setBrightness(BigDecimal brightness) throws IllegalArgumentException {
+        if (brightness == null) {
+            throw new IllegalArgumentException("Sun brightness can not be null");
         }
-        if (!this.luminosity.equals(luminosity)) {
-            this.luminosity = luminosity;
+        if (!this.brightness.equals(brightness)) {
+            this.brightness = brightness;
             setChanged();
-            notifySubscribers(SunUpdateCode.luminosity);
+            notifySubscribers(SunUpdateCode.brightness);
         }
     }
 
@@ -113,7 +113,7 @@ public class BasicSun implements Sun {
 
     @Override
     public void synchronize() {
-        state.setLuminosity(luminosity);
+        state.setBrightness(brightness);
         state.setRiseAngle(riseAngle);
         state.setZenithAngle(zenithAngle);
     }
