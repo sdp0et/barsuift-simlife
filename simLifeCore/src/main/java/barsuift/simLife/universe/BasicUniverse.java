@@ -43,8 +43,6 @@ public class BasicUniverse implements Universe {
 
     private final UniverseState state;
 
-    private final long creationMillis;
-
     private final List<Tree> trees;
 
     private final List<TreeLeaf> fallenLeaves;
@@ -58,7 +56,6 @@ public class BasicUniverse implements Universe {
 
     public BasicUniverse(UniverseState state) throws InitException {
         this.state = state;
-        this.creationMillis = state.getCreationMillis();
         this.universe3D = new BasicUniverse3D();
         this.environment = new BasicEnvironment(state.getEnvironment());
         this.synchronizer = new BasicSynchronizer(state.getSynchronizerState());
@@ -75,11 +72,6 @@ public class BasicUniverse implements Universe {
             fallenLeaves.add(new BasicTreeLeaf(this, fallenLeafState));
         }
         this.universe3D.initFromUniverse(this);
-    }
-
-    @Override
-    public long getCreationMillis() {
-        return creationMillis;
     }
 
     @Override

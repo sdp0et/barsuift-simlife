@@ -76,7 +76,7 @@ public class UniverseStateFactory {
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createRandomUniverse3DState();
 
-        return new UniverseState(0, trees, fallenLeaves, environment, synchronizerState, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environment, synchronizerState, univ3DState);
     }
 
     /**
@@ -98,7 +98,7 @@ public class UniverseStateFactory {
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createEmptyUniverse3DState();
 
-        return new UniverseState(0, trees, fallenLeaves, environment, synchronizerState, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environment, synchronizerState, univ3DState);
     }
 
 }

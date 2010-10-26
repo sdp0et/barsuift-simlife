@@ -33,8 +33,6 @@ import barsuift.simLife.tree.TreeState;
 @XmlRootElement
 public class UniverseState implements State {
 
-    private long creationMillis;
-
     private Set<TreeState> trees;
 
     private Set<TreeLeafState> fallenLeaves;
@@ -47,7 +45,6 @@ public class UniverseState implements State {
 
     public UniverseState() {
         super();
-        this.creationMillis = 0;
         this.trees = new HashSet<TreeState>();
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
@@ -55,23 +52,14 @@ public class UniverseState implements State {
         this.univ3DState = new Universe3DState();
     }
 
-    public UniverseState(long creationMillis, Set<TreeState> trees, Set<TreeLeafState> fallenLeaves,
-            EnvironmentState environment, SynchronizerState synchronizerState, Universe3DState univ3DState) {
+    public UniverseState(Set<TreeState> trees, Set<TreeLeafState> fallenLeaves, EnvironmentState environment,
+            SynchronizerState synchronizerState, Universe3DState univ3DState) {
         super();
-        this.creationMillis = creationMillis;
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
         this.synchronizerState = synchronizerState;
         this.univ3DState = univ3DState;
-    }
-
-    public long getCreationMillis() {
-        return creationMillis;
-    }
-
-    public void setCreationMillis(long creationMillis) {
-        this.creationMillis = creationMillis;
     }
 
     public Set<TreeState> getTrees() {
@@ -118,7 +106,6 @@ public class UniverseState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) (creationMillis ^ (creationMillis >>> 32));
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
         result = prime * result + ((synchronizerState == null) ? 0 : synchronizerState.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
@@ -136,8 +123,6 @@ public class UniverseState implements State {
         if (getClass() != obj.getClass())
             return false;
         UniverseState other = (UniverseState) obj;
-        if (creationMillis != other.creationMillis)
-            return false;
         if (environment == null) {
             if (other.environment != null)
                 return false;
@@ -173,9 +158,8 @@ public class UniverseState implements State {
 
     @Override
     public String toString() {
-        return "UniverseState [creationMillis=" + creationMillis + ", trees=" + trees + ", fallenLeaves="
-                + fallenLeaves + ", environment=" + environment + ", synchronizerState=" + synchronizerState
-                + ", univ3DState=" + univ3DState + "]";
+        return "UniverseState [trees=" + trees + ", fallenLeaves=" + fallenLeaves + ", environment=" + environment
+                + ", synchronizerState=" + synchronizerState + ", univ3DState=" + univ3DState + "]";
     }
 
 }

@@ -120,7 +120,6 @@ public final class CoreDataCreatorForTests {
     }
 
     public static UniverseState createRandomUniverseState() {
-        int age = Randomizer.randomBetween(0, 100);
         Set<TreeState> trees = new HashSet<TreeState>();
         trees.add(createRandomTreeState());
         trees.add(createRandomTreeState());
@@ -132,14 +131,12 @@ public final class CoreDataCreatorForTests {
         }
         SynchronizerState synchronizerState = createRandomSynchronizerState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(age, trees, fallenLeaves, createRandomEnvironmentState(), synchronizerState,
-                univ3DState);
+        return new UniverseState(trees, fallenLeaves, createRandomEnvironmentState(), synchronizerState, univ3DState);
     }
 
     /**
      * Create a specific universe state with
      * <ul>
-     * <li>age=15</li>
      * <li>nb trees=3 (made through the {@link #createSpecificTreeState()} method)</li>
      * <li>nb fallen leaves=20 (made through the {@link #createSpecificTreeLeafState()} method)</li>
      * </ul>
@@ -149,7 +146,6 @@ public final class CoreDataCreatorForTests {
      * @return
      */
     public static UniverseState createSpecificUniverseState() {
-        int age = 15;
         Set<TreeState> trees = new HashSet<TreeState>();
         trees.add(createSpecificTreeState());
         trees.add(createSpecificTreeState());
@@ -161,8 +157,7 @@ public final class CoreDataCreatorForTests {
         }
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
         SynchronizerState synchronizerState = createSpecificSynchronizerState();
-        return new UniverseState(age, trees, fallenLeaves, createSpecificEnvironmentState(), synchronizerState,
-                univ3DState);
+        return new UniverseState(trees, fallenLeaves, createSpecificEnvironmentState(), synchronizerState, univ3DState);
     }
 
     public static EnvironmentState createRandomEnvironmentState() {
