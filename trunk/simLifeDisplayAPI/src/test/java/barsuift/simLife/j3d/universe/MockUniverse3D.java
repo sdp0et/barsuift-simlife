@@ -25,14 +25,14 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Node;
 
 import barsuift.simLife.j3d.universe.physic.MockPhysics;
-import barsuift.simLife.j3d.universe.physic.Physics;
+import barsuift.simLife.j3d.universe.physic.Physics3D;
 
 
 public class MockUniverse3D implements Universe3D {
 
     private Set<Node> elements3D = new HashSet<Node>();
 
-    private Physics physics = new MockPhysics();
+    private Physics3D physics = new MockPhysics();
 
     private BranchGroup branchGroup = new BranchGroup();
 
@@ -47,11 +47,11 @@ public class MockUniverse3D implements Universe3D {
     }
 
     @Override
-    public Physics getPhysics() {
+    public Physics3D getPhysics() {
         return physics;
     }
 
-    public void setPhysics(Physics physics) {
+    public void setPhysics(Physics3D physics) {
         this.physics = physics;
     }
 

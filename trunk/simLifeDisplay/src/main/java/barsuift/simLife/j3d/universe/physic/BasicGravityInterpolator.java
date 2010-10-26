@@ -33,11 +33,11 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 
-public class BasicGravity implements Gravity {
+public class BasicGravityInterpolator implements GravityInterpolator {
 
     private Universe3D universe3D;
 
-    public BasicGravity(Universe3D universe3D) {
+    public BasicGravityInterpolator(Universe3D universe3D) {
         this.universe3D = universe3D;
     }
 

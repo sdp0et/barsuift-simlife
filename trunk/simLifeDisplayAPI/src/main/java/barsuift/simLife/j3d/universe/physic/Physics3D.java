@@ -18,22 +18,10 @@
  */
 package barsuift.simLife.j3d.universe.physic;
 
-import barsuift.simLife.j3d.universe.Universe3D;
 
 
-public class BasicPhysics implements Physics {
+public interface Physics3D {
 
-    // private Universe3D universe3D;
-
-    private Gravity gravity;
-
-    public BasicPhysics(Universe3D universe3D) {
-        // this.universe3D = universe3D;
-        this.gravity = new BasicGravity(universe3D);
-    }
-
-    public Gravity getGravity() {
-        return gravity;
-    }
+    public GravityInterpolator getGravity();
 
 }
