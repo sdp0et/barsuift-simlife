@@ -96,11 +96,11 @@ public class BasicTreeLeaf implements TreeLeaf {
 
     /**
      * Compute the new leaf energy. It is the old energy + the collected energy.
-     * <code>collectedEnergy= sunLuminosity * leafEfficiency * energyDensity * leaf Area</code>
+     * <code>collectedEnergy= sunBrightness * leafEfficiency * energyDensity * leaf Area</code>
      */
     @Override
     public void collectSolarEnergy() {
-        BigDecimal lightRate = universe.getEnvironment().getSun().getLuminosity();
+        BigDecimal lightRate = universe.getEnvironment().getSun().getBrightness();
         BigDecimal solarEnergyRateCollected = efficiency.multiply(lightRate);
         BigDecimal energyCollected = solarEnergyRateCollected.multiply(Sun.ENERGY_DENSITY).multiply(
                 new BigDecimal(leaf3D.getArea()));

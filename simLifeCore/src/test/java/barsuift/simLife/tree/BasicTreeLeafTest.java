@@ -54,7 +54,7 @@ public class BasicTreeLeafTest extends TestCase {
 
         BigDecimal lightRate = PercentHelper.getDecimalValue(70);
         mockSun = new MockSun();
-        mockSun.setLuminosity(lightRate);
+        mockSun.setBrightness(lightRate);
         MockEnvironment mockEnv = new MockEnvironment();
         mockEnv.setSun(mockSun);
         universe = new MockUniverse();

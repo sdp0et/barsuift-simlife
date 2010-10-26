@@ -30,22 +30,22 @@ public class SunStateFactory {
     /**
      * Creates a default sun state with following values :
      * <ul>
-     * <li>luminosity = 100%</li>
+     * <li>brightness = 100%</li>
      * <li>riseAngle = 25%</li>
      * <li>zenithAngle = 50%</li>
      * </ul>
      */
     // TODO 010. the sun position should depend on the current date, at init time
-    // TODO 009. rename luminosity to brightness
-    // TODO 015. the sun position luminosity should depend on the sun position
+    // TODO 015. the sun brightness should depend on the sun position
     // TODO 020. the sun position should evolve with the time of the day
+    // TODO 025. the sun sliders should be able to be decorrelated from auto move
     public SunState createSunState() {
-        BigDecimal luminosity = PercentHelper.getDecimalValue(100);
+        BigDecimal brightness = PercentHelper.getDecimalValue(100);
         BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
         BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
         Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
         Sun3DState sun3DState = sun3DStateFactory.createSpecificSun3DState();
-        return new SunState(luminosity, riseAngle, zenithAngle, sun3DState);
+        return new SunState(brightness, riseAngle, zenithAngle, sun3DState);
     }
 
 }

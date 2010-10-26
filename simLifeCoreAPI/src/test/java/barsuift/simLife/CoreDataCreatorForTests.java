@@ -178,17 +178,17 @@ public final class CoreDataCreatorForTests {
     }
 
     public static SunState createRandomSunState() {
-        BigDecimal luminosity = UtilDataCreatorForTests.createRandomBigDecimal();
+        BigDecimal brightness = UtilDataCreatorForTests.createRandomBigDecimal();
         BigDecimal riseAngle = UtilDataCreatorForTests.createRandomBigDecimal();
         BigDecimal zenithAngle = UtilDataCreatorForTests.createRandomBigDecimal();
         Sun3DState sun3DState = DisplayDataCreatorForTests.createRandomSun3DState();
-        return new SunState(luminosity, riseAngle, zenithAngle, sun3DState);
+        return new SunState(brightness, riseAngle, zenithAngle, sun3DState);
     }
 
     /**
      * Create specific sun state with
      * <ul>
-     * <li>luminosity=70%</li>
+     * <li>brightness=70%</li>
      * <li>rise angle=25%</li>
      * <li>zenith angle = 50%</li>
      * </ul>
@@ -196,11 +196,11 @@ public final class CoreDataCreatorForTests {
      * @return
      */
     public static SunState createSpecificSunState() {
-        BigDecimal luminosity = PercentHelper.getDecimalValue(70);
+        BigDecimal brightness = PercentHelper.getDecimalValue(70);
         BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
         BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
         Sun3DState sun3DState = DisplayDataCreatorForTests.createSpecificSun3DState();
-        return new SunState(luminosity, riseAngle, zenithAngle, sun3DState);
+        return new SunState(brightness, riseAngle, zenithAngle, sun3DState);
     }
 
     public static TreeState createRandomTreeState() {

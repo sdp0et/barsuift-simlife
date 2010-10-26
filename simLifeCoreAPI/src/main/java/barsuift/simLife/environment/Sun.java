@@ -30,23 +30,23 @@ import barsuift.simLife.message.Publisher;
 public interface Sun extends Publisher, Persistent<SunState> {
 
     /**
-     * This is the energy provided by a 100% luminosity sun on 1m²
+     * This is the energy provided by a 100% brightness sun on 1 m²
      */
     public static final BigDecimal ENERGY_DENSITY = new BigDecimal(150);
 
     public Sun3D getSun3D();
 
-    public BigDecimal getLuminosity();
+    public BigDecimal getBrightness();
 
-    public void setLuminosity(BigDecimal luminosity) throws IllegalArgumentException;
+    public void setBrightness(BigDecimal brightness) throws IllegalArgumentException;
 
     /**
      * Rise angle, in percent.
      * <p>
      * <ul>
-     * <li>0 means sun is full east, enlighting only along the X axis</li>
+     * <li>0 means sun is full east, lighting only along the X axis</li>
      * <li>50 means sun is at its zenith position (neither east nor west). no X direction</li>
-     * <li>100 means sun is full west, enlighting only along the reverted X axis</li>
+     * <li>100 means sun is full west, lighting only along the reverted X axis</li>
      * </ul>
      * </p>
      */
@@ -60,7 +60,7 @@ public interface Sun extends Publisher, Persistent<SunState> {
      * <ul>
      * <li>0 means sun is always at the horizon</li>
      * <li>50 means sun is at 45° (Pi/4)</li>
-     * <li>100 means sun iis at its zenith position. no Z direction</li>
+     * <li>100 means sun is at its zenith position. no Z direction</li>
      * </ul>
      * </p>
      */

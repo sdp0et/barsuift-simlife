@@ -62,7 +62,7 @@ public class SunZenithPanel extends JPanel implements ChangeListener {
         zenithSlider.addChangeListener(this);
         // Turn on labels at major tick marks.
         zenithSlider.setMajorTickSpacing(20);
-        // luminositySlider.setMinorTickSpacing(5);
+        // brightnessSlider.setMinorTickSpacing(5);
         zenithSlider.setPaintTicks(true);
 
         // Create the label table
