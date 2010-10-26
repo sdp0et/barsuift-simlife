@@ -3,7 +3,7 @@
 
 
 --------------------------------------------------
----                    v0.4                    ---
+---                    v0.5                    ---
 --------------------------------------------------
 
 This is yet another an intermediary release, focused on time management.
