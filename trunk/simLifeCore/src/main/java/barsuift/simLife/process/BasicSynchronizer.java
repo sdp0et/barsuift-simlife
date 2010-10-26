@@ -90,6 +90,7 @@ public class BasicSynchronizer implements Synchronizer {
         this.barrier = new CyclicBarrier(1, new BarrierTask());
         this.temporizer = new Temporizer(barrier);
         this.scheduledThreadPool = Executors.newScheduledThreadPool(1);
+        // FIXME this won't work when more than 64 parallel thread. I need an unlimited thread pool.
         this.standardThreadPool = Executors.newFixedThreadPool(64);
         DateUpdater dateUpdater = new DateUpdater(dateHandler.getDate());
         schedule(dateUpdater);
