@@ -18,9 +18,13 @@
  */
 package barsuift.simLife.j3d.universe.physic;
 
+import javax.media.j3d.Group;
+
 import barsuift.simLife.Persistent;
 
 public interface Physics3D extends Persistent<Physics3DState> {
+
+    public Group getGroup();
 
     public GravityInterpolator getGravityInterpolator();
 

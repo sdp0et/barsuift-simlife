@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.j3d.universe.physic;
 
+import javax.media.j3d.Group;
+
 
 public class MockPhysics3D implements Physics3D {
 
@@ -29,6 +31,8 @@ public class MockPhysics3D implements Physics3D {
 
     private Gravity3D gravity3D;
 
+    private Group group;
+
     public MockPhysics3D() {
         reset();
     }
@@ -38,6 +42,7 @@ public class MockPhysics3D implements Physics3D {
         synchronizeCalled = 0;
         gravity = new MockGravityInterpolator();
         gravity3D = new MockGravity3D();
+        group = new Group();
     }
 
     @Override
@@ -74,6 +79,15 @@ public class MockPhysics3D implements Physics3D {
 
     public void setGravity3D(Gravity3D gravity3D) {
         this.gravity3D = gravity3D;
+    }
+
+    @Override
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
 }

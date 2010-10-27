@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Group;
 
 
 public class MockGravity3D implements Gravity3D {
@@ -14,6 +15,8 @@ public class MockGravity3D implements Gravity3D {
 
     private List<BranchGroup> fallenGroups;
 
+    private Group group;
+
     public MockGravity3D() {
         reset();
     }
@@ -22,6 +25,7 @@ public class MockGravity3D implements Gravity3D {
         state = new Gravity3DState();
         synchronizeCalled = 0;
         fallenGroups = new ArrayList<BranchGroup>();
+        group = new Group();
     }
 
     @Override
@@ -49,6 +53,15 @@ public class MockGravity3D implements Gravity3D {
 
     public List<BranchGroup> getFallenGroups() {
         return fallenGroups;
+    }
+
+    @Override
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
 }
