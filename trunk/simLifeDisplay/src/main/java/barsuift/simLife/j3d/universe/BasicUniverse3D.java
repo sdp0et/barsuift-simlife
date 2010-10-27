@@ -62,7 +62,7 @@ public class BasicUniverse3D implements Universe3D {
         addElement3D(universe.getEnvironment().getEnvironment3D().getGroup());
 
         for (Tree tree : universe.getTrees()) {
-            addTree(tree);
+            addTree(tree.getTree3D());
         }
 
         for (TreeLeaf treeLeaf : universe.getFallenLeaves()) {
@@ -70,8 +70,7 @@ public class BasicUniverse3D implements Universe3D {
         }
     }
 
-    private void addTree(Tree tree) {
-        Tree3D tree3D = tree.getTree3D();
+    private void addTree(Tree3D tree3D) {
         Point3d treeOriginPoint = tree3D.getState().getTranslationVector().toPointValue();
         Transform3D translation = TransformerHelper.getTranslationTransform3D(new Vector3d(treeOriginPoint));
         TransformGroup transformGroup = new TransformGroup(translation);
