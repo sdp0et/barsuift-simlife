@@ -38,7 +38,7 @@ public class BasicEnvironment3D implements Environment3D {
         ambientLight.setInfluencingBounds(bounds);
         group = new BranchGroup();
         group.addChild(ambientLight);
-        group.addChild(environment.getSun().getSun3D().getLight());
+        group.addChild(getSun3D().getLight());
     }
 
     @Override

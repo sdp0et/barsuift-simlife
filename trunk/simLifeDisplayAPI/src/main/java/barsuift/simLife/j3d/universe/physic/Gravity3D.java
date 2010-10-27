@@ -19,10 +19,13 @@
 package barsuift.simLife.j3d.universe.physic;
 
 import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Group;
 
 import barsuift.simLife.Persistent;
 
 public interface Gravity3D extends Persistent<Gravity3DState> {
+
+    public Group getGroup();
 
     /**
      * Make the given group fall.

@@ -18,6 +18,9 @@
  */
 package barsuift.simLife.j3d.universe.physic;
 
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Group;
+
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.universe.physic.Physics;
 
@@ -30,11 +33,20 @@ public class BasicPhysics3D implements Physics3D {
 
     private final Physics physics;
 
+    private final Group group;
+
     public BasicPhysics3D(Universe3D universe3D, Physics3DState state, Physics physics) {
         this.state = state;
         this.physics = physics;
         this.gravity = new BasicGravityInterpolator(universe3D);
+        group = new BranchGroup();
+        group.addChild(getGravity3D().getGroup());
 
+    }
+
+    @Override
+    public Group getGroup() {
+        return group;
     }
 
     public GravityInterpolator getGravityInterpolator() {
