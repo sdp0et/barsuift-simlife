@@ -33,6 +33,17 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 
+// TODO 001. il ne faut pas qu'un interpolator dure plus d'un cycle, sinon, il peut se désynchroniser d'avec les threads
+// "métiers"
+// l'idée serait donc de repasser le synchronizer principal dur 1 seconde
+// puis de mettre tous les changements graphiques à l'aide d'Interpolator (par exemple, changement de couleur des
+// feuilles ou gravité bien sur)
+// Comme tous les interpolat ont une durée de vie de 1 seconde, augmenter la vitesse consiste uniquement à appeler la
+// methode setIncreasingAlphaDuration() à une seconde, un diximèe de seconde ou un centième de seconde.
+// Il faut donc un synchronizer3D qui gère ça
+// Ensuite, il faut que les process géré par ce synchronizer3D puisse garder un "état" d'un cycle à l'autre pour pouvoir
+// faire durer une action sur plusieurs cycles (plusieurs secondes) et réinitialiser létat des interpolator suivants en
+// fonction
 public class BasicGravityInterpolator implements GravityInterpolator {
 
     private Universe3D universe3D;
