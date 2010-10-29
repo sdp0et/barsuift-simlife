@@ -33,17 +33,36 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 
-// TODO 001. il ne faut pas qu'un interpolator dure plus d'un cycle, sinon, il peut se désynchroniser d'avec les threads
-// "métiers"
-// l'idée serait donc de repasser le synchronizer principal dur 1 seconde
-// puis de mettre tous les changements graphiques à l'aide d'Interpolator (par exemple, changement de couleur des
-// feuilles ou gravité bien sur)
-// Comme tous les interpolat ont une durée de vie de 1 seconde, augmenter la vitesse consiste uniquement à appeler la
-// methode setIncreasingAlphaDuration() à une seconde, un diximèe de seconde ou un centième de seconde.
-// Il faut donc un synchronizer3D qui gère ça
-// Ensuite, il faut que les process géré par ce synchronizer3D puisse garder un "état" d'un cycle à l'autre pour pouvoir
-// faire durer une action sur plusieurs cycles (plusieurs secondes) et réinitialiser létat des interpolator suivants en
-// fonction
+// TODO 001. Be able to stop and change speed of interpolators
+/*
+ * Implementation note : An interpolator must not last more than one cycle, or it could be unsynchronized with 'core'
+ * processes. As a consequence, the alpha in the interpolator must always be set to increasingAlphaDuration=100 ms (1
+ * cycle)
+ * 
+ * Implementation note : As the alpha duration is always one cycle, changing its speed consists in setting the
+ * increasingAlphaDuration to 100ms (speed=1), 10ms (speed=10), or 1ms (speed=100).
+ * 
+ * To Do :
+ * 
+ * 1. Create an InterpolatorWrapper class, with a state storing the required information (What are the required
+ * information ??). The wrapper must have start, stop and oneStep methods. The wrapper should also take a parameter to
+ * know how many cycles the interpolators should last. As a consequence, it must recreate a new interpolator at each
+ * cycle or refire the enable conditions of the existing one so that it can continue on the next cycle. When making this
+ * decision, take into account how this will behave regarding the reload of the wrapper from its state.
+ * 
+ * 2. Create a Synchronizer3D to store the interpolatorWrappers. The Synchronizer3D must have start, stop and oneStep
+ * methods. It also put the wrapped interpolator in its branch group, which is itself part of the Universe3D root.
+ * 
+ * 3. (or 4. ??) the gravity should keeps its falling elements, and the Universe should only have the fallen leaves.
+ * 
+ * 4. (or 3. ??) integrate the existing gravity interpolator into the Gravity3D framework
+ * 
+ * x. all graphic changes should use an InterpolatorWrapper
+ * 
+ * x.1. Leaf color
+ * 
+ * x.2. Gravity
+ */
 public class BasicGravityInterpolator implements GravityInterpolator {
 
     private Universe3D universe3D;

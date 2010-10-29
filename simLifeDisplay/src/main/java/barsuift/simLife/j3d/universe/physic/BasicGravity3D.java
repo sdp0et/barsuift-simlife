@@ -22,7 +22,6 @@ public class BasicGravity3D implements Gravity3D {
 
     @Override
     public void fall(BranchGroup groupToFall) {
-        // TODO 001. put here the code extracted from GravityInerpolator
         // put the fallen leaves and interpolator in this group
     }
 
