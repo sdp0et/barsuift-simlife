@@ -37,10 +37,15 @@ import barsuift.simLife.j3d.util.ProjectionHelper;
 /*
  * Implementation note : Do not use interpolators, as they do not fit well in this framework
  * 
- * Implementation note : The synchronizer3D must always run at the same 'speed' (=25 ms). Change the core synchronizer
- * speed to 500ms, 100ms and 25 ms. The synchronized 3D process will use a (modified?) version of UnfrequentRunnable, in
- * which the 'delay' parameter only depends on the core synchronizer speed. Thus when the speed gets higher, the
- * execution of 3d task should become more frequent. At max speed, the task is executed at every iteration.
+ * Implementation note : The synchronizer3D must always run at the same 'speed' (=25 ms). The synchronized 3D process
+ * will execute at each cycle (every 25ms). Depending on speed, it will do its full tasks in one time, or split it in 20
+ * for example if speed is 1.
+ * 
+ * The speed in core synchronizer means the number of cycle per cycle duration. For example, speed 5 means 5 cycles in
+ * 500 ms, so one cycle last 100ms.
+ * 
+ * The speed in synchronizer3D means the number of core cycle per 3d cycles. For example, a speed of 5 means 20/5=4 3D
+ * cycles per core cycle. The number of 3D iteration for one core cycle is : coreCycleLength / coreSpeed / 3dCycleLength
  * 
  * To Do :
  * 

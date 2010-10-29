@@ -164,7 +164,7 @@ public class BasicSynchronizer implements Synchronizer {
         updateTaskList(false);
         running = true;
 
-        // wake-up period (speed = cycles / second)
+        // wake-up period (speed = cycles / cycle length)
         long period = CYCLE_LENGTH_MS / speed.getSpeed();
         temporizerFuture = scheduledThreadPool.scheduleWithFixedDelay(temporizer, 0, period, TimeUnit.MILLISECONDS);
 
