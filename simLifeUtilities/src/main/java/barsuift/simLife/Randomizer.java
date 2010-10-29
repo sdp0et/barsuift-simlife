@@ -67,6 +67,7 @@ public final class Randomizer {
     }
 
     /**
+     * Returns a random number comprised between min and max (both inclusive)
      * 
      * @return random int between min and max
      * @throws IllegalArgumentException if min > max

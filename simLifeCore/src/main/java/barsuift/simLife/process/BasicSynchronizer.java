@@ -46,7 +46,7 @@ public class BasicSynchronizer implements Synchronizer {
     /**
      * Length of a cycle, used to schedule the temporizer, and to know how much to add to the date at each iteration.
      */
-    public static final int CYCLE_LENGTH_MS = 100;
+    public static final int CYCLE_LENGTH_MS = 500;
 
     private final SynchronizerState state;
 
@@ -56,7 +56,7 @@ public class BasicSynchronizer implements Synchronizer {
 
     private boolean isStopAsked;
 
-    private int speed;
+    private Speed speed;
 
 
     private final ScheduledExecutorService scheduledThreadPool;
@@ -101,12 +101,12 @@ public class BasicSynchronizer implements Synchronizer {
     }
 
     @Override
-    public void setSpeed(int speed) {
+    public void setSpeed(Speed speed) {
         this.speed = speed;
     }
 
     @Override
-    public int getSpeed() {
+    public Speed getSpeed() {
         return speed;
     }
 
@@ -165,7 +165,7 @@ public class BasicSynchronizer implements Synchronizer {
         running = true;
 
         // wake-up period (speed = cycles / second)
-        long period = CYCLE_LENGTH_MS / speed;
+        long period = CYCLE_LENGTH_MS / speed.getSpeed();
         temporizerFuture = scheduledThreadPool.scheduleWithFixedDelay(temporizer, 0, period, TimeUnit.MILLISECONDS);
 
         for (Runnable runnable : runnables) {

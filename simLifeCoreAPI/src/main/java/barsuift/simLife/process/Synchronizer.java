@@ -10,9 +10,9 @@ public interface Synchronizer extends Publisher, Persistent<SynchronizerState> {
 
     public SimLifeDate getDate();
 
-    public void setSpeed(int speed);
+    public void setSpeed(Speed speed);
 
-    public int getSpeed();
+    public Speed getSpeed();
 
     public boolean isRunning();
 

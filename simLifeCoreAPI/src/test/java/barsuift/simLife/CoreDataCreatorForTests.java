@@ -38,6 +38,7 @@ import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.j3d.universe.physic.Physics3DState;
+import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.SynchronizerState;
 import barsuift.simLife.process.UnfrequentRunnableState;
 import barsuift.simLife.time.DateHandlerState;
@@ -121,12 +122,12 @@ public final class CoreDataCreatorForTests {
 
     public static SynchronizerState createRandomSynchronizerState() {
         DateHandlerState dateHandler = createRandomDateHandlerState();
-        return new SynchronizerState(Randomizer.randomBetween(1, 20), dateHandler);
+        return new SynchronizerState(Speed.values()[Randomizer.randomBetween(0, 2)], dateHandler);
     }
 
     public static SynchronizerState createSpecificSynchronizerState() {
         DateHandlerState dateHandler = createSpecificDateHandlerState();
-        return new SynchronizerState(1, dateHandler);
+        return new SynchronizerState(Speed.NORMAL, dateHandler);
     }
 
     public static UnfrequentRunnableState createRandomUnfrequentRunnableState() {

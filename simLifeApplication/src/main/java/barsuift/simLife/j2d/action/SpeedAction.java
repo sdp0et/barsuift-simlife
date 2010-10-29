@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.Synchronizer;
 
 
@@ -46,8 +47,7 @@ public class SpeedAction extends AbstractAction {
 
     private void setSpeed(ActionEvent e) {
         String actionCmd = e.getActionCommand();
-        int speed = Integer.valueOf(actionCmd).intValue();
-        synchronizer.setSpeed(speed);
+        synchronizer.setSpeed(Speed.valueOf(actionCmd));
     }
 
 }

@@ -8,27 +8,27 @@ import barsuift.simLife.time.DateHandlerState;
 @XmlRootElement
 public class SynchronizerState implements State {
 
-    private int speed;
+    private Speed speed;
 
     private DateHandlerState dateHandler;
 
     public SynchronizerState() {
         super();
-        this.speed = 1;
+        this.speed = Speed.NORMAL;
         this.dateHandler = new DateHandlerState();
     }
 
-    public SynchronizerState(int speed, DateHandlerState dateHandler) {
+    public SynchronizerState(Speed speed, DateHandlerState dateHandler) {
         super();
         this.speed = speed;
         this.dateHandler = dateHandler;
     }
 
-    public int getSpeed() {
+    public Speed getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(Speed speed) {
         this.speed = speed;
     }
 
@@ -44,8 +44,8 @@ public class SynchronizerState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + speed;
         result = prime * result + ((dateHandler == null) ? 0 : dateHandler.hashCode());
+        result = prime * result + ((speed == null) ? 0 : speed.hashCode());
         return result;
     }
 
@@ -58,14 +58,14 @@ public class SynchronizerState implements State {
         if (getClass() != obj.getClass())
             return false;
         SynchronizerState other = (SynchronizerState) obj;
-        if (speed != other.speed)
-            return false;
         if (dateHandler == null) {
             if (other.dateHandler != null)
                 return false;
         } else
             if (!dateHandler.equals(other.dateHandler))
                 return false;
+        if (speed != other.speed)
+            return false;
         return true;
     }
 
