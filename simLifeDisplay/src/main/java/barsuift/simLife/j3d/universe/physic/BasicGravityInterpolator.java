@@ -35,12 +35,12 @@ import barsuift.simLife.j3d.util.ProjectionHelper;
 
 // TODO 001. Be able to stop and change speed of interpolators
 /*
- * Implementation note : An interpolator must not last more than one cycle, or it could be unsynchronized with 'core'
- * processes. As a consequence, the alpha in the interpolator must always be set to increasingAlphaDuration=100 ms (1
- * cycle)
+ * Implementation note : Do not use interpolators, as they do not fit well in this framework
  * 
- * Implementation note : As the alpha duration is always one cycle, changing its speed consists in setting the
- * increasingAlphaDuration to 100ms (speed=1), 10ms (speed=10), or 1ms (speed=100).
+ * Implementation note : The synchronizer3D must always run at the same 'speed' (=25 ms). Change the core synchronizer
+ * speed to 500ms, 100ms and 25 ms. The synchronized 3D process will use a (modified?) version of UnfrequentRunnable, in
+ * which the 'delay' parameter only depends on the core synchronizer speed. Thus when the speed gets higher, the
+ * execution of 3d task should become more frequent. At max speed, the task is executed at every iteration.
  * 
  * To Do :
  * 
