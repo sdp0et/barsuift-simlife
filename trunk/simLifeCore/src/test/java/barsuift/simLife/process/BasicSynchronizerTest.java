@@ -134,7 +134,6 @@ public class BasicSynchronizerTest extends TestCase {
         synchro.oneStep();
         Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_MS / synchro.getSpeed().getSpeed() + 100);
 
-        // FIXME it returned 0 instead of 1
         assertEquals(1, mockRun1.getNbExecuted());
         assertEquals(0, mockRun2.getNbExecuted());
         assertEquals(0, mockRun3.getNbExecuted());
