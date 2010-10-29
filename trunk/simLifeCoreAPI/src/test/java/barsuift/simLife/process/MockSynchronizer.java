@@ -12,7 +12,7 @@ public class MockSynchronizer extends BasicPublisher implements Synchronizer {
 
     private SimLifeDate date;
 
-    private int speed;
+    private Speed speed;
 
     private boolean running;
 
@@ -43,7 +43,7 @@ public class MockSynchronizer extends BasicPublisher implements Synchronizer {
 
     public void reset() {
         date = new SimLifeDate();
-        speed = 1;
+        speed = Speed.NORMAL;
         running = false;
         scheduleCalled = 0;
         runnablesToSchedule = new ArrayList<Runnable>();
@@ -67,12 +67,12 @@ public class MockSynchronizer extends BasicPublisher implements Synchronizer {
     }
 
     @Override
-    public void setSpeed(int speed) {
+    public void setSpeed(Speed speed) {
         this.speed = speed;
     }
 
     @Override
-    public int getSpeed() {
+    public Speed getSpeed() {
         return speed;
     }
 

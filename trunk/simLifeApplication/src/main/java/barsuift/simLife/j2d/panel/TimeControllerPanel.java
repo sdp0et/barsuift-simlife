@@ -37,6 +37,7 @@ import barsuift.simLife.j2d.button.OneStepButton;
 import barsuift.simLife.j2d.button.StartButton;
 import barsuift.simLife.j2d.button.StopButton;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.Synchronizer;
 
 public class TimeControllerPanel extends JPanel {
@@ -81,29 +82,21 @@ public class TimeControllerPanel extends JPanel {
         JPanel speedPanel = new JPanel();
         speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));
         SpeedAction actionNormalSpeed = new SpeedAction(synchronizer, "Normal", "Normal speed", Mnemonics.SPEED_NORMAL,
-                "1");
+                Speed.NORMAL.name());
         JRadioButton normalSpeed = new JRadioButton(actionNormalSpeed);
 
-        SpeedAction actionFastSpeed = new SpeedAction(synchronizer, "Fast", "Fast speed (about 10 times faster))",
-                Mnemonics.SPEED_FAST, "10");
+        SpeedAction actionFastSpeed = new SpeedAction(synchronizer, "Fast", "Fast speed (about 5 times faster))",
+                Mnemonics.SPEED_FAST, Speed.FAST.name());
         JRadioButton fastSpeed = new JRadioButton(actionFastSpeed);
 
         SpeedAction actionVeryFastSpeed = new SpeedAction(synchronizer, "Very fast",
-                "Very fast speed (about 100 times faster)", Mnemonics.SPEED_VERY_FAST, "100");
+                "Very fast speed (about 20 times faster)", Mnemonics.SPEED_VERY_FAST, Speed.VERY_FAST.name());
         JRadioButton veryFastSpeed = new JRadioButton(actionVeryFastSpeed);
 
-        int speed = synchronizer.getSpeed();
-        if (speed == 1) {
-            normalSpeed.setSelected(true);
-        } else {
-            if (speed == 10) {
-                fastSpeed.setSelected(true);
-            } else {
-                if (speed == 100) {
-                    veryFastSpeed.setSelected(true);
-                }
-            }
-        }
+        Speed speed = synchronizer.getSpeed();
+        normalSpeed.setSelected(speed == Speed.NORMAL);
+        fastSpeed.setSelected(speed == Speed.FAST);
+        veryFastSpeed.setSelected(speed == Speed.VERY_FAST);
 
         ButtonGroup speedSwitch = new ButtonGroup();
         speedSwitch.add(normalSpeed);

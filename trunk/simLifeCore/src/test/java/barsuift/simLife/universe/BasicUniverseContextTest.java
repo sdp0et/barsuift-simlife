@@ -61,7 +61,7 @@ public class BasicUniverseContextTest extends TestCase {
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
         assertFalse(context.getState().isAxisShowing());
-        assertEquals(100, context.getState().getUniverseState().getSynchronizerState().getDateHandler().getDate()
+        assertEquals(500, context.getState().getUniverseState().getSynchronizerState().getDateHandler().getDate()
                 .getValue());
     }
 
