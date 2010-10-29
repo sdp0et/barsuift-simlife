@@ -53,9 +53,12 @@ import barsuift.simLife.j3d.util.ProjectionHelper;
  * 2. Create a Synchronizer3D to store the interpolatorWrappers. The Synchronizer3D must have start, stop and oneStep
  * methods. It also put the wrapped interpolator in its branch group, which is itself part of the Universe3D root.
  * 
- * 3. (or 4. ??) the gravity should keeps its falling elements, and the Universe should only have the fallen leaves.
+ * 3. To synchronize the CoreSynchronizer and the Synchronizer3D, their BarrierTask should wait on a main barrier which
+ * only have the two of them as parties. This implies that a MainSynchronizer exists in simlifeApplication module.
  * 
- * 4. (or 3. ??) integrate the existing gravity interpolator into the Gravity3D framework
+ * 5. (or 6. ??) the gravity should keeps its falling elements, and the Universe should only have the fallen leaves.
+ * 
+ * 6. (or 5. ??) integrate the existing gravity interpolator into the Gravity3D framework
  * 
  * x. all graphic changes should use an InterpolatorWrapper
  * 
