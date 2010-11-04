@@ -67,7 +67,7 @@ public class UnfrequentRunnableStateFactory {
 
     /**
      * @param key the key to look for
-     * @return the value from the properties. The returned value os never null, but can be the empty string
+     * @return the value from the properties. The returned value is never null, but can be the empty string
      */
     private String getProperty(String key) {
         String property = prop.getProperty(key);
