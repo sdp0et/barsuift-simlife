@@ -34,33 +34,48 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
 
     private CyclicBarrier barrier;
 
-    private final SynchronizerCore coreSynchro;
+    private final SynchronizerCore synchroCore;
+
+    private final Synchronizer3D synchro3D;
 
     private final Publisher publisher = new BasicPublisher(this);
+
+    private boolean notifiedFromCore;
+
+    private boolean notifiedFrom3D;
 
 
     public BasicMainSynchronizer(MainSynchronizerState state, Universe universe) throws InitException {
         this.state = state;
         this.isStopAsked = false;
-        this.barrier = new CyclicBarrier(1, new BarrierTask());
-        this.coreSynchro = universe.getSynchronizer();
-        this.coreSynchro.addSubscriber(this);
-        this.coreSynchro.setBarrier(barrier);
+        this.barrier = new CyclicBarrier(2, new BarrierTask());
+
+        this.synchroCore = universe.getSynchronizer();
+        this.synchroCore.addSubscriber(this);
+        this.synchroCore.setBarrier(barrier);
+
+        this.synchro3D = universe.getUniverse3D().getSynchronizer();
+        this.synchro3D.addSubscriber(this);
+        this.synchro3D.setBarrier(barrier);
     }
 
     @Override
     public void setSpeed(Speed speed) {
-        coreSynchro.setSpeed(speed);
+        synchroCore.setSpeed(speed);
+        synchro3D.setStepSize(speed.getSpeed());
     }
 
     @Override
     public Speed getSpeed() {
-        return coreSynchro.getSpeed();
+        return synchroCore.getSpeed();
     }
 
+    /**
+     * Returns true if the core synchronizer or the 3D synchronizer is running.
+     */
     @Override
     public boolean isRunning() {
-        return coreSynchro.isRunning();
+        return synchroCore.isRunning() || synchro3D.isRunning();
     }
 
     @Override
@@ -79,7 +94,8 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
         if (isRunning() == true) {
             throw new IllegalStateException("The synchronizer is already running");
         }
-        coreSynchro.start();
+        synchroCore.start();
+        synchro3D.start();
     }
 
     @Override
@@ -94,7 +110,8 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
         if (isRunning() == false) {
             throw new IllegalStateException("The synchronizer is not running");
         }
-        coreSynchro.stop();
+        synchroCore.stop();
+        synchro3D.stop();
     }
 
     public synchronized void stopAndWait() {
@@ -116,13 +133,23 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
 
     @Override
     public void synchronize() {
-        coreSynchro.synchronize();
+        // nothing to do
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        setChanged();
-        notifySubscribers();
+        if (publisher instanceof BasicSynchronizer3D) {
+            notifiedFrom3D = true;
+        }
+        if (publisher instanceof BasicSynchronizerCore) {
+            notifiedFromCore = true;
+        }
+        if (notifiedFrom3D && notifiedFromCore) {
+            notifiedFrom3D = false;
+            notifiedFromCore = false;
+            setChanged();
+            notifySubscribers();
+        }
     }
 
     public void addSubscriber(Subscriber subscriber) {

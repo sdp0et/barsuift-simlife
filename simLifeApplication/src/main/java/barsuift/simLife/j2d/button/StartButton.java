@@ -30,6 +30,7 @@ public class StartButton extends JButton implements Subscriber {
 
     @Override
     public void update(Publisher publisher, Object arg) {
+        System.out.println("updating the start button");
         if (((MainSynchronizer) publisher).isRunning()) {
             setVisible(false);
         } else {
