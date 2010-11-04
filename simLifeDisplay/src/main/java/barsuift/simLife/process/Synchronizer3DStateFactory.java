@@ -18,37 +18,11 @@
  */
 package barsuift.simLife.process;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-import barsuift.simLife.State;
+public class Synchronizer3DStateFactory {
 
-@XmlRootElement
-public class Synchronizer3DState implements State {
-
-    public Synchronizer3DState() {
-        super();
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 1;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Synchronizer3DState []";
+    public Synchronizer3DState createSynchronizer3DState() {
+        return new Synchronizer3DState();
     }
 
 }
