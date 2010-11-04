@@ -31,9 +31,9 @@ import barsuift.simLife.Persistent;
 public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable implements
         Persistent<UnfrequentRunnableState> {
 
-    private UnfrequentRunnableState state;
+    private final UnfrequentRunnableState state;
 
-    private int delay;
+    private final int delay;
 
     private int count;
 
