@@ -23,23 +23,19 @@ import junit.framework.TestCase;
 
 public class UnfrequentRunnableStateFactoryTest extends TestCase {
 
-    /**
-     * Test method for
-     * {@link barsuift.simLife.process.UnfrequentRunnableStateFactory#createUnfrequentRunnableState(java.lang.Class)}.
-     */
     public void testCreateUnfrequentRunnableState() {
         UnfrequentRunnableStateFactory factory = new UnfrequentRunnableStateFactory();
 
         UnfrequentRunnableState photosynthesisState = factory.createUnfrequentRunnableState(Photosynthesis.class);
-        assertEquals(300, photosynthesisState.getDelay());
+        assertEquals(60, photosynthesisState.getDelay());
         assertEquals(0, photosynthesisState.getCount());
 
         UnfrequentRunnableState agingTreeState = factory.createUnfrequentRunnableState(Aging.class);
-        assertEquals(1200, agingTreeState.getDelay());
+        assertEquals(240, agingTreeState.getDelay());
         assertEquals(0, agingTreeState.getCount());
 
         UnfrequentRunnableState treeGrowthState = factory.createUnfrequentRunnableState(TreeGrowth.class);
-        assertEquals(3000, treeGrowthState.getDelay());
+        assertEquals(600, treeGrowthState.getDelay());
         assertEquals(0, treeGrowthState.getCount());
 
         UnfrequentRunnableState unknownState = factory.createUnfrequentRunnableState(MockUnfrequentRunnable.class);
