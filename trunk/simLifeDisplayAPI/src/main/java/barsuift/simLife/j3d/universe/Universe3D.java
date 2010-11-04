@@ -25,8 +25,11 @@ import javax.media.j3d.Node;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
+import barsuift.simLife.process.Synchronizer3D;
 
 public interface Universe3D extends Persistent<Universe3DState> {
+
+    public Synchronizer3D getSynchronizer();
 
     public BranchGroup getUniverseRoot();
 

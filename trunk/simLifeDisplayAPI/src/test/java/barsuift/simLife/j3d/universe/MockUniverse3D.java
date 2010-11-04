@@ -26,6 +26,8 @@ import javax.media.j3d.Node;
 
 import barsuift.simLife.j3d.universe.physic.MockPhysics3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
+import barsuift.simLife.process.MockSynchronizer3D;
+import barsuift.simLife.process.Synchronizer3D;
 
 
 public class MockUniverse3D implements Universe3D {
@@ -39,6 +41,8 @@ public class MockUniverse3D implements Universe3D {
     private Universe3DState state = new Universe3DState();
 
     private int synchronizedCalled = 0;
+
+    private Synchronizer3D synchronizer = new MockSynchronizer3D();
 
     @Override
     public void addElement3D(Node element3d) {
@@ -84,6 +88,15 @@ public class MockUniverse3D implements Universe3D {
 
     public int getNbSynchronize() {
         return synchronizedCalled;
+    }
+
+    @Override
+    public Synchronizer3D getSynchronizer() {
+        return synchronizer;
+    }
+
+    public void setSynchronizer(Synchronizer3D synchronizer) {
+        this.synchronizer = synchronizer;
     }
 
 }
