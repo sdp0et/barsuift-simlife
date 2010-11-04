@@ -44,9 +44,15 @@ import barsuift.simLife.time.SimLifeDate;
 public class BasicSynchronizer implements Synchronizer {
 
     /**
-     * Length of a cycle, used to schedule the temporizer, and to know how much to add to the date at each iteration.
+     * Length of a core cycle, used to schedule the core temporizer, and to know how much to add to the date at each
+     * iteration.
      */
-    public static final int CYCLE_LENGTH_MS = 500;
+    public static final int CYCLE_LENGTH_CORE_MS = 500;
+
+    /**
+     * Length of a 3D cycle, used to schedule the 3D temporizer.
+     */
+    public static final int CYCLE_LENGTH_3D_MS = 25;
 
     private final SynchronizerState state;
 
@@ -165,7 +171,7 @@ public class BasicSynchronizer implements Synchronizer {
         running = true;
 
         // wake-up period (speed = cycles / cycle length)
-        long period = CYCLE_LENGTH_MS / speed.getSpeed();
+        long period = CYCLE_LENGTH_CORE_MS / speed.getSpeed();
         temporizerFuture = scheduledThreadPool.scheduleWithFixedDelay(temporizer, 0, period, TimeUnit.MILLISECONDS);
 
         for (Runnable runnable : runnables) {
