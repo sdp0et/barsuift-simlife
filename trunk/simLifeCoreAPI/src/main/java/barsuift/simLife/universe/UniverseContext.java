@@ -20,12 +20,15 @@ package barsuift.simLife.universe;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
+import barsuift.simLife.process.MainSynchronizer;
 
 public interface UniverseContext extends Persistent<UniverseContextState> {
 
     public SimLifeCanvas3D getCanvas3D();
 
     public Universe getUniverse();
+
+    public MainSynchronizer getSynchronizer();
 
     public void setFpsShowing(boolean fpsShowing);
 

@@ -37,9 +37,10 @@ import barsuift.simLife.j2d.button.OneStepButton;
 import barsuift.simLife.j2d.button.StartButton;
 import barsuift.simLife.j2d.button.StopButton;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.process.Speed;
-import barsuift.simLife.process.SynchronizerCore;
 import barsuift.simLife.universe.Universe;
+import barsuift.simLife.universe.UniverseContext;
 
 public class TimeControllerPanel extends JPanel {
 
@@ -52,17 +53,18 @@ public class TimeControllerPanel extends JPanel {
      * 
      * @param synchronizer the synchronizer
      */
-    public TimeControllerPanel(Universe universe) {
+    public TimeControllerPanel(UniverseContext universeContext) {
         super();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setMaximumSize(new Dimension(220, 100));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        Universe universe = universeContext.getUniverse();
         dateDisplay = new DateDisplay(universe.getDate());
         dateDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(dateDisplay);
 
-        SynchronizerCore synchronizer = universe.getSynchronizer();
+        MainSynchronizer synchronizer = universeContext.getSynchronizer();
         JPanel speedPanel = createSpeedPanel(synchronizer);
         add(speedPanel);
 
@@ -80,7 +82,7 @@ public class TimeControllerPanel extends JPanel {
         setBorder(titledBorder);
     }
 
-    private JPanel createSpeedPanel(SynchronizerCore synchronizer) {
+    private JPanel createSpeedPanel(MainSynchronizer synchronizer) {
         JPanel speedPanel = new JPanel();
         speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));
         SpeedAction actionNormalSpeed = new SpeedAction(synchronizer, "Normal", "Normal speed", Mnemonics.SPEED_NORMAL,

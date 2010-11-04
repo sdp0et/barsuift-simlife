@@ -1,52 +1,50 @@
 package barsuift.simLife.process;
 
+import java.util.concurrent.CyclicBarrier;
+
 import barsuift.simLife.Persistent;
-import barsuift.simLife.message.Publisher;
 
+/**
+ * The core synchronizer allows to run a list of given {@link SynchronizedRunnable} at a given rate.
+ * 
+ */
+public interface SynchronizerCore extends Synchronizer, Persistent<SynchronizerCoreState> {
 
-
-public interface SynchronizerCore extends Publisher, Persistent<SynchronizerCoreState> {
-
+    /**
+     * Sets the speed of the current core synchronizer.
+     * 
+     * @param speed the speed
+     */
     public void setSpeed(Speed speed);
 
+    /**
+     * Returns the speed of the core synchronizer.
+     * 
+     * @return the speed of the synchronizer
+     */
     public Speed getSpeed();
 
-    public boolean isRunning();
-
+    /**
+     * Adds the given runnable to the list of synchronized tasks.
+     * 
+     * @param runnable the runnable to synchronize
+     */
     public void schedule(SynchronizedRunnable runnable);
 
+    /**
+     * Remove the given runnable from the list of synchronized tasks.
+     * 
+     * @param runnable the runnable to desynchronize
+     */
     public void unschedule(SynchronizedRunnable runnable);
 
     /**
-     * Execute one step of the synchronizer.
+     * Set the barrier to use for synchronization purpose.
      * 
-     * @throws IllegalStateException if the synchronizer is already running
+     * @param barrier the cyclic barrier used to synchronize the synchronizer with other synchronizers
+     * @throws IllegalArgumentException if the given barrier is null
+     * @throws IllegalStateException if a barrier has already been set
      */
-    public void oneStep();
-
-    /**
-     * Start the synchronizer.
-     * <p>
-     * All the SynchronizedRunnable objects given at initialization time are started.
-     * </p>
-     * 
-     * @throws IllegalStateException if the synchronizer is already running
-     */
-    public void start();
-
-    /**
-     * Stop the synchronizer.
-     * <p>
-     * The running processes are asked to stop, once they have completed their current execution.
-     * </p>
-     * 
-     * @throws IllegalStateException if the synchronizer is not running
-     */
-    public void stop();
-
-    /**
-     * Stop the synchronizer and sleep until the synchronizer is fully stopped.
-     */
-    public void stopAndWait();
+    public void setBarrier(CyclicBarrier barrier);
 
 }

@@ -54,9 +54,10 @@ public class BasicUniverseContextTest extends TestCase {
         assertTrue(context.getState().isAxisShowing());
         assertEquals(0, context.getState().getUniverseState().getDateHandler().getDate().getValue());
         context.setAxisShowing(false);
-        context.getUniverse().getSynchronizer().oneStep();
+        context.getUniverse().getSynchronizer().start();
+        context.getUniverse().getSynchronizer().stop();
         // wait a little bit to ensure the time controller ends its treatments
-        Thread.sleep(100);
+        Thread.sleep(600);
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
         assertFalse(context.getState().isAxisShowing());

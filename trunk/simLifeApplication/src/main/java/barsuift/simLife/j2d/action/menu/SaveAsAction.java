@@ -28,7 +28,7 @@ import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
-import barsuift.simLife.process.SynchronizerCore;
+import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.universe.SaveException;
 
 
@@ -54,7 +54,7 @@ public class SaveAsAction extends AbstractAction implements Subscriber {
         boolean wasRunning = stopApp();
         saveAs();
         if (wasRunning) {
-            SynchronizerCore synchronizer = application.getUniverseContext().getUniverse().getSynchronizer();
+            MainSynchronizer synchronizer = application.getUniverseContext().getSynchronizer();
             synchronizer.start();
         }
     }
@@ -65,7 +65,7 @@ public class SaveAsAction extends AbstractAction implements Subscriber {
      * @return true if the application was running, false otherwise
      */
     private boolean stopApp() {
-        SynchronizerCore synchronizer = application.getUniverseContext().getUniverse().getSynchronizer();
+        MainSynchronizer synchronizer = application.getUniverseContext().getSynchronizer();
         if (synchronizer.isRunning()) {
             synchronizer.stop();
             return true;

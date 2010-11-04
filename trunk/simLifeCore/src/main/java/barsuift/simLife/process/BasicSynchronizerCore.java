@@ -20,6 +20,7 @@ package barsuift.simLife.process;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
@@ -28,7 +29,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import barsuift.simLife.InitException;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
@@ -45,11 +45,13 @@ public class BasicSynchronizerCore implements SynchronizerCore {
      * Length of a core cycle, used to schedule the core temporizer, and to know how much to add to the date at each
      * iteration.
      */
+    // TODO 003. move in interface, somewhere
     public static final int CYCLE_LENGTH_CORE_MS = 500;
 
     /**
      * Length of a 3D cycle, used to schedule the 3D temporizer.
      */
+    // TODO 003. move in interface, somewhere
     public static final int CYCLE_LENGTH_3D_MS = 25;
 
     private final SynchronizerCoreState state;
@@ -68,7 +70,9 @@ public class BasicSynchronizerCore implements SynchronizerCore {
     private ScheduledFuture<?> temporizerFuture;
 
 
-    private CyclicBarrier barrier;
+    private CyclicBarrier innerBarrier;
+
+    private CyclicBarrier barrierForRunnables;
 
     private final ExecutorService standardThreadPool;
 
@@ -83,15 +87,25 @@ public class BasicSynchronizerCore implements SynchronizerCore {
     private final Publisher publisher = new BasicPublisher(this);
 
 
-    public BasicSynchronizerCore(SynchronizerCoreState state) throws InitException {
+    public BasicSynchronizerCore(SynchronizerCoreState state) {
         this.state = state;
         this.running = false;
         this.isStopAsked = false;
         this.speed = state.getSpeed();
-        this.barrier = new CyclicBarrier(1, new BarrierTask());
-        this.temporizer = new Temporizer(barrier);
+        this.barrierForRunnables = new CyclicBarrier(1, new BarrierTask());
+        this.temporizer = new Temporizer(barrierForRunnables);
         this.scheduledThreadPool = Executors.newScheduledThreadPool(1);
         this.standardThreadPool = Executors.newCachedThreadPool();
+    }
+
+    public void setBarrier(CyclicBarrier barrier) {
+        if (this.innerBarrier != null) {
+            throw new IllegalStateException("The synchronizer already has a barrier to synchronize on");
+        }
+        if (barrier == null) {
+            throw new IllegalArgumentException("The given barrier is null");
+        }
+        this.innerBarrier = barrier;
     }
 
     @Override
@@ -126,32 +140,9 @@ public class BasicSynchronizerCore implements SynchronizerCore {
         }
     }
 
-    /**
-     * Execute one step of the synchronizer.
-     * 
-     * @throws IllegalStateException if the synchronizer is already running
-     */
-    @Override
-    public synchronized void oneStep() {
-        isStopAsked = true;
-        internalStart();
-    }
-
-    /**
-     * Start the synchronizer.
-     * <p>
-     * All the SynchronizedRunnable objects given at initialization time are started.
-     * </p>
-     * 
-     * @throws IllegalStateException if the synchronizer is already running
-     */
     @Override
     public synchronized void start() {
         isStopAsked = false;
-        internalStart();
-    }
-
-    private void internalStart() {
         if (running == true) {
             throw new IllegalStateException("The synchronizer is already running");
         }
@@ -169,14 +160,6 @@ public class BasicSynchronizerCore implements SynchronizerCore {
         notifySubscribers();
     }
 
-    /**
-     * Stop the synchronizer.
-     * <p>
-     * The running processes are asked to stop, once they have completed their current execution.
-     * </p>
-     * 
-     * @throws IllegalStateException if the synchronizer is not running
-     */
     @Override
     public synchronized void stop() {
         if (running == false) {
@@ -228,16 +211,17 @@ public class BasicSynchronizerCore implements SynchronizerCore {
         // if there are new tasks to schedule or to unschedule
         if (nbNewTasksToAdd > 0 || nbTasksToRemove > 0) {
             // 1. update the new barrier
-            barrier = new CyclicBarrier(barrier.getParties() + nbNewTasksToAdd - nbTasksToRemove, new BarrierTask());
+            barrierForRunnables = new CyclicBarrier(barrierForRunnables.getParties() + nbNewTasksToAdd
+                    - nbTasksToRemove, new BarrierTask());
             // 2. update the list of executed tasks
             runnables.addAll(newTasksToSchedule);
             runnables.removeAll(tasksToUnschedule);
             // 3. update the barrier for everyone
             for (SynchronizedRunnable runnable : runnables) {
-                runnable.changeBarrier(barrier);
+                runnable.changeBarrier(barrierForRunnables);
             }
             // 4. also change the temporizer barrier
-            temporizer.changeBarrier(barrier);
+            temporizer.changeBarrier(barrierForRunnables);
             // 5. start the new tasks if needed, or simply purge the list
             if (startNewTasks) {
                 while (!newTasksToSchedule.isEmpty()) {
@@ -303,6 +287,13 @@ public class BasicSynchronizerCore implements SynchronizerCore {
 
         @Override
         public synchronized void run() {
+            try {
+                innerBarrier.await();
+            } catch (InterruptedException e) {
+                internalStop();
+            } catch (BrokenBarrierException e) {
+                internalStop();
+            }
             updateTaskList(true);
             if (isStopAsked) {
                 internalStop();

@@ -18,29 +18,37 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.JaxbTestCase;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import barsuift.simLife.State;
 
-public class SynchronizerCoreStateTest extends JaxbTestCase {
+@XmlRootElement
+public class MainSynchronizerState implements State {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    public MainSynchronizerState() {
+        super();
     }
 
     @Override
-    protected String getPackage() {
-        return "barsuift.simLife.process";
+    public int hashCode() {
+        int result = 1;
+        return result;
     }
 
-    public void testJaxb() throws Exception {
-        SynchronizerCoreState synchro = new SynchronizerCoreState(Speed.VERY_FAST);
-        write(synchro);
-        SynchronizerCoreState synchro2 = (SynchronizerCoreState) read();
-        assertEquals(synchro, synchro2);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "SynchronizerState []";
     }
 
 }

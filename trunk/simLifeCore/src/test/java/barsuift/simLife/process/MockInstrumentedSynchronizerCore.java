@@ -4,17 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
-import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.message.BasicPublisher;
 
-
-public class MockSynchronizerCore extends BasicPublisher implements SynchronizerCore {
+public class MockInstrumentedSynchronizerCore extends BasicSynchronizerCore {
 
     private CyclicBarrier barrier;
-
-    private Speed speed;
-
-    private boolean running;
 
     private int scheduleCalled;
 
@@ -28,30 +21,26 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
 
     private int stopCalled;
 
-    private SynchronizerCoreState state;
-
     private int synchronizeCalled;
 
-    public MockSynchronizerCore() {
-        super(null);
+    public MockInstrumentedSynchronizerCore(SynchronizerCoreState state) {
+        super(state);
         reset();
     }
 
     public void reset() {
         barrier = new CyclicBarrier(1);
-        speed = Speed.NORMAL;
-        running = false;
         scheduleCalled = 0;
         runnablesToSchedule = new ArrayList<Runnable>();
         unscheduleCalled = 0;
         runnablesToUnschedule = new ArrayList<Runnable>();
         startCalled = 0;
         stopCalled = 0;
-        state = CoreDataCreatorForTests.createSpecificSynchronizerCoreState();
         synchronizeCalled = 0;
     }
 
     public void setBarrier(CyclicBarrier barrier) {
+        super.setBarrier(barrier);
         this.barrier = barrier;
     }
 
@@ -61,25 +50,22 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
 
     @Override
     public void setSpeed(Speed speed) {
-        this.speed = speed;
+        super.setSpeed(speed);
     }
 
     @Override
     public Speed getSpeed() {
-        return speed;
+        return super.getSpeed();
     }
 
     @Override
     public boolean isRunning() {
-        return running;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
+        return super.isRunning();
     }
 
     @Override
     public void schedule(SynchronizedRunnable runnable) {
+        super.schedule(runnable);
         scheduleCalled++;
         runnablesToSchedule.add(runnable);
     }
@@ -94,6 +80,7 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
 
     @Override
     public void unschedule(SynchronizedRunnable runnable) {
+        super.unschedule(runnable);
         unscheduleCalled++;
         runnablesToUnschedule.add(runnable);
     }
@@ -106,9 +93,9 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
         return runnablesToUnschedule;
     }
 
-
     @Override
     public void start() throws IllegalStateException {
+        super.start();
         startCalled++;
     }
 
@@ -118,6 +105,7 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
 
     @Override
     public void stop() {
+        super.stop();
         stopCalled++;
     }
 
@@ -127,15 +115,12 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
 
     @Override
     public SynchronizerCoreState getState() {
-        return state;
-    }
-
-    public void setState(SynchronizerCoreState state) {
-        this.state = state;
+        return super.getState();
     }
 
     @Override
     public void synchronize() {
+        super.synchronize();
         synchronizeCalled++;
     }
 

@@ -27,7 +27,7 @@ import javax.swing.JFileChooser;
 import barsuift.simLife.Application;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
-import barsuift.simLife.process.SynchronizerCore;
+import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.universe.OpenException;
 import barsuift.simLife.universe.UniverseContext;
 
@@ -56,7 +56,7 @@ public class OpenAction extends AbstractAction {
     private void stopApp() {
         UniverseContext universeContext = application.getUniverseContext();
         if (universeContext != null) {
-            SynchronizerCore synchronizer = universeContext.getUniverse().getSynchronizer();
+            MainSynchronizer synchronizer = universeContext.getSynchronizer();
             if (synchronizer.isRunning()) {
                 synchronizer.stop();
             }
