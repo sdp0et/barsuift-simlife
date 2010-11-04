@@ -33,21 +33,17 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-/**
- * The synchronizer allows to run the list of given {@link SynchronizedRunnable} at a given rate. A
- * {@link CyclicBarrier} is used to synchronized all the tasks, and a {@link Temporizer}, in a
- * {@link ScheduledExecutorService}, is used to ensure there is always the same delay between two runs.
- * 
- */
-public class BasicSynchronizerCore implements SynchronizerCore {
+// TODO 004. create mock class
+// TODO 004. unit test
+// TODO 004. javadoc
+public class BasicSynchronizer3D implements Synchronizer3D {
 
-    private final SynchronizerCoreState state;
+    // TODO check what to put in state (see SynchronizerCoreState)
+    private final Synchronizer3DState state;
 
     private boolean running;
 
     private boolean isStopAsked;
-
-    private Speed speed;
 
 
     private final ScheduledExecutorService scheduledThreadPool;
@@ -63,22 +59,21 @@ public class BasicSynchronizerCore implements SynchronizerCore {
 
     private final ExecutorService standardThreadPool;
 
-    private final List<SynchronizedRunnable> runnables = new ArrayList<SynchronizedRunnable>();
+    private final List<SplitBoundedRunnable> runnables = new ArrayList<SplitBoundedRunnable>();
 
 
-    private final ConcurrentLinkedQueue<SynchronizedRunnable> newTasksToSchedule = new ConcurrentLinkedQueue<SynchronizedRunnable>();
+    private final ConcurrentLinkedQueue<SplitBoundedRunnable> newTasksToSchedule = new ConcurrentLinkedQueue<SplitBoundedRunnable>();
 
-    private final ConcurrentLinkedQueue<SynchronizedRunnable> tasksToUnschedule = new ConcurrentLinkedQueue<SynchronizedRunnable>();
+    private final ConcurrentLinkedQueue<SplitBoundedRunnable> tasksToUnschedule = new ConcurrentLinkedQueue<SplitBoundedRunnable>();
 
 
     private final Publisher publisher = new BasicPublisher(this);
 
 
-    public BasicSynchronizerCore(SynchronizerCoreState state) {
+    public BasicSynchronizer3D(Synchronizer3DState state) {
         this.state = state;
         this.running = false;
         this.isStopAsked = false;
-        this.speed = state.getSpeed();
         this.barrierForRunnables = new CyclicBarrier(1, new BarrierTask());
         this.temporizer = new Temporizer(barrierForRunnables);
         this.scheduledThreadPool = Executors.newScheduledThreadPool(1);
@@ -96,13 +91,10 @@ public class BasicSynchronizerCore implements SynchronizerCore {
     }
 
     @Override
-    public void setSpeed(Speed speed) {
-        this.speed = speed;
-    }
-
-    @Override
-    public Speed getSpeed() {
-        return speed;
+    public void setStepSize(int stepSize) {
+        for (SplitBoundedRunnable runnable : runnables) {
+            runnable.setStepSize(stepSize);
+        }
     }
 
     @Override
@@ -111,12 +103,12 @@ public class BasicSynchronizerCore implements SynchronizerCore {
     }
 
     @Override
-    public void schedule(SynchronizedRunnable runnable) {
+    public void schedule(SplitBoundedRunnable runnable) {
         newTasksToSchedule.add(runnable);
     }
 
     @Override
-    public void unschedule(SynchronizedRunnable runnable) {
+    public void unschedule(SplitBoundedRunnable runnable) {
         // first try to remove it from the list of tasks to add
         if (!newTasksToSchedule.remove(runnable)) {
             if (!runnables.contains(runnable)) {
@@ -136,11 +128,10 @@ public class BasicSynchronizerCore implements SynchronizerCore {
         updateTaskList(false);
         running = true;
 
-        // wake-up period (speed = cycles / cycle length)
-        long period = CYCLE_LENGTH_CORE_MS / speed.getSpeed();
-        temporizerFuture = scheduledThreadPool.scheduleWithFixedDelay(temporizer, 0, period, TimeUnit.MILLISECONDS);
+        temporizerFuture = scheduledThreadPool.scheduleWithFixedDelay(temporizer, 0, CYCLE_LENGTH_3D_MS,
+                TimeUnit.MILLISECONDS);
 
-        for (Runnable runnable : runnables) {
+        for (SplitBoundedRunnable runnable : runnables) {
             standardThreadPool.submit(runnable);
         }
         setChanged();
@@ -173,7 +164,7 @@ public class BasicSynchronizerCore implements SynchronizerCore {
         running = false;
 
         temporizerFuture.cancel(false);
-        for (SynchronizedRunnable runnable : runnables) {
+        for (SplitBoundedRunnable runnable : runnables) {
             runnable.stop();
         }
         setChanged();
@@ -181,14 +172,13 @@ public class BasicSynchronizerCore implements SynchronizerCore {
     }
 
     @Override
-    public SynchronizerCoreState getState() {
+    public Synchronizer3DState getState() {
         synchronize();
         return state;
     }
 
     @Override
     public void synchronize() {
-        state.setSpeed(speed);
     }
 
 
@@ -204,7 +194,7 @@ public class BasicSynchronizerCore implements SynchronizerCore {
             runnables.addAll(newTasksToSchedule);
             runnables.removeAll(tasksToUnschedule);
             // 3. update the barrier for everyone
-            for (SynchronizedRunnable runnable : runnables) {
+            for (SplitBoundedRunnable runnable : runnables) {
                 runnable.changeBarrier(barrierForRunnables);
             }
             // 4. also change the temporizer barrier
@@ -222,7 +212,7 @@ public class BasicSynchronizerCore implements SynchronizerCore {
             }
             // 6. stop the old tasks
             while (!tasksToUnschedule.isEmpty()) {
-                SynchronizedRunnable taskToUnschedule = tasksToUnschedule.poll();
+                SplitBoundedRunnable taskToUnschedule = tasksToUnschedule.poll();
                 if (taskToUnschedule.isRunning()) {
                     taskToUnschedule.stop();
                 }

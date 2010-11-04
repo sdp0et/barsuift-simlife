@@ -27,8 +27,7 @@ public class SplitBoundedRunnableStateFactory {
     /**
      * The default bound to use when no value is found in the properties file
      */
-    private static final int DEFAULT_BOUND = BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS
-            / BasicSynchronizerCore.CYCLE_LENGTH_3D_MS;
+    private static final int DEFAULT_BOUND = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
 
     private static final String PROPERTIES_FILE = "barsuift/simLife/process/SplitBoundedRunnables.properties";
 

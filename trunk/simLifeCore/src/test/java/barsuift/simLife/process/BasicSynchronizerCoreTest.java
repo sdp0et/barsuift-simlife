@@ -70,22 +70,22 @@ public class BasicSynchronizerCoreTest extends TestCase {
         assertEquals(0, date.getTimeInMillis());
 
         synchro.start();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertTrue(synchro.isRunning());
         assertTrue(date.getTimeInMillis() > 0);
 
         synchro.stop();
         barrierReleaser.run();
         // make sure the thread has time to stop
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertFalse(synchro.isRunning());
         long time = date.getTimeInMillis();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         // assert the time does not change anymore once stopped
         assertEquals(time, date.getTimeInMillis());
         // even if we release the barrier once more
         new Thread(barrierReleaser).start();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertEquals(time, date.getTimeInMillis());
     }
 
@@ -98,10 +98,10 @@ public class BasicSynchronizerCoreTest extends TestCase {
         assertNull(publisherHelper.getUpdateObjects().get(0));
 
         publisherHelper.reset();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         synchro.stop();
         barrierReleaser.run();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertEquals(1, publisherHelper.nbUpdated());
         assertNull(publisherHelper.getUpdateObjects().get(0));
     }
@@ -115,7 +115,7 @@ public class BasicSynchronizerCoreTest extends TestCase {
             // OK expected exception
         }
         synchro.start();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         try {
             synchro.start();
             fail("IllegalStateException expected");
@@ -150,7 +150,7 @@ public class BasicSynchronizerCoreTest extends TestCase {
         synchro.start();
         synchro.stop();
         barrierReleaser.run();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
 
         assertTrue(mockRun1.getNbExecuted() >= 1);
         assertTrue(mockRun2.getNbExecuted() == 0);
@@ -162,7 +162,7 @@ public class BasicSynchronizerCoreTest extends TestCase {
         synchro.start();
         synchro.stop();
         barrierReleaser.run();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
 
         assertTrue(mockRun1.getNbExecuted() >= 1);
         assertTrue(mockRun2.getNbExecuted() == 0);
@@ -173,12 +173,12 @@ public class BasicSynchronizerCoreTest extends TestCase {
         synchro.start();
         synchro.stop();
         barrierReleaser.run();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         synchro.unschedule(mockRun2);
         synchro.start();
         synchro.stop();
         barrierReleaser.run();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
 
         assertTrue(mockRun1.getNbExecuted() >= 1);
         assertTrue(mockRun2.getNbExecuted() >= 1);
@@ -192,7 +192,7 @@ public class BasicSynchronizerCoreTest extends TestCase {
         synchro.start();
         synchro.stop();
         barrierReleaser.run();
-        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
 
         assertTrue(mockRun1.getNbExecuted() == 0);
         assertTrue(mockRun2.getNbExecuted() == 0);
