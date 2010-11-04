@@ -12,6 +12,17 @@ import barsuift.simLife.message.Publisher;
 public interface Synchronizer extends Publisher {
 
     /**
+     * Length of a core cycle, used to schedule the core temporizer, and to know how much to add to the date at each
+     * iteration.
+     */
+    public static final int CYCLE_LENGTH_CORE_MS = 500;
+
+    /**
+     * Length of a 3D cycle, used to schedule the 3D temporizer.
+     */
+    public static final int CYCLE_LENGTH_3D_MS = 25;
+
+    /**
      * Tests if the synchronizer is running.
      * 
      * @return true if the synchronizer is running, false otherwise

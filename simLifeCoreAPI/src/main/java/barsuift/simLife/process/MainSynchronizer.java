@@ -3,10 +3,9 @@ package barsuift.simLife.process;
 import barsuift.simLife.Persistent;
 
 /**
- * The main synchronizer allows to synchronize the {@link SynchronizerCore} and the Synchronizer3D.
+ * The main synchronizer allows to synchronize the {@link SynchronizerCore} and the {@link Synchronizer3D}.
  * 
  */
-// TODO 002. update javadoc (once Synchronizer3D exists)
 public interface MainSynchronizer extends Synchronizer, Persistent<MainSynchronizerState> {
 
     /**

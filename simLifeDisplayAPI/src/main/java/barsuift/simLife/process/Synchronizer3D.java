@@ -23,10 +23,10 @@ import java.util.concurrent.CyclicBarrier;
 import barsuift.simLife.Persistent;
 
 /**
- * The synchronizer3D allows to run a list of given {@link SynchronizedRunnable} at a constant rate.
+ * The synchronizer3D allows to run a list of given {@link SplitBoundedRunnable} at a constant rate.
  * <p>
  * The synchronizer is able to manage a {@code stepSize} parameter, which is reflected to its synchronized
- * {@code SynchronizedRunnable}.
+ * {@code SplitBoundedRunnable}.
  * </p>
  */
 public interface Synchronizer3D extends Synchronizer, Persistent<Synchronizer3DState> {
@@ -39,25 +39,18 @@ public interface Synchronizer3D extends Synchronizer, Persistent<Synchronizer3DS
     public void setStepSize(int stepSize);
 
     /**
-     * Returns the step size of the 3D synchronizer.
-     * 
-     * @return the step size of the synchronizer
-     */
-    public int getStepSize();
-
-    /**
      * Adds the given runnable to the list of synchronized tasks.
      * 
      * @param runnable the runnable to synchronize
      */
-    public void schedule(SynchronizedRunnable runnable);
+    public void schedule(SplitBoundedRunnable runnable);
 
     /**
      * Remove the given runnable from the list of synchronized tasks.
      * 
      * @param runnable the runnable to desynchronize
      */
-    public void unschedule(SynchronizedRunnable runnable);
+    public void unschedule(SplitBoundedRunnable runnable);
 
     /**
      * Set the barrier to use for synchronization purpose.

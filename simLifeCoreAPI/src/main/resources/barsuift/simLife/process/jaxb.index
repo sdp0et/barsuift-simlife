@@ -1,5 +1,4 @@
 BoundedRunnableState
 MainSynchronizerState
-SplitBoundedRunnableState
 SynchronizerCoreState
 UnfrequentRunnableState

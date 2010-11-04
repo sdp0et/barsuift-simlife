@@ -14,7 +14,7 @@ public class DateUpdater extends AbstractSynchronizedRunnable {
 
     @Override
     public void executeStep() {
-        date.addMillis(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS);
+        date.addMillis(Synchronizer.CYCLE_LENGTH_CORE_MS);
     }
 
 }
