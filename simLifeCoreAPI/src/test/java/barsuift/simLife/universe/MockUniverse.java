@@ -26,8 +26,8 @@ import barsuift.simLife.environment.Environment;
 import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.process.MockSynchronizer;
-import barsuift.simLife.process.Synchronizer;
+import barsuift.simLife.process.MockSynchronizerCore;
+import barsuift.simLife.process.SynchronizerCore;
 import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
@@ -49,7 +49,7 @@ public class MockUniverse implements Universe {
 
     private Physics physics;
 
-    private Synchronizer synchronizer;
+    private SynchronizerCore synchronizer;
 
     private SimLifeDate date;
 
@@ -70,7 +70,7 @@ public class MockUniverse implements Universe {
         creationMillis = 0;
         environment = new MockEnvironment();
         physics = new MockPhysics();
-        synchronizer = new MockSynchronizer();
+        synchronizer = new MockSynchronizerCore();
         date = new SimLifeDate();
         universe3D = new MockUniverse3D();
         state = new UniverseState();
@@ -118,11 +118,11 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public Synchronizer getSynchronizer() {
+    public SynchronizerCore getSynchronizer() {
         return synchronizer;
     }
 
-    public void setSynchronizer(Synchronizer synchronizer) {
+    public void setSynchronizer(SynchronizerCore synchronizer) {
         this.synchronizer = synchronizer;
     }
 

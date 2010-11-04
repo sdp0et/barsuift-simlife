@@ -33,9 +33,9 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 
-// TODO 001. rename Synchronizer to SynchronizerCore
-// TODO 002. create a Synchronizer (in simLifeApplication module) which contains the SynchronizerCore, and a main
+// TODO 001. create a Synchronizer (in simLifeApplication module) which contains the SynchronizerCore, and a main
 // barrier
+// TODO 002. extract Synchronizer interface (in simLifeUtilities module). The speed should not be in this synchronizer.
 // TODO 003. create a Synchronizer3D (in simLifeDisplay module), based on SynchronizerCore
 // TODO 004. see if SynchronizerCore and Synchronizer3D can be refactored to inherit from the same super class
 // TODO 005. Be able to stop and change speed of interpolators

@@ -1,4 +1,4 @@
 BoundedRunnableState
 SplitBoundedRunnableState
-SynchronizerState
+SynchronizerCoreState
 UnfrequentRunnableState

@@ -30,8 +30,8 @@ import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.EnvironmentStateFactory;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
-import barsuift.simLife.process.SynchronizerState;
-import barsuift.simLife.process.SynchronizerStateFactory;
+import barsuift.simLife.process.SynchronizerCoreState;
+import barsuift.simLife.process.SynchronizerCoreStateFactory;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
@@ -75,8 +75,8 @@ public class UniverseStateFactory {
         EnvironmentState environment = envStateFactory.createEnvironmentState();
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
         PhysicsState physics = physicsStateFactory.createPhysicsState();
-        SynchronizerStateFactory synchronizerStateFactory = new SynchronizerStateFactory();
-        SynchronizerState synchronizerState = synchronizerStateFactory.createSynchronizerState();
+        SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();
+        SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerState();
         DateHandlerState dateHandler = new DateHandlerState();
 
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
@@ -101,8 +101,8 @@ public class UniverseStateFactory {
         EnvironmentState environment = envStateFactory.createEnvironmentState();
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
         PhysicsState physics = physicsStateFactory.createPhysicsState();
-        SynchronizerStateFactory synchronizerStateFactory = new SynchronizerStateFactory();
-        SynchronizerState synchronizerState = synchronizerStateFactory.createSynchronizerState();
+        SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();
+        SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerState();
         DateHandlerState dateHandler = new DateHandlerState();
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createEmptyUniverse3DState();

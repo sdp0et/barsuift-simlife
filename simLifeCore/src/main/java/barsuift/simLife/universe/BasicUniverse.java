@@ -30,9 +30,9 @@ import barsuift.simLife.environment.BasicEnvironment;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.process.BasicSynchronizer;
+import barsuift.simLife.process.BasicSynchronizerCore;
 import barsuift.simLife.process.DateUpdater;
-import barsuift.simLife.process.Synchronizer;
+import barsuift.simLife.process.SynchronizerCore;
 import barsuift.simLife.time.DateHandler;
 import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.tree.BasicTree;
@@ -56,7 +56,7 @@ public class BasicUniverse implements Universe {
 
     private final Physics physics;
 
-    private final BasicSynchronizer synchronizer;
+    private final BasicSynchronizerCore synchronizer;
 
     private final DateHandler dateHandler;
 
@@ -68,7 +68,7 @@ public class BasicUniverse implements Universe {
         this.universe3D = new BasicUniverse3D(state.getUniv3DState(), this);
         this.environment = new BasicEnvironment(state.getEnvironment());
         this.physics = new BasicPhysics(this, state.getPhysics());
-        this.synchronizer = new BasicSynchronizer(state.getSynchronizerState());
+        this.synchronizer = new BasicSynchronizerCore(state.getSynchronizerState());
         this.dateHandler = new DateHandler(state.getDateHandler());
         DateUpdater dateUpdater = new DateUpdater(dateHandler.getDate());
         synchronizer.schedule(dateUpdater);
@@ -125,7 +125,7 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public Synchronizer getSynchronizer() {
+    public SynchronizerCore getSynchronizer() {
         return synchronizer;
     }
 

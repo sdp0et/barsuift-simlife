@@ -6,19 +6,19 @@ import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.time.SimLifeDate;
 
 
-public class BasicSynchronizerTest extends TestCase {
+public class BasicSynchronizerCoreTest extends TestCase {
 
-    private BasicSynchronizer synchro;
+    private BasicSynchronizerCore synchro;
 
-    private SynchronizerState state;
+    private SynchronizerCoreState state;
 
     private SimLifeDate date;
 
     protected void setUp() throws Exception {
         super.setUp();
 
-        state = new SynchronizerState(Speed.VERY_FAST);
-        synchro = new BasicSynchronizer(state);
+        state = new SynchronizerCoreState(Speed.VERY_FAST);
+        synchro = new BasicSynchronizerCore(state);
         date = new SimLifeDate();
         DateUpdater dateUpdater = new DateUpdater(date);
         synchro.schedule(dateUpdater);
@@ -43,7 +43,7 @@ public class BasicSynchronizerTest extends TestCase {
         synchro.oneStep();
         assertTrue(synchro.isRunning());
 
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertFalse(synchro.isRunning());
     }
 
@@ -53,15 +53,15 @@ public class BasicSynchronizerTest extends TestCase {
         assertEquals(0, date.getTimeInMillis());
 
         synchro.start();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertTrue(synchro.isRunning());
         assertTrue(date.getTimeInMillis() > 0);
 
         synchro.stop();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertFalse(synchro.isRunning());
         long time = date.getTimeInMillis();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         // assert the time does not change anymore once stopped
         assertEquals(time, date.getTimeInMillis());
     }
@@ -75,15 +75,15 @@ public class BasicSynchronizerTest extends TestCase {
         assertNull(publisherHelper.getUpdateObjects().get(0));
 
         publisherHelper.reset();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         synchro.stop();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertEquals(1, publisherHelper.nbUpdated());
         assertNull(publisherHelper.getUpdateObjects().get(0));
 
         publisherHelper.reset();
         synchro.oneStep();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertEquals(2, publisherHelper.nbUpdated());
         assertNull(publisherHelper.getUpdateObjects().get(0));
     }
@@ -138,7 +138,7 @@ public class BasicSynchronizerTest extends TestCase {
 
         synchro.schedule(mockRun1);
         synchro.oneStep();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
 
         assertEquals(1, mockRun1.getNbExecuted());
         assertEquals(0, mockRun2.getNbExecuted());
@@ -148,7 +148,7 @@ public class BasicSynchronizerTest extends TestCase {
         synchro.schedule(mockRun2);
         synchro.unschedule(mockRun2);
         synchro.oneStep();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
 
         assertEquals(1, mockRun1.getNbExecuted());
         assertEquals(0, mockRun2.getNbExecuted());
@@ -157,10 +157,10 @@ public class BasicSynchronizerTest extends TestCase {
         mockRun1.resetNbExecuted();
         synchro.schedule(mockRun2);
         synchro.oneStep();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         synchro.unschedule(mockRun2);
         synchro.oneStep();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
 
         assertEquals(2, mockRun1.getNbExecuted());
         assertEquals(1, mockRun2.getNbExecuted());
@@ -171,9 +171,9 @@ public class BasicSynchronizerTest extends TestCase {
         synchro.schedule(mockRun3);
         synchro.unschedule(mockRun1);
         synchro.start();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         synchro.stop();
-        Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(BasicSynchronizerCore.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
 
         assertEquals(0, mockRun1.getNbExecuted());
         assertEquals(0, mockRun2.getNbExecuted());

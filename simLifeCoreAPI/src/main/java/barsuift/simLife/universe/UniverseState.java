@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import barsuift.simLife.State;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.j3d.universe.Universe3DState;
-import barsuift.simLife.process.SynchronizerState;
+import barsuift.simLife.process.SynchronizerCoreState;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
@@ -43,7 +43,7 @@ public class UniverseState implements State {
 
     private PhysicsState physics;
 
-    private SynchronizerState synchronizerState;
+    private SynchronizerCoreState synchronizerState;
 
     private DateHandlerState dateHandler;
 
@@ -55,13 +55,13 @@ public class UniverseState implements State {
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
         this.physics = new PhysicsState();
-        this.synchronizerState = new SynchronizerState();
+        this.synchronizerState = new SynchronizerCoreState();
         this.dateHandler = new DateHandlerState();
         this.univ3DState = new Universe3DState();
     }
 
     public UniverseState(Set<TreeState> trees, Set<TreeLeafState> fallenLeaves, EnvironmentState environment,
-            PhysicsState physics, SynchronizerState synchronizerState, DateHandlerState dateHandler,
+            PhysicsState physics, SynchronizerCoreState synchronizerState, DateHandlerState dateHandler,
             Universe3DState univ3DState) {
         super();
         this.trees = trees;
@@ -105,11 +105,11 @@ public class UniverseState implements State {
         this.physics = physics;
     }
 
-    public SynchronizerState getSynchronizerState() {
+    public SynchronizerCoreState getSynchronizerState() {
         return synchronizerState;
     }
 
-    public void setSynchronizerState(SynchronizerState synchronizerState) {
+    public void setSynchronizerState(SynchronizerCoreState synchronizerState) {
         this.synchronizerState = synchronizerState;
     }
 
