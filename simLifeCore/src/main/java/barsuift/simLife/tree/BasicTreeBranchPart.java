@@ -272,8 +272,8 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     protected void createOneNewLeaf() {
         Point3d leafAttachPoint = computeAttachPointForNewLeaf();
         BasicTreeLeafFactory factory = new BasicTreeLeafFactory(universe);
-        TreeLeaf leaf = factory.createNew(leafAttachPoint, NEW_LEAF_ENERGY_PROVIDED, universe.getSynchronizer()
-                .getDate().getTimeInMillis());
+        TreeLeaf leaf = factory.createNew(leafAttachPoint, NEW_LEAF_ENERGY_PROVIDED, universe.getDate()
+                .getTimeInMillis());
         leaf.addSubscriber(this);
         leaves.add(leaf);
         branchPart3D.addLeaf(leaf.getTreeLeaf3D());

@@ -32,6 +32,7 @@ import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
 import barsuift.simLife.process.SynchronizerState;
 import barsuift.simLife.process.SynchronizerStateFactory;
+import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 import barsuift.simLife.tree.TreeStateFactory;
@@ -76,11 +77,12 @@ public class UniverseStateFactory {
         PhysicsState physics = physicsStateFactory.createPhysicsState();
         SynchronizerStateFactory synchronizerStateFactory = new SynchronizerStateFactory();
         SynchronizerState synchronizerState = synchronizerStateFactory.createSynchronizerState();
+        DateHandlerState dateHandler = new DateHandlerState();
 
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createRandomUniverse3DState();
 
-        return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, dateHandler, univ3DState);
     }
 
     /**
@@ -101,10 +103,11 @@ public class UniverseStateFactory {
         PhysicsState physics = physicsStateFactory.createPhysicsState();
         SynchronizerStateFactory synchronizerStateFactory = new SynchronizerStateFactory();
         SynchronizerState synchronizerState = synchronizerStateFactory.createSynchronizerState();
+        DateHandlerState dateHandler = new DateHandlerState();
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createEmptyUniverse3DState();
 
-        return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, dateHandler, univ3DState);
     }
 
 }

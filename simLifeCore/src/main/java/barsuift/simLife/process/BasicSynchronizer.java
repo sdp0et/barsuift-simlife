@@ -32,8 +32,6 @@ import barsuift.simLife.InitException;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
-import barsuift.simLife.time.DateHandler;
-import barsuift.simLife.time.SimLifeDate;
 
 /**
  * The synchronizer allows to run the list of given {@link SynchronizedRunnable} at a given rate. A
@@ -55,8 +53,6 @@ public class BasicSynchronizer implements Synchronizer {
     public static final int CYCLE_LENGTH_3D_MS = 25;
 
     private final SynchronizerState state;
-
-    private final DateHandler dateHandler;
 
     private boolean running;
 
@@ -92,18 +88,10 @@ public class BasicSynchronizer implements Synchronizer {
         this.running = false;
         this.isStopAsked = false;
         this.speed = state.getSpeed();
-        this.dateHandler = new DateHandler(state.getDateHandler());
         this.barrier = new CyclicBarrier(1, new BarrierTask());
         this.temporizer = new Temporizer(barrier);
         this.scheduledThreadPool = Executors.newScheduledThreadPool(1);
         this.standardThreadPool = Executors.newCachedThreadPool();
-        DateUpdater dateUpdater = new DateUpdater(dateHandler.getDate());
-        schedule(dateUpdater);
-    }
-
-    @Override
-    public SimLifeDate getDate() {
-        return dateHandler.getDate();
     }
 
     @Override
@@ -231,7 +219,6 @@ public class BasicSynchronizer implements Synchronizer {
     @Override
     public void synchronize() {
         state.setSpeed(speed);
-        dateHandler.synchronize();
     }
 
 

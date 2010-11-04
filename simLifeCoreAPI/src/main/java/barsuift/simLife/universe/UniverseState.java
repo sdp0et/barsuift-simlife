@@ -27,6 +27,7 @@ import barsuift.simLife.State;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.process.SynchronizerState;
+import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
 import barsuift.simLife.universe.physic.PhysicsState;
@@ -44,6 +45,8 @@ public class UniverseState implements State {
 
     private SynchronizerState synchronizerState;
 
+    private DateHandlerState dateHandler;
+
     private Universe3DState univ3DState;
 
     public UniverseState() {
@@ -53,17 +56,20 @@ public class UniverseState implements State {
         this.environment = new EnvironmentState();
         this.physics = new PhysicsState();
         this.synchronizerState = new SynchronizerState();
+        this.dateHandler = new DateHandlerState();
         this.univ3DState = new Universe3DState();
     }
 
     public UniverseState(Set<TreeState> trees, Set<TreeLeafState> fallenLeaves, EnvironmentState environment,
-            PhysicsState physics, SynchronizerState synchronizerState, Universe3DState univ3DState) {
+            PhysicsState physics, SynchronizerState synchronizerState, DateHandlerState dateHandler,
+            Universe3DState univ3DState) {
         super();
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
         this.physics = physics;
         this.synchronizerState = synchronizerState;
+        this.dateHandler = dateHandler;
         this.univ3DState = univ3DState;
     }
 
@@ -107,6 +113,14 @@ public class UniverseState implements State {
         this.synchronizerState = synchronizerState;
     }
 
+    public DateHandlerState getDateHandler() {
+        return dateHandler;
+    }
+
+    public void setDateHandler(DateHandlerState dateHandler) {
+        this.dateHandler = dateHandler;
+    }
+
     public Universe3DState getUniv3DState() {
         return univ3DState;
     }
@@ -122,6 +136,7 @@ public class UniverseState implements State {
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
         result = prime * result + ((physics == null) ? 0 : physics.hashCode());
         result = prime * result + ((synchronizerState == null) ? 0 : synchronizerState.hashCode());
+        result = prime * result + ((dateHandler == null) ? 0 : dateHandler.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
         result = prime * result + ((trees == null) ? 0 : trees.hashCode());
         result = prime * result + ((univ3DState == null) ? 0 : univ3DState.hashCode());
@@ -155,6 +170,12 @@ public class UniverseState implements State {
         } else
             if (!synchronizerState.equals(other.synchronizerState))
                 return false;
+        if (dateHandler == null) {
+            if (other.dateHandler != null)
+                return false;
+        } else
+            if (!dateHandler.equals(other.dateHandler))
+                return false;
         if (fallenLeaves == null) {
             if (other.fallenLeaves != null)
                 return false;
@@ -179,8 +200,8 @@ public class UniverseState implements State {
     @Override
     public String toString() {
         return "UniverseState [trees=" + trees + ", fallenLeaves=" + fallenLeaves + ", environment=" + environment
-                + ", physics=" + physics + ", synchronizerState=" + synchronizerState + ", univ3DState=" + univ3DState
-                + "]";
+                + ", physics=" + physics + ", synchronizerState=" + synchronizerState + ", dateHandler=" + dateHandler
+                + ", univ3DState=" + univ3DState + "]";
     }
 
 }

@@ -3,7 +3,6 @@ package barsuift.simLife.process;
 import junit.framework.TestCase;
 import barsuift.simLife.InitException;
 import barsuift.simLife.message.PublisherTestHelper;
-import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.time.SimLifeDate;
 
 
@@ -13,16 +12,23 @@ public class BasicSynchronizerTest extends TestCase {
 
     private SynchronizerState state;
 
+    private SimLifeDate date;
+
     protected void setUp() throws Exception {
         super.setUp();
 
-        state = new SynchronizerState(Speed.VERY_FAST, new DateHandlerState());
+        state = new SynchronizerState(Speed.VERY_FAST);
         synchro = new BasicSynchronizer(state);
+        date = new SimLifeDate();
+        DateUpdater dateUpdater = new DateUpdater(date);
+        synchro.schedule(dateUpdater);
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
+        state = null;
         synchro = null;
+        date = null;
     }
 
     public void testSetSpeed() throws InitException {
@@ -43,21 +49,21 @@ public class BasicSynchronizerTest extends TestCase {
 
     public void testStart() throws InterruptedException {
         assertFalse(synchro.isRunning());
-        assertEquals(new SimLifeDate(), synchro.getDate());
-        assertEquals(0, synchro.getDate().getTimeInMillis());
+        assertEquals(new SimLifeDate(), date);
+        assertEquals(0, date.getTimeInMillis());
 
         synchro.start();
         Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertTrue(synchro.isRunning());
-        assertTrue(synchro.getDate().getTimeInMillis() > 0);
+        assertTrue(date.getTimeInMillis() > 0);
 
         synchro.stop();
         Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertFalse(synchro.isRunning());
-        long time = synchro.getDate().getTimeInMillis();
+        long time = date.getTimeInMillis();
         Thread.sleep(BasicSynchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         // assert the time does not change anymore once stopped
-        assertEquals(time, synchro.getDate().getTimeInMillis());
+        assertEquals(time, date.getTimeInMillis());
     }
 
     public void testPublisher() throws Exception {

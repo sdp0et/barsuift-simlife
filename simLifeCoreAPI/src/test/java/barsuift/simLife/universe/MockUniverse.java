@@ -28,6 +28,7 @@ import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.process.MockSynchronizer;
 import barsuift.simLife.process.Synchronizer;
+import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.universe.physic.MockPhysics;
@@ -36,25 +37,45 @@ import barsuift.simLife.universe.physic.Physics;
 
 public class MockUniverse implements Universe {
 
-    private List<LivingPart> livingParts = new ArrayList<LivingPart>();
+    private List<LivingPart> livingParts;
 
-    private List<Tree> trees = new ArrayList<Tree>();
+    private List<Tree> trees;
 
-    private List<TreeLeaf> fallenLeaves = new ArrayList<TreeLeaf>();
+    private List<TreeLeaf> fallenLeaves;
 
-    private long creationMillis = 0;
+    private long creationMillis;
 
-    private Environment environment = new MockEnvironment();
+    private Environment environment;
 
-    private Physics physics = new MockPhysics();
+    private Physics physics;
 
-    private Synchronizer synchronizer = new MockSynchronizer();
+    private Synchronizer synchronizer;
 
-    private Universe3D universe3D = new MockUniverse3D();
+    private SimLifeDate date;
 
-    private UniverseState state = new UniverseState();
+    private Universe3D universe3D;
 
-    private int synchronizedCalled = 0;
+    private UniverseState state;
+
+    private int synchronizedCalled;
+
+    public MockUniverse() {
+        reset();
+    }
+
+    public void reset() {
+        livingParts = new ArrayList<LivingPart>();
+        trees = new ArrayList<Tree>();
+        fallenLeaves = new ArrayList<TreeLeaf>();
+        creationMillis = 0;
+        environment = new MockEnvironment();
+        physics = new MockPhysics();
+        synchronizer = new MockSynchronizer();
+        date = new SimLifeDate();
+        universe3D = new MockUniverse3D();
+        state = new UniverseState();
+        synchronizedCalled = 0;
+    }
 
 
     @Override
@@ -103,6 +124,15 @@ public class MockUniverse implements Universe {
 
     public void setSynchronizer(Synchronizer synchronizer) {
         this.synchronizer = synchronizer;
+    }
+
+    @Override
+    public SimLifeDate getDate() {
+        return date;
+    }
+
+    public void setDate(SimLifeDate date) {
+        this.date = date;
     }
 
     @Override

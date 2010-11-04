@@ -39,6 +39,7 @@ import barsuift.simLife.j2d.button.StopButton;
 import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.Synchronizer;
+import barsuift.simLife.universe.Universe;
 
 public class TimeControllerPanel extends JPanel {
 
@@ -51,16 +52,17 @@ public class TimeControllerPanel extends JPanel {
      * 
      * @param synchronizer the synchronizer
      */
-    public TimeControllerPanel(Synchronizer synchronizer) {
+    public TimeControllerPanel(Universe universe) {
         super();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setMaximumSize(new Dimension(220, 100));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        dateDisplay = new DateDisplay(synchronizer.getDate());
+        dateDisplay = new DateDisplay(universe.getDate());
         dateDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(dateDisplay);
 
+        Synchronizer synchronizer = universe.getSynchronizer();
         JPanel speedPanel = createSpeedPanel(synchronizer);
         add(speedPanel);
 
