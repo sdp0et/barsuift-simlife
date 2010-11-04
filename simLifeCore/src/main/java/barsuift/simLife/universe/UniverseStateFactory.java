@@ -76,7 +76,7 @@ public class UniverseStateFactory {
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
         PhysicsState physics = physicsStateFactory.createPhysicsState();
         SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();
-        SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerState();
+        SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerCoreState();
         DateHandlerState dateHandler = new DateHandlerState();
 
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
@@ -102,7 +102,7 @@ public class UniverseStateFactory {
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
         PhysicsState physics = physicsStateFactory.createPhysicsState();
         SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();
-        SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerState();
+        SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerCoreState();
         DateHandlerState dateHandler = new DateHandlerState();
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createEmptyUniverse3DState();

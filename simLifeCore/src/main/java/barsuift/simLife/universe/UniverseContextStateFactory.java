@@ -20,6 +20,8 @@ package barsuift.simLife.universe;
 
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.SimLifeCanvas3DStateFactory;
+import barsuift.simLife.process.MainSynchronizerState;
+import barsuift.simLife.process.MainSynchronizerStateFactory;
 
 
 public class UniverseContextStateFactory {
@@ -43,9 +45,12 @@ public class UniverseContextStateFactory {
         boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createRandomUniverseState();
+        MainSynchronizerStateFactory synchroStateFactory = new MainSynchronizerStateFactory();
+        MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createRandomCanvasState();
-        return new UniverseContextState(universeState, canvasState, axisShowing, fpsShowing, NOMINAL_VIEWER_TRANSFORM);
+        return new UniverseContextState(universeState, synchronizerState, canvasState, axisShowing, fpsShowing,
+                NOMINAL_VIEWER_TRANSFORM);
     }
 
     /**
@@ -66,9 +71,12 @@ public class UniverseContextStateFactory {
         boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createEmptyUniverseState();
+        MainSynchronizerStateFactory synchroStateFactory = new MainSynchronizerStateFactory();
+        MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createEmptyCanvasState();
-        return new UniverseContextState(universeState, canvasState, axisShowing, fpsShowing, NOMINAL_VIEWER_TRANSFORM);
+        return new UniverseContextState(universeState, synchronizerState, canvasState, axisShowing, fpsShowing,
+                NOMINAL_VIEWER_TRANSFORM);
     }
 
 }

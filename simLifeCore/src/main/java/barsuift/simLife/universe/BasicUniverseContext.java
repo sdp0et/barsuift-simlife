@@ -31,7 +31,9 @@ import barsuift.simLife.InitException;
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
+import barsuift.simLife.process.BasicMainSynchronizer;
 import barsuift.simLife.process.FpsTicker;
+import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.time.FpsCounter;
 
 import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
@@ -65,6 +67,8 @@ public class BasicUniverseContext implements UniverseContext {
 
     private FpsTicker fpsTicker;
 
+    private final MainSynchronizer synchronizer;
+
     public BasicUniverseContext(UniverseContextState state) throws InitException {
         this.state = state;
         this.axisShowing = state.isAxisShowing();
@@ -90,6 +94,9 @@ public class BasicUniverseContext implements UniverseContext {
 
         root.compile();
         simpleU.addBranchGraph(root);
+
+        synchronizer = new BasicMainSynchronizer(state.getSynchronizer(), universe);
+
         setAxisShowing(state.isAxisShowing());
         setFpsShowing(state.isFpsShowing());
     }
@@ -102,6 +109,11 @@ public class BasicUniverseContext implements UniverseContext {
     @Override
     public Universe getUniverse() {
         return universe;
+    }
+
+    @Override
+    public MainSynchronizer getSynchronizer() {
+        return synchronizer;
     }
 
     @Override

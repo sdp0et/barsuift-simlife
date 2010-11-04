@@ -24,11 +24,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
+import barsuift.simLife.process.MainSynchronizerState;
 
 @XmlRootElement
 public class UniverseContextState implements State {
 
     private UniverseState universeState;
+
+    private MainSynchronizerState synchronizer;
 
     private SimLifeCanvas3DState canvasState;
 
@@ -41,6 +44,7 @@ public class UniverseContextState implements State {
     public UniverseContextState() {
         super();
         this.universeState = new UniverseState();
+        this.synchronizer = new MainSynchronizerState();
         this.canvasState = new SimLifeCanvas3DState();
         this.axisShowing = true;
         this.fpsShowing = false;
@@ -48,10 +52,11 @@ public class UniverseContextState implements State {
         this.viewerTransform3D = new double[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
     }
 
-    public UniverseContextState(UniverseState universeState, SimLifeCanvas3DState canvasState, boolean axisShowing,
-            boolean fpsShowing, double[] viewerTransform3D) {
+    public UniverseContextState(UniverseState universeState, MainSynchronizerState synchronizer,
+            SimLifeCanvas3DState canvasState, boolean axisShowing, boolean fpsShowing, double[] viewerTransform3D) {
         super();
         this.universeState = universeState;
+        this.synchronizer = synchronizer;
         this.canvasState = canvasState;
         this.axisShowing = axisShowing;
         this.fpsShowing = fpsShowing;
@@ -82,6 +87,14 @@ public class UniverseContextState implements State {
         this.universeState = universeState;
     }
 
+    public MainSynchronizerState getSynchronizer() {
+        return synchronizer;
+    }
+
+    public void setSynchronizer(MainSynchronizerState synchronizer) {
+        this.synchronizer = synchronizer;
+    }
+
     public SimLifeCanvas3DState getCanvasState() {
         return canvasState;
     }
@@ -106,6 +119,7 @@ public class UniverseContextState implements State {
         result = prime * result + (fpsShowing ? 1231 : 1237);
         result = prime * result + ((canvasState == null) ? 0 : canvasState.hashCode());
         result = prime * result + ((universeState == null) ? 0 : universeState.hashCode());
+        result = prime * result + ((synchronizer == null) ? 0 : synchronizer.hashCode());
         result = prime * result + Arrays.hashCode(viewerTransform3D);
         return result;
     }
@@ -135,6 +149,12 @@ public class UniverseContextState implements State {
         } else
             if (!universeState.equals(other.universeState))
                 return false;
+        if (synchronizer == null) {
+            if (other.synchronizer != null)
+                return false;
+        } else
+            if (!synchronizer.equals(other.synchronizer))
+                return false;
         if (!Arrays.equals(viewerTransform3D, other.viewerTransform3D))
             return false;
         return true;
@@ -144,9 +164,9 @@ public class UniverseContextState implements State {
 
     @Override
     public String toString() {
-        return "UniverseContextState [universeState=" + universeState + ", canvasState=" + canvasState
-                + ", axisShowing=" + axisShowing + ", fpsShowing=" + fpsShowing + ", viewerTransform3D="
-                + Arrays.toString(viewerTransform3D) + "]";
+        return "UniverseContextState [universeState=" + universeState + ", synchronizer=" + synchronizer
+                + ", canvasState=" + canvasState + ", axisShowing=" + axisShowing + ", fpsShowing=" + fpsShowing
+                + ", viewerTransform3D=" + Arrays.toString(viewerTransform3D) + "]";
     }
 
 }

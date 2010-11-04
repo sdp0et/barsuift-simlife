@@ -7,13 +7,13 @@ import javax.swing.JButton;
 
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
-import barsuift.simLife.process.SynchronizerCore;
+import barsuift.simLife.process.MainSynchronizer;
 
 public class OneStepButton extends JButton implements Subscriber {
 
     private static final long serialVersionUID = 1547061708163353428L;
 
-    public OneStepButton(final SynchronizerCore synchronizer) {
+    public OneStepButton(final MainSynchronizer synchronizer) {
         super("ONE STEP");
         synchronizer.addSubscriber(this);
         addActionListener(new ActionListener() {
@@ -28,7 +28,7 @@ public class OneStepButton extends JButton implements Subscriber {
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (((SynchronizerCore) publisher).isRunning()) {
+        if (((MainSynchronizer) publisher).isRunning()) {
             setEnabled(false);
         } else {
             setEnabled(true);
