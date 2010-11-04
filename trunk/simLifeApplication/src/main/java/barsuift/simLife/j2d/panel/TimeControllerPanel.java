@@ -38,7 +38,7 @@ import barsuift.simLife.j2d.button.StartButton;
 import barsuift.simLife.j2d.button.StopButton;
 import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.process.Speed;
-import barsuift.simLife.process.Synchronizer;
+import barsuift.simLife.process.SynchronizerCore;
 import barsuift.simLife.universe.Universe;
 
 public class TimeControllerPanel extends JPanel {
@@ -62,7 +62,7 @@ public class TimeControllerPanel extends JPanel {
         dateDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(dateDisplay);
 
-        Synchronizer synchronizer = universe.getSynchronizer();
+        SynchronizerCore synchronizer = universe.getSynchronizer();
         JPanel speedPanel = createSpeedPanel(synchronizer);
         add(speedPanel);
 
@@ -80,7 +80,7 @@ public class TimeControllerPanel extends JPanel {
         setBorder(titledBorder);
     }
 
-    private JPanel createSpeedPanel(Synchronizer synchronizer) {
+    private JPanel createSpeedPanel(SynchronizerCore synchronizer) {
         JPanel speedPanel = new JPanel();
         speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.LINE_AXIS));
         SpeedAction actionNormalSpeed = new SpeedAction(synchronizer, "Normal", "Normal speed", Mnemonics.SPEED_NORMAL,

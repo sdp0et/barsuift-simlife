@@ -5,7 +5,7 @@ import barsuift.simLife.message.Publisher;
 
 
 
-public interface Synchronizer extends Publisher, Persistent<SynchronizerState> {
+public interface SynchronizerCore extends Publisher, Persistent<SynchronizerCoreState> {
 
     public void setSpeed(Speed speed);
 

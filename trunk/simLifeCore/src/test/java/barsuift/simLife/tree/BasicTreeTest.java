@@ -25,7 +25,7 @@ import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.process.Aging;
-import barsuift.simLife.process.MockSynchronizer;
+import barsuift.simLife.process.MockSynchronizerCore;
 import barsuift.simLife.process.Photosynthesis;
 import barsuift.simLife.process.TreeGrowth;
 import barsuift.simLife.universe.MockUniverse;
@@ -66,7 +66,7 @@ public class BasicTreeTest extends TestCase {
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
-        MockSynchronizer synchronizer = (MockSynchronizer) universe.getSynchronizer();
+        MockSynchronizerCore synchronizer = (MockSynchronizerCore) universe.getSynchronizer();
         assertEquals(3, synchronizer.getNbScheduleCalled());
         assertEquals(3, synchronizer.getScheduledRunnables().size());
         assertEquals(Photosynthesis.class, synchronizer.getScheduledRunnables().get(0).getClass());

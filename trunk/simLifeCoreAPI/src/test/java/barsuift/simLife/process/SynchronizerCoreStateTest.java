@@ -21,7 +21,7 @@ package barsuift.simLife.process;
 import barsuift.simLife.JaxbTestCase;
 
 
-public class SynchronizerStateTest extends JaxbTestCase {
+public class SynchronizerCoreStateTest extends JaxbTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -37,9 +37,9 @@ public class SynchronizerStateTest extends JaxbTestCase {
     }
 
     public void testJaxb() throws Exception {
-        SynchronizerState synchro = new SynchronizerState();
+        SynchronizerCoreState synchro = new SynchronizerCoreState();
         write(synchro);
-        SynchronizerState synchro2 = (SynchronizerState) read();
+        SynchronizerCoreState synchro2 = (SynchronizerCoreState) read();
         assertEquals(synchro, synchro2);
     }
 

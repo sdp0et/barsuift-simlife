@@ -39,7 +39,7 @@ import barsuift.simLife.message.Subscriber;
  * {@link ScheduledExecutorService}, is used to ensure there is always the same delay between two runs.
  * 
  */
-public class BasicSynchronizer implements Synchronizer {
+public class BasicSynchronizerCore implements SynchronizerCore {
 
     /**
      * Length of a core cycle, used to schedule the core temporizer, and to know how much to add to the date at each
@@ -52,7 +52,7 @@ public class BasicSynchronizer implements Synchronizer {
      */
     public static final int CYCLE_LENGTH_3D_MS = 25;
 
-    private final SynchronizerState state;
+    private final SynchronizerCoreState state;
 
     private boolean running;
 
@@ -83,7 +83,7 @@ public class BasicSynchronizer implements Synchronizer {
     private final Publisher publisher = new BasicPublisher(this);
 
 
-    public BasicSynchronizer(SynchronizerState state) throws InitException {
+    public BasicSynchronizerCore(SynchronizerCoreState state) throws InitException {
         this.state = state;
         this.running = false;
         this.isStopAsked = false;
@@ -211,7 +211,7 @@ public class BasicSynchronizer implements Synchronizer {
     }
 
     @Override
-    public SynchronizerState getState() {
+    public SynchronizerCoreState getState() {
         synchronize();
         return state;
     }

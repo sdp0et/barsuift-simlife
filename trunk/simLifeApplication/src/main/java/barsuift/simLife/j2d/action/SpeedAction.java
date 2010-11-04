@@ -5,16 +5,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import barsuift.simLife.process.Speed;
-import barsuift.simLife.process.Synchronizer;
+import barsuift.simLife.process.SynchronizerCore;
 
 
 public class SpeedAction extends AbstractAction {
 
     private static final long serialVersionUID = -8115155709776072647L;
 
-    private final Synchronizer synchronizer;
+    private final SynchronizerCore synchronizer;
 
-    public SpeedAction(Synchronizer synchronizer, String name, String description, int mnemonic, String actionCommand) {
+    public SpeedAction(SynchronizerCore synchronizer, String name, String description, int mnemonic, String actionCommand) {
         super();
         this.synchronizer = synchronizer;
         putValue(MNEMONIC_KEY, mnemonic);

@@ -7,7 +7,7 @@ import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.message.BasicPublisher;
 
 
-public class MockSynchronizer extends BasicPublisher implements Synchronizer {
+public class MockSynchronizerCore extends BasicPublisher implements SynchronizerCore {
 
     private Speed speed;
 
@@ -29,11 +29,11 @@ public class MockSynchronizer extends BasicPublisher implements Synchronizer {
 
     private int stopAndWaitCalled;
 
-    private SynchronizerState state;
+    private SynchronizerCoreState state;
 
     private int synchronizeCalled;
 
-    public MockSynchronizer() {
+    public MockSynchronizerCore() {
         super(null);
         reset();
     }
@@ -136,11 +136,11 @@ public class MockSynchronizer extends BasicPublisher implements Synchronizer {
     }
 
     @Override
-    public SynchronizerState getState() {
+    public SynchronizerCoreState getState() {
         return state;
     }
 
-    public void setState(SynchronizerState state) {
+    public void setState(SynchronizerCoreState state) {
         this.state = state;
     }
 

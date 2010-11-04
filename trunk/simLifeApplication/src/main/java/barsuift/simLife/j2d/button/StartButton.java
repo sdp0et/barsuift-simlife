@@ -7,14 +7,14 @@ import javax.swing.JButton;
 
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
-import barsuift.simLife.process.Synchronizer;
+import barsuift.simLife.process.SynchronizerCore;
 
 
 public class StartButton extends JButton implements Subscriber {
 
     private static final long serialVersionUID = -264984224317451654L;
 
-    public StartButton(final Synchronizer synchronizer) {
+    public StartButton(final SynchronizerCore synchronizer) {
         super("START");
         synchronizer.addSubscriber(this);
         addActionListener(new ActionListener() {
@@ -30,7 +30,7 @@ public class StartButton extends JButton implements Subscriber {
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (((Synchronizer) publisher).isRunning()) {
+        if (((SynchronizerCore) publisher).isRunning()) {
             setVisible(false);
         } else {
             setVisible(true);
