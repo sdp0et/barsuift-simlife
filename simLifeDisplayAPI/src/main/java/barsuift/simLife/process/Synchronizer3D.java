@@ -23,8 +23,11 @@ import java.util.concurrent.CyclicBarrier;
 import barsuift.simLife.Persistent;
 
 /**
- * The core synchronizer allows to run a list of given {@link SynchronizedRunnable} at a given rate.
- * 
+ * The synchronizer3D allows to run a list of given {@link SynchronizedRunnable} at a constant rate.
+ * <p>
+ * The synchronizer is able to manage a {@code stepSize} parameter, which is reflected to its synchronized
+ * {@code SynchronizedRunnable}.
+ * </p>
  */
 public interface Synchronizer3D extends Synchronizer, Persistent<Synchronizer3DState> {
 
