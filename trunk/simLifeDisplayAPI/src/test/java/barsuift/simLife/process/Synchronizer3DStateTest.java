@@ -18,37 +18,30 @@
  */
 package barsuift.simLife.process;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 
-import barsuift.simLife.State;
 
-@XmlRootElement
-public class Synchronizer3DState implements State {
+public class Synchronizer3DStateTest extends JaxbTestCase {
 
-    public Synchronizer3DState() {
-        super();
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Override
-    public int hashCode() {
-        int result = 1;
-        return result;
+    protected String getPackage() {
+        return "barsuift.simLife.process";
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Synchronizer3DState []";
+    public void testJaxb() throws Exception {
+        Synchronizer3DState synchroState = DisplayDataCreatorForTests.createRandomSynchronizer3DState();
+        write(synchroState);
+        Synchronizer3DState synchroState2 = (Synchronizer3DState) read();
+        assertEquals(synchroState, synchroState2);
     }
 
 }
