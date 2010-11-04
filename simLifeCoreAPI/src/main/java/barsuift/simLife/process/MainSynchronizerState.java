@@ -48,7 +48,7 @@ public class MainSynchronizerState implements State {
 
     @Override
     public String toString() {
-        return "SynchronizerState []";
+        return "MainSynchronizerState []";
     }
 
 }
