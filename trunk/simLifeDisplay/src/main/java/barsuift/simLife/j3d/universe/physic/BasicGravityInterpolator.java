@@ -33,7 +33,12 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 
-// TODO 001. Be able to stop and change speed of interpolators
+// TODO 001. rename Synchronizer to SynchronizerCore
+// TODO 002. create a Synchronizer (in simLifeApplication module) which contains the SynchronizerCore, and a main
+// barrier
+// TODO 003. create a Synchronizer3D (in simLifeDisplay module), based on SynchronizerCore
+// TODO 004. see if SynchronizerCore and Synchronizer3D can be refactored to inherit from the same super class
+// TODO 005. Be able to stop and change speed of interpolators
 /*
  * Implementation note : Do not use interpolators, as they do not fit well in this framework
  * 
@@ -44,22 +49,9 @@ import barsuift.simLife.j3d.util.ProjectionHelper;
  * The speed in core synchronizer means the number of cycle per cycle duration. For example, speed 5 means 5 cycles in
  * 500 ms, so one cycle last 100ms.
  * 
- * The speed in synchronizer3D means the number of core cycle per 3d cycles. For example, a speed of 5 means 20/5=4 3D
- * cycles per core cycle. The number of 3D iteration for one core cycle is : coreCycleLength / coreSpeed / 3dCycleLength
+ * There is no speed in synchronizer3D, but a stepSize. The stepSize has the same value as the core speed.
  * 
- * To Do :
- * 
- * 1. Create an InterpolatorWrapper class, with a state storing the required information (What are the required
- * information ??). The wrapper must have start, stop and oneStep methods. The wrapper should also take a parameter to
- * know how many cycles the interpolators should last. As a consequence, it must recreate a new interpolator at each
- * cycle or refire the enable conditions of the existing one so that it can continue on the next cycle. When making this
- * decision, take into account how this will behave regarding the reload of the wrapper from its state.
- * 
- * 2. Create a Synchronizer3D to store the interpolatorWrappers. The Synchronizer3D must have start, stop and oneStep
- * methods. It also put the wrapped interpolator in its branch group, which is itself part of the Universe3D root.
- * 
- * 3. To synchronize the CoreSynchronizer and the Synchronizer3D, their BarrierTask should wait on a main barrier which
- * only have the two of them as parties. This implies that a MainSynchronizer exists in simlifeApplication module.
+ * To Do : ???
  * 
  * 5. (or 6. ??) the gravity should keeps its falling elements, and the Universe should only have the fallen leaves.
  * 
