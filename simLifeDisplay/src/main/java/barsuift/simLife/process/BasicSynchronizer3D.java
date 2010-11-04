@@ -33,12 +33,10 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-// TODO 004. create mock class
 // TODO 004. unit test
 // TODO 004. javadoc
 public class BasicSynchronizer3D implements Synchronizer3D {
 
-    // TODO check what to put in state (see SynchronizerCoreState)
     private final Synchronizer3DState state;
 
     private boolean running;
@@ -179,6 +177,7 @@ public class BasicSynchronizer3D implements Synchronizer3D {
 
     @Override
     public void synchronize() {
+        // nothing to do
     }
 
 

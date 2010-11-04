@@ -35,11 +35,15 @@ import barsuift.simLife.j3d.tree.Tree3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
+import barsuift.simLife.process.BasicSynchronizer3D;
+import barsuift.simLife.process.Synchronizer3D;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.universe.Universe;
 
 public class BasicUniverse3D implements Universe3D {
+
+    private final BasicSynchronizer3D synchronizer;
 
     private final Universe3DState state;
 
@@ -52,6 +56,7 @@ public class BasicUniverse3D implements Universe3D {
     public BasicUniverse3D(Universe3DState state, Universe universe) {
         this.state = state;
         this.universe = universe;
+        this.synchronizer = new BasicSynchronizer3D(state.getSynchronizerState());
         root = new BranchGroup();
         root.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         elements3D = new HashSet<Node>();
@@ -107,6 +112,11 @@ public class BasicUniverse3D implements Universe3D {
     }
 
     @Override
+    public Synchronizer3D getSynchronizer() {
+        return synchronizer;
+    }
+
+    @Override
     public Physics3D getPhysics3D() {
         return universe.getPhysics().getPhysics3D();
     }
@@ -124,7 +134,7 @@ public class BasicUniverse3D implements Universe3D {
 
     @Override
     public void synchronize() {
-        // nothing to do
+        synchronizer.synchronize();
     }
 
 }

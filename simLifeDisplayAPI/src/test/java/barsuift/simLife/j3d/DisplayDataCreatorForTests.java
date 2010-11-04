@@ -84,11 +84,13 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Universe3DState createRandomUniverse3DState() {
-        return new Universe3DState();
+        Synchronizer3DState synchronizerState = createRandomSynchronizer3DState();
+        return new Universe3DState(synchronizerState);
     }
 
     public static Universe3DState createSpecificUniverse3DState() {
-        return new Universe3DState();
+        Synchronizer3DState synchronizerState = createSpecificSynchronizer3DState();
+        return new Universe3DState(synchronizerState);
     }
 
     public static TreeLeaf3DState createRandomTreeLeaf3DState() {
