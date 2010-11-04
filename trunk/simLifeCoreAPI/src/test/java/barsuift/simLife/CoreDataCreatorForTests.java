@@ -121,13 +121,11 @@ public final class CoreDataCreatorForTests {
     }
 
     public static SynchronizerState createRandomSynchronizerState() {
-        DateHandlerState dateHandler = createRandomDateHandlerState();
-        return new SynchronizerState(Speed.values()[Randomizer.randomBetween(0, 2)], dateHandler);
+        return new SynchronizerState(Speed.values()[Randomizer.randomBetween(0, 2)]);
     }
 
     public static SynchronizerState createSpecificSynchronizerState() {
-        DateHandlerState dateHandler = createSpecificDateHandlerState();
-        return new SynchronizerState(Speed.NORMAL, dateHandler);
+        return new SynchronizerState(Speed.NORMAL);
     }
 
     public static UnfrequentRunnableState createRandomUnfrequentRunnableState() {
@@ -159,8 +157,10 @@ public final class CoreDataCreatorForTests {
         EnvironmentState environmentState = createRandomEnvironmentState();
         PhysicsState physicsState = createRandomPhysicsState();
         SynchronizerState synchronizerState = createRandomSynchronizerState();
+        DateHandlerState dateHandler = createRandomDateHandlerState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchronizerState, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchronizerState, dateHandler,
+                univ3DState);
     }
 
     /**
@@ -188,7 +188,9 @@ public final class CoreDataCreatorForTests {
         PhysicsState physicsState = createSpecificPhysicsState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
         SynchronizerState synchronizerState = createSpecificSynchronizerState();
-        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchronizerState, univ3DState);
+        DateHandlerState dateHandler = createSpecificDateHandlerState();
+        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchronizerState, dateHandler,
+                univ3DState);
     }
 
     public static EnvironmentState createRandomEnvironmentState() {

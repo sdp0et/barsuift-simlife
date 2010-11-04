@@ -25,6 +25,7 @@ import barsuift.simLife.Persistent;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.process.Synchronizer;
+import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.universe.physic.Physics;
@@ -64,5 +65,7 @@ public interface Universe extends Persistent<UniverseState> {
     public Universe3D getUniverse3D();
 
     public Synchronizer getSynchronizer();
+
+    public SimLifeDate getDate();
 
 }

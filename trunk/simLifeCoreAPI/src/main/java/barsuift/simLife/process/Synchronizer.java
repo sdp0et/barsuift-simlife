@@ -2,13 +2,10 @@ package barsuift.simLife.process;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.message.Publisher;
-import barsuift.simLife.time.SimLifeDate;
 
 
 
 public interface Synchronizer extends Publisher, Persistent<SynchronizerState> {
-
-    public SimLifeDate getDate();
 
     public void setSpeed(Speed speed);
 

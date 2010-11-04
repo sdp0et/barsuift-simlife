@@ -5,12 +5,9 @@ import java.util.List;
 
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.message.BasicPublisher;
-import barsuift.simLife.time.SimLifeDate;
 
 
 public class MockSynchronizer extends BasicPublisher implements Synchronizer {
-
-    private SimLifeDate date;
 
     private Speed speed;
 
@@ -42,7 +39,6 @@ public class MockSynchronizer extends BasicPublisher implements Synchronizer {
     }
 
     public void reset() {
-        date = new SimLifeDate();
         speed = Speed.NORMAL;
         running = false;
         scheduleCalled = 0;
@@ -55,15 +51,6 @@ public class MockSynchronizer extends BasicPublisher implements Synchronizer {
         stopAndWaitCalled = 0;
         state = CoreDataCreatorForTests.createSpecificSynchronizerState();
         synchronizeCalled = 0;
-    }
-
-    @Override
-    public SimLifeDate getDate() {
-        return date;
-    }
-
-    public void setDate(SimLifeDate date) {
-        this.date = date;
     }
 
     @Override
