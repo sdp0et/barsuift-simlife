@@ -53,7 +53,6 @@ public class GravityProcess extends SplitBoundedRunnable {
 
     @Override
     public void executeSplitBoundedStep(int stepSize) {
-        System.out.println("Executing GravityProcess");
         for (TransformGroup currentTG : transforms) {
             // get current values
             Transform3D transform = new Transform3D();
