@@ -1,6 +1,10 @@
 package barsuift.simLife.process;
 
-
+/**
+ * A task synchronizer is a synchronizer able to schedule or unschedule tasks.
+ * 
+ * @param <E> the sub-type of SynchronizedRunnable to use
+ */
 public interface TaskSynchronizer<E extends SynchronizedRunnable> extends Synchronizer {
 
     /**

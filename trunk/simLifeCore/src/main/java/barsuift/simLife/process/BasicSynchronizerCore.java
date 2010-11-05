@@ -18,13 +18,9 @@
  */
 package barsuift.simLife.process;
 
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
- * The synchronizer allows to run the list of given {@link SynchronizedRunnable} at a given rate. A
- * {@link CyclicBarrier} is used to synchronized all the tasks, and a {@link Temporizer}, in a
- * {@link ScheduledExecutorService}, is used to ensure there is always the same delay between two runs.
+ * This synchronizer allows to change the speed of the synchronizer.
  * 
  */
 public class BasicSynchronizerCore extends AbstractTaskSynchronizer<SynchronizedRunnable> implements SynchronizerCore {
