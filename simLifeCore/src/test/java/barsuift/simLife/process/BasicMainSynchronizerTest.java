@@ -17,15 +17,28 @@ public class BasicMainSynchronizerTest extends TestCase {
 
     private MockInstrumentedSynchronizer3D synchronizer3D;
 
+    private MockSplitBoundedRunnable task3D;
+
+    private MockSynchronizedRunnable taskCore;
+
     protected void setUp() throws Exception {
         super.setUp();
-        state = new MainSynchronizerState();
+        Speed speed = Speed.VERY_FAST;
+        int stepSize = speed.getSpeed();
+
         MockUniverse mockUniverse = new MockUniverse();
-        synchronizerCore = new MockInstrumentedSynchronizerCore(new SynchronizerCoreState(Speed.VERY_FAST));
+        synchronizerCore = new MockInstrumentedSynchronizerCore(new SynchronizerCoreState(speed));
         mockUniverse.setSynchronizer(synchronizerCore);
+        taskCore = new MockSynchronizedRunnable();
+        synchronizerCore.schedule(taskCore);
+
         synchronizer3D = new MockInstrumentedSynchronizer3D(new Synchronizer3DState());
-        synchronizer3D.setStepSize(Speed.VERY_FAST.getSpeed());
+        synchronizer3D.setStepSize(stepSize);
         ((MockUniverse3D) mockUniverse.getUniverse3D()).setSynchronizer(synchronizer3D);
+        task3D = new MockSplitBoundedRunnable(new SplitBoundedRunnableState(60, 0, stepSize));
+        synchronizer3D.schedule(task3D);
+
+        state = new MainSynchronizerState();
         synchro = new BasicMainSynchronizer(state, mockUniverse);
     }
 
@@ -35,6 +48,8 @@ public class BasicMainSynchronizerTest extends TestCase {
         synchro = null;
         synchronizerCore = null;
         synchronizer3D = null;
+        task3D = null;
+        taskCore = null;
     }
 
     public void testSetSpeed() throws InitException {
@@ -57,24 +72,82 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertFalse(synchro.isRunning());
         assertEquals(1, synchronizerCore.getNbStartCalled());
         assertEquals(1, synchronizerCore.getNbStopCalled());
+        assertEquals(1, taskCore.getNbExecuted());
         assertEquals(1, synchronizer3D.getNbStartCalled());
         assertEquals(1, synchronizer3D.getNbStopCalled());
+        assertEquals(1, task3D.getNbExecuted());
+        assertEquals(20, task3D.getNbIncrementExecuted());
+
+        synchro.oneStep();
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        assertFalse(synchro.isRunning());
+        assertEquals(2, synchronizerCore.getNbStartCalled());
+        assertEquals(2, synchronizerCore.getNbStopCalled());
+        assertEquals(2, taskCore.getNbExecuted());
+        assertEquals(2, synchronizer3D.getNbStartCalled());
+        assertEquals(2, synchronizer3D.getNbStopCalled());
+        assertEquals(2, task3D.getNbExecuted());
+        assertEquals(40, task3D.getNbIncrementExecuted());
+
+        synchro.oneStep();
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        assertFalse(synchro.isRunning());
+        assertEquals(3, synchronizerCore.getNbStartCalled());
+        assertEquals(3, synchronizerCore.getNbStopCalled());
+        assertEquals(3, taskCore.getNbExecuted());
+        assertEquals(3, synchronizer3D.getNbStartCalled());
+        assertEquals(3, synchronizer3D.getNbStopCalled());
+        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60, task3D.getNbIncrementExecuted());
+
+        synchro.oneStep();
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        assertFalse(synchro.isRunning());
+        assertEquals(4, synchronizerCore.getNbStartCalled());
+        assertEquals(4, synchronizerCore.getNbStopCalled());
+        assertEquals(4, taskCore.getNbExecuted());
+        assertEquals(4, synchronizer3D.getNbStartCalled());
+        assertEquals(4, synchronizer3D.getNbStopCalled());
+        // the task3D should not be executed anymore, as it has reach its bound
+        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60, task3D.getNbIncrementExecuted());
+
+        synchro.oneStep();
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        assertFalse(synchro.isRunning());
+        assertEquals(5, synchronizerCore.getNbStartCalled());
+        assertEquals(5, synchronizerCore.getNbStopCalled());
+        assertEquals(5, taskCore.getNbExecuted());
+        assertEquals(5, synchronizer3D.getNbStartCalled());
+        assertEquals(5, synchronizer3D.getNbStopCalled());
+        // the task3D should not be executed anymore, as it has reach its bound
+        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60, task3D.getNbIncrementExecuted());
     }
 
     public void testStart() throws InterruptedException {
         assertFalse(synchro.isRunning());
 
         synchro.start();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        // wait a little longer to be sure the task3D completes (3 core cycles should be enough)
+        Thread.sleep(5 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertTrue(synchro.isRunning());
         assertEquals(1, synchronizerCore.getNbStartCalled());
+        assertEquals(0, synchronizerCore.getNbStopCalled());
+        assertTrue(taskCore.getNbExecuted() > 3);
         assertEquals(1, synchronizer3D.getNbStartCalled());
+        assertEquals(0, synchronizer3D.getNbStopCalled());
+        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60, task3D.getNbIncrementExecuted());
+
 
         synchro.stop();
         Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertFalse(synchro.isRunning());
         assertEquals(1, synchronizerCore.getNbStopCalled());
         assertEquals(1, synchronizer3D.getNbStopCalled());
+        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60, task3D.getNbIncrementExecuted());
     }
 
     public void testPublisher() throws Exception {
