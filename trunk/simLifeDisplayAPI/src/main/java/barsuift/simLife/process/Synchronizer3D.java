@@ -21,6 +21,7 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.message.Subscriber;
 
 /**
  * The synchronizer3D allows to run a list of given {@link SplitBoundedRunnable} at a constant rate.
@@ -29,7 +30,7 @@ import barsuift.simLife.Persistent;
  * {@code SplitBoundedRunnable}.
  * </p>
  */
-public interface Synchronizer3D extends Synchronizer, Persistent<Synchronizer3DState> {
+public interface Synchronizer3D extends Synchronizer, Subscriber, Persistent<Synchronizer3DState> {
 
     /**
      * Sets the step size of the current 3D synchronizer.
