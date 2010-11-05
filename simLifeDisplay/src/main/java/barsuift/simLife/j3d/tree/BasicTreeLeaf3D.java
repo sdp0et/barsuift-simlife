@@ -44,6 +44,9 @@ import barsuift.simLife.j3d.util.PointHelper;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.message.Publisher;
+import barsuift.simLife.process.GravityProcess;
+import barsuift.simLife.process.SplitBoundedRunnable;
+import barsuift.simLife.process.SplitBoundedRunnableState;
 import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -242,6 +245,11 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         rotation = TransformerHelper.getRotationFromTransform(globalTransform, Axis.Y);
         // send the leaf Branch group, which contains a TG for the translation along the branch part
         universe3D.getPhysics3D().getGravityInterpolator().fall((BranchGroup) leafShape3D.getParent().getParent());
+
+        // GravityProcess gravityProcess = new GravityProcess(new SplitBoundedRunnableState(
+        // (int) (translationVector.getY() * 1000 / 25), 0, universe3D.getSynchronizer().getStepSize()));
+        // gravityProcess.fall((BranchGroup) leafShape3D.getParent().getParent());
+        // universe3D.getSynchronizer().schedule(gravityProcess);
     }
 
     @Override
