@@ -61,7 +61,6 @@ public abstract class SplitBoundedRunnable extends AbstractSynchronizedRunnable 
     @Override
     public final void executeStep() {
         count += stepSize;
-        // FIXME this fails as stop waits for the ucrrent iteration to end ??
         if (count >= bound) {
             stop();
             setChanged();
