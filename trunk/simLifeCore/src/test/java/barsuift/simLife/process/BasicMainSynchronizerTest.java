@@ -93,7 +93,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(1, taskCore.getNbExecuted());
         assertEquals(1, synchronizer3D.getNbStartCalled());
         assertEquals(1, synchronizer3D.getNbStopCalled());
-        assertEquals(1, task3D.getNbExecuted());
+        assertEquals(20 / synchro.getSpeed().getSpeed(), task3D.getNbExecuted());
         assertEquals(20, task3D.getNbIncrementExecuted());
 
         synchro.oneStep();
@@ -104,7 +104,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(2, taskCore.getNbExecuted());
         assertEquals(2, synchronizer3D.getNbStartCalled());
         assertEquals(2, synchronizer3D.getNbStopCalled());
-        assertEquals(2, task3D.getNbExecuted());
+        assertEquals(40 / synchro.getSpeed().getSpeed(), task3D.getNbExecuted());
         assertEquals(40, task3D.getNbIncrementExecuted());
 
         synchro.oneStep();
@@ -115,7 +115,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(3, taskCore.getNbExecuted());
         assertEquals(3, synchronizer3D.getNbStartCalled());
         assertEquals(3, synchronizer3D.getNbStopCalled());
-        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60 / synchro.getSpeed().getSpeed(), task3D.getNbExecuted());
         assertEquals(60, task3D.getNbIncrementExecuted());
 
         synchro.oneStep();
@@ -127,7 +127,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(4, synchronizer3D.getNbStartCalled());
         assertEquals(4, synchronizer3D.getNbStopCalled());
         // the task3D should not be executed anymore, as it has reach its bound
-        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60 / synchro.getSpeed().getSpeed(), task3D.getNbExecuted());
         assertEquals(60, task3D.getNbIncrementExecuted());
 
         synchro.oneStep();
@@ -139,7 +139,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(5, synchronizer3D.getNbStartCalled());
         assertEquals(5, synchronizer3D.getNbStopCalled());
         // the task3D should not be executed anymore, as it has reach its bound
-        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60 / synchro.getSpeed().getSpeed(), task3D.getNbExecuted());
         assertEquals(60, task3D.getNbIncrementExecuted());
     }
 
@@ -169,7 +169,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertTrue(taskCore.getNbExecuted() > 3);
         assertEquals(1, synchronizer3D.getNbStartCalled());
         assertEquals(0, synchronizer3D.getNbStopCalled());
-        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60 / synchro.getSpeed().getSpeed(), task3D.getNbExecuted());
         assertEquals(60, task3D.getNbIncrementExecuted());
 
 
@@ -178,7 +178,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertFalse(synchro.isRunning());
         assertEquals(1, synchronizerCore.getNbStopCalled());
         assertEquals(1, synchronizer3D.getNbStopCalled());
-        assertEquals(3, task3D.getNbExecuted());
+        assertEquals(60 / synchro.getSpeed().getSpeed(), task3D.getNbExecuted());
         assertEquals(60, task3D.getNbIncrementExecuted());
     }
 
