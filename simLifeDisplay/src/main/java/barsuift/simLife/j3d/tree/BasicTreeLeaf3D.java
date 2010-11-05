@@ -44,9 +44,6 @@ import barsuift.simLife.j3d.util.PointHelper;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.message.Publisher;
-import barsuift.simLife.process.GravityProcess;
-import barsuift.simLife.process.SplitBoundedRunnable;
-import barsuift.simLife.process.SplitBoundedRunnableState;
 import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.TreeLeaf;
 
