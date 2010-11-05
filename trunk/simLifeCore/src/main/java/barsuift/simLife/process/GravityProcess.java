@@ -27,12 +27,12 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
 // FIXME this is just a prototype implementation. Do not use it right now
-public class GravityProcess extends AbstractSynchronizedRunnable {
+public class GravityProcess extends SplitBoundedRunnable {
 
     private final ConcurrentLinkedQueue<TransformGroup> transforms;
 
-    public GravityProcess() {
-        super();
+    public GravityProcess(SplitBoundedRunnableState state) {
+        super(state);
         this.transforms = new ConcurrentLinkedQueue<TransformGroup>();
     }
 
@@ -52,7 +52,7 @@ public class GravityProcess extends AbstractSynchronizedRunnable {
     }
 
     @Override
-    public void executeStep() {
+    public void executeSplitBoundedStep(int stepSize) {
         System.out.println("Executing GravityProcess");
         for (TransformGroup currentTG : transforms) {
             // get current values
@@ -62,11 +62,11 @@ public class GravityProcess extends AbstractSynchronizedRunnable {
             transform.get(translation);
 
             // update values
-            if (translation.y < 0.1) {
+            if (translation.y < (0.025 * stepSize)) {
                 translation.y = 0;
                 transforms.remove(currentTG);
             } else {
-                translation.y -= 0.1;
+                translation.y -= (0.025 * stepSize);
             }
 
             // set the new values
