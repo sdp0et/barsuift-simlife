@@ -22,7 +22,7 @@ import barsuift.simLife.message.Publisher;
 
 // TODO 004. unit test (including publisher/subscriber behavior with split tasks)
 // TODO 004. javadoc
-public class BasicSynchronizer3D extends AbstractSynchronizer<SplitBoundedRunnable> implements Synchronizer3D {
+public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedRunnable> implements Synchronizer3D {
 
     private static final int RATIO_CORE_3D = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
 

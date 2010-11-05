@@ -27,7 +27,7 @@ import java.util.concurrent.ScheduledExecutorService;
  * {@link ScheduledExecutorService}, is used to ensure there is always the same delay between two runs.
  * 
  */
-public class BasicSynchronizerCore extends AbstractSynchronizer<SynchronizedRunnable> implements SynchronizerCore {
+public class BasicSynchronizerCore extends AbstractTaskSynchronizer<SynchronizedRunnable> implements SynchronizerCore {
 
     private final SynchronizerCoreState state;
 
