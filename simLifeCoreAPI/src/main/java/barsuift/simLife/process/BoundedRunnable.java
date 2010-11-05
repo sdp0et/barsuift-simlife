@@ -34,7 +34,6 @@ import barsuift.simLife.message.Subscriber;
  * The bounded task notifies its subscribers when it reaches its bound and stops.
  * </p>
  */
-// FIXME test publisher behavior
 public abstract class BoundedRunnable extends AbstractSynchronizedRunnable implements Publisher,
         Persistent<BoundedRunnableState> {
 
