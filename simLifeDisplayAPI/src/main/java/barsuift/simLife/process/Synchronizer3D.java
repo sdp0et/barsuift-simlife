@@ -30,7 +30,8 @@ import barsuift.simLife.message.Subscriber;
  * {@code SplitBoundedRunnable}.
  * </p>
  */
-public interface Synchronizer3D extends Synchronizer, Subscriber, Persistent<Synchronizer3DState> {
+public interface Synchronizer3D extends TaskSynchronizer<SplitBoundedRunnable>, Subscriber,
+        Persistent<Synchronizer3DState> {
 
     /**
      * Sets the step size of the current 3D synchronizer.

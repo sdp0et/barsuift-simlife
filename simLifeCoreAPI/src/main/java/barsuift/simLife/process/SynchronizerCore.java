@@ -26,7 +26,7 @@ import barsuift.simLife.Persistent;
  * The core synchronizer allows to run a list of given {@link SynchronizedRunnable} at a given rate.
  * 
  */
-public interface SynchronizerCore extends Synchronizer, Persistent<SynchronizerCoreState> {
+public interface SynchronizerCore extends TaskSynchronizer<SynchronizedRunnable>, Persistent<SynchronizerCoreState> {
 
     /**
      * Sets the speed of the current core synchronizer.
