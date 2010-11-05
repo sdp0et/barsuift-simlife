@@ -3,6 +3,7 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
+import barsuift.simLife.message.PublisherTestHelper;
 
 
 public class BoundedRunnableTest extends TestCase {
@@ -29,12 +30,17 @@ public class BoundedRunnableTest extends TestCase {
     }
 
     public void testRun() throws Exception {
+        PublisherTestHelper publisherHelper = new PublisherTestHelper();
+        publisherHelper.addSubscriberTo(boundedRun);
+
         (new Thread(boundedRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
         assertTrue(boundedRun.isRunning());
         // executed once (1/3)
         assertEquals(1, boundedRun.getNbExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
 
         // test we can not run the same runnable again
         try {
@@ -59,6 +65,8 @@ public class BoundedRunnableTest extends TestCase {
         assertTrue(boundedRun.isRunning());
         // executed once again (2/3)
         assertEquals(2, boundedRun.getNbExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
 
         // release the barrier
         mockSynchroRun.run();
@@ -67,7 +75,10 @@ public class BoundedRunnableTest extends TestCase {
         assertTrue(boundedRun.isRunning());
         // executed once again (3/3)
         assertEquals(3, boundedRun.getNbExecuted());
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
 
+        publisherHelper.reset();
         // release the barrier
         mockSynchroRun.run();
         // make sure the thread has time to execute
@@ -75,6 +86,12 @@ public class BoundedRunnableTest extends TestCase {
         assertFalse(boundedRun.isRunning());
         // it should not have executed this time
         assertEquals(3, boundedRun.getNbExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
+    }
+
+    public void testPublisher() {
+
     }
 
     public void testGetState() throws InterruptedException {

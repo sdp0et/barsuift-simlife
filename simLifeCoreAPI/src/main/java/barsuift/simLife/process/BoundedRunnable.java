@@ -19,6 +19,9 @@
 package barsuift.simLife.process;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
 
 /**
@@ -27,14 +30,21 @@ import barsuift.simLife.Persistent;
  * It has a {@code bound} parameter which defines the number of call before it stops. If {@code bound=n}, the task is
  * executed exactly {@code n} times, and then stops.
  * </p>
+ * <p>
+ * The bounded task notifies its subscribers when it reaches its bound and stops.
+ * </p>
  */
-public abstract class BoundedRunnable extends AbstractSynchronizedRunnable implements Persistent<BoundedRunnableState> {
+// FIXME test publisher behavior
+public abstract class BoundedRunnable extends AbstractSynchronizedRunnable implements Publisher,
+        Persistent<BoundedRunnableState> {
 
     private final BoundedRunnableState state;
 
     private final int bound;
 
     private int count;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     public BoundedRunnable(BoundedRunnableState state) {
         super();
@@ -48,6 +58,8 @@ public abstract class BoundedRunnable extends AbstractSynchronizedRunnable imple
         count++;
         if (count == bound) {
             stop();
+            setChanged();
+            notifySubscribers();
         }
         executeBoundedStep();
     }
@@ -65,5 +77,41 @@ public abstract class BoundedRunnable extends AbstractSynchronizedRunnable imple
     }
 
     public abstract void executeBoundedStep();
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
+    }
 
 }

@@ -24,6 +24,7 @@ import java.util.concurrent.CyclicBarrier;
 
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
 
 
 public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D {
@@ -50,6 +51,12 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
 
     private int stepSize;
 
+    private int updateCounter;
+
+    private List<Publisher> publisherObjectsSubscribed;
+
+    private List<Object> arguments;
+
     public MockSynchronizer3D() {
         super(null);
         reset();
@@ -67,6 +74,9 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
         state = DisplayDataCreatorForTests.createSpecificSynchronizer3DState();
         synchronizeCalled = 0;
         stepSize = 1;
+        updateCounter = 0;
+        publisherObjectsSubscribed = new ArrayList<Publisher>();
+        arguments = new ArrayList<Object>();
     }
 
     public void setBarrier(CyclicBarrier barrier) {
@@ -158,6 +168,25 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
 
     public int getStepSize() {
         return stepSize;
+    }
+
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        updateCounter++;
+        publisherObjectsSubscribed.add(publisher);
+        arguments.add(arg);
+    }
+
+    public List<Object> getArguments() {
+        return arguments;
+    }
+
+    public List<Publisher> getPublisherObjectsSubscribed() {
+        return publisherObjectsSubscribed;
+    }
+
+    public int getUpdateCounter() {
+        return updateCounter;
     }
 
 }

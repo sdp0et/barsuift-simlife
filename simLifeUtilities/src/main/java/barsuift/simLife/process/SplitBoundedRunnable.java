@@ -19,15 +19,21 @@
 package barsuift.simLife.process;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
 
 /**
  * This abstract class represents a split bounded task. As a bounded task, it automatically stops after a number of run.
  * Additionally, the task is split in increments. The {@code stepSize} parameter allow to run more than one increment in
- * a row. Note that executing more than one increment in a row does NOT mean exectuing them one after the other, but to
+ * a row. Note that executing more than one increment in a row does NOT mean executing them one after the other, but to
  * execute the whole increment range in one action.
+ * <p>
+ * The bounded task notifies its subscribers when it reaches its bound and stops.
+ * </p>
  */
-public abstract class SplitBoundedRunnable extends AbstractSynchronizedRunnable implements
+public abstract class SplitBoundedRunnable extends AbstractSynchronizedRunnable implements Publisher,
         Persistent<SplitBoundedRunnableState> {
 
     private final SplitBoundedRunnableState state;
@@ -37,6 +43,8 @@ public abstract class SplitBoundedRunnable extends AbstractSynchronizedRunnable 
     private int count;
 
     private int stepSize;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     public SplitBoundedRunnable(SplitBoundedRunnableState state) {
         super();
@@ -53,8 +61,11 @@ public abstract class SplitBoundedRunnable extends AbstractSynchronizedRunnable 
     @Override
     public final void executeStep() {
         count += stepSize;
+        // FIXME this fails as stop waits for the ucrrent iteration to end ??
         if (count >= bound) {
             stop();
+            setChanged();
+            notifySubscribers();
         }
         executeSplitBoundedStep(stepSize);
     }
@@ -73,5 +84,41 @@ public abstract class SplitBoundedRunnable extends AbstractSynchronizedRunnable 
     }
 
     public abstract void executeSplitBoundedStep(int stepSize);
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
+    }
 
 }

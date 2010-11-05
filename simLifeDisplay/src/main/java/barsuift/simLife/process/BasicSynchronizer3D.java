@@ -33,7 +33,7 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-// TODO 004. unit test
+// TODO 004. unit test (including publisher/subscriber behavior with split tasks)
 // TODO 004. javadoc
 public class BasicSynchronizer3D implements Synchronizer3D {
 
@@ -199,24 +199,27 @@ public class BasicSynchronizer3D implements Synchronizer3D {
             // 4. also change the temporizer barrier
             temporizer.changeBarrier(barrierForRunnables);
             // 5. start the new tasks if needed, or simply purge the list
-            if (startNewTasks) {
-                while (!newTasksToSchedule.isEmpty()) {
-                    standardThreadPool.submit(newTasksToSchedule.poll());
-                }
-            } else {
-                // simply purge the list
-                while (!newTasksToSchedule.isEmpty()) {
-                    newTasksToSchedule.poll();
+            while (!newTasksToSchedule.isEmpty()) {
+                SplitBoundedRunnable runnable = newTasksToSchedule.poll();
+                runnable.addSubscriber(this);
+                if (startNewTasks) {
+                    standardThreadPool.submit(runnable);
                 }
             }
             // 6. stop the old tasks
             while (!tasksToUnschedule.isEmpty()) {
                 SplitBoundedRunnable taskToUnschedule = tasksToUnschedule.poll();
+                taskToUnschedule.deleteSubscriber(this);
                 if (taskToUnschedule.isRunning()) {
                     taskToUnschedule.stop();
                 }
             }
         }
+    }
+
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        tasksToUnschedule.add((SplitBoundedRunnable) publisher);
     }
 
     public void addSubscriber(Subscriber subscriber) {
@@ -263,6 +266,7 @@ public class BasicSynchronizer3D implements Synchronizer3D {
 
         @Override
         public synchronized void run() {
+            System.out.println("BasicSynchronizer3D waiting for the other synchronizer - START");
             try {
                 innerBarrier.await();
             } catch (InterruptedException e) {
@@ -270,6 +274,7 @@ public class BasicSynchronizer3D implements Synchronizer3D {
             } catch (BrokenBarrierException e) {
                 internalStop();
             }
+            System.out.println("BasicSynchronizer3D waiting for the other synchronizer - END");
             updateTaskList(true);
             if (isStopAsked) {
                 internalStop();

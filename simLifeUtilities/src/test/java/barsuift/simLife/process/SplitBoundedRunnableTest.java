@@ -3,6 +3,7 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
+import barsuift.simLife.message.PublisherTestHelper;
 
 
 public class SplitBoundedRunnableTest extends TestCase {
@@ -29,6 +30,9 @@ public class SplitBoundedRunnableTest extends TestCase {
     }
 
     public void testRun() throws Exception {
+        PublisherTestHelper publisherHelper = new PublisherTestHelper();
+        publisherHelper.addSubscriberTo(splitRun);
+
         (new Thread(splitRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
@@ -36,6 +40,8 @@ public class SplitBoundedRunnableTest extends TestCase {
         // executed once
         assertEquals(1, splitRun.getNbExecuted());
         assertEquals(1, splitRun.getNbIncrementExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
 
         // test we can not run the same runnable again
         try {
@@ -61,17 +67,21 @@ public class SplitBoundedRunnableTest extends TestCase {
         // executed once again
         assertEquals(2, splitRun.getNbExecuted());
         assertEquals(2, splitRun.getNbIncrementExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
 
         // release the barrier
         mockSynchroRun.run();
         // make sure the thread has time to execute
         Thread.sleep(100);
         assertTrue(splitRun.isRunning());
-        // executed once again (3/3)
+        // executed once again
         assertEquals(3, splitRun.getNbExecuted());
         assertEquals(3, splitRun.getNbIncrementExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
 
-        splitRun.setStepSize(2);
+        splitRun.setStepSize(3);
 
         // release the barrier
         mockSynchroRun.run();
@@ -80,7 +90,9 @@ public class SplitBoundedRunnableTest extends TestCase {
         assertTrue(splitRun.isRunning());
         // executed once again
         assertEquals(4, splitRun.getNbExecuted());
-        assertEquals(5, splitRun.getNbIncrementExecuted());
+        assertEquals(6, splitRun.getNbIncrementExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
 
         // release the barrier
         mockSynchroRun.run();
@@ -89,9 +101,11 @@ public class SplitBoundedRunnableTest extends TestCase {
         assertTrue(splitRun.isRunning());
         // executed once again
         assertEquals(5, splitRun.getNbExecuted());
-        assertEquals(7, splitRun.getNbIncrementExecuted());
+        assertEquals(9, splitRun.getNbIncrementExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
 
-        splitRun.setStepSize(30);
+        splitRun.setStepSize(25);
 
         // release the barrier
         mockSynchroRun.run();
@@ -100,7 +114,9 @@ public class SplitBoundedRunnableTest extends TestCase {
         assertTrue(splitRun.isRunning());
         // executed once again
         assertEquals(6, splitRun.getNbExecuted());
-        assertEquals(37, splitRun.getNbIncrementExecuted());
+        assertEquals(34, splitRun.getNbIncrementExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
 
         // release the barrier
         mockSynchroRun.run();
@@ -109,19 +125,34 @@ public class SplitBoundedRunnableTest extends TestCase {
         assertTrue(splitRun.isRunning());
         // executed once again
         assertEquals(7, splitRun.getNbExecuted());
-        assertEquals(67, splitRun.getNbIncrementExecuted());
+        assertEquals(59, splitRun.getNbIncrementExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
 
+        splitRun.setStepSize(1);
+
+        // release the barrier
+        mockSynchroRun.run();
+        // make sure the thread has time to execute
+        Thread.sleep(100);
+        assertTrue(splitRun.isRunning());
+        // executed once again
+        assertEquals(8, splitRun.getNbExecuted());
+        assertEquals(60, splitRun.getNbIncrementExecuted());
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+
+        publisherHelper.reset();
         // release the barrier
         mockSynchroRun.run();
         // make sure the thread has time to execute
         Thread.sleep(100);
         // this time, the split task should have stopped
         assertFalse(splitRun.isRunning());
-        assertEquals(7, splitRun.getNbExecuted());
-        assertEquals(67, splitRun.getNbIncrementExecuted());
-
-
-
+        assertEquals(8, splitRun.getNbExecuted());
+        assertEquals(60, splitRun.getNbIncrementExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
     public void testGetState() throws InterruptedException {
