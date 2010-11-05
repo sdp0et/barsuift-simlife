@@ -37,6 +37,8 @@ import barsuift.simLife.message.Subscriber;
 // TODO 004. javadoc
 public class BasicSynchronizer3D implements Synchronizer3D {
 
+    private static final int RATIO_CORE_3D = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
+
     private final Synchronizer3DState state;
 
     private boolean running;
@@ -69,10 +71,16 @@ public class BasicSynchronizer3D implements Synchronizer3D {
 
     private final Publisher publisher = new BasicPublisher(this);
 
+    private int stepBeforeSynchro;
+
+    private int currentStep;
+
 
     public BasicSynchronizer3D(Synchronizer3DState state) {
         this.state = state;
         this.stepSize = state.getStepSize();
+        this.stepBeforeSynchro = RATIO_CORE_3D / stepSize;
+        this.currentStep = 0;
         this.running = false;
         this.isStopAsked = false;
         this.barrierForRunnables = new CyclicBarrier(1, new BarrierTask());
@@ -94,6 +102,7 @@ public class BasicSynchronizer3D implements Synchronizer3D {
     @Override
     public void setStepSize(int stepSize) {
         this.stepSize = stepSize;
+        stepBeforeSynchro = RATIO_CORE_3D / stepSize;
         for (SplitBoundedRunnable runnable : runnables) {
             runnable.setStepSize(stepSize);
         }
@@ -276,17 +285,21 @@ public class BasicSynchronizer3D implements Synchronizer3D {
         @Override
         public synchronized void run() {
             System.out.println("BasicSynchronizer3D waiting for the other synchronizer - START");
-            try {
-                innerBarrier.await();
-            } catch (InterruptedException e) {
-                internalStop();
-            } catch (BrokenBarrierException e) {
-                internalStop();
-            }
-            System.out.println("BasicSynchronizer3D waiting for the other synchronizer - END");
-            updateTaskList(true);
-            if (isStopAsked) {
-                internalStop();
+            currentStep++;
+            if (currentStep == stepBeforeSynchro) {
+                currentStep = 0;
+                try {
+                    innerBarrier.await();
+                } catch (InterruptedException e) {
+                    internalStop();
+                } catch (BrokenBarrierException e) {
+                    internalStop();
+                }
+                System.out.println("BasicSynchronizer3D waiting for the other synchronizer - END");
+                updateTaskList(true);
+                if (isStopAsked) {
+                    internalStop();
+                }
             }
         }
 
