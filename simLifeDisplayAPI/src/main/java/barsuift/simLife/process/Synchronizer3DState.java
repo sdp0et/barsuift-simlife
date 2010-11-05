@@ -25,13 +25,31 @@ import barsuift.simLife.State;
 @XmlRootElement
 public class Synchronizer3DState implements State {
 
+    private int stepSize;
+
     public Synchronizer3DState() {
         super();
+        this.stepSize = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
+    }
+
+    public Synchronizer3DState(int stepSize) {
+        super();
+        this.stepSize = stepSize;
+    }
+
+    public int getStepSize() {
+        return stepSize;
+    }
+
+    public void setStepSize(int stepSize) {
+        this.stepSize = stepSize;
     }
 
     @Override
     public int hashCode() {
+        final int prime = 31;
         int result = 1;
+        result = prime * result + stepSize;
         return result;
     }
 
@@ -43,12 +61,15 @@ public class Synchronizer3DState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
+        Synchronizer3DState other = (Synchronizer3DState) obj;
+        if (stepSize != other.stepSize)
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Synchronizer3DState []";
+        return "Synchronizer3DState [stepSize=" + stepSize + "]";
     }
 
 }
