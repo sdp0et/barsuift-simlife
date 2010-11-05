@@ -15,7 +15,16 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-
+/**
+ * This is a common implementation of TaskSynchronizer.
+ * <p>
+ * This synchronizer allows to run the list of given {@link SynchronizedRunnable} at a given rate. A
+ * {@link CyclicBarrier} is used to synchronized all the tasks, and a {@link Temporizer}, in a
+ * {@link ScheduledExecutorService}, is used to ensure there is always the same delay between two runs.
+ * </p>
+ * 
+ * @param <E> the sub-type of SynchronizedRunnable to use
+ */
 public abstract class AbstractTaskSynchronizer<E extends SynchronizedRunnable> implements TaskSynchronizer<E> {
 
     private boolean running;
