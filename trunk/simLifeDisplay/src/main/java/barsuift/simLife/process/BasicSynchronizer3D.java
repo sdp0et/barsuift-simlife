@@ -20,7 +20,6 @@ package barsuift.simLife.process;
 
 import barsuift.simLife.message.Publisher;
 
-// TODO 004. unit test (including publisher/subscriber behavior with split tasks)
 /**
  * This synchronizer is able to work by steps of increments.
  * <p>
