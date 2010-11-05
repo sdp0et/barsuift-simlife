@@ -33,7 +33,7 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 
-// TODO 004. see if SynchronizerCore and Synchronizer3D can be refactored to inherit from the same super class
+// TODO 004. do something about the comment mess below
 // TODO 005. Be able to stop and change speed of interpolators
 /*
  * Implementation note : Do not use interpolators, as they do not fit well in this framework
