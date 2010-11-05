@@ -274,6 +274,7 @@ public class BasicSynchronizerCore implements SynchronizerCore {
 
         @Override
         public synchronized void run() {
+            updateTaskList(true);
             try {
                 innerBarrier.await();
             } catch (InterruptedException e) {
@@ -281,7 +282,6 @@ public class BasicSynchronizerCore implements SynchronizerCore {
             } catch (BrokenBarrierException e) {
                 internalStop();
             }
-            updateTaskList(true);
             if (isStopAsked) {
                 internalStop();
             }

@@ -284,8 +284,8 @@ public class BasicSynchronizer3D implements Synchronizer3D {
 
         @Override
         public synchronized void run() {
-            System.out.println("BasicSynchronizer3D waiting for the other synchronizer - START");
             currentStep++;
+            updateTaskList(true);
             if (currentStep == stepBeforeSynchro) {
                 currentStep = 0;
                 try {
@@ -295,8 +295,6 @@ public class BasicSynchronizer3D implements Synchronizer3D {
                 } catch (BrokenBarrierException e) {
                     internalStop();
                 }
-                System.out.println("BasicSynchronizer3D waiting for the other synchronizer - END");
-                updateTaskList(true);
                 if (isStopAsked) {
                     internalStop();
                 }
