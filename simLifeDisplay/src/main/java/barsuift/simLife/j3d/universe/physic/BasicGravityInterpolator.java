@@ -33,8 +33,8 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 
-// TODO 006. the gravity should keeps its falling elements, and the Universe should only have the fallen leaves
-// TODO 005. use GravityProcess instead of GravityInterpolator
+// TODO 005. the gravity should keeps its falling elements, and the Universe should only have the fallen leaves
+// TODO 006. use GravityProcess instead of GravityInterpolator
 public class BasicGravityInterpolator implements GravityInterpolator {
 
     private Universe3D universe3D;
