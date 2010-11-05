@@ -33,32 +33,8 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ProjectionHelper;
 
-// TODO 004. do something about the comment mess below
-// TODO 005. Be able to stop and change speed of interpolators
-/*
- * Implementation note : Do not use interpolators, as they do not fit well in this framework
- * 
- * Implementation note : The synchronizer3D must always run at the same 'speed' (=25 ms). The synchronized 3D process
- * will execute at each cycle (every 25ms). Depending on speed, it will do its full tasks in one time, or split it in 20
- * for example if speed is 1.
- * 
- * The speed in core synchronizer means the number of cycle per cycle duration. For example, speed 5 means 5 cycles in
- * 500 ms, so one cycle last 100ms.
- * 
- * There is no speed in synchronizer3D, but a stepSize. The stepSize has the same value as the core speed.
- * 
- * To Do : ???
- * 
- * 5. (or 6. ??) the gravity should keeps its falling elements, and the Universe should only have the fallen leaves.
- * 
- * 6. (or 5. ??) integrate the existing gravity interpolator into the Gravity3D framework
- * 
- * x. all graphic changes should use an InterpolatorWrapper
- * 
- * x.1. Leaf color
- * 
- * x.2. Gravity
- */
+// TODO 006. the gravity should keeps its falling elements, and the Universe should only have the fallen leaves
+// TODO 005. use GravityProcess instead of GravityInterpolator
 public class BasicGravityInterpolator implements GravityInterpolator {
 
     private Universe3D universe3D;
