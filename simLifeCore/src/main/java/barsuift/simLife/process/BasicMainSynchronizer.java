@@ -20,7 +20,6 @@ package barsuift.simLife.process;
 
 import java.util.concurrent.CyclicBarrier;
 
-import barsuift.simLife.InitException;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
@@ -45,7 +44,7 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
     private boolean notifiedFrom3D;
 
 
-    public BasicMainSynchronizer(MainSynchronizerState state, Universe universe) throws InitException {
+    public BasicMainSynchronizer(MainSynchronizerState state, Universe universe) {
         this.state = state;
         this.isStopAsked = false;
         this.barrier = new CyclicBarrier(2, new BarrierTask());
