@@ -24,6 +24,10 @@ public class BasicMainSynchronizerTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         Speed speed = Speed.VERY_FAST;
+        setUpFromSpeed(speed);
+    }
+
+    private void setUpFromSpeed(Speed speed) {
         int stepSize = speed.getSpeed();
 
         MockUniverse mockUniverse = new MockUniverse();
@@ -66,7 +70,21 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(Speed.NORMAL.getSpeed(), synchronizer3D.getStepSize());
     }
 
-    public void testOneStep() throws InterruptedException {
+    public void testOneStepNormal() throws InterruptedException {
+        internalTestOneStep(Speed.NORMAL);
+    }
+
+    public void testOneStepFast() throws InterruptedException {
+        internalTestOneStep(Speed.FAST);
+    }
+
+    public void testOneStepVeryFast() throws InterruptedException {
+        internalTestOneStep(Speed.VERY_FAST);
+    }
+
+    private void internalTestOneStep(Speed speed) throws InterruptedException {
+        setUpFromSpeed(speed);
+
         synchro.oneStep();
         Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertFalse(synchro.isRunning());
@@ -125,7 +143,21 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(60, task3D.getNbIncrementExecuted());
     }
 
-    public void testStart() throws InterruptedException {
+    public void testStartNormal() throws InterruptedException {
+        internalTestStart(Speed.NORMAL);
+    }
+
+    public void testStartFast() throws InterruptedException {
+        internalTestStart(Speed.FAST);
+    }
+
+    public void testStartVeryFast() throws InterruptedException {
+        internalTestStart(Speed.VERY_FAST);
+    }
+
+    private void internalTestStart(Speed speed) throws InterruptedException {
+        setUpFromSpeed(speed);
+
         assertFalse(synchro.isRunning());
 
         synchro.start();
