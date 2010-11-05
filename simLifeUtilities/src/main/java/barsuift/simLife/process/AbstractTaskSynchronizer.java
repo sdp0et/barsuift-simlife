@@ -16,7 +16,7 @@ import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
 
-public abstract class AbstractSynchronizer<E extends SynchronizedRunnable> implements TaskSynchronizer<E> {
+public abstract class AbstractTaskSynchronizer<E extends SynchronizedRunnable> implements TaskSynchronizer<E> {
 
     private boolean running;
 
@@ -47,7 +47,7 @@ public abstract class AbstractSynchronizer<E extends SynchronizedRunnable> imple
     private final Publisher publisher = new BasicPublisher(this);
 
 
-    public AbstractSynchronizer() {
+    public AbstractTaskSynchronizer() {
         this.running = false;
         this.isStopAsked = false;
         this.barrierForRunnables = new CyclicBarrier(1, createBarrierTask());
