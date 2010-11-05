@@ -40,6 +40,13 @@ public interface Synchronizer3D extends Synchronizer, Subscriber, Persistent<Syn
     public void setStepSize(int stepSize);
 
     /**
+     * Returns the step size of the 3D synchronizer.
+     * 
+     * @return the step size of the synchronizer
+     */
+    public int getStepSize();
+
+    /**
      * Adds the given runnable to the list of synchronized tasks.
      * 
      * @param runnable the runnable to synchronize

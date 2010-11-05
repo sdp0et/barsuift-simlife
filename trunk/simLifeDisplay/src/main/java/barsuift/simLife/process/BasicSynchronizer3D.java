@@ -43,6 +43,8 @@ public class BasicSynchronizer3D implements Synchronizer3D {
 
     private boolean isStopAsked;
 
+    private int stepSize;
+
 
     private final ScheduledExecutorService scheduledThreadPool;
 
@@ -70,6 +72,7 @@ public class BasicSynchronizer3D implements Synchronizer3D {
 
     public BasicSynchronizer3D(Synchronizer3DState state) {
         this.state = state;
+        this.stepSize = state.getStepSize();
         this.running = false;
         this.isStopAsked = false;
         this.barrierForRunnables = new CyclicBarrier(1, new BarrierTask());
@@ -90,9 +93,15 @@ public class BasicSynchronizer3D implements Synchronizer3D {
 
     @Override
     public void setStepSize(int stepSize) {
+        this.stepSize = stepSize;
         for (SplitBoundedRunnable runnable : runnables) {
             runnable.setStepSize(stepSize);
         }
+    }
+
+    @Override
+    public int getStepSize() {
+        return stepSize;
     }
 
     @Override
