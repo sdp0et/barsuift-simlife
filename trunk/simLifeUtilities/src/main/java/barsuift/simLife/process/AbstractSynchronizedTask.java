@@ -26,7 +26,7 @@ import java.util.concurrent.CyclicBarrier;
  * can be stopped with the <code>stop</code> method.
  * 
  */
-public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnable {
+public abstract class AbstractSynchronizedTask implements SynchronizedTask {
 
     private CyclicBarrier barrier;
 
@@ -36,7 +36,7 @@ public abstract class AbstractSynchronizedRunnable implements SynchronizedRunnab
 
     private boolean isStopAsked;
 
-    protected AbstractSynchronizedRunnable() {
+    protected AbstractSynchronizedTask() {
         running = false;
     }
 

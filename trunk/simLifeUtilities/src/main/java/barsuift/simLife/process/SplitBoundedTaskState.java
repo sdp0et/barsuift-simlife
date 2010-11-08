@@ -21,36 +21,61 @@ package barsuift.simLife.process;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.condition.BoundConditionState;
 
 @XmlRootElement
-public class BoundedRunnableState implements State {
+public class SplitBoundedTaskState implements State {
 
-    private BoundConditionState endingCondition;
+    private int bound;
 
-    public BoundedRunnableState() {
+    private int count;
+
+    private int stepSize;
+
+    public SplitBoundedTaskState() {
         super();
-        endingCondition = new BoundConditionState();
+        bound = 20;
+        count = 0;
+        stepSize = 1;
     }
 
-    public BoundedRunnableState(BoundConditionState endingCondition) {
+    public SplitBoundedTaskState(int bound, int count, int stepSize) {
         super();
-        this.endingCondition = endingCondition;
+        this.bound = bound;
+        this.count = count;
+        this.stepSize = stepSize;
     }
 
-    public BoundConditionState getEndingCondition() {
-        return endingCondition;
+    public int getBound() {
+        return bound;
     }
 
-    public void setEndingCondition(BoundConditionState endingCondition) {
-        this.endingCondition = endingCondition;
+    public void setBound(int bound) {
+        this.bound = bound;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getStepSize() {
+        return stepSize;
+    }
+
+    public void setStepSize(int stepSize) {
+        this.stepSize = stepSize;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((endingCondition == null) ? 0 : endingCondition.hashCode());
+        result = prime * result + count;
+        result = prime * result + bound;
+        result = prime * result + stepSize;
         return result;
     }
 
@@ -62,19 +87,19 @@ public class BoundedRunnableState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        BoundedRunnableState other = (BoundedRunnableState) obj;
-        if (endingCondition == null) {
-            if (other.endingCondition != null)
-                return false;
-        } else
-            if (!endingCondition.equals(other.endingCondition))
-                return false;
+        SplitBoundedTaskState other = (SplitBoundedTaskState) obj;
+        if (count != other.count)
+            return false;
+        if (bound != other.bound)
+            return false;
+        if (stepSize != other.stepSize)
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "BoundedRunnableState [endingCondition=" + endingCondition + "]";
+        return "SplitBoundedTaskState [bound=" + bound + ", count=" + count + ", stepSize=" + stepSize + "]";
     }
 
 }

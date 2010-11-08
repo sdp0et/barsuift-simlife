@@ -18,30 +18,20 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.JaxbTestCase;
+import junit.framework.TestCase;
 
 
-public class CyclicRunnableStateTest extends JaxbTestCase {
+public class SplitBoundedTaskStateFactoryTest extends TestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+    public void testCreateSplitBoundedTaskState() {
+        SplitBoundedTaskStateFactory factory = new SplitBoundedTaskStateFactory();
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.process";
-    }
-
-    public void testJaxb() throws Exception {
-        CyclicRunnableState runnable = CoreDataCreatorForTests.createRandomCyclicRunnableState();
-        write(runnable);
-        CyclicRunnableState runnable2 = (CyclicRunnableState) read();
-        assertEquals(runnable, runnable2);
+        int stepSize = 5;
+        SplitBoundedTaskState unknownState = factory.createSplitBoundedTaskState(
+                MockSplitBoundedTask.class, stepSize);
+        assertEquals(20, unknownState.getBound());
+        assertEquals(0, unknownState.getCount());
+        assertEquals(stepSize, unknownState.getStepSize());
     }
 
 }

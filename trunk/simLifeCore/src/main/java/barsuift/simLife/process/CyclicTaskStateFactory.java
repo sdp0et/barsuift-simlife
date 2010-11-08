@@ -18,27 +18,15 @@
  */
 package barsuift.simLife.process;
 
+import barsuift.simLife.condition.CyclicConditionState;
+import barsuift.simLife.condition.CyclicConditionStateFactory;
 
-public class MockBoundedRunnable extends BoundedRunnable {
+public class CyclicTaskStateFactory {
 
-    private int nbExecuted;
-
-    public MockBoundedRunnable(BoundedRunnableState state) {
-        super(state);
-        resetNbExecuted();
-    }
-
-    @Override
-    public void executeBoundedStep() {
-        nbExecuted++;
-    }
-
-    public int getNbExecuted() {
-        return nbExecuted;
-    }
-
-    public void resetNbExecuted() {
-        nbExecuted = 0;
+    public CyclicTaskState createCyclicTaskState(Class<? extends SynchronizedTask> clazz) {
+        CyclicConditionStateFactory factory = new CyclicConditionStateFactory();
+        CyclicConditionState executionCondition = factory.createCyclicConditionState(clazz);
+        return new CyclicTaskState(executionCondition);
     }
 
 }

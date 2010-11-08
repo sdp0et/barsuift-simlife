@@ -18,20 +18,26 @@
  */
 package barsuift.simLife.process;
 
-import junit.framework.TestCase;
+public class MockCyclicTask extends CyclicTask {
 
+    private int nbExecuted;
 
-public class SplitBoundedRunnableStateFactoryTest extends TestCase {
+    public MockCyclicTask(CyclicTaskState state) {
+        super(state);
+        resetNbExecuted();
+    }
 
-    public void testCreateSplitBoundedRunnableState() {
-        SplitBoundedRunnableStateFactory factory = new SplitBoundedRunnableStateFactory();
+    @Override
+    public void executeCyclicStep() {
+        nbExecuted++;
+    }
 
-        int stepSize = 5;
-        SplitBoundedRunnableState unknownState = factory.createSplitBoundedRunnableState(
-                MockSplitBoundedRunnable.class, stepSize);
-        assertEquals(20, unknownState.getBound());
-        assertEquals(0, unknownState.getCount());
-        assertEquals(stepSize, unknownState.getStepSize());
+    public int getNbExecuted() {
+        return nbExecuted;
+    }
+
+    public void resetNbExecuted() {
+        nbExecuted = 0;
     }
 
 }

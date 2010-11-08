@@ -19,19 +19,19 @@
 package barsuift.simLife.condition;
 
 import junit.framework.TestCase;
-import barsuift.simLife.process.MockSingleRunSynchronizedRunnable;
-import barsuift.simLife.process.MockSynchronizedRunnable;
+import barsuift.simLife.process.MockSingleSynchronizedTask;
+import barsuift.simLife.process.MockSynchronizedTask;
 
 public class CyclicConditionStateFactoryTest extends TestCase {
 
-    public void testCreateCyclicRunnableState() {
+    public void testCreateCyclicTaskState() {
         CyclicConditionStateFactory factory = new CyclicConditionStateFactory();
 
-        CyclicConditionState mockSynchronizedState = factory.createCyclicConditionState(MockSynchronizedRunnable.class);
+        CyclicConditionState mockSynchronizedState = factory.createCyclicConditionState(MockSynchronizedTask.class);
         assertEquals(5, mockSynchronizedState.getCycle());
         assertEquals(0, mockSynchronizedState.getCount());
 
-        CyclicConditionState unknownState = factory.createCyclicConditionState(MockSingleRunSynchronizedRunnable.class);
+        CyclicConditionState unknownState = factory.createCyclicConditionState(MockSingleSynchronizedTask.class);
         assertEquals(1, unknownState.getCycle());
         assertEquals(0, unknownState.getCount());
     }

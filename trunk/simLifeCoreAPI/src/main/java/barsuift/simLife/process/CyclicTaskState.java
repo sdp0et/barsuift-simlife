@@ -21,61 +21,37 @@ package barsuift.simLife.process;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
+import barsuift.simLife.condition.CyclicConditionState;
 
 @XmlRootElement
-public class SplitBoundedRunnableState implements State {
+// TODO 000. merge CyclicTaskState and BoundedTaskState into SynchronizedTaskState
+public class CyclicTaskState implements State {
 
-    private int bound;
+    private CyclicConditionState executionCondition;
 
-    private int count;
-
-    private int stepSize;
-
-    public SplitBoundedRunnableState() {
+    public CyclicTaskState() {
         super();
-        bound = 20;
-        count = 0;
-        stepSize = 1;
+        this.executionCondition = new CyclicConditionState(1, 0);
     }
 
-    public SplitBoundedRunnableState(int bound, int count, int stepSize) {
+    public CyclicTaskState(CyclicConditionState executionCondition) {
         super();
-        this.bound = bound;
-        this.count = count;
-        this.stepSize = stepSize;
+        this.executionCondition = executionCondition;
     }
 
-    public int getBound() {
-        return bound;
+    public CyclicConditionState getExecutionCondition() {
+        return executionCondition;
     }
 
-    public void setBound(int bound) {
-        this.bound = bound;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getStepSize() {
-        return stepSize;
-    }
-
-    public void setStepSize(int stepSize) {
-        this.stepSize = stepSize;
+    public void setExecutionCondition(CyclicConditionState executionCondition) {
+        this.executionCondition = executionCondition;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + count;
-        result = prime * result + bound;
-        result = prime * result + stepSize;
+        result = prime * result + ((executionCondition == null) ? 0 : executionCondition.hashCode());
         return result;
     }
 
@@ -87,19 +63,19 @@ public class SplitBoundedRunnableState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SplitBoundedRunnableState other = (SplitBoundedRunnableState) obj;
-        if (count != other.count)
-            return false;
-        if (bound != other.bound)
-            return false;
-        if (stepSize != other.stepSize)
-            return false;
+        CyclicTaskState other = (CyclicTaskState) obj;
+        if (executionCondition == null) {
+            if (other.executionCondition != null)
+                return false;
+        } else
+            if (!executionCondition.equals(other.executionCondition))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "SplitBoundedRunnableState [bound=" + bound + ", count=" + count + ", stepSize=" + stepSize + "]";
+        return "CyclicTaskState [executionCondition=" + executionCondition + "]";
     }
 
 }

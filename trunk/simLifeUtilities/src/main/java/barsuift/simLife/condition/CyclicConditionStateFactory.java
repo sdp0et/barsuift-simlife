@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import barsuift.simLife.process.SynchronizedRunnable;
+import barsuift.simLife.process.SynchronizedTask;
 
 public class CyclicConditionStateFactory {
 
@@ -32,7 +32,7 @@ public class CyclicConditionStateFactory {
     private static final int DEFAULT_CYCLE = 1;
 
     // TODO 000. merge cyclic and bound factories
-    private static final String PROPERTIES_FILE = "barsuift/simLife/process/CyclicRunnables.properties";
+    private static final String PROPERTIES_FILE = "barsuift/simLife/process/CyclicTasks.properties";
 
     private static final String CYCLE_SUFFIX = ".cycle";
 
@@ -59,7 +59,7 @@ public class CyclicConditionStateFactory {
         return prop;
     }
 
-    public CyclicConditionState createCyclicConditionState(Class<? extends SynchronizedRunnable> clazz) {
+    public CyclicConditionState createCyclicConditionState(Class<? extends SynchronizedTask> clazz) {
         String boundStr = getProperty(clazz.getSimpleName() + CYCLE_SUFFIX);
 
         int bound = (boundStr.length() == 0) ? DEFAULT_CYCLE : Integer.parseInt(boundStr);

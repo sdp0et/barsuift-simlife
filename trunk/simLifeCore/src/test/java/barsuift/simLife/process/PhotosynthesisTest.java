@@ -28,7 +28,7 @@ public class PhotosynthesisTest extends TestCase {
     public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
         Photosynthesis photosynthesis = new Photosynthesis(
-                CoreDataCreatorForTests.createSpecificCyclicRunnableState(), mockTree);
+                CoreDataCreatorForTests.createSpecificCyclicTaskState(), mockTree);
         photosynthesis.executeCyclicStep();
         assertEquals(1, mockTree.getNbCollectSolarEnergyCalled());
     }

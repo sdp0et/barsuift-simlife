@@ -16,7 +16,7 @@ public class BasicSynchronizerCoreTest extends TestCase {
 
     private SimLifeDate date;
 
-    private SynchronizedRunnable barrierReleaser;
+    private SynchronizedTask barrierReleaser;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -29,7 +29,7 @@ public class BasicSynchronizerCoreTest extends TestCase {
 
         CyclicBarrier barrier = new CyclicBarrier(2);
         synchro.setBarrier(barrier);
-        barrierReleaser = new MockSingleRunSynchronizedRunnable();
+        barrierReleaser = new MockSingleSynchronizedTask();
         barrierReleaser.changeBarrier(barrier);
     }
 
@@ -135,9 +135,9 @@ public class BasicSynchronizerCoreTest extends TestCase {
     }
 
     public void testSchedule() throws Exception {
-        MockSynchronizedRunnable mockRun1 = new MockSynchronizedRunnable();
-        MockSynchronizedRunnable mockRun2 = new MockSynchronizedRunnable();
-        MockSynchronizedRunnable mockRun3 = new MockSynchronizedRunnable();
+        MockSynchronizedTask mockRun1 = new MockSynchronizedTask();
+        MockSynchronizedTask mockRun2 = new MockSynchronizedTask();
+        MockSynchronizedTask mockRun3 = new MockSynchronizedTask();
 
         try {
             synchro.unschedule(mockRun1);

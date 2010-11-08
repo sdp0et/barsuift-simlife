@@ -5,20 +5,20 @@ import java.util.concurrent.CyclicBarrier;
 import junit.framework.TestCase;
 
 
-public class SynchronizedRunnableTest extends TestCase {
+public class SynchronizedTaskTest extends TestCase {
 
-    private MockSingleRunSynchronizedRunnable barrierReleaser;
+    private MockSingleSynchronizedTask barrierReleaser;
 
-    private MockSynchronizedRunnable synchroRun;
+    private MockSynchronizedTask synchroTask;
 
     private CyclicBarrier barrier;
 
     protected void setUp() throws Exception {
         super.setUp();
         barrier = new CyclicBarrier(2);
-        synchroRun = new MockSynchronizedRunnable();
-        synchroRun.changeBarrier(barrier);
-        barrierReleaser = new MockSingleRunSynchronizedRunnable();
+        synchroTask = new MockSynchronizedTask();
+        synchroTask.changeBarrier(barrier);
+        barrierReleaser = new MockSingleSynchronizedTask();
         barrierReleaser.changeBarrier(barrier);
     }
 
@@ -27,60 +27,60 @@ public class SynchronizedRunnableTest extends TestCase {
     }
 
     public void testRun() throws InterruptedException {
-        (new Thread(synchroRun)).start();
+        (new Thread(synchroTask)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertTrue(synchroRun.isRunning());
-        assertEquals(1, synchroRun.getNbExecuted());
+        assertTrue(synchroTask.isRunning());
+        assertEquals(1, synchroTask.getNbExecuted());
 
-        // test we can not run the same runnable again
+        // test we can not run the same task again
         try {
-            synchroRun.run();
+            synchroTask.run();
             fail("Should throw an IllegalStateException");
         } catch (IllegalStateException ise) {
             // OK expected exception
         }
 
         // test we can stop it now
-        synchroRun.stop();
+        synchroTask.stop();
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        assertFalse(synchroRun.isRunning());
+        assertFalse(synchroTask.isRunning());
 
-        synchroRun.resetNbExecuted();
+        synchroTask.resetNbExecuted();
         // test we can start it again
-        (new Thread(synchroRun)).start();
+        (new Thread(synchroTask)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertTrue(synchroRun.isRunning());
-        assertEquals(1, synchroRun.getNbExecuted());
+        assertTrue(synchroTask.isRunning());
+        assertEquals(1, synchroTask.getNbExecuted());
     }
 
     public void testSetBarrier() throws Exception {
         // the process is not running, so it is still OK to change the barrier
-        synchroRun.changeBarrier(barrier);
+        synchroTask.changeBarrier(barrier);
 
         // start the process
-        (new Thread(synchroRun)).start();
+        (new Thread(synchroTask)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertTrue(synchroRun.isRunning());
+        assertTrue(synchroTask.isRunning());
         // now, the process is running, but we can still change the barrier
-        synchroRun.changeBarrier(barrier);
+        synchroTask.changeBarrier(barrier);
 
         // stop the process
-        synchroRun.stop();
+        synchroTask.stop();
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        assertFalse(synchroRun.isRunning());
+        assertFalse(synchroTask.isRunning());
         // now, the process is stopped, so we can change again the barrier
-        synchroRun.changeBarrier(barrier);
+        synchroTask.changeBarrier(barrier);
 
         // test with null parameter
         try {
-            synchroRun.changeBarrier(null);
+            synchroTask.changeBarrier(null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException iae) {
             // OK expected exception

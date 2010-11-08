@@ -22,7 +22,7 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 /**
- * The temporizer is an empty runnable, that only waits for the barrier. Its sole purpose is to release the barrier at
+ * The temporizer is an empty task, that only waits for the barrier. Its sole purpose is to release the barrier at
  * cyclic time, controlled by its scheduledThreadPool.
  * 
  */

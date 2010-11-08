@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import barsuift.simLife.process.SynchronizedRunnable;
+import barsuift.simLife.process.SynchronizedTask;
 
 public class BoundConditionStateFactory {
 
@@ -31,7 +31,7 @@ public class BoundConditionStateFactory {
      */
     private static final int DEFAULT_BOUND = 1;
 
-    private static final String PROPERTIES_FILE = "barsuift/simLife/process/BoundedRunnables.properties";
+    private static final String PROPERTIES_FILE = "barsuift/simLife/process/BoundedTasks.properties";
 
     private static final String BOUND_SUFFIX = ".bound";
 
@@ -58,7 +58,7 @@ public class BoundConditionStateFactory {
         return prop;
     }
 
-    public BoundConditionState createBoundConditionState(Class<? extends SynchronizedRunnable> clazz) {
+    public BoundConditionState createBoundConditionState(Class<? extends SynchronizedTask> clazz) {
         String boundStr = getProperty(clazz.getSimpleName() + BOUND_SUFFIX);
 
         int bound = (boundStr.length() == 0) ? DEFAULT_BOUND : Integer.parseInt(boundStr);

@@ -18,14 +18,14 @@ import barsuift.simLife.message.Subscriber;
 /**
  * This is a common implementation of TaskSynchronizer.
  * <p>
- * This synchronizer allows to run the list of given {@link SynchronizedRunnable} at a given rate. A
+ * This synchronizer allows to run the list of given {@link SynchronizedTask} at a given rate. A
  * {@link CyclicBarrier} is used to synchronized all the tasks, and a {@link Temporizer}, in a
  * {@link ScheduledExecutorService}, is used to ensure there is always the same delay between two runs.
  * </p>
  * 
- * @param <E> the sub-type of SynchronizedRunnable to use
+ * @param <E> the sub-type of SynchronizedTask to use
  */
-public abstract class AbstractTaskSynchronizer<E extends SynchronizedRunnable> implements TaskSynchronizer<E> {
+public abstract class AbstractTaskSynchronizer<E extends SynchronizedTask> implements TaskSynchronizer<E> {
 
     private boolean running;
 
@@ -41,11 +41,11 @@ public abstract class AbstractTaskSynchronizer<E extends SynchronizedRunnable> i
 
     private CyclicBarrier innerBarrier;
 
-    private CyclicBarrier barrierForRunnables;
+    private CyclicBarrier barrierForTasks;
 
     private final ExecutorService standardThreadPool;
 
-    private final List<E> runnables = new ArrayList<E>();
+    private final List<E> tasks = new ArrayList<E>();
 
 
     private final ConcurrentLinkedQueue<E> newTasksToSchedule = new ConcurrentLinkedQueue<E>();
@@ -59,8 +59,8 @@ public abstract class AbstractTaskSynchronizer<E extends SynchronizedRunnable> i
     public AbstractTaskSynchronizer() {
         this.running = false;
         this.isStopAsked = false;
-        this.barrierForRunnables = new CyclicBarrier(1, createBarrierTask());
-        this.temporizer = new Temporizer(barrierForRunnables);
+        this.barrierForTasks = new CyclicBarrier(1, createBarrierTask());
+        this.temporizer = new Temporizer(barrierForTasks);
         this.scheduledThreadPool = Executors.newScheduledThreadPool(1);
         this.standardThreadPool = Executors.newCachedThreadPool();
     }
@@ -90,24 +90,24 @@ public abstract class AbstractTaskSynchronizer<E extends SynchronizedRunnable> i
         return running;
     }
 
-    protected List<E> getRunnables() {
-        return runnables;
+    protected List<E> getTasks() {
+        return tasks;
     }
 
     @Override
-    public void schedule(E runnable) {
-        newTasksToSchedule.add(runnable);
+    public void schedule(E task) {
+        newTasksToSchedule.add(task);
     }
 
     @Override
-    public void unschedule(E runnable) {
+    public void unschedule(E task) {
         // first try to remove it from the list of tasks to add
-        if (!newTasksToSchedule.remove(runnable)) {
-            if (!runnables.contains(runnable)) {
-                throw new IllegalStateException("The task to unschedule is not acutally scheduled. task=" + runnable);
+        if (!newTasksToSchedule.remove(task)) {
+            if (!tasks.contains(task)) {
+                throw new IllegalStateException("The task to unschedule is not acutally scheduled. task=" + task);
             }
             // if not present in the list to add, add it to the list to remove
-            tasksToUnschedule.add(runnable);
+            tasksToUnschedule.add(task);
         }
     }
 
@@ -123,8 +123,8 @@ public abstract class AbstractTaskSynchronizer<E extends SynchronizedRunnable> i
         temporizerFuture = scheduledThreadPool.scheduleWithFixedDelay(temporizer, 0, getTemporizerPeriod(),
                 TimeUnit.MILLISECONDS);
 
-        for (SynchronizedRunnable runnable : runnables) {
-            standardThreadPool.submit(runnable);
+        for (SynchronizedTask task : tasks) {
+            standardThreadPool.submit(task);
         }
         setChanged();
         notifySubscribers();
@@ -162,8 +162,8 @@ public abstract class AbstractTaskSynchronizer<E extends SynchronizedRunnable> i
         running = false;
 
         temporizerFuture.cancel(false);
-        for (SynchronizedRunnable runnable : runnables) {
-            runnable.stop();
+        for (SynchronizedTask task : tasks) {
+            task.stop();
         }
         setChanged();
         notifySubscribers();
@@ -176,17 +176,17 @@ public abstract class AbstractTaskSynchronizer<E extends SynchronizedRunnable> i
         // if there are new tasks to schedule or to unschedule
         if (nbNewTasksToAdd > 0 || nbTasksToRemove > 0) {
             // 1. update the new barrier
-            barrierForRunnables = new CyclicBarrier(barrierForRunnables.getParties() + nbNewTasksToAdd
+            barrierForTasks = new CyclicBarrier(barrierForTasks.getParties() + nbNewTasksToAdd
                     - nbTasksToRemove, createBarrierTask());
             // 2. update the list of executed tasks
-            runnables.addAll(newTasksToSchedule);
-            runnables.removeAll(tasksToUnschedule);
+            tasks.addAll(newTasksToSchedule);
+            tasks.removeAll(tasksToUnschedule);
             // 3. update the barrier for everyone
-            for (SynchronizedRunnable runnable : runnables) {
-                runnable.changeBarrier(barrierForRunnables);
+            for (SynchronizedTask task : tasks) {
+                task.changeBarrier(barrierForTasks);
             }
             // 4. also change the temporizer barrier
-            temporizer.changeBarrier(barrierForRunnables);
+            temporizer.changeBarrier(barrierForTasks);
             // 5. start the new tasks if needed, or simply purge the list
             while (!newTasksToSchedule.isEmpty()) {
                 E taskToSchedule = newTasksToSchedule.poll();

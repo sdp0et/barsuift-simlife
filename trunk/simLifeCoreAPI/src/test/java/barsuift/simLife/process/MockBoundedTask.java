@@ -18,22 +18,18 @@
  */
 package barsuift.simLife.process;
 
-public class MockSynchronizedRunnable extends AbstractSynchronizedRunnable {
+
+public class MockBoundedTask extends BoundedTask {
 
     private int nbExecuted;
 
-    public MockSynchronizedRunnable() {
-        super();
+    public MockBoundedTask(BoundedTaskState state) {
+        super(state);
         resetNbExecuted();
     }
 
     @Override
-    public void executeStep() {
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-            // nothing to do
-        }
+    public void executeBoundedStep() {
         nbExecuted++;
     }
 

@@ -2,11 +2,11 @@ package barsuift.simLife.process;
 
 import barsuift.simLife.tree.Photosynthetic;
 
-public class Photosynthesis extends CyclicRunnable {
+public class Photosynthesis extends CyclicTask {
 
     private final Photosynthetic photosynthetic;
 
-    public Photosynthesis(CyclicRunnableState state, Photosynthetic photosynthetic) {
+    public Photosynthesis(CyclicTaskState state, Photosynthetic photosynthetic) {
         super(state);
         this.photosynthetic = photosynthetic;
     }

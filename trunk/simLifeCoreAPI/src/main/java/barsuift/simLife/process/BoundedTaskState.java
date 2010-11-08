@@ -21,37 +21,36 @@ package barsuift.simLife.process;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.condition.CyclicConditionState;
+import barsuift.simLife.condition.BoundConditionState;
 
 @XmlRootElement
-// TODO 000. merge CyclicRunnableState and BoundedRunnableState into SynchronizedRunnableState
-public class CyclicRunnableState implements State {
+public class BoundedTaskState implements State {
 
-    private CyclicConditionState executionCondition;
+    private BoundConditionState endingCondition;
 
-    public CyclicRunnableState() {
+    public BoundedTaskState() {
         super();
-        this.executionCondition = new CyclicConditionState(1, 0);
+        endingCondition = new BoundConditionState();
     }
 
-    public CyclicRunnableState(CyclicConditionState executionCondition) {
+    public BoundedTaskState(BoundConditionState endingCondition) {
         super();
-        this.executionCondition = executionCondition;
+        this.endingCondition = endingCondition;
     }
 
-    public CyclicConditionState getExecutionCondition() {
-        return executionCondition;
+    public BoundConditionState getEndingCondition() {
+        return endingCondition;
     }
 
-    public void setExecutionCondition(CyclicConditionState executionCondition) {
-        this.executionCondition = executionCondition;
+    public void setEndingCondition(BoundConditionState endingCondition) {
+        this.endingCondition = endingCondition;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((executionCondition == null) ? 0 : executionCondition.hashCode());
+        result = prime * result + ((endingCondition == null) ? 0 : endingCondition.hashCode());
         return result;
     }
 
@@ -63,19 +62,19 @@ public class CyclicRunnableState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CyclicRunnableState other = (CyclicRunnableState) obj;
-        if (executionCondition == null) {
-            if (other.executionCondition != null)
+        BoundedTaskState other = (BoundedTaskState) obj;
+        if (endingCondition == null) {
+            if (other.endingCondition != null)
                 return false;
         } else
-            if (!executionCondition.equals(other.executionCondition))
+            if (!endingCondition.equals(other.endingCondition))
                 return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "CyclicRunnableState [executionCondition=" + executionCondition + "]";
+        return "BoundedTaskState [endingCondition=" + endingCondition + "]";
     }
 
 }

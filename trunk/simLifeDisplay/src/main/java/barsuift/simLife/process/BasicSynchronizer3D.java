@@ -23,11 +23,11 @@ import barsuift.simLife.message.Publisher;
 /**
  * This synchronizer is able to work by steps of increments.
  * <p>
- * It manages {@link SplitBoundedRunnable} and remove them from the list of scheduled tasks when they have reach their
+ * It manages {@link SplitBoundedTask} and remove them from the list of scheduled tasks when they have reach their
  * bound.
  * </p>
  */
-public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedRunnable> implements Synchronizer3D {
+public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedTask> implements Synchronizer3D {
 
     private static final int RATIO_CORE_3D = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
 
@@ -52,8 +52,8 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedRu
     public void setStepSize(int stepSize) {
         this.stepSize = stepSize;
         stepBeforeSynchro = RATIO_CORE_3D / stepSize;
-        for (SplitBoundedRunnable runnable : getRunnables()) {
-            runnable.setStepSize(stepSize);
+        for (SplitBoundedTask task : getTasks()) {
+            task.setStepSize(stepSize);
         }
     }
 
@@ -68,15 +68,15 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedRu
     }
 
     @Override
-    public void schedule(SplitBoundedRunnable runnable) {
-        super.schedule(runnable);
-        runnable.addSubscriber(this);
+    public void schedule(SplitBoundedTask task) {
+        super.schedule(task);
+        task.addSubscriber(this);
     }
 
     @Override
-    public void unschedule(SplitBoundedRunnable runnable) {
-        super.unschedule(runnable);
-        runnable.deleteSubscriber(this);
+    public void unschedule(SplitBoundedTask task) {
+        super.unschedule(task);
+        task.deleteSubscriber(this);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedRu
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        unschedule((SplitBoundedRunnable) publisher);
+        unschedule((SplitBoundedTask) publisher);
     }
 
     @Override

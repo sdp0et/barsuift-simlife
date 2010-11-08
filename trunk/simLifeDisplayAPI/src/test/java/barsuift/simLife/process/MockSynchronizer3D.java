@@ -35,11 +35,11 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
 
     private int scheduleCalled;
 
-    private List<Runnable> runnablesToSchedule;
+    private List<SynchronizedTask> tasksToSchedule;
 
     private int unscheduleCalled;
 
-    private List<Runnable> runnablesToUnschedule;
+    private List<SynchronizedTask> tasksToUnschedule;
 
     private int startCalled;
 
@@ -66,9 +66,9 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
         barrier = new CyclicBarrier(1);
         running = false;
         scheduleCalled = 0;
-        runnablesToSchedule = new ArrayList<Runnable>();
+        tasksToSchedule = new ArrayList<SynchronizedTask>();
         unscheduleCalled = 0;
-        runnablesToUnschedule = new ArrayList<Runnable>();
+        tasksToUnschedule = new ArrayList<SynchronizedTask>();
         startCalled = 0;
         stopCalled = 0;
         state = DisplayDataCreatorForTests.createSpecificSynchronizer3DState();
@@ -97,31 +97,31 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
     }
 
     @Override
-    public void schedule(SplitBoundedRunnable runnable) {
+    public void schedule(SplitBoundedTask task) {
         scheduleCalled++;
-        runnablesToSchedule.add(runnable);
+        tasksToSchedule.add(task);
     }
 
     public int getNbScheduleCalled() {
         return scheduleCalled;
     }
 
-    public List<Runnable> getScheduledRunnables() {
-        return runnablesToSchedule;
+    public List<SynchronizedTask> getScheduledTasks() {
+        return tasksToSchedule;
     }
 
     @Override
-    public void unschedule(SplitBoundedRunnable runnable) {
+    public void unschedule(SplitBoundedTask task) {
         unscheduleCalled++;
-        runnablesToUnschedule.add(runnable);
+        tasksToUnschedule.add(task);
     }
 
     public int getNbUnscheduleCalled() {
         return unscheduleCalled;
     }
 
-    public List<Runnable> getUnscheduledRunnables() {
-        return runnablesToUnschedule;
+    public List<SynchronizedTask> getUnscheduledTasks() {
+        return tasksToUnschedule;
     }
 
 

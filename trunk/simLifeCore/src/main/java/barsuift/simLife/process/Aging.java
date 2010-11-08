@@ -21,11 +21,11 @@ package barsuift.simLife.process;
 import barsuift.simLife.LivingPart;
 
 
-public class Aging extends CyclicRunnable {
+public class Aging extends CyclicTask {
 
     private final LivingPart livingPart;
 
-    public Aging(CyclicRunnableState state, LivingPart livingPart) {
+    public Aging(CyclicTaskState state, LivingPart livingPart) {
         super(state);
         this.livingPart = livingPart;
     }

@@ -9,11 +9,11 @@ import barsuift.simLife.tree.TreeBranchPart;
 import barsuift.simLife.tree.TreeLeaf;
 
 
-public class TreeGrowth extends CyclicRunnable {
+public class TreeGrowth extends CyclicTask {
 
     private final Tree tree;
 
-    public TreeGrowth(CyclicRunnableState state, Tree tree) {
+    public TreeGrowth(CyclicTaskState state, Tree tree) {
         super(state);
         this.tree = tree;
     }

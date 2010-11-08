@@ -6,23 +6,23 @@ import junit.framework.TestCase;
 import barsuift.simLife.condition.CyclicConditionState;
 
 
-public class CyclicRunnableTest extends TestCase {
+public class CyclicTaskTest extends TestCase {
 
-    private MockCyclicRunnable cyclicRun;
+    private MockCyclicTask cyclicRun;
 
-    private CyclicRunnableState state;
+    private CyclicTaskState state;
 
-    private MockSingleRunSynchronizedRunnable barrierReleaser;
+    private MockSingleSynchronizedTask barrierReleaser;
 
     protected void setUp() throws Exception {
         super.setUp();
         // make sure the barrier will block the process as long as the other mock process is not run
         CyclicBarrier barrier = new CyclicBarrier(2);
         CyclicConditionState executionConditionState = new CyclicConditionState(3, 0);
-        state = new CyclicRunnableState(executionConditionState);
-        barrierReleaser = new MockSingleRunSynchronizedRunnable();
+        state = new CyclicTaskState(executionConditionState);
+        barrierReleaser = new MockSingleSynchronizedTask();
         barrierReleaser.changeBarrier(barrier);
-        cyclicRun = new MockCyclicRunnable(state);
+        cyclicRun = new MockCyclicTask(state);
         cyclicRun.changeBarrier(barrier);
     }
 
@@ -38,7 +38,7 @@ public class CyclicRunnableTest extends TestCase {
         // not executed once as it should wait 3 times before executing
         assertEquals(0, cyclicRun.getNbExecuted());
 
-        // test we can not run the same runnable again
+        // test we can not run the same task again
         try {
             cyclicRun.run();
             fail("Should throw an IllegalStateException");

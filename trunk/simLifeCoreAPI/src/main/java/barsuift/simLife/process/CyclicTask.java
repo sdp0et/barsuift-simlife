@@ -31,18 +31,18 @@ import barsuift.simLife.condition.CyclicCondition;
  */
 // TODO 002. create split unbounded condition
 // TODO 002. create split cyclic condition
-// TODO 001. refactor runnables to make them common
-// TODO 000. merge with BoundedRunnable
-// TODO 004. add a startCondition to SynchronizedRunnable : a task can wait a notification before it starts
-// TODO 004. add a pauseCondition to SynchronizedRunnable : a task can pause and wait to restart later (with a timeout)
-public abstract class CyclicRunnable extends AbstractSynchronizedRunnable implements
-        Persistent<CyclicRunnableState> {
+// TODO 001. refactor tasks to make them common
+// TODO 000. merge with BoundedTask
+// TODO 004. add a startCondition to SynchronizedTask : a task can wait a notification before it starts
+// TODO 004. add a pauseCondition to SynchronizedTask : a task can pause and wait to restart later (with a timeout)
+public abstract class CyclicTask extends AbstractSynchronizedTask implements
+        Persistent<CyclicTaskState> {
 
-    private final CyclicRunnableState state;
+    private final CyclicTaskState state;
 
     private final CyclicCondition executionCondition;
 
-    public CyclicRunnable(CyclicRunnableState state) {
+    public CyclicTask(CyclicTaskState state) {
         super();
         this.state = state;
         this.executionCondition = new CyclicCondition(state.getExecutionCondition());
@@ -56,7 +56,7 @@ public abstract class CyclicRunnable extends AbstractSynchronizedRunnable implem
     }
 
     @Override
-    public CyclicRunnableState getState() {
+    public CyclicTaskState getState() {
         synchronize();
         return state;
     }

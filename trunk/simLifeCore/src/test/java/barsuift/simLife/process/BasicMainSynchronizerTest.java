@@ -17,9 +17,9 @@ public class BasicMainSynchronizerTest extends TestCase {
 
     private MockInstrumentedSynchronizer3D synchronizer3D;
 
-    private MockSplitBoundedRunnable task3D;
+    private MockSplitBoundedTask task3D;
 
-    private MockSynchronizedRunnable taskCore;
+    private MockSynchronizedTask taskCore;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -33,13 +33,13 @@ public class BasicMainSynchronizerTest extends TestCase {
         MockUniverse mockUniverse = new MockUniverse();
         synchronizerCore = new MockInstrumentedSynchronizerCore(new SynchronizerCoreState(speed));
         mockUniverse.setSynchronizer(synchronizerCore);
-        taskCore = new MockSynchronizedRunnable();
+        taskCore = new MockSynchronizedTask();
         synchronizerCore.schedule(taskCore);
 
         synchronizer3D = new MockInstrumentedSynchronizer3D(new Synchronizer3DState());
         synchronizer3D.setStepSize(stepSize);
         ((MockUniverse3D) mockUniverse.getUniverse3D()).setSynchronizer(synchronizer3D);
-        task3D = new MockSplitBoundedRunnable(new SplitBoundedRunnableState(60, 0, stepSize));
+        task3D = new MockSplitBoundedTask(new SplitBoundedTaskState(60, 0, stepSize));
         synchronizer3D.schedule(task3D);
 
         state = new MainSynchronizerState();
