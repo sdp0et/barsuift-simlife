@@ -27,4 +27,13 @@ package barsuift.simLife;
  */
 public interface State {
 
+    @Override
+    public int hashCode();
+
+    @Override
+    public boolean equals(Object obj);
+
+    @Override
+    public String toString();
+
 }

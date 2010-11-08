@@ -1,5 +1,7 @@
 package barsuift.simLife.condition;
 
+import barsuift.simLife.Persistent;
+
 /**
  * A cyclic condition evaluates to false except on a cyclic period.
  * <p>
@@ -16,7 +18,8 @@ package barsuift.simLife.condition;
  * </p>
  * 
  */
-public class CyclicCondition implements Condition<CyclicConditionState> {
+//TODO 001. create SplitCyclicCondition
+public class CyclicCondition implements Condition, Persistent<CyclicConditionState> {
 
     private final CyclicConditionState state;
 

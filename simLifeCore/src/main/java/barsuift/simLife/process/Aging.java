@@ -21,17 +21,17 @@ package barsuift.simLife.process;
 import barsuift.simLife.LivingPart;
 
 
-public class Aging extends CyclicTask {
+public class Aging extends ConditionalTask {
 
     private final LivingPart livingPart;
 
-    public Aging(CyclicTaskState state, LivingPart livingPart) {
+    public Aging(ConditionalTaskState state, LivingPart livingPart) {
         super(state);
         this.livingPart = livingPart;
     }
 
     @Override
-    public void executeCyclicStep() {
+    public void executeConditionalStep() {
         livingPart.age();
     }
 }

@@ -2,17 +2,17 @@ package barsuift.simLife.process;
 
 import barsuift.simLife.tree.Photosynthetic;
 
-public class Photosynthesis extends CyclicTask {
+public class Photosynthesis extends ConditionalTask {
 
     private final Photosynthetic photosynthetic;
 
-    public Photosynthesis(CyclicTaskState state, Photosynthetic photosynthetic) {
+    public Photosynthesis(ConditionalTaskState state, Photosynthetic photosynthetic) {
         super(state);
         this.photosynthetic = photosynthetic;
     }
 
     @Override
-    public void executeCyclicStep() {
+    public void executeConditionalStep() {
         photosynthetic.collectSolarEnergy();
     }
 }

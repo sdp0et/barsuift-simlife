@@ -20,35 +20,33 @@ package barsuift.simLife.process;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.condition.BoundCondition;
-import barsuift.simLife.condition.Condition;
+import barsuift.simLife.condition.BoundConditionFactory;
+import barsuift.simLife.condition.CyclicCondition;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
 
 /**
- * This abstract class represents a bounded task that automatically stops after a number of run.
- * <p>
- * It has a {@code bound} parameter which defines the number of call before it stops. If {@code bound=n}, the task is
- * executed exactly {@code n} times, and then stops.
- * </p>
- * <p>
- * The bounded task notifies its subscribers when it reaches its bound and stops.
- * </p>
+ * A conditional task is a task with an execution condition and an ending condition.
  */
-public abstract class BoundedTask extends AbstractSynchronizedTask implements Publisher,
-        Persistent<BoundedTaskState> {
+public abstract class ConditionalTask extends AbstractSynchronizedTask implements Publisher,
+        Persistent<ConditionalTaskState> {
 
-    private final BoundedTaskState state;
+    private final ConditionalTaskState state;
 
-    private final Condition<?> endingCondition;
+    private final CyclicCondition executionCondition;
+
+    private final BoundCondition endingCondition;
 
     private final Publisher publisher = new BasicPublisher(this);
 
-    public BoundedTask(BoundedTaskState state) {
+    public ConditionalTask(ConditionalTaskState state) {
         super();
         this.state = state;
-        this.endingCondition = new BoundCondition(state.getEndingCondition());
+        this.executionCondition = new CyclicCondition(state.getExecutionCondition());
+        BoundConditionFactory factory = new BoundConditionFactory();
+        this.endingCondition = factory.createBoundCondition(state.getEndingCondition());
     }
 
     @Override
@@ -58,21 +56,24 @@ public abstract class BoundedTask extends AbstractSynchronizedTask implements Pu
             setChanged();
             notifySubscribers();
         }
-        executeBoundedStep();
+        if (executionCondition.evaluate()) {
+            executeConditionalStep();
+        }
     }
 
+    public abstract void executeConditionalStep();
+
     @Override
-    public BoundedTaskState getState() {
+    public ConditionalTaskState getState() {
         synchronize();
         return state;
     }
 
     @Override
     public void synchronize() {
+        executionCondition.synchronize();
         endingCondition.synchronize();
     }
-
-    public abstract void executeBoundedStep();
 
     public void addSubscriber(Subscriber subscriber) {
         publisher.addSubscriber(subscriber);

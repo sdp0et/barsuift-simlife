@@ -38,7 +38,7 @@ import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.j3d.universe.physic.Physics3DState;
-import barsuift.simLife.process.CyclicTaskState;
+import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.SynchronizerCoreState;
@@ -241,9 +241,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(createRandomTreeBranchState());
         }
-        CyclicTaskState photosynthesis = UtilDataCreatorForTests.createRandomCyclicTaskState();
-        CyclicTaskState aging = UtilDataCreatorForTests.createRandomCyclicTaskState();
-        CyclicTaskState growth = UtilDataCreatorForTests.createRandomCyclicTaskState();
+        ConditionalTaskState photosynthesis = UtilDataCreatorForTests.createRandomConditionalTaskState();
+        ConditionalTaskState aging = UtilDataCreatorForTests.createRandomConditionalTaskState();
+        ConditionalTaskState growth = UtilDataCreatorForTests.createRandomConditionalTaskState();
         TreeTrunkState trunkState = createRandomTreeTrunkState();
         float height = (float) Math.random();
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
@@ -271,9 +271,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(createSpecificTreeBranchState());
         }
-        CyclicTaskState photosynthesis = UtilDataCreatorForTests.createSpecificCyclicTaskState();
-        CyclicTaskState aging = UtilDataCreatorForTests.createSpecificCyclicTaskState();
-        CyclicTaskState growth = UtilDataCreatorForTests.createSpecificCyclicTaskState();
+        ConditionalTaskState photosynthesis = UtilDataCreatorForTests.createSpecificConditionalTaskState();
+        ConditionalTaskState aging = UtilDataCreatorForTests.createSpecificConditionalTaskState();
+        ConditionalTaskState growth = UtilDataCreatorForTests.createSpecificConditionalTaskState();
         TreeTrunkState trunkState = createSpecificTreeTrunkState();
         float height = (float) 4;
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();

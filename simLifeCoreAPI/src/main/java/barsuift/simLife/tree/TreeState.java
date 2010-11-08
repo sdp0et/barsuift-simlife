@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.tree.Tree3DState;
-import barsuift.simLife.process.CyclicTaskState;
+import barsuift.simLife.process.ConditionalTaskState;
 
 @XmlRootElement
 public class TreeState implements State {
@@ -37,11 +37,11 @@ public class TreeState implements State {
 
     private List<TreeBranchState> branches;
 
-    private CyclicTaskState photosynthesis;
+    private ConditionalTaskState photosynthesis;
 
-    private CyclicTaskState aging;
+    private ConditionalTaskState aging;
 
-    private CyclicTaskState growth;
+    private ConditionalTaskState growth;
 
     private TreeTrunkState trunkState;
 
@@ -57,13 +57,13 @@ public class TreeState implements State {
         this.height = 0;
         this.trunkState = new TreeTrunkState();
         this.tree3DState = new Tree3DState();
-        this.photosynthesis = new CyclicTaskState();
-        this.aging = new CyclicTaskState();
-        this.growth = new CyclicTaskState();
+        this.photosynthesis = new ConditionalTaskState();
+        this.aging = new ConditionalTaskState();
+        this.growth = new ConditionalTaskState();
     }
 
     public TreeState(long creationMillis, BigDecimal energy, List<TreeBranchState> branches,
-            CyclicTaskState photosynthesis, CyclicTaskState aging, CyclicTaskState growth,
+            ConditionalTaskState photosynthesis, ConditionalTaskState aging, ConditionalTaskState growth,
             TreeTrunkState trunkState, float height, Tree3DState tree3dState) {
         super();
         this.creationMillis = creationMillis;
@@ -101,27 +101,27 @@ public class TreeState implements State {
         this.branches = branches;
     }
 
-    public CyclicTaskState getPhotosynthesis() {
+    public ConditionalTaskState getPhotosynthesis() {
         return photosynthesis;
     }
 
-    public void setPhotosynthesis(CyclicTaskState photosynthesis) {
+    public void setPhotosynthesis(ConditionalTaskState photosynthesis) {
         this.photosynthesis = photosynthesis;
     }
 
-    public CyclicTaskState getAging() {
+    public ConditionalTaskState getAging() {
         return aging;
     }
 
-    public void setAging(CyclicTaskState aging) {
+    public void setAging(ConditionalTaskState aging) {
         this.aging = aging;
     }
 
-    public CyclicTaskState getGrowth() {
+    public ConditionalTaskState getGrowth() {
         return growth;
     }
 
-    public void setGrowth(CyclicTaskState growth) {
+    public void setGrowth(ConditionalTaskState growth) {
         this.growth = growth;
     }
 

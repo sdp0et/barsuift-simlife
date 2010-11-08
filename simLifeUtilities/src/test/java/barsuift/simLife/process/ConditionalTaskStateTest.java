@@ -16,24 +16,32 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.condition;
+package barsuift.simLife.process;
 
-import junit.framework.TestCase;
-import barsuift.simLife.process.MockSingleSynchronizedTask;
-import barsuift.simLife.process.MockSynchronizedTask;
+import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.UtilDataCreatorForTests;
 
-public class CyclicConditionStateFactoryTest extends TestCase {
 
-    public void testCreateCyclicTaskState() {
-        CyclicConditionStateFactory factory = new CyclicConditionStateFactory();
+public class ConditionalTaskStateTest extends JaxbTestCase {
 
-        CyclicConditionState mockSynchronizedState = factory.createCyclicConditionState(MockSynchronizedTask.class);
-        assertEquals(5, mockSynchronizedState.getCycle());
-        assertEquals(0, mockSynchronizedState.getCount());
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-        CyclicConditionState unknownState = factory.createCyclicConditionState(MockSingleSynchronizedTask.class);
-        assertEquals(1, unknownState.getCycle());
-        assertEquals(0, unknownState.getCount());
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    @Override
+    protected String getPackage() {
+        return "barsuift.simLife.process";
+    }
+
+    public void testJaxb() throws Exception {
+        ConditionalTaskState task = UtilDataCreatorForTests.createRandomConditionalTaskState();
+        write(task);
+        ConditionalTaskState task2 = (ConditionalTaskState) read();
+        assertEquals(task, task2);
     }
 
 }

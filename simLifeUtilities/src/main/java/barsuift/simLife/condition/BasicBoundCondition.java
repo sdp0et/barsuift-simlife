@@ -18,14 +18,45 @@
  */
 package barsuift.simLife.condition;
 
-import barsuift.simLife.Persistent;
-
 
 /**
  * A bound condition evaluates to false as long as the bound is not reached. Then it always return true;
  * 
  */
-// TODO 001. create SplitBoundCondition
-public interface BoundCondition extends Condition, Persistent<BoundConditionState> {
+public class BasicBoundCondition implements BoundCondition {
+
+    private final BoundConditionState state;
+
+    private final int bound;
+
+    private int count;
+
+    public BasicBoundCondition(BoundConditionState state) {
+        super();
+        this.state = state;
+        this.bound = state.getBound();
+        this.count = state.getCount();
+    }
+
+    /**
+     * Increment a counter and then test if the counter is greater or equal to the bound.
+     */
+    @Override
+    public boolean evaluate() {
+        count++;
+        return count >= bound;
+    }
+
+    @Override
+    public BoundConditionState getState() {
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setCount(count);
+        state.setBound(bound);
+    }
 
 }

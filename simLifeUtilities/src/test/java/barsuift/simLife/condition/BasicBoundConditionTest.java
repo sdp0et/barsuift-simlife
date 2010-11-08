@@ -3,16 +3,16 @@ package barsuift.simLife.condition;
 import junit.framework.TestCase;
 
 
-public class BoundConditionTest extends TestCase {
+public class BasicBoundConditionTest extends TestCase {
 
-    private BoundCondition condition;
+    private BasicBoundCondition condition;
 
     private BoundConditionState state;
 
     protected void setUp() throws Exception {
         super.setUp();
         state = new BoundConditionState(5, 2);
-        condition = new BoundCondition(state);
+        condition = new BasicBoundCondition(state);
     }
 
     protected void tearDown() throws Exception {

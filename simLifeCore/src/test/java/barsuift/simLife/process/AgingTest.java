@@ -27,10 +27,8 @@ public class AgingTest extends TestCase {
 
     public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
-
-        Aging aging = new Aging(UtilDataCreatorForTests.createSpecificCyclicTaskState(), mockTree);
-        aging.executeCyclicStep();
-
+        Aging aging = new Aging(UtilDataCreatorForTests.createSpecificConditionalTaskState(), mockTree);
+        aging.executeConditionalStep();
         assertEquals(1, mockTree.getNbAgeCalled());
     }
 

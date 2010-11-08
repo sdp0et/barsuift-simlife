@@ -1,3 +1,2 @@
-BoundedTaskState
-CyclicTaskState
+ConditionalTaskState
 SplitBoundedTaskState

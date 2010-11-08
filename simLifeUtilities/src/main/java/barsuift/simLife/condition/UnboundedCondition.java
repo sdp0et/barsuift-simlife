@@ -16,17 +16,35 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.condition;
 
-import barsuift.simLife.condition.BoundConditionState;
-import barsuift.simLife.condition.BoundConditionStateFactory;
 
-public class BoundedTaskStateFactory {
+/**
+ * An unbounded condition always evaluates to false.
+ * 
+ */
+public class UnboundedCondition implements BoundCondition {
 
-    public BoundedTaskState createBoundedTaskState(Class<? extends SynchronizedTask> clazz) {
-        BoundConditionStateFactory factory = new BoundConditionStateFactory();
-        BoundConditionState endingCondition = factory.createBoundConditionState(clazz);
-        return new BoundedTaskState(endingCondition);
+    public UnboundedCondition() {
+        super();
+    }
+
+    /**
+     * Always return false.
+     */
+    @Override
+    public boolean evaluate() {
+        return false;
+    }
+
+    @Override
+    public BoundConditionState getState() {
+        return new BoundConditionState(-1, 0);
+    }
+
+    @Override
+    public void synchronize() {
+        // nothing to do
     }
 
 }
