@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.process;
 
+import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.JaxbTestCase;
 
 
@@ -37,7 +38,7 @@ public class UnfrequentRunnableStateTest extends JaxbTestCase {
     }
 
     public void testJaxb() throws Exception {
-        UnfrequentRunnableState runnable = new UnfrequentRunnableState(3, 2);
+        UnfrequentRunnableState runnable = CoreDataCreatorForTests.createRandomUnfrequentRunnableState();
         write(runnable);
         UnfrequentRunnableState runnable2 = (UnfrequentRunnableState) read();
         assertEquals(runnable, runnable2);

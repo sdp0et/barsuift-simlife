@@ -24,16 +24,17 @@ import java.util.Properties;
 
 import barsuift.simLife.process.SynchronizedRunnable;
 
-public class BoundConditionStateFactory {
+public class CyclicConditionStateFactory {
 
     /**
-     * The default bound to use when no value is found in the properties file
+     * The default cycle to use when no value is found in the properties file
      */
-    private static final int DEFAULT_BOUND = 1;
+    private static final int DEFAULT_CYCLE = 1;
 
-    private static final String PROPERTIES_FILE = "barsuift/simLife/process/BoundedRunnables.properties";
+    // TODO 000. merge cyclic and bound factories
+    private static final String PROPERTIES_FILE = "barsuift/simLife/process/CyclicRunnables.properties";
 
-    private static final String BOUND_SUFFIX = ".bound";
+    private static final String CYCLE_SUFFIX = ".cycle";
 
     private static final Properties prop = loadProperties();;
 
@@ -58,12 +59,12 @@ public class BoundConditionStateFactory {
         return prop;
     }
 
-    public BoundConditionState createBoundConditionState(Class<? extends SynchronizedRunnable> clazz) {
-        String boundStr = getProperty(clazz.getSimpleName() + BOUND_SUFFIX);
+    public CyclicConditionState createCyclicConditionState(Class<? extends SynchronizedRunnable> clazz) {
+        String boundStr = getProperty(clazz.getSimpleName() + CYCLE_SUFFIX);
 
-        int bound = (boundStr.length() == 0) ? DEFAULT_BOUND : Integer.parseInt(boundStr);
+        int bound = (boundStr.length() == 0) ? DEFAULT_CYCLE : Integer.parseInt(boundStr);
         int count = 0;
-        return new BoundConditionState(bound, count);
+        return new CyclicConditionState(bound, count);
 
     }
 

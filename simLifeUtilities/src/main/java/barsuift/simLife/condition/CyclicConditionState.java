@@ -16,42 +16,53 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.condition;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.condition.CyclicConditionState;
 
 @XmlRootElement
-// TODO 000. merge UnfrequentRunnableState and BoundedRunnableState into SynchronizedRunnableState
-public class UnfrequentRunnableState implements State {
+public class CyclicConditionState implements State {
 
-    private CyclicConditionState executionCondition;
+    private int cycle;
 
-    public UnfrequentRunnableState() {
+    private int count;
+
+    public CyclicConditionState() {
         super();
-        this.executionCondition = new CyclicConditionState(1, 0);
+        cycle = 1;
+        count = 0;
     }
 
-    public UnfrequentRunnableState(CyclicConditionState executionCondition) {
+    public CyclicConditionState(int cycle, int count) {
         super();
-        this.executionCondition = executionCondition;
+        this.cycle = cycle;
+        this.count = count;
     }
 
-    public CyclicConditionState getExecutionCondition() {
-        return executionCondition;
+    public int getCycle() {
+        return cycle;
     }
 
-    public void setExecutionCondition(CyclicConditionState executionCondition) {
-        this.executionCondition = executionCondition;
+    public void setCycle(int cycle) {
+        this.cycle = cycle;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((executionCondition == null) ? 0 : executionCondition.hashCode());
+        result = prime * result + count;
+        result = prime * result + cycle;
         return result;
     }
 
@@ -63,19 +74,17 @@ public class UnfrequentRunnableState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        UnfrequentRunnableState other = (UnfrequentRunnableState) obj;
-        if (executionCondition == null) {
-            if (other.executionCondition != null)
-                return false;
-        } else
-            if (!executionCondition.equals(other.executionCondition))
-                return false;
+        CyclicConditionState other = (CyclicConditionState) obj;
+        if (count != other.count)
+            return false;
+        if (cycle != other.cycle)
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "UnfrequentRunnableState [executionCondition=" + executionCondition + "]";
+        return "CyclicConditionState [cycle=" + cycle + ", count=" + count + "]";
     }
 
 }

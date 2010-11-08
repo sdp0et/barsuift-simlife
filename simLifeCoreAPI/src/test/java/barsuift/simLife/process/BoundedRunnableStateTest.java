@@ -18,8 +18,8 @@
  */
 package barsuift.simLife.process;
 
+import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.JaxbTestCase;
-import barsuift.simLife.condition.BoundConditionState;
 
 
 public class BoundedRunnableStateTest extends JaxbTestCase {
@@ -38,7 +38,7 @@ public class BoundedRunnableStateTest extends JaxbTestCase {
     }
 
     public void testJaxb() throws Exception {
-        BoundedRunnableState runnable = new BoundedRunnableState(new BoundConditionState(3, 2));
+        BoundedRunnableState runnable = CoreDataCreatorForTests.createRandomBoundedRunnableState();
         write(runnable);
         BoundedRunnableState runnable2 = (BoundedRunnableState) read();
         assertEquals(runnable, runnable2);
