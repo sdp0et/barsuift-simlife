@@ -33,7 +33,7 @@ import barsuift.simLife.message.Subscriber;
  * The bounded task notifies its subscribers when it reaches its bound and stops.
  * </p>
  */
-// TODO 002. use condition
+// TODO 002. create SplitTask and use condition
 public abstract class SplitBoundedTask extends AbstractSynchronizedTask implements Publisher,
         Persistent<SplitBoundedTaskState> {
 

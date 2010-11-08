@@ -3,22 +3,23 @@ package barsuift.simLife.condition;
 import barsuift.simLife.Persistent;
 
 /**
- * A cyclic condition evaluates to false except on a cyclic period.
+ * A split cyclic condition evaluates to false except on a cyclic period.
  * <p>
- * For example, with a cycle of 3, successive calls to evaluate returns the following values :
+ * For example, with a cycle of 3, and a stepSize of 2, successive calls to evaluate returns the following values :
  * <ol>
- * <li>{@code false}</li>
- * <li>{@code false}</li>
- * <li>{@code true}</li>
- * <li>{@code false}</li>
- * <li>{@code false}</li>
- * <li>{@code true}</li>
+ * <li>{@code false} : (2/3)</li>
+ * <li>{@code true} : (4/3)</li>
+ * <li>{@code true} : (6/3)</li>
+ * <li>{@code false} : (8/3)</li>
+ * <li>{@code true} : (10/3)</li>
+ * <li>{@code true} : (12/3)</li>
+ * <li>{@code false} : (14/3)</li>
  * <li>...</li>
  * </ol>
  * </p>
  * 
  */
-public class CyclicCondition implements Condition, Persistent<CyclicConditionState> {
+public class SplitCyclicCondition implements SplitCondition, Persistent<CyclicConditionState> {
 
     private final CyclicConditionState state;
 
@@ -26,7 +27,7 @@ public class CyclicCondition implements Condition, Persistent<CyclicConditionSta
 
     private int count;
 
-    public CyclicCondition(CyclicConditionState state) {
+    public SplitCyclicCondition(CyclicConditionState state) {
         super();
         this.state = state;
         this.cycle = state.getCycle();
@@ -37,10 +38,10 @@ public class CyclicCondition implements Condition, Persistent<CyclicConditionSta
      * Increment a counter and then test if the counter is equal to the cycle. If true, the counter is reseted.
      */
     @Override
-    public boolean evaluate() {
-        count++;
-        if (count == cycle) {
-            count = 0;
+    public boolean evaluate(int stepSize) {
+        count += stepSize;
+        if (count >= cycle) {
+            count = count % cycle;
             return true;
         }
         return false;
@@ -57,5 +58,6 @@ public class CyclicCondition implements Condition, Persistent<CyclicConditionSta
         state.setCount(count);
         state.setCycle(cycle);
     }
+
 
 }

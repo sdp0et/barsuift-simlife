@@ -23,7 +23,7 @@ package barsuift.simLife.condition;
  * A bound condition evaluates to false as long as the bound is not reached. Then it always return true.
  * 
  */
-public class BasicBoundCondition implements BoundCondition {
+public class BasicSplitBoundCondition implements SplitBoundCondition {
 
     private final BoundConditionState state;
 
@@ -31,7 +31,7 @@ public class BasicBoundCondition implements BoundCondition {
 
     private int count;
 
-    public BasicBoundCondition(BoundConditionState state) {
+    public BasicSplitBoundCondition(BoundConditionState state) {
         super();
         this.state = state;
         this.bound = state.getBound();
@@ -39,11 +39,11 @@ public class BasicBoundCondition implements BoundCondition {
     }
 
     /**
-     * Increment a counter and then test if the counter is greater or equal to the bound.
+     * Always return false.
      */
     @Override
-    public boolean evaluate() {
-        count++;
+    public boolean evaluate(int stepSize) {
+        count += stepSize;
         return count >= bound;
     }
 
