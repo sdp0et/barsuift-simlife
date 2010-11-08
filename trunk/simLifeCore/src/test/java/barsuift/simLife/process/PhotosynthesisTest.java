@@ -25,11 +25,11 @@ import barsuift.simLife.tree.MockTree;
 
 public class PhotosynthesisTest extends TestCase {
 
-    public void testExecuteUnfrequentStep() {
+    public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
         Photosynthesis photosynthesis = new Photosynthesis(
-                CoreDataCreatorForTests.createSpecificUnfrequentRunnableState(), mockTree);
-        photosynthesis.executeUnfrequentStep();
+                CoreDataCreatorForTests.createSpecificCyclicRunnableState(), mockTree);
+        photosynthesis.executeCyclicStep();
         assertEquals(1, mockTree.getNbCollectSolarEnergyCalled());
     }
 

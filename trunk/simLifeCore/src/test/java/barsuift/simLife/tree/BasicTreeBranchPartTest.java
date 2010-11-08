@@ -710,8 +710,8 @@ public class BasicTreeBranchPartTest extends TestCase {
         assertTrue("sum1=" + sum1, sum1 < 550);
         assertTrue("sum2=" + sum2, sum2 > 240);
         assertTrue("sum2=" + sum2, sum2 < 360);
-        assertTrue("sum3=" + sum3, sum3 > 160);
-        assertTrue("sum3=" + sum3, sum3 < 240);
+        assertTrue("sum3=" + sum3, sum3 > 150);
+        assertTrue("sum3=" + sum3, sum3 < 250);
     }
 
     /**

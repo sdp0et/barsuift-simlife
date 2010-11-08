@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.tree.Tree3DState;
-import barsuift.simLife.process.UnfrequentRunnableState;
+import barsuift.simLife.process.CyclicRunnableState;
 
 @XmlRootElement
 public class TreeState implements State {
@@ -37,11 +37,11 @@ public class TreeState implements State {
 
     private List<TreeBranchState> branches;
 
-    private UnfrequentRunnableState photosynthesis;
+    private CyclicRunnableState photosynthesis;
 
-    private UnfrequentRunnableState aging;
+    private CyclicRunnableState aging;
 
-    private UnfrequentRunnableState growth;
+    private CyclicRunnableState growth;
 
     private TreeTrunkState trunkState;
 
@@ -57,13 +57,13 @@ public class TreeState implements State {
         this.height = 0;
         this.trunkState = new TreeTrunkState();
         this.tree3DState = new Tree3DState();
-        this.photosynthesis = new UnfrequentRunnableState();
-        this.aging = new UnfrequentRunnableState();
-        this.growth = new UnfrequentRunnableState();
+        this.photosynthesis = new CyclicRunnableState();
+        this.aging = new CyclicRunnableState();
+        this.growth = new CyclicRunnableState();
     }
 
     public TreeState(long creationMillis, BigDecimal energy, List<TreeBranchState> branches,
-            UnfrequentRunnableState photosynthesis, UnfrequentRunnableState aging, UnfrequentRunnableState growth,
+            CyclicRunnableState photosynthesis, CyclicRunnableState aging, CyclicRunnableState growth,
             TreeTrunkState trunkState, float height, Tree3DState tree3dState) {
         super();
         this.creationMillis = creationMillis;
@@ -101,27 +101,27 @@ public class TreeState implements State {
         this.branches = branches;
     }
 
-    public UnfrequentRunnableState getPhotosynthesis() {
+    public CyclicRunnableState getPhotosynthesis() {
         return photosynthesis;
     }
 
-    public void setPhotosynthesis(UnfrequentRunnableState photosynthesis) {
+    public void setPhotosynthesis(CyclicRunnableState photosynthesis) {
         this.photosynthesis = photosynthesis;
     }
 
-    public UnfrequentRunnableState getAging() {
+    public CyclicRunnableState getAging() {
         return aging;
     }
 
-    public void setAging(UnfrequentRunnableState aging) {
+    public void setAging(CyclicRunnableState aging) {
         this.aging = aging;
     }
 
-    public UnfrequentRunnableState getGrowth() {
+    public CyclicRunnableState getGrowth() {
         return growth;
     }
 
-    public void setGrowth(UnfrequentRunnableState growth) {
+    public void setGrowth(CyclicRunnableState growth) {
         this.growth = growth;
     }
 

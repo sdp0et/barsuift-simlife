@@ -99,7 +99,7 @@ public class SplitBoundedRunnableState implements State {
 
     @Override
     public String toString() {
-        return "UnfrequentRunnableState [bound=" + bound + ", count=" + count + ", stepSize=" + stepSize + "]";
+        return "SplitBoundedRunnableState [bound=" + bound + ", count=" + count + ", stepSize=" + stepSize + "]";
     }
 
 }

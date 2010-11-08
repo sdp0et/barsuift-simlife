@@ -44,7 +44,7 @@ import barsuift.simLife.process.BoundedRunnableState;
 import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.SynchronizerCoreState;
-import barsuift.simLife.process.UnfrequentRunnableState;
+import barsuift.simLife.process.CyclicRunnableState;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.time.SimLifeDateState;
 import barsuift.simLife.tree.TreeBranchPartState;
@@ -144,14 +144,14 @@ public final class CoreDataCreatorForTests {
         return new MainSynchronizerState();
     }
 
-    public static UnfrequentRunnableState createRandomUnfrequentRunnableState() {
+    public static CyclicRunnableState createRandomCyclicRunnableState() {
         CyclicConditionState executionCondition = UtilDataCreatorForTests.createRandomCyclicConditionState();
-        return new UnfrequentRunnableState(executionCondition);
+        return new CyclicRunnableState(executionCondition);
     }
 
-    public static UnfrequentRunnableState createSpecificUnfrequentRunnableState() {
+    public static CyclicRunnableState createSpecificCyclicRunnableState() {
         CyclicConditionState executionCondition = UtilDataCreatorForTests.createSpecificCyclicConditionState();
-        return new UnfrequentRunnableState(executionCondition);
+        return new CyclicRunnableState(executionCondition);
     }
 
     public static BoundedRunnableState createRandomBoundedRunnableState() {
@@ -264,9 +264,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(createRandomTreeBranchState());
         }
-        UnfrequentRunnableState photosynthesis = createRandomUnfrequentRunnableState();
-        UnfrequentRunnableState aging = createRandomUnfrequentRunnableState();
-        UnfrequentRunnableState growth = createRandomUnfrequentRunnableState();
+        CyclicRunnableState photosynthesis = createRandomCyclicRunnableState();
+        CyclicRunnableState aging = createRandomCyclicRunnableState();
+        CyclicRunnableState growth = createRandomCyclicRunnableState();
         TreeTrunkState trunkState = createRandomTreeTrunkState();
         float height = (float) Math.random();
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
@@ -294,9 +294,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(createSpecificTreeBranchState());
         }
-        UnfrequentRunnableState photosynthesis = createSpecificUnfrequentRunnableState();
-        UnfrequentRunnableState aging = createSpecificUnfrequentRunnableState();
-        UnfrequentRunnableState growth = createSpecificUnfrequentRunnableState();
+        CyclicRunnableState photosynthesis = createSpecificCyclicRunnableState();
+        CyclicRunnableState aging = createSpecificCyclicRunnableState();
+        CyclicRunnableState growth = createSpecificCyclicRunnableState();
         TreeTrunkState trunkState = createSpecificTreeTrunkState();
         float height = (float) 4;
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();

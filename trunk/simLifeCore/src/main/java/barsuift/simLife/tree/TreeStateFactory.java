@@ -32,8 +32,8 @@ import barsuift.simLife.j3d.tree.Tree3DStateFactory;
 import barsuift.simLife.process.Aging;
 import barsuift.simLife.process.Photosynthesis;
 import barsuift.simLife.process.TreeGrowth;
-import barsuift.simLife.process.UnfrequentRunnableState;
-import barsuift.simLife.process.UnfrequentRunnableStateFactory;
+import barsuift.simLife.process.CyclicRunnableState;
+import barsuift.simLife.process.CyclicRunnableStateFactory;
 
 public class TreeStateFactory {
 
@@ -54,11 +54,11 @@ public class TreeStateFactory {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(computeRandomBranchState(radius, height));
         }
-        UnfrequentRunnableStateFactory unfrequentRunnableStateFactory = new UnfrequentRunnableStateFactory();
-        UnfrequentRunnableState photosynthesis = unfrequentRunnableStateFactory
-                .createUnfrequentRunnableState(Photosynthesis.class);
-        UnfrequentRunnableState aging = unfrequentRunnableStateFactory.createUnfrequentRunnableState(Aging.class);
-        UnfrequentRunnableState growth = unfrequentRunnableStateFactory.createUnfrequentRunnableState(TreeGrowth.class);
+        CyclicRunnableStateFactory cyclicRunnableStateFactory = new CyclicRunnableStateFactory();
+        CyclicRunnableState photosynthesis = cyclicRunnableStateFactory
+                .createCyclicRunnableState(Photosynthesis.class);
+        CyclicRunnableState aging = cyclicRunnableStateFactory.createCyclicRunnableState(Aging.class);
+        CyclicRunnableState growth = cyclicRunnableStateFactory.createCyclicRunnableState(TreeGrowth.class);
         TreeTrunkStateFactory trunkStateFactory = new TreeTrunkStateFactory();
         TreeTrunkState trunkState = trunkStateFactory.createRandomTreeTrunkState(radius, height);
 

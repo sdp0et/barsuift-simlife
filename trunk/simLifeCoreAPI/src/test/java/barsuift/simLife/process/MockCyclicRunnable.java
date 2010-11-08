@@ -18,17 +18,17 @@
  */
 package barsuift.simLife.process;
 
-public class MockUnfrequentRunnable extends UnfrequentRunnable {
+public class MockCyclicRunnable extends CyclicRunnable {
 
     private int nbExecuted;
 
-    public MockUnfrequentRunnable(UnfrequentRunnableState state) {
+    public MockCyclicRunnable(CyclicRunnableState state) {
         super(state);
         resetNbExecuted();
     }
 
     @Override
-    public void executeUnfrequentStep() {
+    public void executeCyclicStep() {
         nbExecuted++;
     }
 
