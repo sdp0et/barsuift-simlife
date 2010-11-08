@@ -18,30 +18,26 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.JaxbTestCase;
-import barsuift.simLife.UtilDataCreatorForTests;
+public class MockConditionalTask extends ConditionalTask {
 
+    private int nbExecuted;
 
-public class BoundedTaskStateTest extends JaxbTestCase {
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    public MockConditionalTask(ConditionalTaskState state) {
+        super(state);
+        resetNbExecuted();
     }
 
     @Override
-    protected String getPackage() {
-        return "barsuift.simLife.process";
+    public void executeConditionalStep() {
+        nbExecuted++;
     }
 
-    public void testJaxb() throws Exception {
-        BoundedTaskState task = UtilDataCreatorForTests.createRandomBoundedTaskState();
-        write(task);
-        BoundedTaskState task2 = (BoundedTaskState) read();
-        assertEquals(task, task2);
+    public int getNbExecuted() {
+        return nbExecuted;
+    }
+
+    public void resetNbExecuted() {
+        nbExecuted = 0;
     }
 
 }

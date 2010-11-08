@@ -18,14 +18,12 @@
  */
 package barsuift.simLife.condition;
 
-import barsuift.simLife.Persistent;
-import barsuift.simLife.State;
 
 /**
  * A condition which evaluates as a boolean value.
  * 
  */
-public interface Condition<E extends State> extends Persistent<E> {
+public interface Condition {
 
     public boolean evaluate();
 

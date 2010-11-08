@@ -22,20 +22,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.condition.CyclicConditionState;
 
 @XmlRootElement
-public class BoundedTaskState implements State {
+public class ConditionalTaskState implements State {
+
+    private CyclicConditionState executionCondition;
 
     private BoundConditionState endingCondition;
 
-    public BoundedTaskState() {
+    public ConditionalTaskState() {
         super();
-        endingCondition = new BoundConditionState();
+        this.executionCondition = new CyclicConditionState();
+        this.endingCondition = new BoundConditionState();
     }
 
-    public BoundedTaskState(BoundConditionState endingCondition) {
+    public ConditionalTaskState(CyclicConditionState executionCondition, BoundConditionState endingCondition) {
         super();
+        this.executionCondition = executionCondition;
         this.endingCondition = endingCondition;
+    }
+
+    public CyclicConditionState getExecutionCondition() {
+        return executionCondition;
+    }
+
+    public void setExecutionCondition(CyclicConditionState executionCondition) {
+        this.executionCondition = executionCondition;
     }
 
     public BoundConditionState getEndingCondition() {
@@ -51,6 +64,7 @@ public class BoundedTaskState implements State {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((endingCondition == null) ? 0 : endingCondition.hashCode());
+        result = prime * result + ((executionCondition == null) ? 0 : executionCondition.hashCode());
         return result;
     }
 
@@ -62,19 +76,26 @@ public class BoundedTaskState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        BoundedTaskState other = (BoundedTaskState) obj;
+        ConditionalTaskState other = (ConditionalTaskState) obj;
         if (endingCondition == null) {
             if (other.endingCondition != null)
                 return false;
         } else
             if (!endingCondition.equals(other.endingCondition))
                 return false;
+        if (executionCondition == null) {
+            if (other.executionCondition != null)
+                return false;
+        } else
+            if (!executionCondition.equals(other.executionCondition))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "BoundedTaskState [endingCondition=" + endingCondition + "]";
+        return "ConditionalTaskState [executionCondition=" + executionCondition + ", endingCondition="
+                + endingCondition + "]";
     }
 
 }

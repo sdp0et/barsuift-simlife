@@ -22,18 +22,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.SynchronizedTask;
 
-public class BoundConditionStateFactory {
+public class ConditionalTaskStateFactory {
 
     /**
      * The default bound to use when no value is found in the properties file
      */
-    private static final int DEFAULT_BOUND = 1;
+    private static final int DEFAULT_BOUND = -1;
 
-    private static final String PROPERTIES_FILE = "barsuift/simLife/process/BoundedTasks.properties";
+    /**
+     * The default cycle to use when no value is found in the properties file
+     */
+    private static final int DEFAULT_CYCLE = 1;
+
+    private static final String PROPERTIES_FILE = "barsuift/simLife/process/ConditionalTasks.properties";
 
     private static final String BOUND_SUFFIX = ".bound";
+
+    private static final String CYCLE_SUFFIX = ".cycle";
 
     private static final Properties prop = loadProperties();;
 
@@ -58,13 +66,24 @@ public class BoundConditionStateFactory {
         return prop;
     }
 
-    public BoundConditionState createBoundConditionState(Class<? extends SynchronizedTask> clazz) {
-        String boundStr = getProperty(clazz.getSimpleName() + BOUND_SUFFIX);
+    public ConditionalTaskState createConditionalTaskState(Class<? extends SynchronizedTask> clazz) {
+        CyclicConditionState executionCondition = createCyclicConditionState(clazz);
+        BoundConditionState endingCondition = createBoundConditionState(clazz);
+        return new ConditionalTaskState(executionCondition, endingCondition);
+    }
 
+    private BoundConditionState createBoundConditionState(Class<? extends SynchronizedTask> clazz) {
+        String boundStr = getProperty(clazz.getSimpleName() + BOUND_SUFFIX);
         int bound = (boundStr.length() == 0) ? DEFAULT_BOUND : Integer.parseInt(boundStr);
         int count = 0;
         return new BoundConditionState(bound, count);
+    }
 
+    private CyclicConditionState createCyclicConditionState(Class<? extends SynchronizedTask> clazz) {
+        String boundStr = getProperty(clazz.getSimpleName() + CYCLE_SUFFIX);
+        int bound = (boundStr.length() == 0) ? DEFAULT_CYCLE : Integer.parseInt(boundStr);
+        int count = 0;
+        return new CyclicConditionState(bound, count);
     }
 
     /**

@@ -22,8 +22,7 @@ import java.math.BigDecimal;
 
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
-import barsuift.simLife.process.BoundedTaskState;
-import barsuift.simLife.process.CyclicTaskState;
+import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.time.SimLifeDateState;
 
 
@@ -102,24 +101,16 @@ public final class UtilDataCreatorForTests {
      * ************* TASKS *************
      */
 
-    public static CyclicTaskState createRandomCyclicTaskState() {
+    public static ConditionalTaskState createRandomConditionalTaskState() {
         CyclicConditionState executionCondition = createRandomCyclicConditionState();
-        return new CyclicTaskState(executionCondition);
+        BoundConditionState endingCondition = createRandomBoundConditionState();
+        return new ConditionalTaskState(executionCondition, endingCondition);
     }
 
-    public static CyclicTaskState createSpecificCyclicTaskState() {
+    public static ConditionalTaskState createSpecificConditionalTaskState() {
         CyclicConditionState executionCondition = createSpecificCyclicConditionState();
-        return new CyclicTaskState(executionCondition);
-    }
-
-    public static BoundedTaskState createRandomBoundedTaskState() {
-        BoundConditionState executionCondition = createRandomBoundConditionState();
-        return new BoundedTaskState(executionCondition);
-    }
-
-    public static BoundedTaskState createSpecificBoundedTaskState() {
-        BoundConditionState executionCondition = createSpecificBoundConditionState();
-        return new BoundedTaskState(executionCondition);
+        BoundConditionState endingCondition = createSpecificBoundConditionState();
+        return new ConditionalTaskState(executionCondition, endingCondition);
     }
 
 }

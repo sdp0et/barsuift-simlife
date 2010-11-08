@@ -9,17 +9,17 @@ import barsuift.simLife.tree.TreeBranchPart;
 import barsuift.simLife.tree.TreeLeaf;
 
 
-public class TreeGrowth extends CyclicTask {
+public class TreeGrowth extends ConditionalTask {
 
     private final Tree tree;
 
-    public TreeGrowth(CyclicTaskState state, Tree tree) {
+    public TreeGrowth(ConditionalTaskState state, Tree tree) {
         super(state);
         this.tree = tree;
     }
 
     @Override
-    public void executeCyclicStep() {
+    public void executeConditionalStep() {
         System.out.println("Executing TreeGrowth");
         List<TreeBranch> branches = tree.getBranches();
         for (TreeBranch branch : branches) {

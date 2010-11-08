@@ -26,14 +26,14 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.Randomizer;
+import barsuift.simLife.condition.ConditionalTaskStateFactory;
 import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.Tree3DStateFactory;
 import barsuift.simLife.process.Aging;
+import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.Photosynthesis;
 import barsuift.simLife.process.TreeGrowth;
-import barsuift.simLife.process.CyclicTaskState;
-import barsuift.simLife.process.CyclicTaskStateFactory;
 
 public class TreeStateFactory {
 
@@ -54,11 +54,10 @@ public class TreeStateFactory {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(computeRandomBranchState(radius, height));
         }
-        CyclicTaskStateFactory cyclicTaskStateFactory = new CyclicTaskStateFactory();
-        CyclicTaskState photosynthesis = cyclicTaskStateFactory
-                .createCyclicTaskState(Photosynthesis.class);
-        CyclicTaskState aging = cyclicTaskStateFactory.createCyclicTaskState(Aging.class);
-        CyclicTaskState growth = cyclicTaskStateFactory.createCyclicTaskState(TreeGrowth.class);
+        ConditionalTaskStateFactory cyclicTaskStateFactory = new ConditionalTaskStateFactory();
+        ConditionalTaskState photosynthesis = cyclicTaskStateFactory.createConditionalTaskState(Photosynthesis.class);
+        ConditionalTaskState aging = cyclicTaskStateFactory.createConditionalTaskState(Aging.class);
+        ConditionalTaskState growth = cyclicTaskStateFactory.createConditionalTaskState(TreeGrowth.class);
         TreeTrunkStateFactory trunkStateFactory = new TreeTrunkStateFactory();
         TreeTrunkState trunkState = trunkStateFactory.createRandomTreeTrunkState(radius, height);
 
