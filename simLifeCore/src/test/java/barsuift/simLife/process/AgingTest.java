@@ -19,7 +19,7 @@
 package barsuift.simLife.process;
 
 import junit.framework.TestCase;
-import barsuift.simLife.CoreDataCreatorForTests;
+import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.tree.MockTree;
 
 
@@ -28,7 +28,7 @@ public class AgingTest extends TestCase {
     public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
 
-        Aging aging = new Aging(CoreDataCreatorForTests.createSpecificCyclicTaskState(), mockTree);
+        Aging aging = new Aging(UtilDataCreatorForTests.createSpecificCyclicTaskState(), mockTree);
         aging.executeCyclicStep();
 
         assertEquals(1, mockTree.getNbAgeCalled());
