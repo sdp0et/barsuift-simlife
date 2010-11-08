@@ -24,8 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import barsuift.simLife.condition.BoundConditionState;
-import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.SunState;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
@@ -40,11 +38,10 @@ import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.j3d.universe.physic.Physics3DState;
-import barsuift.simLife.process.BoundedTaskState;
+import barsuift.simLife.process.CyclicTaskState;
 import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.SynchronizerCoreState;
-import barsuift.simLife.process.CyclicTaskState;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.time.SimLifeDateState;
 import barsuift.simLife.tree.TreeBranchPartState;
@@ -142,26 +139,6 @@ public final class CoreDataCreatorForTests {
 
     public static MainSynchronizerState createSpecificMainSynchronizerState() {
         return new MainSynchronizerState();
-    }
-
-    public static CyclicTaskState createRandomCyclicTaskState() {
-        CyclicConditionState executionCondition = UtilDataCreatorForTests.createRandomCyclicConditionState();
-        return new CyclicTaskState(executionCondition);
-    }
-
-    public static CyclicTaskState createSpecificCyclicTaskState() {
-        CyclicConditionState executionCondition = UtilDataCreatorForTests.createSpecificCyclicConditionState();
-        return new CyclicTaskState(executionCondition);
-    }
-
-    public static BoundedTaskState createRandomBoundedTaskState() {
-        BoundConditionState executionCondition = UtilDataCreatorForTests.createRandomBoundConditionState();
-        return new BoundedTaskState(executionCondition);
-    }
-
-    public static BoundedTaskState createSpecificBoundedTaskState() {
-        BoundConditionState executionCondition = UtilDataCreatorForTests.createSpecificBoundConditionState();
-        return new BoundedTaskState(executionCondition);
     }
 
     public static UniverseState createRandomUniverseState() {
@@ -264,9 +241,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(createRandomTreeBranchState());
         }
-        CyclicTaskState photosynthesis = createRandomCyclicTaskState();
-        CyclicTaskState aging = createRandomCyclicTaskState();
-        CyclicTaskState growth = createRandomCyclicTaskState();
+        CyclicTaskState photosynthesis = UtilDataCreatorForTests.createRandomCyclicTaskState();
+        CyclicTaskState aging = UtilDataCreatorForTests.createRandomCyclicTaskState();
+        CyclicTaskState growth = UtilDataCreatorForTests.createRandomCyclicTaskState();
         TreeTrunkState trunkState = createRandomTreeTrunkState();
         float height = (float) Math.random();
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
@@ -294,9 +271,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(createSpecificTreeBranchState());
         }
-        CyclicTaskState photosynthesis = createSpecificCyclicTaskState();
-        CyclicTaskState aging = createSpecificCyclicTaskState();
-        CyclicTaskState growth = createSpecificCyclicTaskState();
+        CyclicTaskState photosynthesis = UtilDataCreatorForTests.createSpecificCyclicTaskState();
+        CyclicTaskState aging = UtilDataCreatorForTests.createSpecificCyclicTaskState();
+        CyclicTaskState growth = UtilDataCreatorForTests.createSpecificCyclicTaskState();
         TreeTrunkState trunkState = createSpecificTreeTrunkState();
         float height = (float) 4;
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();

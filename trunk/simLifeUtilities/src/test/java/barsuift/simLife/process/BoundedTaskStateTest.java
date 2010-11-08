@@ -18,11 +18,11 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.UtilDataCreatorForTests;
 
 
-public class CyclicTaskStateTest extends JaxbTestCase {
+public class BoundedTaskStateTest extends JaxbTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -38,9 +38,9 @@ public class CyclicTaskStateTest extends JaxbTestCase {
     }
 
     public void testJaxb() throws Exception {
-        CyclicTaskState task = CoreDataCreatorForTests.createRandomCyclicTaskState();
+        BoundedTaskState task = UtilDataCreatorForTests.createRandomBoundedTaskState();
         write(task);
-        CyclicTaskState task2 = (CyclicTaskState) read();
+        BoundedTaskState task2 = (BoundedTaskState) read();
         assertEquals(task, task2);
     }
 

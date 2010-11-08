@@ -19,7 +19,7 @@
 package barsuift.simLife.process;
 
 import junit.framework.TestCase;
-import barsuift.simLife.CoreDataCreatorForTests;
+import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.tree.MockTree;
 
 
@@ -27,8 +27,8 @@ public class PhotosynthesisTest extends TestCase {
 
     public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
-        Photosynthesis photosynthesis = new Photosynthesis(
-                CoreDataCreatorForTests.createSpecificCyclicTaskState(), mockTree);
+        Photosynthesis photosynthesis = new Photosynthesis(UtilDataCreatorForTests.createSpecificCyclicTaskState(),
+                mockTree);
         photosynthesis.executeCyclicStep();
         assertEquals(1, mockTree.getNbCollectSolarEnergyCalled());
     }
