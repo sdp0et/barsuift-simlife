@@ -33,7 +33,7 @@ import barsuift.simLife.message.Subscriber;
  * The bounded task notifies its subscribers when it reaches its bound and stops.
  * </p>
  */
-// TODO 002. create SplitTask and use condition
+// TODO 002. create SplitTask and SplitConditionalTask (and use condition)
 public abstract class SplitBoundedTask extends AbstractSynchronizedTask implements Publisher,
         Persistent<SplitBoundedTaskState> {
 
@@ -70,6 +70,8 @@ public abstract class SplitBoundedTask extends AbstractSynchronizedTask implemen
         executeSplitBoundedStep(stepSize);
     }
 
+    public abstract void executeSplitBoundedStep(int stepSize);
+
     @Override
     public SplitBoundedTaskState getState() {
         synchronize();
@@ -82,8 +84,6 @@ public abstract class SplitBoundedTask extends AbstractSynchronizedTask implemen
         state.setBound(bound);
         state.setStepSize(stepSize);
     }
-
-    public abstract void executeSplitBoundedStep(int stepSize);
 
     public void addSubscriber(Subscriber subscriber) {
         publisher.addSubscriber(subscriber);

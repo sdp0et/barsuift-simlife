@@ -25,7 +25,6 @@ import barsuift.simLife.Persistent;
  * A bound condition evaluates to false as long as the bound is not reached. Then it always return true;
  * 
  */
-// TODO 001. create SplitBoundCondition
 public interface BoundCondition extends Condition, Persistent<BoundConditionState> {
 
 }
