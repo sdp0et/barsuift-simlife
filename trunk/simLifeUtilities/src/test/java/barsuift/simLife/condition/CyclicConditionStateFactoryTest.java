@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 import barsuift.simLife.process.MockSingleRunSynchronizedRunnable;
 import barsuift.simLife.process.MockSynchronizedRunnable;
 
-// FIXME remove dir simLifeCore:src/test/resrouces
 public class CyclicConditionStateFactoryTest extends TestCase {
 
     public void testCreateUnfrequentRunnableState() {
