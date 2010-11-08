@@ -19,6 +19,7 @@
 package barsuift.simLife.process;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.condition.CyclicCondition;
 
 
 /**
@@ -28,32 +29,27 @@ import barsuift.simLife.Persistent;
  * If <code>delay=n</code>, the task is executed exactly on the n<sup>th</sup> call, and n call after that, and so on.
  * </p>
  */
-// TODO 001. use condition
 // TODO 002. create split unbounded condition
-// TODO 002. create split unfrequent condition
-// TODO 002. refactor runnables to make them common
+// TODO 002. create split cyclic condition
+// TODO 001. refactor runnables to make them common
+// TODO 000. merge with BoundedRunnable
 public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable implements
         Persistent<UnfrequentRunnableState> {
 
     private final UnfrequentRunnableState state;
 
-    private final int delay;
-
-    private int count;
+    private final CyclicCondition executionCondition;
 
     public UnfrequentRunnable(UnfrequentRunnableState state) {
         super();
         this.state = state;
-        this.delay = state.getDelay();
-        this.count = state.getCount();
+        this.executionCondition = new CyclicCondition(state.getExecutionCondition());
     }
 
     @Override
     public final void executeStep() {
-        count++;
-        if (count % delay == 0) {
+        if (executionCondition.evaluate()) {
             executeUnfrequentStep();
-            count = 0;
         }
     }
 
@@ -65,8 +61,7 @@ public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable im
 
     @Override
     public void synchronize() {
-        state.setCount(count);
-        state.setDelay(delay);
+        executionCondition.synchronize();
     }
 
     public abstract void executeUnfrequentStep();

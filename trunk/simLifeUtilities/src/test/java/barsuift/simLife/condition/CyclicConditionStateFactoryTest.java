@@ -16,17 +16,25 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.condition;
 
-import barsuift.simLife.condition.CyclicConditionState;
-import barsuift.simLife.condition.CyclicConditionStateFactory;
+import junit.framework.TestCase;
+import barsuift.simLife.process.MockSingleRunSynchronizedRunnable;
+import barsuift.simLife.process.MockSynchronizedRunnable;
 
-public class UnfrequentRunnableStateFactory {
+// FIXME remove dir simLifeCore:src/test/resrouces
+public class CyclicConditionStateFactoryTest extends TestCase {
 
-    public UnfrequentRunnableState createUnfrequentRunnableState(Class<? extends SynchronizedRunnable> clazz) {
+    public void testCreateUnfrequentRunnableState() {
         CyclicConditionStateFactory factory = new CyclicConditionStateFactory();
-        CyclicConditionState executionCondition = factory.createCyclicConditionState(clazz);
-        return new UnfrequentRunnableState(executionCondition);
+
+        CyclicConditionState mockSynchronizedState = factory.createCyclicConditionState(MockSynchronizedRunnable.class);
+        assertEquals(5, mockSynchronizedState.getCycle());
+        assertEquals(0, mockSynchronizedState.getCount());
+
+        CyclicConditionState unknownState = factory.createCyclicConditionState(MockSingleRunSynchronizedRunnable.class);
+        assertEquals(1, unknownState.getCycle());
+        assertEquals(0, unknownState.getCount());
     }
 
 }

@@ -3,6 +3,7 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
+import barsuift.simLife.condition.CyclicConditionState;
 
 
 public class UnfrequentRunnableTest extends TestCase {
@@ -17,7 +18,8 @@ public class UnfrequentRunnableTest extends TestCase {
         super.setUp();
         // make sure the barrier will block the process as long as the other mock process is not run
         CyclicBarrier barrier = new CyclicBarrier(2);
-        state = new UnfrequentRunnableState(3, 0);
+        CyclicConditionState executionConditionState = new CyclicConditionState(3, 0);
+        state = new UnfrequentRunnableState(executionConditionState);
         mockSynchroRun = new MockSingleRunSynchronizedRunnable();
         mockSynchroRun.changeBarrier(barrier);
         unfrequentRun = new MockUnfrequentRunnable(state);
@@ -75,13 +77,13 @@ public class UnfrequentRunnableTest extends TestCase {
     public void testGetState() throws InterruptedException {
         assertEquals(state, unfrequentRun.getState());
         assertSame(state, unfrequentRun.getState());
-        assertEquals(0, unfrequentRun.getState().getCount());
+        assertEquals(0, unfrequentRun.getState().getExecutionCondition().getCount());
         (new Thread(unfrequentRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
         assertEquals(state, unfrequentRun.getState());
         assertSame(state, unfrequentRun.getState());
-        assertEquals(1, unfrequentRun.getState().getCount());
+        assertEquals(1, unfrequentRun.getState().getExecutionCondition().getCount());
     }
 
 }

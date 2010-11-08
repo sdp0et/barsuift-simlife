@@ -18,17 +18,15 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.condition.BoundCondition;
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.BoundConditionStateFactory;
 
 public class BoundedRunnableStateFactory {
 
-    public BoundedRunnableState createBoundedRunnableState(Class<? extends BoundedRunnable> clazz) {
+    public BoundedRunnableState createBoundedRunnableState(Class<? extends SynchronizedRunnable> clazz) {
         BoundConditionStateFactory factory = new BoundConditionStateFactory();
-        BoundConditionState endingCondition = factory.createBoundConditionState(BoundCondition.class);
+        BoundConditionState endingCondition = factory.createBoundConditionState(clazz);
         return new BoundedRunnableState(endingCondition);
-
     }
 
 }

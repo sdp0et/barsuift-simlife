@@ -20,6 +20,8 @@ package barsuift.simLife;
 
 import java.math.BigDecimal;
 
+import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.time.SimLifeDateState;
 
 
@@ -53,6 +55,38 @@ public final class UtilDataCreatorForTests {
      */
     public static SimLifeDateState createSpecificDateState() {
         return new SimLifeDateState(100000);
+    }
+
+    public static CyclicConditionState createRandomCyclicConditionState() {
+        return new CyclicConditionState(Randomizer.randomBetween(3, 10), Randomizer.randomBetween(0, 2));
+    }
+
+    /**
+     * Creates a specific CyclicConditionState with
+     * <ul>
+     * <li>cycle=5</li>
+     * <li>count=2</li>
+     * </ul>
+     * 
+     */
+    public static CyclicConditionState createSpecificCyclicConditionState() {
+        return new CyclicConditionState(5, 2);
+    }
+
+    public static BoundConditionState createRandomBoundConditionState() {
+        return new BoundConditionState(Randomizer.randomBetween(3, 10), Randomizer.randomBetween(0, 2));
+    }
+
+    /**
+     * Creates a specific BoundConditionState with
+     * <ul>
+     * <li>bound=5</li>
+     * <li>count=2</li>
+     * </ul>
+     * 
+     */
+    public static BoundConditionState createSpecificBoundConditionState() {
+        return new BoundConditionState(5, 2);
     }
 
 }

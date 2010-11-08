@@ -16,22 +16,31 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.condition;
 
-import junit.framework.TestCase;
-import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.JaxbTestCase;
 
 
-public class BoundedRunnableStateFactoryTest extends TestCase {
+public class CyclicConditionStateTest extends JaxbTestCase {
 
-    public void testCreateBoundedRunnableState() {
-        BoundedRunnableStateFactory factory = new BoundedRunnableStateFactory();
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-        BoundedRunnableState unknownState = factory.createBoundedRunnableState(MockBoundedRunnable.class);
-        BoundConditionState endingCondition = unknownState.getEndingCondition();
-        assertNotNull(endingCondition);
-        assertEquals(1, endingCondition.getBound());
-        assertEquals(0, endingCondition.getCount());
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    @Override
+    protected String getPackage() {
+        return "barsuift.simLife.condition";
+    }
+
+    public void testJaxb() throws Exception {
+        CyclicConditionState condition = new CyclicConditionState(3, 2);
+        write(condition);
+        CyclicConditionState condition2 = (CyclicConditionState) read();
+        assertEquals(condition, condition2);
     }
 
 }

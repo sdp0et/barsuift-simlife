@@ -86,7 +86,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         setUpFromSpeed(speed);
 
         synchro.oneStep();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         assertFalse(synchro.isRunning());
         assertEquals(1, synchronizerCore.getNbStartCalled());
         assertEquals(1, synchronizerCore.getNbStopCalled());
@@ -97,7 +97,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(20, task3D.getNbIncrementExecuted());
 
         synchro.oneStep();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         assertFalse(synchro.isRunning());
         assertEquals(2, synchronizerCore.getNbStartCalled());
         assertEquals(2, synchronizerCore.getNbStopCalled());
@@ -108,7 +108,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(40, task3D.getNbIncrementExecuted());
 
         synchro.oneStep();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         assertFalse(synchro.isRunning());
         assertEquals(3, synchronizerCore.getNbStartCalled());
         assertEquals(3, synchronizerCore.getNbStopCalled());
@@ -119,7 +119,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(60, task3D.getNbIncrementExecuted());
 
         synchro.oneStep();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         assertFalse(synchro.isRunning());
         assertEquals(4, synchronizerCore.getNbStartCalled());
         assertEquals(4, synchronizerCore.getNbStopCalled());
@@ -131,7 +131,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertEquals(60, task3D.getNbIncrementExecuted());
 
         synchro.oneStep();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         assertFalse(synchro.isRunning());
         assertEquals(5, synchronizerCore.getNbStartCalled());
         assertEquals(5, synchronizerCore.getNbStopCalled());
@@ -174,7 +174,7 @@ public class BasicMainSynchronizerTest extends TestCase {
 
 
         synchro.stop();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         assertFalse(synchro.isRunning());
         assertEquals(1, synchronizerCore.getNbStopCalled());
         assertEquals(1, synchronizer3D.getNbStopCalled());
@@ -191,15 +191,15 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertNull(publisherHelper.getUpdateObjects().get(0));
 
         publisherHelper.reset();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         synchro.stop();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         assertEquals(1, publisherHelper.nbUpdated());
         assertNull(publisherHelper.getUpdateObjects().get(0));
 
         publisherHelper.reset();
         synchro.oneStep();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         assertEquals(2, publisherHelper.nbUpdated());
         assertNull(publisherHelper.getUpdateObjects().get(0));
     }
@@ -213,7 +213,7 @@ public class BasicMainSynchronizerTest extends TestCase {
             // OK expected exception
         }
         synchro.start();
-        Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         try {
             synchro.start();
             fail("IllegalStateException expected");

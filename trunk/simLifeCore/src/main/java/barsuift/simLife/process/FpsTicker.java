@@ -3,17 +3,17 @@ package barsuift.simLife.process;
 import barsuift.simLife.time.FpsCounter;
 
 
-public class FpsTicker extends UnfrequentRunnable {
+public class FpsTicker extends AbstractSynchronizedRunnable {
 
     private final FpsCounter fps;
 
     public FpsTicker(FpsCounter fps) {
-        super(new UnfrequentRunnableState(10, 0));
+        super();
         this.fps = fps;
     }
 
     @Override
-    public void executeUnfrequentStep() {
+    public void executeStep() {
         fps.tick();
     }
 

@@ -24,6 +24,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.SunState;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
@@ -38,6 +40,7 @@ import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.j3d.universe.physic.Physics3DState;
+import barsuift.simLife.process.BoundedRunnableState;
 import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.SynchronizerCoreState;
@@ -142,19 +145,23 @@ public final class CoreDataCreatorForTests {
     }
 
     public static UnfrequentRunnableState createRandomUnfrequentRunnableState() {
-        return new UnfrequentRunnableState(Randomizer.randomBetween(3, 10), Randomizer.randomBetween(0, 2));
+        CyclicConditionState executionCondition = UtilDataCreatorForTests.createRandomCyclicConditionState();
+        return new UnfrequentRunnableState(executionCondition);
     }
 
-    /**
-     * Creates a specific UnfrequentRunnableState with
-     * <ul>
-     * <li>delay=5</li>
-     * <li>count=2</li>
-     * </ul>
-     * 
-     */
     public static UnfrequentRunnableState createSpecificUnfrequentRunnableState() {
-        return new UnfrequentRunnableState(5, 2);
+        CyclicConditionState executionCondition = UtilDataCreatorForTests.createSpecificCyclicConditionState();
+        return new UnfrequentRunnableState(executionCondition);
+    }
+
+    public static BoundedRunnableState createRandomBoundedRunnableState() {
+        BoundConditionState executionCondition = UtilDataCreatorForTests.createRandomBoundConditionState();
+        return new BoundedRunnableState(executionCondition);
+    }
+
+    public static BoundedRunnableState createSpecificBoundedRunnableState() {
+        BoundConditionState executionCondition = UtilDataCreatorForTests.createSpecificBoundConditionState();
+        return new BoundedRunnableState(executionCondition);
     }
 
     public static UniverseState createRandomUniverseState() {
