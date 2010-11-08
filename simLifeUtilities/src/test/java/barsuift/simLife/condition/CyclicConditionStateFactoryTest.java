@@ -24,7 +24,7 @@ import barsuift.simLife.process.MockSynchronizedRunnable;
 
 public class CyclicConditionStateFactoryTest extends TestCase {
 
-    public void testCreateUnfrequentRunnableState() {
+    public void testCreateCyclicRunnableState() {
         CyclicConditionStateFactory factory = new CyclicConditionStateFactory();
 
         CyclicConditionState mockSynchronizedState = factory.createCyclicConditionState(MockSynchronizedRunnable.class);

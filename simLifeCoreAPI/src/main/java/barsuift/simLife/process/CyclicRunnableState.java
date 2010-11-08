@@ -24,17 +24,17 @@ import barsuift.simLife.State;
 import barsuift.simLife.condition.CyclicConditionState;
 
 @XmlRootElement
-// TODO 000. merge UnfrequentRunnableState and BoundedRunnableState into SynchronizedRunnableState
-public class UnfrequentRunnableState implements State {
+// TODO 000. merge CyclicRunnableState and BoundedRunnableState into SynchronizedRunnableState
+public class CyclicRunnableState implements State {
 
     private CyclicConditionState executionCondition;
 
-    public UnfrequentRunnableState() {
+    public CyclicRunnableState() {
         super();
         this.executionCondition = new CyclicConditionState(1, 0);
     }
 
-    public UnfrequentRunnableState(CyclicConditionState executionCondition) {
+    public CyclicRunnableState(CyclicConditionState executionCondition) {
         super();
         this.executionCondition = executionCondition;
     }
@@ -63,7 +63,7 @@ public class UnfrequentRunnableState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        UnfrequentRunnableState other = (UnfrequentRunnableState) obj;
+        CyclicRunnableState other = (CyclicRunnableState) obj;
         if (executionCondition == null) {
             if (other.executionCondition != null)
                 return false;
@@ -75,7 +75,7 @@ public class UnfrequentRunnableState implements State {
 
     @Override
     public String toString() {
-        return "UnfrequentRunnableState [executionCondition=" + executionCondition + "]";
+        return "CyclicRunnableState [executionCondition=" + executionCondition + "]";
     }
 
 }

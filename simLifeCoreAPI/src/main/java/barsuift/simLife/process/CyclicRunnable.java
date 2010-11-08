@@ -35,14 +35,14 @@ import barsuift.simLife.condition.CyclicCondition;
 // TODO 000. merge with BoundedRunnable
 // TODO 004. add a startCondition to SynchronizedRunnable : a task can wait a notification before it starts
 // TODO 004. add a pauseCondition to SynchronizedRunnable : a task can pause and wait to restart later (with a timeout)
-public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable implements
-        Persistent<UnfrequentRunnableState> {
+public abstract class CyclicRunnable extends AbstractSynchronizedRunnable implements
+        Persistent<CyclicRunnableState> {
 
-    private final UnfrequentRunnableState state;
+    private final CyclicRunnableState state;
 
     private final CyclicCondition executionCondition;
 
-    public UnfrequentRunnable(UnfrequentRunnableState state) {
+    public CyclicRunnable(CyclicRunnableState state) {
         super();
         this.state = state;
         this.executionCondition = new CyclicCondition(state.getExecutionCondition());
@@ -51,12 +51,12 @@ public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable im
     @Override
     public final void executeStep() {
         if (executionCondition.evaluate()) {
-            executeUnfrequentStep();
+            executeCyclicStep();
         }
     }
 
     @Override
-    public UnfrequentRunnableState getState() {
+    public CyclicRunnableState getState() {
         synchronize();
         return state;
     }
@@ -66,6 +66,6 @@ public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable im
         executionCondition.synchronize();
     }
 
-    public abstract void executeUnfrequentStep();
+    public abstract void executeCyclicStep();
 
 }

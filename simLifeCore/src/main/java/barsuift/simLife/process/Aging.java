@@ -21,17 +21,17 @@ package barsuift.simLife.process;
 import barsuift.simLife.LivingPart;
 
 
-public class Aging extends UnfrequentRunnable {
+public class Aging extends CyclicRunnable {
 
     private final LivingPart livingPart;
 
-    public Aging(UnfrequentRunnableState state, LivingPart livingPart) {
+    public Aging(CyclicRunnableState state, LivingPart livingPart) {
         super(state);
         this.livingPart = livingPart;
     }
 
     @Override
-    public void executeUnfrequentStep() {
+    public void executeCyclicStep() {
         livingPart.age();
     }
 }

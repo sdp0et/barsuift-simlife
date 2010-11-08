@@ -6,24 +6,24 @@ import junit.framework.TestCase;
 import barsuift.simLife.condition.CyclicConditionState;
 
 
-public class UnfrequentRunnableTest extends TestCase {
+public class CyclicRunnableTest extends TestCase {
 
-    private MockUnfrequentRunnable unfrequentRun;
+    private MockCyclicRunnable cyclicRun;
 
-    private UnfrequentRunnableState state;
+    private CyclicRunnableState state;
 
-    private MockSingleRunSynchronizedRunnable mockSynchroRun;
+    private MockSingleRunSynchronizedRunnable barrierReleaser;
 
     protected void setUp() throws Exception {
         super.setUp();
         // make sure the barrier will block the process as long as the other mock process is not run
         CyclicBarrier barrier = new CyclicBarrier(2);
         CyclicConditionState executionConditionState = new CyclicConditionState(3, 0);
-        state = new UnfrequentRunnableState(executionConditionState);
-        mockSynchroRun = new MockSingleRunSynchronizedRunnable();
-        mockSynchroRun.changeBarrier(barrier);
-        unfrequentRun = new MockUnfrequentRunnable(state);
-        unfrequentRun.changeBarrier(barrier);
+        state = new CyclicRunnableState(executionConditionState);
+        barrierReleaser = new MockSingleRunSynchronizedRunnable();
+        barrierReleaser.changeBarrier(barrier);
+        cyclicRun = new MockCyclicRunnable(state);
+        cyclicRun.changeBarrier(barrier);
     }
 
     protected void tearDown() throws Exception {
@@ -31,59 +31,59 @@ public class UnfrequentRunnableTest extends TestCase {
     }
 
     public void testRun() throws Exception {
-        (new Thread(unfrequentRun)).start();
+        (new Thread(cyclicRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertTrue(unfrequentRun.isRunning());
+        assertTrue(cyclicRun.isRunning());
         // not executed once as it should wait 3 times before executing
-        assertEquals(0, unfrequentRun.getNbExecuted());
+        assertEquals(0, cyclicRun.getNbExecuted());
 
         // test we can not run the same runnable again
         try {
-            unfrequentRun.run();
+            cyclicRun.run();
             fail("Should throw an IllegalStateException");
         } catch (IllegalStateException ise) {
             // OK expected exception
         }
 
         // test we can stop it now
-        unfrequentRun.stop();
+        cyclicRun.stop();
         // release the barrier
-        mockSynchroRun.run();
+        barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        assertFalse(unfrequentRun.isRunning());
+        assertFalse(cyclicRun.isRunning());
 
         // test we can start it again
-        (new Thread(unfrequentRun)).start();
+        (new Thread(cyclicRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertTrue(unfrequentRun.isRunning());
+        assertTrue(cyclicRun.isRunning());
         // still not run
-        assertEquals(0, unfrequentRun.getNbExecuted());
+        assertEquals(0, cyclicRun.getNbExecuted());
 
-        unfrequentRun.stop();
+        cyclicRun.stop();
         // release the barrier
-        mockSynchroRun.run();
+        barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        (new Thread(unfrequentRun)).start();
+        (new Thread(cyclicRun)).start();
         Thread.sleep(100);
-        assertTrue(unfrequentRun.isRunning());
+        assertTrue(cyclicRun.isRunning());
         // now it has run once
-        assertEquals(1, unfrequentRun.getNbExecuted());
+        assertEquals(1, cyclicRun.getNbExecuted());
     }
 
     public void testGetState() throws InterruptedException {
-        assertEquals(state, unfrequentRun.getState());
-        assertSame(state, unfrequentRun.getState());
-        assertEquals(0, unfrequentRun.getState().getExecutionCondition().getCount());
-        (new Thread(unfrequentRun)).start();
+        assertEquals(state, cyclicRun.getState());
+        assertSame(state, cyclicRun.getState());
+        assertEquals(0, cyclicRun.getState().getExecutionCondition().getCount());
+        (new Thread(cyclicRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertEquals(state, unfrequentRun.getState());
-        assertSame(state, unfrequentRun.getState());
-        assertEquals(1, unfrequentRun.getState().getExecutionCondition().getCount());
+        assertEquals(state, cyclicRun.getState());
+        assertSame(state, cyclicRun.getState());
+        assertEquals(1, cyclicRun.getState().getExecutionCondition().getCount());
     }
 
 }

@@ -1,4 +1,4 @@
 BoundedRunnableState
+CyclicRunnableState
 MainSynchronizerState
 SynchronizerCoreState
-UnfrequentRunnableState

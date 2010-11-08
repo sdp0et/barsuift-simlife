@@ -25,11 +25,11 @@ import barsuift.simLife.tree.MockTree;
 
 public class AgingTest extends TestCase {
 
-    public void testExecuteUnfrequentStep() {
+    public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
 
-        Aging aging = new Aging(CoreDataCreatorForTests.createSpecificUnfrequentRunnableState(), mockTree);
-        aging.executeUnfrequentStep();
+        Aging aging = new Aging(CoreDataCreatorForTests.createSpecificCyclicRunnableState(), mockTree);
+        aging.executeCyclicStep();
 
         assertEquals(1, mockTree.getNbAgeCalled());
     }

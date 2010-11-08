@@ -18,30 +18,15 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.condition.CyclicConditionState;
+import barsuift.simLife.condition.CyclicConditionStateFactory;
 
+public class CyclicRunnableStateFactory {
 
-public class UnfrequentRunnableStateTest extends JaxbTestCase {
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.process";
-    }
-
-    public void testJaxb() throws Exception {
-        UnfrequentRunnableState runnable = CoreDataCreatorForTests.createRandomUnfrequentRunnableState();
-        write(runnable);
-        UnfrequentRunnableState runnable2 = (UnfrequentRunnableState) read();
-        assertEquals(runnable, runnable2);
+    public CyclicRunnableState createCyclicRunnableState(Class<? extends SynchronizedRunnable> clazz) {
+        CyclicConditionStateFactory factory = new CyclicConditionStateFactory();
+        CyclicConditionState executionCondition = factory.createCyclicConditionState(clazz);
+        return new CyclicRunnableState(executionCondition);
     }
 
 }

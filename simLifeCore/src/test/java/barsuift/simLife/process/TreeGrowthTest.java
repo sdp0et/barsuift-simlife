@@ -28,10 +28,7 @@ import barsuift.simLife.tree.MockTreeLeaf;
 
 public class TreeGrowthTest extends TestCase {
 
-    /**
-     * Test method for {@link barsuift.simLife.process.Photosynthesis#executeUnfrequentStep()}.
-     */
-    public void testExecuteUnfrequentStep() {
+    public void testExecuteCyclicStep() {
         MockTreeLeaf mockLeaf = new MockTreeLeaf();
 
         MockTreeBranchPart mockBranchPart = new MockTreeBranchPart();
@@ -43,9 +40,8 @@ public class TreeGrowthTest extends TestCase {
         MockTree mockTree = new MockTree();
         mockTree.addBranch(mockBranch);
 
-        TreeGrowth treeGrowth = new TreeGrowth(CoreDataCreatorForTests.createSpecificUnfrequentRunnableState(),
-                mockTree);
-        treeGrowth.executeUnfrequentStep();
+        TreeGrowth treeGrowth = new TreeGrowth(CoreDataCreatorForTests.createSpecificCyclicRunnableState(), mockTree);
+        treeGrowth.executeCyclicStep();
 
         assertEquals(1, mockLeaf.getNbImproveEfficiencyCalled());
 

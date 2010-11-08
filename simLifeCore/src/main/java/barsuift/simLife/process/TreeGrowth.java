@@ -9,17 +9,17 @@ import barsuift.simLife.tree.TreeBranchPart;
 import barsuift.simLife.tree.TreeLeaf;
 
 
-public class TreeGrowth extends UnfrequentRunnable {
+public class TreeGrowth extends CyclicRunnable {
 
     private final Tree tree;
 
-    public TreeGrowth(UnfrequentRunnableState state, Tree tree) {
+    public TreeGrowth(CyclicRunnableState state, Tree tree) {
         super(state);
         this.tree = tree;
     }
 
     @Override
-    public void executeUnfrequentStep() {
+    public void executeCyclicStep() {
         System.out.println("Executing TreeGrowth");
         List<TreeBranch> branches = tree.getBranches();
         for (TreeBranch branch : branches) {
