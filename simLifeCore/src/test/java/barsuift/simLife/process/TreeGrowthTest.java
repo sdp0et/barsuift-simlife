@@ -40,7 +40,7 @@ public class TreeGrowthTest extends TestCase {
         MockTree mockTree = new MockTree();
         mockTree.addBranch(mockBranch);
 
-        TreeGrowth treeGrowth = new TreeGrowth(CoreDataCreatorForTests.createSpecificCyclicRunnableState(), mockTree);
+        TreeGrowth treeGrowth = new TreeGrowth(CoreDataCreatorForTests.createSpecificCyclicTaskState(), mockTree);
         treeGrowth.executeCyclicStep();
 
         assertEquals(1, mockLeaf.getNbImproveEfficiencyCalled());

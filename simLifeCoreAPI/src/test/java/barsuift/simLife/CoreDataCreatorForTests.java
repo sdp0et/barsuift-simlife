@@ -40,11 +40,11 @@ import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.j3d.universe.physic.Physics3DState;
-import barsuift.simLife.process.BoundedRunnableState;
+import barsuift.simLife.process.BoundedTaskState;
 import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.SynchronizerCoreState;
-import barsuift.simLife.process.CyclicRunnableState;
+import barsuift.simLife.process.CyclicTaskState;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.time.SimLifeDateState;
 import barsuift.simLife.tree.TreeBranchPartState;
@@ -144,24 +144,24 @@ public final class CoreDataCreatorForTests {
         return new MainSynchronizerState();
     }
 
-    public static CyclicRunnableState createRandomCyclicRunnableState() {
+    public static CyclicTaskState createRandomCyclicTaskState() {
         CyclicConditionState executionCondition = UtilDataCreatorForTests.createRandomCyclicConditionState();
-        return new CyclicRunnableState(executionCondition);
+        return new CyclicTaskState(executionCondition);
     }
 
-    public static CyclicRunnableState createSpecificCyclicRunnableState() {
+    public static CyclicTaskState createSpecificCyclicTaskState() {
         CyclicConditionState executionCondition = UtilDataCreatorForTests.createSpecificCyclicConditionState();
-        return new CyclicRunnableState(executionCondition);
+        return new CyclicTaskState(executionCondition);
     }
 
-    public static BoundedRunnableState createRandomBoundedRunnableState() {
+    public static BoundedTaskState createRandomBoundedTaskState() {
         BoundConditionState executionCondition = UtilDataCreatorForTests.createRandomBoundConditionState();
-        return new BoundedRunnableState(executionCondition);
+        return new BoundedTaskState(executionCondition);
     }
 
-    public static BoundedRunnableState createSpecificBoundedRunnableState() {
+    public static BoundedTaskState createSpecificBoundedTaskState() {
         BoundConditionState executionCondition = UtilDataCreatorForTests.createSpecificBoundConditionState();
-        return new BoundedRunnableState(executionCondition);
+        return new BoundedTaskState(executionCondition);
     }
 
     public static UniverseState createRandomUniverseState() {
@@ -264,9 +264,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(createRandomTreeBranchState());
         }
-        CyclicRunnableState photosynthesis = createRandomCyclicRunnableState();
-        CyclicRunnableState aging = createRandomCyclicRunnableState();
-        CyclicRunnableState growth = createRandomCyclicRunnableState();
+        CyclicTaskState photosynthesis = createRandomCyclicTaskState();
+        CyclicTaskState aging = createRandomCyclicTaskState();
+        CyclicTaskState growth = createRandomCyclicTaskState();
         TreeTrunkState trunkState = createRandomTreeTrunkState();
         float height = (float) Math.random();
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();
@@ -294,9 +294,9 @@ public final class CoreDataCreatorForTests {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(createSpecificTreeBranchState());
         }
-        CyclicRunnableState photosynthesis = createSpecificCyclicRunnableState();
-        CyclicRunnableState aging = createSpecificCyclicRunnableState();
-        CyclicRunnableState growth = createSpecificCyclicRunnableState();
+        CyclicTaskState photosynthesis = createSpecificCyclicTaskState();
+        CyclicTaskState aging = createSpecificCyclicTaskState();
+        CyclicTaskState growth = createSpecificCyclicTaskState();
         TreeTrunkState trunkState = createSpecificTreeTrunkState();
         float height = (float) 4;
         Tree3DState tree3dState = DisplayDataCreatorForTests.createRandomTree3DState();

@@ -19,60 +19,71 @@
 package barsuift.simLife.process;
 
 import barsuift.simLife.Persistent;
-import barsuift.simLife.condition.BoundCondition;
-import barsuift.simLife.condition.Condition;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
 
 /**
- * This abstract class represents a bounded task that automatically stops after a number of run.
- * <p>
- * It has a {@code bound} parameter which defines the number of call before it stops. If {@code bound=n}, the task is
- * executed exactly {@code n} times, and then stops.
- * </p>
+ * This abstract class represents a split bounded task. As a bounded task, it automatically stops after a number of run.
+ * Additionally, the task is split in increments. The {@code stepSize} parameter allow to run more than one increment in
+ * a row. Note that executing more than one increment in a row does NOT mean executing them one after the other, but to
+ * execute the whole increment range in one action.
  * <p>
  * The bounded task notifies its subscribers when it reaches its bound and stops.
  * </p>
  */
-public abstract class BoundedRunnable extends AbstractSynchronizedRunnable implements Publisher,
-        Persistent<BoundedRunnableState> {
+// TODO 002. use condition
+public abstract class SplitBoundedTask extends AbstractSynchronizedTask implements Publisher,
+        Persistent<SplitBoundedTaskState> {
 
-    private final BoundedRunnableState state;
+    private final SplitBoundedTaskState state;
 
-    private final Condition<?> endingCondition;
+    private final int bound;
+
+    private int count;
+
+    private int stepSize;
 
     private final Publisher publisher = new BasicPublisher(this);
 
-    public BoundedRunnable(BoundedRunnableState state) {
+    public SplitBoundedTask(SplitBoundedTaskState state) {
         super();
         this.state = state;
-        this.endingCondition = new BoundCondition(state.getEndingCondition());
+        this.bound = state.getBound();
+        this.count = state.getCount();
+        this.stepSize = state.getStepSize();
+    }
+
+    public void setStepSize(int stepSize) {
+        this.stepSize = stepSize;
     }
 
     @Override
     public final void executeStep() {
-        if (endingCondition.evaluate()) {
+        count += stepSize;
+        if (count >= bound) {
             stop();
             setChanged();
             notifySubscribers();
         }
-        executeBoundedStep();
+        executeSplitBoundedStep(stepSize);
     }
 
     @Override
-    public BoundedRunnableState getState() {
+    public SplitBoundedTaskState getState() {
         synchronize();
         return state;
     }
 
     @Override
     public void synchronize() {
-        endingCondition.synchronize();
+        state.setCount(count);
+        state.setBound(bound);
+        state.setStepSize(stepSize);
     }
 
-    public abstract void executeBoundedStep();
+    public abstract void executeSplitBoundedStep(int stepSize);
 
     public void addSubscriber(Subscriber subscriber) {
         publisher.addSubscriber(subscriber);

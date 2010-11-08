@@ -11,11 +11,11 @@ public class MockInstrumentedSynchronizerCore extends BasicSynchronizerCore {
 
     private int scheduleCalled;
 
-    private List<Runnable> runnablesToSchedule;
+    private List<SynchronizedTask> tasksToSchedule;
 
     private int unscheduleCalled;
 
-    private List<Runnable> runnablesToUnschedule;
+    private List<SynchronizedTask> tasksToUnschedule;
 
     private int startCalled;
 
@@ -31,9 +31,9 @@ public class MockInstrumentedSynchronizerCore extends BasicSynchronizerCore {
     public void reset() {
         barrier = new CyclicBarrier(1);
         scheduleCalled = 0;
-        runnablesToSchedule = new ArrayList<Runnable>();
+        tasksToSchedule = new ArrayList<SynchronizedTask>();
         unscheduleCalled = 0;
-        runnablesToUnschedule = new ArrayList<Runnable>();
+        tasksToUnschedule = new ArrayList<SynchronizedTask>();
         startCalled = 0;
         stopCalled = 0;
         synchronizeCalled = 0;
@@ -64,33 +64,33 @@ public class MockInstrumentedSynchronizerCore extends BasicSynchronizerCore {
     }
 
     @Override
-    public void schedule(SynchronizedRunnable runnable) {
-        super.schedule(runnable);
+    public void schedule(SynchronizedTask task) {
+        super.schedule(task);
         scheduleCalled++;
-        runnablesToSchedule.add(runnable);
+        tasksToSchedule.add(task);
     }
 
     public int getNbScheduleCalled() {
         return scheduleCalled;
     }
 
-    public List<Runnable> getScheduledRunnables() {
-        return runnablesToSchedule;
+    public List<SynchronizedTask> getScheduledTasks() {
+        return tasksToSchedule;
     }
 
     @Override
-    public void unschedule(SynchronizedRunnable runnable) {
-        super.unschedule(runnable);
+    public void unschedule(SynchronizedTask task) {
+        super.unschedule(task);
         unscheduleCalled++;
-        runnablesToUnschedule.add(runnable);
+        tasksToUnschedule.add(task);
     }
 
     public int getNbUnscheduleCalled() {
         return unscheduleCalled;
     }
 
-    public List<Runnable> getUnscheduledRunnables() {
-        return runnablesToUnschedule;
+    public List<SynchronizedTask> getUnscheduledTasks() {
+        return tasksToUnschedule;
     }
 
     @Override

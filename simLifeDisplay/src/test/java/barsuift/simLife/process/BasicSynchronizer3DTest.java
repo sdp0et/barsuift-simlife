@@ -13,9 +13,9 @@ public class BasicSynchronizer3DTest extends TestCase {
 
     private Synchronizer3DState state;
 
-    private MockSplitBoundedRunnable runnable;
+    private MockSplitBoundedTask task;
 
-    private SynchronizedRunnable barrierReleaser;
+    private SynchronizedTask barrierReleaser;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -25,12 +25,12 @@ public class BasicSynchronizer3DTest extends TestCase {
     private void setUpwithBound(int bound) {
         state = new Synchronizer3DState(10);
         synchro = new BasicSynchronizer3D(state);
-        runnable = new MockSplitBoundedRunnable(new SplitBoundedRunnableState(bound, 0, 10));
-        synchro.schedule(runnable);
+        task = new MockSplitBoundedTask(new SplitBoundedTaskState(bound, 0, 10));
+        synchro.schedule(task);
 
         CyclicBarrier barrier = new CyclicBarrier(2);
         synchro.setBarrier(barrier);
-        barrierReleaser = new MockSingleRunSynchronizedRunnable();
+        barrierReleaser = new MockSingleSynchronizedTask();
         barrierReleaser.changeBarrier(barrier);
     }
 
@@ -38,7 +38,7 @@ public class BasicSynchronizer3DTest extends TestCase {
         super.tearDown();
         state = null;
         synchro = null;
-        runnable = null;
+        task = null;
         barrierReleaser = null;
     }
 
@@ -68,31 +68,31 @@ public class BasicSynchronizer3DTest extends TestCase {
 
     public void testStart() throws InterruptedException {
         assertFalse(synchro.isRunning());
-        assertEquals(0, runnable.getNbExecuted());
-        assertEquals(0, runnable.getNbIncrementExecuted());
+        assertEquals(0, task.getNbExecuted());
+        assertEquals(0, task.getNbIncrementExecuted());
 
         synchro.start();
         Thread.sleep(Synchronizer.CYCLE_LENGTH_3D_MS + 100);
         assertTrue(synchro.isRunning());
-        assertTrue(runnable.getNbExecuted() > 0);
-        assertTrue(runnable.getNbIncrementExecuted() > 0);
+        assertTrue(task.getNbExecuted() > 0);
+        assertTrue(task.getNbIncrementExecuted() > 0);
 
         synchro.stop();
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(Synchronizer.CYCLE_LENGTH_3D_MS + 100);
         assertFalse(synchro.isRunning());
-        int nbExecuted = runnable.getNbExecuted();
-        int nbIncrementExecuted = runnable.getNbIncrementExecuted();
+        int nbExecuted = task.getNbExecuted();
+        int nbIncrementExecuted = task.getNbIncrementExecuted();
         Thread.sleep(Synchronizer.CYCLE_LENGTH_3D_MS + 100);
-        // assert the runnable is not called anymore
-        assertEquals(nbExecuted, runnable.getNbExecuted());
-        assertEquals(nbIncrementExecuted, runnable.getNbIncrementExecuted());
+        // assert the task is not called anymore
+        assertEquals(nbExecuted, task.getNbExecuted());
+        assertEquals(nbIncrementExecuted, task.getNbIncrementExecuted());
         // even if we release the barrier once more
         new Thread(barrierReleaser).start();
         Thread.sleep(Synchronizer.CYCLE_LENGTH_3D_MS + 100);
-        assertEquals(nbExecuted, runnable.getNbExecuted());
-        assertEquals(nbIncrementExecuted, runnable.getNbIncrementExecuted());
+        assertEquals(nbExecuted, task.getNbExecuted());
+        assertEquals(nbIncrementExecuted, task.getNbIncrementExecuted());
     }
 
     public void testStartWithBoundedTask() throws InterruptedException {
@@ -100,29 +100,29 @@ public class BasicSynchronizer3DTest extends TestCase {
         setUpwithBound(10);
 
         assertFalse(synchro.isRunning());
-        assertEquals(0, runnable.getNbExecuted());
-        assertEquals(0, runnable.getNbIncrementExecuted());
+        assertEquals(0, task.getNbExecuted());
+        assertEquals(0, task.getNbIncrementExecuted());
         // the task in not yet in the list because the synchronizer is not running
-        assertFalse(synchro.getRunnables().contains(runnable));
+        assertFalse(synchro.getTasks().contains(task));
 
         synchro.start();
         // ths synchronizer should be in the list now
-        assertTrue(synchro.getRunnables().contains(runnable));
+        assertTrue(synchro.getTasks().contains(task));
         Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_3D_MS + 100);
         assertTrue(synchro.isRunning());
-        assertEquals(1, runnable.getNbExecuted());
-        assertEquals(10, runnable.getNbIncrementExecuted());
+        assertEquals(1, task.getNbExecuted());
+        assertEquals(10, task.getNbIncrementExecuted());
 
         synchro.stop();
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(Synchronizer.CYCLE_LENGTH_3D_MS + 100);
         assertFalse(synchro.isRunning());
-        // the runnable has already stopped anyway
-        assertEquals(1, runnable.getNbExecuted());
-        assertEquals(10, runnable.getNbIncrementExecuted());
-        // the runnable is not even in the list of runnables
-        assertFalse(synchro.getRunnables().contains(runnable));
+        // the task has already stopped anyway
+        assertEquals(1, task.getNbExecuted());
+        assertEquals(10, task.getNbIncrementExecuted());
+        // the task is not even in the list of tasks
+        assertFalse(synchro.getTasks().contains(task));
     }
 
     public void testPublisher() throws Exception {
@@ -172,12 +172,9 @@ public class BasicSynchronizer3DTest extends TestCase {
 
     public void testSchedule() throws Exception {
         // create mocks with a very high bound to be sure they won't stop before the end of the test
-        MockSplitBoundedRunnable mockRun1 = new MockSplitBoundedRunnable(new SplitBoundedRunnableState(
-                Integer.MAX_VALUE, 0, 10));
-        MockSplitBoundedRunnable mockRun2 = new MockSplitBoundedRunnable(new SplitBoundedRunnableState(
-                Integer.MAX_VALUE, 0, 10));
-        MockSplitBoundedRunnable mockRun3 = new MockSplitBoundedRunnable(new SplitBoundedRunnableState(
-                Integer.MAX_VALUE, 0, 10));
+        MockSplitBoundedTask mockRun1 = new MockSplitBoundedTask(new SplitBoundedTaskState(Integer.MAX_VALUE, 0, 10));
+        MockSplitBoundedTask mockRun2 = new MockSplitBoundedTask(new SplitBoundedTaskState(Integer.MAX_VALUE, 0, 10));
+        MockSplitBoundedTask mockRun3 = new MockSplitBoundedTask(new SplitBoundedTaskState(Integer.MAX_VALUE, 0, 10));
 
         try {
             synchro.unschedule(mockRun1);

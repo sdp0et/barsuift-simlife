@@ -27,12 +27,12 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
 // TODO 004. unit test
-// TODO 003. use SplitRunnable instead of SplitBoundedRunnable
-public class GravityProcess extends SplitBoundedRunnable {
+// TODO 003. use SplitTask instead of SplitBoundedTask
+public class GravityProcess extends SplitBoundedTask {
 
     private final ConcurrentLinkedQueue<TransformGroup> transforms;
 
-    public GravityProcess(SplitBoundedRunnableState state) {
+    public GravityProcess(SplitBoundedTaskState state) {
         super(state);
         this.transforms = new ConcurrentLinkedQueue<TransformGroup>();
     }

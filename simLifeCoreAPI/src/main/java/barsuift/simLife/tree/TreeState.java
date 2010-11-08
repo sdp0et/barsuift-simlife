@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.tree.Tree3DState;
-import barsuift.simLife.process.CyclicRunnableState;
+import barsuift.simLife.process.CyclicTaskState;
 
 @XmlRootElement
 public class TreeState implements State {
@@ -37,11 +37,11 @@ public class TreeState implements State {
 
     private List<TreeBranchState> branches;
 
-    private CyclicRunnableState photosynthesis;
+    private CyclicTaskState photosynthesis;
 
-    private CyclicRunnableState aging;
+    private CyclicTaskState aging;
 
-    private CyclicRunnableState growth;
+    private CyclicTaskState growth;
 
     private TreeTrunkState trunkState;
 
@@ -57,13 +57,13 @@ public class TreeState implements State {
         this.height = 0;
         this.trunkState = new TreeTrunkState();
         this.tree3DState = new Tree3DState();
-        this.photosynthesis = new CyclicRunnableState();
-        this.aging = new CyclicRunnableState();
-        this.growth = new CyclicRunnableState();
+        this.photosynthesis = new CyclicTaskState();
+        this.aging = new CyclicTaskState();
+        this.growth = new CyclicTaskState();
     }
 
     public TreeState(long creationMillis, BigDecimal energy, List<TreeBranchState> branches,
-            CyclicRunnableState photosynthesis, CyclicRunnableState aging, CyclicRunnableState growth,
+            CyclicTaskState photosynthesis, CyclicTaskState aging, CyclicTaskState growth,
             TreeTrunkState trunkState, float height, Tree3DState tree3dState) {
         super();
         this.creationMillis = creationMillis;
@@ -101,27 +101,27 @@ public class TreeState implements State {
         this.branches = branches;
     }
 
-    public CyclicRunnableState getPhotosynthesis() {
+    public CyclicTaskState getPhotosynthesis() {
         return photosynthesis;
     }
 
-    public void setPhotosynthesis(CyclicRunnableState photosynthesis) {
+    public void setPhotosynthesis(CyclicTaskState photosynthesis) {
         this.photosynthesis = photosynthesis;
     }
 
-    public CyclicRunnableState getAging() {
+    public CyclicTaskState getAging() {
         return aging;
     }
 
-    public void setAging(CyclicRunnableState aging) {
+    public void setAging(CyclicTaskState aging) {
         this.aging = aging;
     }
 
-    public CyclicRunnableState getGrowth() {
+    public CyclicTaskState getGrowth() {
         return growth;
     }
 
-    public void setGrowth(CyclicRunnableState growth) {
+    public void setGrowth(CyclicTaskState growth) {
         this.growth = growth;
     }
 

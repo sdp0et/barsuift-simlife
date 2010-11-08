@@ -18,17 +18,22 @@
  */
 package barsuift.simLife.process;
 
-public class MockCyclicRunnable extends CyclicRunnable {
+public class MockSynchronizedTask extends AbstractSynchronizedTask {
 
     private int nbExecuted;
 
-    public MockCyclicRunnable(CyclicRunnableState state) {
-        super(state);
+    public MockSynchronizedTask() {
+        super();
         resetNbExecuted();
     }
 
     @Override
-    public void executeCyclicStep() {
+    public void executeStep() {
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException e) {
+            // nothing to do
+        }
         nbExecuted++;
     }
 

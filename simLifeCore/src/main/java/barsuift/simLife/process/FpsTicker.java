@@ -3,7 +3,7 @@ package barsuift.simLife.process;
 import barsuift.simLife.time.FpsCounter;
 
 
-public class FpsTicker extends AbstractSynchronizedRunnable {
+public class FpsTicker extends AbstractSynchronizedTask {
 
     private final FpsCounter fps;
 

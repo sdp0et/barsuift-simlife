@@ -18,34 +18,30 @@
  */
 package barsuift.simLife.process;
 
-public class MockSplitBoundedRunnable extends SplitBoundedRunnable {
+import barsuift.simLife.CoreDataCreatorForTests;
+import barsuift.simLife.JaxbTestCase;
 
-    private int nbExecuted;
 
-    private int nbIncrementExecuted;
+public class BoundedTaskStateTest extends JaxbTestCase {
 
-    public MockSplitBoundedRunnable(SplitBoundedRunnableState state) {
-        super(state);
-        reset();
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Override
-    public void executeSplitBoundedStep(int stepSize) {
-        nbExecuted++;
-        nbIncrementExecuted += stepSize;
+    protected String getPackage() {
+        return "barsuift.simLife.process";
     }
 
-    public int getNbExecuted() {
-        return nbExecuted;
-    }
-
-    public int getNbIncrementExecuted() {
-        return nbIncrementExecuted;
-    }
-
-    public void reset() {
-        nbExecuted = 0;
-        nbIncrementExecuted = 0;
+    public void testJaxb() throws Exception {
+        BoundedTaskState task = CoreDataCreatorForTests.createRandomBoundedTaskState();
+        write(task);
+        BoundedTaskState task2 = (BoundedTaskState) read();
+        assertEquals(task, task2);
     }
 
 }

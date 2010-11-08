@@ -18,15 +18,29 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.condition.BoundConditionState;
-import barsuift.simLife.condition.BoundConditionStateFactory;
+import barsuift.simLife.JaxbTestCase;
 
-public class BoundedRunnableStateFactory {
 
-    public BoundedRunnableState createBoundedRunnableState(Class<? extends SynchronizedRunnable> clazz) {
-        BoundConditionStateFactory factory = new BoundConditionStateFactory();
-        BoundConditionState endingCondition = factory.createBoundConditionState(clazz);
-        return new BoundedRunnableState(endingCondition);
+public class SplitBoundedTaskStateTest extends JaxbTestCase {
+
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    @Override
+    protected String getPackage() {
+        return "barsuift.simLife.process";
+    }
+
+    public void testJaxb() throws Exception {
+        SplitBoundedTaskState task = new SplitBoundedTaskState(20, 10, 5);
+        write(task);
+        SplitBoundedTaskState task2 = (SplitBoundedTaskState) read();
+        assertEquals(task, task2);
     }
 
 }

@@ -24,14 +24,13 @@ import barsuift.simLife.Persistent;
 import barsuift.simLife.message.Subscriber;
 
 /**
- * The synchronizer3D allows to run a list of given {@link SplitBoundedRunnable} at a constant rate.
+ * The synchronizer3D allows to run a list of given {@link SplitBoundedTask} at a constant rate.
  * <p>
  * The synchronizer is able to manage a {@code stepSize} parameter, which is reflected to its synchronized
- * {@code SplitBoundedRunnable}.
+ * {@code SplitBoundedTask}.
  * </p>
  */
-public interface Synchronizer3D extends TaskSynchronizer<SplitBoundedRunnable>, Subscriber,
-        Persistent<Synchronizer3DState> {
+public interface Synchronizer3D extends TaskSynchronizer<SplitBoundedTask>, Subscriber, Persistent<Synchronizer3DState> {
 
     /**
      * Sets the step size of the current 3D synchronizer.
@@ -48,18 +47,18 @@ public interface Synchronizer3D extends TaskSynchronizer<SplitBoundedRunnable>, 
     public int getStepSize();
 
     /**
-     * Adds the given runnable to the list of synchronized tasks.
+     * Adds the given task to the list of synchronized tasks.
      * 
-     * @param runnable the runnable to synchronize
+     * @param task the task to synchronize
      */
-    public void schedule(SplitBoundedRunnable runnable);
+    public void schedule(SplitBoundedTask task);
 
     /**
-     * Remove the given runnable from the list of synchronized tasks.
+     * Remove the given task from the list of synchronized tasks.
      * 
-     * @param runnable the runnable to desynchronize
+     * @param task the task to desynchronize
      */
-    public void unschedule(SplitBoundedRunnable runnable);
+    public void unschedule(SplitBoundedTask task);
 
     /**
      * Set the barrier to use for synchronization purpose.

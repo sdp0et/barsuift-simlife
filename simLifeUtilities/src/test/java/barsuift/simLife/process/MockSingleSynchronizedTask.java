@@ -21,7 +21,7 @@ package barsuift.simLife.process;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
-public class MockSingleRunSynchronizedRunnable implements SynchronizedRunnable {
+public class MockSingleSynchronizedTask implements SynchronizedTask {
 
     private CyclicBarrier barrier;
 
@@ -31,7 +31,7 @@ public class MockSingleRunSynchronizedRunnable implements SynchronizedRunnable {
 
     private int stopCalled;
 
-    public MockSingleRunSynchronizedRunnable() {
+    public MockSingleSynchronizedTask() {
         reset();
     }
 

@@ -22,14 +22,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class SplitBoundedRunnableStateFactory {
+public class SplitBoundedTaskStateFactory {
 
     /**
      * The default bound to use when no value is found in the properties file
      */
     private static final int DEFAULT_BOUND = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
 
-    private static final String PROPERTIES_FILE = "barsuift/simLife/process/SplitBoundedRunnables.properties";
+    private static final String PROPERTIES_FILE = "barsuift/simLife/process/SplitBoundedTasks.properties";
 
     private static final String BOUND_SUFFIX = ".bound";
 
@@ -56,13 +56,13 @@ public class SplitBoundedRunnableStateFactory {
         return prop;
     }
 
-    public SplitBoundedRunnableState createSplitBoundedRunnableState(Class<? extends SplitBoundedRunnable> clazz,
+    public SplitBoundedTaskState createSplitBoundedTaskState(Class<? extends SplitBoundedTask> clazz,
             int stepSize) {
         String boundStr = getProperty(clazz.getSimpleName() + BOUND_SUFFIX);
 
         int bound = (boundStr.length() == 0) ? DEFAULT_BOUND : Integer.parseInt(boundStr);
         int count = 0;
-        return new SplitBoundedRunnableState(bound, count, stepSize);
+        return new SplitBoundedTaskState(bound, count, stepSize);
 
     }
 

@@ -24,7 +24,7 @@ import java.util.concurrent.CyclicBarrier;
 /**
  * This class represents a task that can be synchronized with others.
  */
-public interface SynchronizedRunnable extends Runnable {
+public interface SynchronizedTask extends Runnable {
 
     /**
      * Change the barrier to use for synchronization purpose.
@@ -32,7 +32,7 @@ public interface SynchronizedRunnable extends Runnable {
      * This method can be used even for a running task.
      * </p>
      * 
-     * @param barrier the new cyclic barrier used to synchronize the runnable
+     * @param barrier the new cyclic barrier used to synchronize the task
      * @throws IllegalArgumentException if the given barrier is null
      */
     public void changeBarrier(CyclicBarrier barrier);

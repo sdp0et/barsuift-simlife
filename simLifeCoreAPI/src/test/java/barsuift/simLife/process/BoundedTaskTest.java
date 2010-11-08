@@ -7,23 +7,23 @@ import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
 
 
-public class BoundedRunnableTest extends TestCase {
+public class BoundedTaskTest extends TestCase {
 
-    private MockBoundedRunnable boundedRun;
+    private MockBoundedTask boundedRun;
 
-    private BoundedRunnableState state;
+    private BoundedTaskState state;
 
-    private MockSingleRunSynchronizedRunnable barrierReleaser;
+    private MockSingleSynchronizedTask barrierReleaser;
 
     protected void setUp() throws Exception {
         super.setUp();
         // make sure the barrier will block the process as long as the other mock process is not run
         CyclicBarrier barrier = new CyclicBarrier(2);
         BoundConditionState endingConditionState = new BoundConditionState(3, 0);
-        state = new BoundedRunnableState(endingConditionState);
-        barrierReleaser = new MockSingleRunSynchronizedRunnable();
+        state = new BoundedTaskState(endingConditionState);
+        barrierReleaser = new MockSingleSynchronizedTask();
         barrierReleaser.changeBarrier(barrier);
-        boundedRun = new MockBoundedRunnable(state);
+        boundedRun = new MockBoundedTask(state);
         boundedRun.changeBarrier(barrier);
     }
 
@@ -44,7 +44,7 @@ public class BoundedRunnableTest extends TestCase {
         assertEquals(0, publisherHelper.nbUpdated());
         assertEquals(0, publisherHelper.getUpdateObjects().size());
 
-        // test we can not run the same runnable again
+        // test we can not run the same task again
         try {
             boundedRun.run();
             fail("Should throw an IllegalStateException");

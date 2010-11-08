@@ -3,7 +3,7 @@ package barsuift.simLife.process;
 import barsuift.simLife.time.SimLifeDate;
 
 
-public class DateUpdater extends AbstractSynchronizedRunnable {
+public class DateUpdater extends AbstractSynchronizedTask {
 
     private final SimLifeDate date;
 

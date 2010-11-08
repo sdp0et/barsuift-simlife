@@ -68,10 +68,10 @@ public class BasicTreeTest extends TestCase {
         }
         MockSynchronizerCore synchronizer = (MockSynchronizerCore) universe.getSynchronizer();
         assertEquals(3, synchronizer.getNbScheduleCalled());
-        assertEquals(3, synchronizer.getScheduledRunnables().size());
-        assertEquals(Photosynthesis.class, synchronizer.getScheduledRunnables().get(0).getClass());
-        assertEquals(Aging.class, synchronizer.getScheduledRunnables().get(1).getClass());
-        assertEquals(TreeGrowth.class, synchronizer.getScheduledRunnables().get(2).getClass());
+        assertEquals(3, synchronizer.getScheduledTasks().size());
+        assertEquals(Photosynthesis.class, synchronizer.getScheduledTasks().get(0).getClass());
+        assertEquals(Aging.class, synchronizer.getScheduledTasks().get(1).getClass());
+        assertEquals(TreeGrowth.class, synchronizer.getScheduledTasks().get(2).getClass());
     }
 
     public void testGetState() {
