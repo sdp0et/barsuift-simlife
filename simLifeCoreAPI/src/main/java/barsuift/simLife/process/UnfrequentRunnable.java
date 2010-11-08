@@ -33,6 +33,8 @@ import barsuift.simLife.condition.CyclicCondition;
 // TODO 002. create split cyclic condition
 // TODO 001. refactor runnables to make them common
 // TODO 000. merge with BoundedRunnable
+// TODO 004. add a startCondition to SynchronizedRunnable : a task can wait a notification before it starts
+// TODO 004. add a pauseCondition to SynchronizedRunnable : a task can pause and wait to restart later (with a timeout)
 public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable implements
         Persistent<UnfrequentRunnableState> {
 
