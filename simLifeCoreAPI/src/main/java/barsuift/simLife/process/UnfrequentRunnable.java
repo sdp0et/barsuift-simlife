@@ -28,6 +28,10 @@ import barsuift.simLife.Persistent;
  * If <code>delay=n</code>, the task is executed exactly on the n<sup>th</sup> call, and n call after that, and so on.
  * </p>
  */
+// TODO 001. use condition
+// TODO 002. create split unbounded condition
+// TODO 002. create split unfrequent condition
+// TODO 002. refactor runnables to make them common
 public abstract class UnfrequentRunnable extends AbstractSynchronizedRunnable implements
         Persistent<UnfrequentRunnableState> {
 

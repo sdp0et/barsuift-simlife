@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.process;
 
+
 public class MockBoundedRunnable extends BoundedRunnable {
 
     private int nbExecuted;

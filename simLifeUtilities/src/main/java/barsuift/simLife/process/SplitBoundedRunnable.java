@@ -33,6 +33,7 @@ import barsuift.simLife.message.Subscriber;
  * The bounded task notifies its subscribers when it reaches its bound and stops.
  * </p>
  */
+// TODO 001. use condition
 public abstract class SplitBoundedRunnable extends AbstractSynchronizedRunnable implements Publisher,
         Persistent<SplitBoundedRunnableState> {
 

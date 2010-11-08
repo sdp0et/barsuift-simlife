@@ -3,6 +3,7 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
+import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
 
 
@@ -12,15 +13,16 @@ public class BoundedRunnableTest extends TestCase {
 
     private BoundedRunnableState state;
 
-    private MockSingleRunSynchronizedRunnable mockSynchroRun;
+    private MockSingleRunSynchronizedRunnable barrierReleaser;
 
     protected void setUp() throws Exception {
         super.setUp();
         // make sure the barrier will block the process as long as the other mock process is not run
         CyclicBarrier barrier = new CyclicBarrier(2);
-        state = new BoundedRunnableState(3, 0);
-        mockSynchroRun = new MockSingleRunSynchronizedRunnable();
-        mockSynchroRun.changeBarrier(barrier);
+        BoundConditionState endingConditionState = new BoundConditionState(3, 0);
+        state = new BoundedRunnableState(endingConditionState);
+        barrierReleaser = new MockSingleRunSynchronizedRunnable();
+        barrierReleaser.changeBarrier(barrier);
         boundedRun = new MockBoundedRunnable(state);
         boundedRun.changeBarrier(barrier);
     }
@@ -53,7 +55,7 @@ public class BoundedRunnableTest extends TestCase {
         // test we can stop it now
         boundedRun.stop();
         // release the barrier
-        mockSynchroRun.run();
+        (new Thread(barrierReleaser)).start();
         // make sure the thread has time to stop
         Thread.sleep(100);
         assertFalse(boundedRun.isRunning());
@@ -69,7 +71,7 @@ public class BoundedRunnableTest extends TestCase {
         assertEquals(0, publisherHelper.getUpdateObjects().size());
 
         // release the barrier
-        mockSynchroRun.run();
+        (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
         assertTrue(boundedRun.isRunning());
@@ -80,7 +82,19 @@ public class BoundedRunnableTest extends TestCase {
 
         publisherHelper.reset();
         // release the barrier
-        mockSynchroRun.run();
+        (new Thread(barrierReleaser)).start();
+        // make sure the thread has time to execute
+        Thread.sleep(100);
+        assertFalse(boundedRun.isRunning());
+        // it should not have executed this time
+        assertEquals(3, boundedRun.getNbExecuted());
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
+
+        // even if we do it yet another time
+        publisherHelper.reset();
+        // release the barrier
+        (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
         assertFalse(boundedRun.isRunning());
@@ -90,20 +104,16 @@ public class BoundedRunnableTest extends TestCase {
         assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
-    public void testPublisher() {
-
-    }
-
     public void testGetState() throws InterruptedException {
         assertEquals(state, boundedRun.getState());
         assertSame(state, boundedRun.getState());
-        assertEquals(0, boundedRun.getState().getCount());
+        assertEquals(0, boundedRun.getState().getEndingCondition().getCount());
         (new Thread(boundedRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
         assertEquals(state, boundedRun.getState());
         assertSame(state, boundedRun.getState());
-        assertEquals(1, boundedRun.getState().getCount());
+        assertEquals(1, boundedRun.getState().getEndingCondition().getCount());
     }
 
 }

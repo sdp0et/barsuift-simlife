@@ -16,41 +16,53 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.condition;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.condition.BoundConditionState;
 
 @XmlRootElement
-public class BoundedRunnableState implements State {
+public class BoundConditionState implements State {
 
-    private BoundConditionState endingCondition;
+    private int bound;
 
-    public BoundedRunnableState() {
+    private int count;
+
+    public BoundConditionState() {
         super();
-        endingCondition = new BoundConditionState();
+        bound = 1;
+        count = 0;
     }
 
-    public BoundedRunnableState(BoundConditionState endingCondition) {
+    public BoundConditionState(int bound, int count) {
         super();
-        this.endingCondition = endingCondition;
+        this.bound = bound;
+        this.count = count;
     }
 
-    public BoundConditionState getEndingCondition() {
-        return endingCondition;
+    public int getBound() {
+        return bound;
     }
 
-    public void setEndingCondition(BoundConditionState endingCondition) {
-        this.endingCondition = endingCondition;
+    public void setBound(int bound) {
+        this.bound = bound;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((endingCondition == null) ? 0 : endingCondition.hashCode());
+        result = prime * result + count;
+        result = prime * result + bound;
         return result;
     }
 
@@ -62,19 +74,17 @@ public class BoundedRunnableState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        BoundedRunnableState other = (BoundedRunnableState) obj;
-        if (endingCondition == null) {
-            if (other.endingCondition != null)
-                return false;
-        } else
-            if (!endingCondition.equals(other.endingCondition))
-                return false;
+        BoundConditionState other = (BoundConditionState) obj;
+        if (count != other.count)
+            return false;
+        if (bound != other.bound)
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "BoundedRunnableState [endingCondition=" + endingCondition + "]";
+        return "BoundConditionState [bound=" + bound + ", count=" + count + "]";
     }
 
 }

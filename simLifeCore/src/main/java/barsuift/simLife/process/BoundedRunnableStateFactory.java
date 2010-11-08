@@ -18,64 +18,17 @@
  */
 package barsuift.simLife.process;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import barsuift.simLife.condition.BoundCondition;
+import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.condition.BoundConditionStateFactory;
 
 public class BoundedRunnableStateFactory {
 
-    /**
-     * The default bound to use when no value is found in the properties file
-     */
-    private static final int DEFAULT_BOUND = 1;
-
-    private static final String PROPERTIES_FILE = "barsuift/simLife/process/BoundedRunnables.properties";
-
-    private static final String BOUND_SUFFIX = ".bound";
-
-    private static final Properties prop = loadProperties();;
-
-
-    private static Properties loadProperties() {
-        Properties prop = new Properties();
-        InputStream is = null;
-
-        try {
-            is = ClassLoader.getSystemResourceAsStream(PROPERTIES_FILE);
-            prop.load(is);
-        } catch (IOException e) {
-            System.out.println("Unable to open properties file " + PROPERTIES_FILE + "\n" + e);
-        } finally {
-            if (is != null)
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    System.out.println("Unable to close open stream on properties file " + PROPERTIES_FILE);
-                }
-        }
-        return prop;
-    }
-
     public BoundedRunnableState createBoundedRunnableState(Class<? extends BoundedRunnable> clazz) {
-        String boundStr = getProperty(clazz.getSimpleName() + BOUND_SUFFIX);
+        BoundConditionStateFactory factory = new BoundConditionStateFactory();
+        BoundConditionState endingCondition = factory.createBoundConditionState(BoundCondition.class);
+        return new BoundedRunnableState(endingCondition);
 
-        int bound = (boundStr.length() == 0) ? DEFAULT_BOUND : Integer.parseInt(boundStr);
-        int count = 0;
-        return new BoundedRunnableState(bound, count);
-
-    }
-
-    /**
-     * @param key the key to look for
-     * @return the value from the properties. The returned value is never null, but can be the empty string
-     */
-    private String getProperty(String key) {
-        String property = prop.getProperty(key);
-        if (property == null) {
-            System.out.println("No value four for key " + key);
-            return "";
-        }
-        return property;
     }
 
 }

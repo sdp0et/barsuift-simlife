@@ -19,6 +19,7 @@
 package barsuift.simLife.process;
 
 import junit.framework.TestCase;
+import barsuift.simLife.condition.BoundConditionState;
 
 
 public class BoundedRunnableStateFactoryTest extends TestCase {
@@ -27,8 +28,10 @@ public class BoundedRunnableStateFactoryTest extends TestCase {
         BoundedRunnableStateFactory factory = new BoundedRunnableStateFactory();
 
         BoundedRunnableState unknownState = factory.createBoundedRunnableState(MockBoundedRunnable.class);
-        assertEquals(1, unknownState.getBound());
-        assertEquals(0, unknownState.getCount());
+        BoundConditionState endingCondition = unknownState.getEndingCondition();
+        assertNotNull(endingCondition);
+        assertEquals(1, endingCondition.getBound());
+        assertEquals(0, endingCondition.getCount());
     }
 
 }
