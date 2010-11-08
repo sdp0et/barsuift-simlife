@@ -19,6 +19,8 @@
 package barsuift.simLife.process;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.condition.BoundCondition;
+import barsuift.simLife.condition.Condition;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
@@ -39,23 +41,19 @@ public abstract class BoundedRunnable extends AbstractSynchronizedRunnable imple
 
     private final BoundedRunnableState state;
 
-    private final int bound;
-
-    private int count;
+    private final Condition<?> endingCondition;
 
     private final Publisher publisher = new BasicPublisher(this);
 
     public BoundedRunnable(BoundedRunnableState state) {
         super();
         this.state = state;
-        this.bound = state.getBound();
-        this.count = state.getCount();
+        this.endingCondition = new BoundCondition(state.getEndingCondition());
     }
 
     @Override
     public final void executeStep() {
-        count++;
-        if (count == bound) {
+        if (endingCondition.evaluate()) {
             stop();
             setChanged();
             notifySubscribers();
@@ -71,8 +69,7 @@ public abstract class BoundedRunnable extends AbstractSynchronizedRunnable imple
 
     @Override
     public void synchronize() {
-        state.setCount(count);
-        state.setBound(bound);
+        endingCondition.synchronize();
     }
 
     public abstract void executeBoundedStep();

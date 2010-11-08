@@ -16,24 +16,24 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.condition;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class UnfrequentRunnableStateFactory {
+public class BoundConditionStateFactory {
 
     /**
-     * The default delay to use when no value is found in the properties file
+     * The default bound to use when no value is found in the properties file
      */
-    private static final int DEFAULT_DELAY = 1;
+    private static final int DEFAULT_BOUND = 1;
 
-    private static final String PROPERTIES_FILE = "barsuift/simLife/process/UnfrequentRunnables.properties";
+    private static final String PROPERTIES_FILE = "barsuift/simLife/process/BoundedRunnables.properties";
 
-    private static final String DELAY_SUFFIX = ".delay";
+    private static final String BOUND_SUFFIX = ".bound";
 
-    private static final Properties prop = loadProperties();
+    private static final Properties prop = loadProperties();;
 
 
     private static Properties loadProperties() {
@@ -56,12 +56,12 @@ public class UnfrequentRunnableStateFactory {
         return prop;
     }
 
-    public UnfrequentRunnableState createUnfrequentRunnableState(Class<? extends UnfrequentRunnable> clazz) {
-        String delayStr = getProperty(clazz.getSimpleName() + DELAY_SUFFIX);
+    public BoundConditionState createBoundConditionState(Class<? extends Condition<?>> clazz) {
+        String boundStr = getProperty(clazz.getSimpleName() + BOUND_SUFFIX);
 
-        int delay = (delayStr.length() == 0) ? DEFAULT_DELAY : Integer.parseInt(delayStr);
+        int bound = (boundStr.length() == 0) ? DEFAULT_BOUND : Integer.parseInt(boundStr);
         int count = 0;
-        return new UnfrequentRunnableState(delay, count);
+        return new BoundConditionState(bound, count);
 
     }
 

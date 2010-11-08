@@ -16,32 +16,17 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.condition;
 
-import barsuift.simLife.JaxbTestCase;
-import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.Persistent;
+import barsuift.simLife.State;
 
+/**
+ * A condition which evaluates as a boolean value.
+ * 
+ */
+public interface Condition<E extends State> extends Persistent<E> {
 
-public class BoundedRunnableStateTest extends JaxbTestCase {
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.process";
-    }
-
-    public void testJaxb() throws Exception {
-        BoundedRunnableState runnable = new BoundedRunnableState(new BoundConditionState(3, 2));
-        write(runnable);
-        BoundedRunnableState runnable2 = (BoundedRunnableState) read();
-        assertEquals(runnable, runnable2);
-    }
+    public boolean evaluate();
 
 }
