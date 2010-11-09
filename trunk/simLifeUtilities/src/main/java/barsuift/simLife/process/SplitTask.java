@@ -16,47 +16,49 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.condition;
+package barsuift.simLife.process;
+
+import barsuift.simLife.Persistent;
 
 
 /**
- * A bound condition evaluates to false as long as the bound is not reached. Then it always return true.
- * 
+ * This abstract class represents a split task. It is split in increments. The {@code stepSize} parameter allow to run
+ * more than one increment in a row. Note that executing more than one increment in a row does NOT mean executing them
+ * one after the other, but to execute the whole increment range in one action.
  */
-public class BasicBoundCondition implements BoundCondition {
+// TODO unit test
+public abstract class SplitTask extends AbstractSynchronizedTask implements Persistent<SplitTaskState> {
 
-    private final BoundConditionState state;
+    private final SplitTaskState state;
 
-    private final int bound;
+    private int stepSize;
 
-    private int count;
-
-    public BasicBoundCondition(BoundConditionState state) {
+    public SplitTask(SplitTaskState state) {
         super();
         this.state = state;
-        this.bound = state.getBound();
-        this.count = state.getCount();
+        this.stepSize = state.getStepSize();
     }
 
-    /**
-     * Increment a counter and then test if the counter is greater or equal to the bound.
-     */
-    @Override
-    public boolean evaluate() {
-        count++;
-        return count >= bound;
+    public void setStepSize(int stepSize) {
+        this.stepSize = stepSize;
     }
 
     @Override
-    public BoundConditionState getState() {
+    public final void executeStep() {
+        executeSplitStep(stepSize);
+    }
+
+    public abstract void executeSplitStep(int stepSize);
+
+    @Override
+    public SplitTaskState getState() {
         synchronize();
         return state;
     }
 
     @Override
     public void synchronize() {
-        state.setCount(count);
-        state.setBound(bound);
+        state.setStepSize(stepSize);
     }
 
 }

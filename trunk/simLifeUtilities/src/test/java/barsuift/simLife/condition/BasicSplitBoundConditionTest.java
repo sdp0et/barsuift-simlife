@@ -5,14 +5,14 @@ import junit.framework.TestCase;
 
 public class BasicSplitBoundConditionTest extends TestCase {
 
-    private BasicSplitBoundCondition condition;
+    private SplitBoundCondition condition;
 
     private BoundConditionState state;
 
     protected void setUp() throws Exception {
         super.setUp();
         state = new BoundConditionState(7, 2);
-        condition = new BasicSplitBoundCondition(state);
+        condition = new SplitBoundCondition(state);
     }
 
     protected void tearDown() throws Exception {

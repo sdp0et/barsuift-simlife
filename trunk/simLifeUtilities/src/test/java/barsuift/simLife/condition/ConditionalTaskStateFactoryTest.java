@@ -28,7 +28,7 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         assertEquals(1, executionCondition.getCycle());
         assertEquals(0, executionCondition.getCount());
         endingCondition = taskState.getEndingCondition();
-        assertEquals(-1, endingCondition.getBound());
+        assertEquals(0, endingCondition.getBound());
         assertEquals(0, endingCondition.getCount());
 
         taskState = factory.createConditionalTaskState(MockSplitBoundedTask.class);
@@ -36,7 +36,7 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         assertEquals(2, executionCondition.getCycle());
         assertEquals(0, executionCondition.getCount());
         endingCondition = taskState.getEndingCondition();
-        assertEquals(-1, endingCondition.getBound());
+        assertEquals(0, endingCondition.getBound());
         assertEquals(0, endingCondition.getCount());
 
 
