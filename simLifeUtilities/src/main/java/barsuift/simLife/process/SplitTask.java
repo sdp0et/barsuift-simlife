@@ -27,6 +27,7 @@ import barsuift.simLife.Persistent;
  * one after the other, but to execute the whole increment range in one action.
  */
 // TODO unit test
+// FIXME there should be only one SplitTask (which extends conditionalTask !!
 public abstract class SplitTask extends AbstractSynchronizedTask implements Persistent<SplitTaskState> {
 
     private final SplitTaskState state;
