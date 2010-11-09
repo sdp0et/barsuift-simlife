@@ -54,10 +54,10 @@ public class TreeStateFactory {
         for (int i = 0; i < nbBranches; i++) {
             branches.add(computeRandomBranchState(radius, height));
         }
-        ConditionalTaskStateFactory cyclicTaskStateFactory = new ConditionalTaskStateFactory();
-        ConditionalTaskState photosynthesis = cyclicTaskStateFactory.createConditionalTaskState(Photosynthesis.class);
-        ConditionalTaskState aging = cyclicTaskStateFactory.createConditionalTaskState(Aging.class);
-        ConditionalTaskState growth = cyclicTaskStateFactory.createConditionalTaskState(TreeGrowth.class);
+        ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
+        ConditionalTaskState photosynthesis = taskStateFactory.createConditionalTaskState(Photosynthesis.class);
+        ConditionalTaskState aging = taskStateFactory.createConditionalTaskState(Aging.class);
+        ConditionalTaskState growth = taskStateFactory.createConditionalTaskState(TreeGrowth.class);
         TreeTrunkStateFactory trunkStateFactory = new TreeTrunkStateFactory();
         TreeTrunkState trunkState = trunkStateFactory.createRandomTreeTrunkState(radius, height);
 

@@ -4,6 +4,8 @@ import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
 import barsuift.simLife.InitException;
+import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.time.SimLifeDate;
 
@@ -24,7 +26,8 @@ public class BasicSynchronizerCoreTest extends TestCase {
         state = new SynchronizerCoreState(Speed.VERY_FAST);
         synchro = new BasicSynchronizerCore(state);
         date = new SimLifeDate();
-        DateUpdater dateUpdater = new DateUpdater(date);
+        DateUpdater dateUpdater = new DateUpdater(new ConditionalTaskState(new CyclicConditionState(1, 0),
+                new BoundConditionState(0, 0)), date);
         synchro.schedule(dateUpdater);
 
         CyclicBarrier barrier = new CyclicBarrier(2);
