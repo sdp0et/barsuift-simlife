@@ -22,9 +22,43 @@ import barsuift.simLife.Persistent;
 
 
 /**
- * A bound condition evaluates to false as long as the bound is not reached. Then it always return true;
+ * A bound condition evaluates to false as long as the bound is not reached. Then it always return true.
  * 
  */
-public interface SplitBoundCondition extends SplitCondition, Persistent<BoundConditionState> {
+public class SplitBoundCondition implements SplitCondition, Persistent<BoundConditionState> {
+
+    private final BoundConditionState state;
+
+    private final int bound;
+
+    private int count;
+
+    public SplitBoundCondition(BoundConditionState state) {
+        super();
+        this.state = state;
+        this.bound = state.getBound();
+        this.count = state.getCount();
+    }
+
+    /**
+     * Always return false.
+     */
+    @Override
+    public boolean evaluate(int stepSize) {
+        count += stepSize;
+        return count >= bound;
+    }
+
+    @Override
+    public BoundConditionState getState() {
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setCount(count);
+        state.setBound(bound);
+    }
 
 }

@@ -20,7 +20,6 @@ package barsuift.simLife.process;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.condition.BoundCondition;
-import barsuift.simLife.condition.BoundConditionFactory;
 import barsuift.simLife.condition.CyclicCondition;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
@@ -45,8 +44,7 @@ public abstract class ConditionalTask extends AbstractSynchronizedTask implement
         super();
         this.state = state;
         this.executionCondition = new CyclicCondition(state.getExecutionCondition());
-        BoundConditionFactory factory = new BoundConditionFactory();
-        this.endingCondition = factory.createBoundCondition(state.getEndingCondition());
+        this.endingCondition = new BoundCondition(state.getEndingCondition());
     }
 
     @Override

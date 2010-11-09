@@ -22,9 +22,52 @@ import barsuift.simLife.Persistent;
 
 
 /**
- * A bound condition evaluates to false as long as the bound is not reached. Then it always return true;
+ * A bound condition evaluates to false as long as the bound is not reached. Then it always return true.
  * 
  */
-public interface BoundCondition extends Condition, Persistent<BoundConditionState> {
+public class BoundCondition implements Condition, Persistent<BoundConditionState> {
+
+    private final BoundConditionState state;
+
+    private final int bound;
+
+    private int count;
+
+    public BoundCondition(BoundConditionState state) {
+        super();
+        this.state = state;
+        this.bound = state.getBound();
+        this.count = state.getCount();
+    }
+
+    /**
+     * If the counter is less than the bound, increment the counter and return true if the counter has now reached the
+     * bound. Return false otherwise.
+     */
+    @Override
+    public boolean evaluate() {
+        if (bound == 0) {
+            // bound 0 means no bound, so it can not be reached
+            return false;
+        }
+        // this test is to prevent overflow of count
+        if (count < bound) {
+            count++;
+            return count >= bound;
+        }
+        return true;
+    }
+
+    @Override
+    public BoundConditionState getState() {
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        state.setCount(count);
+        state.setBound(bound);
+    }
 
 }

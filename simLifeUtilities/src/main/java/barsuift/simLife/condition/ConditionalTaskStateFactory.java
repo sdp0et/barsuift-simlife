@@ -28,9 +28,9 @@ import barsuift.simLife.process.SynchronizedTask;
 public class ConditionalTaskStateFactory {
 
     /**
-     * The default bound to use when no value is found in the properties file
+     * The default bound to use when no value is found in the properties file. 0 means no bound.
      */
-    private static final int DEFAULT_BOUND = -1;
+    private static final int DEFAULT_BOUND = 0;
 
     /**
      * The default cycle to use when no value is found in the properties file
