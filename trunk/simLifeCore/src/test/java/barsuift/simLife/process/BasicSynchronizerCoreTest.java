@@ -3,7 +3,6 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
-import barsuift.simLife.InitException;
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
@@ -59,7 +58,7 @@ public class BasicSynchronizerCoreTest extends TestCase {
         }
     }
 
-    public void testSetSpeed() throws InitException {
+    public void testSetSpeed() {
         assertEquals(Speed.VERY_FAST, synchro.getSpeed());
         synchro.setSpeed(Speed.FAST);
         assertEquals(Speed.FAST, synchro.getSpeed());

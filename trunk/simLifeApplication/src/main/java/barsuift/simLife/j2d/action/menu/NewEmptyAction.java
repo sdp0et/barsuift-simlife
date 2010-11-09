@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import barsuift.simLife.Application;
-import barsuift.simLife.InitException;
 import barsuift.simLife.j2d.menu.Accelerators;
 import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.process.MainSynchronizer;
@@ -48,7 +47,7 @@ public class NewEmptyAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         stopApp();
-        createEmptyUniverse();
+        application.createEmptyUniverse();
     }
 
     private void stopApp() {
@@ -58,14 +57,6 @@ public class NewEmptyAction extends AbstractAction {
             if (synchronizer.isRunning()) {
                 synchronizer.stop();
             }
-        }
-    }
-
-    private void createEmptyUniverse() {
-        try {
-            application.createEmptyUniverse();
-        } catch (InitException ie) {
-            System.out.println("Unable to create an empty universe\n" + ie);
         }
     }
 

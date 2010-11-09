@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import barsuift.simLife.InitException;
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.condition.ConditionalTaskStateFactory;
 import barsuift.simLife.environment.BasicEnvironment;
@@ -65,7 +64,7 @@ public class BasicUniverse implements Universe {
     private final BasicUniverse3D universe3D;
 
 
-    public BasicUniverse(UniverseState state) throws InitException {
+    public BasicUniverse(UniverseState state) {
         this.state = state;
         this.universe3D = new BasicUniverse3D(state.getUniv3DState(), this);
         this.environment = new BasicEnvironment(state.getEnvironment());

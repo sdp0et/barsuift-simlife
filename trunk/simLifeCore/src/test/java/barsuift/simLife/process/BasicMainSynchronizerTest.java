@@ -1,7 +1,6 @@
 package barsuift.simLife.process;
 
 import junit.framework.TestCase;
-import barsuift.simLife.InitException;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
@@ -56,7 +55,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         taskCore = null;
     }
 
-    public void testSetSpeed() throws InitException {
+    public void testSetSpeed() {
         assertEquals(Speed.VERY_FAST, synchro.getSpeed());
         assertEquals(Speed.VERY_FAST, synchronizerCore.getSpeed());
         assertEquals(Speed.VERY_FAST.getSpeed(), synchronizer3D.getStepSize());
