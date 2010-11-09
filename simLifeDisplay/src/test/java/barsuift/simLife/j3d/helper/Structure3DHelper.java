@@ -65,7 +65,7 @@ public final class Structure3DHelper extends Assert {
         assertTrue(children.nextElement() instanceof Shape3D);
         assertFalse(children.hasMoreElements());
     }
-    
+
     @SuppressWarnings("rawtypes")
     public static void assertExactlyOneShape3D(TransformGroup transformGroup) {
         Enumeration children = transformGroup.getAllChildren();

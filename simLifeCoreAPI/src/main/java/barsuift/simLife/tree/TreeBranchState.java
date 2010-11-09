@@ -151,8 +151,8 @@ public class TreeBranchState implements State {
 
     @Override
     public String toString() {
-        return "TreeBranchState [branch3DState=" + branch3DState + ", creationMillis=" + creationMillis + ", energy=" + energy
-                + ", freeEnergy=" + freeEnergy + ", branchPartStates=" + branchPartStates + "]";
+        return "TreeBranchState [branch3DState=" + branch3DState + ", creationMillis=" + creationMillis + ", energy="
+                + energy + ", freeEnergy=" + freeEnergy + ", branchPartStates=" + branchPartStates + "]";
     }
 
 }

@@ -35,7 +35,7 @@ public class Mnemonics {
     public static final int SPEED_NORMAL = KeyEvent.VK_1;
 
     public static final int SPEED_FAST = KeyEvent.VK_2;
-    
+
     public static final int SPEED_VERY_FAST = KeyEvent.VK_3;
 
 

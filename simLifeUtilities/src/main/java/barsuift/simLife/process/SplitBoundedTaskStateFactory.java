@@ -56,8 +56,7 @@ public class SplitBoundedTaskStateFactory {
         return prop;
     }
 
-    public SplitBoundedTaskState createSplitBoundedTaskState(Class<? extends SplitBoundedTask> clazz,
-            int stepSize) {
+    public SplitBoundedTaskState createSplitBoundedTaskState(Class<? extends SplitBoundedTask> clazz, int stepSize) {
         String boundStr = getProperty(clazz.getSimpleName() + BOUND_SUFFIX);
 
         int bound = (boundStr.length() == 0) ? DEFAULT_BOUND : Integer.parseInt(boundStr);

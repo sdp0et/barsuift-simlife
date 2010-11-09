@@ -33,7 +33,7 @@ public interface TreeBranch3D extends Persistent<TreeBranch3DState> {
     public List<TreeBranchPart3D> getBranchParts();
 
     public Group getGroup();
-    
+
     public Vector3d getTranslationVector();
 
 }

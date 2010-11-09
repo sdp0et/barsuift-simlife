@@ -176,7 +176,8 @@ public class BasicTreeLeafTest extends TestCase {
         int updateParam2 = (Integer) publisherHelper.getUpdateObjects().get(1);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam2, LeafUpdateMask.FALL_MASK));
 
-        MockGravityInterpolator gravity = (MockGravityInterpolator) universe.getUniverse3D().getPhysics3D().getGravityInterpolator();
+        MockGravityInterpolator gravity = (MockGravityInterpolator) universe.getUniverse3D().getPhysics3D()
+                .getGravityInterpolator();
         assertEquals(bg, gravity.getFallenGroup());
     }
 
