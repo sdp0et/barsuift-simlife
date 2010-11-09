@@ -22,7 +22,6 @@ import java.io.File;
 
 import javax.xml.bind.JAXBException;
 
-import barsuift.simLife.InitException;
 import barsuift.simLife.JaxbIO;
 
 public class UniverseContextIO {
@@ -40,8 +39,6 @@ public class UniverseContextIO {
             UniverseContext universeContext = new BasicUniverseContext(universeContextState);
             return universeContext;
         } catch (JAXBException e) {
-            throw new OpenException(e);
-        } catch (InitException e) {
             throw new OpenException(e);
         }
     }

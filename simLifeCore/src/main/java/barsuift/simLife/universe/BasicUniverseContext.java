@@ -27,7 +27,6 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Quat4d;
 import javax.vecmath.Vector3d;
 
-import barsuift.simLife.InitException;
 import barsuift.simLife.condition.ConditionalTaskStateFactory;
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
@@ -71,7 +70,7 @@ public class BasicUniverseContext implements UniverseContext {
 
     private final MainSynchronizer synchronizer;
 
-    public BasicUniverseContext(UniverseContextState state) throws InitException {
+    public BasicUniverseContext(UniverseContextState state) {
         this.state = state;
         this.axisShowing = state.isAxisShowing();
 

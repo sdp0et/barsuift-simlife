@@ -1,7 +1,6 @@
 package barsuift.simLife.universe;
 
 import junit.framework.TestCase;
-import barsuift.simLife.InitException;
 import barsuift.simLife.tree.MockTree;
 
 
@@ -15,7 +14,7 @@ public class BasicUniverseTest extends TestCase {
         super.tearDown();
     }
 
-    public void testGetState() throws InitException {
+    public void testGetState() {
         UniverseStateFactory factory = new UniverseStateFactory();
         UniverseState state = factory.createRandomUniverseState();
         BasicUniverse universe = new BasicUniverse(state);
