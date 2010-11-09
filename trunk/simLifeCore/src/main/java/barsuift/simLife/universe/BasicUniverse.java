@@ -26,11 +26,13 @@ import java.util.Set;
 
 import barsuift.simLife.InitException;
 import barsuift.simLife.LivingPart;
+import barsuift.simLife.condition.ConditionalTaskStateFactory;
 import barsuift.simLife.environment.BasicEnvironment;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.process.BasicSynchronizerCore;
+import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.DateUpdater;
 import barsuift.simLife.process.SynchronizerCore;
 import barsuift.simLife.time.DateHandler;
@@ -70,7 +72,9 @@ public class BasicUniverse implements Universe {
         this.physics = new BasicPhysics(this, state.getPhysics());
         this.synchronizer = new BasicSynchronizerCore(state.getSynchronizerState());
         this.dateHandler = new DateHandler(state.getDateHandler());
-        DateUpdater dateUpdater = new DateUpdater(dateHandler.getDate());
+        ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
+        ConditionalTaskState dateUpdaterState = taskStateFactory.createConditionalTaskState(DateUpdater.class);
+        DateUpdater dateUpdater = new DateUpdater(dateUpdaterState, dateHandler.getDate());
         synchronizer.schedule(dateUpdater);
         this.trees = new ArrayList<Tree>();
         Set<TreeState> treeStates = state.getTrees();

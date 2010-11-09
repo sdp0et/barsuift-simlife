@@ -3,17 +3,17 @@ package barsuift.simLife.process;
 import barsuift.simLife.time.SimLifeDate;
 
 
-public class DateUpdater extends AbstractSynchronizedTask {
+public class DateUpdater extends ConditionalTask {
 
     private final SimLifeDate date;
 
-    public DateUpdater(SimLifeDate date) {
-        super();
+    public DateUpdater(ConditionalTaskState state, SimLifeDate date) {
+        super(state);
         this.date = date;
     }
 
     @Override
-    public void executeStep() {
+    public void executeConditionalStep() {
         date.addMillis(Synchronizer.CYCLE_LENGTH_CORE_MS);
     }
 
