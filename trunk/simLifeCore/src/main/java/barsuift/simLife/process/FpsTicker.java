@@ -3,17 +3,17 @@ package barsuift.simLife.process;
 import barsuift.simLife.time.FpsCounter;
 
 
-public class FpsTicker extends AbstractSynchronizedTask {
+public class FpsTicker extends ConditionalTask {
 
     private final FpsCounter fps;
 
-    public FpsTicker(FpsCounter fps) {
-        super();
+    public FpsTicker(ConditionalTaskState state, FpsCounter fps) {
+        super(state);
         this.fps = fps;
     }
 
     @Override
-    public void executeStep() {
+    public void executeConditionalStep() {
         fps.tick();
     }
 

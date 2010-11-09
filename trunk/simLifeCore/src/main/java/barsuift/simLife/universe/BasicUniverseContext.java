@@ -28,10 +28,12 @@ import javax.vecmath.Quat4d;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.InitException;
+import barsuift.simLife.condition.ConditionalTaskStateFactory;
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
 import barsuift.simLife.process.BasicMainSynchronizer;
+import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.FpsTicker;
 import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.time.FpsCounter;
@@ -120,7 +122,9 @@ public class BasicUniverseContext implements UniverseContext {
     public void setFpsShowing(boolean fpsShowing) {
         if (fpsShowing) {
             fpsCounter.reset();
-            fpsTicker = new FpsTicker(fpsCounter);
+            ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
+            ConditionalTaskState fpsTickerState = taskStateFactory.createConditionalTaskState(FpsTicker.class);
+            fpsTicker = new FpsTicker(fpsTickerState, fpsCounter);
             universe.getSynchronizer().schedule(fpsTicker);
         } else {
             if (this.fpsShowing) {
