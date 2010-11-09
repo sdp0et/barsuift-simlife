@@ -34,6 +34,7 @@ import barsuift.simLife.message.Subscriber;
  * </p>
  */
 // TODO 002. create SplitTask and SplitConditionalTask (and use condition)
+//TODO change this class to SplitConditionalTask
 public abstract class SplitBoundedTask extends AbstractSynchronizedTask implements Publisher,
         Persistent<SplitBoundedTaskState> {
 

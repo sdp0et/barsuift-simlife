@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 
+// TODO change this class to SplitConditionalTaskState
 @XmlRootElement
 public class SplitBoundedTaskState implements State {
 
