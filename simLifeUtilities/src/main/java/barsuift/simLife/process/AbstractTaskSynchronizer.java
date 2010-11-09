@@ -18,13 +18,15 @@ import barsuift.simLife.message.Subscriber;
 /**
  * This is a common implementation of TaskSynchronizer.
  * <p>
- * This synchronizer allows to run the list of given {@link SynchronizedTask} at a given rate. A
- * {@link CyclicBarrier} is used to synchronized all the tasks, and a {@link Temporizer}, in a
- * {@link ScheduledExecutorService}, is used to ensure there is always the same delay between two runs.
+ * This synchronizer allows to run the list of given {@link SynchronizedTask} at a given rate. A {@link CyclicBarrier}
+ * is used to synchronized all the tasks, and a {@link Temporizer}, in a {@link ScheduledExecutorService}, is used to
+ * ensure there is always the same delay between two runs.
  * </p>
  * 
  * @param <E> the sub-type of SynchronizedTask to use
  */
+// FIXME this synchronizer should be able to deal with ConditionalTask that notifies when stopped (as
+// BasicSynchronizer3D do.
 public abstract class AbstractTaskSynchronizer<E extends SynchronizedTask> implements TaskSynchronizer<E> {
 
     private boolean running;
@@ -176,8 +178,8 @@ public abstract class AbstractTaskSynchronizer<E extends SynchronizedTask> imple
         // if there are new tasks to schedule or to unschedule
         if (nbNewTasksToAdd > 0 || nbTasksToRemove > 0) {
             // 1. update the new barrier
-            barrierForTasks = new CyclicBarrier(barrierForTasks.getParties() + nbNewTasksToAdd
-                    - nbTasksToRemove, createBarrierTask());
+            barrierForTasks = new CyclicBarrier(barrierForTasks.getParties() + nbNewTasksToAdd - nbTasksToRemove,
+                    createBarrierTask());
             // 2. update the list of executed tasks
             tasks.addAll(newTasksToSchedule);
             tasks.removeAll(tasksToUnschedule);
