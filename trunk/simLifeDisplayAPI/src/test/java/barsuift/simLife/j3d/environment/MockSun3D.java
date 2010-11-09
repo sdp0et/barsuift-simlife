@@ -35,7 +35,7 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
     public MockSun3D() {
         super(null);
     }
-    
+
     @Override
     public BigDecimal getWhiteFactor() {
         return whiteFactor;

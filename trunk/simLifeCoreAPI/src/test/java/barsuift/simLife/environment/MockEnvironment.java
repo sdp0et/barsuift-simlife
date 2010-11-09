@@ -58,7 +58,7 @@ public class MockEnvironment implements Environment {
     public int getNbSynchronize() {
         return synchronizedCalled;
     }
-    
+
     public void setNbSynchronize(int nbSynchronize) {
         this.synchronizedCalled = nbSynchronize;
     }

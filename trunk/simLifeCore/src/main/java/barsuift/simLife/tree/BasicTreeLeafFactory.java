@@ -41,7 +41,8 @@ public class BasicTreeLeafFactory {
 
     public TreeLeaf createNew(Point3d leafAttachPoint, BigDecimal energy, long creationMillis) {
         TreeLeafStateFactory treeLeafStateFactory = new TreeLeafStateFactory();
-        TreeLeafState treeLeafState = treeLeafStateFactory.createNewTreeLeafState(leafAttachPoint, energy, creationMillis);
+        TreeLeafState treeLeafState = treeLeafStateFactory.createNewTreeLeafState(leafAttachPoint, energy,
+                creationMillis);
         TreeLeaf treeLeaf = new BasicTreeLeaf(universe, treeLeafState);
         return treeLeaf;
     }

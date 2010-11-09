@@ -27,7 +27,7 @@ public class BasicUniverseContextFactory {
      * Create a random universe context
      * 
      * @return a new universe context instance
-     * @throws InitException 
+     * @throws InitException
      */
     public UniverseContext createRandom() throws InitException {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
@@ -40,7 +40,7 @@ public class BasicUniverseContextFactory {
      * Create an empty universe context
      * 
      * @return a new universe context instance
-     * @throws InitException 
+     * @throws InitException
      */
     public UniverseContext createEmpty() throws InitException {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();

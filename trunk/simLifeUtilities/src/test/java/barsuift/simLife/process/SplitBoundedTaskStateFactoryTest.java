@@ -27,8 +27,7 @@ public class SplitBoundedTaskStateFactoryTest extends TestCase {
         SplitBoundedTaskStateFactory factory = new SplitBoundedTaskStateFactory();
 
         int stepSize = 5;
-        SplitBoundedTaskState unknownState = factory.createSplitBoundedTaskState(
-                MockSplitBoundedTask.class, stepSize);
+        SplitBoundedTaskState unknownState = factory.createSplitBoundedTaskState(MockSplitBoundedTask.class, stepSize);
         assertEquals(20, unknownState.getBound());
         assertEquals(0, unknownState.getCount());
         assertEquals(stepSize, unknownState.getStepSize());
