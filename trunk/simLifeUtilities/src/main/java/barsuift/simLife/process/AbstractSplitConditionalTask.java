@@ -21,6 +21,7 @@ package barsuift.simLife.process;
 import barsuift.simLife.Persistent;
 
 
+
 /**
  * This abstract class represents a split task. It is split in increments. The {@code stepSize} parameter allow to run
  * more than one increment in a row. Note that executing more than one increment in a row does NOT mean executing them
@@ -28,18 +29,20 @@ import barsuift.simLife.Persistent;
  */
 // TODO unit test
 // FIXME there should be only one SplitTask (which extends conditionalTask !!
-public abstract class SplitTask extends AbstractSynchronizedTask implements Persistent<SplitTaskState> {
+public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedTask implements SplitConditionalTask,
+        Persistent<SplitTaskState> {
 
     private final SplitTaskState state;
 
     private int stepSize;
 
-    public SplitTask(SplitTaskState state) {
+    public AbstractSplitConditionalTask(SplitTaskState state) {
         super();
         this.state = state;
         this.stepSize = state.getStepSize();
     }
 
+    @Override
     public void setStepSize(int stepSize) {
         this.stepSize = stepSize;
     }
@@ -49,6 +52,7 @@ public abstract class SplitTask extends AbstractSynchronizedTask implements Pers
         executeSplitStep(stepSize);
     }
 
+    @Override
     public abstract void executeSplitStep(int stepSize);
 
     @Override
