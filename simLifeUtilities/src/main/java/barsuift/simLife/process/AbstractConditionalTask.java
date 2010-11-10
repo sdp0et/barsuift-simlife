@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.process;
 
+import barsuift.simLife.Persistent;
 import barsuift.simLife.condition.BoundCondition;
 import barsuift.simLife.condition.CyclicCondition;
 import barsuift.simLife.message.BasicPublisher;
@@ -28,7 +29,8 @@ import barsuift.simLife.message.Subscriber;
 /**
  * A conditional task is a task with an execution condition and an ending condition.
  */
-public abstract class AbstractConditionalTask extends AbstractSynchronizedTask implements ConditionalTask {
+public abstract class AbstractConditionalTask extends AbstractSynchronizedTask implements ConditionalTask,
+        Persistent<ConditionalTaskState> {
 
     private final ConditionalTaskState state;
 
