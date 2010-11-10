@@ -38,8 +38,6 @@ import barsuift.simLife.message.Subscriber;
  * The task notifies its subscribers when it reaches its bound and stops.
  * </p>
  */
-// TODO unit test (see AbstractConditionalTaskTest)
-// FIXME there should be only one SplitTask (which extends conditionalTask !!
 public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedTask implements SplitConditionalTask,
         Persistent<SplitConditionalTaskState> {
 

@@ -18,19 +18,34 @@
  */
 package barsuift.simLife.process;
 
-import junit.framework.TestCase;
+public class MockSplitConditionalTask extends AbstractSplitConditionalTask {
 
+    private int nbExecuted;
 
-public class SplitBoundedTaskStateFactoryTest extends TestCase {
+    private int nbIncrementExecuted;
 
-    public void testCreateSplitBoundedTaskState() {
-        SplitBoundedTaskStateFactory factory = new SplitBoundedTaskStateFactory();
+    public MockSplitConditionalTask(SplitConditionalTaskState state) {
+        super(state);
+        reset();
+    }
 
-        int stepSize = 5;
-        SplitBoundedTaskState unknownState = factory.createSplitBoundedTaskState(MockSplitBoundedTask.class, stepSize);
-        assertEquals(20, unknownState.getBound());
-        assertEquals(0, unknownState.getCount());
-        assertEquals(stepSize, unknownState.getStepSize());
+    public void reset() {
+        nbExecuted = 0;
+        nbIncrementExecuted = 0;
+    }
+
+    @Override
+    public void executeSplitConditionalStep(int stepSize) {
+        nbExecuted++;
+        nbIncrementExecuted += stepSize;
+    }
+
+    public int getNbExecuted() {
+        return nbExecuted;
+    }
+
+    public int getNbIncrementExecuted() {
+        return nbIncrementExecuted;
     }
 
 }

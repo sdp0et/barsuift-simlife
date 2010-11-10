@@ -41,8 +41,9 @@ public class BoundCondition implements Condition, Persistent<BoundConditionState
     }
 
     /**
-     * If the counter is less than the bound, increment the counter and return true if the counter has now reached the
-     * bound. Return false otherwise.
+     * If the counter is less than the bound, increment the counter with stepSize and return true if the counter has now
+     * reached the bound. Return false otherwise. If the counter is greater or equals to the bound, always return true
+     * (counter is not incremented). If the bound is 0, always return false (counter is not incremented).
      */
     @Override
     public boolean evaluate() {

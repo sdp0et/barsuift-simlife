@@ -1,6 +1,8 @@
 package barsuift.simLife.process;
 
 import junit.framework.TestCase;
+import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
@@ -16,9 +18,9 @@ public class BasicMainSynchronizerTest extends TestCase {
 
     private MockInstrumentedSynchronizer3D synchronizer3D;
 
-    private MockSplitBoundedTask task3D;
+    private MockSplitConditionalTask task3D;
 
-    private MockSynchronizedTask taskCore;
+    private MockConditionalTask taskCore;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -32,13 +34,17 @@ public class BasicMainSynchronizerTest extends TestCase {
         MockUniverse mockUniverse = new MockUniverse();
         synchronizerCore = new MockInstrumentedSynchronizerCore(new SynchronizerCoreState(speed));
         mockUniverse.setSynchronizer(synchronizerCore);
-        taskCore = new MockSynchronizedTask();
+        ConditionalTaskState conditionalTaskState = new ConditionalTaskState(new CyclicConditionState(1, 0),
+                new BoundConditionState(4, 0));
+        taskCore = new MockConditionalTask(conditionalTaskState);
         synchronizerCore.schedule(taskCore);
 
         synchronizer3D = new MockInstrumentedSynchronizer3D(new Synchronizer3DState());
         synchronizer3D.setStepSize(stepSize);
         ((MockUniverse3D) mockUniverse.getUniverse3D()).setSynchronizer(synchronizer3D);
-        task3D = new MockSplitBoundedTask(new SplitBoundedTaskState(60, 0, stepSize));
+        ConditionalTaskState conditionalTask3DState = new ConditionalTaskState(new CyclicConditionState(1, 0),
+                new BoundConditionState(60, 0));
+        task3D = new MockSplitConditionalTask(new SplitConditionalTaskState(conditionalTask3DState, stepSize));
         synchronizer3D.schedule(task3D);
 
         state = new MainSynchronizerState();
@@ -134,7 +140,8 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertFalse(synchro.isRunning());
         assertEquals(5, synchronizerCore.getNbStartCalled());
         assertEquals(5, synchronizerCore.getNbStopCalled());
-        assertEquals(5, taskCore.getNbExecuted());
+        // the taskCore should not be executed anymore, as it has reach its bound
+        assertEquals(4, taskCore.getNbExecuted());
         assertEquals(5, synchronizer3D.getNbStartCalled());
         assertEquals(5, synchronizer3D.getNbStopCalled());
         // the task3D should not be executed anymore, as it has reach its bound
@@ -160,12 +167,12 @@ public class BasicMainSynchronizerTest extends TestCase {
         assertFalse(synchro.isRunning());
 
         synchro.start();
-        // wait a little longer to be sure the task3D completes (3 core cycles should be enough)
+        // wait a little longer to be sure the tasks complete (5 core cycles should be enough)
         Thread.sleep(5 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertTrue(synchro.isRunning());
         assertEquals(1, synchronizerCore.getNbStartCalled());
         assertEquals(0, synchronizerCore.getNbStopCalled());
-        assertTrue(taskCore.getNbExecuted() > 3);
+        assertEquals(4, taskCore.getNbExecuted());
         assertEquals(1, synchronizer3D.getNbStartCalled());
         assertEquals(0, synchronizer3D.getNbStopCalled());
         assertEquals(60 / synchro.getSpeed().getSpeed(), task3D.getNbExecuted());
@@ -176,6 +183,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 50);
         assertFalse(synchro.isRunning());
         assertEquals(1, synchronizerCore.getNbStopCalled());
+        assertEquals(4, taskCore.getNbExecuted());
         assertEquals(1, synchronizer3D.getNbStopCalled());
         assertEquals(60 / synchro.getSpeed().getSpeed(), task3D.getNbExecuted());
         assertEquals(60, task3D.getNbIncrementExecuted());

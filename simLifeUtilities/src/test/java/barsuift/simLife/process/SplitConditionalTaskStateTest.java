@@ -19,9 +19,10 @@
 package barsuift.simLife.process;
 
 import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.UtilDataCreatorForTests;
 
 
-public class SplitBoundedTaskStateTest extends JaxbTestCase {
+public class SplitConditionalTaskStateTest extends JaxbTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -37,9 +38,9 @@ public class SplitBoundedTaskStateTest extends JaxbTestCase {
     }
 
     public void testJaxb() throws Exception {
-        SplitBoundedTaskState task = new SplitBoundedTaskState(20, 10, 5);
+        SplitConditionalTaskState task = UtilDataCreatorForTests.createRandomSplitConditionalTaskState();
         write(task);
-        SplitBoundedTaskState task2 = (SplitBoundedTaskState) read();
+        SplitConditionalTaskState task2 = (SplitConditionalTaskState) read();
         assertEquals(task, task2);
     }
 

@@ -35,11 +35,11 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
 
     private int scheduleCalled;
 
-    private List<SynchronizedTask> tasksToSchedule;
+    private List<SplitConditionalTask> tasksToSchedule;
 
     private int unscheduleCalled;
 
-    private List<SynchronizedTask> tasksToUnschedule;
+    private List<SplitConditionalTask> tasksToUnschedule;
 
     private int startCalled;
 
@@ -66,9 +66,9 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
         barrier = new CyclicBarrier(1);
         running = false;
         scheduleCalled = 0;
-        tasksToSchedule = new ArrayList<SynchronizedTask>();
+        tasksToSchedule = new ArrayList<SplitConditionalTask>();
         unscheduleCalled = 0;
-        tasksToUnschedule = new ArrayList<SynchronizedTask>();
+        tasksToUnschedule = new ArrayList<SplitConditionalTask>();
         startCalled = 0;
         stopCalled = 0;
         state = DisplayDataCreatorForTests.createSpecificSynchronizer3DState();
@@ -97,7 +97,7 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
     }
 
     @Override
-    public void schedule(SplitBoundedTask task) {
+    public void schedule(SplitConditionalTask task) {
         scheduleCalled++;
         tasksToSchedule.add(task);
     }
@@ -106,12 +106,12 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
         return scheduleCalled;
     }
 
-    public List<SynchronizedTask> getScheduledTasks() {
+    public List<SplitConditionalTask> getScheduledTasks() {
         return tasksToSchedule;
     }
 
     @Override
-    public void unschedule(SplitBoundedTask task) {
+    public void unschedule(SplitConditionalTask task) {
         unscheduleCalled++;
         tasksToUnschedule.add(task);
     }
@@ -120,7 +120,7 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
         return unscheduleCalled;
     }
 
-    public List<SynchronizedTask> getUnscheduledTasks() {
+    public List<SplitConditionalTask> getUnscheduledTasks() {
         return tasksToUnschedule;
     }
 

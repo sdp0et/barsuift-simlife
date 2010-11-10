@@ -3,6 +3,8 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import junit.framework.TestCase;
+import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
 
 
@@ -12,19 +14,21 @@ public class BasicSynchronizer3DTest extends TestCase {
 
     private Synchronizer3DState state;
 
-    private MockSplitBoundedTask task;
+    private MockSplitConditionalTask task;
 
     private SynchronizedTask barrierReleaser;
 
     protected void setUp() throws Exception {
         super.setUp();
-        setUpwithBound(Integer.MAX_VALUE);
+        setUpWithBound(0);
     }
 
-    private void setUpwithBound(int bound) {
+    private void setUpWithBound(int bound) {
         state = new Synchronizer3DState(10);
         synchro = new BasicSynchronizer3D(state);
-        task = new MockSplitBoundedTask(new SplitBoundedTaskState(bound, 0, 10));
+        ConditionalTaskState conditionalTaskState = new ConditionalTaskState(new CyclicConditionState(1, 0),
+                new BoundConditionState(bound, 0));
+        task = new MockSplitConditionalTask(new SplitConditionalTaskState(conditionalTaskState, 10));
         synchro.schedule(task);
 
         CyclicBarrier barrier = new CyclicBarrier(2);
@@ -96,7 +100,7 @@ public class BasicSynchronizer3DTest extends TestCase {
 
     public void testStartWithBoundedTask() throws InterruptedException {
         // with this bound, the tasks should execute only once
-        setUpwithBound(10);
+        setUpWithBound(10);
 
         assertFalse(synchro.isRunning());
         assertEquals(0, task.getNbExecuted());
@@ -105,7 +109,7 @@ public class BasicSynchronizer3DTest extends TestCase {
         assertFalse(synchro.getTasks().contains(task));
 
         synchro.start();
-        // ths synchronizer should be in the list now
+        // the synchronizer should be in the list now
         assertTrue(synchro.getTasks().contains(task));
         Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_3D_MS + 100);
         assertTrue(synchro.isRunning());
@@ -170,10 +174,13 @@ public class BasicSynchronizer3DTest extends TestCase {
     }
 
     public void testSchedule() throws Exception {
-        // create mocks with a very high bound to be sure they won't stop before the end of the test
-        MockSplitBoundedTask mockRun1 = new MockSplitBoundedTask(new SplitBoundedTaskState(Integer.MAX_VALUE, 0, 10));
-        MockSplitBoundedTask mockRun2 = new MockSplitBoundedTask(new SplitBoundedTaskState(Integer.MAX_VALUE, 0, 10));
-        MockSplitBoundedTask mockRun3 = new MockSplitBoundedTask(new SplitBoundedTaskState(Integer.MAX_VALUE, 0, 10));
+        // create mocks with no bound to be sure they won't stop before the end of the test
+        ConditionalTaskState conditionalTaskState = new ConditionalTaskState(new CyclicConditionState(1, 0),
+                new BoundConditionState(0, 0));
+        SplitConditionalTaskState splitConditionalTaskState = new SplitConditionalTaskState(conditionalTaskState, 10);
+        MockSplitConditionalTask mockRun1 = new MockSplitConditionalTask(splitConditionalTaskState);
+        MockSplitConditionalTask mockRun2 = new MockSplitConditionalTask(splitConditionalTaskState);
+        MockSplitConditionalTask mockRun3 = new MockSplitConditionalTask(splitConditionalTaskState);
 
         try {
             synchro.unschedule(mockRun1);

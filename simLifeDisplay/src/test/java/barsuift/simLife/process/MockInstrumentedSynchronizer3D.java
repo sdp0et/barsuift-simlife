@@ -29,11 +29,11 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
 
     private int scheduleCalled;
 
-    private List<SynchronizedTask> tasksToSchedule;
+    private List<SplitConditionalTask> tasksToSchedule;
 
     private int unscheduleCalled;
 
-    private List<SynchronizedTask> tasksToUnschedule;
+    private List<SplitConditionalTask> tasksToUnschedule;
 
     private int startCalled;
 
@@ -51,9 +51,9 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
     public void reset() {
         barrier = new CyclicBarrier(1);
         scheduleCalled = 0;
-        tasksToSchedule = new ArrayList<SynchronizedTask>();
+        tasksToSchedule = new ArrayList<SplitConditionalTask>();
         unscheduleCalled = 0;
-        tasksToUnschedule = new ArrayList<SynchronizedTask>();
+        tasksToUnschedule = new ArrayList<SplitConditionalTask>();
         startCalled = 0;
         stopCalled = 0;
         synchronizeCalled = 0;
@@ -75,7 +75,7 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
     }
 
     @Override
-    public void schedule(SplitBoundedTask task) {
+    public void schedule(SplitConditionalTask task) {
         super.schedule(task);
         scheduleCalled++;
         tasksToSchedule.add(task);
@@ -85,12 +85,12 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
         return scheduleCalled;
     }
 
-    public List<SynchronizedTask> getScheduledTasks() {
+    public List<SplitConditionalTask> getScheduledTasks() {
         return tasksToSchedule;
     }
 
     @Override
-    public void unschedule(SplitBoundedTask task) {
+    public void unschedule(SplitConditionalTask task) {
         super.unschedule(task);
         unscheduleCalled++;
         tasksToUnschedule.add(task);
@@ -100,7 +100,7 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
         return unscheduleCalled;
     }
 
-    public List<SynchronizedTask> getUnscheduledTasks() {
+    public List<SplitConditionalTask> getUnscheduledTasks() {
         return tasksToUnschedule;
     }
 

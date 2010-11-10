@@ -25,7 +25,6 @@ import barsuift.simLife.Persistent;
  * A bound condition evaluates to false as long as the bound is not reached. Then it always return true.
  * 
  */
-// TODO update as BoundCondition (evaluate method and tests)
 public class SplitBoundCondition implements SplitCondition, Persistent<BoundConditionState> {
 
     private final BoundConditionState state;
@@ -42,12 +41,22 @@ public class SplitBoundCondition implements SplitCondition, Persistent<BoundCond
     }
 
     /**
-     * Always return false.
+     * If the counter is less than the bound, increment the counter with stepSize and return true if the counter has now
+     * reached the bound. Return false otherwise. If the counter is greater or equals to the bound, always return true
+     * (counter is not incremented). If the bound is 0, always return false (counter is not incremented).
      */
     @Override
     public boolean evaluate(int stepSize) {
-        count += stepSize;
-        return count >= bound;
+        if (bound == 0) {
+            // bound 0 means no bound, so it can not be reached
+            return false;
+        }
+        // this test is to prevent overflow of count
+        if (count < bound) {
+            count += stepSize;
+            return count >= bound;
+        }
+        return true;
     }
 
     @Override
