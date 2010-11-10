@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.process;
 
-public class MockConditionalTask extends ConditionalTask {
+public class MockConditionalTask extends AbstractConditionalTask {
 
     private int nbExecuted;
 

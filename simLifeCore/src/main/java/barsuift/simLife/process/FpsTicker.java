@@ -3,7 +3,7 @@ package barsuift.simLife.process;
 import barsuift.simLife.time.FpsCounter;
 
 
-public class FpsTicker extends ConditionalTask {
+public class FpsTicker extends AbstractConditionalTask {
 
     private final FpsCounter fps;
 

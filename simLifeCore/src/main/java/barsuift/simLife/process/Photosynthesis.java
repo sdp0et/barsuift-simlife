@@ -2,7 +2,7 @@ package barsuift.simLife.process;
 
 import barsuift.simLife.tree.Photosynthetic;
 
-public class Photosynthesis extends ConditionalTask {
+public class Photosynthesis extends AbstractConditionalTask {
 
     private final Photosynthetic photosynthetic;
 

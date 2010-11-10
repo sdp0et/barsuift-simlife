@@ -3,7 +3,7 @@ package barsuift.simLife.process;
 import barsuift.simLife.time.SimLifeDate;
 
 
-public class DateUpdater extends ConditionalTask {
+public class DateUpdater extends AbstractConditionalTask {
 
     private final SimLifeDate date;
 
