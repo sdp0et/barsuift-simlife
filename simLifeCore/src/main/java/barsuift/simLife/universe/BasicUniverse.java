@@ -25,13 +25,13 @@ import java.util.List;
 import java.util.Set;
 
 import barsuift.simLife.LivingPart;
-import barsuift.simLife.condition.ConditionalTaskStateFactory;
 import barsuift.simLife.environment.BasicEnvironment;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.process.BasicSynchronizerCore;
 import barsuift.simLife.process.ConditionalTaskState;
+import barsuift.simLife.process.ConditionalTaskStateFactory;
 import barsuift.simLife.process.DateUpdater;
 import barsuift.simLife.process.SynchronizerCore;
 import barsuift.simLife.time.DateHandler;

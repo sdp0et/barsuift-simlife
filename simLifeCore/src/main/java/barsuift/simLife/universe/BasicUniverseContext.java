@@ -27,12 +27,12 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Quat4d;
 import javax.vecmath.Vector3d;
 
-import barsuift.simLife.condition.ConditionalTaskStateFactory;
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
 import barsuift.simLife.process.BasicMainSynchronizer;
 import barsuift.simLife.process.ConditionalTaskState;
+import barsuift.simLife.process.ConditionalTaskStateFactory;
 import barsuift.simLife.process.FpsTicker;
 import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.time.FpsCounter;

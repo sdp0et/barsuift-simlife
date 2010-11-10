@@ -26,12 +26,12 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.Randomizer;
-import barsuift.simLife.condition.ConditionalTaskStateFactory;
 import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.Tree3DStateFactory;
 import barsuift.simLife.process.Aging;
 import barsuift.simLife.process.ConditionalTaskState;
+import barsuift.simLife.process.ConditionalTaskStateFactory;
 import barsuift.simLife.process.Photosynthesis;
 import barsuift.simLife.process.TreeGrowth;
 

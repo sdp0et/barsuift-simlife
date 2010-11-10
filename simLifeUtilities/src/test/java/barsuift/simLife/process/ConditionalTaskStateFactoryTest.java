@@ -1,10 +1,9 @@
-package barsuift.simLife.condition;
+package barsuift.simLife.process;
 
 import junit.framework.TestCase;
+import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.process.ConditionalTaskState;
-import barsuift.simLife.process.MockSingleSynchronizedTask;
-import barsuift.simLife.process.MockSplitBoundedTask;
-import barsuift.simLife.process.MockSynchronizedTask;
 
 
 public class ConditionalTaskStateFactoryTest extends TestCase {
