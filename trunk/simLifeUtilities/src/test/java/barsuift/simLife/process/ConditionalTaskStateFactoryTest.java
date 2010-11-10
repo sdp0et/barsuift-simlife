@@ -3,7 +3,6 @@ package barsuift.simLife.process;
 import junit.framework.TestCase;
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
-import barsuift.simLife.process.ConditionalTaskState;
 
 
 public class ConditionalTaskStateFactoryTest extends TestCase {
@@ -14,7 +13,8 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         BoundConditionState endingCondition;
         ConditionalTaskStateFactory factory = new ConditionalTaskStateFactory();
 
-        taskState = factory.createConditionalTaskState(MockSynchronizedTask.class);
+        // existing class in properties file
+        taskState = factory.createConditionalTaskState(AbstractSplitConditionalTask.class);
         executionCondition = taskState.getExecutionCondition();
         assertEquals(5, executionCondition.getCycle());
         assertEquals(0, executionCondition.getCount());
@@ -22,7 +22,8 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         assertEquals(10, endingCondition.getBound());
         assertEquals(0, endingCondition.getCount());
 
-        taskState = factory.createConditionalTaskState(MockSingleSynchronizedTask.class);
+        // non existing class in properties file
+        taskState = factory.createConditionalTaskState(SplitConditionalTask.class);
         executionCondition = taskState.getExecutionCondition();
         assertEquals(1, executionCondition.getCycle());
         assertEquals(0, executionCondition.getCount());
@@ -30,7 +31,8 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         assertEquals(0, endingCondition.getBound());
         assertEquals(0, endingCondition.getCount());
 
-        taskState = factory.createConditionalTaskState(MockSplitBoundedTask.class);
+        // existing class in properties file
+        taskState = factory.createConditionalTaskState(AbstractConditionalTask.class);
         executionCondition = taskState.getExecutionCondition();
         assertEquals(2, executionCondition.getCycle());
         assertEquals(0, executionCondition.getCount());

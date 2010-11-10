@@ -24,18 +24,30 @@ import barsuift.simLife.State;
 
 // TODO unit test
 @XmlRootElement
-public class SplitTaskState implements State {
+public class SplitConditionalTaskState implements State {
+
+    private ConditionalTaskState conditionalTask;
 
     private int stepSize;
 
-    public SplitTaskState() {
+    public SplitConditionalTaskState() {
         super();
+        this.conditionalTask = new ConditionalTaskState();
         stepSize = 1;
     }
 
-    public SplitTaskState(int stepSize) {
+    public SplitConditionalTaskState(ConditionalTaskState conditionalTask, int stepSize) {
         super();
+        this.conditionalTask = conditionalTask;
         this.stepSize = stepSize;
+    }
+
+    public ConditionalTaskState getConditionalTask() {
+        return conditionalTask;
+    }
+
+    public void setConditionalTask(ConditionalTaskState conditionalTask) {
+        this.conditionalTask = conditionalTask;
     }
 
     public int getStepSize() {
@@ -50,6 +62,7 @@ public class SplitTaskState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((conditionalTask == null) ? 0 : conditionalTask.hashCode());
         result = prime * result + stepSize;
         return result;
     }
@@ -62,7 +75,14 @@ public class SplitTaskState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SplitTaskState other = (SplitTaskState) obj;
+        SplitConditionalTaskState other = (SplitConditionalTaskState) obj;
+        if (conditionalTask == null) {
+            if (other.conditionalTask != null)
+                return false;
+        } else
+            if (!conditionalTask.equals(other.conditionalTask))
+                return false;
+
         if (stepSize != other.stepSize)
             return false;
         return true;
@@ -70,7 +90,7 @@ public class SplitTaskState implements State {
 
     @Override
     public String toString() {
-        return "SplitTaskState [stepSize=" + stepSize + "]";
+        return "SplitConditionalTaskState [conditionalTask=" + conditionalTask + ", stepSize=" + stepSize + "]";
     }
 
 }
