@@ -21,7 +21,7 @@ package barsuift.simLife.process;
 import barsuift.simLife.LivingPart;
 
 
-public class Aging extends ConditionalTask {
+public class Aging extends AbstractConditionalTask {
 
     private final LivingPart livingPart;
 

@@ -8,7 +8,7 @@ import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
 
 
-public class ConditionalTaskTest extends TestCase {
+public class AbstractConditionalTaskTest extends TestCase {
 
     private MockConditionalTask conditionalRun;
 

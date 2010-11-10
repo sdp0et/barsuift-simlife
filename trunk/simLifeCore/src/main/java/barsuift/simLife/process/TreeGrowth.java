@@ -9,7 +9,7 @@ import barsuift.simLife.tree.TreeBranchPart;
 import barsuift.simLife.tree.TreeLeaf;
 
 
-public class TreeGrowth extends ConditionalTask {
+public class TreeGrowth extends AbstractConditionalTask {
 
     private final Tree tree;
 
