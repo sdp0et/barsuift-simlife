@@ -27,6 +27,6 @@ public interface SplitConditionalTask extends ConditionalTask {
 
     public void setStepSize(int stepSize);
 
-    public void executeSplitStep(int stepSize);
+    public void executeSplitConditionalStep(int stepSize);
 
 }

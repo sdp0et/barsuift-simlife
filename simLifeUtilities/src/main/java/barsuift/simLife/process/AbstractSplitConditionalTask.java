@@ -19,6 +19,11 @@
 package barsuift.simLife.process;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.condition.SplitBoundCondition;
+import barsuift.simLife.condition.SplitCyclicCondition;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
 
 
@@ -33,7 +38,7 @@ import barsuift.simLife.Persistent;
  * The task notifies its subscribers when it reaches its bound and stops.
  * </p>
  */
-// TODO unit test
+// TODO unit test (see AbstractConditionalTaskTest)
 // FIXME there should be only one SplitTask (which extends conditionalTask !!
 public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedTask implements SplitConditionalTask,
         Persistent<SplitConditionalTaskState> {
@@ -42,10 +47,18 @@ public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedT
 
     private int stepSize;
 
+    private final SplitCyclicCondition executionCondition;
+
+    private final SplitBoundCondition endingCondition;
+
+    private final Publisher publisher = new BasicPublisher(this);
+
     public AbstractSplitConditionalTask(SplitConditionalTaskState state) {
         super();
         this.state = state;
         this.stepSize = state.getStepSize();
+        this.executionCondition = new SplitCyclicCondition(state.getConditionalTask().getExecutionCondition());
+        this.endingCondition = new SplitBoundCondition(state.getConditionalTask().getEndingCondition());
     }
 
     @Override
@@ -55,11 +68,22 @@ public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedT
 
     @Override
     public final void executeStep() {
-        executeSplitStep(stepSize);
+        if (endingCondition.evaluate(stepSize)) {
+            stop();
+            setChanged();
+            notifySubscribers();
+        }
+        if (executionCondition.evaluate(stepSize)) {
+            executeConditionalStep();
+        }
+    }
+
+    public final void executeConditionalStep() {
+        executeSplitConditionalStep(stepSize);
     }
 
     @Override
-    public abstract void executeSplitStep(int stepSize);
+    public abstract void executeSplitConditionalStep(int stepSize);
 
     @Override
     public SplitConditionalTaskState getState() {
@@ -70,6 +94,44 @@ public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedT
     @Override
     public void synchronize() {
         state.setStepSize(stepSize);
+        executionCondition.synchronize();
+        endingCondition.synchronize();
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
 }
