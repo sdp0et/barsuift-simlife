@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.condition;
+package barsuift.simLife.process;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import barsuift.simLife.process.ConditionalTaskState;
-import barsuift.simLife.process.SynchronizedTask;
+import barsuift.simLife.condition.BoundConditionState;
+import barsuift.simLife.condition.CyclicConditionState;
 
 public class ConditionalTaskStateFactory {
 
