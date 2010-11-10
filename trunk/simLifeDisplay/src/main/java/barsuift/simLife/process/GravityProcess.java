@@ -27,12 +27,11 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
 // TODO 004. unit test
-// TODO 003. use SplitTask instead of SplitBoundedTask
-public class GravityProcess extends SplitBoundedTask {
+public class GravityProcess extends AbstractSplitConditionalTask {
 
     private final ConcurrentLinkedQueue<TransformGroup> transforms;
 
-    public GravityProcess(SplitBoundedTaskState state) {
+    public GravityProcess(SplitConditionalTaskState state) {
         super(state);
         this.transforms = new ConcurrentLinkedQueue<TransformGroup>();
     }
@@ -53,7 +52,7 @@ public class GravityProcess extends SplitBoundedTask {
     }
 
     @Override
-    public void executeSplitBoundedStep(int stepSize) {
+    public void executeSplitConditionalStep(int stepSize) {
         for (TransformGroup currentTG : transforms) {
             // get current values
             Transform3D transform = new Transform3D();

@@ -22,15 +22,6 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         assertEquals(10, endingCondition.getBound());
         assertEquals(0, endingCondition.getCount());
 
-        // non existing class in properties file
-        taskState = factory.createConditionalTaskState(SplitConditionalTask.class);
-        executionCondition = taskState.getExecutionCondition();
-        assertEquals(1, executionCondition.getCycle());
-        assertEquals(0, executionCondition.getCount());
-        endingCondition = taskState.getEndingCondition();
-        assertEquals(0, endingCondition.getBound());
-        assertEquals(0, endingCondition.getCount());
-
         // existing class in properties file
         taskState = factory.createConditionalTaskState(AbstractConditionalTask.class);
         executionCondition = taskState.getExecutionCondition();
@@ -40,7 +31,55 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         assertEquals(0, endingCondition.getBound());
         assertEquals(0, endingCondition.getCount());
 
+        // non existing class in properties file
+        taskState = factory.createConditionalTaskState(SplitConditionalTask.class);
+        executionCondition = taskState.getExecutionCondition();
+        assertEquals(1, executionCondition.getCycle());
+        assertEquals(0, executionCondition.getCount());
+        endingCondition = taskState.getEndingCondition();
+        assertEquals(0, endingCondition.getBound());
+        assertEquals(0, endingCondition.getCount());
+    }
 
+    public void testCreateSplitConditionalTaskState() {
+        SplitConditionalTaskState splitTaskState;
+        ConditionalTaskState taskState;
+        CyclicConditionState executionCondition;
+        BoundConditionState endingCondition;
+        ConditionalTaskStateFactory factory = new ConditionalTaskStateFactory();
+
+        // existing class in properties file
+        splitTaskState = factory.createSplitConditionalTaskState(AbstractSplitConditionalTask.class, 5);
+        assertEquals(5, splitTaskState.getStepSize());
+        taskState = splitTaskState.getConditionalTask();
+        executionCondition = taskState.getExecutionCondition();
+        assertEquals(5, executionCondition.getCycle());
+        assertEquals(0, executionCondition.getCount());
+        endingCondition = taskState.getEndingCondition();
+        assertEquals(10, endingCondition.getBound());
+        assertEquals(0, endingCondition.getCount());
+
+        // existing class in properties file
+        splitTaskState = factory.createSplitConditionalTaskState(AbstractConditionalTask.class, 2);
+        assertEquals(2, splitTaskState.getStepSize());
+        taskState = splitTaskState.getConditionalTask();
+        executionCondition = taskState.getExecutionCondition();
+        assertEquals(2, executionCondition.getCycle());
+        assertEquals(0, executionCondition.getCount());
+        endingCondition = taskState.getEndingCondition();
+        assertEquals(0, endingCondition.getBound());
+        assertEquals(0, endingCondition.getCount());
+
+        // non existing class in properties file
+        splitTaskState = factory.createSplitConditionalTaskState(SplitConditionalTask.class, 3);
+        assertEquals(3, splitTaskState.getStepSize());
+        taskState = splitTaskState.getConditionalTask();
+        executionCondition = taskState.getExecutionCondition();
+        assertEquals(1, executionCondition.getCycle());
+        assertEquals(0, executionCondition.getCount());
+        endingCondition = taskState.getEndingCondition();
+        assertEquals(0, endingCondition.getBound());
+        assertEquals(0, endingCondition.getCount());
     }
 
 }

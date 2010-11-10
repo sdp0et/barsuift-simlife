@@ -6,7 +6,6 @@ import junit.framework.TestCase;
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
-import barsuift.simLife.time.SimLifeDate;
 
 
 public class BasicSynchronizerCoreTest extends TestCase {
@@ -15,19 +14,21 @@ public class BasicSynchronizerCoreTest extends TestCase {
 
     private SynchronizerCoreState state;
 
-    private SimLifeDate date;
+    private MockConditionalTask task;
 
     private SynchronizedTask barrierReleaser;
 
     protected void setUp() throws Exception {
         super.setUp();
+        setUpWithBound(0);
+    }
 
+    private void setUpWithBound(int bound) {
         state = new SynchronizerCoreState(Speed.VERY_FAST);
         synchro = new BasicSynchronizerCore(state);
-        date = new SimLifeDate();
-        DateUpdater dateUpdater = new DateUpdater(new ConditionalTaskState(new CyclicConditionState(1, 0),
-                new BoundConditionState(0, 0)), date);
-        synchro.schedule(dateUpdater);
+        task = new MockConditionalTask(new ConditionalTaskState(new CyclicConditionState(1, 0),
+                new BoundConditionState(bound, 0)));
+        synchro.schedule(task);
 
         CyclicBarrier barrier = new CyclicBarrier(2);
         synchro.setBarrier(barrier);
@@ -39,7 +40,7 @@ public class BasicSynchronizerCoreTest extends TestCase {
         super.tearDown();
         state = null;
         synchro = null;
-        date = null;
+        task = null;
     }
 
     public void testSetBarrier() {
@@ -68,27 +69,53 @@ public class BasicSynchronizerCoreTest extends TestCase {
 
     public void testStart() throws InterruptedException {
         assertFalse(synchro.isRunning());
-        assertEquals(new SimLifeDate(), date);
-        assertEquals(0, date.getTimeInMillis());
+        assertEquals(0, task.getNbExecuted());
 
         synchro.start();
         Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertTrue(synchro.isRunning());
-        assertTrue(date.getTimeInMillis() > 0);
+        assertTrue(task.getNbExecuted() > 0);
 
         synchro.stop();
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
         assertFalse(synchro.isRunning());
-        long time = date.getTimeInMillis();
+        int nbExecuted = task.getNbExecuted();
         Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
-        // assert the time does not change anymore once stopped
-        assertEquals(time, date.getTimeInMillis());
+        // assert the task is not called anymore
+        assertEquals(nbExecuted, task.getNbExecuted());
         // even if we release the barrier once more
         new Thread(barrierReleaser).start();
         Thread.sleep(Synchronizer.CYCLE_LENGTH_CORE_MS / synchro.getSpeed().getSpeed() + 100);
-        assertEquals(time, date.getTimeInMillis());
+        assertEquals(nbExecuted, task.getNbExecuted());
+    }
+
+    public void testStartWithBoundedTask() throws InterruptedException {
+        // with this bound, the tasks should execute only once
+        setUpWithBound(1);
+
+        assertFalse(synchro.isRunning());
+        assertEquals(0, task.getNbExecuted());
+        // the task in not yet in the list because the synchronizer is not running
+        assertFalse(synchro.getTasks().contains(task));
+
+        synchro.start();
+        // the synchronizer should be in the list now
+        assertTrue(synchro.getTasks().contains(task));
+        Thread.sleep(2 * Synchronizer.CYCLE_LENGTH_3D_MS + 100);
+        assertTrue(synchro.isRunning());
+        assertEquals(1, task.getNbExecuted());
+
+        synchro.stop();
+        barrierReleaser.run();
+        // make sure the thread has time to stop
+        Thread.sleep(Synchronizer.CYCLE_LENGTH_3D_MS + 100);
+        assertFalse(synchro.isRunning());
+        // the task has already stopped anyway
+        assertEquals(1, task.getNbExecuted());
+        // the task is not even in the list of tasks
+        assertFalse(synchro.getTasks().contains(task));
     }
 
     public void testPublisher() throws Exception {
@@ -137,9 +164,12 @@ public class BasicSynchronizerCoreTest extends TestCase {
     }
 
     public void testSchedule() throws Exception {
-        MockSynchronizedTask mockRun1 = new MockSynchronizedTask();
-        MockSynchronizedTask mockRun2 = new MockSynchronizedTask();
-        MockSynchronizedTask mockRun3 = new MockSynchronizedTask();
+        // create mocks with no bound to be sure they won't stop before the end of the test
+        ConditionalTaskState conditionalTaskState = new ConditionalTaskState(new CyclicConditionState(1, 0),
+                new BoundConditionState(0, 0));
+        MockConditionalTask mockRun1 = new MockConditionalTask(conditionalTaskState);
+        MockConditionalTask mockRun2 = new MockConditionalTask(conditionalTaskState);
+        MockConditionalTask mockRun3 = new MockConditionalTask(conditionalTaskState);
 
         try {
             synchro.unschedule(mockRun1);

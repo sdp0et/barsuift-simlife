@@ -72,7 +72,6 @@ public class ConditionalTaskStateFactory {
         return new ConditionalTaskState(executionCondition, endingCondition);
     }
 
-    // TODO unit test
     public SplitConditionalTaskState createSplitConditionalTaskState(Class<? extends ConditionalTask> clazz,
             int stepSize) {
         ConditionalTaskState conditionalTask = createConditionalTaskState(clazz);

@@ -3,7 +3,7 @@ package barsuift.simLife.condition;
 import junit.framework.TestCase;
 
 
-public class BasicBoundConditionTest extends TestCase {
+public class BoundConditionTest extends TestCase {
 
     private BoundCondition condition;
 

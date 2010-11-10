@@ -18,16 +18,17 @@ import barsuift.simLife.message.Subscriber;
 /**
  * This is a common implementation of TaskSynchronizer.
  * <p>
- * This synchronizer allows to run the list of given {@link SynchronizedTask} at a given rate. A {@link CyclicBarrier}
- * is used to synchronized all the tasks, and a {@link Temporizer}, in a {@link ScheduledExecutorService}, is used to
+ * This synchronizer allows to run the list of given {@link ConditionalTask} at a given rate. A {@link CyclicBarrier} is
+ * used to synchronized all the tasks, and a {@link Temporizer}, in a {@link ScheduledExecutorService}, is used to
  * ensure there is always the same delay between two runs.
  * </p>
+ * <p>
+ * It unschedules the tasks when they have reach their bound.
+ * </p>
  * 
- * @param <E> the sub-type of SynchronizedTask to use
+ * @param <E> the sub-type of ConditionalTask to use
  */
-// FIXME this synchronizer should be able to deal with ConditionalTask that notifies when stopped (as
-// BasicSynchronizer3D do.
-public abstract class AbstractTaskSynchronizer<E extends SynchronizedTask> implements TaskSynchronizer<E> {
+public abstract class AbstractTaskSynchronizer<E extends ConditionalTask> implements TaskSynchronizer<E> {
 
     private boolean running;
 
@@ -99,6 +100,7 @@ public abstract class AbstractTaskSynchronizer<E extends SynchronizedTask> imple
     @Override
     public void schedule(E task) {
         newTasksToSchedule.add(task);
+        task.addSubscriber(this);
     }
 
     @Override
@@ -111,6 +113,13 @@ public abstract class AbstractTaskSynchronizer<E extends SynchronizedTask> imple
             // if not present in the list to add, add it to the list to remove
             tasksToUnschedule.add(task);
         }
+        task.deleteSubscriber(this);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        unschedule((E) publisher);
     }
 
     @Override

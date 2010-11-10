@@ -18,16 +18,11 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.message.Publisher;
 
 /**
  * This synchronizer is able to work by steps of increments.
- * <p>
- * It manages {@link SplitBoundedTask} and remove them from the list of scheduled tasks when they have reach their
- * bound.
- * </p>
  */
-public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedTask> implements Synchronizer3D {
+public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitConditionalTask> implements Synchronizer3D {
 
     private static final int RATIO_CORE_3D = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
 
@@ -52,7 +47,7 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedTa
     public void setStepSize(int stepSize) {
         this.stepSize = stepSize;
         stepBeforeSynchro = RATIO_CORE_3D / stepSize;
-        for (SplitBoundedTask task : getTasks()) {
+        for (SplitConditionalTask task : getTasks()) {
             task.setStepSize(stepSize);
         }
     }
@@ -68,18 +63,6 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedTa
     }
 
     @Override
-    public void schedule(SplitBoundedTask task) {
-        super.schedule(task);
-        task.addSubscriber(this);
-    }
-
-    @Override
-    public void unschedule(SplitBoundedTask task) {
-        super.unschedule(task);
-        task.deleteSubscriber(this);
-    }
-
-    @Override
     public Synchronizer3DState getState() {
         synchronize();
         return state;
@@ -88,11 +71,6 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitBoundedTa
     @Override
     public void synchronize() {
         state.setStepSize(stepSize);
-    }
-
-    @Override
-    public void update(Publisher publisher, Object arg) {
-        unschedule((SplitBoundedTask) publisher);
     }
 
     @Override

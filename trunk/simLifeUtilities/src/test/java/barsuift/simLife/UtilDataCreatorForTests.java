@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.process.ConditionalTaskState;
+import barsuift.simLife.process.SplitConditionalTaskState;
 import barsuift.simLife.time.SimLifeDateState;
 
 
@@ -111,6 +112,19 @@ public final class UtilDataCreatorForTests {
         CyclicConditionState executionCondition = createSpecificCyclicConditionState();
         BoundConditionState endingCondition = createSpecificBoundConditionState();
         return new ConditionalTaskState(executionCondition, endingCondition);
+    }
+
+    public static SplitConditionalTaskState createRandomSplitConditionalTaskState() {
+        ConditionalTaskState conditionalTask = createRandomConditionalTaskState();
+        int stepSize = Randomizer.randomBetween(2, 5);
+        return new SplitConditionalTaskState(conditionalTask, stepSize);
+    }
+
+    public static SplitConditionalTaskState createSpecificSplitConditionalTaskState() {
+        ConditionalTaskState conditionalTask = createSpecificConditionalTaskState();
+        int stepSize = 3;
+        return new SplitConditionalTaskState(conditionalTask, stepSize);
+
     }
 
 }

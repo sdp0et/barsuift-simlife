@@ -6,6 +6,7 @@ import java.util.concurrent.CyclicBarrier;
 
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
 
 
 public class MockSynchronizerCore extends BasicPublisher implements SynchronizerCore {
@@ -18,11 +19,11 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
 
     private int scheduleCalled;
 
-    private List<SynchronizedTask> tasksToSchedule;
+    private List<ConditionalTask> tasksToSchedule;
 
     private int unscheduleCalled;
 
-    private List<SynchronizedTask> tasksToUnschedule;
+    private List<ConditionalTask> tasksToUnschedule;
 
     private int startCalled;
 
@@ -31,6 +32,12 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
     private SynchronizerCoreState state;
 
     private int synchronizeCalled;
+
+    private int updateCounter;
+
+    private List<Publisher> publisherObjectsSubscribed;
+
+    private List<Object> arguments;
 
     public MockSynchronizerCore() {
         super(null);
@@ -42,13 +49,16 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
         speed = Speed.NORMAL;
         running = false;
         scheduleCalled = 0;
-        tasksToSchedule = new ArrayList<SynchronizedTask>();
+        tasksToSchedule = new ArrayList<ConditionalTask>();
         unscheduleCalled = 0;
-        tasksToUnschedule = new ArrayList<SynchronizedTask>();
+        tasksToUnschedule = new ArrayList<ConditionalTask>();
         startCalled = 0;
         stopCalled = 0;
         state = CoreDataCreatorForTests.createSpecificSynchronizerCoreState();
         synchronizeCalled = 0;
+        updateCounter = 0;
+        publisherObjectsSubscribed = new ArrayList<Publisher>();
+        arguments = new ArrayList<Object>();
     }
 
     public void setBarrier(CyclicBarrier barrier) {
@@ -79,7 +89,7 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
     }
 
     @Override
-    public void schedule(SynchronizedTask task) {
+    public void schedule(ConditionalTask task) {
         scheduleCalled++;
         tasksToSchedule.add(task);
     }
@@ -88,12 +98,12 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
         return scheduleCalled;
     }
 
-    public List<SynchronizedTask> getScheduledTasks() {
+    public List<ConditionalTask> getScheduledTasks() {
         return tasksToSchedule;
     }
 
     @Override
-    public void unschedule(SynchronizedTask task) {
+    public void unschedule(ConditionalTask task) {
         unscheduleCalled++;
         tasksToUnschedule.add(task);
     }
@@ -102,7 +112,7 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
         return unscheduleCalled;
     }
 
-    public List<SynchronizedTask> getUnscheduledTasks() {
+    public List<ConditionalTask> getUnscheduledTasks() {
         return tasksToUnschedule;
     }
 
@@ -141,6 +151,25 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
 
     public int getNbSynchronizeCalled() {
         return synchronizeCalled;
+    }
+
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        updateCounter++;
+        publisherObjectsSubscribed.add(publisher);
+        arguments.add(arg);
+    }
+
+    public List<Object> getArguments() {
+        return arguments;
+    }
+
+    public List<Publisher> getPublisherObjectsSubscribed() {
+        return publisherObjectsSubscribed;
+    }
+
+    public int getUpdateCounter() {
+        return updateCounter;
     }
 
 }

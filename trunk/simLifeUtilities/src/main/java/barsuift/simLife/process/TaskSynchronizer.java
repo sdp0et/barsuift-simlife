@@ -1,11 +1,13 @@
 package barsuift.simLife.process;
 
+import barsuift.simLife.message.Subscriber;
+
 /**
  * A task synchronizer is a synchronizer able to schedule or unschedule tasks.
  * 
- * @param <E> the sub-type of SynchronizedTask to use
+ * @param <E> the sub-type of ConditionalTask to use
  */
-public interface TaskSynchronizer<E extends SynchronizedTask> extends Synchronizer {
+public interface TaskSynchronizer<E extends ConditionalTask> extends Synchronizer, Subscriber {
 
     /**
      * Adds the given task to the list of synchronized tasks.

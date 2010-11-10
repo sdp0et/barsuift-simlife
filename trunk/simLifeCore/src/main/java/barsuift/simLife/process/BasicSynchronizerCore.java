@@ -23,7 +23,7 @@ package barsuift.simLife.process;
  * This synchronizer allows to change the speed of the synchronizer.
  * 
  */
-public class BasicSynchronizerCore extends AbstractTaskSynchronizer<SynchronizedTask> implements SynchronizerCore {
+public class BasicSynchronizerCore extends AbstractTaskSynchronizer<ConditionalTask> implements SynchronizerCore {
 
     private final SynchronizerCoreState state;
 

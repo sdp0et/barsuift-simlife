@@ -23,10 +23,10 @@ import java.util.concurrent.CyclicBarrier;
 import barsuift.simLife.Persistent;
 
 /**
- * The core synchronizer allows to run a list of given {@link SynchronizedTask} at a given rate.
+ * The core synchronizer allows to run a list of given {@link ConditionalTask} at a given rate.
  * 
  */
-public interface SynchronizerCore extends TaskSynchronizer<SynchronizedTask>, Persistent<SynchronizerCoreState> {
+public interface SynchronizerCore extends TaskSynchronizer<ConditionalTask>, Persistent<SynchronizerCoreState> {
 
     /**
      * Sets the speed of the current core synchronizer.
@@ -47,14 +47,14 @@ public interface SynchronizerCore extends TaskSynchronizer<SynchronizedTask>, Pe
      * 
      * @param task the task to synchronize
      */
-    public void schedule(SynchronizedTask task);
+    public void schedule(ConditionalTask task);
 
     /**
      * Remove the given task from the list of synchronized tasks.
      * 
      * @param task the task to desynchronize
      */
-    public void unschedule(SynchronizedTask task);
+    public void unschedule(ConditionalTask task);
 
     /**
      * Set the barrier to use for synchronization purpose.

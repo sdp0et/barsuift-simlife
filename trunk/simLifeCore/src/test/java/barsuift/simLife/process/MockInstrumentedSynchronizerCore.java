@@ -11,11 +11,11 @@ public class MockInstrumentedSynchronizerCore extends BasicSynchronizerCore {
 
     private int scheduleCalled;
 
-    private List<SynchronizedTask> tasksToSchedule;
+    private List<ConditionalTask> tasksToSchedule;
 
     private int unscheduleCalled;
 
-    private List<SynchronizedTask> tasksToUnschedule;
+    private List<ConditionalTask> tasksToUnschedule;
 
     private int startCalled;
 
@@ -31,9 +31,9 @@ public class MockInstrumentedSynchronizerCore extends BasicSynchronizerCore {
     public void reset() {
         barrier = new CyclicBarrier(1);
         scheduleCalled = 0;
-        tasksToSchedule = new ArrayList<SynchronizedTask>();
+        tasksToSchedule = new ArrayList<ConditionalTask>();
         unscheduleCalled = 0;
-        tasksToUnschedule = new ArrayList<SynchronizedTask>();
+        tasksToUnschedule = new ArrayList<ConditionalTask>();
         startCalled = 0;
         stopCalled = 0;
         synchronizeCalled = 0;
@@ -64,7 +64,7 @@ public class MockInstrumentedSynchronizerCore extends BasicSynchronizerCore {
     }
 
     @Override
-    public void schedule(SynchronizedTask task) {
+    public void schedule(ConditionalTask task) {
         super.schedule(task);
         scheduleCalled++;
         tasksToSchedule.add(task);
@@ -74,12 +74,12 @@ public class MockInstrumentedSynchronizerCore extends BasicSynchronizerCore {
         return scheduleCalled;
     }
 
-    public List<SynchronizedTask> getScheduledTasks() {
+    public List<ConditionalTask> getScheduledTasks() {
         return tasksToSchedule;
     }
 
     @Override
-    public void unschedule(SynchronizedTask task) {
+    public void unschedule(ConditionalTask task) {
         super.unschedule(task);
         unscheduleCalled++;
         tasksToUnschedule.add(task);
@@ -89,7 +89,7 @@ public class MockInstrumentedSynchronizerCore extends BasicSynchronizerCore {
         return unscheduleCalled;
     }
 
-    public List<SynchronizedTask> getUnscheduledTasks() {
+    public List<ConditionalTask> getUnscheduledTasks() {
         return tasksToUnschedule;
     }
 
