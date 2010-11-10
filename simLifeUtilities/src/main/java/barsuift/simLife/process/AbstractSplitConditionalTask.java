@@ -30,13 +30,13 @@ import barsuift.simLife.Persistent;
 // TODO unit test
 // FIXME there should be only one SplitTask (which extends conditionalTask !!
 public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedTask implements SplitConditionalTask,
-        Persistent<SplitTaskState> {
+        Persistent<SplitConditionalTaskState> {
 
-    private final SplitTaskState state;
+    private final SplitConditionalTaskState state;
 
     private int stepSize;
 
-    public AbstractSplitConditionalTask(SplitTaskState state) {
+    public AbstractSplitConditionalTask(SplitConditionalTaskState state) {
         super();
         this.state = state;
         this.stepSize = state.getStepSize();
@@ -56,7 +56,7 @@ public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedT
     public abstract void executeSplitStep(int stepSize);
 
     @Override
-    public SplitTaskState getState() {
+    public SplitConditionalTaskState getState() {
         synchronize();
         return state;
     }

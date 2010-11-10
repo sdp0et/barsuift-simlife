@@ -66,10 +66,17 @@ public class ConditionalTaskStateFactory {
         return prop;
     }
 
-    public ConditionalTaskState createConditionalTaskState(Class<? extends SynchronizedTask> clazz) {
+    public ConditionalTaskState createConditionalTaskState(Class<? extends ConditionalTask> clazz) {
         CyclicConditionState executionCondition = createCyclicConditionState(clazz);
         BoundConditionState endingCondition = createBoundConditionState(clazz);
         return new ConditionalTaskState(executionCondition, endingCondition);
+    }
+
+    // TODO unit test
+    public SplitConditionalTaskState createSplitConditionalTaskState(Class<? extends ConditionalTask> clazz,
+            int stepSize) {
+        ConditionalTaskState conditionalTask = createConditionalTaskState(clazz);
+        return new SplitConditionalTaskState(conditionalTask, stepSize);
     }
 
     private BoundConditionState createBoundConditionState(Class<? extends SynchronizedTask> clazz) {
