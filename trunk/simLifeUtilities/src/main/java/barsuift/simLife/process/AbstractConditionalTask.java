@@ -27,7 +27,10 @@ import barsuift.simLife.message.Subscriber;
 
 
 /**
- * A conditional task is a task with an execution condition and an ending condition.
+ * A abstract conditional task with an execution condition and an ending condition.
+ * <p>
+ * The task notifies its subscribers when it reaches its bound and stops.
+ * </p>
  */
 public abstract class AbstractConditionalTask extends AbstractSynchronizedTask implements ConditionalTask,
         Persistent<ConditionalTaskState> {

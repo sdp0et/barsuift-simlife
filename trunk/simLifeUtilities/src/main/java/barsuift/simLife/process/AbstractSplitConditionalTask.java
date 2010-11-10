@@ -27,6 +27,12 @@ import barsuift.simLife.Persistent;
  * more than one increment in a row. Note that executing more than one increment in a row does NOT mean executing them
  * one after the other, but to execute the whole increment range in one action.
  */
+/**
+ * A abstract conditional task with an execution condition and an ending condition.
+ * <p>
+ * The task notifies its subscribers when it reaches its bound and stops.
+ * </p>
+ */
 // TODO unit test
 // FIXME there should be only one SplitTask (which extends conditionalTask !!
 public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedTask implements SplitConditionalTask,
