@@ -67,6 +67,13 @@ public final class DisplayDataCreatorForTests {
         return new Tuple3dState(Math.random(), Math.random(), Math.random());
     }
 
+    public static Transform3DState createRandomTransform3DState() {
+        return new Transform3DState(new double[] { Math.random(), Math.random(), Math.random(), Math.random(),
+                Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(),
+                Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random() });
+    }
+
+
     public static Sun3DState createRandomSun3DState() {
         return new Sun3DState();
     }
