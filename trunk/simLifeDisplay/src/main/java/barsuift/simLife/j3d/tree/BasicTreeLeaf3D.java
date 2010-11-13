@@ -41,7 +41,6 @@ import barsuift.simLife.j3d.util.AreaHelper;
 import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.j3d.util.NormalHelper;
 import barsuift.simLife.j3d.util.PointHelper;
-import barsuift.simLife.j3d.util.ProjectionHelper;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.tree.LeafUpdateMask;
@@ -237,11 +236,14 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         Vector3d translationVector = new Vector3d();
         globalTransform.get(translationVector);
         // project the leaf attach point to the ground
-        leafAttachPoint = ProjectionHelper.getProjectionPoint(new Point3d(translationVector));
+        // leafAttachPoint = ProjectionHelper.getProjectionPoint(new Point3d(translationVector));
+        leafAttachPoint = new Point3d(translationVector);
         // the rotation is now global and not related to the tree or the branch
         rotation = TransformerHelper.getRotationFromTransform(globalTransform, Axis.Y);
         // send the leaf Branch group, which contains a TG for the translation along the branch part
-        universe3D.getPhysics3D().getGravityInterpolator().fall((BranchGroup) leafShape3D.getParent().getParent());
+        // universe3D.getPhysics3D().getGravityInterpolator().fall((BranchGroup) leafShape3D.getParent().getParent());
+
+        universe3D.getPhysics3D().getGravity3D().fall((BranchGroup) leafShape3D.getParent().getParent());
 
         // GravityProcess gravityProcess = new GravityProcess(new SplitConditionalTaskState(
         // (int) (translationVector.getY() * 1000 / 25), 0, universe3D.getSynchronizer().getStepSize()));
