@@ -41,6 +41,14 @@ public final class TransformerHelper {
         return translation;
     }
 
+    public static Vector3d getTranslationFromTransformGroup(TransformGroup transformGroup) {
+        Transform3D transform3D = new Transform3D();
+        transformGroup.getTransform(transform3D);
+        Vector3d translation = new Vector3d();
+        transform3D.get(translation);
+        return translation;
+    }
+
     public static TransformGroup getRotationTransformGroup(double rotationAngle, Axis axis) {
         return new TransformGroup(getRotationTransform3D(rotationAngle, axis));
     }
