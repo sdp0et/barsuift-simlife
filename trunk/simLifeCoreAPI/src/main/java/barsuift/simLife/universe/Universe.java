@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.universe;
 
-import java.util.List;
+import java.util.Set;
 
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.Persistent;
@@ -38,14 +38,14 @@ public interface Universe extends Persistent<UniverseState> {
      * 
      * @return all the universe living parts
      */
-    public List<LivingPart> getLivingParts();
+    public Set<LivingPart> getLivingParts();
 
     /**
      * Return an unmodifiable Set of trees
      * 
      * @return the trees
      */
-    public List<Tree> getTrees();
+    public Set<Tree> getTrees();
 
     public void addTree(Tree tree);
 
@@ -54,7 +54,7 @@ public interface Universe extends Persistent<UniverseState> {
      * 
      * @return the fallen leaves
      */
-    public List<TreeLeaf> getFallenLeaves();
+    public Set<TreeLeaf> getFallenLeaves();
 
     public void addFallenLeaf(TreeLeaf treeLeaf);
 

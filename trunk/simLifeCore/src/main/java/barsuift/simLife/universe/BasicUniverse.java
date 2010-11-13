@@ -18,10 +18,8 @@
  */
 package barsuift.simLife.universe;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import barsuift.simLife.LivingPart;
@@ -49,9 +47,9 @@ public class BasicUniverse implements Universe {
 
     private final UniverseState state;
 
-    private final List<Tree> trees;
+    private final Set<Tree> trees;
 
-    private final List<TreeLeaf> fallenLeaves;
+    private final Set<TreeLeaf> fallenLeaves;
 
     private final Environment environment;
 
@@ -75,14 +73,14 @@ public class BasicUniverse implements Universe {
         ConditionalTaskState dateUpdaterState = taskStateFactory.createConditionalTaskState(DateUpdater.class);
         DateUpdater dateUpdater = new DateUpdater(dateUpdaterState, dateHandler.getDate());
         synchronizer.schedule(dateUpdater);
-        this.trees = new ArrayList<Tree>();
+        this.trees = new HashSet<Tree>();
         Set<TreeState> treeStates = state.getTrees();
         for (TreeState treeState : treeStates) {
             BasicTree newTree = new BasicTree(this, treeState);
             trees.add(newTree);
             System.out.println("nb Leaves=" + newTree.getNbLeaves());
         }
-        this.fallenLeaves = new ArrayList<TreeLeaf>();
+        this.fallenLeaves = new HashSet<TreeLeaf>();
         Set<TreeLeafState> fallenLeafStates = state.getFallenLeaves();
         for (TreeLeafState fallenLeafState : fallenLeafStates) {
             fallenLeaves.add(new BasicTreeLeaf(this, fallenLeafState));
@@ -91,15 +89,15 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public List<LivingPart> getLivingParts() {
-        List<LivingPart> livingParts = new ArrayList<LivingPart>();
+    public Set<LivingPart> getLivingParts() {
+        Set<LivingPart> livingParts = new HashSet<LivingPart>();
         livingParts.addAll(trees);
-        return Collections.unmodifiableList(livingParts);
+        return Collections.unmodifiableSet(livingParts);
     }
 
     @Override
-    public List<Tree> getTrees() {
-        return Collections.unmodifiableList(trees);
+    public Set<Tree> getTrees() {
+        return Collections.unmodifiableSet(trees);
     }
 
     @Override
@@ -108,8 +106,8 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public List<TreeLeaf> getFallenLeaves() {
-        return Collections.unmodifiableList(fallenLeaves);
+    public Set<TreeLeaf> getFallenLeaves() {
+        return Collections.unmodifiableSet(fallenLeaves);
     }
 
     @Override
