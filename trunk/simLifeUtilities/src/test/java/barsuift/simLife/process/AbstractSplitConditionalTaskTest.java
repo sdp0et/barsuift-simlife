@@ -20,7 +20,7 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         super.setUp();
         // make sure the barrier will block the process as long as the other mock process is not run
         CyclicBarrier barrier = new CyclicBarrier(2);
-        CyclicConditionState executionCondition = new CyclicConditionState(3, 6);
+        CyclicConditionState executionCondition = new CyclicConditionState(3, 0);
         BoundConditionState endingCondition = new BoundConditionState(60, 6);
         ConditionalTaskState conditionalTaskState = new ConditionalTaskState(executionCondition, endingCondition);
         state = new SplitConditionalTaskState(conditionalTaskState, 2);
@@ -43,8 +43,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertTrue(splitTask.isRunning());
         // executed once
-        assertEquals(1, splitTask.getNbExecuted());
-        assertEquals(2, splitTask.getNbIncrementExecuted());
+        assertEquals(0, splitTask.getNbExecuted());
+        assertEquals(0, splitTask.getNbIncrementExecuted());
         assertEquals(2, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(8, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -72,8 +72,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertTrue(splitTask.isRunning());
         // executed once again
-        assertEquals(2, splitTask.getNbExecuted());
-        assertEquals(4, splitTask.getNbIncrementExecuted());
+        assertEquals(1, splitTask.getNbExecuted());
+        assertEquals(2, splitTask.getNbIncrementExecuted());
         assertEquals(1, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(10, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -85,8 +85,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertTrue(splitTask.isRunning());
         // executed once again
-        assertEquals(3, splitTask.getNbExecuted());
-        assertEquals(6, splitTask.getNbIncrementExecuted());
+        assertEquals(2, splitTask.getNbExecuted());
+        assertEquals(4, splitTask.getNbIncrementExecuted());
         assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(12, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -100,8 +100,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertTrue(splitTask.isRunning());
         // executed once again
-        assertEquals(4, splitTask.getNbExecuted());
-        assertEquals(9, splitTask.getNbIncrementExecuted());
+        assertEquals(3, splitTask.getNbExecuted());
+        assertEquals(7, splitTask.getNbIncrementExecuted());
         assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(15, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -113,8 +113,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertTrue(splitTask.isRunning());
         // executed once again
-        assertEquals(5, splitTask.getNbExecuted());
-        assertEquals(12, splitTask.getNbIncrementExecuted());
+        assertEquals(4, splitTask.getNbExecuted());
+        assertEquals(10, splitTask.getNbIncrementExecuted());
         assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(18, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -128,8 +128,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertTrue(splitTask.isRunning());
         // executed once again
-        assertEquals(6, splitTask.getNbExecuted());
-        assertEquals(32, splitTask.getNbIncrementExecuted());
+        assertEquals(5, splitTask.getNbExecuted());
+        assertEquals(30, splitTask.getNbIncrementExecuted());
         assertEquals(2, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(38, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -141,8 +141,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertTrue(splitTask.isRunning());
         // executed once again
-        assertEquals(7, splitTask.getNbExecuted());
-        assertEquals(52, splitTask.getNbIncrementExecuted());
+        assertEquals(6, splitTask.getNbExecuted());
+        assertEquals(50, splitTask.getNbIncrementExecuted());
         assertEquals(1, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(58, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -156,8 +156,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertTrue(splitTask.isRunning());
         // executed once again
-        assertEquals(7, splitTask.getNbExecuted());
-        assertEquals(52, splitTask.getNbIncrementExecuted());
+        assertEquals(6, splitTask.getNbExecuted());
+        assertEquals(50, splitTask.getNbIncrementExecuted());
         assertEquals(2, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(59, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -169,8 +169,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertTrue(splitTask.isRunning());
         // executed once again
-        assertEquals(8, splitTask.getNbExecuted());
-        assertEquals(53, splitTask.getNbIncrementExecuted());
+        assertEquals(7, splitTask.getNbExecuted());
+        assertEquals(51, splitTask.getNbIncrementExecuted());
         assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(60, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(1, publisherHelper.nbUpdated());
@@ -183,8 +183,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         assertFalse(splitTask.isRunning());
         // this time, the split task should have stopped
-        assertEquals(8, splitTask.getNbExecuted());
-        assertEquals(53, splitTask.getNbIncrementExecuted());
+        assertEquals(7, splitTask.getNbExecuted());
+        assertEquals(51, splitTask.getNbIncrementExecuted());
         assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(60, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -196,8 +196,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         Thread.sleep(100);
         // still stopped
         assertFalse(splitTask.isRunning());
-        assertEquals(8, splitTask.getNbExecuted());
-        assertEquals(53, splitTask.getNbIncrementExecuted());
+        assertEquals(7, splitTask.getNbExecuted());
+        assertEquals(51, splitTask.getNbIncrementExecuted());
         assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
         assertEquals(60, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
@@ -207,8 +207,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
     public void testGetState() throws InterruptedException {
         assertEquals(state, splitTask.getState());
         assertSame(state, splitTask.getState());
-        assertEquals(6, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(6, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
+        assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
+        assertEquals(6, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
         (new Thread(splitTask)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
@@ -216,7 +216,7 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         assertSame(state, splitTask.getState());
         // 2 because the counter is reseted every time it is greater than the cycle size
         assertEquals(2, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(2, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
+        assertEquals(8, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
     }
 
 }
