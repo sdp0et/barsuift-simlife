@@ -27,11 +27,11 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
 // TODO 004. unit test
-public class GravityProcess extends AbstractSplitConditionalTask {
+public class GravityTask extends AbstractSplitConditionalTask {
 
     private final ConcurrentLinkedQueue<TransformGroup> transforms;
 
-    public GravityProcess(SplitConditionalTaskState state) {
+    public GravityTask(SplitConditionalTaskState state) {
         super(state);
         this.transforms = new ConcurrentLinkedQueue<TransformGroup>();
     }
