@@ -18,8 +18,8 @@
  */
 package barsuift.simLife.universe;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.environment.Environment;
@@ -37,11 +37,11 @@ import barsuift.simLife.universe.physic.Physics;
 
 public class MockUniverse implements Universe {
 
-    private List<LivingPart> livingParts;
+    private Set<LivingPart> livingParts;
 
-    private List<Tree> trees;
+    private Set<Tree> trees;
 
-    private List<TreeLeaf> fallenLeaves;
+    private Set<TreeLeaf> fallenLeaves;
 
     private long creationMillis;
 
@@ -64,9 +64,9 @@ public class MockUniverse implements Universe {
     }
 
     public void reset() {
-        livingParts = new ArrayList<LivingPart>();
-        trees = new ArrayList<Tree>();
-        fallenLeaves = new ArrayList<TreeLeaf>();
+        livingParts = new HashSet<LivingPart>();
+        trees = new HashSet<Tree>();
+        fallenLeaves = new HashSet<TreeLeaf>();
         creationMillis = 0;
         environment = new MockEnvironment();
         physics = new MockPhysics();
@@ -79,7 +79,7 @@ public class MockUniverse implements Universe {
 
 
     @Override
-    public List<LivingPart> getLivingParts() {
+    public Set<LivingPart> getLivingParts() {
         return livingParts;
     }
 
@@ -136,7 +136,7 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public List<Tree> getTrees() {
+    public Set<Tree> getTrees() {
         return trees;
     }
 
@@ -150,7 +150,7 @@ public class MockUniverse implements Universe {
     }
 
     @Override
-    public List<TreeLeaf> getFallenLeaves() {
+    public Set<TreeLeaf> getFallenLeaves() {
         return fallenLeaves;
     }
 
