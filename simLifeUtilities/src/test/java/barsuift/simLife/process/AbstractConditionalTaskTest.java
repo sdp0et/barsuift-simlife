@@ -56,6 +56,8 @@ public class AbstractConditionalTaskTest extends TestCase {
         assertTrue(conditionalRun.isRunning());
         // run 1
         assertEquals(0, conditionalRun.getNbExecuted());
+        assertEquals(1, conditionalRun.getState().getExecutionCondition().getCount());
+        assertEquals(1, conditionalRun.getState().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
         assertEquals(0, publisherHelper.getUpdateObjects().size());
 
@@ -82,6 +84,8 @@ public class AbstractConditionalTaskTest extends TestCase {
         assertTrue(conditionalRun.isRunning());
         // run 2
         assertEquals(0, conditionalRun.getNbExecuted());
+        assertEquals(2, conditionalRun.getState().getExecutionCondition().getCount());
+        assertEquals(2, conditionalRun.getState().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
         assertEquals(0, publisherHelper.getUpdateObjects().size());
 
@@ -92,6 +96,8 @@ public class AbstractConditionalTaskTest extends TestCase {
         assertTrue(conditionalRun.isRunning());
         // run 3
         assertEquals(1, conditionalRun.getNbExecuted());
+        assertEquals(0, conditionalRun.getState().getExecutionCondition().getCount());
+        assertEquals(3, conditionalRun.getState().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
         assertEquals(0, publisherHelper.getUpdateObjects().size());
 
@@ -103,6 +109,8 @@ public class AbstractConditionalTaskTest extends TestCase {
         assertTrue(conditionalRun.isRunning());
         // run 4
         assertEquals(1, conditionalRun.getNbExecuted());
+        assertEquals(1, conditionalRun.getState().getExecutionCondition().getCount());
+        assertEquals(4, conditionalRun.getState().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
         assertEquals(0, publisherHelper.getUpdateObjects().size());
 
@@ -113,6 +121,8 @@ public class AbstractConditionalTaskTest extends TestCase {
         assertTrue(conditionalRun.isRunning());
         // run 5
         assertEquals(1, conditionalRun.getNbExecuted());
+        assertEquals(2, conditionalRun.getState().getExecutionCondition().getCount());
+        assertEquals(5, conditionalRun.getState().getEndingCondition().getCount());
         assertEquals(1, publisherHelper.nbUpdated());
         assertEquals(null, publisherHelper.getUpdateObjects().get(0));
 
@@ -124,6 +134,8 @@ public class AbstractConditionalTaskTest extends TestCase {
         assertFalse(conditionalRun.isRunning());
         // run 6
         assertEquals(1, conditionalRun.getNbExecuted());
+        assertEquals(2, conditionalRun.getState().getExecutionCondition().getCount());
+        assertEquals(5, conditionalRun.getState().getEndingCondition().getCount());
         assertEquals(0, publisherHelper.nbUpdated());
         assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
