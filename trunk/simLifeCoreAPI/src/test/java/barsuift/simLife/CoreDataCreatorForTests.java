@@ -107,12 +107,22 @@ public final class CoreDataCreatorForTests {
 
     public static GravityState createRandomGravityState() {
         Gravity3DState gravity3D = DisplayDataCreatorForTests.createRandomGravity3DState();
-        return new GravityState(gravity3D);
+        int nbFallingLeaves = Randomizer.randomBetween(0, 40);
+        Set<TreeLeafState> fallingLeaves = new HashSet<TreeLeafState>(nbFallingLeaves);
+        for (int i = 0; i < nbFallingLeaves; i++) {
+            fallingLeaves.add(createRandomTreeLeafState());
+        }
+        return new GravityState(gravity3D, fallingLeaves);
     }
 
     public static GravityState createSpecificGravityState() {
         Gravity3DState gravity3D = DisplayDataCreatorForTests.createSpecificGravity3DState();
-        return new GravityState(gravity3D);
+        int nbFallingLeaves = 20;
+        Set<TreeLeafState> fallingLeaves = new HashSet<TreeLeafState>(nbFallingLeaves);
+        for (int i = 0; i < nbFallingLeaves; i++) {
+            fallingLeaves.add(createSpecificTreeLeafState());
+        }
+        return new GravityState(gravity3D, fallingLeaves);
     }
 
     public static DateHandlerState createRandomDateHandlerState() {
