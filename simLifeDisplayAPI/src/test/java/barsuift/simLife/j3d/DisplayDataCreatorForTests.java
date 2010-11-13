@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.j3d;
 
+import javax.media.j3d.Transform3D;
+
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
