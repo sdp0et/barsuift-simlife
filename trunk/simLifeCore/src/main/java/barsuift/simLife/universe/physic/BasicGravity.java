@@ -27,7 +27,7 @@ public class BasicGravity implements Gravity {
         for (TreeLeafState fallingLeafState : fallingLeafStates) {
             fallingLeaves.add(new BasicTreeLeaf(universe, fallingLeafState));
         }
-        this.gravity3D = new BasicGravity3D(state.getGravity3D());
+        this.gravity3D = new BasicGravity3D(state.getGravity3D(), universe.getUniverse3D());
     }
 
     @Override
@@ -35,6 +35,8 @@ public class BasicGravity implements Gravity {
         return Collections.unmodifiableSet(fallingLeaves);
     }
 
+    // FIXME this should be called by BasicTreeLeaf#fall()
+    // FIXME find a way to add the leaf as a fallen leaf and no more as a falling leaf
     @Override
     public void addFallingLeaf(TreeLeaf treeLeaf) {
         fallingLeaves.add(treeLeaf);
