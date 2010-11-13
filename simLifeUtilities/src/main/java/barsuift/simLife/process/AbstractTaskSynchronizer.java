@@ -1,7 +1,5 @@
 package barsuift.simLife.process;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CyclicBarrier;
@@ -48,7 +46,7 @@ public abstract class AbstractTaskSynchronizer<E extends ConditionalTask> implem
 
     private final ExecutorService standardThreadPool;
 
-    private final List<E> tasks = new ArrayList<E>();
+    private final ConcurrentLinkedQueue<E> tasks = new ConcurrentLinkedQueue<E>();
 
 
     private final ConcurrentLinkedQueue<E> newTasksToSchedule = new ConcurrentLinkedQueue<E>();
@@ -93,7 +91,7 @@ public abstract class AbstractTaskSynchronizer<E extends ConditionalTask> implem
         return running;
     }
 
-    protected List<E> getTasks() {
+    protected ConcurrentLinkedQueue<E> getTasks() {
         return tasks;
     }
 
