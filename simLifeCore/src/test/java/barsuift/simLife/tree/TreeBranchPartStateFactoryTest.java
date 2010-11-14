@@ -24,7 +24,7 @@ import java.util.List;
 import javax.vecmath.Point3d;
 
 import junit.framework.TestCase;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 
 
@@ -51,9 +51,11 @@ public class TreeBranchPartStateFactoryTest extends TestCase {
         assertTrue(nbLeaves <= 4);
         for (int index = 0; index < nbLeaves; index++) {
             TreeLeafState leafState = leaveStates.get(index);
-            Tuple3dState leafAttachPoint = leafState.getLeaf3DState().getLeafAttachPoint();
-            PointTestHelper.assertPointIsWithinBounds(leafAttachPoint.toPointValue(), new Point3d(0, 0, 0),
-                    branchPartEndPoint);
+            Transform3DState transform = leafState.getLeaf3DState().getTransform();
+            Point3d leafAttachPoint = new Point3d(transform.getMatrix()[3], transform.getMatrix()[7],
+                    transform.getMatrix()[11]);
+
+            PointTestHelper.assertPointIsWithinBounds(leafAttachPoint, new Point3d(0, 0, 0), branchPartEndPoint);
         }
 
         assertTrue(branchPartState.getCreationMillis() >= 0);

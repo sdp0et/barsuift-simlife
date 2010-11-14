@@ -32,7 +32,7 @@ public class Transform3DState implements State {
 
     public Transform3DState() {
         super();
-        this.matrix = new double[16];
+        this.matrix = new double[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
     }
 
     public Transform3DState(double[] matrix) {

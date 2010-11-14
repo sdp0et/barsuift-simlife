@@ -20,7 +20,7 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 
-import javax.vecmath.Point3d;
+import javax.media.j3d.Transform3D;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
@@ -40,13 +40,13 @@ public class TreeLeafStateFactory {
      * <li>random 3D state</li>
      * </ul>
      */
-    public TreeLeafState createRandomTreeLeafState(Point3d leafAttachPoint) {
+    public TreeLeafState createRandomTreeLeafState(Transform3D transform) {
         BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
         long creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
-        TreeLeaf3DState leaf3dState = leaf3DStateFactory.createRandomTreeLeaf3DState(leafAttachPoint);
+        TreeLeaf3DState leaf3dState = leaf3DStateFactory.createRandomTreeLeaf3DState(transform);
         return new TreeLeafState(creationMillis, energy, freeEnergy, efficiency, leaf3dState);
     }
 
@@ -58,11 +58,11 @@ public class TreeLeafStateFactory {
      * <li>new 3D state</li>
      * </ul>
      */
-    public TreeLeafState createNewTreeLeafState(Point3d leafAttachPoint, BigDecimal energy, long creationMillis) {
+    public TreeLeafState createNewTreeLeafState(Transform3D transform, BigDecimal energy, long creationMillis) {
         BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
         BigDecimal freeEnergy = new BigDecimal(0);
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
-        TreeLeaf3DState leaf3dState = leaf3DStateFactory.createNewTreeLeaf3DState(leafAttachPoint);
+        TreeLeaf3DState leaf3dState = leaf3DStateFactory.createNewTreeLeaf3DState(transform);
         return new TreeLeafState(creationMillis, energy, freeEnergy, efficiency, leaf3dState);
     }
 

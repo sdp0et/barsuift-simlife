@@ -35,14 +35,13 @@ import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
-import barsuift.simLife.j3d.Axis;
+import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.AreaHelper;
 import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.j3d.util.NormalHelper;
 import barsuift.simLife.j3d.util.PointHelper;
-import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.TreeLeaf;
@@ -58,11 +57,6 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
 
     private final TreeLeaf3DState state;
-
-    /**
-     * Leaf attach point, relative to the branch part
-     */
-    private Point3d leafAttachPoint;
 
     /**
      * End point 1 at the creation of the leaf (its birth end point 1). The point is relative to the attach point.
@@ -84,18 +78,12 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
      */
     private Point3d endPoint2;
 
-    /**
-     * Leaf rotation (in radian)
-     */
-    private double rotation;
-
 
 
     private TriangleArray leafGeometry;
 
     private final Shape3D leafShape3D;
 
-    // TODO 001. store the sub-TG in state ??
     private final BranchGroup bg;
 
     private final TransformGroup tg;
@@ -122,12 +110,10 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         }
         this.universe3D = universe3D;
         this.state = state;
-        this.leafAttachPoint = state.getLeafAttachPoint().toPointValue();
         this.initialEndPoint1 = state.getInitialEndPoint1().toPointValue();
         this.initialEndPoint2 = state.getInitialEndPoint2().toPointValue();
         this.endPoint1 = state.getEndPoint1().toPointValue();
         this.endPoint2 = state.getEndPoint2().toPointValue();
-        this.rotation = state.getRotation();
 
         maxEndPoint1 = computeMaxEndPoint(initialEndPoint1);
         maxEndPoint2 = computeMaxEndPoint(initialEndPoint2);
@@ -150,14 +136,9 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     }
 
     private TransformGroup createLeafTransformGroup() {
-        Transform3D translationT3D = TransformerHelper.getTranslationTransform3D(new Vector3d(leafAttachPoint));
-        Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
-        translationT3D.mul(rotationT3D);
-
-        TransformGroup transformGroup = new TransformGroup();
+        TransformGroup transformGroup = new TransformGroup(state.getTransform().toTransform3D());
         transformGroup.setCapability(Group.ALLOW_CHILDREN_WRITE);
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        transformGroup.setTransform(translationT3D);
         transformGroup.addChild(leafShape3D);
         return transformGroup;
     }
@@ -231,7 +212,11 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     @Override
     public Point3d getPosition() {
-        return leafAttachPoint;
+        Transform3D transform3D = new Transform3D();
+        tg.getTransform(transform3D);
+        Vector3d translation = new Vector3d();
+        transform3D.get(translation);
+        return new Point3d(translation);
     }
 
     /**
@@ -254,18 +239,15 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     }
 
     private void fall() {
+        // get the global transform before detaching to get all the transforms along the way
+        // the group will not be attached locally anymore, but at the root,
+        // so we need to get the global transform.
         Transform3D globalTransform = new Transform3D();
         leafShape3D.getLocalToVworld(globalTransform);
-        Vector3d translationVector = new Vector3d();
-        globalTransform.get(translationVector);
-        // project the leaf attach point to the ground
-        // leafAttachPoint = ProjectionHelper.getProjectionPoint(new Point3d(translationVector));
-        leafAttachPoint = new Point3d(translationVector);
-        // the rotation is now global and not related to the tree or the branch
-        rotation = TransformerHelper.getRotationFromTransform(globalTransform, Axis.Y);
-        // send the leaf Branch group, which contains a TG for the translation along the branch part
-        // universe3D.getPhysics3D().getGravityInterpolator().fall((BranchGroup) leafShape3D.getParent().getParent());
-        universe3D.getPhysics3D().getGravity3D().fall((BranchGroup) leafShape3D.getParent().getParent());
+        // we need to detach before changing the global transform, or it will move the group too far
+        bg.detach();
+        tg.setTransform(globalTransform);
+        universe3D.getPhysics3D().getGravity3D().fall(bg);
     }
 
     @Override
@@ -276,12 +258,13 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     @Override
     public void synchronize() {
-        state.setLeafAttachPoint(new Tuple3dState(leafAttachPoint));
+        Transform3D transform3D = new Transform3D();
+        tg.getTransform(transform3D);
+        state.setTransform(new Transform3DState(transform3D));
         state.setInitialEndPoint1(new Tuple3dState(initialEndPoint1));
         state.setInitialEndPoint2(new Tuple3dState(initialEndPoint2));
         state.setEndPoint1(new Tuple3dState(endPoint1));
         state.setEndPoint2(new Tuple3dState(endPoint2));
-        state.setRotation(rotation);
     }
 
     @Override

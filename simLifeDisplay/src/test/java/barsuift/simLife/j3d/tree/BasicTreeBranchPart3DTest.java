@@ -26,7 +26,6 @@ import javax.media.j3d.Shape3D;
 import javax.vecmath.Point3d;
 
 import junit.framework.TestCase;
-import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.tree.helper.BasicTreeBranchPart3DTestHelper;
@@ -50,8 +49,7 @@ public class BasicTreeBranchPart3DTest extends TestCase {
         nbLeaves = 5;
         for (int index = 0; index < nbLeaves; index++) {
             MockTreeLeaf mockLeaf = new MockTreeLeaf();
-            mockLeaf.getTreeLeaf3D().getState().setRotation(Randomizer.randomRotation());
-            mockLeaf.getTreeLeaf3D().getState().setLeafAttachPoint(DisplayDataCreatorForTests.createRandomTupleState());
+            mockLeaf.getTreeLeaf3D().getState().setTransform(DisplayDataCreatorForTests.createRandomTransform3DState());
             mockBranchPart.addLeaf(mockLeaf);
         }
         mockUniverse3D = new MockUniverse3D();

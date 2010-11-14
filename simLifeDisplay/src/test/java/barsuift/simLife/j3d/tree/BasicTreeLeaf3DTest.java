@@ -20,29 +20,30 @@ package barsuift.simLife.j3d.tree;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Geometry;
+import javax.media.j3d.Group;
 import javax.media.j3d.PolygonAttributes;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.TriangleArray;
 import javax.vecmath.Color3f;
-import javax.vecmath.Matrix3d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
+import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.helper.ColorTestHelper;
 import barsuift.simLife.j3d.helper.CompilerHelper;
-import barsuift.simLife.j3d.helper.MatrixTestHelper;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
-import barsuift.simLife.j3d.helper.VectorTestHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.util.ColorConstants;
+import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.MockTreeLeaf;
 
@@ -164,16 +165,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // test translation and rotation
         Transform3D transform3D = new Transform3D();
         transformGroup.getTransform(transform3D);
-        Matrix3d rotationMatrix = new Matrix3d();
-        Vector3d translationVector = new Vector3d();
-        transform3D.get(rotationMatrix, translationVector);
-        Matrix3d expectedRotationMatrix = new Matrix3d();
-        double rotation = leaf3DState.getRotation();
-        expectedRotationMatrix.rotY(rotation);
-        MatrixTestHelper.assertMatrixEquals(expectedRotationMatrix, rotationMatrix);
-        Point3d leafAttachPoint = leaf3DState.getLeafAttachPoint().toPointValue();
-        Vector3d expectedTranslationVector = new Vector3d(leafAttachPoint);
-        VectorTestHelper.assertVectorEquals(expectedTranslationVector, translationVector);
+        assertEquals(leaf3DState.getTransform(), new Transform3DState(transform3D));
 
         // test one leaf found
         Structure3DHelper.assertExactlyOneShape3D(transformGroup);
@@ -198,35 +190,41 @@ public class BasicTreeLeaf3DTest extends TestCase {
     }
 
     public void testFall() {
-        double oldRotation = Randomizer.randomRotation();
-        leaf3DState.setRotation(oldRotation);
-        Tuple3dState oldLeafAttachPoint = new Tuple3dState(1, 2, 3);
-        leaf3DState.setLeafAttachPoint(oldLeafAttachPoint);
+        double initialRotation = Randomizer.randomRotation();
+        Tuple3dState initialLeafAttachPoint = new Tuple3dState(1, 2, 3);
+        Transform3D initialTransform = TransformerHelper.getTranslationTransform3D(initialLeafAttachPoint
+                .toVectorValue());
+        Transform3D initialRotationT3D = TransformerHelper.getRotationTransform3D(initialRotation, Axis.Y);
+        initialTransform.mul(initialRotationT3D);
+        leaf3DState.setTransform(new Transform3DState(initialTransform));
+
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
 
         // add the leaf into a graph with translation and rotation
-        Transform3D transform3D = new Transform3D();
-        Vector3d graphTranslation = new Vector3d(2, 3, 5);
-        transform3D.set(graphTranslation);
-        Transform3D rotation = new Transform3D();
-        rotation.rotY(Math.PI / 2);
-        transform3D.mul(rotation);
-        TransformGroup transformGroup = new TransformGroup(transform3D);
-        BranchGroup branchGroup = new BranchGroup();
-        branchGroup.addChild(transformGroup);
-        transformGroup.addChild(leaf3D.getBranchGroup());
-        CompilerHelper.addToLocale(branchGroup);
+        Transform3D parentTransform3D = new Transform3D();
+        Vector3d parentTranslation = new Vector3d(2, 3, 5);
+        parentTransform3D.set(parentTranslation);
+        Transform3D parentRotation = new Transform3D();
+        parentRotation.rotY(Math.PI / 2);
+        parentTransform3D.mul(parentRotation);
+        TransformGroup parentTransformGroup = new TransformGroup(parentTransform3D);
+        BranchGroup parentBranchGroup = new BranchGroup();
+        parentTransformGroup.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        parentBranchGroup.addChild(parentTransformGroup);
+        parentTransformGroup.addChild(leaf3D.getBranchGroup());
+        CompilerHelper.addToLocale(parentBranchGroup);
 
         // call to the fall() method
         leaf3D.update(null, LeafUpdateMask.FALLING_MASK);
 
-        double newRotation = leaf3D.getState().getRotation();
-        assertEquals((oldRotation + Math.PI / 2) % (2 * Math.PI), newRotation, 0.000001);
-        Tuple3dState newAttachPoint = leaf3D.getState().getLeafAttachPoint();
-        // due to Y rotation of Pi/2, (1,3) on plan (X, Z) became (3, -1)
-        Tuple3dState expectedNewAttachPoint = new Tuple3dState(oldLeafAttachPoint.getZ() + 2,
-                oldLeafAttachPoint.getY() + 3, -oldLeafAttachPoint.getX() + 5);
-        assertEquals(expectedNewAttachPoint, newAttachPoint);
+        assertEquals(new Point3d(3 + 2, 2 + 3, -1 + 5), leaf3D.getPosition());
+
+        TransformGroup tg = (TransformGroup) leaf3D.getBranchGroup().getChild(0);
+        Transform3D newTransform = new Transform3D();
+        tg.getTransform(newTransform);
+        double newRotation = TransformerHelper.getRotationFromTransform(newTransform, Axis.Y);
+        assertEquals(initialRotation + Math.PI / 2, newRotation, 0.000001);
+
     }
 
     public void testGetArea() {

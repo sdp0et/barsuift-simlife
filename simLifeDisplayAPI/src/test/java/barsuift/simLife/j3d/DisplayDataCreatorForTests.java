@@ -19,6 +19,7 @@
 package barsuift.simLife.j3d;
 
 import javax.media.j3d.Transform3D;
+import javax.vecmath.Vector3d;
 
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.environment.Environment3DState;
@@ -74,9 +75,12 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Transform3DState createRandomTransform3DState() {
-        return new Transform3DState(new double[] { Math.random(), Math.random(), Math.random(), Math.random(),
-                Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(),
-                Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random() });
+        Transform3D transform = new Transform3D();
+        transform.setTranslation(new Vector3d(Math.random(), Math.random(), Math.random()));
+        Transform3D rotation = new Transform3D();
+        rotation.rotY(Randomizer.randomRotation());
+        transform.mul(rotation);
+        return new Transform3DState(transform);
     }
 
 
@@ -107,37 +111,34 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static TreeLeaf3DState createRandomTreeLeaf3DState() {
-        Tuple3dState attachPoint = createRandomTupleState();
+        Transform3DState transform = createRandomTransform3DState();
         Tuple3dState initialEndPoint1 = createRandomTupleState();
         Tuple3dState initialEndPoint2 = createRandomTupleState();
         Tuple3dState endPoint1 = createRandomTupleState();
         Tuple3dState endPoint2 = createRandomTupleState();
-        double rotation = Randomizer.randomRotation();
-        return new TreeLeaf3DState(attachPoint, initialEndPoint1, initialEndPoint2, endPoint1, endPoint2, rotation);
+        return new TreeLeaf3DState(transform, initialEndPoint1, initialEndPoint2, endPoint1, endPoint2);
     }
 
     /**
      * Create a specific leaf 3D with
      * <ul>
-     * <li>attachPoint=(0.1, 0.2, 0.0)</li>
+     * <li>transform=identity</li>
      * <li>initialEndPoint1=(0.2, 0.2, 0.0)</li>
      * <li>initialEndPoint2=(0.2, 0.1, 0.0)</li>
      * <li>endPoint1=(0.4, 0.0, 0.0)</li>
      * <li>endPoint2=(0.2, 0.4, 0.0)</li>
-     * <li>rotation=Pi/3</li>
      * </ul>
      * For information, the area is 0.08
      * 
      * @return
      */
     public static TreeLeaf3DState createSpecificTreeLeaf3DState() {
-        Tuple3dState attachPoint = new Tuple3dState(0.1, 0.2, 0.0);
+        Transform3DState transform = createSpecificTransform3DState();
         Tuple3dState initialEndPoint1 = new Tuple3dState(0.2, 0.2, 0.0);
         Tuple3dState initialEndPoint2 = new Tuple3dState(0.2, 0.1, 0.0);
         Tuple3dState endPoint1 = new Tuple3dState(0.4, 0.0, 0.0);
         Tuple3dState endPoint2 = new Tuple3dState(0.2, 0.4, 0.0);
-        double rotation = Math.PI / 3;
-        return new TreeLeaf3DState(attachPoint, initialEndPoint1, initialEndPoint2, endPoint1, endPoint2, rotation);
+        return new TreeLeaf3DState(transform, initialEndPoint1, initialEndPoint2, endPoint1, endPoint2);
     }
 
     public static TreeBranchPart3DState createRandomTreeBranchPart3DState() {

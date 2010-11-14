@@ -21,7 +21,6 @@ package barsuift.simLife.process;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Node;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
@@ -36,19 +35,9 @@ public class GravityTask extends AbstractSplitConditionalTask {
         this.transforms = new ConcurrentLinkedQueue<TransformGroup>();
     }
 
+    // TODO 001. pass a TG, not a BG ?? or pass the leaf, or the Fallable ??
     public void fall(BranchGroup groupToFall) {
-        System.out.println("Adding new leaf to fall");
         TransformGroup tg = (TransformGroup) groupToFall.getChild(0);
-        Node node = tg.getChild(0);
-        // get the global transform before detaching to get all the transforms along the way
-        // the group will not be attached locally anymore, but at the root,
-        // so we need to get the global transform.
-        Transform3D transform3D = new Transform3D();
-        // FIXME this should go in BasicTreeLeaf3D#fall method (once Leaf has a TG not a BG)
-        node.getLocalToVworld(transform3D);
-        // we need to detach before changing the global transform, or it will move the group too far
-        groupToFall.detach();
-        tg.setTransform(transform3D);
         transforms.add(tg);
     }
 
