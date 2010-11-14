@@ -58,7 +58,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
 
     private final TreeLeaf3DState state;
-    
+
     /**
      * Leaf attach point, relative to the branch part
      */
@@ -98,6 +98,8 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     // TODO 001. store the sub-TG in state ??
     private final BranchGroup bg;
 
+    private final TransformGroup tg;
+
     private final Universe3D universe3D;
 
     private boolean maxSizeReached;
@@ -127,7 +129,6 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         this.endPoint2 = state.getEndPoint2().toPointValue();
         this.rotation = state.getRotation();
 
-
         maxEndPoint1 = computeMaxEndPoint(initialEndPoint1);
         maxEndPoint2 = computeMaxEndPoint(initialEndPoint2);
         leaf.addSubscriber(this);
@@ -136,10 +137,19 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         setColor(leaf.getEfficiency());
         leafShape3D.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         maxSizeReached = false;
+        this.tg = createLeafTransformGroup();
         this.bg = createLeafBranchGroup();
     }
 
     private BranchGroup createLeafBranchGroup() {
+        BranchGroup leafBranchGroup = new BranchGroup();
+        leafBranchGroup.setCapability(BranchGroup.ALLOW_DETACH);
+        leafBranchGroup.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
+        leafBranchGroup.addChild(tg);
+        return leafBranchGroup;
+    }
+
+    private TransformGroup createLeafTransformGroup() {
         Transform3D translationT3D = TransformerHelper.getTranslationTransform3D(new Vector3d(leafAttachPoint));
         Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
         translationT3D.mul(rotationT3D);
@@ -149,12 +159,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         transformGroup.setTransform(translationT3D);
         transformGroup.addChild(leafShape3D);
-
-        BranchGroup leafBranchGroup = new BranchGroup();
-        leafBranchGroup.setCapability(BranchGroup.ALLOW_DETACH);
-        leafBranchGroup.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
-        leafBranchGroup.addChild(transformGroup);
-        return leafBranchGroup;
+        return transformGroup;
     }
 
     private void setColor(BigDecimal efficiency) {
