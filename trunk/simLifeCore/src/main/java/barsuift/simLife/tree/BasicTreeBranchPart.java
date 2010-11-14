@@ -293,7 +293,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
 
         // compute which couple of leaves are the most distant
         for (TreeLeaf leaf : sortedLeaves) {
-            Point3d attachPoint = leaf.getTreeLeaf3D().getAttachPoint();
+            Point3d attachPoint = leaf.getTreeLeaf3D().getPosition();
             distance = previousAttachPoint.distance(attachPoint);
             if (distance > maxDistance) {
                 maxDistance = distance;

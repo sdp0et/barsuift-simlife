@@ -49,7 +49,7 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
         this.area = area;
     }
 
-    public Point3d getAttachPoint() {
+    public Point3d getPosition() {
         return attachPoint;
     }
 

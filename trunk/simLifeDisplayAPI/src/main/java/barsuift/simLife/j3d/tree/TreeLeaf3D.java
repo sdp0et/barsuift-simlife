@@ -33,7 +33,7 @@ public interface TreeLeaf3D extends Subscriber, Persistent<TreeLeaf3DState> {
 
     public void increaseSize();
 
-    public Point3d getAttachPoint();
+    public Point3d getPosition();
 
     /**
      * Gets the BranchGroup of the leaf 3D. This branch group contains a transform group, for relative position of the
