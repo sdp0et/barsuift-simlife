@@ -20,7 +20,7 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 
-import javax.vecmath.Point3d;
+import javax.media.j3d.Transform3D;
 
 import junit.framework.TestCase;
 import barsuift.simLife.PercentHelper;
@@ -39,8 +39,7 @@ public class TreeLeafStateFactoryTest extends TestCase {
 
     public void testCreateRandomTreeLeafState() {
         TreeLeafStateFactory factory = new TreeLeafStateFactory();
-        Point3d leafAttachPoint = new Point3d(Math.random(), Math.random(), Math.random());
-        TreeLeafState treeLeafState = factory.createRandomTreeLeafState(leafAttachPoint);
+        TreeLeafState treeLeafState = factory.createRandomTreeLeafState(new Transform3D());
         assertNotNull(treeLeafState);
         assertNotNull(treeLeafState.getLeaf3DState());
         assertTrue(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency()) <= 0);
@@ -55,10 +54,9 @@ public class TreeLeafStateFactoryTest extends TestCase {
 
     public void testCreateNewTreeLeafState() {
         TreeLeafStateFactory factory = new TreeLeafStateFactory();
-        Point3d leafAttachPoint = new Point3d(Math.random(), Math.random(), Math.random());
         BigDecimal energy = new BigDecimal(30);
         long creationMillis = 200;
-        TreeLeafState treeLeafState = factory.createNewTreeLeafState(leafAttachPoint, energy, creationMillis);
+        TreeLeafState treeLeafState = factory.createNewTreeLeafState(new Transform3D(), energy, creationMillis);
         assertNotNull(treeLeafState);
         assertEquals(creationMillis, treeLeafState.getCreationMillis());
         TreeLeaf3DState leaf3dState = treeLeafState.getLeaf3DState();

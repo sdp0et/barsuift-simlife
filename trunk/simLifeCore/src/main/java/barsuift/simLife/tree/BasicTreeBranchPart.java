@@ -29,12 +29,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javax.media.j3d.Transform3D;
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
+import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.tree.BasicTreeBranchPart3D;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
+import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.universe.Universe;
 
@@ -270,16 +274,25 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     }
 
     protected void createOneNewLeaf() {
-        Point3d leafAttachPoint = computeAttachPointForNewLeaf();
+        Transform3D transform = computeTransformForNewLeaf();
         TreeLeafStateFactory treeLeafStateFactory = new TreeLeafStateFactory();
-        TreeLeafState treeLeafState = treeLeafStateFactory.createNewTreeLeafState(leafAttachPoint,
-                NEW_LEAF_ENERGY_PROVIDED, universe.getDate().getTimeInMillis());
+        TreeLeafState treeLeafState = treeLeafStateFactory.createNewTreeLeafState(transform, NEW_LEAF_ENERGY_PROVIDED,
+                universe.getDate().getTimeInMillis());
         TreeLeaf leaf = new BasicTreeLeaf(universe, treeLeafState);
         leaf.addSubscriber(this);
         leaves.add(leaf);
         branchPart3D.addLeaf(leaf.getTreeLeaf3D());
         BigDecimal totalLeafCreationCost = NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED);
         energy = energy.subtract(totalLeafCreationCost);
+    }
+
+    private Transform3D computeTransformForNewLeaf() {
+        Point3d leafAttachPoint = computeAttachPointForNewLeaf();
+        double rotation = Randomizer.randomRotation();
+        Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3d(leafAttachPoint));
+        Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
+        transform.mul(rotationT3D);
+        return transform;
     }
 
     protected Point3d computeAttachPointForNewLeaf() {

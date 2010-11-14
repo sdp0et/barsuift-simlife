@@ -22,12 +22,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.j3d.Transform3D;
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
+import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
@@ -132,12 +135,19 @@ public class BasicTreeBranchPartTest extends TestCase {
         assertEquals("no leaf should have been removed", nbLeaves - 1, branchPart.getNbLeaves());
     }
 
+    private void setLeafStateTransform(TreeLeaf3DState leaf3DState, Vector3d translation) {
+        Transform3D transform1 = new Transform3D();
+        transform1.setTranslation(translation);
+        leaf3DState.setTransform(new Transform3DState(transform1));
+    }
+
+
     public void testComputeAttachPointForNewleafState1() {
         // create object states
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        leaf3DState1.setLeafAttachPoint(new Tuple3dState(2, 0, 0));
+        setLeafStateTransform(leaf3DState1, new Vector3d(2, 0, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        leaf3DState2.setLeafAttachPoint(new Tuple3dState(3, 0, 0));
+        setLeafStateTransform(leaf3DState2, new Vector3d(3, 0, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -165,9 +175,9 @@ public class BasicTreeBranchPartTest extends TestCase {
     public void testComputeAttachPointForNewleafState2() {
         // create object states
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        leaf3DState1.setLeafAttachPoint(new Tuple3dState(1, 0, 0));
+        setLeafStateTransform(leaf3DState1, new Vector3d(1, 0, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        leaf3DState2.setLeafAttachPoint(new Tuple3dState(5, 0, 0));
+        setLeafStateTransform(leaf3DState2, new Vector3d(5, 0, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -195,9 +205,9 @@ public class BasicTreeBranchPartTest extends TestCase {
     public void testComputeAttachPointForNewLeaf3() {
         // create object states
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        leaf3DState1.setLeafAttachPoint(new Tuple3dState(2, 0, 0));
+        setLeafStateTransform(leaf3DState1, new Vector3d(2, 0, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        leaf3DState2.setLeafAttachPoint(new Tuple3dState(3, 0, 0));
+        setLeafStateTransform(leaf3DState2, new Vector3d(3, 0, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -228,9 +238,9 @@ public class BasicTreeBranchPartTest extends TestCase {
     public void testComputeAttachPointForNewLeaf4() {
         // create object states
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        leaf3DState1.setLeafAttachPoint(new Tuple3dState(2, 0, 0));
+        setLeafStateTransform(leaf3DState1, new Vector3d(2, 0, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        leaf3DState2.setLeafAttachPoint(new Tuple3dState(3, 0, 0));
+        setLeafStateTransform(leaf3DState2, new Vector3d(3, 0, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
