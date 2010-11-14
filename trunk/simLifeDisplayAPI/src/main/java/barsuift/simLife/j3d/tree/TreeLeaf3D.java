@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import javax.media.j3d.Node;
+import javax.media.j3d.BranchGroup;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.Persistent;
@@ -37,6 +37,12 @@ public interface TreeLeaf3D extends Subscriber, Persistent<TreeLeaf3DState> {
 
     public double getRotation();
 
-    public Node getNode();
+    /**
+     * Gets the BranchGroup of the leaf 3D. This branch group contains a transform group, for relative position of the
+     * leaf. The TG contains the leaf shape.
+     * 
+     * @return the leaf 3D branch group
+     */
+    public BranchGroup getBranchGroup();
 
 }

@@ -18,8 +18,7 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import javax.media.j3d.Node;
-import javax.media.j3d.Shape3D;
+import javax.media.j3d.BranchGroup;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.message.MockSubscriber;
@@ -31,7 +30,7 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
     private TreeLeaf3DState state = new TreeLeaf3DState();
 
-    private Node node = new Shape3D();
+    private BranchGroup bg = new BranchGroup();
 
     private Point3d attachPoint = new Point3d();
 
@@ -70,12 +69,12 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
     }
 
     @Override
-    public Node getNode() {
-        return node;
+    public BranchGroup getBranchGroup() {
+        return bg;
     }
 
-    public void setNode(Node node) {
-        this.node = node;
+    public void setBranchGroup(BranchGroup bg) {
+        this.bg = bg;
     }
 
     @Override

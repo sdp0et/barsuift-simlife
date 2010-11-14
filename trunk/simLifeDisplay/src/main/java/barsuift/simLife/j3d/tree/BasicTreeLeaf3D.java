@@ -23,10 +23,11 @@ import java.math.BigDecimal;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.GeometryArray;
-import javax.media.j3d.Node;
+import javax.media.j3d.Group;
 import javax.media.j3d.PolygonAttributes;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
 import javax.media.j3d.TriangleArray;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
@@ -94,6 +95,9 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private final Shape3D leafShape3D;
 
+    // TODO 001. store the sub-TG in state ??
+    private final BranchGroup bg;
+
     private final Universe3D universe3D;
 
     private boolean maxSizeReached;
@@ -132,6 +136,25 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         setColor(leaf.getEfficiency());
         leafShape3D.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         maxSizeReached = false;
+        this.bg = createLeafBranchGroup();
+    }
+
+    private BranchGroup createLeafBranchGroup() {
+        Transform3D translationT3D = TransformerHelper.getTranslationTransform3D(new Vector3d(leafAttachPoint));
+        Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
+        translationT3D.mul(rotationT3D);
+
+        TransformGroup transformGroup = new TransformGroup();
+        transformGroup.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        transformGroup.setTransform(translationT3D);
+        transformGroup.addChild(leafShape3D);
+
+        BranchGroup leafBranchGroup = new BranchGroup();
+        leafBranchGroup.setCapability(BranchGroup.ALLOW_DETACH);
+        leafBranchGroup.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
+        leafBranchGroup.addChild(transformGroup);
+        return leafBranchGroup;
     }
 
     private void setColor(BigDecimal efficiency) {
@@ -262,8 +285,8 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     }
 
     @Override
-    public Node getNode() {
-        return leafShape3D;
+    public BranchGroup getBranchGroup() {
+        return bg;
     }
 
 }

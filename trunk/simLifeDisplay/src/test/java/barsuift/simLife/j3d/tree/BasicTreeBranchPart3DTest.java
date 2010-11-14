@@ -22,26 +22,17 @@ import java.util.Enumeration;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
-import javax.media.j3d.Node;
 import javax.media.j3d.Shape3D;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.vecmath.Matrix3d;
 import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.CompilerHelper;
-import barsuift.simLife.j3d.helper.MatrixTestHelper;
-import barsuift.simLife.j3d.helper.Structure3DHelper;
-import barsuift.simLife.j3d.helper.VectorTestHelper;
 import barsuift.simLife.j3d.tree.helper.BasicTreeBranchPart3DTestHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.tree.MockTreeBranchPart;
 import barsuift.simLife.tree.MockTreeLeaf;
-import barsuift.simLife.tree.TreeLeaf;
 
 public class BasicTreeBranchPart3DTest extends TestCase {
 
@@ -116,30 +107,6 @@ public class BasicTreeBranchPart3DTest extends TestCase {
         for (Enumeration enumeration = partGroup.getAllChildren(); enumeration.hasMoreElements();) {
             Object child = enumeration.nextElement();
             if (child instanceof BranchGroup) {
-                BranchGroup leafBranchGroup = (BranchGroup) child;
-
-                Structure3DHelper.assertExactlyOneTransformGroup(leafBranchGroup);
-                TransformGroup transformGroup = (TransformGroup) leafBranchGroup.getChild(0);
-
-                // test translation and rotation
-                Transform3D transform3D = new Transform3D();
-                transformGroup.getTransform(transform3D);
-                Matrix3d rotationMatrix = new Matrix3d();
-                Vector3d translationVector = new Vector3d();
-                transform3D.get(rotationMatrix, translationVector);
-                Matrix3d expectedRotationMatrix = new Matrix3d();
-                TreeLeaf treeLeaf = mockBranchPart.getLeaves().get(nbLeavesFound);
-                double rotation = treeLeaf.getTreeLeaf3D().getState().getRotation();
-                expectedRotationMatrix.rotY(rotation);
-                MatrixTestHelper.assertMatrixEquals(expectedRotationMatrix, rotationMatrix);
-                Point3d leafAttachPoint = treeLeaf.getTreeLeaf3D().getState().getLeafAttachPoint().toPointValue();
-                Vector3d expectedTranslationVector = new Vector3d(leafAttachPoint);
-                VectorTestHelper.assertVectorEquals(expectedTranslationVector, translationVector);
-
-                // test one leaf found
-                Structure3DHelper.assertExactlyOneShape3D(transformGroup);
-                Node specificLeafNode = (Node) transformGroup.getChild(0);
-                assertNotNull(specificLeafNode);
                 nbLeavesFound++;
             } else {
                 if (child instanceof Shape3D) {

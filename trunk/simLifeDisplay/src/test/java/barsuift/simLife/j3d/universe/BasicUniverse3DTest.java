@@ -76,7 +76,7 @@ public class BasicUniverse3DTest extends TestCase {
         // the 3D node is added to a transform group, itself added to a branch group
         // that's why i test the parent of the parent
         assertTrue(elements3d.contains(tree.getTree3D().getBranchGroup().getParent().getParent()));
-        assertTrue(elements3d.contains(treeLeaf.getTreeLeaf3D().getNode().getParent().getParent()));
+        assertTrue(elements3d.contains(treeLeaf.getTreeLeaf3D().getBranchGroup().getParent().getParent()));
 
     }
 
@@ -86,14 +86,14 @@ public class BasicUniverse3DTest extends TestCase {
         Point3d leafAttachPoint = new Point3d(Math.random(), Math.random(), Math.random());
         TreeLeaf3DState leaf3dState = stateFactory.createRandomTreeLeaf3DState(leafAttachPoint);
         BasicTreeLeaf3D treeLeaf3D = new BasicTreeLeaf3D(universe3D, leaf3dState, new MockTreeLeaf());
-        universe3D.addElement3D(treeLeaf3D.getNode());
+        universe3D.addElement3D(treeLeaf3D.getBranchGroup());
         Set<Node> elements3d = universe3D.getElements3D();
         assertNotNull(elements3d);
         assertEquals(1, elements3d.size());
-        assertTrue(elements3d.contains(treeLeaf3D.getNode()));
+        assertTrue(elements3d.contains(treeLeaf3D.getBranchGroup()));
         BranchGroup root = universe3D.getUniverseRoot();
         assertNotNull(root);
         assertEquals(1, root.numChildren());
-        assertEquals(treeLeaf3D.getNode(), root.getChild(0));
+        assertEquals(treeLeaf3D.getBranchGroup(), root.getChild(0));
     }
 }

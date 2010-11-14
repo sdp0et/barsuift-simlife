@@ -23,22 +23,16 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.media.j3d.Appearance;
-import javax.media.j3d.BranchGroup;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Group;
 import javax.media.j3d.LineArray;
 import javax.media.j3d.Shape3D;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.AppearanceFactory;
-import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ColorConstants;
-import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.TreeBranchPart;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -96,21 +90,7 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
     }
 
     public void addLeaf(TreeLeaf3D leaf) {
-        BranchGroup leafBranchGroup = new BranchGroup();
-        leafBranchGroup.setCapability(BranchGroup.ALLOW_DETACH);
-        leafBranchGroup.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
-        TransformGroup transformGroup = new TransformGroup();
-        transformGroup.setCapability(Group.ALLOW_CHILDREN_WRITE);
-        transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        TreeLeaf3DState leaf3DState = leaf.getState();
-        Transform3D translation = TransformerHelper.getTranslationTransform3D(new Vector3d(leaf3DState
-                .getLeafAttachPoint().toPointValue()));
-        Transform3D rotation = TransformerHelper.getRotationTransform3D(leaf3DState.getRotation(), Axis.Y);
-        translation.mul(rotation);
-        transformGroup.setTransform(translation);
-        transformGroup.addChild(leaf.getNode());
-        leafBranchGroup.addChild(transformGroup);
-        group.addChild(leafBranchGroup);
+        group.addChild(leaf.getBranchGroup());
     }
 
     public Point3d getEndPoint() {
