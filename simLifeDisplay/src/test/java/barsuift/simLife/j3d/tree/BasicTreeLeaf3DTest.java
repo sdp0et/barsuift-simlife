@@ -140,8 +140,8 @@ public class BasicTreeLeaf3DTest extends TestCase {
 
 
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(60));
-        // 4 does not correspond to any valid update code
-        leaf3D.update(mockLeaf, 4);
+        // 65536 does not correspond to any valid update code
+        leaf3D.update(mockLeaf, 65536);
 
         // check that the color has NOT changed as expected, because the update code is not the appropriate one
         expectedColor = new Color3f(ColorConstants.brownYellow);
@@ -195,13 +195,9 @@ public class BasicTreeLeaf3DTest extends TestCase {
         CompilerHelper.addToLocale(branchGroup);
 
         // call to the fall() method
-        leaf3D.update(null, LeafUpdateMask.FALL_MASK);
+        leaf3D.update(null, LeafUpdateMask.FALLING_MASK);
 
-        Tuple3dState newLeafAttachPoint = leaf3D.getState().getLeafAttachPoint();
         double newRotation = leaf3D.getState().getRotation();
-
-        Point3d expectedAttachPoint = new Point3d(oldLeafAttachPoint.getX(), 0, oldLeafAttachPoint.getZ());
-        assertEquals(expectedAttachPoint, newLeafAttachPoint.toPointValue());
         assertEquals(oldRotation, newRotation, 0.000001);
     }
 

@@ -35,8 +35,8 @@ public class BasicGravity implements Gravity {
         return Collections.unmodifiableSet(fallingLeaves);
     }
 
-    // FIXME this should be called by BasicTreeLeaf#fall()
     // FIXME find a way to add the leaf as a fallen leaf and no more as a falling leaf
+    // universe.addFallenLeaf(treeLeaf);
     @Override
     public void addFallingLeaf(TreeLeaf treeLeaf) {
         fallingLeaves.add(treeLeaf);

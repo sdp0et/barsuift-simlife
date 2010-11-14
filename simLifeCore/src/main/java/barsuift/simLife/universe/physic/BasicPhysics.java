@@ -16,7 +16,7 @@ public class BasicPhysics implements Physics {
     public BasicPhysics(Universe universe, PhysicsState state) {
         this.state = state;
         this.gravity = new BasicGravity(state.getGravity(), universe);
-        this.physics3D = new BasicPhysics3D(universe.getUniverse3D(), state.getPhysics3D(), this);
+        this.physics3D = new BasicPhysics3D(state.getPhysics3D(), this);
     }
 
     @Override
