@@ -20,10 +20,6 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Node;
-import javax.media.j3d.TransformGroup;
-
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
@@ -43,8 +39,6 @@ public class BasicTreeLeafTest extends TestCase {
 
     private TreeLeafState leafState;
 
-    private BranchGroup bg;
-
     private MockSun mockSun;
 
     protected void setUp() throws Exception {
@@ -62,15 +56,6 @@ public class BasicTreeLeafTest extends TestCase {
 
         leaf = new BasicTreeLeaf(universe, leafState);
         publisherHelper = new PublisherTestHelper();
-        attachLeaf3DIn3dStructure();
-    }
-
-    private void attachLeaf3DIn3dStructure() {
-        Node leafNode = leaf.getTreeLeaf3D().getNode();
-        bg = new BranchGroup();
-        TransformGroup tg = new TransformGroup();
-        bg.addChild(tg);
-        tg.addChild(leafNode);
     }
 
     protected void tearDown() throws Exception {
@@ -80,7 +65,6 @@ public class BasicTreeLeafTest extends TestCase {
         publisherHelper = null;
         universe = null;
         leafState = null;
-        bg = null;
     }
 
     public void testBasicTreeLeaf() {
@@ -158,7 +142,6 @@ public class BasicTreeLeafTest extends TestCase {
         // make sure the leaf only has 10% efficiency (limit before falling)
         leafState.setEfficiency(PercentHelper.getDecimalValue(10));
         leaf = new BasicTreeLeaf(universe, leafState);
-        attachLeaf3DIn3dStructure();
         publisherHelper.addSubscriberTo(leaf);
 
         assertFalse(leaf.isTooWeak());
@@ -177,7 +160,7 @@ public class BasicTreeLeafTest extends TestCase {
         assertTrue(LeafUpdateMask.isFieldSet(updateParam2, LeafUpdateMask.FALLING_MASK));
 
         MockGravity3D gravity3D = (MockGravity3D) universe.getUniverse3D().getPhysics3D().getGravity3D();
-        assertEquals(bg, gravity3D.getFallenGroups().get(0));
+        assertEquals(leaf.getTreeLeaf3D().getBranchGroup(), gravity3D.getFallenGroups().get(0));
     }
 
     public void testGetState() {

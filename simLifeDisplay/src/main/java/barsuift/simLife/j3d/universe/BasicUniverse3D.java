@@ -98,7 +98,7 @@ public class BasicUniverse3D implements Universe3D {
 
         BranchGroup treeLeafBranchGroup = new BranchGroup();
         treeLeafBranchGroup.addChild(transformGroup);
-        transformGroup.addChild(treeLeaf3D.getNode());
+        transformGroup.addChild(treeLeaf3D.getBranchGroup());
 
         addElement3D(treeLeafBranchGroup);
     }
