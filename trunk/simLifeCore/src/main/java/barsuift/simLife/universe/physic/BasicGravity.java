@@ -18,6 +18,7 @@ public class BasicGravity implements Gravity {
 
     private final Gravity3D gravity3D;
 
+    // FIXME it seems the falling leaves are not restored, because only added to Gravity, and not to Gravity3D
     private final Set<TreeLeaf> fallingLeaves;
 
     public BasicGravity(GravityState state, Universe universe) {
