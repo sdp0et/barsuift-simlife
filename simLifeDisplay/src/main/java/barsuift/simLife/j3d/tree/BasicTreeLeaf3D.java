@@ -58,7 +58,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
 
     private final TreeLeaf3DState state;
-
+    
     /**
      * Leaf attach point, relative to the branch part
      */
@@ -225,7 +225,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     }
 
     @Override
-    public Point3d getAttachPoint() {
+    public Point3d getPosition() {
         return leafAttachPoint;
     }
 
