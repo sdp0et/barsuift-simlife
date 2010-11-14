@@ -27,8 +27,6 @@ public class MockPhysics3D implements Physics3D {
 
     private int synchronizeCalled;
 
-    private GravityInterpolator gravity;
-
     private Gravity3D gravity3D;
 
     private Group group;
@@ -40,7 +38,6 @@ public class MockPhysics3D implements Physics3D {
     public void reset() {
         state = new Physics3DState();
         synchronizeCalled = 0;
-        gravity = new MockGravityInterpolator();
         gravity3D = new MockGravity3D();
         group = new Group();
     }
@@ -61,15 +58,6 @@ public class MockPhysics3D implements Physics3D {
 
     public int getNbSynchronizeCalled() {
         return synchronizeCalled;
-    }
-
-    @Override
-    public GravityInterpolator getGravityInterpolator() {
-        return gravity;
-    }
-
-    public void setGravity(GravityInterpolator gravity) {
-        this.gravity = gravity;
     }
 
     @Override

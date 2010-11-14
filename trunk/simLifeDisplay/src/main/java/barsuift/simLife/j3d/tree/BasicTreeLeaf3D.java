@@ -225,7 +225,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
             TreeLeaf leaf = (TreeLeaf) publisher;
             setColor(leaf.getEfficiency());
         }
-        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALL_MASK)) {
+        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALLING_MASK)) {
             fall();
         }
     }
@@ -242,13 +242,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         rotation = TransformerHelper.getRotationFromTransform(globalTransform, Axis.Y);
         // send the leaf Branch group, which contains a TG for the translation along the branch part
         // universe3D.getPhysics3D().getGravityInterpolator().fall((BranchGroup) leafShape3D.getParent().getParent());
-
         universe3D.getPhysics3D().getGravity3D().fall((BranchGroup) leafShape3D.getParent().getParent());
-
-        // GravityProcess gravityProcess = new GravityProcess(new SplitConditionalTaskState(
-        // (int) (translationVector.getY() * 1000 / 25), 0, universe3D.getSynchronizer().getStepSize()));
-        // gravityProcess.fall((BranchGroup) leafShape3D.getParent().getParent());
-        // universe3D.getSynchronizer().schedule(gravityProcess);
     }
 
     @Override

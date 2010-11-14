@@ -65,7 +65,6 @@ public class BasicUniverse3D implements Universe3D {
     // TODO 888 see if this can be improved
     public void initFromUniverse(Universe universe) {
         addElement3D(universe.getEnvironment().getEnvironment3D().getGroup());
-        // FIXME added line : this should have been tested
         addElement3D(universe.getPhysics().getPhysics3D().getGroup());
 
         for (Tree tree : universe.getTrees()) {

@@ -353,7 +353,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     }
 
     public void update(Publisher publisher, Object arg) {
-        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALL_MASK)) {
+        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALLING_MASK)) {
             TreeLeaf leaf = (TreeLeaf) publisher;
             leaves.remove(leaf);
         }

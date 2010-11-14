@@ -103,6 +103,7 @@ public class BasicUniverse implements Universe {
     @Override
     public void addTree(Tree tree) {
         trees.add(tree);
+        universe3D.addElement3D(tree.getTree3D().getBranchGroup());
     }
 
     @Override
@@ -113,6 +114,7 @@ public class BasicUniverse implements Universe {
     @Override
     public void addFallenLeaf(TreeLeaf treeLeaf) {
         fallenLeaves.add(treeLeaf);
+        universe3D.addElement3D(treeLeaf.getTreeLeaf3D().getNode());
     }
 
     @Override

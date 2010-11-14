@@ -26,8 +26,6 @@ public interface Physics3D extends Persistent<Physics3DState> {
 
     public Group getGroup();
 
-    public GravityInterpolator getGravityInterpolator();
-
     public Gravity3D getGravity3D();
 
 }
