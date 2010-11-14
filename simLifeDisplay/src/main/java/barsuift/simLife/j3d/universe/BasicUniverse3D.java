@@ -30,9 +30,7 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.tree.Tree3D;
-import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.process.BasicSynchronizer3D;
@@ -72,11 +70,12 @@ public class BasicUniverse3D implements Universe3D {
         }
 
         for (TreeLeaf treeLeaf : universe.getFallenLeaves()) {
-            addFallenLeaf(treeLeaf.getTreeLeaf3D());
+            addElement3D(treeLeaf.getTreeLeaf3D().getBranchGroup());
         }
     }
 
     private void addTree(Tree3D tree3D) {
+        // TODO 001. this code should be move into BasicTree3D, as done for BasicTreeLeaf3D (to be done for everyone)
         Point3d treeOriginPoint = tree3D.getState().getTranslationVector().toPointValue();
         Transform3D translation = TransformerHelper.getTranslationTransform3D(new Vector3d(treeOriginPoint));
         TransformGroup transformGroup = new TransformGroup(translation);
@@ -86,21 +85,6 @@ public class BasicUniverse3D implements Universe3D {
         transformGroup.addChild(tree3D.getBranchGroup());
 
         addElement3D(treeBranchGroup);
-    }
-
-    private void addFallenLeaf(TreeLeaf3D treeLeaf3D) {
-        Point3d treeLeafAttachPoint = treeLeaf3D.getAttachPoint();
-        double treeLeafRotation = treeLeaf3D.getRotation();
-        Transform3D translation = TransformerHelper.getTranslationTransform3D(new Vector3d(treeLeafAttachPoint));
-        Transform3D rotation = TransformerHelper.getRotationTransform3D(treeLeafRotation, Axis.Y);
-        translation.mul(rotation);
-        TransformGroup transformGroup = new TransformGroup(translation);
-
-        BranchGroup treeLeafBranchGroup = new BranchGroup();
-        treeLeafBranchGroup.addChild(transformGroup);
-        transformGroup.addChild(treeLeaf3D.getBranchGroup());
-
-        addElement3D(treeLeafBranchGroup);
     }
 
     public void addElement3D(Node element3D) {
