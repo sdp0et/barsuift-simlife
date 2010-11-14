@@ -34,8 +34,6 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
     private Point3d attachPoint = new Point3d();
 
-    private double rotation = 0;
-
     private int increaseSizeCalled = 0;
 
     private boolean isMaxSizeReached = false;
@@ -102,15 +100,6 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
     public int getNbSynchronize() {
         return synchronizedCalled;
-    }
-
-    @Override
-    public double getRotation() {
-        return rotation;
-    }
-
-    public void setRotation(double rotation) {
-        this.rotation = rotation;
     }
 
 }

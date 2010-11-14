@@ -229,11 +229,6 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         return leafAttachPoint;
     }
 
-    @Override
-    public double getRotation() {
-        return rotation;
-    }
-
     /**
      * Set the startPoint, endPoint1 and endPoint2 points to the leafGeometry
      */
