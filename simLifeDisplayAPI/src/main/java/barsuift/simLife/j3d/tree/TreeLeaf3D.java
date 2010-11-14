@@ -35,8 +35,6 @@ public interface TreeLeaf3D extends Subscriber, Persistent<TreeLeaf3DState> {
 
     public Point3d getAttachPoint();
 
-    public double getRotation();
-
     /**
      * Gets the BranchGroup of the leaf 3D. This branch group contains a transform group, for relative position of the
      * leaf. The TG contains the leaf shape.
