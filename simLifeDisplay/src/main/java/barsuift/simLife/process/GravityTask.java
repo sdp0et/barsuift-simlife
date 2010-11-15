@@ -25,7 +25,7 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
-// TODO 004. unit test
+// TODO 001. 007. unit test
 public class GravityTask extends AbstractSplitConditionalTask {
 
     private final ConcurrentLinkedQueue<TransformGroup> transforms;
