@@ -35,7 +35,9 @@ public class GravityTask extends AbstractSplitConditionalTask {
         this.transforms = new ConcurrentLinkedQueue<TransformGroup>();
     }
 
-    // TODO 001. pass a TG, not a BG ?? or pass the leaf, or the Fallable ??
+    // TODO 001. 001. create Mobile interface extending Publisher, with getTransformGroup() method
+    // TODO 001. 002. make TreeLeaf3D extends Mobile
+    // TODO 001. 003. pass a Mobile as a parameter
     public void fall(BranchGroup groupToFall) {
         TransformGroup tg = (TransformGroup) groupToFall.getChild(0);
         transforms.add(tg);
@@ -53,6 +55,7 @@ public class GravityTask extends AbstractSplitConditionalTask {
             // update values
             if (translation.y < (0.025 * stepSize)) {
                 translation.y = 0;
+                // TODO 001. 004. mobile.notifySubscriber(FALLEN)
                 transforms.remove(currentTG);
             } else {
                 translation.y -= (0.025 * stepSize);
