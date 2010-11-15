@@ -21,7 +21,7 @@ package barsuift.simLife.process;
 public class Synchronizer3DStateFactory {
 
     public Synchronizer3DState createSynchronizer3DState() {
-        int stepSize = 1;
+        int stepSize = Speed.DEFAULT_SPEED.getSpeed();
         return new Synchronizer3DState(stepSize);
     }
 
