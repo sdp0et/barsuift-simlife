@@ -29,7 +29,7 @@ public class Synchronizer3DState implements State {
 
     public Synchronizer3DState() {
         super();
-        this.stepSize = 1;
+        this.stepSize = Speed.DEFAULT_SPEED.getSpeed();
     }
 
     public Synchronizer3DState(int stepSize) {
