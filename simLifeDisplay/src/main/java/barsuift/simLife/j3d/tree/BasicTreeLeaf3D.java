@@ -247,7 +247,6 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         // we need to detach before changing the global transform, or it will move the group too far
         bg.detach();
         tg.setTransform(globalTransform);
-        universe3D.getPhysics3D().getGravity3D().fall(bg);
     }
 
     @Override
