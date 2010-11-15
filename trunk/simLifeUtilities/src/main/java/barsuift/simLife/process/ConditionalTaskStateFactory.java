@@ -37,6 +37,12 @@ public class ConditionalTaskStateFactory {
      */
     private static final int DEFAULT_CYCLE = 1;
 
+    /**
+     * The default step size. This value is always used at this point. The step size must be set manually afterward when
+     * real object is created.
+     */
+    private static final int DEFAULT_STEP_SIZE = 1;
+
     private static final String PROPERTIES_FILE = "barsuift/simLife/process/ConditionalTasks.properties";
 
     private static final String BOUND_SUFFIX = ".bound";
@@ -72,10 +78,9 @@ public class ConditionalTaskStateFactory {
         return new ConditionalTaskState(executionCondition, endingCondition);
     }
 
-    public SplitConditionalTaskState createSplitConditionalTaskState(Class<? extends ConditionalTask> clazz,
-            int stepSize) {
+    public SplitConditionalTaskState createSplitConditionalTaskState(Class<? extends ConditionalTask> clazz) {
         ConditionalTaskState conditionalTask = createConditionalTaskState(clazz);
-        return new SplitConditionalTaskState(conditionalTask, stepSize);
+        return new SplitConditionalTaskState(conditionalTask, DEFAULT_STEP_SIZE);
     }
 
     private BoundConditionState createBoundConditionState(Class<? extends SynchronizedTask> clazz) {
