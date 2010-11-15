@@ -18,17 +18,16 @@ public class BasicGravity implements Gravity {
 
     private final Gravity3D gravity3D;
 
-    // FIXME it seems the falling leaves are not restored, because only added to Gravity, and not to Gravity3D
     private final Set<TreeLeaf> fallingLeaves;
 
     public BasicGravity(GravityState state, Universe universe) {
         this.state = state;
         this.fallingLeaves = new HashSet<TreeLeaf>();
+        this.gravity3D = new BasicGravity3D(state.getGravity3D(), universe.getUniverse3D());
         Set<TreeLeafState> fallingLeafStates = state.getFallingLeaves();
         for (TreeLeafState fallingLeafState : fallingLeafStates) {
-            fallingLeaves.add(new BasicTreeLeaf(universe, fallingLeafState));
+            addFallingLeaf(new BasicTreeLeaf(universe, fallingLeafState));
         }
-        this.gravity3D = new BasicGravity3D(state.getGravity3D(), universe.getUniverse3D());
     }
 
     @Override
@@ -38,9 +37,11 @@ public class BasicGravity implements Gravity {
 
     // FIXME find a way to add the leaf as a fallen leaf and no more as a falling leaf
     // universe.addFallenLeaf(treeLeaf);
+    // FIXME unit test
     @Override
     public void addFallingLeaf(TreeLeaf treeLeaf) {
         fallingLeaves.add(treeLeaf);
+        gravity3D.fall(treeLeaf.getTreeLeaf3D().getBranchGroup());
     }
 
     @Override
