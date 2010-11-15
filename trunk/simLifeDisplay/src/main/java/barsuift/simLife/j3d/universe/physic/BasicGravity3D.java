@@ -32,12 +32,9 @@ public class BasicGravity3D implements Gravity3D {
 
     @Override
     public void fall(BranchGroup groupToFall) {
-        // TODO 001. 005. subscribe to the mobile
         gravityTask.fall(groupToFall);
         group.addChild(groupToFall);
     }
-
-    // TODO 001. 006. update method : transfer the leaf from Gravity(3D?) to Universe(3D?)
 
     @Override
     public Gravity3DState getState() {
