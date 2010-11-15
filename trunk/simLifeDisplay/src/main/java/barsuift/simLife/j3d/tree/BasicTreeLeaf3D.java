@@ -88,8 +88,6 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private final TransformGroup tg;
 
-    private final Universe3D universe3D;
-
     private boolean maxSizeReached;
 
     private final Point3d maxEndPoint1;
@@ -98,6 +96,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private double area;
 
+    // TODO 900 see if the universe3D is needed or not
     public BasicTreeLeaf3D(Universe3D universe3D, TreeLeaf3DState state, TreeLeaf leaf) {
         if (universe3D == null) {
             throw new IllegalArgumentException("Null universe 3D");
@@ -108,7 +107,6 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         if (state == null) {
             throw new IllegalArgumentException("Null tree leaf 3D state");
         }
-        this.universe3D = universe3D;
         this.state = state;
         this.initialEndPoint1 = state.getInitialEndPoint1().toPointValue();
         this.initialEndPoint2 = state.getInitialEndPoint2().toPointValue();
