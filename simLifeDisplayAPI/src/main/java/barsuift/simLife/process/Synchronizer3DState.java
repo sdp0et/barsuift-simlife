@@ -29,7 +29,7 @@ public class Synchronizer3DState implements State {
 
     public Synchronizer3DState() {
         super();
-        this.stepSize = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
+        this.stepSize = 1;
     }
 
     public Synchronizer3DState(int stepSize) {
