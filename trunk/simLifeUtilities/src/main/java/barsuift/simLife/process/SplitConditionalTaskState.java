@@ -32,7 +32,7 @@ public class SplitConditionalTaskState implements State {
     public SplitConditionalTaskState() {
         super();
         this.conditionalTask = new ConditionalTaskState();
-        stepSize = 1;
+        stepSize = Speed.DEFAULT_SPEED.getSpeed();
     }
 
     public SplitConditionalTaskState(ConditionalTaskState conditionalTask, int stepSize) {
