@@ -41,8 +41,6 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
 
     private int synchronizeCalled;
 
-    private int stepSize;
-
     public MockInstrumentedSynchronizer3D(Synchronizer3DState state) {
         super(state);
         reset();
@@ -57,7 +55,6 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
         startCalled = 0;
         stopCalled = 0;
         synchronizeCalled = 0;
-        stepSize = 1;
     }
 
     public void setBarrier(CyclicBarrier barrier) {
@@ -143,11 +140,6 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
     @Override
     public void setStepSize(int stepSize) {
         super.setStepSize(stepSize);
-        this.stepSize = stepSize;
-    }
-
-    public int getStepSize() {
-        return stepSize;
     }
 
 }
