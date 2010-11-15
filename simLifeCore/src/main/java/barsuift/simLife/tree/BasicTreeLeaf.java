@@ -124,9 +124,9 @@ public class BasicTreeLeaf implements TreeLeaf {
      */
     // TODO unit test addition to gravity
     private void fall() {
-        universe.getPhysics().getGravity().addFallingLeaf(this);
         setChanged();
         notifySubscribers(LeafUpdateMask.FALLING_MASK);
+        universe.getPhysics().getGravity().addFallingLeaf(this);
     }
 
     // TODO 045. do not use all energy at one time to improve efficiency
