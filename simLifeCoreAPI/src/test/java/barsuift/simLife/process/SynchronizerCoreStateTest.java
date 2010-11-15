@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.process;
 
+import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.JaxbTestCase;
 
 
@@ -37,7 +38,7 @@ public class SynchronizerCoreStateTest extends JaxbTestCase {
     }
 
     public void testJaxb() throws Exception {
-        SynchronizerCoreState synchro = new SynchronizerCoreState(Speed.VERY_FAST);
+        SynchronizerCoreState synchro = CoreDataCreatorForTests.createRandomSynchronizerCoreState();
         write(synchro);
         SynchronizerCoreState synchro2 = (SynchronizerCoreState) read();
         assertEquals(synchro, synchro2);
