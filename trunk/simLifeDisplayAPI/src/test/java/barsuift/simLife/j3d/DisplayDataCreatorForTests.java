@@ -22,6 +22,7 @@ import javax.media.j3d.Transform3D;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.Randomizer;
+import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.j3d.tree.Tree3DState;
@@ -32,6 +33,7 @@ import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.j3d.universe.physic.Physics3DState;
+import barsuift.simLife.process.SplitConditionalTaskState;
 import barsuift.simLife.process.Synchronizer3DState;
 
 
@@ -43,11 +45,11 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Synchronizer3DState createRandomSynchronizer3DState() {
-        return new Synchronizer3DState();
+        return new Synchronizer3DState(Randomizer.randomBetween(1, 20));
     }
 
     public static Synchronizer3DState createSpecificSynchronizer3DState() {
-        return new Synchronizer3DState();
+        return new Synchronizer3DState(1);
     }
 
     public static Physics3DState createRandomPhysics3DState() {
@@ -59,11 +61,13 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Gravity3DState createRandomGravity3DState() {
-        return new Gravity3DState();
+        SplitConditionalTaskState gravityTask = UtilDataCreatorForTests.createRandomSplitConditionalTaskState();
+        return new Gravity3DState(gravityTask);
     }
 
     public static Gravity3DState createSpecificGravity3DState() {
-        return new Gravity3DState();
+        SplitConditionalTaskState gravityTask = UtilDataCreatorForTests.createSpecificSplitConditionalTaskState();
+        return new Gravity3DState(gravityTask);
     }
 
     public static Tuple3dState createRandomTupleState() {
