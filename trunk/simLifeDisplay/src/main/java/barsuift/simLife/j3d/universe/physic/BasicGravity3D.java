@@ -42,7 +42,6 @@ public class BasicGravity3D implements Gravity3D {
         return state;
     }
 
-    // FIXME unit test
     @Override
     public void synchronize() {
         gravityTask.synchronize();
