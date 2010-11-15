@@ -37,7 +37,6 @@ public class BasicGravity implements Gravity {
 
     // FIXME find a way to add the leaf as a fallen leaf and no more as a falling leaf
     // universe.addFallenLeaf(treeLeaf);
-    // FIXME unit test
     @Override
     public void addFallingLeaf(TreeLeaf treeLeaf) {
         fallingLeaves.add(treeLeaf);
