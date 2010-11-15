@@ -35,7 +35,6 @@ public class GravityTask extends AbstractSplitConditionalTask {
         this.transforms = new ConcurrentLinkedQueue<TransformGroup>();
     }
 
-    // TODO 001. 002. make TreeLeaf3D extends Mobile
     // TODO 001. 003. pass a Mobile as a parameter
     public void fall(BranchGroup groupToFall) {
         TransformGroup tg = (TransformGroup) groupToFall.getChild(0);

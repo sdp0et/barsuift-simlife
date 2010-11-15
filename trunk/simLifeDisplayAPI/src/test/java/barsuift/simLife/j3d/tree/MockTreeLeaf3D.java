@@ -23,7 +23,10 @@ import javax.media.j3d.Shape3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
 
+import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.MockSubscriber;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
 
 public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
@@ -34,6 +37,8 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
     private BranchGroup bg;
 
+    private TransformGroup tg;
+
     private Point3d attachPoint;
 
     private int increaseSizeCalled;
@@ -41,6 +46,8 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
     private boolean isMaxSizeReached;
 
     private int synchronizedCalled;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     public MockTreeLeaf3D() {
         reset();
@@ -50,7 +57,7 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
         area = 0;
         state = new TreeLeaf3DState();
         Shape3D shape = new Shape3D();
-        TransformGroup tg = new TransformGroup();
+        tg = new TransformGroup();
         tg.addChild(shape);
         bg = new BranchGroup();
         bg.addChild(tg);
@@ -92,7 +99,20 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
     }
 
     public void setBranchGroup(BranchGroup bg) {
+        this.bg.removeChild(tg);
         this.bg = bg;
+        bg.addChild(tg);
+    }
+
+    @Override
+    public TransformGroup getTransformGroup() {
+        return tg;
+    }
+
+    public void setTransformGroup(TransformGroup tg) {
+        bg.removeChild(tg);
+        this.tg = tg;
+        bg.addChild(tg);
     }
 
     @Override
@@ -120,6 +140,42 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
     public int getNbSynchronize() {
         return synchronizedCalled;
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
 }
