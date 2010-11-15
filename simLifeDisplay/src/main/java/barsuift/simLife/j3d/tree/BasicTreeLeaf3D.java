@@ -42,7 +42,9 @@ import barsuift.simLife.j3d.util.AreaHelper;
 import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.j3d.util.NormalHelper;
 import barsuift.simLife.j3d.util.PointHelper;
+import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.tree.LeafUpdateMask;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -95,6 +97,8 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     private final Point3d maxEndPoint2;
 
     private double area;
+
+    private final Publisher publisher = new BasicPublisher(this);
 
     // TODO 900 see if the universe3D is needed or not
     public BasicTreeLeaf3D(Universe3D universe3D, TreeLeaf3DState state, TreeLeaf leaf) {
@@ -267,6 +271,47 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     @Override
     public BranchGroup getBranchGroup() {
         return bg;
+    }
+
+    @Override
+    public TransformGroup getTransformGroup() {
+        return tg;
+    }
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
     }
 
 }

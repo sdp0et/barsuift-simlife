@@ -21,7 +21,7 @@ package barsuift.simLife.message;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MockSubscriber {
+public class MockSubscriber implements Subscriber {
 
     private int updateCounter;
 

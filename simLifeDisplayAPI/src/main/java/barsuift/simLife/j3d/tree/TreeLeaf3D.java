@@ -22,10 +22,11 @@ import javax.media.j3d.BranchGroup;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.message.Subscriber;
 
 
-public interface TreeLeaf3D extends Subscriber, Persistent<TreeLeaf3DState> {
+public interface TreeLeaf3D extends Subscriber, Mobile, Persistent<TreeLeaf3DState> {
 
     public double getArea();
 
