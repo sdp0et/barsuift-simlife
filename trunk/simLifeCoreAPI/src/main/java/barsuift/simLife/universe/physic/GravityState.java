@@ -9,7 +9,6 @@ import barsuift.simLife.State;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.tree.TreeLeafState;
 
-// FIXME missing ConditionalTaskState for gravityTask
 @XmlRootElement
 public class GravityState implements State {
 
