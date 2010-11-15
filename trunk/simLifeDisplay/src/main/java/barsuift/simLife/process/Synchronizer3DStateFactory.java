@@ -18,11 +18,11 @@
  */
 package barsuift.simLife.process;
 
-
 public class Synchronizer3DStateFactory {
 
     public Synchronizer3DState createSynchronizer3DState() {
-        return new Synchronizer3DState();
+        int stepSize = 1;
+        return new Synchronizer3DState(stepSize);
     }
 
 }
