@@ -22,7 +22,7 @@ package barsuift.simLife.process;
 public class SynchronizerCoreStateFactory {
 
     public SynchronizerCoreState createSynchronizerCoreState() {
-        Speed speed = Speed.NORMAL;
+        Speed speed = Speed.DEFAULT_SPEED;
         return new SynchronizerCoreState(speed);
     }
 
