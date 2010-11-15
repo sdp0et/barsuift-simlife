@@ -19,6 +19,8 @@
 package barsuift.simLife.j3d.tree;
 
 import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.message.MockSubscriber;
@@ -26,19 +28,37 @@ import barsuift.simLife.message.MockSubscriber;
 
 public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
-    private double area = 0;
+    private double area;
 
-    private TreeLeaf3DState state = new TreeLeaf3DState();
+    private TreeLeaf3DState state;
 
-    private BranchGroup bg = new BranchGroup();
+    private BranchGroup bg;
 
-    private Point3d attachPoint = new Point3d();
+    private Point3d attachPoint;
 
-    private int increaseSizeCalled = 0;
+    private int increaseSizeCalled;
 
-    private boolean isMaxSizeReached = false;
+    private boolean isMaxSizeReached;
 
     private int synchronizedCalled;
+
+    public MockTreeLeaf3D() {
+        reset();
+    }
+
+    public void reset() {
+        area = 0;
+        state = new TreeLeaf3DState();
+        Shape3D shape = new Shape3D();
+        TransformGroup tg = new TransformGroup();
+        tg.addChild(shape);
+        bg = new BranchGroup();
+        bg.addChild(tg);
+        attachPoint = new Point3d();
+        increaseSizeCalled = 0;
+        isMaxSizeReached = false;
+        synchronizedCalled = 0;
+    }
 
     @Override
     public double getArea() {
