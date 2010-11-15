@@ -63,6 +63,12 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitCondition
     }
 
     @Override
+    public void schedule(SplitConditionalTask task) {
+        task.setStepSize(stepSize);
+        super.schedule(task);
+    }
+
+    @Override
     public Synchronizer3DState getState() {
         synchronize();
         return state;

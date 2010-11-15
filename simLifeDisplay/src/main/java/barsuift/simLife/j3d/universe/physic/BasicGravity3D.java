@@ -22,7 +22,6 @@ public class BasicGravity3D implements Gravity3D {
         group.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         Synchronizer3D synchronizer3D = universe3D.getSynchronizer();
         gravityTask = new GravityTask(state.getGravityTask());
-        gravityTask.setStepSize(synchronizer3D.getStepSize());
         synchronizer3D.schedule(gravityTask);
     }
 
