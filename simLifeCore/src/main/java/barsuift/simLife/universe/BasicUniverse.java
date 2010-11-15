@@ -159,6 +159,7 @@ public class BasicUniverse implements Universe {
         physics.synchronize();
         synchronizer.synchronize();
         dateHandler.synchronize();
+        universe3D.synchronize();
     }
 
     @Override
