@@ -35,13 +35,15 @@ public class BasicGravity implements Gravity {
         return Collections.unmodifiableSet(fallingLeaves);
     }
 
-    // FIXME find a way to add the leaf as a fallen leaf and no more as a falling leaf
-    // universe.addFallenLeaf(treeLeaf);
     @Override
     public void addFallingLeaf(TreeLeaf treeLeaf) {
+        // TODO 001. 005. subscribe to the mobile
         fallingLeaves.add(treeLeaf);
         gravity3D.fall(treeLeaf.getTreeLeaf3D().getBranchGroup());
     }
+    
+    // TODO 001. 006. update method : transfer the leaf from Gravity to Universe
+    // universe.addFallenLeaf(treeLeaf);
 
     @Override
     public GravityState getState() {
