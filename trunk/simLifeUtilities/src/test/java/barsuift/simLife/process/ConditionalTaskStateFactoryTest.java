@@ -49,8 +49,8 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         ConditionalTaskStateFactory factory = new ConditionalTaskStateFactory();
 
         // existing class in properties file
-        splitTaskState = factory.createSplitConditionalTaskState(AbstractSplitConditionalTask.class, 5);
-        assertEquals(5, splitTaskState.getStepSize());
+        splitTaskState = factory.createSplitConditionalTaskState(AbstractSplitConditionalTask.class);
+        assertEquals(1, splitTaskState.getStepSize());
         taskState = splitTaskState.getConditionalTask();
         executionCondition = taskState.getExecutionCondition();
         assertEquals(5, executionCondition.getCycle());
@@ -60,8 +60,8 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         assertEquals(0, endingCondition.getCount());
 
         // existing class in properties file
-        splitTaskState = factory.createSplitConditionalTaskState(AbstractConditionalTask.class, 2);
-        assertEquals(2, splitTaskState.getStepSize());
+        splitTaskState = factory.createSplitConditionalTaskState(AbstractConditionalTask.class);
+        assertEquals(1, splitTaskState.getStepSize());
         taskState = splitTaskState.getConditionalTask();
         executionCondition = taskState.getExecutionCondition();
         assertEquals(2, executionCondition.getCycle());
@@ -71,8 +71,8 @@ public class ConditionalTaskStateFactoryTest extends TestCase {
         assertEquals(0, endingCondition.getCount());
 
         // non existing class in properties file
-        splitTaskState = factory.createSplitConditionalTaskState(SplitConditionalTask.class, 3);
-        assertEquals(3, splitTaskState.getStepSize());
+        splitTaskState = factory.createSplitConditionalTaskState(SplitConditionalTask.class);
+        assertEquals(1, splitTaskState.getStepSize());
         taskState = splitTaskState.getConditionalTask();
         executionCondition = taskState.getExecutionCondition();
         assertEquals(1, executionCondition.getCycle());
