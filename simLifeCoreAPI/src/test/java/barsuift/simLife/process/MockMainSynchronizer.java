@@ -28,7 +28,7 @@ public class MockMainSynchronizer extends BasicPublisher implements MainSynchron
     }
 
     public void reset() {
-        speed = Speed.NORMAL;
+        speed = Speed.DEFAULT_SPEED;
         running = false;
         startCalled = 0;
         oneStepCalled = 0;

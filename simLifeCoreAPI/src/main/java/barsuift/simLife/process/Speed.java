@@ -18,6 +18,8 @@ public enum Speed {
      */
     VERY_FAST(20);
 
+    public static final Speed DEFAULT_SPEED = NORMAL;
+
     private final int speed;
 
 

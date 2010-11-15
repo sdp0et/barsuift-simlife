@@ -29,7 +29,7 @@ public class SynchronizerCoreState implements State {
 
     public SynchronizerCoreState() {
         super();
-        this.speed = Speed.NORMAL;
+        this.speed = Speed.DEFAULT_SPEED;
     }
 
     public SynchronizerCoreState(Speed speed) {

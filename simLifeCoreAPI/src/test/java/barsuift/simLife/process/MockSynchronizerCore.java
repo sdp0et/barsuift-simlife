@@ -46,7 +46,7 @@ public class MockSynchronizerCore extends BasicPublisher implements Synchronizer
 
     public void reset() {
         barrier = new CyclicBarrier(1);
-        speed = Speed.NORMAL;
+        speed = Speed.DEFAULT_SPEED;
         running = false;
         scheduleCalled = 0;
         tasksToSchedule = new ArrayList<ConditionalTask>();
