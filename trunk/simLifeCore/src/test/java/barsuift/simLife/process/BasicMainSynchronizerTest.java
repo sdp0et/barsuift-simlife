@@ -39,8 +39,7 @@ public class BasicMainSynchronizerTest extends TestCase {
         taskCore = new MockConditionalTask(conditionalTaskState);
         synchronizerCore.schedule(taskCore);
 
-        synchronizer3D = new MockInstrumentedSynchronizer3D(new Synchronizer3DState());
-        synchronizer3D.setStepSize(stepSize);
+        synchronizer3D = new MockInstrumentedSynchronizer3D(new Synchronizer3DState(stepSize));
         ((MockUniverse3D) mockUniverse.getUniverse3D()).setSynchronizer(synchronizer3D);
         ConditionalTaskState conditionalTask3DState = new ConditionalTaskState(new CyclicConditionState(1, 0),
                 new BoundConditionState(60, 0));
