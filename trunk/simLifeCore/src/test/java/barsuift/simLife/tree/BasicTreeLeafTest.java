@@ -25,7 +25,6 @@ import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.environment.MockSun;
-import barsuift.simLife.j3d.universe.physic.MockGravity3D;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
 
@@ -145,6 +144,7 @@ public class BasicTreeLeafTest extends TestCase {
         publisherHelper.addSubscriberTo(leaf);
 
         assertFalse(leaf.isTooWeak());
+        assertEquals(0, universe.getPhysics().getGravity().getFallingLeaves().size());
 
         leaf.age();
 
@@ -159,8 +159,8 @@ public class BasicTreeLeafTest extends TestCase {
         int updateParam2 = (Integer) publisherHelper.getUpdateObjects().get(1);
         assertTrue(LeafUpdateMask.isFieldSet(updateParam2, LeafUpdateMask.FALLING_MASK));
 
-        MockGravity3D gravity3D = (MockGravity3D) universe.getUniverse3D().getPhysics3D().getGravity3D();
-        assertEquals(leaf.getTreeLeaf3D().getBranchGroup(), gravity3D.getFallenGroups().get(0));
+        assertEquals(1, universe.getPhysics().getGravity().getFallingLeaves().size());
+        assertTrue(universe.getPhysics().getGravity().getFallingLeaves().contains(leaf));
     }
 
     public void testGetState() {
