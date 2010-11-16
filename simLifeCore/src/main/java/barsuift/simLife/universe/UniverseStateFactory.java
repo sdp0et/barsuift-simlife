@@ -56,6 +56,7 @@ public class UniverseStateFactory {
      * Creates a random universe state with the following values :
      * <ul>
      * <li>nb of trees between 1 and 4</li>
+     * <li>no fallen leaves</li>
      * <li>a random environment</li>
      * </ul>
      * 
