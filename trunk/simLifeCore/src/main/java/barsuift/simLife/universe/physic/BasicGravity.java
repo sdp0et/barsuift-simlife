@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.universe.physic.BasicGravity3D;
 import barsuift.simLife.j3d.universe.physic.Gravity3D;
 import barsuift.simLife.message.Publisher;
@@ -21,8 +22,11 @@ public class BasicGravity implements Gravity {
 
     private final Set<TreeLeaf> fallingLeaves;
 
+    private final Universe universe;
+
     public BasicGravity(GravityState state, Universe universe) {
         this.state = state;
+        this.universe = universe;
         this.fallingLeaves = new HashSet<TreeLeaf>();
         this.gravity3D = new BasicGravity3D(state.getGravity3D(), universe.getUniverse3D());
         Set<TreeLeafState> fallingLeafStates = state.getFallingLeaves();
@@ -45,8 +49,11 @@ public class BasicGravity implements Gravity {
 
     @Override
     public void update(Publisher publisher, Object arg) {
+        if (arg == MobileEvent.FALLEN) {
+            fallingLeaves.remove((TreeLeaf) publisher);
+            universe.addFallenLeaf((TreeLeaf) publisher);
+        }
         // TODO 001. 006. update method : transfer the leaf from Gravity to Universe
-        // universe.addFallenLeaf(treeLeaf);
     }
 
     @Override

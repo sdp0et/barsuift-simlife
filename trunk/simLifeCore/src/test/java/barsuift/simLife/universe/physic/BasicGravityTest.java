@@ -63,6 +63,11 @@ public class BasicGravityTest extends TestCase {
         assertEquals(0, treeLeaf.countSubscribers());
     }
 
+    public void testUpdate() {
+        // test with wrong arg
+        // test with good arg
+    }
+
     public void testGetState() {
         BasicGravity gravity = new BasicGravity(gravityState, universe);
 
