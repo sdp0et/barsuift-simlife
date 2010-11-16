@@ -33,6 +33,9 @@ public final class UtilDataCreatorForTests {
         // private constructor to enforce static access
     }
 
+    /**
+     * Creates a random BigDecimal, between 0 and 1.
+     */
     public static BigDecimal createRandomBigDecimal() {
         return new BigDecimal(Math.random());
     }
@@ -42,18 +45,14 @@ public final class UtilDataCreatorForTests {
     }
 
     /**
-     * Creates a random date state, between 0 and 100 seconds
-     * 
-     * @return
+     * Creates a random date state, between 0 and 100 seconds.
      */
     public static SimLifeDateState createRandomDateState() {
         return new SimLifeDateState(Randomizer.randomBetween(0, 100) * 1000);
     }
 
     /**
-     * Creates a specific date state, at 100 seconds
-     * 
-     * @return
+     * Creates a specific date state, at 100 seconds.
      */
     public static SimLifeDateState createSpecificDateState() {
         return new SimLifeDateState(100000);
@@ -64,6 +63,13 @@ public final class UtilDataCreatorForTests {
      * ************* CONDTIONS *************
      */
 
+    /**
+     * Creates a random Cyclic condition state with
+     * <ul>
+     * <li>cycle=[3-10]</li>
+     * <li>count=[0-2]</li>
+     * </ul>
+     */
     public static CyclicConditionState createRandomCyclicConditionState() {
         return new CyclicConditionState(Randomizer.randomBetween(3, 10), Randomizer.randomBetween(0, 2));
     }
@@ -74,12 +80,18 @@ public final class UtilDataCreatorForTests {
      * <li>cycle=5</li>
      * <li>count=2</li>
      * </ul>
-     * 
      */
     public static CyclicConditionState createSpecificCyclicConditionState() {
         return new CyclicConditionState(5, 2);
     }
 
+    /**
+     * Creates a random BoundConditionState with
+     * <ul>
+     * <li>bound=[3-10]</li>
+     * <li>count=[0-2]</li>
+     * </ul>
+     */
     public static BoundConditionState createRandomBoundConditionState() {
         return new BoundConditionState(Randomizer.randomBetween(3, 10), Randomizer.randomBetween(0, 2));
     }
@@ -90,7 +102,6 @@ public final class UtilDataCreatorForTests {
      * <li>bound=5</li>
      * <li>count=2</li>
      * </ul>
-     * 
      */
     public static BoundConditionState createSpecificBoundConditionState() {
         return new BoundConditionState(5, 2);
@@ -102,29 +113,56 @@ public final class UtilDataCreatorForTests {
      * ************* TASKS *************
      */
 
+    /**
+     * Creates a random ConditionalTaskState with
+     * <ul>
+     * <li>executionCondition made through {@link #createRandomCyclicConditionState()}</li>
+     * <li>endingCondition made through {@link #createRandomBoundConditionState()}</li>
+     * </ul>
+     */
     public static ConditionalTaskState createRandomConditionalTaskState() {
         CyclicConditionState executionCondition = createRandomCyclicConditionState();
         BoundConditionState endingCondition = createRandomBoundConditionState();
         return new ConditionalTaskState(executionCondition, endingCondition);
     }
 
+    /**
+     * Creates a specific ConditionalTaskState with
+     * <ul>
+     * <li>executionCondition made through {@link #createSpecificCyclicConditionState()}</li>
+     * <li>endingCondition made through {@link #createSpecificBoundConditionState()}</li>
+     * </ul>
+     */
     public static ConditionalTaskState createSpecificConditionalTaskState() {
         CyclicConditionState executionCondition = createSpecificCyclicConditionState();
         BoundConditionState endingCondition = createSpecificBoundConditionState();
         return new ConditionalTaskState(executionCondition, endingCondition);
     }
 
+    /**
+     * Creates a random SplitConditionalTaskState with
+     * <ul>
+     * <li>conditionalTask made through {@link #createRandomConditionalTaskState()}</li>
+     * <li>stepSize=[2-5]</li>
+     * </ul>
+     */
     public static SplitConditionalTaskState createRandomSplitConditionalTaskState() {
         ConditionalTaskState conditionalTask = createRandomConditionalTaskState();
         int stepSize = Randomizer.randomBetween(2, 5);
         return new SplitConditionalTaskState(conditionalTask, stepSize);
     }
 
+    /**
+     * Creates a specific SplitConditionalTaskState with
+     * <ul>
+     * <li>conditionalTask made through {@link #createSpecificConditionalTaskState()}</li>
+     * <li>stepSize=3</li>
+     * </ul>
+     */
     public static SplitConditionalTaskState createSpecificSplitConditionalTaskState() {
         ConditionalTaskState conditionalTask = createSpecificConditionalTaskState();
         int stepSize = 3;
         return new SplitConditionalTaskState(conditionalTask, stepSize);
-
     }
 
 }
