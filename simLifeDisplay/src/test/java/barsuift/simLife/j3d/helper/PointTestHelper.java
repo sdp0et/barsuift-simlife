@@ -34,11 +34,8 @@ public final class PointTestHelper extends Assert {
 
     public static final void assertPointEquals(Point3d p1, Point3d p2, double xPrecision, double yPrecision,
             double zPrecision) {
-        // assertEquals("expected X = " + p1.getX() + " - actual X = " + p2.getX(), p1.getX(), p2.getX(), xPrecision);
         assertEquals(p1.getX(), p2.getX(), xPrecision);
-        // assertEquals("expected Y = " + p1.getY() + " - actual Y = " + p2.getY(), p1.getY(), p2.getY(), yPrecision);
         assertEquals(p1.getY(), p2.getY(), yPrecision);
-        // assertEquals("expected Z = " + p1.getZ() + " - actual Z = " + p2.getZ(), p1.getZ(), p2.getZ(), zPrecision);
         assertEquals(p1.getZ(), p2.getZ(), zPrecision);
     }
 
