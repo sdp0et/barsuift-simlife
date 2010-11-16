@@ -6,6 +6,7 @@ import java.util.Set;
 
 import barsuift.simLife.j3d.universe.physic.BasicGravity3D;
 import barsuift.simLife.j3d.universe.physic.Gravity3D;
+import barsuift.simLife.message.Publisher;
 import barsuift.simLife.tree.BasicTreeLeaf;
 import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.tree.TreeLeafState;
@@ -37,13 +38,16 @@ public class BasicGravity implements Gravity {
 
     @Override
     public void addFallingLeaf(TreeLeaf treeLeaf) {
-        // TODO 001. 005. subscribe to the mobile
+        treeLeaf.addSubscriber(this);
         fallingLeaves.add(treeLeaf);
         gravity3D.fall(treeLeaf.getTreeLeaf3D());
     }
 
-    // TODO 001. 006. update method : transfer the leaf from Gravity to Universe
-    // universe.addFallenLeaf(treeLeaf);
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        // TODO 001. 006. update method : transfer the leaf from Gravity to Universe
+        // universe.addFallenLeaf(treeLeaf);
+    }
 
     @Override
     public GravityState getState() {

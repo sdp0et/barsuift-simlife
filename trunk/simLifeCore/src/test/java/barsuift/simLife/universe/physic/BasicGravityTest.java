@@ -6,6 +6,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.tree.MockTreeLeaf;
+import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.universe.BasicUniverse;
 import barsuift.simLife.universe.UniverseState;
@@ -43,10 +44,23 @@ public class BasicGravityTest extends TestCase {
         BasicGravity gravity = new BasicGravity(gravityState, universe);
         assertEquals(2, gravity.getFallingLeaves().size());
         assertEquals(2, gravity.getGravity3D().getGroup().numChildren());
+        for (TreeLeaf treeLeaf : gravity.getFallingLeaves()) {
+            // leaf3D and gravity are subscribers
+            assertEquals(2, treeLeaf.countSubscribers());
+            treeLeaf.deleteSubscriber(gravity);
+            // assert the gravity is really one of the subscribers
+            assertEquals(1, treeLeaf.countSubscribers());
+        }
 
-        gravity.addFallingLeaf(new MockTreeLeaf());
+        MockTreeLeaf treeLeaf = new MockTreeLeaf();
+        gravity.addFallingLeaf(treeLeaf);
         assertEquals(3, gravity.getFallingLeaves().size());
         assertEquals(3, gravity.getGravity3D().getGroup().numChildren());
+        // gravity is subscriber
+        assertEquals(1, treeLeaf.countSubscribers());
+        treeLeaf.deleteSubscriber(gravity);
+        // assert the gravity is really one of the subscribers
+        assertEquals(0, treeLeaf.countSubscribers());
     }
 
     public void testGetState() {

@@ -5,10 +5,11 @@ import java.util.Set;
 
 import barsuift.simLife.j3d.universe.physic.Gravity3D;
 import barsuift.simLife.j3d.universe.physic.MockGravity3D;
+import barsuift.simLife.message.MockSubscriber;
 import barsuift.simLife.tree.TreeLeaf;
 
 
-public class MockGravity implements Gravity {
+public class MockGravity extends MockSubscriber implements Gravity {
 
     private GravityState state;
 
