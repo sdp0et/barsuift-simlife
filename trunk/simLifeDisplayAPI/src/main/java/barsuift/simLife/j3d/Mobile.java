@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.j3d;
 
+import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
 
 import barsuift.simLife.message.Publisher;
@@ -32,5 +33,18 @@ import barsuift.simLife.message.Publisher;
  */
 public interface Mobile extends Publisher {
 
+    /**
+     * Gets the transform group of the mobile. This transform group is used to move the mobile.
+     * 
+     * @return the mobile transform group
+     */
     public TransformGroup getTransformGroup();
+
+    /**
+     * Gets the branch group of the mobile. This branch group contains the transform group, returned by
+     * {@link #getTransformGroup()}.
+     * 
+     * @return the mobile branch group
+     */
+    public BranchGroup getBranchGroup();
 }

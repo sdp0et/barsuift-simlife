@@ -20,48 +20,50 @@ package barsuift.simLife.process;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
+import barsuift.simLife.j3d.Mobile;
+
 // TODO 001. 007. unit test
 public class GravityTask extends AbstractSplitConditionalTask {
 
-    private final ConcurrentLinkedQueue<TransformGroup> transforms;
+    private final ConcurrentLinkedQueue<Mobile> mobiles;
 
     public GravityTask(SplitConditionalTaskState state) {
         super(state);
-        this.transforms = new ConcurrentLinkedQueue<TransformGroup>();
+        this.mobiles = new ConcurrentLinkedQueue<Mobile>();
     }
 
-    // TODO 001. 003. pass a Mobile as a parameter
-    public void fall(BranchGroup groupToFall) {
-        TransformGroup tg = (TransformGroup) groupToFall.getChild(0);
-        transforms.add(tg);
+    public void fall(Mobile mobile) {
+        mobiles.add(mobile);
     }
 
     @Override
     public void executeSplitConditionalStep(int stepSize) {
-        for (TransformGroup currentTG : transforms) {
-            // get current values
-            Transform3D transform = new Transform3D();
-            currentTG.getTransform(transform);
-            Vector3d translation = new Vector3d();
-            transform.get(translation);
+        for (Mobile mobile : mobiles) {
+            TransformGroup currentTG = mobile.getTransformGroup();
+            synchronized (currentTG) {
+                // get current values
+                Transform3D transform = new Transform3D();
+                currentTG.getTransform(transform);
+                Vector3d translation = new Vector3d();
+                transform.get(translation);
 
-            // update values
-            if (translation.y < (0.025 * stepSize)) {
-                translation.y = 0;
-                // TODO 001. 004. mobile.notifySubscriber(FALLEN)
-                transforms.remove(currentTG);
-            } else {
-                translation.y -= (0.025 * stepSize);
+                // update values
+                if (translation.y < (0.025 * stepSize)) {
+                    translation.y = 0;
+                    // TODO 001. 004. mobile.notifySubscriber(FALLEN)
+                    mobiles.remove(currentTG);
+                } else {
+                    translation.y -= (0.025 * stepSize);
+                }
+
+                // set the new values
+                transform.setTranslation(translation);
+                currentTG.setTransform(transform);
             }
-
-            // set the new values
-            transform.setTranslation(translation);
-            currentTG.setTransform(transform);
         }
     }
 }

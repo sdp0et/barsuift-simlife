@@ -1,9 +1,7 @@
 package barsuift.simLife.j3d.universe.physic;
 
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.TransformGroup;
-
 import junit.framework.TestCase;
+import barsuift.simLife.j3d.MockMobile;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
@@ -35,10 +33,8 @@ public class BasicGravity3DTest extends TestCase {
     public void testFall() {
         BasicGravity3D gravity3D = new BasicGravity3D(gravity3DState, universe3D);
         assertEquals(0, gravity3D.getGroup().numChildren());
-
-        BranchGroup groupToFall = new BranchGroup();
-        groupToFall.addChild(new TransformGroup());
-        gravity3D.fall(groupToFall);
+        MockMobile mobile = new MockMobile();
+        gravity3D.fall(mobile);
         assertEquals(1, gravity3D.getGroup().numChildren());
     }
 
