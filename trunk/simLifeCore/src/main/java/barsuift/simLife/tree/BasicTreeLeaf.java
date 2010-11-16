@@ -123,7 +123,6 @@ public class BasicTreeLeaf implements TreeLeaf {
     /**
      * Send a notifying message of LeafUpdateCode.fall
      */
-    // TODO 000. unit test addition to gravity
     private void fall() {
         setChanged();
         notifySubscribers(MobileEvent.FALLING);
