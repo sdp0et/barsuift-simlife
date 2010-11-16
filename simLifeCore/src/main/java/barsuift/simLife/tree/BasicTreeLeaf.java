@@ -23,6 +23,7 @@ import java.math.RoundingMode;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
+import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.tree.BasicTreeLeaf3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.message.BasicPublisher;
@@ -88,7 +89,7 @@ public class BasicTreeLeaf implements TreeLeaf {
     public void age() {
         efficiency = efficiency.multiply(AGING_EFFICIENCY_DECREASE);
         setChanged();
-        notifySubscribers(LeafUpdateMask.EFFICIENCY_MASK);
+        notifySubscribers(LeafEvent.EFFICIENCY);
         if (isTooWeak()) {
             fall();
         }
@@ -122,10 +123,10 @@ public class BasicTreeLeaf implements TreeLeaf {
     /**
      * Send a notifying message of LeafUpdateCode.fall
      */
-    // TODO unit test addition to gravity
+    // TODO 000. unit test addition to gravity
     private void fall() {
         setChanged();
-        notifySubscribers(LeafUpdateMask.FALLING_MASK);
+        notifySubscribers(MobileEvent.FALLING);
         universe.getPhysics().getGravity().addFallingLeaf(this);
     }
 
@@ -142,7 +143,7 @@ public class BasicTreeLeaf implements TreeLeaf {
         efficiency = efficiency.add(efficiencyToAdd).setScale(10, RoundingMode.HALF_DOWN);
         energy = energy.subtract(efficiencyToAdd.movePointRight(2)).setScale(5, RoundingMode.HALF_DOWN);
         setChanged();
-        notifySubscribers(LeafUpdateMask.EFFICIENCY_MASK);
+        notifySubscribers(LeafEvent.EFFICIENCY);
     }
 
     @Override

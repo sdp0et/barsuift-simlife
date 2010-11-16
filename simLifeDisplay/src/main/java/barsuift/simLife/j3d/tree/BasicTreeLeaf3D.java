@@ -35,6 +35,7 @@ import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
+import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.Tuple3dState;
 import barsuift.simLife.j3d.universe.Universe3D;
@@ -45,7 +46,7 @@ import barsuift.simLife.j3d.util.PointHelper;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
-import barsuift.simLife.tree.LeafUpdateMask;
+import barsuift.simLife.tree.LeafEvent;
 import barsuift.simLife.tree.TreeLeaf;
 
 public class BasicTreeLeaf3D implements TreeLeaf3D {
@@ -231,11 +232,11 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.EFFICIENCY_MASK)) {
+        if (arg == LeafEvent.EFFICIENCY) {
             TreeLeaf leaf = (TreeLeaf) publisher;
             setColor(leaf.getEfficiency());
         }
-        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALLING_MASK)) {
+        if (arg == MobileEvent.FALLING) {
             fall();
         }
     }

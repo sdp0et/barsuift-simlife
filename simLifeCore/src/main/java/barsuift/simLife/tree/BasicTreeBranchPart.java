@@ -36,6 +36,7 @@ import javax.vecmath.Vector3d;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.Axis;
+import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.tree.BasicTreeBranchPart3D;
 import barsuift.simLife.j3d.tree.TreeBranchPart3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
@@ -366,7 +367,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     }
 
     public void update(Publisher publisher, Object arg) {
-        if (LeafUpdateMask.isFieldSet((Integer) arg, LeafUpdateMask.FALLING_MASK)) {
+        if (arg == MobileEvent.FALLING) {
             TreeLeaf leaf = (TreeLeaf) publisher;
             leaves.remove(leaf);
         }

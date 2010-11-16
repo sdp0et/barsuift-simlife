@@ -19,6 +19,7 @@
 package barsuift.simLife.tree;
 
 import barsuift.simLife.PercentHelper;
+import barsuift.simLife.j3d.MobileEvent;
 
 
 public class MockFallingTreeLeaf extends MockTreeLeaf implements TreeLeaf {
@@ -30,7 +31,7 @@ public class MockFallingTreeLeaf extends MockTreeLeaf implements TreeLeaf {
     public void age() {
         super.age();
         setChanged();
-        notifySubscribers(LeafUpdateMask.FALLING_MASK);
+        notifySubscribers(MobileEvent.FALLING);
     }
 
 }
