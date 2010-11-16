@@ -25,6 +25,7 @@ import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.environment.MockSun;
+import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
 
@@ -117,8 +118,8 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(0.76, leaf.getEfficiency().doubleValue(), 0.0000000001);
 
         assertEquals(1, publisherHelper.nbUpdated());
-        int updateParam = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam, LeafUpdateMask.EFFICIENCY_MASK));
+        Object updateParam = publisherHelper.getUpdateObjects().get(0);
+        assertEquals(LeafEvent.EFFICIENCY, updateParam);
     }
 
     public void testImproveEfficiency() {
@@ -153,11 +154,11 @@ public class BasicTreeLeafTest extends TestCase {
 
         assertEquals(2, publisherHelper.nbUpdated());
         // first the age method notifies about efficiency
-        int updateParam1 = (Integer) publisherHelper.getUpdateObjects().get(0);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam1, LeafUpdateMask.EFFICIENCY_MASK));
+        Object updateParam1 = publisherHelper.getUpdateObjects().get(0);
+        assertEquals(LeafEvent.EFFICIENCY, updateParam1);
         // then the fall method notifies about fall
-        int updateParam2 = (Integer) publisherHelper.getUpdateObjects().get(1);
-        assertTrue(LeafUpdateMask.isFieldSet(updateParam2, LeafUpdateMask.FALLING_MASK));
+        Object updateParam2 = publisherHelper.getUpdateObjects().get(1);
+        assertEquals(MobileEvent.FALLING, updateParam2);
 
         assertEquals(1, universe.getPhysics().getGravity().getFallingLeaves().size());
         assertTrue(universe.getPhysics().getGravity().getFallingLeaves().contains(leaf));

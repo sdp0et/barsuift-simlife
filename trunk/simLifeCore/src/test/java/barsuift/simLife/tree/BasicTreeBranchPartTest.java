@@ -131,7 +131,7 @@ public class BasicTreeBranchPartTest extends TestCase {
             assertFalse(firstLeafState.equals(leaf.getState()));
         }
         // simulate one leaf is aging, but not falling
-        branchPart.update((Publisher) branchPart.getLeaves().toArray()[0], LeafUpdateMask.EFFICIENCY_MASK);
+        branchPart.update((Publisher) branchPart.getLeaves().toArray()[0], LeafEvent.EFFICIENCY);
         assertEquals("no leaf should have been removed", nbLeaves - 1, branchPart.getNbLeaves());
     }
 
