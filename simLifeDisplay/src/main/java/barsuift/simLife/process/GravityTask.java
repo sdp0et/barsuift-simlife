@@ -25,8 +25,8 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Mobile;
+import barsuift.simLife.j3d.MobileEvent;
 
-// TODO 001. 007. unit test
 public class GravityTask extends AbstractSplitConditionalTask {
 
     private final ConcurrentLinkedQueue<Mobile> mobiles;
@@ -54,8 +54,9 @@ public class GravityTask extends AbstractSplitConditionalTask {
                 // update values
                 if (translation.y < (0.025 * stepSize)) {
                     translation.y = 0;
-                    // TODO 001. 004. mobile.notifySubscriber(FALLEN)
                     mobiles.remove(currentTG);
+                    mobile.setChanged();
+                    mobile.notifySubscribers(MobileEvent.FALLEN);
                 } else {
                     translation.y -= (0.025 * stepSize);
                 }
