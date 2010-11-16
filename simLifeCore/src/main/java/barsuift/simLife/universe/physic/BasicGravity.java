@@ -39,9 +39,9 @@ public class BasicGravity implements Gravity {
     public void addFallingLeaf(TreeLeaf treeLeaf) {
         // TODO 001. 005. subscribe to the mobile
         fallingLeaves.add(treeLeaf);
-        gravity3D.fall(treeLeaf.getTreeLeaf3D().getBranchGroup());
+        gravity3D.fall(treeLeaf.getTreeLeaf3D());
     }
-    
+
     // TODO 001. 006. update method : transfer the leaf from Gravity to Universe
     // universe.addFallenLeaf(treeLeaf);
 

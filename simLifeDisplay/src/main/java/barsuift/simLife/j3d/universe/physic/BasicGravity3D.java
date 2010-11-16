@@ -3,6 +3,7 @@ package barsuift.simLife.j3d.universe.physic;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 
+import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.process.GravityTask;
 import barsuift.simLife.process.Synchronizer3D;
@@ -31,9 +32,9 @@ public class BasicGravity3D implements Gravity3D {
     }
 
     @Override
-    public void fall(BranchGroup groupToFall) {
-        gravityTask.fall(groupToFall);
-        group.addChild(groupToFall);
+    public void fall(Mobile mobile) {
+        gravityTask.fall(mobile);
+        group.addChild(mobile.getBranchGroup());
     }
 
     @Override

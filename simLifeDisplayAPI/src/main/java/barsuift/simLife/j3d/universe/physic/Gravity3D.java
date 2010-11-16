@@ -18,20 +18,20 @@
  */
 package barsuift.simLife.j3d.universe.physic;
 
-import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.j3d.Mobile;
 
 public interface Gravity3D extends Persistent<Gravity3DState> {
 
     public Group getGroup();
 
     /**
-     * Make the given group fall.
+     * Make the given mobile fall.
      * 
-     * @param groupToFall a BG, containing a TG, containing the element to fall
+     * @param mobile the mobile to fall
      */
-    public void fall(BranchGroup groupToFall);
+    public void fall(Mobile mobile);
 
 }

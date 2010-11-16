@@ -3,8 +3,9 @@ package barsuift.simLife.j3d.universe.physic;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
+
+import barsuift.simLife.j3d.Mobile;
 
 
 public class MockGravity3D implements Gravity3D {
@@ -13,7 +14,7 @@ public class MockGravity3D implements Gravity3D {
 
     private int synchronizeCalled;
 
-    private List<BranchGroup> fallenGroups;
+    private List<Mobile> fallenMobiles;
 
     private Group group;
 
@@ -24,7 +25,7 @@ public class MockGravity3D implements Gravity3D {
     public void reset() {
         state = new Gravity3DState();
         synchronizeCalled = 0;
-        fallenGroups = new ArrayList<BranchGroup>();
+        fallenMobiles = new ArrayList<Mobile>();
         group = new Group();
     }
 
@@ -47,12 +48,12 @@ public class MockGravity3D implements Gravity3D {
     }
 
     @Override
-    public void fall(BranchGroup groupToFall) {
-        fallenGroups.add(groupToFall);
+    public void fall(Mobile mobile) {
+        fallenMobiles.add(mobile);
     }
 
-    public List<BranchGroup> getFallenGroups() {
-        return fallenGroups;
+    public List<Mobile> getFallenGroups() {
+        return fallenMobiles;
     }
 
     @Override
