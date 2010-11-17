@@ -21,7 +21,6 @@ public class BasicGravity3D implements Gravity3D {
         this.state = state;
         group = new BranchGroup();
         group.setCapability(Group.ALLOW_CHILDREN_EXTEND);
-        // FIXME test this
         group.setCapability(Group.ALLOW_CHILDREN_WRITE);
         Synchronizer3D synchronizer3D = universe3D.getSynchronizer();
         gravityTask = new GravityTask(state.getGravityTask());
