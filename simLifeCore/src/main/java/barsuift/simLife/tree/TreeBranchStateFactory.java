@@ -40,7 +40,8 @@ public class TreeBranchStateFactory {
         TreeBranchPartStateFactory treeBranchPartStateFactory = new TreeBranchPartStateFactory();
         List<TreeBranchPartState> treeBranchPartStates = new ArrayList<TreeBranchPartState>();
         // TODO 080. the number of parts should be related to the length of the branch
-        // TODO 050. the parts should be removed entirely and branches should be added to branches
+        // TODO 050. 001. the parts should be removed entirely and branches should be added to branches
+        // TODO 050. 025. only at this time, the branch should manage their own transforms, as done for leaves
         int nbParts = 3;
         for (int i = 0; i < nbParts; i++) {
             Point3d branchPartEndPoint = computeBranchPartEndPoint(branchEndPoint, nbParts);
