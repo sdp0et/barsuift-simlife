@@ -130,7 +130,7 @@ public class BasicTreeLeaf implements TreeLeaf {
         universe.getPhysics().getGravity().addFallingLeaf(this);
     }
 
-    // TODO 045. do not use all energy at one time to improve efficiency
+    // TODO 045. ?? do not use all energy at one time to improve efficiency
     // energy collected is around 6 in best case, and we can use up to 90 here
     /**
      * Use leaf energy to get more efficiency. One energy point allows to gain 1% of energy.
