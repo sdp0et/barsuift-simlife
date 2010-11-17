@@ -1,5 +1,7 @@
 package barsuift.simLife.j3d.universe.physic;
 
+import javax.media.j3d.Group;
+
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.MockMobile;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
@@ -30,12 +32,22 @@ public class BasicGravity3DTest extends TestCase {
         gravity3DState = null;
     }
 
+    public void testGroup() {
+        BasicGravity3D gravity3D = new BasicGravity3D(gravity3DState, universe3D);
+        // the group should be able to add new children
+        assertTrue(gravity3D.getGroup().getCapability(Group.ALLOW_CHILDREN_EXTEND));
+        // the group should be able to remove children
+        assertTrue(gravity3D.getGroup().getCapability(Group.ALLOW_CHILDREN_WRITE));
+    }
+
     public void testFall() {
         BasicGravity3D gravity3D = new BasicGravity3D(gravity3DState, universe3D);
         assertEquals(0, gravity3D.getGroup().numChildren());
         MockMobile mobile = new MockMobile();
         gravity3D.fall(mobile);
         assertEquals(1, gravity3D.getGroup().numChildren());
+        gravity3D.isFallen(mobile);
+        assertEquals(0, gravity3D.getGroup().numChildren());
     }
 
 }

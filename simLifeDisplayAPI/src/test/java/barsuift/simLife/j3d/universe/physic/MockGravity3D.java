@@ -14,6 +14,8 @@ public class MockGravity3D implements Gravity3D {
 
     private int synchronizeCalled;
 
+    private List<Mobile> fallingMobiles;
+
     private List<Mobile> fallenMobiles;
 
     private Group group;
@@ -25,6 +27,7 @@ public class MockGravity3D implements Gravity3D {
     public void reset() {
         state = new Gravity3DState();
         synchronizeCalled = 0;
+        fallingMobiles = new ArrayList<Mobile>();
         fallenMobiles = new ArrayList<Mobile>();
         group = new Group();
     }
@@ -49,10 +52,19 @@ public class MockGravity3D implements Gravity3D {
 
     @Override
     public void fall(Mobile mobile) {
+        fallingMobiles.add(mobile);
+    }
+
+    public List<Mobile> getFallingMobiles() {
+        return fallingMobiles;
+    }
+
+    @Override
+    public void isFallen(Mobile mobile) {
         fallenMobiles.add(mobile);
     }
 
-    public List<Mobile> getFallenGroups() {
+    public List<Mobile> getFallenMobiles() {
         return fallenMobiles;
     }
 

@@ -5,6 +5,9 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
+import barsuift.simLife.j3d.MobileEvent;
+import barsuift.simLife.j3d.tree.TreeLeaf3D;
+import barsuift.simLife.tree.LeafEvent;
 import barsuift.simLife.tree.MockTreeLeaf;
 import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.tree.TreeLeafState;
@@ -45,27 +48,70 @@ public class BasicGravityTest extends TestCase {
         assertEquals(2, gravity.getFallingLeaves().size());
         assertEquals(2, gravity.getGravity3D().getGroup().numChildren());
         for (TreeLeaf treeLeaf : gravity.getFallingLeaves()) {
-            // leaf3D and gravity are subscribers
+            TreeLeaf3D treeLeaf3D = treeLeaf.getTreeLeaf3D();
+
+            // leaf3D and gravity are subscribers of the leaf
             assertEquals(2, treeLeaf.countSubscribers());
+
+            // leaf is subscriber of the leaf3D
+            assertEquals(1, treeLeaf3D.countSubscribers());
+
+            // assert the gravity is really one of the subscribers of the leaf
             treeLeaf.deleteSubscriber(gravity);
-            // assert the gravity is really one of the subscribers
             assertEquals(1, treeLeaf.countSubscribers());
+            // assert the leaf3D is really one of the subscribers of the leaf
+            treeLeaf.deleteSubscriber(treeLeaf3D);
+            assertEquals(0, treeLeaf.countSubscribers());
+
+            // assert the leaf is really one of the subscribers of the leaf3D
+            treeLeaf3D.deleteSubscriber(treeLeaf);
+            assertEquals(0, treeLeaf3D.countSubscribers());
+
         }
 
         MockTreeLeaf treeLeaf = new MockTreeLeaf();
         gravity.addFallingLeaf(treeLeaf);
         assertEquals(3, gravity.getFallingLeaves().size());
         assertEquals(3, gravity.getGravity3D().getGroup().numChildren());
-        // gravity is subscriber
+        // gravity is subscriber of the leaf
         assertEquals(1, treeLeaf.countSubscribers());
         treeLeaf.deleteSubscriber(gravity);
-        // assert the gravity is really one of the subscribers
+        // assert the gravity is really one of the subscribers of the leaf
         assertEquals(0, treeLeaf.countSubscribers());
     }
 
     public void testUpdate() {
-        // test with wrong arg
-        // test with good arg
+        BasicGravity gravity = new BasicGravity(gravityState, universe);
+        MockTreeLeaf treeLeaf = new MockTreeLeaf();
+
+        gravity.addFallingLeaf(treeLeaf);
+        assertTrue(gravity.getFallingLeaves().contains(treeLeaf));
+        assertFalse(universe.getFallenLeaves().contains(treeLeaf));
+        assertEquals(1, gravity.getGravity3D().getGroup().numChildren());
+
+        // test with wrong argument
+        gravity.update(treeLeaf, MobileEvent.FALLING);
+        assertTrue(gravity.getFallingLeaves().contains(treeLeaf));
+        assertFalse(universe.getFallenLeaves().contains(treeLeaf));
+        assertEquals(1, gravity.getGravity3D().getGroup().numChildren());
+
+        // test with wrong argument
+        gravity.update(treeLeaf, null);
+        assertTrue(gravity.getFallingLeaves().contains(treeLeaf));
+        assertFalse(universe.getFallenLeaves().contains(treeLeaf));
+        assertEquals(1, gravity.getGravity3D().getGroup().numChildren());
+
+        // test with wrong argument
+        gravity.update(treeLeaf, LeafEvent.EFFICIENCY);
+        assertTrue(gravity.getFallingLeaves().contains(treeLeaf));
+        assertFalse(universe.getFallenLeaves().contains(treeLeaf));
+        assertEquals(1, gravity.getGravity3D().getGroup().numChildren());
+
+        // test with good argument
+        gravity.update(treeLeaf, MobileEvent.FALLEN);
+        assertFalse(gravity.getFallingLeaves().contains(treeLeaf));
+        assertTrue(universe.getFallenLeaves().contains(treeLeaf));
+        assertEquals(0, gravity.getGravity3D().getGroup().numChildren());
     }
 
     public void testGetState() {

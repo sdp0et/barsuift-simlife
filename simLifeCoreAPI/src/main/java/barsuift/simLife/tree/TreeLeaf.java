@@ -23,8 +23,9 @@ import java.math.BigDecimal;
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-public interface TreeLeaf extends LivingPart, Photosynthetic, Publisher {
+public interface TreeLeaf extends LivingPart, Photosynthetic, Publisher, Subscriber {
 
     public boolean isTooWeak();
 

@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.process;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.media.j3d.Transform3D;
@@ -54,7 +55,7 @@ public class GravityTask extends AbstractSplitConditionalTask {
                 // update values
                 if (translation.y < (0.025 * stepSize)) {
                     translation.y = 0;
-                    mobiles.remove(currentTG);
+                    mobiles.remove(mobile);
                     mobile.setChanged();
                     mobile.notifySubscribers(MobileEvent.FALLEN);
                 } else {
@@ -67,4 +68,9 @@ public class GravityTask extends AbstractSplitConditionalTask {
             }
         }
     }
+
+    protected Collection<Mobile> getMobiles() {
+        return mobiles;
+    }
+
 }

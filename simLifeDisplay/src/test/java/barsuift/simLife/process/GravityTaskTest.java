@@ -64,6 +64,8 @@ public class GravityTaskTest extends TestCase {
         // with stepSize=3, the movement should be y-=0.075
         gravity.executeSplitConditionalStep(state.getStepSize());
 
+
+
         VectorTestHelper.assertVectorEquals(new Vector3d(1, 1.925, 3), getTranslation(mobile1));
         VectorTestHelper.assertVectorEquals(new Vector3d(1, 0.001, 3), getTranslation(mobile2));
         VectorTestHelper.assertVectorEquals(new Vector3d(1, 0, 3), getTranslation(mobile3));
@@ -88,6 +90,16 @@ public class GravityTaskTest extends TestCase {
         assertEquals(MobileEvent.FALLEN, publisher6.getUpdateObjects().get(0));
         assertEquals(1, publisher7.nbUpdated());
         assertEquals(MobileEvent.FALLEN, publisher7.getUpdateObjects().get(0));
+
+        // only mobile1 and mobile2 should still be in the list of mobile
+        assertTrue(gravity.getMobiles().contains(mobile1));
+        assertTrue(gravity.getMobiles().contains(mobile2));
+        assertFalse(gravity.getMobiles().contains(mobile3));
+        assertFalse(gravity.getMobiles().contains(mobile4));
+        assertFalse(gravity.getMobiles().contains(mobile5));
+        assertFalse(gravity.getMobiles().contains(mobile6));
+        assertFalse(gravity.getMobiles().contains(mobile7));
+
     }
 
     private Vector3d getTranslation(MockMobile mobile) {

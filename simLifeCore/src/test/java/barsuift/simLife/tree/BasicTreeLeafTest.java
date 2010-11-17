@@ -26,6 +26,7 @@ import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.j3d.MobileEvent;
+import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
 
@@ -162,6 +163,38 @@ public class BasicTreeLeafTest extends TestCase {
 
         assertEquals(1, universe.getPhysics().getGravity().getFallingLeaves().size());
         assertTrue(universe.getPhysics().getGravity().getFallingLeaves().contains(leaf));
+    }
+
+    public void testUpdate() {
+        TreeLeaf3D leaf3D = leaf.getTreeLeaf3D();
+        // the leaf should be a subscriber of the leaf3D
+        assertEquals(1, leaf3D.countSubscribers());
+        // assert the leaf is really one of the subscribers of the leaf3D
+        leaf3D.deleteSubscriber(leaf);
+        assertEquals(0, leaf3D.countSubscribers());
+
+
+        publisherHelper.addSubscriberTo(leaf);
+
+        // test with wrong argument
+        leaf.update(leaf3D, MobileEvent.FALLING);
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
+
+        // test with wrong argument
+        leaf.update(leaf3D, null);
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
+
+        // test with wrong argument
+        leaf.update(leaf3D, LeafEvent.EFFICIENCY);
+        assertEquals(0, publisherHelper.nbUpdated());
+        assertEquals(0, publisherHelper.getUpdateObjects().size());
+
+        // test with good argument
+        leaf.update(leaf3D, MobileEvent.FALLEN);
+        assertEquals(1, publisherHelper.nbUpdated());
+        assertEquals(MobileEvent.FALLEN, publisherHelper.getUpdateObjects().get(0));
     }
 
     public void testGetState() {

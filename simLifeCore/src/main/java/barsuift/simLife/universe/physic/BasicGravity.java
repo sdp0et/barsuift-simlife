@@ -49,11 +49,14 @@ public class BasicGravity implements Gravity {
 
     @Override
     public void update(Publisher publisher, Object arg) {
+        // FIXME remove print line
+        System.out.println("BasicGravity#update() - publisher=" + publisher + ", arg=" + arg);
         if (arg == MobileEvent.FALLEN) {
-            fallingLeaves.remove((TreeLeaf) publisher);
-            universe.addFallenLeaf((TreeLeaf) publisher);
+            TreeLeaf leaf = (TreeLeaf) publisher;
+            fallingLeaves.remove(leaf);
+            gravity3D.isFallen(leaf.getTreeLeaf3D());
+            universe.addFallenLeaf(leaf);
         }
-        // TODO 001. 006. update method : transfer the leaf from Gravity to Universe
     }
 
     @Override
