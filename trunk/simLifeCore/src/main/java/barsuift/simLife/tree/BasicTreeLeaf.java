@@ -79,6 +79,7 @@ public class BasicTreeLeaf implements TreeLeaf {
 
         this.universe = universe;
         this.leaf3D = new BasicTreeLeaf3D(universe.getUniverse3D(), leafState.getLeaf3DState(), this);
+        this.leaf3D.addSubscriber(this);
     }
 
     /**
@@ -169,6 +170,16 @@ public class BasicTreeLeaf implements TreeLeaf {
 
     public TreeLeaf3D getTreeLeaf3D() {
         return leaf3D;
+    }
+
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        // FIXME remove print line
+        System.out.println("BasicTreeLeaf#update() - publisher=" + publisher + ", arg=" + arg);
+        if (arg == MobileEvent.FALLEN) {
+            setChanged();
+            notifySubscribers(arg);
+        }
     }
 
     @Override

@@ -34,4 +34,11 @@ public interface Gravity3D extends Persistent<Gravity3DState> {
      */
     public void fall(Mobile mobile);
 
+    /**
+     * The given mobile is already fallen, so there is no need for Gravity3D to deal with it anymore.
+     * 
+     * @param mobile the fallen mobile
+     */
+    public void isFallen(Mobile mobile);
+
 }

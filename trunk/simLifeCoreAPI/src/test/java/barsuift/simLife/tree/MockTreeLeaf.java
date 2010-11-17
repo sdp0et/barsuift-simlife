@@ -23,33 +23,53 @@ import java.math.BigDecimal;
 import barsuift.simLife.j3d.tree.MockTreeLeaf3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.MockSubscriber;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
+public class MockTreeLeaf extends MockSubscriber implements TreeLeaf {
 
-    private BigDecimal efficiency = new BigDecimal(0);
+    private BigDecimal efficiency;
 
     private long creationMillis;
 
-    private BigDecimal energy = new BigDecimal(0);
+    private BigDecimal energy;
 
-    private BigDecimal freeEnergy = new BigDecimal(0);
+    private BigDecimal freeEnergy;
 
     private boolean isTooWeak;
 
-    private TreeLeaf3D treeLeaf3D = new MockTreeLeaf3D();
+    private TreeLeaf3D treeLeaf3D;
 
-    private TreeLeafState state = new TreeLeafState();
+    private TreeLeafState state;
 
-    private int synchronizedCalled = 0;
+    private int synchronizedCalled;
 
-    private int collectSolarEnergyCalled = 0;
+    private int collectSolarEnergyCalled;
 
-    private int ageCalled = 0;
+    private int ageCalled;
 
-    private int improveEfficiencyCalled = 0;
+    private int improveEfficiencyCalled;
+
+    private Publisher publisher;
 
     public MockTreeLeaf() {
-        super(null);
+        reset();
+    }
+
+    public void reset() {
+        efficiency = new BigDecimal(0);
+        creationMillis = 0;
+        energy = new BigDecimal(0);
+        freeEnergy = new BigDecimal(0);
+        isTooWeak = false;
+        treeLeaf3D = new MockTreeLeaf3D();
+        state = new TreeLeafState();
+        synchronizedCalled = 0;
+        collectSolarEnergyCalled = 0;
+        ageCalled = 0;
+        improveEfficiencyCalled = 0;
+        publisher = new BasicPublisher(this);
     }
 
     @Override
@@ -144,5 +164,43 @@ public class MockTreeLeaf extends BasicPublisher implements TreeLeaf {
     public int getNbSynchronize() {
         return synchronizedCalled;
     }
+
+
+    public void addSubscriber(Subscriber subscriber) {
+        publisher.addSubscriber(subscriber);
+    }
+
+    public void deleteSubscriber(Subscriber subscriber) {
+        publisher.deleteSubscriber(subscriber);
+    }
+
+    public void notifySubscribers() {
+        publisher.notifySubscribers();
+    }
+
+    public void notifySubscribers(Object arg) {
+        publisher.notifySubscribers(arg);
+    }
+
+    public void deleteSubscribers() {
+        publisher.deleteSubscribers();
+    }
+
+    public boolean hasChanged() {
+        return publisher.hasChanged();
+    }
+
+    public int countSubscribers() {
+        return publisher.countSubscribers();
+    }
+
+    public void setChanged() {
+        publisher.setChanged();
+    }
+
+    public void clearChanged() {
+        publisher.clearChanged();
+    }
+
 
 }
