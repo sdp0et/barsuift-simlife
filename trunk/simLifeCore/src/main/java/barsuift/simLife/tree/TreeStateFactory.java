@@ -70,10 +70,10 @@ public class TreeStateFactory {
     }
 
     protected TreeBranchState computeRandomBranchState(float treeRadius, float treeHeight) {
-        Vector3d translationVector = computeBranchTranslationVector(treeRadius, treeHeight);
-        Point3d endPoint = computeBranchEndPoint(treeHeight, translationVector.getX() > 0, translationVector.getZ() > 0);
+        Vector3d branchTranslationVector = computeBranchTranslationVector(treeRadius, treeHeight);
+        Point3d branchEndPoint = computeBranchEndPoint(treeHeight, branchTranslationVector.getX() > 0, branchTranslationVector.getZ() > 0);
         TreeBranchStateFactory branchStateFactory = new TreeBranchStateFactory();
-        return branchStateFactory.createRandomBranchState(translationVector, endPoint);
+        return branchStateFactory.createRandomBranchState(branchTranslationVector, branchEndPoint);
     }
 
     /**
