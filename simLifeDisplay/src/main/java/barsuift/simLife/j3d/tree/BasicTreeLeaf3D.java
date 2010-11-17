@@ -61,6 +61,8 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private final TreeLeaf3DState state;
 
+    private final TransformGroup tg;
+
     /**
      * End point 1 at the creation of the leaf (its birth end point 1). The point is relative to the attach point.
      */
@@ -88,8 +90,6 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     private final Shape3D leafShape3D;
 
     private final BranchGroup bg;
-
-    private final TransformGroup tg;
 
     private boolean maxSizeReached;
 
