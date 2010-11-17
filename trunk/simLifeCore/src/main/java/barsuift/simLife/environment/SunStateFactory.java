@@ -36,7 +36,10 @@ public class SunStateFactory {
      * </ul>
      */
     // TODO 010. the sun position should depend on the current date, at init time
-    // TODO 015. the sun brightness should depend on the sun position
+    // TODO 010. 001. zenith=(1-cosinus(dayOfYear*2*Pi/72)/2
+    // TODO 010. 002. dayLight = same function = % of day where sun is "visible"
+    // TODO 010. 003. rise = to define later (bounds will depend on dayLight)
+    // TODO 005. the sun brightness should depend on the sun position (same function as white factor)
     // TODO 020. the sun position should evolve with the time of the day
     // TODO 025. the sun sliders should be able to be decorrelated from auto move
     public SunState createSunState() {
