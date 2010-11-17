@@ -49,8 +49,6 @@ public class BasicGravity implements Gravity {
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        // FIXME remove print line
-        System.out.println("BasicGravity#update() - publisher=" + publisher + ", arg=" + arg);
         if (arg == MobileEvent.FALLEN) {
             TreeLeaf leaf = (TreeLeaf) publisher;
             fallingLeaves.remove(leaf);

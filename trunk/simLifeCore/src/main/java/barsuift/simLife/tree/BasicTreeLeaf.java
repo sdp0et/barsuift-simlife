@@ -174,8 +174,6 @@ public class BasicTreeLeaf implements TreeLeaf {
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        // FIXME remove print line
-        System.out.println("BasicTreeLeaf#update() - publisher=" + publisher + ", arg=" + arg);
         if (arg == MobileEvent.FALLEN) {
             setChanged();
             notifySubscribers(arg);
