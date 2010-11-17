@@ -61,12 +61,29 @@ public class BasicSynchronizer3DTest extends TestCase {
         }
     }
 
-    public void testSetSpeed() {
+    public void testSetStepSize() throws Exception {
+        // test step size on scheduled task
         assertEquals(10, synchro.getStepSize());
+        assertEquals(10, task.getState().getStepSize());
         synchro.setStepSize(5);
         assertEquals(5, synchro.getStepSize());
+        assertEquals(5, task.getState().getStepSize());
         synchro.setStepSize(30);
         assertEquals(30, synchro.getStepSize());
+        assertEquals(30, task.getState().getStepSize());
+
+        setUp();
+        synchro.start();
+
+        // test step size ion started task
+        assertEquals(10, synchro.getStepSize());
+        assertEquals(10, task.getState().getStepSize());
+        synchro.setStepSize(5);
+        assertEquals(5, synchro.getStepSize());
+        assertEquals(5, task.getState().getStepSize());
+        synchro.setStepSize(30);
+        assertEquals(30, synchro.getStepSize());
+        assertEquals(30, task.getState().getStepSize());
     }
 
     public void testStart() throws InterruptedException {

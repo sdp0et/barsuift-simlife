@@ -47,7 +47,12 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitCondition
     public void setStepSize(int stepSize) {
         this.stepSize = stepSize;
         stepBeforeSynchro = RATIO_CORE_3D / stepSize;
+        // change step size for started tasks
         for (SplitConditionalTask task : getTasks()) {
+            task.setStepSize(stepSize);
+        }
+        // change step size for scheduled tasks
+        for (SplitConditionalTask task : getScheduledTasks()) {
             task.setStepSize(stepSize);
         }
     }
