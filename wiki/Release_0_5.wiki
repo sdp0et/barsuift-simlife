@@ -1,0 +1,20 @@
+#summary The release note for the release 0.5
+
+his is yet another an intermediary release, focused on time management.
+The rest of the application has not changed a lot.
+
+= New features =
+
+  * Replace the calendar system with a simpler date system
+  * Important internal rework to get rid of Observable/Observer and use homemade Publisher/Subscriber instead
+  * Important internal rework to add a synchronization framework to manage concurrent continuous actions
+  * Use of this synchronization framework for falling leaves, so they follow application speed. they can also be stopped.
+  * File menu actions now stop the application before executing its actions
+  * Addition of a "Very fast" speed radio button (and rename others to "Normal" and "Fast")
+  * When changing speed, stop the application if running, set the new value, and restart if it was running
+
+
+
+= Bug fixes =
+
+  * None yet
