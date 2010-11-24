@@ -1,6 +1,6 @@
 #summary The release note for the release 0.5
 
-his is yet another an intermediary release, focused on time management.
+This is yet another an intermediary release, focused on time management.
 The rest of the application has not changed a lot.
 
 = New features =
