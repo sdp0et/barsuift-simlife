@@ -208,6 +208,11 @@ public class BasicUniverseContext implements UniverseContext {
         root.addChild(mouseZoomNavigator);
     }
 
+    // TODO 001. 001. use chap7/src/KeyBehavior instead (test)
+    // TODO 001. 003. add landscape.inLandscape(x,z) in the doMove (see terra/src/KeyBehavior, and split and doMove and
+    // tryMove).
+    // TODO 001. 004. use a simplified version of the ElevationModel.getEleveationAt(x,z) from nav project to adjust the
+    // y height.
     private KeyNavigatorBehavior createKeyboardNavigator() {
         KeyNavigatorBehavior keyNavigator = new KeyNavigatorBehavior(viewTransform);
         keyNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
