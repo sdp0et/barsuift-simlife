@@ -75,7 +75,7 @@ public class FpsAction extends AbstractAction implements Subscriber {
                 || arg == ApplicationUpdateCode.NEW_RANDOM) {
             setEnabled(true);
             this.universeContext = ((Application) publisher).getUniverseContext();
-            updateState(((Application) publisher).getUniverseContext().isFpsShowing());
+            updateState(universeContext.isFpsShowing());
         }
     }
 

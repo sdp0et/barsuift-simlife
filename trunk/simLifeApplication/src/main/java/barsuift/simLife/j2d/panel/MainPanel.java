@@ -48,7 +48,7 @@ public class MainPanel extends JPanel {
 
         add(rightPanel);
 
-        Universe3DPanel universe3DPanel = new Universe3DPanel(universeContext.getCanvas3D());
+        Universe3DPanel universe3DPanel = new Universe3DPanel(universeContext.getUniverseContext3D().getCanvas3D());
         add(universe3DPanel);
     }
 

@@ -8,7 +8,7 @@
 
 New features
 ------------
-None yet
+Improve the navigation controls 
 
 
 Bug fixes

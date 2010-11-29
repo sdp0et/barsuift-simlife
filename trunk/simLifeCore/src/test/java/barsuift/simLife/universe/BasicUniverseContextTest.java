@@ -31,36 +31,25 @@ public class BasicUniverseContextTest extends TestCase {
         super.tearDown();
     }
 
-    public void testUnsetAxis() {
-        UniverseContextStateFactory factory = new UniverseContextStateFactory();
-        UniverseContextState state = factory.createRandomUniverseContextState();
-        UniverseContext panel = new BasicUniverseContext(state);
-        assertTrue(panel.isAxisShowing());
-        panel.setAxisShowing(false);
-        assertFalse(panel.isAxisShowing());
-        panel.setAxisShowing(true);
-        assertTrue(panel.isAxisShowing());
-        panel.setAxisShowing(false);
-        assertFalse(panel.isAxisShowing());
-    }
-
     public void testGetState() throws Exception {
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
         UniverseContextState state = factory.createRandomUniverseContextState();
         BasicUniverseContext context = new BasicUniverseContext(state);
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
-        assertTrue(context.getState().isAxisShowing());
-        assertEquals(0, context.getState().getUniverseState().getDateHandler().getDate().getValue());
-        context.setAxisShowing(false);
+
+        assertFalse(context.getState().isFpsShowing());
+        assertEquals(0, context.getState().getUniverse().getDateHandler().getDate().getValue());
+        context.setFpsShowing(true);
         context.getUniverse().getSynchronizer().start();
         context.getUniverse().getSynchronizer().stop();
         // wait a little bit to ensure the time controller ends its treatments
         Thread.sleep(600);
+
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
-        assertFalse(context.getState().isAxisShowing());
-        assertEquals(500, context.getState().getUniverseState().getDateHandler().getDate().getValue());
+        assertTrue(context.getState().isFpsShowing());
+        assertEquals(500, context.getState().getUniverse().getDateHandler().getDate().getValue());
     }
 
 
@@ -70,11 +59,11 @@ public class BasicUniverseContextTest extends TestCase {
         BasicUniverseContext universeContext = new BasicUniverseContext(state);
 
         assertFalse(universeContext.isFpsShowing());
-        assertFalse(universeContext.getCanvas3D().isFpsShowing());
+        assertFalse(universeContext.getUniverseContext3D().isFpsShowing());
 
         universeContext.setFpsShowing(true);
         assertTrue(universeContext.isFpsShowing());
-        assertTrue(universeContext.getCanvas3D().isFpsShowing());
+        assertTrue(universeContext.getUniverseContext3D().isFpsShowing());
     }
 
 }

@@ -32,6 +32,7 @@ import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
+import barsuift.simLife.j3d.universe.UniverseContext3DState;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.j3d.universe.physic.Physics3DState;
 import barsuift.simLife.process.SplitConditionalTaskState;
@@ -119,6 +120,28 @@ public final class DisplayDataCreatorForTests {
         return new NavigatorState(translation, rotationX, rotationY);
     }
 
+    public static UniverseContext3DState createRandomUniverseContext3DState() {
+        SimLifeCanvas3DState canvas = createRandomCanvasState();
+        boolean axisShowing = UtilDataCreatorForTests.createRandomBoolean();
+        NavigatorState navigator = createRandomNavigatorState();
+        return new UniverseContext3DState(canvas, axisShowing, navigator);
+    }
+
+    /**
+     * Create a specific universe context state with
+     * <ul>
+     * <li>canvasState made through {@link #createSpecificCanvasState()}</li>
+     * <li>axisShowing = true</li>
+     * <li>navigator made through {@link #createSpecificNavigatorState()}</li>
+     * </ul>
+     */
+    public static UniverseContext3DState createSpecificUniverseContext3DState() {
+        SimLifeCanvas3DState canvas = createSpecificCanvasState();
+        boolean axisShowing = true;
+        NavigatorState navigator = createSpecificNavigatorState();
+        return new UniverseContext3DState(canvas, axisShowing, navigator);
+    }
+
     public static Universe3DState createRandomUniverse3DState() {
         Synchronizer3DState synchronizerState = createRandomSynchronizer3DState();
         return new Universe3DState(synchronizerState);
@@ -177,6 +200,10 @@ public final class DisplayDataCreatorForTests {
     public static Tree3DState createRandomTree3DState() {
         Tuple3dState translationVector = createRandomTupleState();
         return new Tree3DState(translationVector);
+    }
+
+    public static SimLifeCanvas3DState createRandomCanvasState() {
+        return new SimLifeCanvas3DState(UtilDataCreatorForTests.createRandomBoolean());
     }
 
     public static SimLifeCanvas3DState createSpecificCanvasState() {
