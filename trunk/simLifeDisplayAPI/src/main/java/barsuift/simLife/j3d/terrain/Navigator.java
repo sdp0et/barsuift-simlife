@@ -16,34 +16,19 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.universe;
+package barsuift.simLife.j3d.terrain;
 
-import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.SimLifeCanvas3D;
-import barsuift.simLife.j3d.terrain.Navigator;
-import barsuift.simLife.process.MainSynchronizer;
 
-public interface UniverseContext extends Persistent<UniverseContextState> {
-
-    public SimLifeCanvas3D getCanvas3D();
-
-    public Universe getUniverse();
-
-    public MainSynchronizer getSynchronizer();
-
-    public void setFpsShowing(boolean fpsShowing);
-
-    public boolean isFpsShowing();
+public interface Navigator {
 
     /**
-     * Add or remove the X-Y-Z axis as 3 segments of 5 meters along X, Y, and Z axis
-     * 
-     * @param axisShowing
+     * Reset the view along the Z axis, parallel to the (X,Z) plan. Position is (4, 2, 20).
      */
-    public void setAxisShowing(boolean axisShowing);
+    public void resetToOriginalPosition();
 
-    public boolean isAxisShowing();
-
-    public Navigator getNavigator();
+    /**
+     * Reset the view along the Z axis, parallel to the (X,Z) plan. Position is (currentX, 2, currentZ).
+     */
+    public void resetToNominalViewAngle();
 
 }

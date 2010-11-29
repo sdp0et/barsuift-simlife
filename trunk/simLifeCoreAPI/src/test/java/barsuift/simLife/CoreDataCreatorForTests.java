@@ -30,6 +30,7 @@ import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
+import barsuift.simLife.j3d.terrain.NavigatorState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
@@ -66,10 +67,8 @@ public final class CoreDataCreatorForTests {
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = UtilDataCreatorForTests.createRandomBoolean();
         boolean fpsShowing = UtilDataCreatorForTests.createRandomBoolean();
-        double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
-
-        return new UniverseContextState(universeState, synchroState, canvasState, axisShowing, fpsShowing,
-                viewerTransform);
+        NavigatorState navigator = DisplayDataCreatorForTests.createRandomNavigatorState();
+        return new UniverseContextState(universeState, synchroState, canvasState, axisShowing, fpsShowing, navigator);
     }
 
     /**
@@ -88,9 +87,8 @@ public final class CoreDataCreatorForTests {
         SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
         boolean axisShowing = true;
         boolean fpsShowing = false;
-        double[] viewerTransform = DisplayDataCreatorForTests.createSpecificTransform3D();
-        return new UniverseContextState(universeState, synchroState, canvasState, axisShowing, fpsShowing,
-                viewerTransform);
+        NavigatorState navigator = DisplayDataCreatorForTests.createSpecificNavigatorState();
+        return new UniverseContextState(universeState, synchroState, canvasState, axisShowing, fpsShowing, navigator);
     }
 
     public static PhysicsState createRandomPhysicsState() {

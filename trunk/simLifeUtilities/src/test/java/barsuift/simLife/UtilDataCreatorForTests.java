@@ -45,6 +45,13 @@ public final class UtilDataCreatorForTests {
     }
 
     /**
+     * Creates a random rotation angle in radian, between 0 and 2 * Pi
+     */
+    public static double createRandomRotation() {
+        return Math.random() * 2 * Math.PI;
+    }
+
+    /**
      * Creates a random date state, between 0 and 100 seconds.
      */
     public static SimLifeDateState createRandomDateState() {
