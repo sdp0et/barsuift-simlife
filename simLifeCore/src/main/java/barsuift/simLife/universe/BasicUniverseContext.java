@@ -21,15 +21,13 @@ package barsuift.simLife.universe;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
-import javax.vecmath.Quat4d;
-import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
+import barsuift.simLife.j3d.terrain.BasicNavigator;
+import barsuift.simLife.j3d.terrain.Navigator;
 import barsuift.simLife.process.BasicMainSynchronizer;
 import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.ConditionalTaskStateFactory;
@@ -37,12 +35,9 @@ import barsuift.simLife.process.FpsTicker;
 import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.time.FpsCounter;
 
-import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
-import com.sun.j3d.utils.behaviors.mouse.MouseBehavior;
-import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
-import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
+// TODO 001. 001. see if this class could be split in UniverseContext3D ?
 public class BasicUniverseContext implements UniverseContext {
 
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
@@ -57,8 +52,8 @@ public class BasicUniverseContext implements UniverseContext {
 
     private final Universe universe;
 
+    private final BasicNavigator navigator;
 
-    private final TransformGroup viewTransform;
 
     private final BranchGroup root;
 
@@ -87,9 +82,9 @@ public class BasicUniverseContext implements UniverseContext {
         // allow the remove children from the root
         root.setCapability(Group.ALLOW_CHILDREN_WRITE);
 
-        viewTransform = simpleU.getViewingPlatform().getViewPlatformTransform();
-        viewTransform.setTransform(new Transform3D(state.getViewerTransform3D()));
-        addNavigators();
+        navigator = new BasicNavigator(state.getNavigator());
+        navigator.setSchedulingBounds(BOUNDS_FOR_ALL);
+        simpleU.getViewingPlatform().setViewPlatformBehavior(navigator);
 
         root.addChild(universe.getUniverse3D().getUniverseRoot());
 
@@ -156,26 +151,8 @@ public class BasicUniverseContext implements UniverseContext {
     }
 
     @Override
-    public void resetToOriginalView() {
-        viewTransform.setTransform(new Transform3D(UniverseContextStateFactory.NOMINAL_VIEWER_TRANSFORM));
-    }
-
-    @Override
-    public void resetToNominalAngleOfView() {
-        Transform3D viewingTransform = new Transform3D();
-        viewTransform.getTransform(viewingTransform);
-        // set viewer angle of view
-        Quat4d rotationQuat = new Quat4d();
-        viewingTransform.get(rotationQuat);
-        rotationQuat.x = 0;
-        rotationQuat.z = 0;
-        viewingTransform.setRotation(rotationQuat);
-        // set viewer position
-        Vector3d currentTranslation = new Vector3d();
-        viewingTransform.get(currentTranslation);
-        currentTranslation.y = 2;
-        viewingTransform.setTranslation(currentTranslation);
-        viewTransform.setTransform(viewingTransform);
+    public Navigator getNavigator() {
+        return navigator;
     }
 
     @Override
@@ -188,57 +165,9 @@ public class BasicUniverseContext implements UniverseContext {
     public void synchronize() {
         state.setAxisShowing(axisShowing);
         state.setFpsShowing(fpsShowing);
-        Transform3D transform3D = new Transform3D();
-        viewTransform.getTransform(transform3D);
-        double[] matrix = new double[16];
-        transform3D.get(matrix);
-        state.setViewerTransform3D(matrix);
         canvas3D.synchronize();
         universe.synchronize();
-    }
-
-    private void addNavigators() {
-        KeyNavigatorBehavior navigator = createKeyboardNavigator();
-        root.addChild(navigator);
-        // MouseRotate mouseRotateNavigator = createMouseRotateNavigator();
-        // root.addChild(mouseRotateNavigator);
-        MouseTranslate mouseTranslateNavigator = createMouseTranslateNavigator();
-        root.addChild(mouseTranslateNavigator);
-        MouseZoom mouseZoomNavigator = createMouseZoomNavigator();
-        root.addChild(mouseZoomNavigator);
-    }
-
-    // TODO 001. 001. use chap7/src/KeyBehavior instead (test)
-    // TODO 001. 003. add landscape.inLandscape(x,z) in the doMove (see terra/src/KeyBehavior, and split and doMove and
-    // tryMove).
-    // TODO 001. 004. use a simplified version of the ElevationModel.getEleveationAt(x,z) from nav project to adjust the
-    // y height.
-    private KeyNavigatorBehavior createKeyboardNavigator() {
-        KeyNavigatorBehavior keyNavigator = new KeyNavigatorBehavior(viewTransform);
-        keyNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
-        return keyNavigator;
-    }
-
-    // private MouseRotate createMouseRotateNavigator() {
-    // MouseRotate mouseRotateNavigator = new MouseRotate(MouseBehavior.INVERT_INPUT);
-    // mouseRotateNavigator.setTransformGroup(viewTransform);
-    // mouseRotateNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
-    // mouseRotateNavigator.setFactor(0.003);
-    // return mouseRotateNavigator;
-    // }
-
-    private MouseTranslate createMouseTranslateNavigator() {
-        MouseTranslate mouseTranslateNavigator = new MouseTranslate(MouseBehavior.INVERT_INPUT);
-        mouseTranslateNavigator.setTransformGroup(viewTransform);
-        mouseTranslateNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
-        return mouseTranslateNavigator;
-    }
-
-    private MouseZoom createMouseZoomNavigator() {
-        MouseZoom mouseZoomNavigator = new MouseZoom(MouseBehavior.INVERT_INPUT);
-        mouseZoomNavigator.setTransformGroup(viewTransform);
-        mouseZoomNavigator.setSchedulingBounds(BOUNDS_FOR_ALL);
-        return mouseZoomNavigator;
+        navigator.synchronize();
     }
 
 }

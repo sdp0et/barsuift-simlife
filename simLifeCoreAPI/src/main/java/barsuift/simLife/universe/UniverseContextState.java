@@ -18,12 +18,11 @@
  */
 package barsuift.simLife.universe;
 
-import java.util.Arrays;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
+import barsuift.simLife.j3d.terrain.NavigatorState;
 import barsuift.simLife.process.MainSynchronizerState;
 
 @XmlRootElement
@@ -39,7 +38,7 @@ public class UniverseContextState implements State {
 
     private boolean fpsShowing;
 
-    private double[] viewerTransform3D;
+    private NavigatorState navigator;
 
     public UniverseContextState() {
         super();
@@ -48,19 +47,18 @@ public class UniverseContextState implements State {
         this.canvasState = new SimLifeCanvas3DState();
         this.axisShowing = true;
         this.fpsShowing = false;
-        // identity matrix
-        this.viewerTransform3D = new double[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+        this.navigator = new NavigatorState();
     }
 
     public UniverseContextState(UniverseState universeState, MainSynchronizerState synchronizer,
-            SimLifeCanvas3DState canvasState, boolean axisShowing, boolean fpsShowing, double[] viewerTransform3D) {
+            SimLifeCanvas3DState canvasState, boolean axisShowing, boolean fpsShowing, NavigatorState navigator) {
         super();
         this.universeState = universeState;
         this.synchronizer = synchronizer;
         this.canvasState = canvasState;
         this.axisShowing = axisShowing;
         this.fpsShowing = fpsShowing;
-        this.viewerTransform3D = viewerTransform3D;
+        this.navigator = navigator;
     }
 
     public boolean isAxisShowing() {
@@ -103,12 +101,12 @@ public class UniverseContextState implements State {
         this.canvasState = canvasState;
     }
 
-    public double[] getViewerTransform3D() {
-        return viewerTransform3D;
+    public NavigatorState getNavigator() {
+        return navigator;
     }
 
-    public void setViewerTransform3D(double[] viewerTransform3D) {
-        this.viewerTransform3D = viewerTransform3D;
+    public void setNavigator(NavigatorState navigator) {
+        this.navigator = navigator;
     }
 
     @Override
@@ -120,7 +118,7 @@ public class UniverseContextState implements State {
         result = prime * result + ((canvasState == null) ? 0 : canvasState.hashCode());
         result = prime * result + ((universeState == null) ? 0 : universeState.hashCode());
         result = prime * result + ((synchronizer == null) ? 0 : synchronizer.hashCode());
-        result = prime * result + Arrays.hashCode(viewerTransform3D);
+        result = prime * result + ((navigator == null) ? 0 : navigator.hashCode());
         return result;
     }
 
@@ -155,8 +153,12 @@ public class UniverseContextState implements State {
         } else
             if (!synchronizer.equals(other.synchronizer))
                 return false;
-        if (!Arrays.equals(viewerTransform3D, other.viewerTransform3D))
-            return false;
+        if (navigator == null) {
+            if (other.navigator != null)
+                return false;
+        } else
+            if (!navigator.equals(other.navigator))
+                return false;
         return true;
     }
 
@@ -166,7 +168,7 @@ public class UniverseContextState implements State {
     public String toString() {
         return "UniverseContextState [universeState=" + universeState + ", synchronizer=" + synchronizer
                 + ", canvasState=" + canvasState + ", axisShowing=" + axisShowing + ", fpsShowing=" + fpsShowing
-                + ", viewerTransform3D=" + Arrays.toString(viewerTransform3D) + "]";
+                + ", navigator=" + navigator + "]";
     }
 
 }

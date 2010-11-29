@@ -20,13 +20,13 @@ package barsuift.simLife.universe;
 
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.SimLifeCanvas3DStateFactory;
+import barsuift.simLife.j3d.terrain.NavigatorState;
+import barsuift.simLife.j3d.terrain.NavigatorStateFactory;
 import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.process.MainSynchronizerStateFactory;
 
 
 public class UniverseContextStateFactory {
-
-    public static double[] NOMINAL_VIEWER_TRANSFORM = new double[] { 1, 0, 0, 4, 0, 1, 0, 2, 0, 0, 1, 20, 0, 0, 0, 1 };
 
     /**
      * Creates a random UniverseContextState with the following values :
@@ -35,7 +35,7 @@ public class UniverseContextStateFactory {
      * <li>a random canvas state</li>
      * <li>axisShowing = true</li>
      * <li>fpsShowing = false</li>
-     * <li>viewerTransform3D = identity matrix, 4 meters right, 2 meters high, 20 meters back</li>
+     * <li>navigator = 4 meters right, 2 meters high, 20 meters back</li>
      * </ul>
      * 
      * @return
@@ -49,8 +49,11 @@ public class UniverseContextStateFactory {
         MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createRandomCanvasState();
+        NavigatorStateFactory navigatorStateFactory = new NavigatorStateFactory();
+        NavigatorState navigatorState = navigatorStateFactory.createNavigatorState();
+
         return new UniverseContextState(universeState, synchronizerState, canvasState, axisShowing, fpsShowing,
-                NOMINAL_VIEWER_TRANSFORM);
+                navigatorState);
     }
 
     /**
@@ -61,7 +64,7 @@ public class UniverseContextStateFactory {
      * <li>an empty canvas state</li>
      * <li>axisShowing = true</li>
      * <li>fpsShowing = false</li>
-     * <li>viewerTransform3D = identity matrix, 4 meters right, 2 meters high, 20 meters back</li>
+     * <li>navigator = 4 meters right, 2 meters high, 20 meters back</li>
      * </ul>
      * 
      * @return
@@ -75,8 +78,10 @@ public class UniverseContextStateFactory {
         MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createEmptyCanvasState();
+        NavigatorStateFactory navigatorStateFactory = new NavigatorStateFactory();
+        NavigatorState navigatorState = navigatorStateFactory.createNavigatorState();
         return new UniverseContextState(universeState, synchronizerState, canvasState, axisShowing, fpsShowing,
-                NOMINAL_VIEWER_TRANSFORM);
+                navigatorState);
     }
 
 }

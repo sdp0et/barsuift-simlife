@@ -16,34 +16,32 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.universe;
+package barsuift.simLife.j3d.terrain;
 
-import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.SimLifeCanvas3D;
-import barsuift.simLife.j3d.terrain.Navigator;
-import barsuift.simLife.process.MainSynchronizer;
+import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 
-public interface UniverseContext extends Persistent<UniverseContextState> {
 
-    public SimLifeCanvas3D getCanvas3D();
+public class NavigatorStateTest extends JaxbTestCase {
 
-    public Universe getUniverse();
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-    public MainSynchronizer getSynchronizer();
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
 
-    public void setFpsShowing(boolean fpsShowing);
+    @Override
+    protected String getPackage() {
+        return "barsuift.simLife.j3d.terrain";
+    }
 
-    public boolean isFpsShowing();
-
-    /**
-     * Add or remove the X-Y-Z axis as 3 segments of 5 meters along X, Y, and Z axis
-     * 
-     * @param axisShowing
-     */
-    public void setAxisShowing(boolean axisShowing);
-
-    public boolean isAxisShowing();
-
-    public Navigator getNavigator();
+    public void testJaxb() throws Exception {
+        NavigatorState navigatorState = DisplayDataCreatorForTests.createRandomNavigatorState();
+        write(navigatorState);
+        NavigatorState navigatorState2 = (NavigatorState) read();
+        assertEquals(navigatorState, navigatorState2);
+    }
 
 }

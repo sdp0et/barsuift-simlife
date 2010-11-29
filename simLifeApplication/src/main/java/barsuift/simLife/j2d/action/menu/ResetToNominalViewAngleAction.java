@@ -25,20 +25,19 @@ import javax.swing.AbstractAction;
 import barsuift.simLife.Application;
 import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Mnemonics;
+import barsuift.simLife.j3d.terrain.Navigator;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
-import barsuift.simLife.universe.UniverseContext;
 
 public class ResetToNominalViewAngleAction extends AbstractAction implements Subscriber {
 
     private static final long serialVersionUID = 1291567621047871503L;
 
-    private UniverseContext universeContext;
+    private Navigator navigator;
 
     public ResetToNominalViewAngleAction(Application application) {
         super();
         application.addSubscriber(this);
-        this.universeContext = application.getUniverseContext();
         putValue(NAME, "Reset to nominal view angle");
         putValue(SHORT_DESCRIPTION, "Reset the view angle to its nominal state");
         putValue(MNEMONIC_KEY, Mnemonics.WINDOW_RESET_TO_NOMINAL_VIEW_ANGLE);
@@ -48,7 +47,7 @@ public class ResetToNominalViewAngleAction extends AbstractAction implements Sub
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        universeContext.resetToNominalAngleOfView();
+        navigator.resetToNominalViewAngle();
     }
 
     @Override
@@ -56,7 +55,7 @@ public class ResetToNominalViewAngleAction extends AbstractAction implements Sub
         if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
                 || arg == ApplicationUpdateCode.NEW_RANDOM) {
             setEnabled(true);
-            this.universeContext = ((Application) publisher).getUniverseContext();
+            this.navigator = ((Application) publisher).getUniverseContext().getNavigator();
         }
 
     }
