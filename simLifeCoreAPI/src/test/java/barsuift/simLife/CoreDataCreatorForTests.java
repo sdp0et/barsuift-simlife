@@ -27,16 +27,15 @@ import java.util.Set;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.SunState;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
-import barsuift.simLife.j3d.terrain.NavigatorState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
+import barsuift.simLife.j3d.universe.UniverseContext3DState;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.j3d.universe.physic.Physics3DState;
 import barsuift.simLife.process.ConditionalTaskState;
@@ -64,31 +63,28 @@ public final class CoreDataCreatorForTests {
     public static UniverseContextState createRandomUniverseContextState() {
         UniverseState universeState = createRandomUniverseState();
         MainSynchronizerState synchroState = createRandomMainSynchronizerState();
-        SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
-        boolean axisShowing = UtilDataCreatorForTests.createRandomBoolean();
         boolean fpsShowing = UtilDataCreatorForTests.createRandomBoolean();
-        NavigatorState navigator = DisplayDataCreatorForTests.createRandomNavigatorState();
-        return new UniverseContextState(universeState, synchroState, canvasState, axisShowing, fpsShowing, navigator);
+        UniverseContext3DState universeContext3DState = DisplayDataCreatorForTests.createRandomUniverseContext3DState();
+        return new UniverseContextState(universeState, synchroState, fpsShowing, universeContext3DState);
     }
 
     /**
      * Create a specific universe context state with
      * <ul>
      * <li>specific universe state made through the {@link #createSpecificUniverseState()} method</li>
-     * <li>specific canvas state made through the {@link DisplayDataCreatorForTests#createSpecificCanvasState()} method</li>
-     * <li>axisShowing = true</li>
      * <li>fpsShowing = false</li>
+     * <li>specific universe context 3D state made through the
+     * {@link DisplayDataCreatorForTests#createSpecificUniverseContext3DState()} method</li>
      * </ul>
      * 
      */
     public static UniverseContextState createSpecificUniverseContextState() {
         UniverseState universeState = createSpecificUniverseState();
         MainSynchronizerState synchroState = createSpecificMainSynchronizerState();
-        SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
-        boolean axisShowing = true;
         boolean fpsShowing = false;
-        NavigatorState navigator = DisplayDataCreatorForTests.createSpecificNavigatorState();
-        return new UniverseContextState(universeState, synchroState, canvasState, axisShowing, fpsShowing, navigator);
+        UniverseContext3DState universeContext3DState = DisplayDataCreatorForTests
+                .createSpecificUniverseContext3DState();
+        return new UniverseContextState(universeState, synchroState, fpsShowing, universeContext3DState);
     }
 
     public static PhysicsState createRandomPhysicsState() {

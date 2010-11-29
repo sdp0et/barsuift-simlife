@@ -19,7 +19,8 @@
 package barsuift.simLife.universe;
 
 import junit.framework.TestCase;
-import barsuift.simLife.j3d.SimLifeCanvas3DState;
+import barsuift.simLife.j3d.universe.UniverseContext3DState;
+import barsuift.simLife.process.MainSynchronizerState;
 
 
 public class UniverseContextStateFactoryTest extends TestCase {
@@ -35,19 +36,19 @@ public class UniverseContextStateFactoryTest extends TestCase {
     public void testCreateRandomUniverseContextState() {
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = factory.createRandomUniverseContextState();
-        assertTrue(universeContextState.isAxisShowing());
         assertFalse(universeContextState.isFpsShowing());
 
-        SimLifeCanvas3DState canvasState = universeContextState.getCanvasState();
-        assertNotNull(canvasState);
-        assertFalse(canvasState.isFpsShowing());
-
-        UniverseState universeState = universeContextState.getUniverseState();
+        UniverseState universeState = universeContextState.getUniverse();
         assertNotNull(universeState);
         int nbTrees = universeState.getTrees().size();
         assertTrue(nbTrees >= 1);
         assertTrue(nbTrees <= 4);
 
-    }
+        MainSynchronizerState synchronizer = universeContextState.getSynchronizer();
+        assertNotNull(synchronizer);
 
+        UniverseContext3DState universeContext3D = universeContextState.getUniverseContext3D();
+        assertNotNull(universeContext3D);
+
+    }
 }

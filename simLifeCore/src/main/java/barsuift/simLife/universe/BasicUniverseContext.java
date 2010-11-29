@@ -18,16 +18,8 @@
  */
 package barsuift.simLife.universe;
 
-import javax.media.j3d.BoundingSphere;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Group;
-import javax.vecmath.Point3d;
-
-import barsuift.simLife.j3d.Axis3DGroup;
-import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
-import barsuift.simLife.j3d.SimLifeCanvas3D;
-import barsuift.simLife.j3d.terrain.BasicNavigator;
-import barsuift.simLife.j3d.terrain.Navigator;
+import barsuift.simLife.j3d.universe.BasicUniverseContext3D;
+import barsuift.simLife.j3d.universe.UniverseContext3D;
 import barsuift.simLife.process.BasicMainSynchronizer;
 import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.ConditionalTaskStateFactory;
@@ -35,71 +27,31 @@ import barsuift.simLife.process.FpsTicker;
 import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.time.FpsCounter;
 
-import com.sun.j3d.utils.universe.SimpleUniverse;
-
-// TODO 001. 001. see if this class could be split in UniverseContext3D ?
 public class BasicUniverseContext implements UniverseContext {
-
-    private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
 
     private final UniverseContextState state;
 
-    private boolean fpsShowing;
-
-    private boolean axisShowing;
-
-    private final BasicSimLifeCanvas3D canvas3D;
-
     private final Universe universe;
 
-    private final BasicNavigator navigator;
+    private final MainSynchronizer synchronizer;
+
+    private boolean fpsShowing;
+
+    private final UniverseContext3D universeContext3D;
 
 
-    private final BranchGroup root;
-
-    private final Axis3DGroup axisGroup = new Axis3DGroup();
 
     private final FpsCounter fpsCounter = new FpsCounter();
 
     private FpsTicker fpsTicker;
 
-    private final MainSynchronizer synchronizer;
 
     public BasicUniverseContext(UniverseContextState state) {
         this.state = state;
-        this.axisShowing = state.isAxisShowing();
-
-        this.universe = new BasicUniverse(state.getUniverseState());
-        canvas3D = new BasicSimLifeCanvas3D(fpsCounter, state.getCanvasState());
-        SimpleUniverse simpleU = new SimpleUniverse(canvas3D);
-
-        // limit to graphic to 40 FPS (interval = 1000ms / 40 = 25)
-        simpleU.getViewer().getView().setMinimumFrameCycleTime(25);
-
-        root = new BranchGroup();
-        // allow to add children to the root
-        root.setCapability(Group.ALLOW_CHILDREN_EXTEND);
-        // allow the remove children from the root
-        root.setCapability(Group.ALLOW_CHILDREN_WRITE);
-
-        navigator = new BasicNavigator(state.getNavigator());
-        navigator.setSchedulingBounds(BOUNDS_FOR_ALL);
-        simpleU.getViewingPlatform().setViewPlatformBehavior(navigator);
-
-        root.addChild(universe.getUniverse3D().getUniverseRoot());
-
-        root.compile();
-        simpleU.addBranchGraph(root);
-
-        synchronizer = new BasicMainSynchronizer(state.getSynchronizer(), universe);
-
-        setAxisShowing(state.isAxisShowing());
+        this.universe = new BasicUniverse(state.getUniverse());
+        this.synchronizer = new BasicMainSynchronizer(state.getSynchronizer(), universe);
+        this.universeContext3D = new BasicUniverseContext3D(state.getUniverseContext3D(), this);
         setFpsShowing(state.isFpsShowing());
-    }
-
-    @Override
-    public SimLifeCanvas3D getCanvas3D() {
-        return canvas3D;
     }
 
     @Override
@@ -126,33 +78,23 @@ public class BasicUniverseContext implements UniverseContext {
                 universe.getSynchronizer().unschedule(fpsTicker);
             }
         }
-        canvas3D.setFpsShowing(fpsShowing);
+        universeContext3D.setFpsShowing(fpsShowing);
         this.fpsShowing = fpsShowing;
     }
 
     @Override
     public boolean isFpsShowing() {
-        return fpsShowing && canvas3D.isFpsShowing();
+        return fpsShowing && universeContext3D.isFpsShowing();
     }
 
     @Override
-    public void setAxisShowing(boolean axisShowing) {
-        if (axisShowing) {
-            root.addChild(axisGroup);
-        } else {
-            root.removeChild(axisGroup);
-        }
-        this.axisShowing = axisShowing;
+    public FpsCounter getFpsCounter() {
+        return fpsCounter;
     }
 
     @Override
-    public boolean isAxisShowing() {
-        return axisShowing;
-    }
-
-    @Override
-    public Navigator getNavigator() {
-        return navigator;
+    public UniverseContext3D getUniverseContext3D() {
+        return universeContext3D;
     }
 
     @Override
@@ -163,11 +105,10 @@ public class BasicUniverseContext implements UniverseContext {
 
     @Override
     public void synchronize() {
-        state.setAxisShowing(axisShowing);
-        state.setFpsShowing(fpsShowing);
-        canvas3D.synchronize();
         universe.synchronize();
-        navigator.synchronize();
+        synchronizer.synchronize();
+        state.setFpsShowing(fpsShowing);
+        universeContext3D.synchronize();
     }
 
 }

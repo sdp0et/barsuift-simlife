@@ -18,10 +18,8 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.j3d.SimLifeCanvas3DState;
-import barsuift.simLife.j3d.SimLifeCanvas3DStateFactory;
-import barsuift.simLife.j3d.terrain.NavigatorState;
-import barsuift.simLife.j3d.terrain.NavigatorStateFactory;
+import barsuift.simLife.j3d.universe.UniverseContext3DState;
+import barsuift.simLife.j3d.universe.UniverseContext3DStateFactory;
 import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.process.MainSynchronizerStateFactory;
 
@@ -29,59 +27,47 @@ import barsuift.simLife.process.MainSynchronizerStateFactory;
 public class UniverseContextStateFactory {
 
     /**
-     * Creates a random UniverseContextState with the following values :
+     * Creates a random universe context state with the following values :
      * <ul>
      * <li>a random universe state</li>
-     * <li>a random canvas state</li>
-     * <li>axisShowing = true</li>
+     * <li>a default synchronizer state</li>
      * <li>fpsShowing = false</li>
-     * <li>navigator = 4 meters right, 2 meters high, 20 meters back</li>
+     * <li>a default universe context 3D state</li>
      * </ul>
      * 
      * @return
      */
     public UniverseContextState createRandomUniverseContextState() {
-        boolean axisShowing = true;
         boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createRandomUniverseState();
         MainSynchronizerStateFactory synchroStateFactory = new MainSynchronizerStateFactory();
         MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
-        SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
-        SimLifeCanvas3DState canvasState = canvasStateFactory.createRandomCanvasState();
-        NavigatorStateFactory navigatorStateFactory = new NavigatorStateFactory();
-        NavigatorState navigatorState = navigatorStateFactory.createNavigatorState();
-
-        return new UniverseContextState(universeState, synchronizerState, canvasState, axisShowing, fpsShowing,
-                navigatorState);
+        UniverseContext3DStateFactory universeContext3DStateFactory = new UniverseContext3DStateFactory();
+        UniverseContext3DState universeContext3DState = universeContext3DStateFactory.createUniverseContext3DState();
+        return new UniverseContextState(universeState, synchronizerState, fpsShowing, universeContext3DState);
     }
 
     /**
-     * Creates an empty universe context state
+     * Creates an empty universe context state with the following values :
      * <ul>
-     * <li>no trees</li>
      * <li>an empty universe state</li>
-     * <li>an empty canvas state</li>
-     * <li>axisShowing = true</li>
+     * <li>a default synchronizer state</li>
      * <li>fpsShowing = false</li>
-     * <li>navigator = 4 meters right, 2 meters high, 20 meters back</li>
+     * <li>a default universe context 3D state</li>
      * </ul>
      * 
      * @return
      */
     public UniverseContextState createEmptyUniverseContextState() {
-        boolean axisShowing = true;
         boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createEmptyUniverseState();
         MainSynchronizerStateFactory synchroStateFactory = new MainSynchronizerStateFactory();
         MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
-        SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
-        SimLifeCanvas3DState canvasState = canvasStateFactory.createEmptyCanvasState();
-        NavigatorStateFactory navigatorStateFactory = new NavigatorStateFactory();
-        NavigatorState navigatorState = navigatorStateFactory.createNavigatorState();
-        return new UniverseContextState(universeState, synchronizerState, canvasState, axisShowing, fpsShowing,
-                navigatorState);
+        UniverseContext3DStateFactory universeContext3DStateFactory = new UniverseContext3DStateFactory();
+        UniverseContext3DState universeContext3DState = universeContext3DStateFactory.createUniverseContext3DState();
+        return new UniverseContextState(universeState, synchronizerState, fpsShowing, universeContext3DState);
     }
 
 }

@@ -16,25 +16,32 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.universe;
+package barsuift.simLife.j3d.universe;
 
-import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.universe.UniverseContext3D;
-import barsuift.simLife.process.MainSynchronizer;
-import barsuift.simLife.time.FpsCounter;
+import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 
-public interface UniverseContext extends Persistent<UniverseContextState> {
 
-    public Universe getUniverse();
+public class UniverseContext3DStateTest extends JaxbTestCase {
 
-    public MainSynchronizer getSynchronizer();
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-    public void setFpsShowing(boolean fpsShowing);
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
 
-    public boolean isFpsShowing();
+    @Override
+    protected String getPackage() {
+        return "barsuift.simLife.j3d.universe";
+    }
 
-    public FpsCounter getFpsCounter();
-
-    public UniverseContext3D getUniverseContext3D();
+    public void testJaxb() throws Exception {
+        UniverseContext3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverseContext3DState();
+        write(univ3DState);
+        UniverseContext3DState univ3DState2 = (UniverseContext3DState) read();
+        assertEquals(univ3DState, univ3DState2);
+    }
 
 }

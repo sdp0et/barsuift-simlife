@@ -21,52 +21,35 @@ package barsuift.simLife.universe;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.j3d.SimLifeCanvas3DState;
-import barsuift.simLife.j3d.terrain.NavigatorState;
+import barsuift.simLife.j3d.universe.UniverseContext3DState;
 import barsuift.simLife.process.MainSynchronizerState;
 
 @XmlRootElement
 public class UniverseContextState implements State {
 
-    private UniverseState universeState;
+    private UniverseState universe;
 
     private MainSynchronizerState synchronizer;
 
-    private SimLifeCanvas3DState canvasState;
-
-    private boolean axisShowing;
-
     private boolean fpsShowing;
 
-    private NavigatorState navigator;
+    private UniverseContext3DState universeContext3D;
 
     public UniverseContextState() {
         super();
-        this.universeState = new UniverseState();
+        this.universe = new UniverseState();
         this.synchronizer = new MainSynchronizerState();
-        this.canvasState = new SimLifeCanvas3DState();
-        this.axisShowing = true;
         this.fpsShowing = false;
-        this.navigator = new NavigatorState();
+        this.universeContext3D = new UniverseContext3DState();
     }
 
-    public UniverseContextState(UniverseState universeState, MainSynchronizerState synchronizer,
-            SimLifeCanvas3DState canvasState, boolean axisShowing, boolean fpsShowing, NavigatorState navigator) {
+    public UniverseContextState(UniverseState universe, MainSynchronizerState synchronizer, boolean fpsShowing,
+            UniverseContext3DState universeContext3D) {
         super();
-        this.universeState = universeState;
+        this.universe = universe;
         this.synchronizer = synchronizer;
-        this.canvasState = canvasState;
-        this.axisShowing = axisShowing;
         this.fpsShowing = fpsShowing;
-        this.navigator = navigator;
-    }
-
-    public boolean isAxisShowing() {
-        return axisShowing;
-    }
-
-    public void setAxisShowing(boolean axisShowing) {
-        this.axisShowing = axisShowing;
+        this.universeContext3D = universeContext3D;
     }
 
     public boolean isFpsShowing() {
@@ -77,12 +60,12 @@ public class UniverseContextState implements State {
         this.fpsShowing = fpsShowing;
     }
 
-    public UniverseState getUniverseState() {
-        return universeState;
+    public UniverseState getUniverse() {
+        return universe;
     }
 
-    public void setUniverseState(UniverseState universeState) {
-        this.universeState = universeState;
+    public void setUniverse(UniverseState universe) {
+        this.universe = universe;
     }
 
     public MainSynchronizerState getSynchronizer() {
@@ -93,32 +76,22 @@ public class UniverseContextState implements State {
         this.synchronizer = synchronizer;
     }
 
-    public SimLifeCanvas3DState getCanvasState() {
-        return canvasState;
+    public UniverseContext3DState getUniverseContext3D() {
+        return universeContext3D;
     }
 
-    public void setCanvasState(SimLifeCanvas3DState canvasState) {
-        this.canvasState = canvasState;
-    }
-
-    public NavigatorState getNavigator() {
-        return navigator;
-    }
-
-    public void setNavigator(NavigatorState navigator) {
-        this.navigator = navigator;
+    public void setUniverseContext3D(UniverseContext3DState universeContext3D) {
+        this.universeContext3D = universeContext3D;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (axisShowing ? 1231 : 1237);
         result = prime * result + (fpsShowing ? 1231 : 1237);
-        result = prime * result + ((canvasState == null) ? 0 : canvasState.hashCode());
-        result = prime * result + ((universeState == null) ? 0 : universeState.hashCode());
+        result = prime * result + ((universe == null) ? 0 : universe.hashCode());
         result = prime * result + ((synchronizer == null) ? 0 : synchronizer.hashCode());
-        result = prime * result + ((navigator == null) ? 0 : navigator.hashCode());
+        result = prime * result + ((universeContext3D == null) ? 0 : universeContext3D.hashCode());
         return result;
     }
 
@@ -131,21 +104,13 @@ public class UniverseContextState implements State {
         if (getClass() != obj.getClass())
             return false;
         UniverseContextState other = (UniverseContextState) obj;
-        if (axisShowing != other.axisShowing)
-            return false;
         if (fpsShowing != other.fpsShowing)
             return false;
-        if (canvasState == null) {
-            if (other.canvasState != null)
+        if (universe == null) {
+            if (other.universe != null)
                 return false;
         } else
-            if (!canvasState.equals(other.canvasState))
-                return false;
-        if (universeState == null) {
-            if (other.universeState != null)
-                return false;
-        } else
-            if (!universeState.equals(other.universeState))
+            if (!universe.equals(other.universe))
                 return false;
         if (synchronizer == null) {
             if (other.synchronizer != null)
@@ -153,11 +118,11 @@ public class UniverseContextState implements State {
         } else
             if (!synchronizer.equals(other.synchronizer))
                 return false;
-        if (navigator == null) {
-            if (other.navigator != null)
+        if (universeContext3D == null) {
+            if (other.universeContext3D != null)
                 return false;
         } else
-            if (!navigator.equals(other.navigator))
+            if (!universeContext3D.equals(other.universeContext3D))
                 return false;
         return true;
     }
@@ -166,9 +131,8 @@ public class UniverseContextState implements State {
 
     @Override
     public String toString() {
-        return "UniverseContextState [universeState=" + universeState + ", synchronizer=" + synchronizer
-                + ", canvasState=" + canvasState + ", axisShowing=" + axisShowing + ", fpsShowing=" + fpsShowing
-                + ", navigator=" + navigator + "]";
+        return "UniverseContextState [universe=" + universe + ", synchronizer=" + synchronizer + ", fpsShowing="
+                + fpsShowing + ", universeContext3D=" + universeContext3D + "]";
     }
 
 }

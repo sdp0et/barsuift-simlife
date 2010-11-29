@@ -57,7 +57,7 @@ public class MockUniverse implements Universe {
 
     private UniverseState state;
 
-    private int synchronizedCalled;
+    private int nbSynchronizedCalled;
 
     public MockUniverse() {
         reset();
@@ -74,7 +74,7 @@ public class MockUniverse implements Universe {
         date = new SimLifeDate();
         universe3D = new MockUniverse3D();
         state = new UniverseState();
-        synchronizedCalled = 0;
+        nbSynchronizedCalled = 0;
     }
 
 
@@ -182,11 +182,11 @@ public class MockUniverse implements Universe {
 
     @Override
     public void synchronize() {
-        this.synchronizedCalled++;
+        this.nbSynchronizedCalled++;
     }
 
-    public int getNbSynchronize() {
-        return synchronizedCalled;
+    public int getNbSynchronizeCalled() {
+        return nbSynchronizedCalled;
     }
 
 }

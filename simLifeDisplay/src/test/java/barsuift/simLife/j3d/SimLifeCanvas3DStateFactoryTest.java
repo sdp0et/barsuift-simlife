@@ -13,16 +13,9 @@ public class SimLifeCanvas3DStateFactoryTest extends TestCase {
         super.tearDown();
     }
 
-    public void testCreateRandomUniverseContextState() {
+    public void testCreateCanvas3DState() {
         SimLifeCanvas3DStateFactory factory = new SimLifeCanvas3DStateFactory();
-        SimLifeCanvas3DState canvasState = factory.createRandomCanvasState();
-        assertFalse(canvasState.isFpsShowing());
-    }
-
-
-    public void testCreateEmptyUniverseContextState() {
-        SimLifeCanvas3DStateFactory factory = new SimLifeCanvas3DStateFactory();
-        SimLifeCanvas3DState canvasState = factory.createEmptyCanvasState();
+        SimLifeCanvas3DState canvasState = factory.createCanvas3DState();
         assertFalse(canvasState.isFpsShowing());
     }
 

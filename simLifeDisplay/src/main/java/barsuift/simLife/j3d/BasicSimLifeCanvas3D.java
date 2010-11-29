@@ -92,6 +92,8 @@ public class BasicSimLifeCanvas3D extends SimLifeCanvas3D {
     @Override
     public void setFpsShowing(boolean fpsShowing) {
         this.fpsShowing = fpsShowing;
+        // force the painting to be sure the FPS is shown
+        paint(render2d);
     }
 
     public boolean isFpsShowing() {

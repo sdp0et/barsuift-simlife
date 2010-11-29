@@ -16,25 +16,29 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.universe;
+package barsuift.simLife.j3d.universe;
 
 import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.universe.UniverseContext3D;
-import barsuift.simLife.process.MainSynchronizer;
-import barsuift.simLife.time.FpsCounter;
+import barsuift.simLife.j3d.SimLifeCanvas3D;
+import barsuift.simLife.j3d.terrain.Navigator;
 
-public interface UniverseContext extends Persistent<UniverseContextState> {
+public interface UniverseContext3D extends Persistent<UniverseContext3DState> {
 
-    public Universe getUniverse();
-
-    public MainSynchronizer getSynchronizer();
+    public SimLifeCanvas3D getCanvas3D();
 
     public void setFpsShowing(boolean fpsShowing);
 
     public boolean isFpsShowing();
 
-    public FpsCounter getFpsCounter();
+    /**
+     * Add or remove the X-Y-Z axis as 3 segments of 5 meters along X, Y, and Z axis
+     * 
+     * @param axisShowing
+     */
+    public void setAxisShowing(boolean axisShowing);
 
-    public UniverseContext3D getUniverseContext3D();
+    public boolean isAxisShowing();
+
+    public Navigator getNavigator();
 
 }
