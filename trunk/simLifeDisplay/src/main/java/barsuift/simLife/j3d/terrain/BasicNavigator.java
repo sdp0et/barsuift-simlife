@@ -50,7 +50,9 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
 // tryMove).
 // TODO 001. 001. use a simplified version of the ElevationModel.getElevationAt(x,z) from nav project to adjust the
 // y height.
-// FIXME once fully completed, unit test
+// FIXME 001. 999. once fully completed, unit test
+//TODO 001. 002. create a walking mode and a fly mode
+// TODO 001. 003. change nav keys : CTRL is for head movement, while basic keys are for body movement.
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
 
     /**
