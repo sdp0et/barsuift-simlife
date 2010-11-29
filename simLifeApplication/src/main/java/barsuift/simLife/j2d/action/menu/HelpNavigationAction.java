@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 
 import barsuift.simLife.j2d.menu.Mnemonics;
 
+// TODO 001. 004. update the Navigation Help Menu
 public class HelpNavigationAction extends AbstractAction {
 
     private static final long serialVersionUID = 7758429822275467527L;
