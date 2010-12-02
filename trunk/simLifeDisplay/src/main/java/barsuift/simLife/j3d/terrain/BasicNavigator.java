@@ -50,7 +50,6 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
 // y height.
 // FIXME 001. 999. once fully completed, unit test
 // TODO 001. 002. create a walking mode and a fly mode
-// TODO 001. 003. change nav keys : CTRL is for head movement, while basic keys are for body movement.
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
 
     /**
@@ -233,6 +232,36 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
             return;
         }
         if (keycode == KeyEvent.VK_LEFT) {
+            doMove(LEFT);
+            return;
+        }
+        if (keycode == KeyEvent.VK_RIGHT) {
+            doMove(RIGHT);
+            return;
+        }
+        if (keycode == KeyEvent.VK_PAGE_UP) {
+            upMoves++;
+            doMove(UP);
+            return;
+        }
+        if (keycode == KeyEvent.VK_PAGE_DOWN) {
+            // TODO 001. 001. remove this code when the height is properly managed
+            // don't drop below start height
+            if (upMoves > 0) {
+                upMoves--;
+                doMove(DOWN);
+            }
+            return;
+        }
+    }
+
+    /**
+     * Moves viewer up or down, left or right
+     * 
+     * @param keycode
+     */
+    private void ctrlMove(int keycode) {
+        if (keycode == KeyEvent.VK_LEFT) {
             rotateY(ROTATION_STEP_KEYBOARD);
             return;
         }
@@ -246,36 +275,6 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         }
         if (keycode == KeyEvent.VK_PAGE_DOWN) {
             rotateX(-ROTATION_STEP_KEYBOARD);
-            return;
-        }
-    }
-
-    /**
-     * Moves viewer up or down, left or right
-     * 
-     * @param keycode
-     */
-    private void ctrlMove(int keycode) {
-        if (keycode == KeyEvent.VK_UP) {
-            upMoves++;
-            doMove(UP);
-            return;
-        }
-        if (keycode == KeyEvent.VK_DOWN) {
-            // TODO 001. 001. remove this code when the height is properly managed
-            // don't drop below start height
-            if (upMoves > 0) {
-                upMoves--;
-                doMove(DOWN);
-            }
-            return;
-        }
-        if (keycode == KeyEvent.VK_LEFT) {
-            doMove(LEFT);
-            return;
-        }
-        if (keycode == KeyEvent.VK_RIGHT) {
-            doMove(RIGHT);
             return;
         }
     }

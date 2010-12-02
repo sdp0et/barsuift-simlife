@@ -26,7 +26,6 @@ import javax.swing.JOptionPane;
 
 import barsuift.simLife.j2d.menu.Mnemonics;
 
-// TODO 001. 004. update the Navigation Help Menu
 public class HelpNavigationAction extends AbstractAction {
 
     private static final long serialVersionUID = 7758429822275467527L;
@@ -45,20 +44,26 @@ public class HelpNavigationAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         String navigationMessage = "Here are the navigation keys :\n\n";
+        navigationMessage += "Body movement\n";
+        navigationMessage += "-------------\n";
         navigationMessage += "Up : Move forward\n";
         navigationMessage += "Down : Move backward\n";
         navigationMessage += "\n";
-        navigationMessage += "Left : Rotate left\n";
-        navigationMessage += "Right : Rotate right\n";
+        navigationMessage += "Left : Translate left\n";
+        navigationMessage += "Right : Translate right\n";
         navigationMessage += "\n";
-        navigationMessage += "Alt + Left : Translate left\n";
-        navigationMessage += "Alt + Right : Translate right\n";
+        navigationMessage += "PgUp : Translate up (only in free mode)\n";
+        navigationMessage += "PdDown : Translate down (only in free mode)\n";
         navigationMessage += "\n";
-        navigationMessage += "PgUp : Rotate down\n";
-        navigationMessage += "PgDown : Rotate up\n";
+        navigationMessage += "Head movement\n";
+        navigationMessage += "-------------\n";
+        navigationMessage += "Keep right mouse button pressed while moving the mouse\n";
         navigationMessage += "\n";
-        navigationMessage += "Alt + PgUp : Translate up\n";
-        navigationMessage += "Alt + PdDown : Translate down\n";
+        navigationMessage += "Ctrl + Left : Rotate left\n";
+        navigationMessage += "Ctrl + Right : Rotate right\n";
+        navigationMessage += "\n";
+        navigationMessage += "Ctrl + PgUp : Rotate up\n";
+        navigationMessage += "Ctrl + PgDown : Rotate down\n";
         JOptionPane.showMessageDialog(parentFrame, navigationMessage, "Navigation Help",
                 JOptionPane.INFORMATION_MESSAGE);
     }
