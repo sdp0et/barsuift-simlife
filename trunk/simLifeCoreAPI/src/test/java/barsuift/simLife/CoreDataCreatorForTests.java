@@ -199,7 +199,8 @@ public final class CoreDataCreatorForTests {
     public static EnvironmentState createRandomEnvironmentState() {
         SunState sunState = createRandomSunState();
         Environment3DState env3DState = DisplayDataCreatorForTests.createRandomEnvironment3DState();
-        return new EnvironmentState(sunState, env3DState);
+        LandscapeState landscape = createRandomLandscapeState();
+        return new EnvironmentState(sunState, landscape, env3DState);
     }
 
     /**
@@ -210,7 +211,8 @@ public final class CoreDataCreatorForTests {
     public static EnvironmentState createSpecificEnvironmentState() {
         SunState sunState = createSpecificSunState();
         Environment3DState env3DState = DisplayDataCreatorForTests.createSpecificEnvironment3DState();
-        return new EnvironmentState(sunState, env3DState);
+        LandscapeState landscape = createSpecificLandscapeState();
+        return new EnvironmentState(sunState, landscape, env3DState);
     }
 
     public static LandscapeState createRandomLandscapeState() {

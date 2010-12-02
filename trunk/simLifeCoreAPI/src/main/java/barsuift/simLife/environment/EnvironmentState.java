@@ -22,21 +22,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.environment.Environment3DState;
+import barsuift.simLife.terrain.LandscapeState;
 
 @XmlRootElement
 public class EnvironmentState implements State {
 
     private SunState sunState;
 
+    private LandscapeState landscape;
+
     private Environment3DState environment3DState;
 
     public EnvironmentState() {
         this.sunState = new SunState();
+        this.landscape = new LandscapeState();
         this.environment3DState = new Environment3DState();
     }
 
-    public EnvironmentState(SunState sunState, Environment3DState environment3DState) {
+    public EnvironmentState(SunState sunState, LandscapeState landscape, Environment3DState environment3DState) {
         this.sunState = sunState;
+        this.landscape = landscape;
         this.environment3DState = environment3DState;
     }
 
@@ -46,6 +51,14 @@ public class EnvironmentState implements State {
 
     public SunState getSunState() {
         return sunState;
+    }
+
+    public LandscapeState getLandscape() {
+        return landscape;
+    }
+
+    public void setLandscape(LandscapeState landscape) {
+        this.landscape = landscape;
     }
 
     public Environment3DState getEnvironment3DState() {
@@ -62,6 +75,7 @@ public class EnvironmentState implements State {
         int result = 1;
         result = prime * result + ((environment3DState == null) ? 0 : environment3DState.hashCode());
         result = prime * result + ((sunState == null) ? 0 : sunState.hashCode());
+        result = prime * result + ((landscape == null) ? 0 : landscape.hashCode());
         return result;
     }
 
@@ -86,12 +100,19 @@ public class EnvironmentState implements State {
         } else
             if (!sunState.equals(other.sunState))
                 return false;
+        if (landscape == null) {
+            if (other.landscape != null)
+                return false;
+        } else
+            if (!landscape.equals(other.landscape))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "EnvironmentState [sunState=" + sunState + ", environment3DState=" + environment3DState + "]";
+        return "EnvironmentState [sunState=" + sunState + ", landscape=" + landscape + ", environment3DState="
+                + environment3DState + "]";
     }
 
 }

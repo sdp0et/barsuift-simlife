@@ -20,6 +20,8 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.j3d.environment.Environment3D;
 import barsuift.simLife.j3d.environment.MockEnvironment3D;
+import barsuift.simLife.terrain.Landscape;
+import barsuift.simLife.terrain.MockLandscape;
 
 
 public class MockEnvironment implements Environment {
@@ -31,6 +33,8 @@ public class MockEnvironment implements Environment {
     private int synchronizedCalled;
 
     private Environment3D env3D = new MockEnvironment3D();
+
+    private Landscape landscape = new MockLandscape();
 
     @Override
     public Sun getSun() {
@@ -70,6 +74,15 @@ public class MockEnvironment implements Environment {
 
     public void setEnvironment3D(Environment3D env3D) {
         this.env3D = env3D;
+    }
+
+    @Override
+    public Landscape getLandscape() {
+        return landscape;
+    }
+
+    public void setLandscape(Landscape landscape) {
+        this.landscape = landscape;
     }
 
 }

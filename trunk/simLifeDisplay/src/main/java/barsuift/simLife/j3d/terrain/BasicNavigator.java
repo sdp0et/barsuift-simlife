@@ -44,8 +44,6 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
  * This class is widely inspired from KeyBehavior class writtent by Andrew Davison (ad@fivedots.coe.psu.ac.th).
  * 
  */
-// TODO 000. 001. create A Landscape class skeleton, and Landscape3D with double:getHeight(x,z) and
-// boolean:inLandscape(x,z)
 // TODO 001. 001. add landscape.inLandscape(x,z) in the doMove (see terra/src/KeyBehavior, and split into doMove and
 // tryMove).
 // TODO 001. 001. use a simplified version of the ElevationModel.getElevationAt(x,z) from nav project to adjust the
