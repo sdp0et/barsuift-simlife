@@ -8,7 +8,9 @@
 
 New features
 ------------
-Improve the navigation controls 
+Improve the navigation controls
+  * navigation style is first-person style
+  * create a walking mode and a fly mode
 
 
 Bug fixes

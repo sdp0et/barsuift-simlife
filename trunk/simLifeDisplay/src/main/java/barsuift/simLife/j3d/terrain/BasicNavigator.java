@@ -49,7 +49,6 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
 // TODO 001. 001. use a simplified version of the ElevationModel.getElevationAt(x,z) from nav project to adjust the
 // y height.
 // FIXME 001. 999. once fully completed, unit test
-// TODO 001. 002. create a walking mode and a fly mode
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
 
     /**
