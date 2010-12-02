@@ -41,6 +41,9 @@ public class Accelerators {
     // Ctrl + F
     public static final KeyStroke FPS = KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK);
 
+    // Ctrl + M
+    public static final KeyStroke NAVIGATION_MODE = KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK);
+
     // Ctrl + N
     public static final KeyStroke NEW_EMPTY = KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK);
 

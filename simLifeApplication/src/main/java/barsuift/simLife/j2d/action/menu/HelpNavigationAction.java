@@ -52,8 +52,8 @@ public class HelpNavigationAction extends AbstractAction {
         navigationMessage += "Left : Translate left\n";
         navigationMessage += "Right : Translate right\n";
         navigationMessage += "\n";
-        navigationMessage += "PgUp : Translate up (only in free mode)\n";
-        navigationMessage += "PdDown : Translate down (only in free mode)\n";
+        navigationMessage += "PgUp : Translate up (only in fly mode)\n";
+        navigationMessage += "PdDown : Translate down (only in fly mode)\n";
         navigationMessage += "\n";
         navigationMessage += "Head movement\n";
         navigationMessage += "-------------\n";

@@ -32,18 +32,22 @@ public class NavigatorState implements State {
 
     private double rotationY;
 
+    private NavigationMode navigationMode;
+
     public NavigatorState() {
         super();
         this.translation = new Tuple3dState();
         this.rotationX = 0;
         this.rotationY = 0;
+        this.navigationMode = NavigationMode.DEFAULT;
     }
 
-    public NavigatorState(Tuple3dState translation, double rotationX, double rotationY) {
+    public NavigatorState(Tuple3dState translation, double rotationX, double rotationY, NavigationMode navigationMode) {
         super();
         this.translation = translation;
         this.rotationX = rotationX;
         this.rotationY = rotationY;
+        this.navigationMode = navigationMode;
     }
 
     public Tuple3dState getTranslation() {
@@ -70,6 +74,14 @@ public class NavigatorState implements State {
         this.rotationY = rotationY;
     }
 
+    public NavigationMode getNavigationMode() {
+        return navigationMode;
+    }
+
+    public void setNavigationMode(NavigationMode navigationMode) {
+        this.navigationMode = navigationMode;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -80,6 +92,7 @@ public class NavigatorState implements State {
         temp = Double.doubleToLongBits(rotationY);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         result = prime * result + ((translation == null) ? 0 : translation.hashCode());
+        result = prime * result + ((navigationMode == null) ? 0 : navigationMode.hashCode());
         return result;
     }
 
@@ -102,13 +115,15 @@ public class NavigatorState implements State {
         } else
             if (!translation.equals(other.translation))
                 return false;
+        if (navigationMode != other.navigationMode)
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
         return "NavigatorState [translation=" + translation + ", rotationX=" + rotationX + ", rotationY=" + rotationY
-                + "]";
+                + ", navigationMode=" + navigationMode + "]";
     }
 
 }

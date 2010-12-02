@@ -19,20 +19,12 @@
 package barsuift.simLife.j3d.terrain;
 
 
-public interface Navigator {
+public enum NavigationMode {
 
-    /**
-     * Reset the view along the Z axis, parallel to the (X,Z) plan. Position is (4, 2, 20).
-     */
-    public void resetToOriginalPosition();
+    WALK,
 
-    /**
-     * Reset the view along the Z axis, parallel to the (X,Z) plan. Position is (currentX, 2, currentZ).
-     */
-    public void resetToNominalViewAngle();
+    FLY;
 
-    public NavigationMode getNavigationMode();
-
-    public void setNavigationMode(NavigationMode navigationMode);
+    public static final NavigationMode DEFAULT = WALK;
 
 }

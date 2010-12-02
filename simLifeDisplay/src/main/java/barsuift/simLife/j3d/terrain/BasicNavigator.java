@@ -113,8 +113,9 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
 
     private int oldy = 0;
 
-    private final WakeupCondition wakeUpCondition;
+    private NavigationMode navigationMode;
 
+    private final WakeupCondition wakeUpCondition;
 
 
 
@@ -127,11 +128,12 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         this.translation = state.getTranslation().toVectorValue();
         rotateX(state.getRotationX());
         rotateY(state.getRotationY());
-        // wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
-        // new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
+        this.navigationMode = state.getNavigationMode();
         wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
-                new WakeupOnAWTEvent(KeyEvent.KEY_RELEASED), new WakeupOnAWTEvent(KeyEvent.KEY_TYPED),
                 new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
+        // wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
+        // new WakeupOnAWTEvent(KeyEvent.KEY_RELEASED), new WakeupOnAWTEvent(KeyEvent.KEY_TYPED),
+        // new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
     }
 
     public void initialize() {
@@ -239,19 +241,22 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
             doMove(RIGHT);
             return;
         }
-        if (keycode == KeyEvent.VK_PAGE_UP) {
-            upMoves++;
-            doMove(UP);
-            return;
-        }
-        if (keycode == KeyEvent.VK_PAGE_DOWN) {
-            // TODO 001. 001. remove this code when the height is properly managed
-            // don't drop below start height
-            if (upMoves > 0) {
-                upMoves--;
-                doMove(DOWN);
+        // only available in FLY mode
+        if (navigationMode == NavigationMode.FLY) {
+            if (keycode == KeyEvent.VK_PAGE_UP) {
+                upMoves++;
+                doMove(UP);
+                return;
             }
-            return;
+            if (keycode == KeyEvent.VK_PAGE_DOWN) {
+                // TODO 001. 001. remove this code when the height is properly managed
+                // don't drop below start height
+                if (upMoves > 0) {
+                    upMoves--;
+                    doMove(DOWN);
+                }
+                return;
+            }
         }
     }
 
@@ -292,7 +297,6 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
             rotationY += MAX_ANGLE;
 
         transformRotationY.set(new AxisAngle4d(0.0, 1.0, 0.0, rotationY));
-        // propagateTransforms();
     }
 
     /**
@@ -308,20 +312,19 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
             rotationX += MAX_ANGLE;
 
         transformRotationX.set(new AxisAngle4d(1.0, 0.0, 0.0, rotationX));
-        // propagateTransforms();
     }
 
     private void doMove(Vector3d theMove) {
         Transform3D transform = new Transform3D();
         transform.mul(transformRotationY);
-        // FIXME in walking move : do not multiply by X rotation
-        transform.mul(transformRotationX);
+        if (navigationMode == NavigationMode.FLY) {
+            transform.mul(transformRotationX);
+        }
         // new local move vector
         Vector3d moveVector = new Vector3d(theMove);
         // translates movement based on heading
         transform.transform(moveVector);
         translation.add(moveVector);
-        // propagateTransforms();
     }
 
     private void propagateTransforms() {
@@ -332,6 +335,19 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         targetTG.setTransform(transform);
     }
 
+    public NavigationMode getNavigationMode() {
+        return navigationMode;
+    }
+
+    public void setNavigationMode(NavigationMode navigationMode) {
+        this.navigationMode = navigationMode;
+        // FIXME use landscape.getHeight() for reset to real height value
+        // if new mode is WALK, then go back to floor
+        if (navigationMode == NavigationMode.WALK) {
+            translation.y = NavigatorStateFactory.ORIGINAL_POSITION.y;
+            propagateTransforms();
+        }
+    }
 
     @Override
     public NavigatorState getState() {
