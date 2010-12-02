@@ -2,6 +2,9 @@ package barsuift.simLife.j3d.environment;
 
 import javax.media.j3d.Group;
 
+import barsuift.simLife.j3d.terrain.Landscape3D;
+import barsuift.simLife.j3d.terrain.MockLandscape3D;
+
 
 public class MockEnvironment3D implements Environment3D {
 
@@ -12,6 +15,8 @@ public class MockEnvironment3D implements Environment3D {
     private Group group = new Group();
 
     private Sun3D sun3D = new MockSun3D();
+
+    private Landscape3D landscape3D = new MockLandscape3D();
 
     @Override
     public Environment3DState getState() {
@@ -53,5 +58,13 @@ public class MockEnvironment3D implements Environment3D {
         sun3D = sun3d;
     }
 
+    @Override
+    public Landscape3D getLandscape3D() {
+        return landscape3D;
+    }
+
+    public void setLandscape3D(Landscape3D landscape3D) {
+        this.landscape3D = landscape3D;
+    }
 
 }

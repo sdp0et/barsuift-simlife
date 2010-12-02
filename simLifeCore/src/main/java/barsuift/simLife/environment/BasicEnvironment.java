@@ -20,12 +20,16 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.j3d.environment.BasicEnvironment3D;
 import barsuift.simLife.j3d.environment.Environment3D;
+import barsuift.simLife.terrain.BasicLandscape;
+import barsuift.simLife.terrain.Landscape;
 
 public class BasicEnvironment implements Environment {
 
     private final EnvironmentState state;
 
     private final Sun sun;
+
+    private final Landscape landscape;
 
     private final Environment3D env3D;
 
@@ -41,11 +45,18 @@ public class BasicEnvironment implements Environment {
         }
         this.state = state;
         this.sun = new BasicSun(state.getSunState());
+        this.landscape = new BasicLandscape(state.getLandscape());
         this.env3D = new BasicEnvironment3D(state.getEnvironment3DState(), this);
     }
 
+    @Override
     public Sun getSun() {
         return sun;
+    }
+
+    @Override
+    public Landscape getLandscape() {
+        return landscape;
     }
 
     @Override
@@ -61,6 +72,8 @@ public class BasicEnvironment implements Environment {
     @Override
     public void synchronize() {
         sun.synchronize();
+        landscape.synchronize();
+        env3D.synchronize();
     }
 
 }

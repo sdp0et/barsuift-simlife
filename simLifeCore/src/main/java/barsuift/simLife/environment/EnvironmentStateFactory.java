@@ -20,6 +20,8 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Environment3DStateFactory;
+import barsuift.simLife.terrain.LandscapeState;
+import barsuift.simLife.terrain.LandscapeStateFactory;
 
 
 public class EnvironmentStateFactory {
@@ -29,7 +31,9 @@ public class EnvironmentStateFactory {
         SunState sunState = sunStateFactory.createSunState();
         Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
         Environment3DState env3DState = env3DStateFactory.createEnvironment3DState();
-        return new EnvironmentState(sunState, env3DState);
+        LandscapeStateFactory landscapeFactory = new LandscapeStateFactory();
+        LandscapeState landscape = landscapeFactory.createLandscapeState();
+        return new EnvironmentState(sunState, landscape, env3DState);
     }
 
 }

@@ -25,6 +25,7 @@ import javax.media.j3d.Group;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.environment.Environment;
+import barsuift.simLife.j3d.terrain.Landscape3D;
 import barsuift.simLife.j3d.util.ColorConstants;
 
 
@@ -69,6 +70,11 @@ public class BasicEnvironment3D implements Environment3D {
         return environment.getSun().getSun3D();
     }
 
+    @Override
+    public Landscape3D getLandscape3D() {
+        return environment.getLandscape().getLandscape3D();
+    }
+
     public Environment3DState getState() {
         synchronize();
         return state;
@@ -78,6 +84,5 @@ public class BasicEnvironment3D implements Environment3D {
     public void synchronize() {
         // nothing to do
     }
-
 
 }
