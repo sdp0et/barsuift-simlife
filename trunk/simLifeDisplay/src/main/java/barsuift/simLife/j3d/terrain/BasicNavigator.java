@@ -60,12 +60,12 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     /**
      * Rotates by 3 degrees
      */
-    private static final double ROTATION_STEP_KEYBOARD = Math.PI / 60.0;
+    private static final double ROTATION_STEP_KEYBOARD = Math.toRadians(3);
 
     /**
      * Rotates by 1 degrees
      */
-    private static final double ROTATION_STEP_MOUSE = Math.PI / 180.0;
+    private static final double ROTATION_STEP_MOUSE = Math.toRadians(1);
 
     /**
      * Mouse sensitivity in pixel
