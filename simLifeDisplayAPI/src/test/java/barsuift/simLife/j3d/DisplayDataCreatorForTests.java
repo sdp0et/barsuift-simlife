@@ -25,6 +25,7 @@ import barsuift.simLife.Randomizer;
 import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
+import barsuift.simLife.j3d.terrain.Landscape3DState;
 import barsuift.simLife.j3d.terrain.NavigatorState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
@@ -105,8 +106,16 @@ public final class DisplayDataCreatorForTests {
     public static Environment3DState createSpecificEnvironment3DState() {
         return new Environment3DState();
     }
+    
+    public static Landscape3DState createRandomLandscape3DState() {
+        return new Landscape3DState();
+    }
 
-    public static NavigatorState createRandomNavigatorState() {
+    public static Landscape3DState createSpecificLandscape3DState() {
+        return new Landscape3DState();
+    }
+
+       public static NavigatorState createRandomNavigatorState() {
         Tuple3dState translation = createRandomTupleState();
         double rotationX = UtilDataCreatorForTests.createRandomRotation();
         double rotationY = UtilDataCreatorForTests.createRandomRotation();
