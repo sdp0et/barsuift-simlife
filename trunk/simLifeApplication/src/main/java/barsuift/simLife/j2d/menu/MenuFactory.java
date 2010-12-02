@@ -27,6 +27,7 @@ import barsuift.simLife.Application;
 import barsuift.simLife.j2d.action.menu.AxisAction;
 import barsuift.simLife.j2d.action.menu.FpsAction;
 import barsuift.simLife.j2d.action.menu.HelpNavigationAction;
+import barsuift.simLife.j2d.action.menu.NavigationModeAction;
 import barsuift.simLife.j2d.action.menu.NewEmptyAction;
 import barsuift.simLife.j2d.action.menu.NewRandomAction;
 import barsuift.simLife.j2d.action.menu.OpenAction;
@@ -91,6 +92,10 @@ public class MenuFactory {
         ResetToNominalViewAngleAction resetNominalViewAngleAction = new ResetToNominalViewAngleAction(application);
         JMenuItem resetNominalViewAngleItem = new JMenuItem(resetNominalViewAngleAction);
         windowMenu.add(resetNominalViewAngleItem);
+
+        NavigationModeAction navModeAction = new NavigationModeAction(application);
+        JMenuItem navModeItem = new JMenuItem(navModeAction);
+        windowMenu.add(navModeItem);
 
         return windowMenu;
     }
