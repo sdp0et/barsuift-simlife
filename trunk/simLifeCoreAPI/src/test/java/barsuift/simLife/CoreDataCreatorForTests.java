@@ -29,6 +29,7 @@ import barsuift.simLife.environment.SunState;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
+import barsuift.simLife.j3d.terrain.Landscape3DState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
@@ -42,6 +43,7 @@ import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.SynchronizerCoreState;
+import barsuift.simLife.terrain.LandscapeState;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.time.SimLifeDateState;
 import barsuift.simLife.tree.TreeBranchPartState;
@@ -209,6 +211,22 @@ public final class CoreDataCreatorForTests {
         SunState sunState = createSpecificSunState();
         Environment3DState env3DState = DisplayDataCreatorForTests.createSpecificEnvironment3DState();
         return new EnvironmentState(sunState, env3DState);
+    }
+
+    public static LandscapeState createRandomLandscapeState() {
+        Landscape3DState landscape3DState = DisplayDataCreatorForTests.createRandomLandscape3DState();
+        return new LandscapeState(landscape3DState);
+    }
+
+    /**
+     * Create a specific landscape state. The landscape3D state is made through the
+     * {@link DisplayDataCreatorForTests#createSpecificLandscape3DState()} method.
+     * 
+     * @return
+     */
+    public static LandscapeState createSpecificLandscapeState() {
+        Landscape3DState landscape3DState = DisplayDataCreatorForTests.createSpecificLandscape3DState();
+        return new LandscapeState(landscape3DState);
     }
 
     public static SunState createRandomSunState() {
