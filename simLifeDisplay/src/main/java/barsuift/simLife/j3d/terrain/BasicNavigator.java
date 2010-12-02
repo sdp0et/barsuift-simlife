@@ -48,6 +48,7 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
 // tryMove).
 // TODO 001. 001. use a simplified version of the ElevationModel.getElevationAt(x,z) from nav project to adjust the
 // y height.
+// TODO 001. 010. find a way to deal with multiple key presses (with combination of KEY_PRESSED and KEY_RELEASED
 // FIXME 001. 999. once fully completed, unit test
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
 
