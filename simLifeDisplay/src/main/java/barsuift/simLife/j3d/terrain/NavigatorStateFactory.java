@@ -9,7 +9,10 @@ public class NavigatorStateFactory {
 
     public static final double VIEWER_SIZE = 2;
 
-    // FIXME the original position should depend of the landscape height at this point
+    /**
+     * The original viewer position. Be careful that the Y coordinate may not fit with the landscape. Please adjust the
+     * height to the terrain when using this constant.
+     */
     public static final Vector3d ORIGINAL_POSITION = new Vector3d(4, VIEWER_SIZE, 20);
 
     public static final double ORIGINAL_ROTATION_X = 0;

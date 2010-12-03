@@ -45,7 +45,7 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
  * 
  */
 // TODO 001. 010. find a way to deal with multiple key presses (with combination of KEY_PRESSED and KEY_RELEASED
-// FIXME 001. 999. once fully completed, unit test
+// TODO 001. 009. unit test
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
 
     /**
@@ -130,6 +130,9 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         rotateX(state.getRotationX());
         rotateY(state.getRotationY());
         this.navigationMode = state.getNavigationMode();
+        if (navigationMode == NavigationMode.WALK) {
+            resetHeightToWalkMode();
+        }
         wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
                 new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
         // wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
@@ -395,9 +398,13 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         this.navigationMode = navigationMode;
         // if new mode is WALK, then go back to floor
         if (navigationMode == NavigationMode.WALK) {
-            translation.y = landscape3D.getHeight(translation.x, translation.z) + NavigatorStateFactory.VIEWER_SIZE;
+            resetHeightToWalkMode();
             propagateTransforms();
         }
+    }
+
+    private void resetHeightToWalkMode() {
+        translation.y = landscape3D.getHeight(translation.x, translation.z) + NavigatorStateFactory.VIEWER_SIZE;
     }
 
     @Override
@@ -425,16 +432,22 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         rotationY = NavigatorStateFactory.ORIGINAL_ROTATION_Y;
         transformRotationY.set(new AxisAngle4d(0.0, 1.0, 0.0, rotationY));
         translation = new Vector3d(NavigatorStateFactory.ORIGINAL_POSITION);
+        if (navigationMode == NavigationMode.WALK) {
+            resetHeightToWalkMode();
+        }
         propagateTransforms();
     }
 
     @Override
     public void resetToNominalViewAngle() {
-        rotationX = 0;
-        transformRotationX.set(new AxisAngle4d(1.0, 0.0, 0.0, 0));
-        rotationY = 0;
-        transformRotationY.set(new AxisAngle4d(0.0, 1.0, 0.0, 0));
-        translation.y = 2;
+        rotationX = NavigatorStateFactory.ORIGINAL_ROTATION_X;
+        transformRotationX.set(new AxisAngle4d(1.0, 0.0, 0.0, rotationX));
+        rotationY = NavigatorStateFactory.ORIGINAL_ROTATION_Y;
+        transformRotationY.set(new AxisAngle4d(0.0, 1.0, 0.0, rotationY));
+        translation.y = NavigatorStateFactory.VIEWER_SIZE;
+        if (navigationMode == NavigationMode.WALK) {
+            resetHeightToWalkMode();
+        }
         propagateTransforms();
     }
 
