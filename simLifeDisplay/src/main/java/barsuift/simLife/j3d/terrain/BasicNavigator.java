@@ -46,7 +46,6 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
  */
 // TODO 001. 010. find a way to deal with multiple key presses (with combination of KEY_PRESSED and KEY_RELEASED
 // FIXME 001. 999. once fully completed, unit test
-// FIXME in FLY mode, it is possible to go under the ground in all moves but PG_UP or PG_DOWN
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
 
     /**
@@ -122,11 +121,6 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     private NavigationMode navigationMode;
 
     private final WakeupCondition wakeUpCondition;
-
-
-
-    private int upMoves = 0;
-
 
     public BasicNavigator(NavigatorState state, Landscape3D landscape3D) {
         super();
@@ -251,20 +245,11 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         // only available in FLY mode
         if (navigationMode == NavigationMode.FLY) {
             if (keycode == KeyEvent.VK_PAGE_UP) {
-                upMoves++;
-                doAbsoluteMove(UP);
+                doCheckedAbsoluteMove(UP);
                 return;
             }
             if (keycode == KeyEvent.VK_PAGE_DOWN) {
-                // Vector3d nextPosition = new Vector3d();
-                // nextPosition.add(translation, DOWN);
-
-                // TODO 001. 002. use tryMove when the height is properly managed
-                // don't drop below start height
-                if (upMoves > 0) {
-                    upMoves--;
-                    doAbsoluteMove(DOWN);
-                }
+                doCheckedAbsoluteMove(DOWN);
                 return;
             }
         }
@@ -347,15 +332,15 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         doMove(actualMove);
     }
 
-    // private void doCheckedAbsoluteMove(Vector3d theMove) {
-    // // next user position
-    // Vector3d nextLoc = tryAbsoluteMove(theMove);
-    // double height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
-    // double newY = Math.max(nextLoc.y, height + MIN_DISTANCE_FROM_GROUND);
-    // newY -= translation.y;
-    // Vector3d moveVector = new Vector3d(nextLoc.x, newY, nextLoc.z);
-    // translation.add(moveVector);
-    // }
+    private void doCheckedAbsoluteMove(Vector3d theMove) {
+        // next user position
+        Vector3d nextLoc = tryAbsoluteMove(theMove);
+        double height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
+        double newY = Math.max(nextLoc.y, height + MIN_DISTANCE_FROM_GROUND);
+        newY -= translation.y;
+        Vector3d moveVector = new Vector3d(theMove.x, newY, theMove.z);
+        translation.add(moveVector);
+    }
 
     private Vector3d tryMove(Vector3d theMove) {
         Transform3D transform = new Transform3D();
@@ -372,11 +357,11 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         return nextPosition;
     }
 
-    // private Vector3d tryAbsoluteMove(Vector3d theMove) {
-    // Vector3d nextPosition = new Vector3d();
-    // nextPosition.add(translation, theMove);
-    // return nextPosition;
-    // }
+    private Vector3d tryAbsoluteMove(Vector3d theMove) {
+        Vector3d nextPosition = new Vector3d();
+        nextPosition.add(translation, theMove);
+        return nextPosition;
+    }
 
     private void doMove(Vector3d theMove) {
         Transform3D transform = new Transform3D();
