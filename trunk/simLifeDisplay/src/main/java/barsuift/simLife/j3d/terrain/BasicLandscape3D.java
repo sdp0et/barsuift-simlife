@@ -27,14 +27,20 @@ public class BasicLandscape3D implements Landscape3D {
         this.state = state;
     }
 
+    // TODO 003. use a simplified version of the ElevationModel.getElevationAt(x,z) from nav project to adjust the
+    // y height.
     @Override
     public double getHeight(double x, double z) {
-        return 0;
+        // FIXME test code to remove
+        return x + z / 5;
+        // return 0;
     }
 
     @Override
     public boolean inLandscape(double x, double z) {
-        return true;
+        // FIXME test code to remove
+        return x > 0 && z > 0;
+        // return true;
     }
 
     @Override
