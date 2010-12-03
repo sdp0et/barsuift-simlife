@@ -27,6 +27,7 @@ import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
 import barsuift.simLife.j3d.terrain.BasicNavigator;
+import barsuift.simLife.j3d.terrain.Landscape3D;
 import barsuift.simLife.j3d.terrain.Navigator;
 import barsuift.simLife.universe.UniverseContext;
 
@@ -65,7 +66,8 @@ public class BasicUniverseContext3D implements UniverseContext3D {
         // allow the remove children from the root
         root.setCapability(Group.ALLOW_CHILDREN_WRITE);
 
-        navigator = new BasicNavigator(state.getNavigator());
+        Landscape3D landscape3D = universeContext.getUniverse().getEnvironment().getLandscape().getLandscape3D();
+        navigator = new BasicNavigator(state.getNavigator(), landscape3D);
         navigator.setSchedulingBounds(BOUNDS_FOR_ALL);
         simpleU.getViewingPlatform().setViewPlatformBehavior(navigator);
 
