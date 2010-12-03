@@ -130,9 +130,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         rotateX(state.getRotationX());
         rotateY(state.getRotationY());
         this.navigationMode = state.getNavigationMode();
-        if (navigationMode == NavigationMode.WALK) {
-            resetHeightToWalkMode();
-        }
+        adjustHeight();
         wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
                 new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
         // wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
@@ -397,15 +395,28 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
 
     public void setNavigationMode(NavigationMode navigationMode) {
         this.navigationMode = navigationMode;
-        // if new mode is WALK, then go back to floor
-        if (navigationMode == NavigationMode.WALK) {
-            resetHeightToWalkMode();
-            propagateTransforms();
+        adjustHeight();
+        propagateTransforms();
+    }
+
+    private void adjustHeight() {
+        switch (navigationMode) {
+        case FLY:
+            adjustHeightToFlyMode();
+            break;
+        case WALK:
+            adjustHeightToWalkMode();
+            break;
         }
     }
 
-    private void resetHeightToWalkMode() {
+    private void adjustHeightToWalkMode() {
         translation.y = landscape3D.getHeight(translation.x, translation.z) + NavigatorStateFactory.VIEWER_SIZE;
+    }
+
+    private void adjustHeightToFlyMode() {
+        double minHeight = landscape3D.getHeight(translation.x, translation.z) + MIN_DISTANCE_FROM_GROUND;
+        translation.y = Math.max(minHeight, translation.y);
     }
 
     @Override
@@ -434,9 +445,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         rotationY = NavigatorStateFactory.ORIGINAL_ROTATION_Y;
         transformRotationY.set(new AxisAngle4d(0.0, 1.0, 0.0, rotationY));
         translation = new Vector3d(NavigatorStateFactory.ORIGINAL_POSITION);
-        if (navigationMode == NavigationMode.WALK) {
-            resetHeightToWalkMode();
-        }
+        adjustHeight();
         propagateTransforms();
     }
 
@@ -447,9 +456,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         rotationY = NavigatorStateFactory.ORIGINAL_ROTATION_Y;
         transformRotationY.set(new AxisAngle4d(0.0, 1.0, 0.0, rotationY));
         translation.y = NavigatorStateFactory.VIEWER_SIZE;
-        if (navigationMode == NavigationMode.WALK) {
-            resetHeightToWalkMode();
-        }
+        adjustHeight();
         propagateTransforms();
     }
 
