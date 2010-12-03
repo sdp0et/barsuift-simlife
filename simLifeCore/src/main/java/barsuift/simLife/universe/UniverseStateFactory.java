@@ -46,6 +46,7 @@ public class UniverseStateFactory {
 
     static {
         // TODO 999. improve this random placement code
+        // TODO 001. 999. should take the landscape into account
         originPoints.put(new Long(0), new Point3d(0, 0, 0));
         originPoints.put(new Long(1), new Point3d(5, 0, 0));
         originPoints.put(new Long(2), new Point3d(2, 0, -4));
