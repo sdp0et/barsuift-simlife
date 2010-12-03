@@ -24,6 +24,8 @@ import java.awt.event.KeyEvent;
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.Tuple3dState;
 
+import com.sun.j3d.utils.universe.ViewingPlatform;
+
 
 public class BasicNavigatorTest extends TestCase {
 
@@ -39,6 +41,8 @@ public class BasicNavigatorTest extends TestCase {
         state = navigatorStateFactory.createNavigatorState();
         landscape3D = new MockLandscape3D();
         navigator = new BasicNavigator(state, landscape3D);
+        ViewingPlatform vp = new ViewingPlatform();
+        navigator.setViewingPlatform(vp);
     }
 
     protected void tearDown() throws Exception {
@@ -101,12 +105,97 @@ public class BasicNavigatorTest extends TestCase {
     }
 
     public void testResetToOriginalPosition() {
-        // also test goHome method which does the same thing
-        fail("Not yet implemented");
+
+        double height = 5;
+        landscape3D.setHeight(height);
+        navigator.resetToOriginalPosition();
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_X, navigator.getState().getRotationX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y, navigator.getState().getRotationY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, navigator.getState().getTranslation().getX());
+        assertEquals(height + NavigatorStateFactory.VIEWER_SIZE, navigator.getState().getTranslation().getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z, navigator.getState().getTranslation().getZ());
     }
 
-    public void testResetToNominalViewAngle() {
-        fail("Not yet implemented");
+    public void testGoHome() {
+        // FIXME idem
+    }
+
+    public void testResetToNominalViewAngle_WALK_0() {
+        navigator.setNavigationMode(NavigationMode.WALK);
+        double height = 0;
+        landscape3D.setHeight(height);
+        double expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
+        double expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE;
+        double expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
+        internalTestResetToNominalViewAngle(expectedHeight1, expectedHeight2, expectedHeight3);
+    }
+
+    public void testResetToNominalViewAngle_WALK_5() {
+        navigator.setNavigationMode(NavigationMode.WALK);
+        double height = 5;
+        landscape3D.setHeight(height);
+        double expectedHeight1 = height + NavigatorStateFactory.VIEWER_SIZE;
+        double expectedHeight2 = height + NavigatorStateFactory.VIEWER_SIZE;
+        double expectedHeight3 = height + NavigatorStateFactory.VIEWER_SIZE;
+        internalTestResetToNominalViewAngle(expectedHeight1, expectedHeight2, expectedHeight3);
+    }
+
+    public void testResetToNominalViewAngle_FLY_0() {
+        navigator.setNavigationMode(NavigationMode.FLY);
+        double height = 0;
+        landscape3D.setHeight(height);
+        double expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
+        double expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE + BasicNavigator.MOVE_STEP;
+        double expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
+        internalTestResetToNominalViewAngle(expectedHeight1, expectedHeight2, expectedHeight3);
+    }
+
+    public void testResetToNominalViewAngle_FLY_5() {
+        navigator.setNavigationMode(NavigationMode.FLY);
+        double height = 5;
+        landscape3D.setHeight(height);
+        double expectedHeight1 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
+        double expectedHeight2 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND + BasicNavigator.MOVE_STEP;
+        double expectedHeight3 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
+        internalTestResetToNominalViewAngle(expectedHeight1, expectedHeight2, expectedHeight3);
+    }
+
+    private void internalTestResetToNominalViewAngle(double expectedHeight1, double expectedHeight2,
+            double expectedHeight3) {
+        navigator.resetToNominalViewAngle();
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_X, navigator.getState().getRotationX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y, navigator.getState().getRotationY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, navigator.getState().getTranslation().getX());
+        assertEquals(expectedHeight1, navigator.getState().getTranslation().getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z, navigator.getState().getTranslation().getZ());
+
+        // move forward and up, then look up and left
+        KeyEvent eventKeyFwd = createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_UP);
+        KeyEvent eventKeyUp = createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_PAGE_UP);
+        KeyEvent eventKeyRotX = createKeyEvent(KeyEvent.KEY_PRESSED, KeyEvent.CTRL_MASK, KeyEvent.VK_PAGE_UP);
+        KeyEvent eventKeyRotY = createKeyEvent(KeyEvent.KEY_PRESSED, KeyEvent.CTRL_MASK, KeyEvent.VK_LEFT);
+        navigator.processKeyPressedEvent(eventKeyUp);
+        navigator.processKeyPressedEvent(eventKeyFwd);
+        navigator.processKeyPressedEvent(eventKeyRotX);
+        navigator.processKeyPressedEvent(eventKeyRotY);
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_X + BasicNavigator.ROTATION_STEP_KEYBOARD, navigator
+                .getState().getRotationX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y + BasicNavigator.ROTATION_STEP_KEYBOARD, navigator
+                .getState().getRotationY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, navigator.getState().getTranslation().getX());
+        assertEquals(expectedHeight2, navigator.getState().getTranslation().getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z - BasicNavigator.MOVE_STEP, navigator.getState()
+                .getTranslation().getZ());
+
+        // rotations and Y translations go back to default, but X and Z translations should not
+        navigator.resetToNominalViewAngle();
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_X, navigator.getState().getRotationX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y, navigator.getState().getRotationY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, navigator.getState()
+                .getTranslation().getX());
+        assertEquals(expectedHeight3, navigator.getState().getTranslation().getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z - BasicNavigator.MOVE_STEP, navigator.getState()
+                .getTranslation().getZ());
     }
 
 }
