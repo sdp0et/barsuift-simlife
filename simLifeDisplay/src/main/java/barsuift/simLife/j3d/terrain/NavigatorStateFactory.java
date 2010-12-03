@@ -7,7 +7,10 @@ import barsuift.simLife.j3d.Tuple3dState;
 
 public class NavigatorStateFactory {
 
-    public static final Vector3d ORIGINAL_POSITION = new Vector3d(4, 2, 20);
+    public static final double VIEWER_SIZE = 2;
+
+    // FIXME the original position should depend of the landscape height at this point
+    public static final Vector3d ORIGINAL_POSITION = new Vector3d(4, VIEWER_SIZE, 20);
 
     public static final double ORIGINAL_ROTATION_X = 0;
 
