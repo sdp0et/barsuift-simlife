@@ -32,7 +32,7 @@ public class BasicLandscape3D implements Landscape3D {
     @Override
     public double getHeight(double x, double z) {
         // FIXME test code to remove
-        return x + z / 5;
+        return x - z / 5;
         // return 0;
     }
 

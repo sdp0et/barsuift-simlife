@@ -331,21 +331,19 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         if (!landscape3D.inLandscape(nextLoc.x, nextLoc.z)) {
             return;
         }
+        double height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
         Vector3d actualMove = theMove;
         // adapt to terrain, if in WALK mode
         if (navigationMode == NavigationMode.WALK) {
-            double height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
             // create new translation movement, with updated y value
             actualMove = new Vector3d(theMove.x, height - translation.y + NavigatorStateFactory.VIEWER_SIZE, theMove.z);
         }
-        // if (navigationMode == NavigationMode.FLY) {
-        // double height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
-        // System.out.println("height=" + height);
-        // if ((nextLoc.y + translation.y) < (height + MIN_DISTANCE_FROM_GROUND)) {
-        // // the move make us go under the ground
-        // actualMove = new Vector3d(theMove.x, height - translation.y + MIN_DISTANCE_FROM_GROUND, theMove.z);
-        // }
-        // }
+        if (navigationMode == NavigationMode.FLY) {
+            if ((nextLoc.y) < (height + MIN_DISTANCE_FROM_GROUND)) {
+                // the move make us go under the ground
+                actualMove = new Vector3d(theMove.x, height - translation.y + MIN_DISTANCE_FROM_GROUND, theMove.z);
+            }
+        }
         doMove(actualMove);
     }
 
