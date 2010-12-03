@@ -51,7 +51,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     /**
      * Always 50 centimeters above the ground in fly mode
      */
-    private static final double MIN_DISTANCE_FROM_GROUND = 0.5;
+    static final double MIN_DISTANCE_FROM_GROUND = 0.5;
 
     /**
      * Max value in radian for an angle
@@ -61,22 +61,22 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     /**
      * Rotates by 3 degrees
      */
-    private static final double ROTATION_STEP_KEYBOARD = Math.toRadians(3);
+    static final double ROTATION_STEP_KEYBOARD = Math.toRadians(3);
 
     /**
      * Rotates by 1 degrees
      */
-    private static final double ROTATION_STEP_MOUSE = Math.toRadians(1);
+    static final double ROTATION_STEP_MOUSE = Math.toRadians(1);
 
     /**
      * Mouse sensitivity in pixel
      */
-    private static final int SENSITIVITY = 3;
+    static final int SENSITIVITY = 3;
 
     /**
      * Move by 20 centimeters
      */
-    private static final double MOVE_STEP = 0.2;
+    static final double MOVE_STEP = 0.2;
 
     // movement vectors
     private static final Vector3d FWD = new Vector3d(0, 0, -MOVE_STEP);
@@ -136,8 +136,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
                 new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
         // wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
-        // new WakeupOnAWTEvent(KeyEvent.KEY_RELEASED), new WakeupOnAWTEvent(KeyEvent.KEY_TYPED),
-        // new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
+        // new WakeupOnAWTEvent(KeyEvent.KEY_RELEASED), new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
     }
 
     public void initialize() {
@@ -152,18 +151,20 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     @Override
     public void processStimulus(Enumeration criteria) {
         WakeupCriterion wakeup;
-        AWTEvent[] event;
-
+        AWTEvent[] events;
         while (criteria.hasMoreElements()) {
             wakeup = (WakeupCriterion) criteria.nextElement();
             if (wakeup instanceof WakeupOnAWTEvent) {
-                event = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
-                for (int i = 0; i < event.length; i++) {
-                    if (event[i].getID() == KeyEvent.KEY_PRESSED) {
-                        processKeyEvent((KeyEvent) event[i]);
+                events = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
+                for (int i = 0; i < events.length; i++) {
+                    AWTEvent event = events[i];
+                    if (event.getID() == KeyEvent.KEY_PRESSED) {
+                        processKeyPressedEvent((KeyEvent) event);
                     }
-                    if (event[i].getID() == MouseEvent.MOUSE_DRAGGED) {
-                        processMouseEvent((MouseEvent) event[i]);
+                    // if (event.getID() == KeyEvent.KEY_RELEASED) {
+                    // }
+                    if (event.getID() == MouseEvent.MOUSE_DRAGGED) {
+                        processMouseEvent((MouseEvent) event);
                     }
 
 
@@ -212,7 +213,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         oldy = y;
     }
 
-    private void processKeyEvent(KeyEvent eventKey) {
+    void processKeyPressedEvent(KeyEvent eventKey) {
         int keyCode = eventKey.getKeyCode();
         if (eventKey.isControlDown()) {
             // <ctrl> + key
@@ -419,6 +420,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         state.setTranslation(new Tuple3dState(translation));
         state.setRotationX(rotationX);
         state.setRotationY(rotationY);
+        state.setNavigationMode(navigationMode);
     }
 
     public void goHome() {
