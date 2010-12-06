@@ -52,6 +52,7 @@ public class GravityTask extends AbstractSplitConditionalTask {
                 Vector3d translation = new Vector3d();
                 transform.get(translation);
 
+                // TODO 001. 001. use landscape to know the height (not always 0)
                 // update values
                 if (translation.y < (0.025 * stepSize)) {
                     translation.y = 0;
