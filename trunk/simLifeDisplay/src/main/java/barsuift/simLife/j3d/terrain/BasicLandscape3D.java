@@ -31,16 +31,12 @@ public class BasicLandscape3D implements Landscape3D {
     // y height.
     @Override
     public double getHeight(double x, double z) {
-        // FIXME test code to remove
-        return x;
-        // return 0;
+        return 0;
     }
 
     @Override
     public boolean inLandscape(double x, double z) {
-        // FIXME test code to remove
-        return x > 0 && z > 0;
-        // return true;
+        return true;
     }
 
     @Override

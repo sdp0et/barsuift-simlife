@@ -63,25 +63,63 @@ public class BasicNavigatorTest extends TestCase {
     }
 
 
-    public void testProcessKeyEvent() {
-        navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_PAGE_UP));
-        // test position
-        // send a key released
-        // test position :; the same
-        // send the same key press
-        // test position
-        // send another key press (other key)
-        // test position
-        // release the second key
+    public void testProcessKeyEvent_Basic() {
+        Tuple3dState translation;
 
-        // FIXME mysefl : test what happens when
-        // 1 press up
-        // 2 press right
-        // 3 release right
+        // press UP
+        navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_UP));
 
+        // test position
+        translation = navigator.getState().getTranslation();
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, translation.getX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y, translation.getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z - BasicNavigator.MOVE_STEP, translation.getZ());
+    }
 
-        // test with a mix of CTRL keys also
-        fail("Not yet implemented");
+    public void testProcessKeyEvent_Continuous() {
+        Tuple3dState translation;
+
+        // press UP
+        navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_UP));
+
+        // test position
+        translation = navigator.getState().getTranslation();
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, translation.getX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y, translation.getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z - BasicNavigator.MOVE_STEP, translation.getZ());
+
+        // press UP again
+        navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_UP));
+
+        // test position
+        translation = navigator.getState().getTranslation();
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, translation.getX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y, translation.getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z - 2 * BasicNavigator.MOVE_STEP, translation.getZ());
+    }
+
+    public void testProcessKeyEvent_WithCtrl() {
+        Tuple3dState translation;
+        // press RIGHT
+        navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_RIGHT));
+
+        // test position
+        translation = navigator.getState().getTranslation();
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x + BasicNavigator.MOVE_STEP, translation.getX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y, translation.getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z, translation.getZ());
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y, navigator.getState().getRotationY());
+
+        // press CTRL + RIGHT
+        navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, KeyEvent.CTRL_MASK, KeyEvent.VK_RIGHT));
+
+        // test position
+        translation = navigator.getState().getTranslation();
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x + BasicNavigator.MOVE_STEP, translation.getX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y, translation.getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z, translation.getZ());
+        assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y - BasicNavigator.ROTATION_STEP_KEYBOARD + 2 * Math.PI,
+                navigator.getState().getRotationY());
     }
 
     public void testProcessMouseEvent() {
@@ -158,9 +196,9 @@ public class BasicNavigatorTest extends TestCase {
         assertEquals(BasicNavigator.ROTATION_STEP_KEYBOARD, navigator.getState().getRotationX());
         assertEquals(BasicNavigator.ROTATION_STEP_KEYBOARD, navigator.getState().getRotationY());
         translation = navigator.getState().getTranslation();
-        assertEquals(4.0, translation.getX());
-        assertEquals(2.0 + BasicNavigator.MOVE_STEP, translation.getY());
-        assertEquals(20.0, translation.getZ());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, translation.getX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y + BasicNavigator.MOVE_STEP, translation.getY());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z, translation.getZ());
         assertEquals(NavigationMode.FLY, navigator.getState().getNavigationMode());
     }
 
