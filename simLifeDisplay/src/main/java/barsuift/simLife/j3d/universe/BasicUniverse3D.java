@@ -30,6 +30,7 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import barsuift.simLife.j3d.environment.Environment3D;
 import barsuift.simLife.j3d.tree.Tree3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
@@ -101,6 +102,11 @@ public class BasicUniverse3D implements Universe3D {
     @Override
     public Synchronizer3D getSynchronizer() {
         return synchronizer;
+    }
+
+    @Override
+    public Environment3D getEnvironment3D() {
+        return universe.getEnvironment().getEnvironment3D();
     }
 
     @Override

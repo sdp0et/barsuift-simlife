@@ -27,14 +27,20 @@ import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.j3d.MobileEvent;
+import barsuift.simLife.j3d.terrain.Landscape3D;
 
 public class GravityTask extends AbstractSplitConditionalTask {
 
+    private static final double FALLING_DISTANCE = 0.025;
+
     private final ConcurrentLinkedQueue<Mobile> mobiles;
 
-    public GravityTask(SplitConditionalTaskState state) {
+    private final Landscape3D landscape3D;
+
+    public GravityTask(SplitConditionalTaskState state, Landscape3D landscape3D) {
         super(state);
         this.mobiles = new ConcurrentLinkedQueue<Mobile>();
+        this.landscape3D = landscape3D;
     }
 
     public void fall(Mobile mobile) {
@@ -52,15 +58,15 @@ public class GravityTask extends AbstractSplitConditionalTask {
                 Vector3d translation = new Vector3d();
                 transform.get(translation);
 
-                // TODO 001. 001. use landscape to know the height (not always 0)
+                double landscapeHeight = landscape3D.getHeight(translation.x, translation.z);
                 // update values
-                if (translation.y < (0.025 * stepSize)) {
-                    translation.y = 0;
+                if ((translation.y - landscapeHeight) < (FALLING_DISTANCE * stepSize)) {
+                    translation.y = landscapeHeight;
                     mobiles.remove(mobile);
                     mobile.setChanged();
                     mobile.notifySubscribers(MobileEvent.FALLEN);
                 } else {
-                    translation.y -= (0.025 * stepSize);
+                    translation.y -= (FALLING_DISTANCE * stepSize);
                 }
 
                 // set the new values

@@ -9,6 +9,8 @@ import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.MockMobile;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
+import barsuift.simLife.j3d.terrain.Landscape3D;
+import barsuift.simLife.j3d.terrain.MockLandscape3D;
 import barsuift.simLife.message.PublisherTestHelper;
 
 
@@ -22,9 +24,44 @@ public class GravityTaskTest extends TestCase {
         super.tearDown();
     }
 
+    public void testExecuteSplitConditionalStep_WithHeight() {
+        SplitConditionalTaskState state = UtilDataCreatorForTests.createSpecificSplitConditionalTaskState();
+        MockLandscape3D landscape3D = new MockLandscape3D();
+        landscape3D.setHeight(5);
+        GravityTask gravity = new GravityTask(state, landscape3D);
+
+        // add mobile instances
+        PublisherTestHelper publisher = new PublisherTestHelper();
+        MockMobile mobile = createMockMobileAtPosition(new Vector3d(1, 5.1, 3));
+        publisher.addSubscriberTo(mobile);
+        gravity.fall(mobile);
+
+        // with stepSize=3, the movement should be y-=0.075
+        gravity.executeSplitConditionalStep(state.getStepSize());
+
+        VectorTestHelper.assertVectorEquals(new Vector3d(1, 5.025, 3), getTranslation(mobile));
+        // not yet FALLEN
+        assertEquals(0, publisher.nbUpdated());
+        assertEquals(0, publisher.getUpdateObjects().size());
+        // mobile should still be in the list of mobile
+        assertTrue(gravity.getMobiles().contains(mobile));
+
+        // with stepSize=3, the movement should be y-=0.075
+        gravity.executeSplitConditionalStep(state.getStepSize());
+
+        VectorTestHelper.assertVectorEquals(new Vector3d(1, 5.0, 3), getTranslation(mobile));
+        // it is now FALLEN, with height=5
+        assertEquals(1, publisher.nbUpdated());
+        assertEquals(MobileEvent.FALLEN, publisher.getUpdateObjects().get(0));
+        // mobile should still be in the list of mobile
+        assertFalse(gravity.getMobiles().contains(mobile));
+    }
+
     public void testExecuteSplitConditionalStep() {
         SplitConditionalTaskState state = UtilDataCreatorForTests.createSpecificSplitConditionalTaskState();
-        GravityTask gravity = new GravityTask(state);
+        // FIXME improve tests with different heights
+        Landscape3D landscape3D = new MockLandscape3D();
+        GravityTask gravity = new GravityTask(state, landscape3D);
 
         // test with no mobile : nothing special should happen
         gravity.executeSplitConditionalStep(state.getStepSize());

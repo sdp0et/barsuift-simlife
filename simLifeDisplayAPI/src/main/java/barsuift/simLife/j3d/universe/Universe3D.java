@@ -24,6 +24,7 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Node;
 
 import barsuift.simLife.Persistent;
+import barsuift.simLife.j3d.environment.Environment3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
 import barsuift.simLife.process.Synchronizer3D;
 
@@ -36,6 +37,8 @@ public interface Universe3D extends Persistent<Universe3DState> {
     public void addElement3D(Node element3D);
 
     public Set<Node> getElements3D();
+
+    public Environment3D getEnvironment3D();
 
     public Physics3D getPhysics3D();
 
