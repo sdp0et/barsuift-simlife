@@ -19,7 +19,7 @@ public class BasicGravity3DTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         Universe3DStateFactory universe3DStateFactory = new Universe3DStateFactory();
-        Universe3DState universe3DState = universe3DStateFactory.createRandomUniverse3DState();
+        Universe3DState universe3DState = universe3DStateFactory.createUniverse3DState();
         universe3D = new BasicUniverse3D(universe3DState, new MockUniverse());
 
         Gravity3DStateFactory gravity3DStateFactory = new Gravity3DStateFactory();
