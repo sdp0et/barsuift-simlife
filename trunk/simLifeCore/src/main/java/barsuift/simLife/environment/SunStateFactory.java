@@ -47,7 +47,7 @@ public class SunStateFactory {
         BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
         BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
         Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
-        Sun3DState sun3DState = sun3DStateFactory.createSpecificSun3DState();
+        Sun3DState sun3DState = sun3DStateFactory.createSun3DState();
         return new SunState(brightness, riseAngle, zenithAngle, sun3DState);
     }
 
