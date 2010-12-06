@@ -38,14 +38,30 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
 
 
 /**
- * Use key presses to move the viewpoint. Movement is restricted to: forward, backwards, move left, move right, rotate
- * left, rotate right, up, down.
+ * Use key presses to move the viewpoint. Movement is restricted to:
+ * <ul>
+ * <li>move forward</li>
+ * <li>move backward</li>
+ * <li>translate left</li>
+ * <li>translate right</li>
+ * <li>move up (only in FLY mode, and only above the ground))</li>
+ * <li>move down (only in FLY mode)</li>
+ * <li>rotate left</li>
+ * <li>rotate right</li>
+ * <li>rotate up</li>
+ * <li>rotate down</li>
+ * </ul>
  * 
- * This class is widely inspired from KeyBehavior class writtent by Andrew Davison (ad@fivedots.coe.psu.ac.th).
+ * This class implements terrain following. Moreover, it has 2 navigations modes :
+ * <ul>
+ * <li>WALK : terrain following, always 2 meters above the ground, unable to move up or down</li>
+ * <li>FLY : ability to move up or down, but never below 50 cm above the ground</li>
+ * </ul>
+ * 
+ * This class is inspired from KeyBehavior class written by Andrew Davison (ad@fivedots.coe.psu.ac.th), with
+ * additions from FlyingPlatform, written by Mark Pendergast.
  * 
  */
-// TODO 001. 010. find a way to deal with multiple key presses (with combination of KEY_PRESSED and KEY_RELEASED
-// TODO 001. 009. unit test
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
 
     /**
@@ -131,6 +147,12 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         rotateY(state.getRotationY());
         this.navigationMode = state.getNavigationMode();
         adjustHeight();
+        // there is no need to wake up on KEY_RELEASED criterion, as the AWT model won't send anymore KEY_PRESSED event
+        // on such case :
+        // 1. press a key
+        // 2. press another key
+        // 3. release the second key
+        // 4. here AWT won't send any more events, even if the first key is still pressed
         wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
                 new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
         // wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
@@ -159,8 +181,6 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
                     if (event.getID() == KeyEvent.KEY_PRESSED) {
                         processKeyPressedEvent((KeyEvent) event);
                     }
-                    // if (event.getID() == KeyEvent.KEY_RELEASED) {
-                    // }
                     if (event.getID() == MouseEvent.MOUSE_DRAGGED) {
                         processMouseEvent((MouseEvent) event);
                     }
@@ -220,7 +240,6 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
             standardMove(keyCode);
         }
     }
-
 
     /**
      * Make viewer moves forward or backward; rotate left or right
