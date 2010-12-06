@@ -173,7 +173,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         wakeupOn(wakeUpCondition);
     }
 
-    private void processMouseEvent(MouseEvent e) {
+    void processMouseEvent(MouseEvent e) {
         int mods = e.getModifiersEx();
 
         int x = e.getX();
