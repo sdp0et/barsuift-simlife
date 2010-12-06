@@ -40,7 +40,7 @@ public class BasicTreeTrunk3DTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         TreeTrunk3DStateFactory stateFactory = new TreeTrunk3DStateFactory();
-        trunk3DState = stateFactory.createSpecificTreeTrunk3DState();
+        trunk3DState = stateFactory.createRandomTreeTrunk3DState();
         mockTrunk = new MockTreeTrunk();
         mockUniverse3D = new MockUniverse3D();
     }
