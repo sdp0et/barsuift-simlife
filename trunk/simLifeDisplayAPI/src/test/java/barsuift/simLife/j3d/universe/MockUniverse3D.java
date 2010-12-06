@@ -24,6 +24,8 @@ import java.util.Set;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Node;
 
+import barsuift.simLife.j3d.environment.Environment3D;
+import barsuift.simLife.j3d.environment.MockEnvironment3D;
 import barsuift.simLife.j3d.universe.physic.MockPhysics3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
 import barsuift.simLife.process.MockSynchronizer3D;
@@ -35,6 +37,8 @@ public class MockUniverse3D implements Universe3D {
     private Set<Node> elements3D = new HashSet<Node>();
 
     private Physics3D physics3D = new MockPhysics3D();
+
+    private Environment3D environment3D = new MockEnvironment3D();
 
     private BranchGroup branchGroup = new BranchGroup();
 
@@ -61,6 +65,15 @@ public class MockUniverse3D implements Universe3D {
 
     public void setPhysics(Physics3D physics) {
         this.physics3D = physics;
+    }
+
+    @Override
+    public Environment3D getEnvironment3D() {
+        return environment3D;
+    }
+
+    public void setEnvironment3D(Environment3D environment3D) {
+        this.environment3D = environment3D;
     }
 
     @Override
