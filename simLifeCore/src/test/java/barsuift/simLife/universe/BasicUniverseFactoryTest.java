@@ -21,7 +21,7 @@ package barsuift.simLife.universe;
 import junit.framework.TestCase;
 
 
-public class UniverseStateFactoryTest extends TestCase {
+public class BasicUniverseFactoryTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -31,18 +31,23 @@ public class UniverseStateFactoryTest extends TestCase {
         super.tearDown();
     }
 
-    public void testCreateEmptyUniverseState() {
-        UniverseStateFactory factory = new UniverseStateFactory();
-        UniverseState universeState = factory.createEmptyUniverseState();
+    public void testPopulateEmptyUniverse() {
+        UniverseStateFactory universeStateFactory = new UniverseStateFactory();
+        UniverseState universeState = universeStateFactory.createEmptyUniverseState();
+        Universe universe = new BasicUniverse(universeState);
 
-        assertNotNull(universeState.getEnvironment());
-        assertNotNull(universeState.getDateHandler());
-        assertNotNull(universeState.getPhysics());
-        assertNotNull(universeState.getSynchronizerState());
-        assertNotNull(universeState.getUniv3DState());
+        assertNotNull(universe.getEnvironment());
+        assertEquals(0, universe.getTrees().size());
+        assertEquals(0, universe.getFallenLeaves().size());
 
-        assertEquals(0, universeState.getTrees().size());
-        assertEquals(0, universeState.getFallenLeaves().size());
+        BasicUniverseFactory factory = new BasicUniverseFactory();
+        factory.populateEmptyUniverse(universe);
+
+        assertNotNull(universe.getEnvironment());
+        int nbTrees = universe.getTrees().size();
+        assertTrue(nbTrees >= 1);
+        assertTrue(nbTrees <= 4);
+        assertEquals(0, universe.getFallenLeaves().size());
     }
 
 }

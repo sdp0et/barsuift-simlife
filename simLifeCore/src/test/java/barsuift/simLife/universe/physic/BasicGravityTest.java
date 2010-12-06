@@ -13,7 +13,6 @@ import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.universe.BasicUniverse;
 import barsuift.simLife.universe.UniverseState;
-import barsuift.simLife.universe.UniverseStateFactory;
 
 
 public class BasicGravityTest extends TestCase {
@@ -24,8 +23,7 @@ public class BasicGravityTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        UniverseStateFactory universeStateFactory = new UniverseStateFactory();
-        UniverseState universeState = universeStateFactory.createRandomUniverseState();
+        UniverseState universeState = CoreDataCreatorForTests.createRandomUniverseState();
         universe = new BasicUniverse(universeState);
 
         GravityStateFactory gravityStateFactory = new GravityStateFactory();

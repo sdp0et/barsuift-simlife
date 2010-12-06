@@ -75,7 +75,7 @@ public class BasicUniverse3D implements Universe3D {
         }
     }
 
-    private void addTree(Tree3D tree3D) {
+    public void addTree(Tree3D tree3D) {
         // TODO 050. 031. this code should be move into BasicTree3D, as done for BasicTreeLeaf3D (to be done for
         // everyone)
         Point3d treeOriginPoint = tree3D.getState().getTranslationVector().toPointValue();
