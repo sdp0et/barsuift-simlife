@@ -59,7 +59,6 @@ public class GravityTaskTest extends TestCase {
 
     public void testExecuteSplitConditionalStep() {
         SplitConditionalTaskState state = UtilDataCreatorForTests.createSpecificSplitConditionalTaskState();
-        // FIXME improve tests with different heights
         Landscape3D landscape3D = new MockLandscape3D();
         GravityTask gravity = new GravityTask(state, landscape3D);
 
