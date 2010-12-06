@@ -19,6 +19,7 @@
 package barsuift.simLife.universe;
 
 import junit.framework.TestCase;
+import barsuift.simLife.CoreDataCreatorForTests;
 
 
 public class BasicUniverseContextTest extends TestCase {
@@ -32,14 +33,13 @@ public class BasicUniverseContextTest extends TestCase {
     }
 
     public void testGetState() throws Exception {
-        UniverseContextStateFactory factory = new UniverseContextStateFactory();
-        UniverseContextState state = factory.createRandomUniverseContextState();
+        UniverseContextState state = CoreDataCreatorForTests.createSpecificUniverseContextState();
         BasicUniverseContext context = new BasicUniverseContext(state);
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
 
         assertFalse(context.getState().isFpsShowing());
-        assertEquals(0, context.getState().getUniverse().getDateHandler().getDate().getValue());
+        assertEquals(100000, context.getState().getUniverse().getDateHandler().getDate().getValue());
         context.setFpsShowing(true);
         context.getUniverse().getSynchronizer().start();
         context.getUniverse().getSynchronizer().stop();
@@ -49,13 +49,12 @@ public class BasicUniverseContextTest extends TestCase {
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
         assertTrue(context.getState().isFpsShowing());
-        assertEquals(500, context.getState().getUniverse().getDateHandler().getDate().getValue());
+        assertEquals(100500, context.getState().getUniverse().getDateHandler().getDate().getValue());
     }
 
 
     public void testSetFpsShowing() {
-        UniverseContextStateFactory factory = new UniverseContextStateFactory();
-        UniverseContextState state = factory.createRandomUniverseContextState();
+        UniverseContextState state = CoreDataCreatorForTests.createSpecificUniverseContextState();
         BasicUniverseContext universeContext = new BasicUniverseContext(state);
 
         assertFalse(universeContext.isFpsShowing());

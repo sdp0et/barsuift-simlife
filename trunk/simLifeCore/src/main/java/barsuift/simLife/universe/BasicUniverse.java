@@ -103,7 +103,9 @@ public class BasicUniverse implements Universe {
     @Override
     public void addTree(Tree tree) {
         trees.add(tree);
-        universe3D.addElement3D(tree.getTree3D().getBranchGroup());
+        // TODO 050. 033. once translation is managed by the tree BG itself, switch back these 2 lines
+        // universe3D.addElement3D(tree.getTree3D().getBranchGroup());
+        universe3D.addTree(tree.getTree3D());
     }
 
     @Override

@@ -28,9 +28,9 @@ public class BasicUniverseContextFactory {
      * @return a new universe context instance
      */
     public UniverseContext createRandom() {
-        UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
-        UniverseContextState universeContextState = universeContextStateFactory.createRandomUniverseContextState();
-        UniverseContext universeContext = new BasicUniverseContext(universeContextState);
+        UniverseContext universeContext = createEmpty();
+        BasicUniverseFactory universeFactory = new BasicUniverseFactory();
+        universeFactory.populateEmptyUniverse(universeContext.getUniverse());
         return universeContext;
     }
 

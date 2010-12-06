@@ -27,28 +27,6 @@ import barsuift.simLife.process.MainSynchronizerStateFactory;
 public class UniverseContextStateFactory {
 
     /**
-     * Creates a random universe context state with the following values :
-     * <ul>
-     * <li>a random universe state</li>
-     * <li>a default synchronizer state</li>
-     * <li>fpsShowing = false</li>
-     * <li>a default universe context 3D state</li>
-     * </ul>
-     * 
-     * @return
-     */
-    public UniverseContextState createRandomUniverseContextState() {
-        boolean fpsShowing = false;
-        UniverseStateFactory universeStateFactory = new UniverseStateFactory();
-        UniverseState universeState = universeStateFactory.createRandomUniverseState();
-        MainSynchronizerStateFactory synchroStateFactory = new MainSynchronizerStateFactory();
-        MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
-        UniverseContext3DStateFactory universeContext3DStateFactory = new UniverseContext3DStateFactory();
-        UniverseContext3DState universeContext3DState = universeContext3DStateFactory.createUniverseContext3DState();
-        return new UniverseContextState(universeState, synchronizerState, fpsShowing, universeContext3DState);
-    }
-
-    /**
      * Creates an empty universe context state with the following values :
      * <ul>
      * <li>an empty universe state</li>

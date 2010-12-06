@@ -33,16 +33,16 @@ public class UniverseContextStateFactoryTest extends TestCase {
         super.tearDown();
     }
 
-    public void testCreateRandomUniverseContextState() {
+    public void testCreateEmptyUniverseContextState() {
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
-        UniverseContextState universeContextState = factory.createRandomUniverseContextState();
+        UniverseContextState universeContextState = factory.createEmptyUniverseContextState();
         assertFalse(universeContextState.isFpsShowing());
 
         UniverseState universeState = universeContextState.getUniverse();
         assertNotNull(universeState);
-        int nbTrees = universeState.getTrees().size();
-        assertTrue(nbTrees >= 1);
-        assertTrue(nbTrees <= 4);
+
+        assertEquals(0, universeState.getTrees().size());
+        assertEquals(0, universeState.getFallenLeaves().size());
 
         MainSynchronizerState synchronizer = universeContextState.getSynchronizer();
         assertNotNull(synchronizer);
