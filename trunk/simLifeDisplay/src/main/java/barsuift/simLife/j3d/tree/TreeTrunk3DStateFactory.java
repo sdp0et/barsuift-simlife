@@ -24,8 +24,4 @@ public class TreeTrunk3DStateFactory {
         return new TreeTrunk3DState();
     }
 
-    public TreeTrunk3DState createSpecificTreeTrunk3DState() {
-        return new TreeTrunk3DState();
-    }
-
 }
