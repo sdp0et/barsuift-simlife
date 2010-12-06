@@ -72,7 +72,8 @@ public class UniverseStateFactory {
         SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerCoreState();
         DateHandlerState dateHandler = new DateHandlerState();
 
-        //TODO 001. 001. we should first create an empty universe (real object not state), and then populate it with trees (real objects)
+        // TODO 001. 001. we should first create an empty universe (real object not state), and then populate it with
+        // trees (real objects)
         int nbTrees = Randomizer.randomBetween(1, 4);
         TreeStateFactory treeStateFactory = new TreeStateFactory();
         Set<TreeState> trees = new HashSet<TreeState>(nbTrees);
@@ -81,9 +82,9 @@ public class UniverseStateFactory {
             trees.add(treeStateFactory.createRandomTreeState(translationVector));
         }
         Set<TreeLeafState> fallenLeaves = new HashSet<TreeLeafState>(0);
-        
+
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
-        Universe3DState univ3DState = univ3DStateFactory.createRandomUniverse3DState();
+        Universe3DState univ3DState = univ3DStateFactory.createUniverse3DState();
 
         return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, dateHandler, univ3DState);
     }
@@ -98,8 +99,6 @@ public class UniverseStateFactory {
      * @return
      */
     public UniverseState createEmptyUniverseState() {
-        Set<TreeState> trees = new HashSet<TreeState>(0);
-        Set<TreeLeafState> fallenLeaves = new HashSet<TreeLeafState>(0);
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
@@ -107,8 +106,12 @@ public class UniverseStateFactory {
         SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();
         SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerCoreState();
         DateHandlerState dateHandler = new DateHandlerState();
+
+        Set<TreeState> trees = new HashSet<TreeState>(0);
+        Set<TreeLeafState> fallenLeaves = new HashSet<TreeLeafState>(0);
+
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
-        Universe3DState univ3DState = univ3DStateFactory.createEmptyUniverse3DState();
+        Universe3DState univ3DState = univ3DStateFactory.createUniverse3DState();
 
         return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, dateHandler, univ3DState);
     }
