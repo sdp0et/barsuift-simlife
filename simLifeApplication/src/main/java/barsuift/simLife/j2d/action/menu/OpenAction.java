@@ -20,6 +20,8 @@ package barsuift.simLife.j2d.action.menu;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
@@ -33,6 +35,8 @@ import barsuift.simLife.universe.UniverseContext;
 
 
 public class OpenAction extends AbstractAction {
+
+    private static final Logger logger = Logger.getLogger(OpenAction.class.getName());
 
     private static final long serialVersionUID = -7706268023944038274L;
 
@@ -71,8 +75,7 @@ public class OpenAction extends AbstractAction {
             try {
                 application.openUniverse(file);
             } catch (OpenException oe) {
-                System.out.println("Unable to open the given file : " + file.getAbsolutePath() + " because "
-                        + oe.getMessage());
+                logger.log(Level.SEVERE, "Unable to open the given file : " + file.getAbsolutePath(), oe);
             }
         }
     }

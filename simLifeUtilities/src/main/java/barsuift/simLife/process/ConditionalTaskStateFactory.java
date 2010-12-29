@@ -21,11 +21,15 @@ package barsuift.simLife.process;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 
 public class ConditionalTaskStateFactory {
+
+    private static final Logger logger = Logger.getLogger(ConditionalTaskStateFactory.class.getName());
 
     /**
      * The default bound to use when no value is found in the properties file. 0 means no bound.
@@ -54,13 +58,13 @@ public class ConditionalTaskStateFactory {
             is = ClassLoader.getSystemResourceAsStream(PROPERTIES_FILE);
             prop.load(is);
         } catch (IOException e) {
-            System.out.println("Unable to open properties file " + PROPERTIES_FILE + "\n" + e);
+            logger.log(Level.SEVERE, "Unable to open properties file " + PROPERTIES_FILE, e);
         } finally {
             if (is != null)
                 try {
                     is.close();
                 } catch (IOException e) {
-                    System.out.println("Unable to close open stream on properties file " + PROPERTIES_FILE);
+                    logger.log(Level.SEVERE, "Unable to close open stream on properties file " + PROPERTIES_FILE, e);
                 }
         }
         return prop;
@@ -98,7 +102,7 @@ public class ConditionalTaskStateFactory {
     private String getProperty(String key) {
         String property = prop.getProperty(key);
         if (property == null) {
-            System.out.println("No value four for key " + key);
+            logger.fine("No value four for key " + key);
             return "";
         }
         return property;
