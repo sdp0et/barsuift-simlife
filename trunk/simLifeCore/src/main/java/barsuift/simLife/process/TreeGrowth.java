@@ -20,7 +20,6 @@ public class TreeGrowth extends AbstractConditionalTask {
 
     @Override
     public void executeConditionalStep() {
-        System.out.println("Executing TreeGrowth");
         List<TreeBranch> branches = tree.getBranches();
         for (TreeBranch branch : branches) {
             List<TreeBranchPart> parts = branch.getParts();
