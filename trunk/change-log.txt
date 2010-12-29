@@ -11,7 +11,8 @@ New features
 Improve the navigation controls
   * navigation style is first-person style
   * create a walking mode and a fly mode
-
+Add logging utility
+  * log file is written in $HOME/barsuift-simlife/barsuift-simlife-<n>.log
 
 Bug fixes
 ---------

@@ -19,9 +19,13 @@
 package barsuift.simLife;
 
 
+import java.util.logging.Logger;
+
 import javax.swing.UIManager;
 
 public class Launcher {
+
+    private static final Logger logger = Logger.getLogger(Launcher.class.getName());
 
     public void start() {
         new Application();
@@ -37,8 +41,15 @@ public class Launcher {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     }
 
+    public static void configureLoggingPropertyFile() {
+        String path = ClassLoader.getSystemResource("logging.properties").getPath();
+        System.setProperty("java.util.logging.config.file", path);
+    }
+
     public static void main(String[] args) throws Exception {
-        System.out.println("Application has been launched");
+        configureLoggingPropertyFile();
+        logger.info("Launching application");
+
         Launcher launcher = new Launcher();
         launcher.switchToSystemLookAndFeel();
         launcher.start();
