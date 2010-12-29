@@ -70,8 +70,10 @@ public class BasicLandscape3D implements Landscape3D {
     }
 
     @Override
-    // TODO 000. unit test
     public double getHeight(double x, double z) {
+        if (!inLandscape(x, z)) {
+            return 0;
+        }
         // P1 = the "lower" point (closest top left)
         int x1 = (int) Math.floor(x);
         int z1 = (int) Math.floor(z);
@@ -84,19 +86,28 @@ public class BasicLandscape3D implements Landscape3D {
         int x3 = x1;
         int z3 = z1 + 1;
 
+        double weight1;
+        double weight2;
+        double weight3;
+
+        // "distance" is the distance between P1 and Pi, where Pi is the intersection point between the orthogonal to
+        // the opposite angle of P1 and its own orthogonal passing by the given point (x,y).
         // check if the point is closer to the lower point or the upper point
-        double distanceFromLower = (x - x1) + (z - z1);
-        // if distance is >= 1 then the point is closer to the "upper" point
-        if (distanceFromLower >= 1) {
+        double side = ((x - x1) + (z - z1)) / 2;
+        // if side is >= 0.5 then the point is closer to the "upper" point
+        if (side < 0.5) {
+            weight1 = 1 - (side * 2);
+            weight2 = 1 - (x2 - x);
+            weight3 = 1 - (z3 - z);
+        } else {
             // P1 = change to "upper" point
+            // P2 and P3 are still the same
             x1 = (int) Math.ceil(x);
             z1 = (int) Math.ceil(z);
-            // P2 and P3 are still the same
+            weight1 = 1 - ((1 - side) * 2);
+            weight2 = 1 - (z - z2);
+            weight3 = 1 - (x - x3);
         }
-
-        double weight1 = getWeight(x, z, x1, z1, (double) 1);
-        double weight2 = getWeight(x, z, x2, z2, Math.sqrt(2));
-        double weight3 = getWeight(x, z, x3, z3, Math.sqrt(2));
 
         // get the height of the three points
         int vertexIdx1 = getVertexIndix(x1, z1);
@@ -109,35 +120,21 @@ public class BasicLandscape3D implements Landscape3D {
         float y3 = coordinates[vertexIdx3 * 3 + 1];
 
         // compute the weighted average height
-        double weight = ((weight1 * y1) + (weight2 * y2) + (weight3 * y3)) / (weight1 + weight2 + weight3);
+        double height = ((weight1 * y1) + (weight2 * y2) + (weight3 * y3)) / (weight1 + weight2 + weight3);
 
-        return weight;
+        return height;
     }
 
-    /**
-     * Computes the ratio between the distance between 2 points and the maxDistance between these points.
-     * 
-     * @param x1
-     * @param z1
-     * @param x2
-     * @param z2
-     * @return
-     */
-    // TODO 000. unit test
-    private double getWeight(double x1, double z1, int x2, int z2, double maxDistance) {
-        double distance = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((z1 - z2), 2));
-        double weight = distance / maxDistance;
-        return weight;
-    }
-
-    // TODO 000. unit test
-    private int getVertexIndix(int x, int z) {
+    int getVertexIndix(int x, int z) {
         return size * z + x;
     }
 
+    /**
+     * the landscape bounds are inclusive for minimum bounds, but EXCLUSIVE for maximum bounds
+     */
     @Override
     public boolean inLandscape(double x, double z) {
-        return true;
+        return (x >= 0 && z >= 0 && x < (size - 1) && z < (size - 1));
     }
 
     @Override
