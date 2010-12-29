@@ -42,8 +42,8 @@ public class BasicUniverseFactory {
         // TODO 999. improve this random placement code
         originPoints.put(new Long(0), new Point3d(0, 0, 0));
         originPoints.put(new Long(1), new Point3d(5, 0, 0));
-        originPoints.put(new Long(2), new Point3d(2, 0, -4));
-        originPoints.put(new Long(3), new Point3d(-4, 0, 2));
+        originPoints.put(new Long(2), new Point3d(2, 0, 4));
+        originPoints.put(new Long(3), new Point3d(4, 0, 2));
     }
 
     public void populateEmptyUniverse(Universe universe) {
