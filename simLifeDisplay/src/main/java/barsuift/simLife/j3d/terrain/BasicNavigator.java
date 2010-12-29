@@ -58,8 +58,8 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
  * <li>FLY : ability to move up or down, but never below 50 cm above the ground</li>
  * </ul>
  * 
- * This class is inspired from KeyBehavior class written by Andrew Davison (ad@fivedots.coe.psu.ac.th), with
- * additions from FlyingPlatform, written by Mark Pendergast.
+ * This class is inspired from KeyBehavior class written by Andrew Davison (ad@fivedots.coe.psu.ac.th), with additions
+ * from FlyingPlatform, written by Mark Pendergast.
  * 
  */
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
@@ -356,6 +356,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     private void doCheckedAbsoluteMove(Vector3d theMove) {
         // next user position
         Vector3d nextLoc = tryAbsoluteMove(theMove);
+        // no need to check if still in landscape, as we are only getting up or down along the Y axis.
         double height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
         double newY = Math.max(nextLoc.y, height + MIN_DISTANCE_FROM_GROUND);
         newY -= translation.y;
