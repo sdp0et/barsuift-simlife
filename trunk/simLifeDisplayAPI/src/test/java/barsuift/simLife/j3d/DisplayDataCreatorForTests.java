@@ -110,22 +110,29 @@ public final class DisplayDataCreatorForTests {
 
 
     /**
-     * Create a square of 4 points from (0,0) to (1,1).
+     * Create a square landscape (size=2) of 4 points from (0,0) to (1,1), with random heights between 0 and 1.
      */
     public static Landscape3DState createRandomLandscape3DState() {
         int size = 2;
-        float[] coordinates = { 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1 };
+        float[] coordinates = { 0, (float) Math.random(), 0, 1, (float) Math.random(), 0, 0, (float) Math.random(), 1,
+                1, (float) Math.random(), 1 };
         int[] coordinatesIndices = { 0, 2, 1, 1, 2, 3 };
         int[] stripCounts = { 3, 3 };
         return new Landscape3DState(size, coordinates, coordinatesIndices, stripCounts);
     }
 
     /**
-     * Create a square of 4 points from (0,0) to (1,1).
+     * Create a square landscape, with size=2 and the 4 following points :
+     * <ol>
+     * <li>(0.0, 0.0, 0.0)</li>
+     * <li>(1.0, 0.4, 0.0)</li>
+     * <li>(0.0, 0.6, 1.0)</li>
+     * <li>(1.0, 1.0, 1.0)</li>
+     * </ol>
      */
     public static Landscape3DState createSpecificLandscape3DState() {
         int size = 2;
-        float[] coordinates = { 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1 };
+        float[] coordinates = { 0, 0, 0, 1, 0.4f, 0, 0, 0.6f, 1, 1, 1, 1 };
         int[] coordinatesIndices = { 0, 2, 1, 1, 2, 3 };
         int[] stripCounts = { 3, 3 };
         return new Landscape3DState(size, coordinates, coordinatesIndices, stripCounts);
