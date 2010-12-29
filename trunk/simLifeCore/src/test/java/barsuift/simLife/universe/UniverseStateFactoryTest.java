@@ -31,7 +31,7 @@ public class UniverseStateFactoryTest extends TestCase {
         super.tearDown();
     }
 
-    public void testCreateEmptyUniverseState() {
+    public void testCreateEmptyUniverseState() throws Exception {
         UniverseStateFactory factory = new UniverseStateFactory();
         UniverseState universeState = factory.createEmptyUniverseState();
 

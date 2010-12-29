@@ -39,8 +39,9 @@ public class UniverseStateFactory {
     /**
      * Creates an empty universe state. there is no living part in this universe, only the environment, synchronizer,
      * physics, ...
+     * @throws Exception 
      */
-    public UniverseState createEmptyUniverseState() {
+    public UniverseState createEmptyUniverseState() throws Exception {
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createEnvironmentState();
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();

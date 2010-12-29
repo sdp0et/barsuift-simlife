@@ -19,6 +19,8 @@
 package barsuift.simLife.j2d.action.menu;
 
 import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 
@@ -30,6 +32,8 @@ import barsuift.simLife.universe.UniverseContext;
 
 // TODO 200. add a confirmation popup before creating the new universe
 public class NewEmptyAction extends AbstractAction {
+
+    private static final Logger logger = Logger.getLogger(NewEmptyAction.class.getName());
 
     private static final long serialVersionUID = -7620926200302148499L;
 
@@ -47,7 +51,11 @@ public class NewEmptyAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         stopApp();
-        application.createEmptyUniverse();
+        try {
+            application.createEmptyUniverse();
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Unable to create empty universe", ex);
+        }
     }
 
     private void stopApp() {

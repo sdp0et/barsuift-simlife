@@ -26,8 +26,9 @@ public class BasicUniverseContextFactory {
      * Create a random universe context
      * 
      * @return a new universe context instance
+     * @throws Exception 
      */
-    public UniverseContext createRandom() {
+    public UniverseContext createRandom() throws Exception {
         UniverseContext universeContext = createEmpty();
         BasicUniverseFactory universeFactory = new BasicUniverseFactory();
         universeFactory.populateEmptyUniverse(universeContext.getUniverse());
@@ -38,8 +39,9 @@ public class BasicUniverseContextFactory {
      * Create an empty universe context
      * 
      * @return a new universe context instance
+     * @throws Exception 
      */
-    public UniverseContext createEmpty() {
+    public UniverseContext createEmpty() throws Exception {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = universeContextStateFactory.createEmptyUniverseContextState();
         UniverseContext universeContext = new BasicUniverseContext(universeContextState);

@@ -22,8 +22,6 @@ import java.io.File;
 
 import junit.framework.TestCase;
 import barsuift.simLife.universe.BasicUniverseContextFactory;
-import barsuift.simLife.universe.OpenException;
-import barsuift.simLife.universe.SaveException;
 import barsuift.simLife.universe.Universe;
 import barsuift.simLife.universe.UniverseContext;
 import barsuift.simLife.universe.UniverseContextIO;
@@ -48,7 +46,7 @@ public class ApplicationTest extends TestCase {
         saveFile = null;
     }
 
-    public void testSaveUniverse() throws SaveException {
+    public void testSaveUniverse() throws Exception {
         try {
             application.saveUniverse();
             fail("Should throw an IllegalStateException");
@@ -80,7 +78,7 @@ public class ApplicationTest extends TestCase {
         }
     }
 
-    public void testOpen() throws OpenException, SaveException {
+    public void testOpen() throws Exception {
         // create a test file to be read
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         UniverseContext universeContext = factory.createRandom();
