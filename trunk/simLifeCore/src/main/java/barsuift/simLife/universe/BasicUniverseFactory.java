@@ -39,7 +39,7 @@ public class BasicUniverseFactory {
     private static final Map<Long, Point3d> originPoints = new HashMap<Long, Point3d>();
 
     static {
-        // TODO 999. improve this random placement code
+        // TODO 999. improve this random placement code (check inLandscape() at least)
         originPoints.put(new Long(0), new Point3d(0, 0, 0));
         originPoints.put(new Long(1), new Point3d(5, 0, 0));
         originPoints.put(new Long(2), new Point3d(2, 0, 4));
