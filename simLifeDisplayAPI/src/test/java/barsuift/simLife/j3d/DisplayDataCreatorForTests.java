@@ -127,12 +127,12 @@ public final class DisplayDataCreatorForTests {
      * <li>(0.0, 0.0, 0.0)</li>
      * <li>(1.0, 0.4, 0.0)</li>
      * <li>(0.0, 0.6, 1.0)</li>
-     * <li>(1.0, 1.0, 1.0)</li>
+     * <li>(1.0, 1.2, 1.0)</li>
      * </ol>
      */
     public static Landscape3DState createSpecificLandscape3DState() {
         int size = 2;
-        float[] coordinates = { 0, 0, 0, 1, 0.4f, 0, 0, 0.6f, 1, 1, 1, 1 };
+        float[] coordinates = { 0, 0, 0, 1, 0.4f, 0, 0, 0.6f, 1, 1, 1.2f, 1 };
         int[] coordinatesIndices = { 0, 2, 1, 1, 2, 3 };
         int[] stripCounts = { 3, 3 };
         return new Landscape3DState(size, coordinates, coordinatesIndices, stripCounts);
