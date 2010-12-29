@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.j3d.terrain;
 
+import javax.media.j3d.BranchGroup;
+
 
 
 public class MockLandscape3D implements Landscape3D {
@@ -30,6 +32,8 @@ public class MockLandscape3D implements Landscape3D {
 
     private boolean inLandscape;
 
+    private BranchGroup bg;
+
     public MockLandscape3D() {
         reset();
     }
@@ -39,6 +43,7 @@ public class MockLandscape3D implements Landscape3D {
         nbSynchronizedCalled = 0;
         height = 0;
         inLandscape = true;
+        bg = new BranchGroup();
     }
 
     @Override
@@ -75,6 +80,15 @@ public class MockLandscape3D implements Landscape3D {
 
     public void setInLandscape(boolean inLandscape) {
         this.inLandscape = inLandscape;
+    }
+
+    @Override
+    public BranchGroup getBranchGroup() {
+        return bg;
+    }
+
+    public void setBranchGroup(BranchGroup bg) {
+        this.bg = bg;
     }
 
 }
