@@ -40,7 +40,6 @@ import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.universe.Universe;
 
-// TODO 002. create a landscape with terragen (see terra project)
 public class BasicUniverse3D implements Universe3D {
 
     private final BasicSynchronizer3D synchronizer;
