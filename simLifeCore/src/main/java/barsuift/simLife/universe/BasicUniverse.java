@@ -78,7 +78,6 @@ public class BasicUniverse implements Universe {
         for (TreeState treeState : treeStates) {
             BasicTree newTree = new BasicTree(this, treeState);
             trees.add(newTree);
-            System.out.println("nb Leaves=" + newTree.getNbLeaves());
         }
         this.fallenLeaves = new HashSet<TreeLeaf>();
         Set<TreeLeafState> fallenLeafStates = state.getFallenLeaves();

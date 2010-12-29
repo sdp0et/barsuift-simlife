@@ -55,7 +55,6 @@ public class BasicUniverseFactory {
             Point3d translationVector = originPoints.get(new Long(i));
             double height = landscape3D.getHeight(translationVector.x, translationVector.z);
             translationVector.y = height;
-            System.out.println("Populating a new tree at " + translationVector);
             TreeState treeState = treeStateFactory.createRandomTreeState(translationVector);
             Tree tree = new BasicTree(universe, treeState);
             universe.addTree(tree);
