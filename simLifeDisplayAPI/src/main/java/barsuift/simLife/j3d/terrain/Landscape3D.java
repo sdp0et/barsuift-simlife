@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.j3d.terrain;
 
+import javax.media.j3d.BranchGroup;
+
 import barsuift.simLife.Persistent;
 
 /**
@@ -44,5 +46,7 @@ public interface Landscape3D extends Persistent<Landscape3DState> {
      * @return true if the point is part of the landscape, false otherwise.
      */
     public boolean inLandscape(double x, double z);
+
+    public BranchGroup getBranchGroup();
 
 }

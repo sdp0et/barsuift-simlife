@@ -58,6 +58,7 @@ public class BasicEnvironment3D implements Environment3D {
         group = new BranchGroup();
         group.addChild(ambientLight);
         group.addChild(getSun3D().getLight());
+        group.addChild(getLandscape3D().getBranchGroup());
     }
 
     @Override
