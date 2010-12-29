@@ -108,12 +108,25 @@ public final class DisplayDataCreatorForTests {
         return new Environment3DState();
     }
 
+
+    /**
+     * Create a square a 4 points from (0,0) to (1,1).
+     */
     public static Landscape3DState createRandomLandscape3DState() {
-        return new Landscape3DState();
+        float[] coordinates = { 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1 };
+        int[] coordinatesIndices = { 0, 2, 1, 1, 2, 3 };
+        int[] stripCounts = { 3, 3 };
+        return new Landscape3DState(coordinates, coordinatesIndices, stripCounts);
     }
 
+    /**
+     * Create a square a 4 points from (0,0) to (1,1).
+     */
     public static Landscape3DState createSpecificLandscape3DState() {
-        return new Landscape3DState();
+        float[] coordinates = { 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1 };
+        int[] coordinatesIndices = { 0, 2, 1, 1, 2, 3 };
+        int[] stripCounts = { 3, 3 };
+        return new Landscape3DState(coordinates, coordinatesIndices, stripCounts);
     }
 
     public static NavigatorState createRandomNavigatorState() {
@@ -130,7 +143,7 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static NavigatorState createSpecificNavigatorState() {
-        Tuple3dState translation = new Tuple3dState(1, 2, 3);
+        Tuple3dState translation = new Tuple3dState(0.5, 0, 0.6);
         double rotationX = Math.PI / 2;
         double rotationY = Math.PI;
         return new NavigatorState(translation, rotationX, rotationY, NavigationMode.DEFAULT);
