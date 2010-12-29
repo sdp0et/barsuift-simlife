@@ -11,6 +11,9 @@ New features
 Improve the navigation controls
   * navigation style is first-person style
   * create a walking mode and a fly mode
+Add terrain generation
+  * the terrain is a square whose sides are a power of 2
+  * random terrain generation using the midpoint displacement algorithm
 Add logging utility
   * log file is written in $HOME/barsuift-simlife/barsuift-simlife-<n>.log
 
