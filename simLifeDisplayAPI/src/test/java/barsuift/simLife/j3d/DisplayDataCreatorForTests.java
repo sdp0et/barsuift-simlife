@@ -110,23 +110,25 @@ public final class DisplayDataCreatorForTests {
 
 
     /**
-     * Create a square a 4 points from (0,0) to (1,1).
+     * Create a square of 4 points from (0,0) to (1,1).
      */
     public static Landscape3DState createRandomLandscape3DState() {
+        int size = 2;
         float[] coordinates = { 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1 };
         int[] coordinatesIndices = { 0, 2, 1, 1, 2, 3 };
         int[] stripCounts = { 3, 3 };
-        return new Landscape3DState(coordinates, coordinatesIndices, stripCounts);
+        return new Landscape3DState(size, coordinates, coordinatesIndices, stripCounts);
     }
 
     /**
-     * Create a square a 4 points from (0,0) to (1,1).
+     * Create a square of 4 points from (0,0) to (1,1).
      */
     public static Landscape3DState createSpecificLandscape3DState() {
+        int size = 2;
         float[] coordinates = { 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1 };
         int[] coordinatesIndices = { 0, 2, 1, 1, 2, 3 };
         int[] stripCounts = { 3, 3 };
-        return new Landscape3DState(coordinates, coordinatesIndices, stripCounts);
+        return new Landscape3DState(size, coordinates, coordinatesIndices, stripCounts);
     }
 
     public static NavigatorState createRandomNavigatorState() {
