@@ -19,6 +19,8 @@
 package barsuift.simLife.j2d.action.menu;
 
 import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 
@@ -33,6 +35,8 @@ import barsuift.simLife.universe.SaveException;
 
 
 public class SaveAction extends AbstractAction implements Subscriber {
+
+    private static final Logger logger = Logger.getLogger(SaveAction.class.getName());
 
     private static final long serialVersionUID = 8223229157394283604L;
 
@@ -68,14 +72,14 @@ public class SaveAction extends AbstractAction implements Subscriber {
             try {
                 application.saveUniverse();
             } catch (SaveException se) {
-                System.out.println("Unable to save the universe to the current save file because " + se.getMessage());
+                logger.log(Level.SEVERE, "Unable to save the universe to the current save file", se);
             }
         } else {
             // "Save as" action
             try {
                 application.saveUniverseAs();
             } catch (SaveException se) {
-                System.out.println("Unable to save the universe to given file because " + se.getMessage());
+                logger.log(Level.SEVERE, "Unable to save the universe to given file", se);
             }
         }
     }
