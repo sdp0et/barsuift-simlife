@@ -8,7 +8,7 @@ public final class MathHelper {
     }
 
     /**
-     * Returns true if the number is a power of 2 (1, 2, 4, 8, 16, ...)
+     * Returns true if the number is a power of 2 (1, 2, 4, 8, 16, ...). It must also be positive, and greater than 0.
      * 
      * @param number the number to test
      * @return true if the number is a power of two
