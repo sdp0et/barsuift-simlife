@@ -57,8 +57,11 @@ public class BasicUniverseContext3D implements UniverseContext3D {
         canvas3D = new BasicSimLifeCanvas3D(universeContext.getFpsCounter(), state.getCanvas());
         SimpleUniverse simpleU = new SimpleUniverse(canvas3D);
 
-        // limit to graphic to 40 FPS (interval = 1000ms / 40 = 25)
+        // limit the graphic engine to 40 FPS (interval = 1000ms / 40 = 25)
         simpleU.getViewer().getView().setMinimumFrameCycleTime(25);
+
+        // double the back clip distance (distance where objects start to disappear)
+        simpleU.getViewer().getView().setBackClipDistance(20);
 
         root = new BranchGroup();
         // allow to add children to the root
