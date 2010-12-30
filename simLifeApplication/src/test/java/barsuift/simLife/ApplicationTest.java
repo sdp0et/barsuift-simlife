@@ -53,7 +53,8 @@ public class ApplicationTest extends TestCase {
         } catch (IllegalStateException e) {
             // OK expected exception
         }
-        UniverseContext universeContext = application.createEmptyRandomUniverse();
+        application.createEmptyRandomUniverse();
+        UniverseContext universeContext = application.getUniverseContext();
         Universe universe = universeContext.getUniverse();
         // now there is a current universe, but still no current save file
         try {
@@ -85,7 +86,9 @@ public class ApplicationTest extends TestCase {
         UniverseContextIO io = new UniverseContextIO(saveFile);
         io.write(universeContext);
         // now try to read it
-        UniverseContext universeContext2 = application.openUniverse(saveFile);
+        application.openUniverse(saveFile);
+        UniverseContext universeContext2 = application.getUniverseContext();
+        application.getUniverseContext();
         assertEquals(universeContext.getState(), universeContext2.getState());
     }
 
