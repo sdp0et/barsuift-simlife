@@ -30,29 +30,29 @@ import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.universe.UniverseContext;
 
+// TODO 200. add a confirmation popup before creating the new universe
+public class NewEmptyRandomUniverseAction extends AbstractAction {
 
-public class NewRandomAction extends AbstractAction {
-
-    private static final Logger logger = Logger.getLogger(NewRandomAction.class.getName());
+    private static final Logger logger = Logger.getLogger(NewEmptyRandomUniverseAction.class.getName());
 
     private static final long serialVersionUID = -7620926200302148499L;
 
     private final Application application;
 
-    public NewRandomAction(Application application) {
+    public NewEmptyRandomUniverseAction(Application application) {
         super();
         this.application = application;
-        putValue(NAME, "New (random)");
-        putValue(SHORT_DESCRIPTION, "Create a new random universe");
-        putValue(MNEMONIC_KEY, Mnemonics.FILE_RANDOM);
-        putValue(ACCELERATOR_KEY, Accelerators.RANDOM);
+        putValue(NAME, "New (empty)");
+        putValue(SHORT_DESCRIPTION, "Create a new empty random universe");
+        putValue(MNEMONIC_KEY, Mnemonics.FILE_NEW_EMPTY);
+        putValue(ACCELERATOR_KEY, Accelerators.NEW_EMPTY);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         stopApp();
         try {
-            application.createPopulatedRandomUniverse();
+            application.createEmptyRandomUniverse();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Unable to create empty universe", ex);
         }

@@ -28,8 +28,8 @@ import barsuift.simLife.j2d.action.menu.AxisAction;
 import barsuift.simLife.j2d.action.menu.FpsAction;
 import barsuift.simLife.j2d.action.menu.HelpNavigationAction;
 import barsuift.simLife.j2d.action.menu.NavigationModeAction;
-import barsuift.simLife.j2d.action.menu.NewEmptyAction;
-import barsuift.simLife.j2d.action.menu.NewRandomAction;
+import barsuift.simLife.j2d.action.menu.NewEmptyRandomUniverseAction;
+import barsuift.simLife.j2d.action.menu.NewPopulatedRandomUniverseAction;
 import barsuift.simLife.j2d.action.menu.OpenAction;
 import barsuift.simLife.j2d.action.menu.ResetToNominalViewAngleAction;
 import barsuift.simLife.j2d.action.menu.ResetToOriginalViewAction;
@@ -50,11 +50,11 @@ public class MenuFactory {
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(Mnemonics.FILE);
 
-        NewEmptyAction newEmptyAction = new NewEmptyAction(application);
+        NewEmptyRandomUniverseAction newEmptyAction = new NewEmptyRandomUniverseAction(application);
         JMenuItem newEmptyItem = new JMenuItem(newEmptyAction);
         fileMenu.add(newEmptyItem);
 
-        NewRandomAction newRandomAction = new NewRandomAction(application);
+        NewPopulatedRandomUniverseAction newRandomAction = new NewPopulatedRandomUniverseAction(application);
         JMenuItem newRandomItem = new JMenuItem(newRandomAction);
         fileMenu.add(newRandomItem);
 
