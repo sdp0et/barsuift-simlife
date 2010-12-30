@@ -42,10 +42,10 @@ public class NewEmptyRandomUniverseAction extends AbstractAction {
     public NewEmptyRandomUniverseAction(Application application) {
         super();
         this.application = application;
-        putValue(NAME, "New (empty)");
+        putValue(NAME, "New empty random universe");
         putValue(SHORT_DESCRIPTION, "Create a new empty random universe");
         putValue(MNEMONIC_KEY, Mnemonics.FILE_NEW_EMPTY);
-        putValue(ACCELERATOR_KEY, Accelerators.NEW_EMPTY);
+        putValue(ACCELERATOR_KEY, Accelerators.NEW_EMPTY_RANDOM_UNIVERSE);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class NewEmptyRandomUniverseAction extends AbstractAction {
         try {
             application.createEmptyRandomUniverse();
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Unable to create empty universe", ex);
+            logger.log(Level.SEVERE, "Unable to create new empty random universe", ex);
         }
     }
 

@@ -26,35 +26,32 @@ import javax.swing.AbstractAction;
 
 import barsuift.simLife.Application;
 import barsuift.simLife.j2d.menu.Accelerators;
-import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.universe.UniverseContext;
 
+public class NewEmptyRandomUniverseWithParametersAction extends AbstractAction {
 
-public class NewPopulatedRandomUniverseAction extends AbstractAction {
-
-    private static final Logger logger = Logger.getLogger(NewPopulatedRandomUniverseAction.class.getName());
+    private static final Logger logger = Logger.getLogger(NewEmptyRandomUniverseWithParametersAction.class.getName());
 
     private static final long serialVersionUID = -7620926200302148499L;
 
     private final Application application;
 
-    public NewPopulatedRandomUniverseAction(Application application) {
+    public NewEmptyRandomUniverseWithParametersAction(Application application) {
         super();
         this.application = application;
-        putValue(NAME, "New populated random universe");
-        putValue(SHORT_DESCRIPTION, "Create a new populated random universe");
-        putValue(MNEMONIC_KEY, Mnemonics.FILE_RANDOM);
-        putValue(ACCELERATOR_KEY, Accelerators.NEW_POPULATED_RANDOM_UNIVERSE);
+        putValue(NAME, "New empty random universe (with parameters)");
+        putValue(SHORT_DESCRIPTION, "Create a new empty random universe, with parameters");
+        putValue(ACCELERATOR_KEY, Accelerators.NEW_EMPTY_RANDOM_UNIVERSE_WITH_PARAMETERS);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         stopApp();
         try {
-            application.createPopulatedRandomUniverse();
+            application.createEmptyRandomUniverseWithParameters();
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Unable to create new populated random universe", ex);
+            logger.log(Level.SEVERE, "Unable to create new empty random universe with parameters", ex);
         }
     }
 
