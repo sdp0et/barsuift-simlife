@@ -22,14 +22,16 @@ import java.util.Arrays;
 
 public class Landscape3DStateFactory {
 
-    public Landscape3DState createLandscape3DState() throws Exception {
-        // TODO 001. size should be a parameter, as well as roughness
+    public Landscape3DState createLandscape3DState() {
+        // TODO 001. parameters should come from "above".
         int size = 128;
         float roughness = 0.5f;
+        float erosion = 0.5f;
         float maximumHeight = 30;
-        float erosionFilter = 0.5f;
-        MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(size, roughness, maximumHeight,
-                erosionFilter);
+        MidPointHeightMapParameters parameters = new MidPointHeightMapParameters(size, roughness, erosion,
+                maximumHeight);
+
+        MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(parameters);
         float[] coordinates = generator.generateHeightData();
         int[] coordinatesIndices = generateCoordinatesIndices(size);
         int[] stripCounts = generateStripCounts(size);
