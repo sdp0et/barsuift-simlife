@@ -153,7 +153,7 @@ public class BasicSynchronizerCoreTest extends TestCase {
         }
     }
 
-    public void testGetState() throws InterruptedException {
+    public void testGetState() {
         assertEquals(state, synchro.getState());
         assertSame(state, synchro.getState());
         assertEquals(Speed.VERY_FAST, synchro.getState().getSpeed());

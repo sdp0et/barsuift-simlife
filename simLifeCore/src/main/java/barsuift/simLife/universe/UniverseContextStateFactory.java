@@ -36,9 +36,8 @@ public class UniverseContextStateFactory {
      * </ul>
      * 
      * @return
-     * @throws Exception 
      */
-    public UniverseContextState createEmptyUniverseContextState() throws Exception {
+    public UniverseContextState createEmptyUniverseContextState() {
         boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createEmptyUniverseState();
