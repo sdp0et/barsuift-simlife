@@ -48,7 +48,7 @@ public class Application implements Publisher {
         this.window.setVisible(true);
     }
 
-    public UniverseContext createEmptyUniverse() throws Exception {
+    public UniverseContext createEmptyUniverse() {
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         this.currentUniverseContext = factory.createEmpty();
         this.currentSaveFile = null;
@@ -58,7 +58,7 @@ public class Application implements Publisher {
         return currentUniverseContext;
     }
 
-    public UniverseContext createRandomUniverse() throws Exception {
+    public UniverseContext createRandomUniverse() {
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         this.currentUniverseContext = factory.createRandom();
         this.currentSaveFile = null;
