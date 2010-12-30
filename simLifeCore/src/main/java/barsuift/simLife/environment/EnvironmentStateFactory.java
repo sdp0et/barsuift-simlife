@@ -26,7 +26,7 @@ import barsuift.simLife.terrain.LandscapeStateFactory;
 
 public class EnvironmentStateFactory {
 
-    public EnvironmentState createEnvironmentState() throws Exception {
+    public EnvironmentState createEnvironmentState() {
         SunStateFactory sunStateFactory = new SunStateFactory();
         SunState sunState = sunStateFactory.createSunState();
         Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
