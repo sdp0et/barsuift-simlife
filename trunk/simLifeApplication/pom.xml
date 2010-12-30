@@ -118,6 +118,7 @@
 							<stayAlive>true</stayAlive>
 							<jre>
 								<minVersion>1.6.0</minVersion>
+								<maxHeapSize>1024</maxHeapSize>
 							</jre>
 							<versionInfo>
 								<fileVersion>0.0.0.1</fileVersion>
