@@ -211,7 +211,7 @@ public class SimLifeDateTest extends TestCase {
         assertEquals(3, date.getYear());
     }
 
-    public void testFormatDate() throws Exception {
+    public void testFormatDate() {
         SimLifeDate date = new SimLifeDate();
         assertEquals("00:00:000 Nosday 01 Wim 0001", date.formatDate());
 

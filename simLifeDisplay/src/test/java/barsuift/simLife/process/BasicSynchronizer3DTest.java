@@ -180,7 +180,7 @@ public class BasicSynchronizer3DTest extends TestCase {
         }
     }
 
-    public void testGetState() throws InterruptedException {
+    public void testGetState() {
         assertEquals(state, synchro.getState());
         assertSame(state, synchro.getState());
         assertEquals(10, synchro.getState().getStepSize());

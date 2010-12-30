@@ -45,7 +45,7 @@ public class BasicUniverseContext3DTest extends TestCase {
         assertFalse(universeContext3D.isAxisShowing());
     }
 
-    public void testGetState() throws Exception {
+    public void testGetState() {
         UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
         UniverseContext3DState state = factory.createUniverseContext3DState();
         BasicUniverseContext3D universeContext3D = new BasicUniverseContext3D(state, new MockUniverseContext());
