@@ -45,13 +45,23 @@ public class Accelerators {
     public static final KeyStroke NAVIGATION_MODE = KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK);
 
     // Ctrl + N
-    public static final KeyStroke NEW_EMPTY = KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK);
+    public static final KeyStroke NEW_EMPTY_RANDOM_UNIVERSE = KeyStroke.getKeyStroke(KeyEvent.VK_N,
+            ActionEvent.CTRL_MASK);
+
+    // Ctrl + Shift + N
+    public static final KeyStroke NEW_EMPTY_RANDOM_UNIVERSE_WITH_PARAMETERS = KeyStroke.getKeyStroke(KeyEvent.VK_N,
+            ActionEvent.SHIFT_MASK | ActionEvent.CTRL_MASK);
 
     // Ctrl + O
     public static final KeyStroke OPEN = KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK);
 
     // Ctrl + R
-    public static final KeyStroke RANDOM = KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK);
+    public static final KeyStroke NEW_POPULATED_RANDOM_UNIVERSE = KeyStroke.getKeyStroke(KeyEvent.VK_R,
+            ActionEvent.CTRL_MASK);
+
+    // Ctrl + Shift + R
+    public static final KeyStroke NEW_POPULATED_RANDOM_UNIVERSE_WITH_PARAMETERS = KeyStroke.getKeyStroke(KeyEvent.VK_R,
+            ActionEvent.SHIFT_MASK | ActionEvent.CTRL_MASK);
 
     // Ctrl + S
     public static final KeyStroke SAVE = KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK);

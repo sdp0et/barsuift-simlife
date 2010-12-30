@@ -29,7 +29,9 @@ import barsuift.simLife.j2d.action.menu.FpsAction;
 import barsuift.simLife.j2d.action.menu.HelpNavigationAction;
 import barsuift.simLife.j2d.action.menu.NavigationModeAction;
 import barsuift.simLife.j2d.action.menu.NewEmptyRandomUniverseAction;
+import barsuift.simLife.j2d.action.menu.NewEmptyRandomUniverseWithParametersAction;
 import barsuift.simLife.j2d.action.menu.NewPopulatedRandomUniverseAction;
+import barsuift.simLife.j2d.action.menu.NewPopulatedRandomUniverseWithParametersAction;
 import barsuift.simLife.j2d.action.menu.OpenAction;
 import barsuift.simLife.j2d.action.menu.ResetToNominalViewAngleAction;
 import barsuift.simLife.j2d.action.menu.ResetToOriginalViewAction;
@@ -50,13 +52,25 @@ public class MenuFactory {
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(Mnemonics.FILE);
 
-        NewEmptyRandomUniverseAction newEmptyAction = new NewEmptyRandomUniverseAction(application);
-        JMenuItem newEmptyItem = new JMenuItem(newEmptyAction);
-        fileMenu.add(newEmptyItem);
+        NewEmptyRandomUniverseAction newEmptyRandomUniverseAction = new NewEmptyRandomUniverseAction(application);
+        JMenuItem newEmptyRandomUniverseItem = new JMenuItem(newEmptyRandomUniverseAction);
+        fileMenu.add(newEmptyRandomUniverseItem);
 
-        NewPopulatedRandomUniverseAction newRandomAction = new NewPopulatedRandomUniverseAction(application);
-        JMenuItem newRandomItem = new JMenuItem(newRandomAction);
-        fileMenu.add(newRandomItem);
+        NewPopulatedRandomUniverseAction newPopulatedRandomUniverseAction = new NewPopulatedRandomUniverseAction(
+                application);
+        JMenuItem newPopulatedRandomUniverseItem = new JMenuItem(newPopulatedRandomUniverseAction);
+        fileMenu.add(newPopulatedRandomUniverseItem);
+
+        NewEmptyRandomUniverseWithParametersAction newEmptyRandomUniverseWithParametersAction = new NewEmptyRandomUniverseWithParametersAction(
+                application);
+        JMenuItem newEmptyRandomUniverseWithParametersItem = new JMenuItem(newEmptyRandomUniverseWithParametersAction);
+        fileMenu.add(newEmptyRandomUniverseWithParametersItem);
+
+        NewPopulatedRandomUniverseWithParametersAction newPopulatedRandomUniverseWithParametersAction = new NewPopulatedRandomUniverseWithParametersAction(
+                application);
+        JMenuItem newPopulatedRandomUniverseWithParametersItem = new JMenuItem(
+                newPopulatedRandomUniverseWithParametersAction);
+        fileMenu.add(newPopulatedRandomUniverseWithParametersItem);
 
         OpenAction openAction = new OpenAction(application);
         JMenuItem openItem = new JMenuItem(openAction);
