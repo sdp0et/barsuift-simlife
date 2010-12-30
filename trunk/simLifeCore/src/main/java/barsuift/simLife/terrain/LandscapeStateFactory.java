@@ -27,7 +27,7 @@ public class LandscapeStateFactory {
 
     public LandscapeState createLandscapeState() {
         Landscape3DStateFactory landscape3DStateFactory = new Landscape3DStateFactory();
-        Landscape3DState landscape3D = landscape3DStateFactory.createLandscape3DState();
+        Landscape3DState landscape3D = landscape3DStateFactory.createRandomLandscape3DState();
         return new LandscapeState(landscape3D);
     }
 

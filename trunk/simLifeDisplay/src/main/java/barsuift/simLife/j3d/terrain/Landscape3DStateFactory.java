@@ -20,22 +20,31 @@ package barsuift.simLife.j3d.terrain;
 
 import java.util.Arrays;
 
+import barsuift.simLife.Randomizer;
+
 public class Landscape3DStateFactory {
 
-    public Landscape3DState createLandscape3DState() {
-        // TODO 001. parameters should come from "above".
-        int size = 128;
-        float roughness = 0.5f;
-        float erosion = 0.5f;
-        float maximumHeight = 30;
+    public Landscape3DState createRandomLandscape3DState() {
+        // size between 32 and 512
+        int size = (int) Math.pow(2, Randomizer.randomBetween(5, 9));
+        // roughness between 0.25 and 0.75
+        float roughness = (float) (Math.random() + 0.5) / 2;
+        // erosion between 0.25 and 0.75
+        float erosion = (float) (Math.random() + 0.5) / 2;
+        // max height between 10 and 50
+        float maximumHeight = Randomizer.randomBetween(10, 50);
         MidPointHeightMapParameters parameters = new MidPointHeightMapParameters(size, roughness, erosion,
                 maximumHeight);
 
+        return createRandomLandscape3DStateWithParameters(parameters);
+    }
+
+    public Landscape3DState createRandomLandscape3DStateWithParameters(MidPointHeightMapParameters parameters) {
         MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(parameters);
         float[] coordinates = generator.generateHeightData();
-        int[] coordinatesIndices = generateCoordinatesIndices(size);
-        int[] stripCounts = generateStripCounts(size);
-        return new Landscape3DState(size, coordinates, coordinatesIndices, stripCounts);
+        int[] coordinatesIndices = generateCoordinatesIndices(parameters.getSize());
+        int[] stripCounts = generateStripCounts(parameters.getSize());
+        return new Landscape3DState(parameters.getSize(), coordinates, coordinatesIndices, stripCounts);
     }
 
     /**
