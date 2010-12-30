@@ -35,17 +35,13 @@ public class Landscape3DStateFactory {
 
     /**
      * Generates coordinates indices for triangles. It considers a square of points aligned from left to right, and from
-     * top to bottom. It considers each minimal square of four points, and split it into 2 triangles. It then add to the
-     * result array the coordinates of these 2 triangles (6 coordinates indices).
+     * top to bottom. It considers each minimal square of four points, and split it into 2 triangles. It then add the
+     * coordinates of these 2 triangles (6 coordinates indices) to the result array .
      * 
-     * @param size the size of the landscape square array (size = number of lines = number of columns)
+     * @param size the size of the landscape square array (size = number of lines = number of columns = 2^n)
      * @return an array of triangle points indices
      */
-    // TODO 000. unit test this method
-    // TODO use this : int[] coordIdx = new int[] { 0, 4, 1, 1, 4, 5, 4, 8, 5, 5, 8, 9, 8, 12, 9, 9, 12, 13, 1, 5, 2, 2,
-    // 5, 6, 5, 9,
-    // 6, 6, 9, 10, 9, 13, 10, 10, 13, 14, 2, 6, 3, 3, 6, 7, 6, 10, 7, 7, 10, 11, 10, 14, 11, 11, 14, 15 };
-    private int[] generateCoordinatesIndices(int size) {
+    int[] generateCoordinatesIndices(int size) {
         // 2 triangles * 3 points * (size-1) on each line * (size-1) lines
         int resultSize = 2 * 3 * (size - 1) * (size - 1);
         int[] result = new int[resultSize];
@@ -66,11 +62,10 @@ public class Landscape3DStateFactory {
     /**
      * Consider 2 triangles for each minimal square of the landscape.
      * 
-     * @param size the size of the landscape square array (size = number of lines = number of columns)
+     * @param size the size of the landscape square array (size = number of lines = number of columns = 2^n)
      * @return the strip counts array
      */
-    // TODO 000. unit test this method
-    private int[] generateStripCounts(int size) {
+    int[] generateStripCounts(int size) {
         // 2 triangles * (size-1) on each line * (size-1) lines
         int stripCountSize = 2 * (size - 1) * (size - 1);
         int[] stripCounts = new int[stripCountSize];
