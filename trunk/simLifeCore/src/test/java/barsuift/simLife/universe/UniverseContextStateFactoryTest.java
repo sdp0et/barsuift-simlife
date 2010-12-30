@@ -33,7 +33,7 @@ public class UniverseContextStateFactoryTest extends TestCase {
         super.tearDown();
     }
 
-    public void testCreateEmptyUniverseContextState() throws Exception {
+    public void testCreateEmptyUniverseContextState() {
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = factory.createEmptyUniverseContextState();
         assertFalse(universeContextState.isFpsShowing());
