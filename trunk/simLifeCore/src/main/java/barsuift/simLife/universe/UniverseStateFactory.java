@@ -23,6 +23,7 @@ import java.util.Set;
 
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.EnvironmentStateFactory;
+import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
 import barsuift.simLife.process.SynchronizerCoreState;
@@ -40,9 +41,31 @@ public class UniverseStateFactory {
      * Creates an empty universe state. there is no living part in this universe, only the environment, synchronizer,
      * physics, ...
      */
-    public UniverseState createEmptyUniverseState() {
+    public UniverseState createEmptyRandomUniverseState() {
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
-        EnvironmentState environment = envStateFactory.createEnvironmentState();
+        EnvironmentState environment = envStateFactory.createRandomEnvironmentState();
+        PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
+        PhysicsState physics = physicsStateFactory.createPhysicsState();
+        SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();
+        SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerCoreState();
+        DateHandlerState dateHandler = new DateHandlerState();
+
+        Set<TreeState> trees = new HashSet<TreeState>(0);
+        Set<TreeLeafState> fallenLeaves = new HashSet<TreeLeafState>(0);
+
+        Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
+        Universe3DState univ3DState = univ3DStateFactory.createUniverse3DState();
+
+        return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, dateHandler, univ3DState);
+    }
+
+    /**
+     * Creates an empty universe state. there is no living part in this universe, only the environment, synchronizer,
+     * physics, ...
+     */
+    public UniverseState createEmptyRandomUniverseStateWithParameters(MidPointHeightMapParameters parameters) {
+        EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
+        EnvironmentState environment = envStateFactory.createRandomEnvironmentStateWithParameters(parameters);
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
         PhysicsState physics = physicsStateFactory.createPhysicsState();
         SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();

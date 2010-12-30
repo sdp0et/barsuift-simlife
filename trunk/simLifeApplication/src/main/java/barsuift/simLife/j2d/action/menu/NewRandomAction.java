@@ -52,7 +52,7 @@ public class NewRandomAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         stopApp();
         try {
-            application.createRandomUniverse();
+            application.createPopulatedRandomUniverse();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Unable to create empty universe", ex);
         }
