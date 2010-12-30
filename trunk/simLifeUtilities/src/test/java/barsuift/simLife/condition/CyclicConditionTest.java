@@ -43,7 +43,7 @@ public class CyclicConditionTest extends TestCase {
         assertTrue(condition.evaluate());
     }
 
-    public void testGetState() throws InterruptedException {
+    public void testGetState() {
         assertEquals(state, condition.getState());
         assertSame(state, condition.getState());
         assertEquals(2, condition.getState().getCount());
