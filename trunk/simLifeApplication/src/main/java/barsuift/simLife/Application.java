@@ -22,6 +22,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+import barsuift.simLife.j2d.CreationParametersWindow;
 import barsuift.simLife.j2d.MainWindow;
 import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
 import barsuift.simLife.message.BasicPublisher;
@@ -49,40 +50,46 @@ public class Application implements Publisher {
         this.window.setVisible(true);
     }
 
-    public UniverseContext createEmptyRandomUniverse() {
+    public void createEmptyRandomUniverse() {
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         this.currentUniverseContext = factory.createEmptyRandom();
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         setChanged();
         notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_EMPTY);
-        return currentUniverseContext;
     }
 
     // TODO 001. implement a parameter window in addition to this method (+ the 2 actions)
-    public UniverseContext createPopulatedRandomUniverse() {
+    public void createPopulatedRandomUniverse() {
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         this.currentUniverseContext = factory.createPopulatedRandom();
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         setChanged();
         notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_POPULATED);
-        return currentUniverseContext;
     }
 
-    public UniverseContext createEmptyRandomUniverseWithParameters() {
-        BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-        // FIXME fake code to remove (to create from window)
-        MidPointHeightMapParameters parameters = new MidPointHeightMapParameters(64, 0.5f, 0.5f, 25);
-        this.currentUniverseContext = factory.createEmptyRandomWithParameters(parameters);
-        this.currentSaveFile = null;
-        this.window.changeUniverse(currentUniverseContext);
-        setChanged();
-        notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_EMPTY);
-        return currentUniverseContext;
+    public void createEmptyRandomUniverseWithParameters() {
+        CreationParametersWindow parametersWindow = new CreationParametersWindow();
+        int sizeValue = parametersWindow.getSizeValue();
+        boolean closedByOK = parametersWindow.isClosedByOK();
+        System.out.println("closedByOK=" + closedByOK);
+        System.out.println("Size = " + sizeValue);
+
+
+        if (closedByOK) {
+            BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
+            // FIXME fake code to remove (to create from window)
+            MidPointHeightMapParameters parameters = new MidPointHeightMapParameters(64, 0.5f, 0.5f, 25);
+            this.currentUniverseContext = factory.createEmptyRandomWithParameters(parameters);
+            this.currentSaveFile = null;
+            this.window.changeUniverse(currentUniverseContext);
+            setChanged();
+            notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_EMPTY);
+        }
     }
 
-    public UniverseContext createPopulatedRandomUniverseWithParameters() {
+    public void createPopulatedRandomUniverseWithParameters() {
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         // FIXME fake code to remove (to create from window)
         MidPointHeightMapParameters parameters = new MidPointHeightMapParameters(64, 0.5f, 0.5f, 25);
@@ -91,18 +98,16 @@ public class Application implements Publisher {
         this.window.changeUniverse(currentUniverseContext);
         setChanged();
         notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_POPULATED);
-        return currentUniverseContext;
     }
 
 
-    public UniverseContext openUniverse(File saveFile) throws OpenException {
+    public void openUniverse(File saveFile) throws OpenException {
         UniverseContextIO envIO = new UniverseContextIO(saveFile);
         this.currentUniverseContext = envIO.read();
         this.window.changeUniverse(currentUniverseContext);
         this.currentSaveFile = saveFile;
         setChanged();
         notifySubscribers(ApplicationUpdateCode.OPEN);
-        return currentUniverseContext;
     }
 
     public void saveUniverse() throws SaveException {
