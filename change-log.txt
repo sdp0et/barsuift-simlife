@@ -14,6 +14,7 @@ Improve the navigation controls
 Add terrain generation
   * the terrain is a square whose sides are a power of 2
   * random terrain generation using the midpoint displacement algorithm
+  * many thanks to code from Ardor3D (http://www.ardor3d.com) for its MidPointHeightMapGenerator class !
 Add logging utility
   * log file is written in $HOME/barsuift-simlife/barsuift-simlife-<n>.log
 
