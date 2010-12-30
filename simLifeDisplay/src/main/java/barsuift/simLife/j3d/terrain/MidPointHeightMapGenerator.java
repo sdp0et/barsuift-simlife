@@ -49,6 +49,7 @@ public class MidPointHeightMapGenerator {
      * @param parameters the parameters
      */
     public MidPointHeightMapGenerator(MidPointHeightMapParameters parameters) {
+        logger.info("Creating a map generator with parameters " + parameters);
         this.size = parameters.getSize();
         // when height reducer is big (between 2 and 3), first iterations have a disproportionately large effect
         // creating smooth terrain
