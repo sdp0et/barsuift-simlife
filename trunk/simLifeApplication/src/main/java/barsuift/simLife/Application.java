@@ -58,6 +58,7 @@ public class Application implements Publisher {
         return currentUniverseContext;
     }
 
+    // TODO 001. implement a parameter window in addition to this method
     public UniverseContext createRandomUniverse() {
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         this.currentUniverseContext = factory.createRandom();
