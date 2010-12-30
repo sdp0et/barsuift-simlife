@@ -73,8 +73,8 @@ public class AxisAction extends AbstractAction implements Subscriber {
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
-                || arg == ApplicationUpdateCode.NEW_RANDOM) {
+        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_RANDOM_EMPTY
+                || arg == ApplicationUpdateCode.NEW_RANDOM_POPULATED) {
             setEnabled(true);
             this.universeContext3D = ((Application) publisher).getUniverseContext().getUniverseContext3D();
             updateState(universeContext3D.isAxisShowing());

@@ -87,7 +87,7 @@ public class SaveAsAction extends AbstractAction implements Subscriber {
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (arg == ApplicationUpdateCode.NEW_EMPTY || arg == ApplicationUpdateCode.NEW_RANDOM
+        if (arg == ApplicationUpdateCode.NEW_RANDOM_EMPTY || arg == ApplicationUpdateCode.NEW_RANDOM_POPULATED
                 || arg == ApplicationUpdateCode.OPEN) {
             setEnabled(true);
         }

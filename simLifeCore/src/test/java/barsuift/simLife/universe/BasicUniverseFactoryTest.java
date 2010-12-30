@@ -33,7 +33,7 @@ public class BasicUniverseFactoryTest extends TestCase {
 
     public void testPopulateEmptyUniverse() {
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
-        UniverseState universeState = universeStateFactory.createEmptyUniverseState();
+        UniverseState universeState = universeStateFactory.createEmptyRandomUniverseState();
         Universe universe = new BasicUniverse(universeState);
 
         assertNotNull(universe.getEnvironment());

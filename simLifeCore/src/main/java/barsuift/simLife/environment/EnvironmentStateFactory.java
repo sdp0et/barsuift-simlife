@@ -20,19 +20,30 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Environment3DStateFactory;
+import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
 import barsuift.simLife.terrain.LandscapeState;
 import barsuift.simLife.terrain.LandscapeStateFactory;
 
 
 public class EnvironmentStateFactory {
 
-    public EnvironmentState createEnvironmentState() {
+    public EnvironmentState createRandomEnvironmentState() {
         SunStateFactory sunStateFactory = new SunStateFactory();
         SunState sunState = sunStateFactory.createSunState();
         Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
         Environment3DState env3DState = env3DStateFactory.createEnvironment3DState();
         LandscapeStateFactory landscapeFactory = new LandscapeStateFactory();
-        LandscapeState landscape = landscapeFactory.createLandscapeState();
+        LandscapeState landscape = landscapeFactory.createRandomLandscapeState();
+        return new EnvironmentState(sunState, landscape, env3DState);
+    }
+
+    public EnvironmentState createRandomEnvironmentStateWithParameters(MidPointHeightMapParameters parameters) {
+        SunStateFactory sunStateFactory = new SunStateFactory();
+        SunState sunState = sunStateFactory.createSunState();
+        Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
+        Environment3DState env3DState = env3DStateFactory.createEnvironment3DState();
+        LandscapeStateFactory landscapeFactory = new LandscapeStateFactory();
+        LandscapeState landscape = landscapeFactory.createRandomLandscapeStateWithParameters(parameters);
         return new EnvironmentState(sunState, landscape, env3DState);
     }
 

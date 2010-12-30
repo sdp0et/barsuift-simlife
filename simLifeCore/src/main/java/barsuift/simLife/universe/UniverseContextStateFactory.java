@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.universe;
 
+import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
 import barsuift.simLife.j3d.universe.UniverseContext3DState;
 import barsuift.simLife.j3d.universe.UniverseContext3DStateFactory;
 import barsuift.simLife.process.MainSynchronizerState;
@@ -29,7 +30,7 @@ public class UniverseContextStateFactory {
     /**
      * Creates an empty universe context state with the following values :
      * <ul>
-     * <li>an empty universe state</li>
+     * <li>an empty random universe state</li>
      * <li>a default synchronizer state</li>
      * <li>fpsShowing = false</li>
      * <li>a default universe context 3D state</li>
@@ -37,10 +38,33 @@ public class UniverseContextStateFactory {
      * 
      * @return
      */
-    public UniverseContextState createEmptyUniverseContextState() {
+    public UniverseContextState createEmptyRandomUniverseContextState() {
         boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
-        UniverseState universeState = universeStateFactory.createEmptyUniverseState();
+        UniverseState universeState = universeStateFactory.createEmptyRandomUniverseState();
+        MainSynchronizerStateFactory synchroStateFactory = new MainSynchronizerStateFactory();
+        MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
+        UniverseContext3DStateFactory universeContext3DStateFactory = new UniverseContext3DStateFactory();
+        UniverseContext3DState universeContext3DState = universeContext3DStateFactory.createUniverseContext3DState();
+        return new UniverseContextState(universeState, synchronizerState, fpsShowing, universeContext3DState);
+    }
+
+    /**
+     * Creates an empty universe context state with the following values :
+     * <ul>
+     * <li>an empty random universe state, from parameters</li>
+     * <li>a default synchronizer state</li>
+     * <li>fpsShowing = false</li>
+     * <li>a default universe context 3D state</li>
+     * </ul>
+     * 
+     * @return
+     */
+    public UniverseContextState createEmptyRandomUniverseContextStateWithParameters(
+            MidPointHeightMapParameters parameters) {
+        boolean fpsShowing = false;
+        UniverseStateFactory universeStateFactory = new UniverseStateFactory();
+        UniverseState universeState = universeStateFactory.createEmptyRandomUniverseStateWithParameters(parameters);
         MainSynchronizerStateFactory synchroStateFactory = new MainSynchronizerStateFactory();
         MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
         UniverseContext3DStateFactory universeContext3DStateFactory = new UniverseContext3DStateFactory();

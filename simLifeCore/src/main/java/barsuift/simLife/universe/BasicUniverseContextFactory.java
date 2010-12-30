@@ -18,30 +18,57 @@
  */
 package barsuift.simLife.universe;
 
+import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
+
 
 
 public class BasicUniverseContextFactory {
 
     /**
-     * Create a random universe context
+     * Create a random populated universe context
      * 
      * @return a new universe context instance
      */
-    public UniverseContext createRandom() {
-        UniverseContext universeContext = createEmpty();
+    public UniverseContext createPopulatedRandom() {
+        UniverseContext universeContext = createEmptyRandom();
         BasicUniverseFactory universeFactory = new BasicUniverseFactory();
         universeFactory.populateEmptyUniverse(universeContext.getUniverse());
         return universeContext;
     }
 
     /**
-     * Create an empty universe context
+     * Create an empty random universe context
      * 
      * @return a new universe context instance
      */
-    public UniverseContext createEmpty() {
+    public UniverseContext createEmptyRandom() {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
-        UniverseContextState universeContextState = universeContextStateFactory.createEmptyUniverseContextState();
+        UniverseContextState universeContextState = universeContextStateFactory.createEmptyRandomUniverseContextState();
+        UniverseContext universeContext = new BasicUniverseContext(universeContextState);
+        return universeContext;
+    }
+
+    /**
+     * Create a random populated universe context, from parameters
+     * 
+     * @return a new universe context instance
+     */
+    public UniverseContext createPopulatedRandomWithParameters(MidPointHeightMapParameters parameters) {
+        UniverseContext universeContext = createEmptyRandomWithParameters(parameters);
+        BasicUniverseFactory universeFactory = new BasicUniverseFactory();
+        universeFactory.populateEmptyUniverse(universeContext.getUniverse());
+        return universeContext;
+    }
+
+    /**
+     * Create an empty random universe context, from parameters
+     * 
+     * @return a new universe context instance
+     */
+    public UniverseContext createEmptyRandomWithParameters(MidPointHeightMapParameters parameters) {
+        UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
+        UniverseContextState universeContextState = universeContextStateFactory
+                .createEmptyRandomUniverseContextStateWithParameters(parameters);
         UniverseContext universeContext = new BasicUniverseContext(universeContextState);
         return universeContext;
     }

@@ -52,8 +52,8 @@ public class ResetToNominalViewAngleAction extends AbstractAction implements Sub
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_EMPTY
-                || arg == ApplicationUpdateCode.NEW_RANDOM) {
+        if (arg == ApplicationUpdateCode.OPEN || arg == ApplicationUpdateCode.NEW_RANDOM_EMPTY
+                || arg == ApplicationUpdateCode.NEW_RANDOM_POPULATED) {
             setEnabled(true);
             this.navigator = ((Application) publisher).getUniverseContext().getUniverseContext3D().getNavigator();
         }

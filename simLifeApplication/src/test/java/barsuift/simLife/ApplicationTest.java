@@ -53,7 +53,7 @@ public class ApplicationTest extends TestCase {
         } catch (IllegalStateException e) {
             // OK expected exception
         }
-        UniverseContext universeContext = application.createEmptyUniverse();
+        UniverseContext universeContext = application.createEmptyRandomUniverse();
         Universe universe = universeContext.getUniverse();
         // now there is a current universe, but still no current save file
         try {
@@ -68,7 +68,7 @@ public class ApplicationTest extends TestCase {
         universe.getEnvironment().getSun().setBrightness(PercentHelper.getDecimalValue(13));
         // this should work fine
         application.saveUniverse();
-        application.createEmptyUniverse();
+        application.createEmptyRandomUniverse();
         // now we should have reset the current save file and thus throw an Exception
         try {
             application.saveUniverse();
@@ -81,7 +81,7 @@ public class ApplicationTest extends TestCase {
     public void testOpen() throws Exception {
         // create a test file to be read
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-        UniverseContext universeContext = factory.createRandom();
+        UniverseContext universeContext = factory.createPopulatedRandom();
         UniverseContextIO io = new UniverseContextIO(saveFile);
         io.write(universeContext);
         // now try to read it
