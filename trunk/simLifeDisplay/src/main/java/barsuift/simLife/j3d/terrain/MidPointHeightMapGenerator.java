@@ -1,56 +1,73 @@
-package barsuift.simLife.j3d.terrain;
-
 /**
- * Copyright (c) 2008-2010 Ardor Labs, Inc.
+ * barsuift-simlife is a life simulator program
  * 
- * This file is part of Ardor3D.
+ * Copyright (C) 2010 Cyrille GACHOT
  * 
- * Ardor3D is free software: you can redistribute it and/or modify it under the terms of its license which may be found
- * in the accompanying LICENSE file or at <http://www.ardor3d.com/LICENSE>.
+ * This file is part of barsuift-simlife. It was originally part of Ardor3D, and published according its LICENCE which
+ * can be found at <http://www.ardor3d.com/LICENSE>
+ * 
+ * This file is a modified version of the original one, from Ardor3D.
+ * 
+ * barsuift-simlife is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * barsuift-simlife is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
+package barsuift.simLife.j3d.terrain;
 
 import java.util.Random;
 import java.util.logging.Logger;
 
 import barsuift.simLife.MathHelper;
 
-// TODO 001. refactor a little bit the class to improve design
+// TODO 001. introduce a parameter object
 public class MidPointHeightMapGenerator {
 
     private static final Logger logger = Logger.getLogger(MidPointHeightMapGenerator.class.getName());
 
-    private float roughness;
-
-    /** Height data information. */
-    protected float[] heightData = null;
+    /**
+     * Roughness determines how chaotic the terrain will be.
+     * <ul>
+     * <li>0 means very smooth terrain</li>
+     * <li>0.5 means standard terrain</li>
+     * <li>1 means absolutely chaotic terrain</li>
+     * </ul>
+     */
+    private final float roughness;
 
     /** The size of the height map's width. */
-    protected int size = 0;
-
-    /** Allows scaling the Y height of the map. */
-    protected float heightScale = 1.0f;
-
-    /** The filter is used to erode the terrain. */
-    protected float filter = 0.5f;
-
-    /** The range used to normalize terrain */
-    private float heightRange = 10f;
-
-    private final Random random = new Random();
-
-    private boolean loaded = false;
+    private final int size;
 
     /**
-     * Constructor builds a new heightmap using the midpoint displacement algorithm. Roughness determines how chaotic
-     * the terrain will be. Where 1 is perfectly self-similar, > 1 early iterations have a disproportionately large
-     * effect creating smooth terrain, and < 1 late iterations have a disproportionately large effect creating chaotic
-     * terrain.
+     * The filter is used to erode the terrain.
+     * <ul>
+     * <li>0 means no erosion, creating a sharp environment</li>
+     * <li>0.5 is a smooth erosion, creating nice hills and valleys</li>
+     * <li>1 means 100% erosion : the land is flat</li>
+     * </ul>
+     * It can be thought of as the age of the terrain. The older the terrain, the more eroded.
+     */
+    private final float erosionFilter;
+
+    /** The maximum height used to normalize terrain */
+    private final float maximumHeight;
+
+    /**
+     * Constructor builds a new heightmap using the midpoint displacement algorithm.
+     * 
      * 
      * @param size the size of the terrain, must be a power of 2.
      * @param roughness how chaotic to make the terrain.
      * @throws Exception if roughness is negative of size is negative or not a power of 2
      */
-    public MidPointHeightMapGenerator(final int size, final float roughness) throws Exception {
+    public MidPointHeightMapGenerator(final int size, final float roughness, float maximumHeight, float erosionFilter)
+            throws Exception {
         if (roughness < 0) {
             throw new Exception("size and roughness must be greater than 0");
         }
@@ -59,39 +76,32 @@ public class MidPointHeightMapGenerator {
         }
         this.roughness = roughness;
         this.size = size;
+        this.maximumHeight = maximumHeight;
+        // limit the erosion between 0 and 0.6 as it is already a good erosion
+        // moreover it depends on the roughness because a smooth terrain can not and should not be eroded too much
+        this.erosionFilter = erosionFilter * (0.2f + 0.4f * roughness);
     }
 
     /**
-     * @return the heightData
+     * Generates the heightfield using the Midpoint Displacement algorithm.
      */
-    public float[] getHeightData() {
-        if (!loaded) {
-            generateHeightData();
-        }
-        return heightData;
-    }
+    public float[] generateHeightData() {
+        Random random = new Random();
+        float height = 1f;
+        // when height reducer is big (between 2 and 3), first iterations have a disproportionately large effect
+        // creating smooth terrain
+        // when it is small (between 1 and 2), late iterations have a disproportionately large effect creating chaotic
+        // terrain
+        // double heightReducer = Math.pow(2, -1 * roughness);
+        double heightReducer = (1 - roughness) * 2 + 1;
 
-    /**
-     * <code>load</code> generates the heightfield using the Midpoint Displacement algorithm. <code>load</code> uses the
-     * latest attributes, so a call to <code>load</code> is recommended if attributes have changed using the set
-     * methods.
-     */
-    public boolean generateHeightData() {
-        float height;
-        double heightReducer;
-        float[][] tempBuffer;
+        float[] heightData = new float[size * size * 3];
+        float[][] tempBuffer = new float[size][size];
 
         // holds the points of the square.
         int ni, nj;
         int mi, mj;
         int pmi, pmj;
-
-        height = 1f;
-        heightReducer = Math.pow(2, -1 * roughness);
-
-        // heightData = new float[size * size];
-        heightData = new float[size * size * 3];
-        tempBuffer = new float[size][size];
 
         int counter = size;
         while (counter > 0) {
@@ -140,47 +150,35 @@ public class MidPointHeightMapGenerator {
             }
 
             counter /= 2;
-            height *= heightReducer;
+            // height *= heightReducer;
+            height /= heightReducer;
         }
+
+        erodeTerrain(tempBuffer);
 
         normalizeTerrain(tempBuffer);
 
         // transfer the new terrain into the height map.
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                setHeightAtPoint(tempBuffer[i][j], i, j);
+                setHeightAtPoint(heightData, tempBuffer[i][j], i, j);
             }
         }
 
         logger.info("Created Heightmap using Mid Point");
 
-        loaded = true;
-
-        return true;
-    }
-
-    /**
-     * <code>setRoughness</code> sets the new roughness value of the heightmap. Roughness determines how chaotic the
-     * terrain will be. Where 1 is perfectly self-similar, > 1 early iterations have a disproportionately large effect
-     * creating smooth terrain, and < 1 late iterations have a disproportionately large effect creating chaotic terrain.
-     * 
-     * @param roughness how chaotic will the heightmap be.
-     */
-    public void setRoughness(final float roughness) throws Exception {
-        if (roughness < 0) {
-            throw new Exception("roughness must be greater than 0");
-        }
-        this.roughness = roughness;
+        return heightData;
     }
 
     /**
      * <code>setHeightAtPoint</code> sets the height value for a given coordinate.
      * 
+     * @param heightData the result array in which to place coordinates
      * @param height the new height for the coordinate.
      * @param x the x (east/west) coordinate.
      * @param z the z (north/south) coordinate.
      */
-    protected void setHeightAtPoint(final float height, final int x, final int z) {
+    private void setHeightAtPoint(final float[] heightData, final float height, final int x, final int z) {
         int baseIndex = (x + z * size) * 3;
         heightData[baseIndex] = x;
         heightData[baseIndex + 1] = height;
@@ -193,14 +191,14 @@ public class MidPointHeightMapGenerator {
      * 
      * @param tempBuffer the terrain to normalize.
      */
-    protected void normalizeTerrain(final float[][] tempBuffer) {
+    private void normalizeTerrain(final float[][] tempBuffer) {
         float currentMin, currentMax;
         float height;
 
         currentMin = tempBuffer[0][0];
         currentMax = tempBuffer[0][0];
 
-        // find the min/max values of the height fTemptemptempBuffer
+        // find the min/max values of the height tempBuffer
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (tempBuffer[i][j] > currentMax) {
@@ -222,25 +220,24 @@ public class MidPointHeightMapGenerator {
         // scale the values to a range of 0-255
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                tempBuffer[i][j] = (tempBuffer[i][j] - currentMin) / height * heightRange;
+                tempBuffer[i][j] = (tempBuffer[i][j] - currentMin) / height * maximumHeight;
             }
         }
     }
 
     /**
-     * <code>erodeTerrain</code> is a convenience method that applies the FIR filter to a given height map. This
-     * simulates water errosion.
+     * Convenience method that applies the FIR filter to the given height map. This simulates water erosion.
      * 
      * @param tempBuffer the terrain to filter.
      */
     protected void erodeTerrain(final float[][] tempBuffer) {
-        // erode left to right
         float v;
 
+        // erode left to right
         for (int i = 0; i < size; i++) {
             v = tempBuffer[i][0];
             for (int j = 1; j < size; j++) {
-                tempBuffer[i][j] = filter * v + (1 - filter) * tempBuffer[i][j];
+                tempBuffer[i][j] = erosionFilter * v + (1 - erosionFilter) * tempBuffer[i][j];
                 v = tempBuffer[i][j];
             }
         }
@@ -249,7 +246,7 @@ public class MidPointHeightMapGenerator {
         for (int i = size - 1; i >= 0; i--) {
             v = tempBuffer[i][0];
             for (int j = 0; j < size; j++) {
-                tempBuffer[i][j] = filter * v + (1 - filter) * tempBuffer[i][j];
+                tempBuffer[i][j] = erosionFilter * v + (1 - erosionFilter) * tempBuffer[i][j];
                 v = tempBuffer[i][j];
                 // erodeBand(tempBuffer[size * i + size - 1], -1);
             }
@@ -259,7 +256,7 @@ public class MidPointHeightMapGenerator {
         for (int i = 0; i < size; i++) {
             v = tempBuffer[0][i];
             for (int j = 0; j < size; j++) {
-                tempBuffer[j][i] = filter * v + (1 - filter) * tempBuffer[j][i];
+                tempBuffer[j][i] = erosionFilter * v + (1 - erosionFilter) * tempBuffer[j][i];
                 v = tempBuffer[j][i];
             }
         }
@@ -268,22 +265,10 @@ public class MidPointHeightMapGenerator {
         for (int i = size - 1; i >= 0; i--) {
             v = tempBuffer[0][i];
             for (int j = 0; j < size; j++) {
-                tempBuffer[j][i] = filter * v + (1 - filter) * tempBuffer[j][i];
+                tempBuffer[j][i] = erosionFilter * v + (1 - erosionFilter) * tempBuffer[j][i];
                 v = tempBuffer[j][i];
             }
         }
-    }
-
-    public float getHeightRange() {
-        return heightRange;
-    }
-
-    public void setHeightRange(final float heightRange) {
-        this.heightRange = heightRange;
-    }
-
-    public int getSize() {
-        return size;
     }
 
 }

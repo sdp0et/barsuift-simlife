@@ -24,10 +24,13 @@ public class Landscape3DStateFactory {
 
     public Landscape3DState createLandscape3DState() throws Exception {
         // TODO 001. size should be a parameter, as well as roughness
-        int size = 64;
-        int roughness = 1;
-        MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(size, roughness);
-        float[] coordinates = generator.getHeightData();
+        int size = 128;
+        float roughness = 0.5f;
+        float maximumHeight = 30;
+        float erosionFilter = 0.5f;
+        MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(size, roughness, maximumHeight,
+                erosionFilter);
+        float[] coordinates = generator.generateHeightData();
         int[] coordinatesIndices = generateCoordinatesIndices(size);
         int[] stripCounts = generateStripCounts(size);
         return new Landscape3DState(size, coordinates, coordinatesIndices, stripCounts);
