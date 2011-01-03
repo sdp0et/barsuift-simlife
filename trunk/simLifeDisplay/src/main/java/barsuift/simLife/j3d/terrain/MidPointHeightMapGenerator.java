@@ -25,7 +25,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 /**
- * This class generates a height map, from the given {@link MidPointHeightMapParameters parameters}.
+ * This class generates a height map, from the given {@link TerrainParameters parameters}.
  * 
  * It uses the midpoint displacement algorithm to generate the height values, applies an erosion mechanism, and
  * normalize the results between 0 and maximumHeight.
@@ -48,7 +48,7 @@ public class MidPointHeightMapGenerator {
      * 
      * @param parameters the parameters
      */
-    public MidPointHeightMapGenerator(MidPointHeightMapParameters parameters) {
+    public MidPointHeightMapGenerator(TerrainParameters parameters) {
         logger.info("Creating a map generator with parameters " + parameters);
         this.size = parameters.getSize();
         // when height reducer is big (between 2 and 3), first iterations have a disproportionately large effect

@@ -20,7 +20,7 @@ package barsuift.simLife.terrain;
 
 import barsuift.simLife.j3d.terrain.Landscape3DState;
 import barsuift.simLife.j3d.terrain.Landscape3DStateFactory;
-import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
+import barsuift.simLife.j3d.terrain.TerrainParameters;
 
 
 
@@ -32,7 +32,7 @@ public class LandscapeStateFactory {
         return new LandscapeState(landscape3D);
     }
 
-    public LandscapeState createRandomLandscapeStateWithParameters(MidPointHeightMapParameters parameters) {
+    public LandscapeState createRandomLandscapeStateWithParameters(TerrainParameters parameters) {
         Landscape3DStateFactory landscape3DStateFactory = new Landscape3DStateFactory();
         Landscape3DState landscape3D = landscape3DStateFactory.createRandomLandscape3DStateWithParameters(parameters);
         return new LandscapeState(landscape3D);

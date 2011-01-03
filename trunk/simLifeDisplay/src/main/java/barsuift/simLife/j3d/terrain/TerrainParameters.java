@@ -22,7 +22,7 @@ import barsuift.simLife.MathHelper;
 
 
 /**
- * The class holds the parameters required for the {@link MidPointHeightMapGenerator} class.
+ * The class holds the parameters required to create a landscape, especially with the {@link MidPointHeightMapGenerator} class.
  * 
  * Those parameters are :
  * <ul>
@@ -46,7 +46,7 @@ import barsuift.simLife.MathHelper;
  * </ul>
  * 
  */
-public class MidPointHeightMapParameters {
+public class TerrainParameters {
 
     private final int size;
 
@@ -67,7 +67,7 @@ public class MidPointHeightMapParameters {
      * @param maximumHeight must be positive
      * @throws IllegalArgumentException if one parameter is not valid
      */
-    public MidPointHeightMapParameters(int size, float roughness, float erosion, float maximumHeight) {
+    public TerrainParameters(int size, float roughness, float erosion, float maximumHeight) {
         checkParameters(size, roughness, erosion, maximumHeight);
 
         this.roughness = roughness;
