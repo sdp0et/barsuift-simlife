@@ -61,7 +61,7 @@ public class BasicUniverseContext3D implements UniverseContext3D {
         simpleU.getViewer().getView().setMinimumFrameCycleTime(25);
 
         // double the back clip distance (distance where objects start to disappear)
-        simpleU.getViewer().getView().setBackClipDistance(20);
+        simpleU.getViewer().getView().setBackClipDistance(40);
 
         root = new BranchGroup();
         // allow to add children to the root
