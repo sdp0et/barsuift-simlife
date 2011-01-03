@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
+import barsuift.simLife.j3d.terrain.TerrainParameters;
 import barsuift.simLife.j3d.universe.UniverseContext3DState;
 import barsuift.simLife.j3d.universe.UniverseContext3DStateFactory;
 import barsuift.simLife.process.MainSynchronizerState;
@@ -61,7 +61,7 @@ public class UniverseContextStateFactory {
      * @return
      */
     public UniverseContextState createEmptyRandomUniverseContextStateWithParameters(
-            MidPointHeightMapParameters parameters) {
+            TerrainParameters parameters) {
         boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createEmptyRandomUniverseStateWithParameters(parameters);

@@ -20,7 +20,7 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Environment3DStateFactory;
-import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
+import barsuift.simLife.j3d.terrain.TerrainParameters;
 import barsuift.simLife.terrain.LandscapeState;
 import barsuift.simLife.terrain.LandscapeStateFactory;
 
@@ -37,7 +37,7 @@ public class EnvironmentStateFactory {
         return new EnvironmentState(sunState, landscape, env3DState);
     }
 
-    public EnvironmentState createRandomEnvironmentStateWithParameters(MidPointHeightMapParameters parameters) {
+    public EnvironmentState createRandomEnvironmentStateWithParameters(TerrainParameters parameters) {
         SunStateFactory sunStateFactory = new SunStateFactory();
         SunState sunState = sunStateFactory.createSunState();
         Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();

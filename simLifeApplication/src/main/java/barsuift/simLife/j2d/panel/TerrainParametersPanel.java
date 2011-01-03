@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
-import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
+import barsuift.simLife.j3d.terrain.TerrainParameters;
 
 
 public class TerrainParametersPanel extends JPanel {
@@ -78,8 +78,8 @@ public class TerrainParametersPanel extends JPanel {
         return label;
     }
 
-    public MidPointHeightMapParameters getTerrainParameters() {
-        return new MidPointHeightMapParameters((int) Math.pow(2, sizeSlider.getValue()),
+    public TerrainParameters getTerrainParameters() {
+        return new TerrainParameters((int) Math.pow(2, sizeSlider.getValue()),
                 (float) roughnessSlider.getValue() / 100, (float) erosionSlider.getValue() / 100,
                 maxHeightSlider.getValue());
     }

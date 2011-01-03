@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
+import barsuift.simLife.j3d.terrain.TerrainParameters;
 
 
 
@@ -53,7 +53,7 @@ public class BasicUniverseContextFactory {
      * 
      * @return a new universe context instance
      */
-    public UniverseContext createPopulatedRandomWithParameters(MidPointHeightMapParameters parameters) {
+    public UniverseContext createPopulatedRandomWithParameters(TerrainParameters parameters) {
         UniverseContext universeContext = createEmptyRandomWithParameters(parameters);
         BasicUniverseFactory universeFactory = new BasicUniverseFactory();
         universeFactory.populateEmptyUniverse(universeContext.getUniverse());
@@ -65,7 +65,7 @@ public class BasicUniverseContextFactory {
      * 
      * @return a new universe context instance
      */
-    public UniverseContext createEmptyRandomWithParameters(MidPointHeightMapParameters parameters) {
+    public UniverseContext createEmptyRandomWithParameters(TerrainParameters parameters) {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = universeContextStateFactory
                 .createEmptyRandomUniverseContextStateWithParameters(parameters);

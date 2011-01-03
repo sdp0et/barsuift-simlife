@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import barsuift.simLife.j2d.panel.TerrainParametersPanel;
-import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
+import barsuift.simLife.j3d.terrain.TerrainParameters;
 
 
 public class CreationParametersWindow extends JDialog {
@@ -81,7 +81,7 @@ public class CreationParametersWindow extends JDialog {
 
 
 
-    public MidPointHeightMapParameters getTerrainParameters() {
+    public TerrainParameters getTerrainParameters() {
         return terrainPanel.getTerrainParameters();
     }
 
