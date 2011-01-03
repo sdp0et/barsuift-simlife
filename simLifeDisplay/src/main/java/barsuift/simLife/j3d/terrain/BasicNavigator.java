@@ -62,6 +62,7 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
  * from FlyingPlatform, written by Mark Pendergast.
  * 
  */
+// TODO 001. reposition to middle of the landscape, facing south (not north)
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
 
     /**
