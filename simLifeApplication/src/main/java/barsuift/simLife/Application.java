@@ -24,7 +24,6 @@ import javax.swing.JFileChooser;
 
 import barsuift.simLife.j2d.CreationParametersWindow;
 import barsuift.simLife.j2d.MainWindow;
-import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
@@ -59,7 +58,6 @@ public class Application implements Publisher {
         notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_EMPTY);
     }
 
-    // TODO 001. implement a parameter window in addition to this method (+ the 2 actions)
     public void createPopulatedRandomUniverse() {
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         this.currentUniverseContext = factory.createPopulatedRandom();
@@ -71,17 +69,10 @@ public class Application implements Publisher {
 
     public void createEmptyRandomUniverseWithParameters() {
         CreationParametersWindow parametersWindow = new CreationParametersWindow();
-        int sizeValue = parametersWindow.getSizeValue();
-        boolean closedByOK = parametersWindow.isClosedByOK();
-        System.out.println("closedByOK=" + closedByOK);
-        System.out.println("Size = " + sizeValue);
-
-
-        if (closedByOK) {
+        if (parametersWindow.isClosedByOK()) {
             BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-            // FIXME fake code to remove (to create from window)
-            MidPointHeightMapParameters parameters = new MidPointHeightMapParameters(64, 0.5f, 0.5f, 25);
-            this.currentUniverseContext = factory.createEmptyRandomWithParameters(parameters);
+            this.currentUniverseContext = factory.createEmptyRandomWithParameters(parametersWindow
+                    .getTerrainParameters());
             this.currentSaveFile = null;
             this.window.changeUniverse(currentUniverseContext);
             setChanged();
@@ -90,14 +81,16 @@ public class Application implements Publisher {
     }
 
     public void createPopulatedRandomUniverseWithParameters() {
-        BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-        // FIXME fake code to remove (to create from window)
-        MidPointHeightMapParameters parameters = new MidPointHeightMapParameters(64, 0.5f, 0.5f, 25);
-        this.currentUniverseContext = factory.createPopulatedRandomWithParameters(parameters);
-        this.currentSaveFile = null;
-        this.window.changeUniverse(currentUniverseContext);
-        setChanged();
-        notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_POPULATED);
+        CreationParametersWindow parametersWindow = new CreationParametersWindow();
+        if (parametersWindow.isClosedByOK()) {
+            BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
+            this.currentUniverseContext = factory.createPopulatedRandomWithParameters(parametersWindow
+                    .getTerrainParameters());
+            this.currentSaveFile = null;
+            this.window.changeUniverse(currentUniverseContext);
+            setChanged();
+            notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_POPULATED);
+        }
     }
 
 

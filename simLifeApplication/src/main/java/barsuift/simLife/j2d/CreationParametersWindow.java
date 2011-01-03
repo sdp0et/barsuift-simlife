@@ -1,5 +1,6 @@
 package barsuift.simLife.j2d;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import barsuift.simLife.j2d.panel.TerrainParametersPanel;
+import barsuift.simLife.j3d.terrain.MidPointHeightMapParameters;
 
 
 public class CreationParametersWindow extends JDialog {
@@ -26,7 +28,7 @@ public class CreationParametersWindow extends JDialog {
         int width = 512;
         int height = 340;
         setBounds(128, 128, width, height);
-        JPanel contentPane = new JPanel();
+        JPanel contentPane = new JPanel(new BorderLayout());
         setContentPane(contentPane);
 
 
@@ -40,10 +42,10 @@ public class CreationParametersWindow extends JDialog {
 
 
         terrainPanel = new TerrainParametersPanel();
-        contentPane.add(terrainPanel);
+        contentPane.add(terrainPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = createButtonPanel();
-        contentPane.add(buttonPanel);
+        contentPane.add(buttonPanel, BorderLayout.PAGE_END);
 
         setVisible(true);
     }
@@ -79,8 +81,8 @@ public class CreationParametersWindow extends JDialog {
 
 
 
-    public int getSizeValue() {
-        return terrainPanel.getSizeValue();
+    public MidPointHeightMapParameters getTerrainParameters() {
+        return terrainPanel.getTerrainParameters();
     }
 
     public boolean isClosedByOK() {
