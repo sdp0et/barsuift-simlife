@@ -19,21 +19,17 @@
 package barsuift.simLife.j2d;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import barsuift.simLife.j2d.panel.LandscapeParametersPanel;
-import barsuift.simLife.j2d.panel.WorldParametersPanel;
+import barsuift.simLife.j2d.panel.UniverseParametersPanel;
 import barsuift.simLife.universe.AllParameters;
 
 
@@ -43,14 +39,12 @@ public class CreationParametersWindow extends JDialog {
 
     private boolean closedByOK;
 
-    private LandscapeParametersPanel landscapePanel;
-
-    private WorldParametersPanel worldPanel;
+    private final UniverseParametersPanel parametersPanel;
 
     public CreationParametersWindow() {
         super((JFrame) null, "Creation parameters", true);
         int width = 500;
-        int height = 400;
+        int height = 500;
         setBounds(100, 100, width, height);
         JPanel contentPane = new JPanel(new BorderLayout());
         setContentPane(contentPane);
@@ -64,19 +58,8 @@ public class CreationParametersWindow extends JDialog {
             }
         });
 
-        // TODO 000. make a class out of this JPanel
-        JPanel parametersPanel = new JPanel();
-        parametersPanel.setLayout(new BoxLayout(parametersPanel, BoxLayout.PAGE_AXIS));
+        parametersPanel = new UniverseParametersPanel();
         contentPane.add(parametersPanel, BorderLayout.CENTER);
-
-
-        worldPanel = new WorldParametersPanel();
-        parametersPanel.add(worldPanel);
-
-        parametersPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-        landscapePanel = new LandscapeParametersPanel();
-        parametersPanel.add(landscapePanel);
 
         JPanel buttonPanel = createButtonPanel();
         contentPane.add(buttonPanel, BorderLayout.PAGE_END);
@@ -116,7 +99,7 @@ public class CreationParametersWindow extends JDialog {
 
 
     public AllParameters getParameters() {
-        return new AllParameters(worldPanel.getCommonParameters(), landscapePanel.getLandscapeParameters());
+        return parametersPanel.getParameters();
     }
 
     public boolean isClosedByOK() {
