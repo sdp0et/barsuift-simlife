@@ -133,7 +133,7 @@ public class LandscapeParameters {
 
     @Override
     public String toString() {
-        return "MidPointHeightMapParameters [size=" + size + ", roughness=" + roughness + ", erosion=" + erosion
+        return "LandscapeParameters [size=" + size + ", roughness=" + roughness + ", erosion=" + erosion
                 + ", maximumHeight=" + maximumHeight + "]";
     }
 
