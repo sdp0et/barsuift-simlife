@@ -25,7 +25,6 @@ import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.EnvironmentStateFactory;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
-import barsuift.simLife.landscape.LandscapeParameters;
 import barsuift.simLife.process.SynchronizerCoreState;
 import barsuift.simLife.process.SynchronizerCoreStateFactory;
 import barsuift.simLife.time.DateHandlerState;
@@ -63,9 +62,10 @@ public class UniverseStateFactory {
      * Creates an empty universe state. there is no living part in this universe, only the environment, synchronizer,
      * physics, ...
      */
-    public UniverseState createEmptyRandomUniverseStateWithParameters(LandscapeParameters parameters) {
+    public UniverseState createEmptyRandomUniverseStateWithParameters(AllParameters parameters) {
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
-        EnvironmentState environment = envStateFactory.createRandomEnvironmentStateWithParameters(parameters);
+        EnvironmentState environment = envStateFactory.createRandomEnvironmentStateWithParameters(
+                parameters.getLandscape(), parameters.getCommon());
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
         PhysicsState physics = physicsStateFactory.createPhysicsState();
         SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();

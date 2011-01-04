@@ -18,7 +18,6 @@
  */
 package barsuift.simLife.landscape;
 
-import barsuift.simLife.MathHelper;
 
 
 /**
@@ -27,7 +26,6 @@ import barsuift.simLife.MathHelper;
  * 
  * Those parameters are :
  * <ul>
- * <li>size : The size of the map's width (width = length = size)</li>
  * <li>roughness : The roughness determines how chaotic the landscape will be.
  * <ul>
  * <li>0 means very smooth landscape</li>
@@ -54,8 +52,6 @@ import barsuift.simLife.MathHelper;
 // and rename the one with parameters by deleting the mention "WithParamters"in their names
 public class LandscapeParameters {
 
-    private final int size;
-
     private final float roughness;
 
     private final float erosion;
@@ -67,17 +63,15 @@ public class LandscapeParameters {
      * 
      * For information about the parameters, see class comments.
      * 
-     * @param size the size must be a positive, greater than 0, power of 2
      * @param roughness must be between 0 and 1
      * @param erosion must be between 0 and 1
      * @param maximumHeight must be positive
      * @throws IllegalArgumentException if one parameter is not valid
      */
-    public LandscapeParameters(int size, float roughness, float erosion, float maximumHeight) {
-        checkParameters(size, roughness, erosion, maximumHeight);
+    public LandscapeParameters(float roughness, float erosion, float maximumHeight) {
+        checkParameters(roughness, erosion, maximumHeight);
 
         this.roughness = roughness;
-        this.size = size;
         this.maximumHeight = maximumHeight;
         this.erosion = erosion;
     }
@@ -85,17 +79,12 @@ public class LandscapeParameters {
     /**
      * Check the given parameters and throw {@link IllegalArgumentException} if one parameter is not correct
      * 
-     * @param size the size must be a positive, greater than 0, power of 2
      * @param roughness must be between 0 and 1
      * @param erosion must be between 0 and 1
      * @param maximumHeight must be positive
      * @throws IllegalArgumentException if one parameter is not valid
      */
-    private void checkParameters(int size, float roughness, float erosion, float maximumHeight) {
-        if (!MathHelper.isPowerOfTwo(size)) {
-            throw new IllegalArgumentException("Size must be (2^N) sized and positive");
-        }
-
+    private void checkParameters(float roughness, float erosion, float maximumHeight) {
         if (roughness < 0) {
             throw new IllegalArgumentException("roughness must be greater than 0");
         }
@@ -115,10 +104,6 @@ public class LandscapeParameters {
         }
     }
 
-    public int getSize() {
-        return size;
-    }
-
     public float getRoughness() {
         return roughness;
     }
@@ -133,8 +118,8 @@ public class LandscapeParameters {
 
     @Override
     public String toString() {
-        return "LandscapeParameters [size=" + size + ", roughness=" + roughness + ", erosion=" + erosion
-                + ", maximumHeight=" + maximumHeight + "]";
+        return "LandscapeParameters [roughness=" + roughness + ", erosion=" + erosion + ", maximumHeight="
+                + maximumHeight + "]";
     }
 
 }

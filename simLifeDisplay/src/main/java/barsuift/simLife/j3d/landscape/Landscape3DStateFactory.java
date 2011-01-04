@@ -20,8 +20,8 @@ package barsuift.simLife.j3d.landscape;
 
 import java.util.Arrays;
 
+import barsuift.simLife.CommonParameters;
 import barsuift.simLife.Randomizer;
-import barsuift.simLife.j3d.landscape.Landscape3DState;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 public class Landscape3DStateFactory {
@@ -35,18 +35,19 @@ public class Landscape3DStateFactory {
         float erosion = (float) (Math.random() + 0.5) / 2;
         // max height between 10 and 50
         float maximumHeight = Randomizer.randomBetween(10, 50);
-        LandscapeParameters parameters = new LandscapeParameters(size, roughness, erosion,
-                maximumHeight);
+        LandscapeParameters parameters = new LandscapeParameters(roughness, erosion, maximumHeight);
+        CommonParameters commonParameters = new CommonParameters(size);
 
-        return createRandomLandscape3DStateWithParameters(parameters);
+        return createRandomLandscape3DStateWithParameters(parameters, commonParameters);
     }
 
-    public Landscape3DState createRandomLandscape3DStateWithParameters(LandscapeParameters parameters) {
-        MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(parameters);
+    public Landscape3DState createRandomLandscape3DStateWithParameters(LandscapeParameters parameters,
+            CommonParameters commonParameters) {
+        MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(parameters, commonParameters);
         float[] coordinates = generator.generateHeightData();
-        int[] coordinatesIndices = generateCoordinatesIndices(parameters.getSize());
-        int[] stripCounts = generateStripCounts(parameters.getSize());
-        return new Landscape3DState(parameters.getSize(), coordinates, coordinatesIndices, stripCounts);
+        int[] coordinatesIndices = generateCoordinatesIndices(commonParameters.getSize());
+        int[] stripCounts = generateStripCounts(commonParameters.getSize());
+        return new Landscape3DState(commonParameters.getSize(), coordinates, coordinatesIndices, stripCounts);
     }
 
     /**

@@ -24,6 +24,7 @@ package barsuift.simLife.j3d.landscape;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import barsuift.simLife.CommonParameters;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 /**
@@ -50,9 +51,10 @@ public class MidPointHeightMapGenerator {
      * 
      * @param parameters the parameters
      */
-    public MidPointHeightMapGenerator(LandscapeParameters parameters) {
-        logger.info("Creating a map generator with parameters " + parameters);
-        this.size = parameters.getSize();
+    public MidPointHeightMapGenerator(LandscapeParameters parameters, CommonParameters commonParameters) {
+        this.size = commonParameters.getSize();
+        logger.info("Creating a map generator for size=" + size + " with parameters " + parameters);
+
         // when height reducer is big (between 2 and 3), first iterations have a disproportionately large effect
         // creating smooth landscape
         // when it is small (between 1 and 2), late iterations have a disproportionately large effect creating chaotic

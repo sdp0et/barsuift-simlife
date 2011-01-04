@@ -2,16 +2,18 @@ package barsuift.simLife.j2d.panel;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+
+import barsuift.simLife.CommonParameters;
 
 
 public class WorldParametersPanel extends JPanel {
@@ -21,7 +23,8 @@ public class WorldParametersPanel extends JPanel {
     private JSlider sizeSlider;
 
     public WorldParametersPanel() {
-        super(new GridLayout(2, 1));
+        super();
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         Border blacklineBorder = BorderFactory.createLineBorder(Color.black);
         TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "World");
@@ -57,8 +60,8 @@ public class WorldParametersPanel extends JPanel {
         return label;
     }
 
-    public int getWorldSize() {
-        return (int) Math.pow(2, sizeSlider.getValue());
+    public CommonParameters getCommonParameters() {
+        return new CommonParameters((int) Math.pow(2, sizeSlider.getValue()));
     }
 
 }
