@@ -24,6 +24,8 @@ package barsuift.simLife.j3d.landscape;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import barsuift.simLife.landscape.LandscapeParameters;
+
 /**
  * This class generates a height map, from the given {@link LandscapeParameters parameters}.
  * 

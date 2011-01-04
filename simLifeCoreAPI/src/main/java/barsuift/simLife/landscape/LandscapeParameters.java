@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.landscape;
+package barsuift.simLife.landscape;
 
 import barsuift.simLife.MathHelper;
 
@@ -42,8 +42,8 @@ import barsuift.simLife.MathHelper;
  * <li>1 means 100% erosion : the land is perfectly flat</li>
  * </ul>
  * It can be thought of as the age of the landscape. The older the landscape, the more eroded.</li>
- * <li>maximumHeight : The maximum height used to normalize landscape. After normalization, the landscape heights will be
- * between 0 and this value</li>
+ * <li>maximumHeight : The maximum height used to normalize landscape. After normalization, the landscape heights will
+ * be between 0 and this value</li>
  * </ul>
  * 
  */

@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.landscape.Landscape3DState;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 public class Landscape3DStateFactory {
 
