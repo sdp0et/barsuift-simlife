@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.j3d.landscape.LandscapeParameters;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 
 

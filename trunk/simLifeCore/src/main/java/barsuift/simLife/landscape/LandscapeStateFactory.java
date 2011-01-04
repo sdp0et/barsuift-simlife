@@ -20,7 +20,6 @@ package barsuift.simLife.landscape;
 
 import barsuift.simLife.j3d.landscape.Landscape3DState;
 import barsuift.simLife.j3d.landscape.Landscape3DStateFactory;
-import barsuift.simLife.j3d.landscape.LandscapeParameters;
 import barsuift.simLife.landscape.LandscapeState;
 
 

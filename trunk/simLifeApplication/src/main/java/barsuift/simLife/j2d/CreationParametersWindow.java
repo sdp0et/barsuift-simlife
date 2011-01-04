@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import barsuift.simLife.j2d.panel.LandscapeParametersPanel;
-import barsuift.simLife.j3d.landscape.LandscapeParameters;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 
 public class CreationParametersWindow extends JDialog {
