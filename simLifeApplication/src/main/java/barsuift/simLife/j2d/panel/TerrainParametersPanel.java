@@ -29,14 +29,14 @@ public class TerrainParametersPanel extends JPanel {
         super(new GridLayout(2, 2, 20, 20));
 
         sizeSlider = createSizeSlider();
-        roughnessSlider = createSlider(0, 100, 50);
+        roughnessSlider = createRoughnessSlider();
         maxHeightSlider = createSlider(0, 50, 20);
-        erosionSlider = createSlider(0, 100, 50);
+        erosionSlider = createErosionSlider();
 
-        add(createPanel(createLabel("Size (m)"), sizeSlider));
-        add(createPanel(createLabel("Roughness (%)"), roughnessSlider));
-        add(createPanel(createLabel("Maximum height (m)"), maxHeightSlider));
-        add(createPanel(createLabel("Erosion (%)"), erosionSlider));
+        add(createPanel(createLabel("Size (meters)"), sizeSlider));
+        add(createPanel(createLabel("Roughness"), roughnessSlider));
+        add(createPanel(createLabel("Maximum height (meters)"), maxHeightSlider));
+        add(createPanel(createLabel("Erosion"), erosionSlider));
     }
 
     private JPanel createPanel(JLabel label, JSlider slider) {
@@ -44,6 +44,15 @@ public class TerrainParametersPanel extends JPanel {
         panel.add(label);
         panel.add(slider);
         return panel;
+    }
+
+    private JSlider createSlider(int min, int max, int current) {
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, current);
+        slider.setMaximumSize(new Dimension(80, 180));
+        slider.setPaintTicks(true);
+        slider.setMajorTickSpacing(10);
+        slider.setPaintLabels(true);
+        return slider;
     }
 
     private JSlider createSizeSlider() {
@@ -63,12 +72,29 @@ public class TerrainParametersPanel extends JPanel {
         return slider;
     }
 
-    private JSlider createSlider(int min, int max, int current) {
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, current);
-        slider.setMaximumSize(new Dimension(80, 180));
-        slider.setPaintTicks(true);
-        slider.setMajorTickSpacing(10);
-        slider.setPaintLabels(true);
+    private JSlider createRoughnessSlider() {
+        JSlider slider = createSlider(0, 100, 50);
+
+        slider.setMajorTickSpacing(20);
+        // Create the label table
+        Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
+        labels.put(0, new JLabel("Very smooth"));
+        labels.put(100, new JLabel("Absolute chaos"));
+        slider.setLabelTable(labels);
+
+        return slider;
+    }
+
+    private JSlider createErosionSlider() {
+        JSlider slider = createSlider(0, 100, 50);
+
+        slider.setMajorTickSpacing(20);
+        // Create the label table
+        Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
+        labels.put(0, new JLabel("Sharp (no erosion)"));
+        labels.put(100, new JLabel("Flat (complete erosion)"));
+        slider.setLabelTable(labels);
+
         return slider;
     }
 
