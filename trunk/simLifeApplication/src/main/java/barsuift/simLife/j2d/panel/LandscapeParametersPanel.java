@@ -10,10 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
-import barsuift.simLife.j3d.terrain.TerrainParameters;
+import barsuift.simLife.j3d.terrain.LandscapeParameters;
 
 
-public class TerrainParametersPanel extends JPanel {
+public class LandscapeParametersPanel extends JPanel {
 
     private static final long serialVersionUID = 2609564426686409556L;
 
@@ -25,7 +25,7 @@ public class TerrainParametersPanel extends JPanel {
 
     private JSlider erosionSlider;
 
-    public TerrainParametersPanel() {
+    public LandscapeParametersPanel() {
         super(new GridLayout(2, 2, 20, 20));
 
         sizeSlider = createSizeSlider();
@@ -104,8 +104,8 @@ public class TerrainParametersPanel extends JPanel {
         return label;
     }
 
-    public TerrainParameters getTerrainParameters() {
-        return new TerrainParameters((int) Math.pow(2, sizeSlider.getValue()),
+    public LandscapeParameters getLandscapeParameters() {
+        return new LandscapeParameters((int) Math.pow(2, sizeSlider.getValue()),
                 (float) roughnessSlider.getValue() / 100, (float) erosionSlider.getValue() / 100,
                 maxHeightSlider.getValue());
     }

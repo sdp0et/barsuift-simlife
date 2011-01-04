@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.j3d.terrain.TerrainParameters;
+import barsuift.simLife.j3d.terrain.LandscapeParameters;
 
 
 
@@ -53,7 +53,7 @@ public class BasicUniverseContextFactory {
      * 
      * @return a new universe context instance
      */
-    public UniverseContext createPopulatedRandomWithParameters(TerrainParameters parameters) {
+    public UniverseContext createPopulatedRandomWithParameters(LandscapeParameters parameters) {
         UniverseContext universeContext = createEmptyRandomWithParameters(parameters);
         BasicUniverseFactory universeFactory = new BasicUniverseFactory();
         universeFactory.populateEmptyUniverse(universeContext.getUniverse());
@@ -65,7 +65,7 @@ public class BasicUniverseContextFactory {
      * 
      * @return a new universe context instance
      */
-    public UniverseContext createEmptyRandomWithParameters(TerrainParameters parameters) {
+    public UniverseContext createEmptyRandomWithParameters(LandscapeParameters parameters) {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = universeContextStateFactory
                 .createEmptyRandomUniverseContextStateWithParameters(parameters);

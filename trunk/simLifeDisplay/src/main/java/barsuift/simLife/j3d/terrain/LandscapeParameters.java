@@ -28,21 +28,21 @@ import barsuift.simLife.MathHelper;
  * Those parameters are :
  * <ul>
  * <li>size : The size of the map's width (width = length = size)</li>
- * <li>roughness : The roughness determines how chaotic the terrain will be.
+ * <li>roughness : The roughness determines how chaotic the landscape will be.
  * <ul>
- * <li>0 means very smooth terrain</li>
- * <li>0.5 means standard terrain</li>
- * <li>1 means absolutely chaotic terrain</li>
+ * <li>0 means very smooth landscape</li>
+ * <li>0.5 means standard landscape</li>
+ * <li>1 means absolutely chaotic landscape</li>
  * </ul>
  * </li>
- * <li>erosion : The erosion factor is used to erode the terrain.
+ * <li>erosion : The erosion factor is used to erode the landscape.
  * <ul>
  * <li>0 means no erosion, creating a sharp environment</li>
  * <li>0.5 is a smooth erosion, creating nice hills and valleys</li>
  * <li>1 means 100% erosion : the land is perfectly flat</li>
  * </ul>
- * It can be thought of as the age of the terrain. The older the terrain, the more eroded.</li>
- * <li>maximumHeight : The maximum height used to normalize terrain. After normalization, the terrain heights will be
+ * It can be thought of as the age of the landscape. The older the landscape, the more eroded.</li>
+ * <li>maximumHeight : The maximum height used to normalize landscape. After normalization, the landscape heights will be
  * between 0 and this value</li>
  * </ul>
  * 
@@ -52,7 +52,7 @@ import barsuift.simLife.MathHelper;
 // parameters should go as it is used by many parameters and factory classes.
 // TODO 003. all the methods should be with parameters (in StateFactory classes; So remove the one without parameters,
 // and rename the one with parameters by deleting the mention "WithParamters"in their names
-public class TerrainParameters {
+public class LandscapeParameters {
 
     private final int size;
 
@@ -73,7 +73,7 @@ public class TerrainParameters {
      * @param maximumHeight must be positive
      * @throws IllegalArgumentException if one parameter is not valid
      */
-    public TerrainParameters(int size, float roughness, float erosion, float maximumHeight) {
+    public LandscapeParameters(int size, float roughness, float erosion, float maximumHeight) {
         checkParameters(size, roughness, erosion, maximumHeight);
 
         this.roughness = roughness;
