@@ -71,8 +71,7 @@ public class Application implements Publisher {
         CreationParametersWindow parametersWindow = new CreationParametersWindow();
         if (parametersWindow.isClosedByOK()) {
             BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-            this.currentUniverseContext = factory.createEmptyRandomWithParameters(parametersWindow
-                    .getLandscapeParameters());
+            this.currentUniverseContext = factory.createEmptyRandomWithParameters(parametersWindow.getParameters());
             this.currentSaveFile = null;
             this.window.changeUniverse(currentUniverseContext);
             setChanged();
@@ -84,8 +83,7 @@ public class Application implements Publisher {
         CreationParametersWindow parametersWindow = new CreationParametersWindow();
         if (parametersWindow.isClosedByOK()) {
             BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-            this.currentUniverseContext = factory.createPopulatedRandomWithParameters(parametersWindow
-                    .getLandscapeParameters());
+            this.currentUniverseContext = factory.createPopulatedRandomWithParameters(parametersWindow.getParameters());
             this.currentSaveFile = null;
             this.window.changeUniverse(currentUniverseContext);
             setChanged();

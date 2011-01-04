@@ -1,23 +1,26 @@
 package barsuift.simLife.j2d.panel;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
-import barsuift.simLife.j3d.landscape.LandscapeParameters;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 
 public class LandscapeParametersPanel extends JPanel {
 
     private static final long serialVersionUID = 2609564426686409556L;
-
-    private JSlider sizeSlider;
 
     private JSlider roughnessSlider;
 
@@ -26,88 +29,76 @@ public class LandscapeParametersPanel extends JPanel {
     private JSlider erosionSlider;
 
     public LandscapeParametersPanel() {
-        super(new GridLayout(2, 2, 20, 20));
+        super();
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        sizeSlider = createSizeSlider();
+        Border blacklineBorder = BorderFactory.createLineBorder(Color.black);
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "Landscape");
+        setBorder(titledBorder);
+
         roughnessSlider = createRoughnessSlider();
-        maxHeightSlider = createSlider(0, 50, 20);
+        maxHeightSlider = createMaxHeightSlider();
         erosionSlider = createErosionSlider();
 
-        add(createPanel(createLabel("Size (meters)"), sizeSlider));
-        add(createPanel(createLabel("Roughness"), roughnessSlider));
-        add(createPanel(createLabel("Maximum height (meters)"), maxHeightSlider));
-        add(createPanel(createLabel("Erosion"), erosionSlider));
+        JLabel roughnessLabel = new JLabel("Roughness", JLabel.CENTER);
+        roughnessLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(roughnessLabel);
+        add(roughnessSlider);
+
+        add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JLabel maxHeightLabel = new JLabel("Maximum height (meters)", JLabel.CENTER);
+        maxHeightLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(maxHeightLabel);
+        add(maxHeightSlider);
+
+        add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JLabel erosionLabel = new JLabel("Erosion", JLabel.CENTER);
+        erosionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(erosionLabel);
+        add(erosionSlider);
     }
 
-    private JPanel createPanel(JLabel label, JSlider slider) {
-        JPanel panel = new JPanel(new GridLayout(2, 1));
-        panel.add(label);
-        panel.add(slider);
-        return panel;
-    }
-
-    private JSlider createSlider(int min, int max, int current) {
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, current);
-        slider.setMaximumSize(new Dimension(80, 180));
-        slider.setPaintTicks(true);
-        slider.setMajorTickSpacing(10);
-        slider.setPaintLabels(true);
-        return slider;
-    }
-
-    private JSlider createSizeSlider() {
-        JSlider slider = createSlider(5, 9, 7);
-
-        slider.setMajorTickSpacing(1);
-        slider.setSnapToTicks(true);
-        // Create the label table
-        Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
-        labels.put(5, new JLabel("32"));
-        labels.put(6, new JLabel("64"));
-        labels.put(7, new JLabel("128"));
-        labels.put(8, new JLabel("256"));
-        labels.put(9, new JLabel("512"));
-        slider.setLabelTable(labels);
-
-        return slider;
+    private JSlider createMaxHeightSlider() {
+        JSlider maxHeightSlider = new JSlider(JSlider.HORIZONTAL, 0, 50, 20);
+        maxHeightSlider.setPaintTicks(true);
+        maxHeightSlider.setMajorTickSpacing(10);
+        maxHeightSlider.setPaintLabels(true);
+        return maxHeightSlider;
     }
 
     private JSlider createRoughnessSlider() {
-        JSlider slider = createSlider(0, 100, 50);
-
-        slider.setMajorTickSpacing(20);
+        JSlider roughnessSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+        roughnessSlider.setPaintTicks(true);
+        roughnessSlider.setMajorTickSpacing(20);
+        roughnessSlider.setPaintLabels(true);
         // Create the label table
         Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
         labels.put(0, new JLabel("Very smooth"));
         labels.put(100, new JLabel("Absolute chaos"));
-        slider.setLabelTable(labels);
+        roughnessSlider.setLabelTable(labels);
 
-        return slider;
+        return roughnessSlider;
     }
 
     private JSlider createErosionSlider() {
-        JSlider slider = createSlider(0, 100, 50);
-
-        slider.setMajorTickSpacing(20);
+        JSlider erosionSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+        erosionSlider.setPaintTicks(true);
+        erosionSlider.setMajorTickSpacing(20);
+        erosionSlider.setPaintLabels(true);
         // Create the label table
         Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
         labels.put(0, new JLabel("Sharp (no erosion)"));
         labels.put(100, new JLabel("Flat (complete erosion)"));
-        slider.setLabelTable(labels);
+        erosionSlider.setLabelTable(labels);
 
-        return slider;
-    }
-
-    private JLabel createLabel(String text) {
-        JLabel label = new JLabel(text, JLabel.CENTER);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        return label;
+        return erosionSlider;
     }
 
     public LandscapeParameters getLandscapeParameters() {
-        return new LandscapeParameters((int) Math.pow(2, sizeSlider.getValue()),
-                (float) roughnessSlider.getValue() / 100, (float) erosionSlider.getValue() / 100,
-                maxHeightSlider.getValue());
+        return new LandscapeParameters((float) roughnessSlider.getValue() / 100,
+                (float) erosionSlider.getValue() / 100, maxHeightSlider.getValue());
     }
 
 }
