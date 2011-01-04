@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.j3d.terrain.TerrainParameters;
+import barsuift.simLife.j3d.terrain.LandscapeParameters;
 import barsuift.simLife.j3d.universe.UniverseContext3DState;
 import barsuift.simLife.j3d.universe.UniverseContext3DStateFactory;
 import barsuift.simLife.process.MainSynchronizerState;
@@ -61,7 +61,7 @@ public class UniverseContextStateFactory {
      * @return
      */
     public UniverseContextState createEmptyRandomUniverseContextStateWithParameters(
-            TerrainParameters parameters) {
+            LandscapeParameters parameters) {
         boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createEmptyRandomUniverseStateWithParameters(parameters);

@@ -52,9 +52,9 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
  * <li>rotate down</li>
  * </ul>
  * 
- * This class implements terrain following. Moreover, it has 2 navigations modes :
+ * This class implements landscape following. Moreover, it has 2 navigations modes :
  * <ul>
- * <li>WALK : terrain following, always 2 meters above the ground, unable to move up or down</li>
+ * <li>WALK : landscape following, always 2 meters above the ground, unable to move up or down</li>
  * <li>FLY : ability to move up or down, but never below 50 cm above the ground</li>
  * </ul>
  * 
@@ -340,7 +340,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         }
         double height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
         Vector3d actualMove = theMove;
-        // adapt to terrain, if in WALK mode
+        // adapt to landscape, if in WALK mode
         if (navigationMode == NavigationMode.WALK) {
             // create new translation movement, with updated y value
             actualMove = new Vector3d(theMove.x, height - translation.y + NavigatorStateFactory.VIEWER_SIZE, theMove.z);

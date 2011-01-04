@@ -23,7 +23,7 @@ import java.util.Set;
 
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.EnvironmentStateFactory;
-import barsuift.simLife.j3d.terrain.TerrainParameters;
+import barsuift.simLife.j3d.terrain.LandscapeParameters;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
 import barsuift.simLife.process.SynchronizerCoreState;
@@ -63,7 +63,7 @@ public class UniverseStateFactory {
      * Creates an empty universe state. there is no living part in this universe, only the environment, synchronizer,
      * physics, ...
      */
-    public UniverseState createEmptyRandomUniverseStateWithParameters(TerrainParameters parameters) {
+    public UniverseState createEmptyRandomUniverseStateWithParameters(LandscapeParameters parameters) {
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
         EnvironmentState environment = envStateFactory.createRandomEnvironmentStateWithParameters(parameters);
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();

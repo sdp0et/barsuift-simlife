@@ -11,8 +11,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import barsuift.simLife.j2d.panel.TerrainParametersPanel;
-import barsuift.simLife.j3d.terrain.TerrainParameters;
+import barsuift.simLife.j2d.panel.LandscapeParametersPanel;
+import barsuift.simLife.j3d.terrain.LandscapeParameters;
 
 
 public class CreationParametersWindow extends JDialog {
@@ -21,7 +21,7 @@ public class CreationParametersWindow extends JDialog {
 
     private boolean closedByOK;
 
-    private TerrainParametersPanel terrainPanel;
+    private LandscapeParametersPanel landscapePanel;
 
     public CreationParametersWindow() {
         super((JFrame) null, "Creation parameters", true);
@@ -41,8 +41,8 @@ public class CreationParametersWindow extends JDialog {
         });
 
 
-        terrainPanel = new TerrainParametersPanel();
-        contentPane.add(terrainPanel, BorderLayout.CENTER);
+        landscapePanel = new LandscapeParametersPanel();
+        contentPane.add(landscapePanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = createButtonPanel();
         contentPane.add(buttonPanel, BorderLayout.PAGE_END);
@@ -81,8 +81,8 @@ public class CreationParametersWindow extends JDialog {
 
 
 
-    public TerrainParameters getTerrainParameters() {
-        return terrainPanel.getTerrainParameters();
+    public LandscapeParameters getLandscapeParameters() {
+        return landscapePanel.getLandscapeParameters();
     }
 
     public boolean isClosedByOK() {

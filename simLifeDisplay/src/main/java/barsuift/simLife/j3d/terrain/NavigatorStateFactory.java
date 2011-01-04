@@ -9,6 +9,7 @@ public class NavigatorStateFactory {
 
     public static final double VIEWER_SIZE = 2;
 
+    //TODO 000. check this comment
     /**
      * The original viewer position. Be careful that the Y coordinate may not fit with the landscape. Please adjust the
      * height to the terrain when using this constant.

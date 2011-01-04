@@ -33,13 +33,13 @@ public class Landscape3DStateFactory {
         float erosion = (float) (Math.random() + 0.5) / 2;
         // max height between 10 and 50
         float maximumHeight = Randomizer.randomBetween(10, 50);
-        TerrainParameters parameters = new TerrainParameters(size, roughness, erosion,
+        LandscapeParameters parameters = new LandscapeParameters(size, roughness, erosion,
                 maximumHeight);
 
         return createRandomLandscape3DStateWithParameters(parameters);
     }
 
-    public Landscape3DState createRandomLandscape3DStateWithParameters(TerrainParameters parameters) {
+    public Landscape3DState createRandomLandscape3DStateWithParameters(LandscapeParameters parameters) {
         MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(parameters);
         float[] coordinates = generator.generateHeightData();
         int[] coordinatesIndices = generateCoordinatesIndices(parameters.getSize());
