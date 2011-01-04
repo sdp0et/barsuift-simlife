@@ -16,14 +16,15 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.terrain;
-
-import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.terrain.Landscape3D;
+package barsuift.simLife.j3d.landscape;
 
 
-public interface Landscape extends Persistent<LandscapeState> {
+public enum NavigationMode {
 
-    public Landscape3D getLandscape3D();
+    WALK,
+
+    FLY;
+
+    public static final NavigationMode DEFAULT = WALK;
 
 }

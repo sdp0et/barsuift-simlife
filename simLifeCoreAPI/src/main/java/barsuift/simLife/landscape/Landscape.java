@@ -16,23 +16,14 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.landscape;
+
+import barsuift.simLife.Persistent;
+import barsuift.simLife.j3d.landscape.Landscape3D;
 
 
-public interface Navigator {
+public interface Landscape extends Persistent<LandscapeState> {
 
-    /**
-     * Reset the view along the Z axis, parallel to the (X,Z) plan. Position is (4, 2, 20).
-     */
-    public void resetToOriginalPosition();
-
-    /**
-     * Reset the view along the Z axis, parallel to the (X,Z) plan. Position is (currentX, 2, currentZ).
-     */
-    public void resetToNominalViewAngle();
-
-    public NavigationMode getNavigationMode();
-
-    public void setNavigationMode(NavigationMode navigationMode);
+    public Landscape3D getLandscape3D();
 
 }

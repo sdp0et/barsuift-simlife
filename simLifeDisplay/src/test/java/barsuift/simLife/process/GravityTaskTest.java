@@ -9,8 +9,8 @@ import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.MockMobile;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
-import barsuift.simLife.j3d.terrain.Landscape3D;
-import barsuift.simLife.j3d.terrain.MockLandscape3D;
+import barsuift.simLife.j3d.landscape.Landscape3D;
+import barsuift.simLife.j3d.landscape.MockLandscape3D;
 import barsuift.simLife.message.PublisherTestHelper;
 
 

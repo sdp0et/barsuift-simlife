@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.j3d.landscape;
 
 import java.awt.Label;
 import java.awt.event.KeyEvent;
@@ -24,6 +24,11 @@ import java.awt.event.MouseEvent;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.landscape.BasicNavigator;
+import barsuift.simLife.j3d.landscape.MockLandscape3D;
+import barsuift.simLife.j3d.landscape.NavigationMode;
+import barsuift.simLife.j3d.landscape.NavigatorState;
+import barsuift.simLife.j3d.landscape.NavigatorStateFactory;
 
 import com.sun.j3d.utils.universe.ViewingPlatform;
 

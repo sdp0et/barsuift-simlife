@@ -16,32 +16,39 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.landscape;
 
-import barsuift.simLife.JaxbTestCase;
-import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+import barsuift.simLife.j3d.landscape.BasicLandscape3D;
+import barsuift.simLife.j3d.landscape.Landscape3D;
+import barsuift.simLife.landscape.Landscape;
+import barsuift.simLife.landscape.LandscapeState;
 
 
-public class Landscape3DStateTest extends JaxbTestCase {
+public class BasicLandscape implements Landscape {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+    private final LandscapeState state;
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    private final Landscape3D landscape3D;
+
+    public BasicLandscape(LandscapeState state) {
+        this.state = state;
+        this.landscape3D = new BasicLandscape3D(state.getLandscape3D());
     }
 
     @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d.terrain";
+    public LandscapeState getState() {
+        synchronize();
+        return state;
     }
 
-    public void testJaxb() throws Exception {
-        Landscape3DState landscape3DState = DisplayDataCreatorForTests.createRandomLandscape3DState();
-        write(landscape3DState);
-        Landscape3DState landscape3DState2 = (Landscape3DState) read();
-        assertEquals(landscape3DState, landscape3DState2);
+    @Override
+    public void synchronize() {
+        landscape3D.synchronize();
+    }
+
+    @Override
+    public Landscape3D getLandscape3D() {
+        return landscape3D;
     }
 
 }

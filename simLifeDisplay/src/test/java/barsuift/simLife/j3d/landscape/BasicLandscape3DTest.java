@@ -16,10 +16,12 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.j3d.landscape;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+import barsuift.simLife.j3d.landscape.BasicLandscape3D;
+import barsuift.simLife.j3d.landscape.Landscape3DState;
 
 
 public class BasicLandscape3DTest extends TestCase {

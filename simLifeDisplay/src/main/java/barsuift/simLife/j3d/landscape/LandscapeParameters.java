@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.j3d.landscape;
 
 import barsuift.simLife.MathHelper;
 
@@ -48,7 +48,7 @@ import barsuift.simLife.MathHelper;
  * 
  */
 // TODO 001. create factory class to create random and default.
-// TODO 002. create a hierarchy of Parameters classes (World, Terrain, Trees, ...). Think about where the "size"
+// TODO 002. create a hierarchy of Parameters classes (World, Landscape, Trees, ...). Think about where the "size"
 // parameters should go as it is used by many parameters and factory classes.
 // TODO 003. all the methods should be with parameters (in StateFactory classes; So remove the one without parameters,
 // and rename the one with parameters by deleting the mention "WithParamters"in their names

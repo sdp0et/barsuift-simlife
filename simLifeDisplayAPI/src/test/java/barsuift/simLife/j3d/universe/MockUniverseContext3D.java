@@ -20,8 +20,8 @@ package barsuift.simLife.j3d.universe;
 
 import barsuift.simLife.j3d.MockSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
-import barsuift.simLife.j3d.terrain.MockNavigator;
-import barsuift.simLife.j3d.terrain.Navigator;
+import barsuift.simLife.j3d.landscape.MockNavigator;
+import barsuift.simLife.j3d.landscape.Navigator;
 
 public class MockUniverseContext3D implements UniverseContext3D {
 

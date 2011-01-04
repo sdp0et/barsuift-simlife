@@ -20,7 +20,7 @@ package barsuift.simLife.j3d.universe;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
-import barsuift.simLife.j3d.terrain.NavigatorState;
+import barsuift.simLife.j3d.landscape.NavigatorState;
 
 
 public class UniverseContext3DStateFactoryTest extends TestCase {

@@ -1,8 +1,10 @@
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.j3d.landscape;
 
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.landscape.NavigationMode;
+import barsuift.simLife.j3d.landscape.NavigatorState;
 
 
 public class NavigatorStateFactory {
@@ -11,7 +13,7 @@ public class NavigatorStateFactory {
 
     /**
      * The original viewer position. Be careful that the Y coordinate may not fit with the landscape. Please adjust the
-     * height to the terrain when using this constant.
+     * height to the landscape when using this constant.
      */
     public static final Vector3d ORIGINAL_POSITION = new Vector3d(4, VIEWER_SIZE, 20);
 

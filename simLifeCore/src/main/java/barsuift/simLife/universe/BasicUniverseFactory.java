@@ -24,7 +24,7 @@ import java.util.Map;
 import javax.vecmath.Point3d;
 
 import barsuift.simLife.Randomizer;
-import barsuift.simLife.j3d.terrain.Landscape3D;
+import barsuift.simLife.j3d.landscape.Landscape3D;
 import barsuift.simLife.tree.BasicTree;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeState;

@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.terrain;
+package barsuift.simLife.landscape;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.j3d.terrain.Landscape3DState;
+import barsuift.simLife.j3d.landscape.Landscape3DState;
 
 @XmlRootElement
 public class LandscapeState implements State {

@@ -16,42 +16,38 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.landscape;
 
-import javax.media.j3d.BranchGroup;
+import barsuift.simLife.j3d.landscape.Landscape3D;
+import barsuift.simLife.j3d.landscape.MockLandscape3D;
+import barsuift.simLife.landscape.Landscape;
+import barsuift.simLife.landscape.LandscapeState;
 
 
+public class MockLandscape implements Landscape {
 
-public class MockLandscape3D implements Landscape3D {
-
-    private Landscape3DState state;
+    private LandscapeState state;
 
     private int nbSynchronizedCalled;
 
-    private double height;
+    private Landscape3D landscape3D;
 
-    private boolean inLandscape;
-
-    private BranchGroup bg;
-
-    public MockLandscape3D() {
+    public MockLandscape() {
         reset();
     }
 
     public void reset() {
-        state = new Landscape3DState();
+        state = new LandscapeState();
         nbSynchronizedCalled = 0;
-        height = 0;
-        inLandscape = true;
-        bg = new BranchGroup();
+        landscape3D = new MockLandscape3D();
     }
 
     @Override
-    public Landscape3DState getState() {
+    public LandscapeState getState() {
         return state;
     }
 
-    public void setState(Landscape3DState state) {
+    public void setState(LandscapeState state) {
         this.state = state;
     }
 
@@ -64,31 +60,14 @@ public class MockLandscape3D implements Landscape3D {
         return nbSynchronizedCalled;
     }
 
-    @Override
-    public double getHeight(double x, double z) {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
 
     @Override
-    public boolean inLandscape(double x, double z) {
-        return inLandscape;
+    public Landscape3D getLandscape3D() {
+        return landscape3D;
     }
 
-    public void setInLandscape(boolean inLandscape) {
-        this.inLandscape = inLandscape;
-    }
-
-    @Override
-    public BranchGroup getBranchGroup() {
-        return bg;
-    }
-
-    public void setBranchGroup(BranchGroup bg) {
-        this.bg = bg;
+    public void setLandscape3D(Landscape3D landscape3D) {
+        this.landscape3D = landscape3D;
     }
 
 }

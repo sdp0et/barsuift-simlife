@@ -20,8 +20,8 @@ package barsuift.simLife.j3d.universe;
 
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.SimLifeCanvas3DStateFactory;
-import barsuift.simLife.j3d.terrain.NavigatorState;
-import barsuift.simLife.j3d.terrain.NavigatorStateFactory;
+import barsuift.simLife.j3d.landscape.NavigatorState;
+import barsuift.simLife.j3d.landscape.NavigatorStateFactory;
 
 
 public class UniverseContext3DStateFactory {

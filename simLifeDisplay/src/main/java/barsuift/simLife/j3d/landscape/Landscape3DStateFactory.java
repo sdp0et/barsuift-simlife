@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.j3d.landscape;
 
 import java.util.Arrays;
 
 import barsuift.simLife.Randomizer;
+import barsuift.simLife.j3d.landscape.Landscape3DState;
 
 public class Landscape3DStateFactory {
 

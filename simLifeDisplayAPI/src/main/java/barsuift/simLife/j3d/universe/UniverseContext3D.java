@@ -20,7 +20,7 @@ package barsuift.simLife.j3d.universe;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
-import barsuift.simLife.j3d.terrain.Navigator;
+import barsuift.simLife.j3d.landscape.Navigator;
 
 public interface UniverseContext3D extends Persistent<UniverseContext3DState> {
 
