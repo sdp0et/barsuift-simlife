@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 
 import barsuift.simLife.j2d.panel.UniverseParametersPanel;
 import barsuift.simLife.universe.AllParameters;
+import javax.swing.JTabbedPane;
 
 
 public class CreationParametersWindow extends JDialog {
@@ -58,8 +59,15 @@ public class CreationParametersWindow extends JDialog {
             }
         });
 
+
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        contentPane.add(tabbedPane, BorderLayout.CENTER);
+
         parametersPanel = new UniverseParametersPanel();
-        contentPane.add(parametersPanel, BorderLayout.CENTER);
+        tabbedPane.addTab("Universe", null, parametersPanel, "Universe creation parameters");
+
+        tabbedPane.addTab("Ecosystem", null, new JPanel(), "Ecosystem creation parameters");
+        tabbedPane.setEnabledAt(1, false);
 
         JPanel buttonPanel = createButtonPanel();
         contentPane.add(buttonPanel, BorderLayout.PAGE_END);
@@ -95,8 +103,6 @@ public class CreationParametersWindow extends JDialog {
         buttonPanel.add(buttonCancel);
         return buttonPanel;
     }
-
-
 
     public AllParameters getParameters() {
         return parametersPanel.getParameters();
