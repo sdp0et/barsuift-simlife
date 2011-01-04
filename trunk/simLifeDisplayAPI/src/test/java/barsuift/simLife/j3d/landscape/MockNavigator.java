@@ -1,4 +1,7 @@
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.j3d.landscape;
+
+import barsuift.simLife.j3d.landscape.NavigationMode;
+import barsuift.simLife.j3d.landscape.Navigator;
 
 
 public class MockNavigator implements Navigator {

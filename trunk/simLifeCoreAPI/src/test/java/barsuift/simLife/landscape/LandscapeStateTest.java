@@ -16,13 +16,14 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.landscape;
 
+import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.JaxbTestCase;
-import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+import barsuift.simLife.landscape.LandscapeState;
 
 
-public class NavigatorStateTest extends JaxbTestCase {
+public class LandscapeStateTest extends JaxbTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -34,14 +35,14 @@ public class NavigatorStateTest extends JaxbTestCase {
 
     @Override
     protected String getPackage() {
-        return "barsuift.simLife.j3d.terrain";
+        return "barsuift.simLife.landscape";
     }
 
     public void testJaxb() throws Exception {
-        NavigatorState navigatorState = DisplayDataCreatorForTests.createRandomNavigatorState();
-        write(navigatorState);
-        NavigatorState navigatorState2 = (NavigatorState) read();
-        assertEquals(navigatorState, navigatorState2);
+        LandscapeState landscapeState = CoreDataCreatorForTests.createRandomLandscapeState();
+        write(landscapeState);
+        LandscapeState landscapeState2 = (LandscapeState) read();
+        assertEquals(landscapeState, landscapeState2);
     }
 
 }

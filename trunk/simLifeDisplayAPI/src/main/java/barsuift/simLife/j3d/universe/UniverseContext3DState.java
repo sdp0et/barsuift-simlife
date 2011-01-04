@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
-import barsuift.simLife.j3d.terrain.NavigatorState;
+import barsuift.simLife.j3d.landscape.NavigatorState;
 
 @XmlRootElement
 public class UniverseContext3DState implements State {

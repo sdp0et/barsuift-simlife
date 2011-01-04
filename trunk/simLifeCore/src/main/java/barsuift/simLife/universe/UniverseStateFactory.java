@@ -23,7 +23,7 @@ import java.util.Set;
 
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.EnvironmentStateFactory;
-import barsuift.simLife.j3d.terrain.LandscapeParameters;
+import barsuift.simLife.j3d.landscape.LandscapeParameters;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
 import barsuift.simLife.process.SynchronizerCoreState;

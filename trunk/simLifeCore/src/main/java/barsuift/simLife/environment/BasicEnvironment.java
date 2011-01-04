@@ -20,8 +20,8 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.j3d.environment.BasicEnvironment3D;
 import barsuift.simLife.j3d.environment.Environment3D;
-import barsuift.simLife.terrain.BasicLandscape;
-import barsuift.simLife.terrain.Landscape;
+import barsuift.simLife.landscape.BasicLandscape;
+import barsuift.simLife.landscape.Landscape;
 
 public class BasicEnvironment implements Environment {
 

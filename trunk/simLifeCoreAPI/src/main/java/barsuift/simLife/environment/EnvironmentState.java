@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.environment.Environment3DState;
-import barsuift.simLife.terrain.LandscapeState;
+import barsuift.simLife.landscape.LandscapeState;
 
 @XmlRootElement
 public class EnvironmentState implements State {

@@ -27,7 +27,7 @@ import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.j3d.MobileEvent;
-import barsuift.simLife.j3d.terrain.Landscape3D;
+import barsuift.simLife.j3d.landscape.Landscape3D;
 
 public class GravityTask extends AbstractSplitConditionalTask {
 

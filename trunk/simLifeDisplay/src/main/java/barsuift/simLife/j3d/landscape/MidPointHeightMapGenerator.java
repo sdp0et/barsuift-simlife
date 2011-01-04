@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.terrain;
+package barsuift.simLife.j3d.landscape;
 
 import java.util.Random;
 import java.util.logging.Logger;
@@ -52,12 +52,12 @@ public class MidPointHeightMapGenerator {
         logger.info("Creating a map generator with parameters " + parameters);
         this.size = parameters.getSize();
         // when height reducer is big (between 2 and 3), first iterations have a disproportionately large effect
-        // creating smooth terrain
+        // creating smooth landscape
         // when it is small (between 1 and 2), late iterations have a disproportionately large effect creating chaotic
-        // terrain
+        // landscape
         this.heightReducer = (1 - parameters.getRoughness()) * 2 + 1;
         // limit the erosion between 0 and 0.6 as it is already a good erosion
-        // moreover it depends on the roughness because a smooth terrain can not and should not be eroded too much
+        // moreover it depends on the roughness because a smooth landscape can not and should not be eroded too much
         this.erosionFilter = parameters.getErosion() * (0.2f + 0.4f * parameters.getRoughness());
         this.maximumHeight = parameters.getMaximumHeight();
 
@@ -128,24 +128,24 @@ public class MidPointHeightMapGenerator {
             height /= heightReducer;
         }
 
-        erodeTerrain(tempBuffer);
+        erodeLandscape(tempBuffer);
 
-        normalizeTerrain(tempBuffer);
+        normalizeLandscape(tempBuffer);
 
-        // transfer the new terrain into the height map.
+        // transfer the new landscape into the height map.
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 setHeightAtPoint(heightData, tempBuffer[i][j], i, j);
             }
         }
 
-        logger.info("Created Heightmap using Mid Point");
+        logger.info("Created ladnscape data using Mid Point Displacement algorithm");
 
         return heightData;
     }
 
     /**
-     * <code>setHeightAtPoint</code> sets the height value for a given coordinate.
+     * Sets the height value for a given coordinate.
      * 
      * @param heightData the result array in which to place coordinates
      * @param height the new height for the coordinate.
@@ -160,12 +160,11 @@ public class MidPointHeightMapGenerator {
     }
 
     /**
-     * <code>normalizeTerrain</code> takes the current terrain data and converts it to values between 0 and
-     * NORMALIZE_RANGE.
+     * Takes the current landscape data and converts it to values between 0 and NORMALIZE_RANGE.
      * 
-     * @param tempBuffer the terrain to normalize.
+     * @param tempBuffer the landscape to normalize.
      */
-    private void normalizeTerrain(final float[][] tempBuffer) {
+    private void normalizeLandscape(final float[][] tempBuffer) {
         float currentMin, currentMax;
         float height;
 
@@ -200,11 +199,11 @@ public class MidPointHeightMapGenerator {
     }
 
     /**
-     * Convenience method that applies the FIR filter to the given height map. This simulates water erosion.
+     * Convenience method that applies the FIR filter to the given landscape. This simulates erosion.
      * 
-     * @param tempBuffer the terrain to filter.
+     * @param tempBuffer the landscape to erode.
      */
-    protected void erodeTerrain(final float[][] tempBuffer) {
+    protected void erodeLandscape(final float[][] tempBuffer) {
         float v;
 
         // erode left to right

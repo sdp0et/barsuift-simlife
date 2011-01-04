@@ -20,8 +20,8 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.j3d.environment.Environment3D;
 import barsuift.simLife.j3d.environment.MockEnvironment3D;
-import barsuift.simLife.terrain.Landscape;
-import barsuift.simLife.terrain.MockLandscape;
+import barsuift.simLife.landscape.Landscape;
+import barsuift.simLife.landscape.MockLandscape;
 
 
 public class MockEnvironment implements Environment {

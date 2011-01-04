@@ -21,7 +21,7 @@ package barsuift.simLife.j3d.environment;
 import javax.media.j3d.Group;
 
 import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.terrain.Landscape3D;
+import barsuift.simLife.j3d.landscape.Landscape3D;
 
 
 public interface Environment3D extends Persistent<Environment3DState> {

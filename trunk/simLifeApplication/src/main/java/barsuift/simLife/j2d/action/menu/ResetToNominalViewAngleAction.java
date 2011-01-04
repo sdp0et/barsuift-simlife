@@ -25,7 +25,7 @@ import javax.swing.AbstractAction;
 import barsuift.simLife.Application;
 import barsuift.simLife.ApplicationUpdateCode;
 import barsuift.simLife.j2d.menu.Mnemonics;
-import barsuift.simLife.j3d.terrain.Navigator;
+import barsuift.simLife.j3d.landscape.Navigator;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 

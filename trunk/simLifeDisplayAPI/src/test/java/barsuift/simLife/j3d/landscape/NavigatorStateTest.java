@@ -16,37 +16,33 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.terrain;
+package barsuift.simLife.j3d.landscape;
 
-import barsuift.simLife.j3d.terrain.BasicLandscape3D;
-import barsuift.simLife.j3d.terrain.Landscape3D;
+import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+import barsuift.simLife.j3d.landscape.NavigatorState;
 
 
-public class BasicLandscape implements Landscape {
+public class NavigatorStateTest extends JaxbTestCase {
 
-    private final LandscapeState state;
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-    private final Landscape3D landscape3D;
-
-    public BasicLandscape(LandscapeState state) {
-        this.state = state;
-        this.landscape3D = new BasicLandscape3D(state.getLandscape3D());
+    protected void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Override
-    public LandscapeState getState() {
-        synchronize();
-        return state;
+    protected String getPackage() {
+        return "barsuift.simLife.j3d.landscape";
     }
 
-    @Override
-    public void synchronize() {
-        landscape3D.synchronize();
-    }
-
-    @Override
-    public Landscape3D getLandscape3D() {
-        return landscape3D;
+    public void testJaxb() throws Exception {
+        NavigatorState navigatorState = DisplayDataCreatorForTests.createRandomNavigatorState();
+        write(navigatorState);
+        NavigatorState navigatorState2 = (NavigatorState) read();
+        assertEquals(navigatorState, navigatorState2);
     }
 
 }

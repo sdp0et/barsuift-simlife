@@ -20,7 +20,7 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.environment.Environment3D;
-import barsuift.simLife.terrain.Landscape;
+import barsuift.simLife.landscape.Landscape;
 
 
 public interface Environment extends Persistent<EnvironmentState> {

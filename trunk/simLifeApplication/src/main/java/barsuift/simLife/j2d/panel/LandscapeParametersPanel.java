@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
-import barsuift.simLife.j3d.terrain.LandscapeParameters;
+import barsuift.simLife.j3d.landscape.LandscapeParameters;
 
 
 public class LandscapeParametersPanel extends JPanel {

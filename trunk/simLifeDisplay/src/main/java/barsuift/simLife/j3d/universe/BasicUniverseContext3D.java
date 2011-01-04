@@ -26,9 +26,9 @@ import javax.vecmath.Point3d;
 import barsuift.simLife.j3d.Axis3DGroup;
 import barsuift.simLife.j3d.BasicSimLifeCanvas3D;
 import barsuift.simLife.j3d.SimLifeCanvas3D;
-import barsuift.simLife.j3d.terrain.BasicNavigator;
-import barsuift.simLife.j3d.terrain.Landscape3D;
-import barsuift.simLife.j3d.terrain.Navigator;
+import barsuift.simLife.j3d.landscape.BasicNavigator;
+import barsuift.simLife.j3d.landscape.Landscape3D;
+import barsuift.simLife.j3d.landscape.Navigator;
 import barsuift.simLife.universe.UniverseContext;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;

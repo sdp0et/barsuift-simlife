@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.j3d.terrain.LandscapeParameters;
+import barsuift.simLife.j3d.landscape.LandscapeParameters;
 import barsuift.simLife.j3d.universe.UniverseContext3DState;
 import barsuift.simLife.j3d.universe.UniverseContext3DStateFactory;
 import barsuift.simLife.process.MainSynchronizerState;
