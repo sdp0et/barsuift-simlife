@@ -33,11 +33,11 @@ import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import barsuift.simLife.j2d.ParametersPanel;
+import barsuift.simLife.j2d.ParametersDependent;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 
-public class LandscapeParametersPanel extends JPanel implements ParametersPanel {
+public class LandscapeParametersPanel extends JPanel implements ParametersDependent {
 
     private static final long serialVersionUID = 2609564426686409556L;
 

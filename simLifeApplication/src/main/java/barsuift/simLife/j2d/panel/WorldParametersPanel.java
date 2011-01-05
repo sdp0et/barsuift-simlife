@@ -33,10 +33,10 @@ import javax.swing.border.TitledBorder;
 
 import barsuift.simLife.CommonParameters;
 import barsuift.simLife.MathHelper;
-import barsuift.simLife.j2d.ParametersPanel;
+import barsuift.simLife.j2d.ParametersDependent;
 
 
-public class WorldParametersPanel extends JPanel implements ParametersPanel {
+public class WorldParametersPanel extends JPanel implements ParametersDependent {
 
     private static final long serialVersionUID = 4471355030694189610L;
 
@@ -88,10 +88,12 @@ public class WorldParametersPanel extends JPanel implements ParametersPanel {
         return label;
     }
 
+    @Override
     public void readFromParameters() {
         sizeSlider.setValue(MathHelper.getPowerOfTwoExponent(parameters.getSize()));
     }
 
+    @Override
     public void writeIntoParameters() {
         parameters.setSize(1 << sizeSlider.getValue());
     }
