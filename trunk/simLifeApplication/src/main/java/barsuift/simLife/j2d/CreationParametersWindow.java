@@ -28,10 +28,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import barsuift.simLife.j2d.panel.UniverseParametersPanel;
 import barsuift.simLife.universe.AllParameters;
-import javax.swing.JTabbedPane;
 
 
 public class CreationParametersWindow extends JDialog {
@@ -42,14 +42,13 @@ public class CreationParametersWindow extends JDialog {
 
     private final UniverseParametersPanel parametersPanel;
 
-    public CreationParametersWindow() {
+    public CreationParametersWindow(AllParameters parameters) {
         super((JFrame) null, "Creation parameters", true);
         int width = 500;
         int height = 500;
         setBounds(100, 100, width, height);
         JPanel contentPane = new JPanel(new BorderLayout());
         setContentPane(contentPane);
-
 
         // Handle window closing correctly.
         addWindowListener(new WindowAdapter() {
@@ -63,7 +62,7 @@ public class CreationParametersWindow extends JDialog {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
-        parametersPanel = new UniverseParametersPanel();
+        parametersPanel = new UniverseParametersPanel(parameters.getCommon(), parameters.getLandscape());
         tabbedPane.addTab("Universe", null, parametersPanel, "Universe creation parameters");
 
         tabbedPane.addTab("Ecosystem", null, new JPanel(), "Ecosystem creation parameters");
@@ -86,6 +85,7 @@ public class CreationParametersWindow extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 closedByOK = true;
+                writeIntoParameters();
                 setVisible(false);
             }
         });
@@ -104,12 +104,13 @@ public class CreationParametersWindow extends JDialog {
         return buttonPanel;
     }
 
-    public AllParameters getParameters() {
-        return parametersPanel.getParameters();
-    }
-
     public boolean isClosedByOK() {
         return closedByOK;
+    }
+
+    // TODO see if this class should implement the ParametersPanel interface
+    public void writeIntoParameters() {
+        parametersPanel.writeIntoParameters();
     }
 
 }

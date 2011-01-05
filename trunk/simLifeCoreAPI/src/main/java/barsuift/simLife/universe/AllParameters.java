@@ -22,17 +22,20 @@ import barsuift.simLife.CommonParameters;
 import barsuift.simLife.Parameters;
 import barsuift.simLife.landscape.LandscapeParameters;
 
-
+/**
+ * This class gathers together all the parameters.
+ * 
+ */
 public class AllParameters implements Parameters {
 
     private final CommonParameters common;
 
     private final LandscapeParameters landscape;
 
-    public AllParameters(CommonParameters common, LandscapeParameters landscape) {
+    public AllParameters() {
         super();
-        this.common = common;
-        this.landscape = landscape;
+        this.common = new CommonParameters();
+        this.landscape = new LandscapeParameters();
     }
 
     public CommonParameters getCommon() {

@@ -27,6 +27,7 @@ import barsuift.simLife.j2d.MainWindow;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
+import barsuift.simLife.universe.AllParameters;
 import barsuift.simLife.universe.BasicUniverseContextFactory;
 import barsuift.simLife.universe.OpenException;
 import barsuift.simLife.universe.SaveException;
@@ -68,10 +69,11 @@ public class Application implements Publisher {
     }
 
     public void createEmptyRandomUniverseWithParameters() {
-        CreationParametersWindow parametersWindow = new CreationParametersWindow();
+        AllParameters parameters = new AllParameters();
+        CreationParametersWindow parametersWindow = new CreationParametersWindow(parameters);
         if (parametersWindow.isClosedByOK()) {
             BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-            this.currentUniverseContext = factory.createEmptyRandomWithParameters(parametersWindow.getParameters());
+            this.currentUniverseContext = factory.createEmptyRandomWithParameters(parameters);
             this.currentSaveFile = null;
             this.window.changeUniverse(currentUniverseContext);
             setChanged();
@@ -80,10 +82,11 @@ public class Application implements Publisher {
     }
 
     public void createPopulatedRandomUniverseWithParameters() {
-        CreationParametersWindow parametersWindow = new CreationParametersWindow();
+        AllParameters parameters = new AllParameters();
+        CreationParametersWindow parametersWindow = new CreationParametersWindow(parameters);
         if (parametersWindow.isClosedByOK()) {
             BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-            this.currentUniverseContext = factory.createPopulatedRandomWithParameters(parametersWindow.getParameters());
+            this.currentUniverseContext = factory.createPopulatedRandomWithParameters(parameters);
             this.currentSaveFile = null;
             this.window.changeUniverse(currentUniverseContext);
             setChanged();
