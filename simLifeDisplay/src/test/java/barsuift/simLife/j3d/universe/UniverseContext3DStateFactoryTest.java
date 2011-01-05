@@ -19,6 +19,7 @@
 package barsuift.simLife.j3d.universe;
 
 import junit.framework.TestCase;
+import barsuift.simLife.CommonParameters;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.landscape.NavigatorState;
 
@@ -34,8 +35,11 @@ public class UniverseContext3DStateFactoryTest extends TestCase {
     }
 
     public void testCreateRandomUniverseContext3DState() {
+        CommonParameters parameters = new CommonParameters();
+        parameters.random();
+
         UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
-        UniverseContext3DState universeContext3DState = factory.createUniverseContext3DState();
+        UniverseContext3DState universeContext3DState = factory.createUniverseContext3DState(parameters);
 
         assertTrue(universeContext3DState.isAxisShowing());
 
@@ -47,9 +51,9 @@ public class UniverseContext3DStateFactoryTest extends TestCase {
         assertNotNull(navigatorState);
         assertEquals(0.0, navigatorState.getRotationX());
         assertEquals(0.0, navigatorState.getRotationY());
-        assertEquals(4.0, navigatorState.getTranslation().getX());
+        assertEquals((double) parameters.getSize() / 2, navigatorState.getTranslation().getX());
         assertEquals(2.0, navigatorState.getTranslation().getY());
-        assertEquals(20.0, navigatorState.getTranslation().getZ());
+        assertEquals((double) parameters.getSize() / 2, navigatorState.getTranslation().getZ());
 
     }
 

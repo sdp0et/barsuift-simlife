@@ -23,17 +23,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import junit.framework.TestCase;
+import barsuift.simLife.CommonParameters;
 import barsuift.simLife.j3d.Tuple3dState;
-import barsuift.simLife.j3d.landscape.BasicNavigator;
-import barsuift.simLife.j3d.landscape.MockLandscape3D;
-import barsuift.simLife.j3d.landscape.NavigationMode;
-import barsuift.simLife.j3d.landscape.NavigatorState;
-import barsuift.simLife.j3d.landscape.NavigatorStateFactory;
 
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
 
 public class BasicNavigatorTest extends TestCase {
+
+    private CommonParameters parameters;
 
     private BasicNavigator navigator;
 
@@ -43,8 +41,10 @@ public class BasicNavigatorTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
+        parameters = new CommonParameters();
+        parameters.random();
         NavigatorStateFactory navigatorStateFactory = new NavigatorStateFactory();
-        state = navigatorStateFactory.createNavigatorState();
+        state = navigatorStateFactory.createNavigatorState(parameters);
         landscape3D = new MockLandscape3D();
         navigator = new BasicNavigator(state, landscape3D);
         ViewingPlatform vp = new ViewingPlatform();
@@ -53,6 +53,7 @@ public class BasicNavigatorTest extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
+        parameters = null;
         state = null;
         landscape3D = null;
         navigator = null;
@@ -91,7 +92,7 @@ public class BasicNavigatorTest extends TestCase {
         translation = navigator.getState().getTranslation();
         assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, translation.getX());
         assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y, translation.getY());
-        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z - BasicNavigator.MOVE_STEP, translation.getZ());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z - BasicNavigator.MOVE_STEP, translation.getZ(), 0.0001);
 
         // press UP again
         navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_UP));
@@ -100,7 +101,8 @@ public class BasicNavigatorTest extends TestCase {
         translation = navigator.getState().getTranslation();
         assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x, translation.getX());
         assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y, translation.getY());
-        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z - 2 * BasicNavigator.MOVE_STEP, translation.getZ());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z - 2 * BasicNavigator.MOVE_STEP, translation.getZ(),
+                0.0001);
     }
 
     public void testProcessKeyEvent_WithCtrl() {
@@ -110,7 +112,7 @@ public class BasicNavigatorTest extends TestCase {
 
         // test position
         translation = navigator.getState().getTranslation();
-        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x + BasicNavigator.MOVE_STEP, translation.getX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x + BasicNavigator.MOVE_STEP, translation.getX(), 0.0001);
         assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y, translation.getY());
         assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z, translation.getZ());
         assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y, navigator.getState().getRotationY());
@@ -120,11 +122,11 @@ public class BasicNavigatorTest extends TestCase {
 
         // test position
         translation = navigator.getState().getTranslation();
-        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x + BasicNavigator.MOVE_STEP, translation.getX());
+        assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.x + BasicNavigator.MOVE_STEP, translation.getX(), 0.0001);
         assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.y, translation.getY());
         assertEquals(NavigatorStateFactory.ORIGINAL_POSITION.z, translation.getZ());
         assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y - BasicNavigator.ROTATION_STEP_KEYBOARD + 2 * Math.PI,
-                navigator.getState().getRotationY());
+                navigator.getState().getRotationY(), 0.0001);
     }
 
     public void testProcessMouseEvent() {
@@ -181,9 +183,9 @@ public class BasicNavigatorTest extends TestCase {
         assertEquals(0.0, navigator.getState().getRotationX());
         assertEquals(0.0, navigator.getState().getRotationY());
         Tuple3dState translation = navigator.getState().getTranslation();
-        assertEquals(4.0, translation.getX());
+        assertEquals((double) parameters.getSize() / 2, translation.getX());
         assertEquals(2.0, translation.getY());
-        assertEquals(20.0, translation.getZ());
+        assertEquals((double) parameters.getSize() / 2, translation.getZ());
         assertEquals(NavigationMode.WALK, navigator.getState().getNavigationMode());
         assertEquals(NavigationMode.DEFAULT, navigator.getState().getNavigationMode());
 

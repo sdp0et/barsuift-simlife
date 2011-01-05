@@ -19,23 +19,32 @@
 package barsuift.simLife.j3d.universe;
 
 import junit.framework.TestCase;
+import barsuift.simLife.CommonParameters;
 import barsuift.simLife.universe.MockUniverseContext;
 
 
 public class BasicUniverseContext3DTest extends TestCase {
 
+    private UniverseContext3DState state;
+
+    private UniverseContext3D universeContext3D;
+
     protected void setUp() throws Exception {
         super.setUp();
+        CommonParameters parameters = new CommonParameters();
+        parameters.random();
+        UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
+        state = factory.createUniverseContext3DState(parameters);
+        universeContext3D = new BasicUniverseContext3D(state, new MockUniverseContext());
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
+        state = null;
+        universeContext3D = null;
     }
 
     public void testUnsetAxis() {
-        UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
-        UniverseContext3DState state = factory.createUniverseContext3DState();
-        UniverseContext3D universeContext3D = new BasicUniverseContext3D(state, new MockUniverseContext());
         assertTrue(universeContext3D.isAxisShowing());
         universeContext3D.setAxisShowing(false);
         assertFalse(universeContext3D.isAxisShowing());
@@ -46,9 +55,6 @@ public class BasicUniverseContext3DTest extends TestCase {
     }
 
     public void testGetState() {
-        UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
-        UniverseContext3DState state = factory.createUniverseContext3DState();
-        BasicUniverseContext3D universeContext3D = new BasicUniverseContext3D(state, new MockUniverseContext());
         assertEquals(state, universeContext3D.getState());
         assertSame(state, universeContext3D.getState());
 
@@ -65,10 +71,6 @@ public class BasicUniverseContext3DTest extends TestCase {
 
 
     public void testSetFpsShowing() {
-        UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
-        UniverseContext3DState state = factory.createUniverseContext3DState();
-        BasicUniverseContext3D universeContext3D = new BasicUniverseContext3D(state, new MockUniverseContext());
-
         assertFalse(universeContext3D.isFpsShowing());
         assertFalse(universeContext3D.getCanvas3D().isFpsShowing());
 
