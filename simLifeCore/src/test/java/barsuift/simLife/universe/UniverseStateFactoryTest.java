@@ -32,8 +32,11 @@ public class UniverseStateFactoryTest extends TestCase {
     }
 
     public void testCreateEmptyUniverseState() {
+        AllParameters parameters = new AllParameters();
+        parameters.random();
+
         UniverseStateFactory factory = new UniverseStateFactory();
-        UniverseState universeState = factory.createEmptyRandomUniverseState();
+        UniverseState universeState = factory.createEmptyRandomUniverseState(parameters);
 
         assertNotNull(universeState.getEnvironment());
         assertNotNull(universeState.getDateHandler());

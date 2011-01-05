@@ -18,42 +18,15 @@
  */
 package barsuift.simLife.universe;
 
-
-
-
 public class BasicUniverseContextFactory {
-
-    /**
-     * Create a random populated universe context
-     * 
-     * @return a new universe context instance
-     */
-    public UniverseContext createPopulatedRandom() {
-        UniverseContext universeContext = createEmptyRandom();
-        BasicUniverseFactory universeFactory = new BasicUniverseFactory();
-        universeFactory.populateEmptyUniverse(universeContext.getUniverse());
-        return universeContext;
-    }
-
-    /**
-     * Create an empty random universe context
-     * 
-     * @return a new universe context instance
-     */
-    public UniverseContext createEmptyRandom() {
-        UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
-        UniverseContextState universeContextState = universeContextStateFactory.createEmptyRandomUniverseContextState();
-        UniverseContext universeContext = new BasicUniverseContext(universeContextState);
-        return universeContext;
-    }
 
     /**
      * Create a random populated universe context, from parameters
      * 
      * @return a new universe context instance
      */
-    public UniverseContext createPopulatedRandomWithParameters(AllParameters parameters) {
-        UniverseContext universeContext = createEmptyRandomWithParameters(parameters);
+    public UniverseContext createPopulatedRandom(AllParameters parameters) {
+        UniverseContext universeContext = createEmptyRandom(parameters);
         BasicUniverseFactory universeFactory = new BasicUniverseFactory();
         universeFactory.populateEmptyUniverse(universeContext.getUniverse());
         return universeContext;
@@ -64,10 +37,10 @@ public class BasicUniverseContextFactory {
      * 
      * @return a new universe context instance
      */
-    public UniverseContext createEmptyRandomWithParameters(AllParameters parameters) {
+    public UniverseContext createEmptyRandom(AllParameters parameters) {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = universeContextStateFactory
-                .createEmptyRandomUniverseContextStateWithParameters(parameters);
+                .createEmptyRandomUniverseContextState(parameters);
         UniverseContext universeContext = new BasicUniverseContext(universeContextState);
         return universeContext;
     }

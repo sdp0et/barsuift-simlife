@@ -28,25 +28,14 @@ import barsuift.simLife.landscape.LandscapeStateFactory;
 
 public class EnvironmentStateFactory {
 
-    public EnvironmentState createRandomEnvironmentState() {
-        SunStateFactory sunStateFactory = new SunStateFactory();
-        SunState sunState = sunStateFactory.createSunState();
-        Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
-        Environment3DState env3DState = env3DStateFactory.createEnvironment3DState();
-        LandscapeStateFactory landscapeFactory = new LandscapeStateFactory();
-        LandscapeState landscape = landscapeFactory.createRandomLandscapeState();
-        return new EnvironmentState(sunState, landscape, env3DState);
-    }
-
-    public EnvironmentState createRandomEnvironmentStateWithParameters(LandscapeParameters parameters,
+    public EnvironmentState createRandomEnvironmentState(LandscapeParameters parameters,
             CommonParameters commonParameters) {
         SunStateFactory sunStateFactory = new SunStateFactory();
         SunState sunState = sunStateFactory.createSunState();
         Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
         Environment3DState env3DState = env3DStateFactory.createEnvironment3DState();
         LandscapeStateFactory landscapeFactory = new LandscapeStateFactory();
-        LandscapeState landscape = landscapeFactory.createRandomLandscapeStateWithParameters(parameters,
-                commonParameters);
+        LandscapeState landscape = landscapeFactory.createRandomLandscapeState(parameters, commonParameters);
         return new EnvironmentState(sunState, landscape, env3DState);
     }
 

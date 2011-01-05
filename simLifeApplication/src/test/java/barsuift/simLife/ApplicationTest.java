@@ -21,6 +21,7 @@ package barsuift.simLife;
 import java.io.File;
 
 import junit.framework.TestCase;
+import barsuift.simLife.universe.AllParameters;
 import barsuift.simLife.universe.BasicUniverseContextFactory;
 import barsuift.simLife.universe.Universe;
 import barsuift.simLife.universe.UniverseContext;
@@ -80,9 +81,12 @@ public class ApplicationTest extends TestCase {
     }
 
     public void testOpen() throws Exception {
+        AllParameters parameters = new AllParameters();
+        parameters.random();
+
         // create a test file to be read
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-        UniverseContext universeContext = factory.createPopulatedRandom();
+        UniverseContext universeContext = factory.createPopulatedRandom(parameters);
         UniverseContextIO io = new UniverseContextIO(saveFile);
         io.write(universeContext);
         // now try to read it

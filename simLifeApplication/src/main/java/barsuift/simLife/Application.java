@@ -51,8 +51,22 @@ public class Application implements Publisher {
     }
 
     public void createEmptyRandomUniverse() {
+        AllParameters parameters = new AllParameters();
+        parameters.random();
+        createEmptyRandomUniverse(parameters);
+    }
+
+    public void createEmptyRandomUniverseWithParameters() {
+        AllParameters parameters = new AllParameters();
+        CreationParametersWindow parametersWindow = new CreationParametersWindow(parameters);
+        if (parametersWindow.isClosedByOK()) {
+            createEmptyRandomUniverse(parameters);
+        }
+    }
+
+    private void createEmptyRandomUniverse(AllParameters parameters) {
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-        this.currentUniverseContext = factory.createEmptyRandom();
+        this.currentUniverseContext = factory.createEmptyRandom(parameters);
         this.currentSaveFile = null;
         this.window.changeUniverse(currentUniverseContext);
         setChanged();
@@ -60,40 +74,27 @@ public class Application implements Publisher {
     }
 
     public void createPopulatedRandomUniverse() {
-        BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-        this.currentUniverseContext = factory.createPopulatedRandom();
-        this.currentSaveFile = null;
-        this.window.changeUniverse(currentUniverseContext);
-        setChanged();
-        notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_POPULATED);
-    }
-
-    public void createEmptyRandomUniverseWithParameters() {
         AllParameters parameters = new AllParameters();
-        CreationParametersWindow parametersWindow = new CreationParametersWindow(parameters);
-        if (parametersWindow.isClosedByOK()) {
-            BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-            this.currentUniverseContext = factory.createEmptyRandomWithParameters(parameters);
-            this.currentSaveFile = null;
-            this.window.changeUniverse(currentUniverseContext);
-            setChanged();
-            notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_EMPTY);
-        }
+        parameters.random();
+        createPopulatedRandomUniverse(parameters);
     }
 
     public void createPopulatedRandomUniverseWithParameters() {
         AllParameters parameters = new AllParameters();
         CreationParametersWindow parametersWindow = new CreationParametersWindow(parameters);
         if (parametersWindow.isClosedByOK()) {
-            BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-            this.currentUniverseContext = factory.createPopulatedRandomWithParameters(parameters);
-            this.currentSaveFile = null;
-            this.window.changeUniverse(currentUniverseContext);
-            setChanged();
-            notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_POPULATED);
+            createPopulatedRandomUniverse(parameters);
         }
     }
 
+    private void createPopulatedRandomUniverse(AllParameters parameters) {
+        BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
+        this.currentUniverseContext = factory.createPopulatedRandom(parameters);
+        this.currentSaveFile = null;
+        this.window.changeUniverse(currentUniverseContext);
+        setChanged();
+        notifySubscribers(ApplicationUpdateCode.NEW_RANDOM_POPULATED);
+    }
 
     public void openUniverse(File saveFile) throws OpenException {
         UniverseContextIO envIO = new UniverseContextIO(saveFile);

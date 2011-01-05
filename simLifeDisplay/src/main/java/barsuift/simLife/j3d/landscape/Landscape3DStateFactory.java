@@ -25,15 +25,7 @@ import barsuift.simLife.landscape.LandscapeParameters;
 
 public class Landscape3DStateFactory {
 
-    public Landscape3DState createRandomLandscape3DState() {
-        LandscapeParameters parameters = new LandscapeParameters();
-        parameters.random();
-        CommonParameters commonParameters = new CommonParameters();
-        commonParameters.random();
-        return createRandomLandscape3DStateWithParameters(parameters, commonParameters);
-    }
-
-    public Landscape3DState createRandomLandscape3DStateWithParameters(LandscapeParameters parameters,
+    public Landscape3DState createRandomLandscape3DState(LandscapeParameters parameters,
             CommonParameters commonParameters) {
         MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(parameters, commonParameters);
         float[] coordinates = generator.generateHeightData();
