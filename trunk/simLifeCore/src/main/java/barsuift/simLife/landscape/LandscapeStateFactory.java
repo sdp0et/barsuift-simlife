@@ -26,16 +26,9 @@ import barsuift.simLife.j3d.landscape.Landscape3DStateFactory;
 
 public class LandscapeStateFactory {
 
-    public LandscapeState createRandomLandscapeState() {
+    public LandscapeState createRandomLandscapeState(LandscapeParameters parameters, CommonParameters commonParameters) {
         Landscape3DStateFactory landscape3DStateFactory = new Landscape3DStateFactory();
-        Landscape3DState landscape3D = landscape3DStateFactory.createRandomLandscape3DState();
-        return new LandscapeState(landscape3D);
-    }
-
-    public LandscapeState createRandomLandscapeStateWithParameters(LandscapeParameters parameters,
-            CommonParameters commonParameters) {
-        Landscape3DStateFactory landscape3DStateFactory = new Landscape3DStateFactory();
-        Landscape3DState landscape3D = landscape3DStateFactory.createRandomLandscape3DStateWithParameters(parameters,
+        Landscape3DState landscape3D = landscape3DStateFactory.createRandomLandscape3DState(parameters,
                 commonParameters);
         return new LandscapeState(landscape3D);
     }

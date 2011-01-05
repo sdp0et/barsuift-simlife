@@ -48,8 +48,6 @@ import barsuift.simLife.Randomizer;
  * </ul>
  * 
  */
-// TODO 003. all the methods should be with parameters (in StateFactory classes). So remove the one without parameters,
-// and rename the one with parameters by deleting the mention "WithParamters"in their names
 public class LandscapeParameters implements Parameters {
 
     public static final float ROUGHNESS_DEFAULT = 0.5f;

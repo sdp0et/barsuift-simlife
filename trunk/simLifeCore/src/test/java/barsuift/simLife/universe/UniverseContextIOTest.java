@@ -45,16 +45,22 @@ public class UniverseContextIOTest extends TestCase {
     }
 
     public void testWriteAndReadRandom() throws Exception {
+        AllParameters parameters = new AllParameters();
+        parameters.random();
+
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-        UniverseContext universeContext = factory.createPopulatedRandom();
+        UniverseContext universeContext = factory.createPopulatedRandom(parameters);
         universeIo.write(universeContext);
         UniverseContext universeContext2 = universeIo.read();
         assertEquals(universeContext.getState(), universeContext2.getState());
     }
 
     public void testWriteAndReadEmpty() throws Exception {
+        AllParameters parameters = new AllParameters();
+        parameters.random();
+
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
-        UniverseContext universeContext = factory.createEmptyRandom();
+        UniverseContext universeContext = factory.createEmptyRandom(parameters);
         universeIo.write(universeContext);
         UniverseContext universeContext2 = universeIo.read();
         assertEquals(universeContext.getState(), universeContext2.getState());

@@ -34,8 +34,11 @@ public class UniverseContextStateFactoryTest extends TestCase {
     }
 
     public void testCreateEmptyUniverseContextState() {
+        AllParameters parameters = new AllParameters();
+        parameters.random();
+
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
-        UniverseContextState universeContextState = factory.createEmptyRandomUniverseContextState();
+        UniverseContextState universeContextState = factory.createEmptyRandomUniverseContextState(parameters);
         assertFalse(universeContextState.isFpsShowing());
 
         UniverseState universeState = universeContextState.getUniverse();
