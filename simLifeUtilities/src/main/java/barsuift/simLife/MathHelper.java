@@ -24,4 +24,26 @@ public final class MathHelper {
         return (number > 0) && (number & (number - 1)) == 0;
     }
 
+    /**
+     * Returns the exponent of the given number.
+     * 
+     * Considering this number is of the form 2<sup>n</sup>, this method returns {@code n}.
+     * 
+     * @param number the number
+     * @return the exponent if the power of 2 in the given number
+     * @throws IllegalArgumentException if the given number is not a power of 2
+     */
+    public static int getPowerOfTwoExponent(final int number) {
+        if (!isPowerOfTwo(number)) {
+            throw new IllegalArgumentException("The given number " + number + " is not a power of 2");
+        }
+        int mask = 0x0001;
+        int result = 0;
+        while ((number & mask) == 0) {
+            result++;
+            mask = mask << 1;
+        }
+        return result;
+    }
+
 }
