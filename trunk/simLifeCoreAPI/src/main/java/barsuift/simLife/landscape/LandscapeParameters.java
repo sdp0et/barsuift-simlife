@@ -19,6 +19,7 @@
 package barsuift.simLife.landscape;
 
 import barsuift.simLife.Parameters;
+import barsuift.simLife.Randomizer;
 
 
 
@@ -52,11 +53,17 @@ import barsuift.simLife.Parameters;
 // and rename the one with parameters by deleting the mention "WithParamters"in their names
 public class LandscapeParameters implements Parameters {
 
-    private final float roughness;
+    public static final float DEFAULT_ROUGHNESS = 0.5f;
 
-    private final float erosion;
+    public static final float DEFAULT_EROSION = 0.5f;
 
-    private final float maximumHeight;
+    public static final float DEFAULT_MAX_HEIGHT = 20;
+
+    private float roughness;
+
+    private float erosion;
+
+    private float maximumHeight;
 
     /**
      * Constructor.
@@ -114,6 +121,23 @@ public class LandscapeParameters implements Parameters {
 
     public float getMaximumHeight() {
         return maximumHeight;
+    }
+
+    @Override
+    public void resetToDefaults() {
+        this.roughness = DEFAULT_ROUGHNESS;
+        this.erosion = DEFAULT_EROSION;
+        this.maximumHeight = DEFAULT_MAX_HEIGHT;
+    }
+
+    @Override
+    public void random() {
+        // roughness between 0.25 and 0.75
+        this.roughness = (float) (Math.random() + 0.5) / 2;
+        // erosion between 0.25 and 0.75
+        this.erosion = (float) (Math.random() + 0.5) / 2;
+        // max height between 10 and 50
+        this.maximumHeight = Randomizer.randomBetween(10, 50);
     }
 
     @Override

@@ -32,7 +32,9 @@ package barsuift.simLife;
  */
 public class CommonParameters implements Parameters {
 
-    private final int size;
+    public static final int DEFAULT_SIZE = 128;
+
+    private int size;
 
     /**
      * Constructor.
@@ -61,6 +63,17 @@ public class CommonParameters implements Parameters {
 
     public int getSize() {
         return size;
+    }
+
+    @Override
+    public void resetToDefaults() {
+        this.size = DEFAULT_SIZE;
+    }
+
+    @Override
+    public void random() {
+        // size between 32 and 512
+        this.size = (int) Math.pow(2, Randomizer.randomBetween(5, 9));
     }
 
     @Override
