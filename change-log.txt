@@ -17,7 +17,7 @@ Add terrain generation
   * new menu entry to create a terrain from user input parameters (size, erosion, roughness, height, ...)
   * many thanks to code from Ardor3D (http://www.ardor3d.com) for its MidPointHeightMapGenerator class !
 Add logging utility
-  * log file is written in $HOME/barsuift-simlife/barsuift-simlife-<n>.log
+  * log file is written in $HOME/.barsuift-simlife/barsuift-simlife-<n>.log
 
 Bug fixes
 ---------

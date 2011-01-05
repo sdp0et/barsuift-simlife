@@ -19,13 +19,13 @@
 package barsuift.simLife;
 
 
+import java.io.File;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 
 public class Launcher {
-
-    private static final Logger logger = Logger.getLogger(Launcher.class.getName());
 
     public void start() {
         new Application();
@@ -46,13 +46,34 @@ public class Launcher {
         System.setProperty("java.util.logging.config.file", path);
     }
 
-    public static void main(String[] args) throws Exception {
-        configureLoggingPropertyFile();
-        logger.info("Launching application");
+    private static void createApplicationDirectory() {
+        String userHome = System.getProperty("user.home");
+        String appHome = userHome + File.separatorChar + ".barsuift-simlife" + File.separatorChar;
+        File appHomeDirectory = new File(appHome);
+        if (!appHomeDirectory.exists()) {
+            appHomeDirectory.mkdir();
+        }
 
-        Launcher launcher = new Launcher();
-        launcher.switchToSystemLookAndFeel();
-        launcher.start();
+    }
+
+    public static void main(String[] args) {
+        Logger logger = null;
+        try {
+            // this MUST be done before any logger declaration
+            createApplicationDirectory();
+            configureLoggingPropertyFile();
+
+            logger = Logger.getLogger(Launcher.class.getName());
+            logger.info("Launching application");
+
+            Launcher launcher = new Launcher();
+            launcher.switchToSystemLookAndFeel();
+            launcher.start();
+        } catch (Exception e) {
+            if (logger != null) {
+                logger.log(Level.SEVERE, "Global error", e);
+            }
+        }
     }
 
 }
