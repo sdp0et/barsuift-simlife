@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.landscape;
 
+import barsuift.simLife.Parameters;
+
 
 
 /**
@@ -48,7 +50,7 @@ package barsuift.simLife.landscape;
 // TODO 001. create factory class to create random and default, and add the appropriate buttons.
 // TODO 003. all the methods should be with parameters (in StateFactory classes). So remove the one without parameters,
 // and rename the one with parameters by deleting the mention "WithParamters"in their names
-public class LandscapeParameters {
+public class LandscapeParameters implements Parameters {
 
     private final float roughness;
 

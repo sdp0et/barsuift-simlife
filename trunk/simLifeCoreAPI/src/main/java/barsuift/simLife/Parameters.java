@@ -16,36 +16,9 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.universe;
-
-import barsuift.simLife.CommonParameters;
-import barsuift.simLife.Parameters;
-import barsuift.simLife.landscape.LandscapeParameters;
+package barsuift.simLife;
 
 
-public class AllParameters implements Parameters {
-
-    private final CommonParameters common;
-
-    private final LandscapeParameters landscape;
-
-    public AllParameters(CommonParameters common, LandscapeParameters landscape) {
-        super();
-        this.common = common;
-        this.landscape = landscape;
-    }
-
-    public CommonParameters getCommon() {
-        return common;
-    }
-
-    public LandscapeParameters getLandscape() {
-        return landscape;
-    }
-
-    @Override
-    public String toString() {
-        return "AllParameters [common=" + common + ", landscape=" + landscape + "]";
-    }
+public interface Parameters {
 
 }
