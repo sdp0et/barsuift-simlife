@@ -20,6 +20,7 @@ package barsuift.simLife;
 
 
 
+
 /**
  * The class holds the common parameters required to create a universe.
  * 
@@ -29,7 +30,7 @@ package barsuift.simLife;
  * </ul>
  * 
  */
-public class CommonParameters {
+public class CommonParameters implements Parameters {
 
     private final int size;
 
