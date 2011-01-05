@@ -18,7 +18,21 @@
  */
 package barsuift.simLife;
 
-
+/**
+ * This interface is for all parameters objects. It allows to change its internal values to default values or to random
+ * values.
+ * 
+ */
 public interface Parameters {
+
+    /**
+     * Change the internal values to default values
+     */
+    public void resetToDefaults();
+
+    /**
+     * Change the internal values to random values
+     */
+    public void random();
 
 }

@@ -44,6 +44,18 @@ public class AllParameters implements Parameters {
     }
 
     @Override
+    public void resetToDefaults() {
+        common.resetToDefaults();
+        landscape.resetToDefaults();
+    }
+
+    @Override
+    public void random() {
+        common.random();
+        landscape.random();
+    }
+
+    @Override
     public String toString() {
         return "AllParameters [common=" + common + ", landscape=" + landscape + "]";
     }
