@@ -143,7 +143,7 @@ public class MidPointHeightMapGenerator {
             }
         }
 
-        logger.info("Created ladnscape data using Mid Point Displacement algorithm");
+        logger.info("Created landscape data using Mid Point Displacement algorithm");
 
         return heightData;
     }
