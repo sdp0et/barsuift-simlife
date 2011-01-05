@@ -33,12 +33,15 @@ import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import barsuift.simLife.j2d.ParametersPanel;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 
-public class LandscapeParametersPanel extends JPanel {
+public class LandscapeParametersPanel extends JPanel implements ParametersPanel {
 
     private static final long serialVersionUID = 2609564426686409556L;
+
+    private final LandscapeParameters parameters;
 
     private JSlider roughnessSlider;
 
@@ -46,17 +49,19 @@ public class LandscapeParametersPanel extends JPanel {
 
     private JSlider erosionSlider;
 
-    public LandscapeParametersPanel() {
+    public LandscapeParametersPanel(LandscapeParameters parameters) {
         super();
+        this.parameters = parameters;
+
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         Border blacklineBorder = BorderFactory.createLineBorder(Color.black);
         TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "Landscape");
         setBorder(titledBorder);
 
-        roughnessSlider = createRoughnessSlider();
-        maxHeightSlider = createMaxHeightSlider();
-        erosionSlider = createErosionSlider();
+        roughnessSlider = createRoughnessSlider(parameters);
+        maxHeightSlider = createMaxHeightSlider(parameters);
+        erosionSlider = createErosionSlider(parameters);
 
         JLabel roughnessLabel = new JLabel("Roughness", JLabel.CENTER);
         roughnessLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -78,45 +83,61 @@ public class LandscapeParametersPanel extends JPanel {
         add(erosionSlider);
     }
 
-    private JSlider createMaxHeightSlider() {
-        JSlider maxHeightSlider = new JSlider(JSlider.HORIZONTAL, 0, 50, 20);
+    private JSlider createMaxHeightSlider(LandscapeParameters parameters) {
+        JSlider maxHeightSlider = new JSlider(JSlider.HORIZONTAL, LandscapeParameters.MAX_HEIGHT_MIN,
+                LandscapeParameters.MAX_HEIGHT_MAX, (int) parameters.getMaximumHeight());
         maxHeightSlider.setPaintTicks(true);
         maxHeightSlider.setMajorTickSpacing(10);
         maxHeightSlider.setPaintLabels(true);
         return maxHeightSlider;
     }
 
-    private JSlider createRoughnessSlider() {
-        JSlider roughnessSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+    private JSlider createRoughnessSlider(LandscapeParameters parameters) {
+        int min = (int) (LandscapeParameters.ROUGHNESS_MIN * 100);
+        int max = (int) (LandscapeParameters.ROUGHNESS_MAX * 100);
+        int current = (int) (parameters.getRoughness() * 100);
+        JSlider roughnessSlider = new JSlider(JSlider.HORIZONTAL, min, max, current);
         roughnessSlider.setPaintTicks(true);
-        roughnessSlider.setMajorTickSpacing(20);
+        roughnessSlider.setMajorTickSpacing((max - min) / 5);
         roughnessSlider.setPaintLabels(true);
         // Create the label table
         Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
-        labels.put(0, new JLabel("Very smooth"));
-        labels.put(100, new JLabel("Absolute chaos"));
+        labels.put(min, new JLabel("Very smooth"));
+        labels.put(max, new JLabel("Absolute chaos"));
         roughnessSlider.setLabelTable(labels);
 
         return roughnessSlider;
     }
 
-    private JSlider createErosionSlider() {
-        JSlider erosionSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+    private JSlider createErosionSlider(LandscapeParameters parameters) {
+        int min = (int) (LandscapeParameters.EROSION_MIN * 100);
+        int max = (int) (LandscapeParameters.EROSION_MAX * 100);
+        int current = (int) (parameters.getErosion() * 100);
+        JSlider erosionSlider = new JSlider(JSlider.HORIZONTAL, min, max, current);
         erosionSlider.setPaintTicks(true);
-        erosionSlider.setMajorTickSpacing(20);
+        erosionSlider.setMajorTickSpacing((max - min) / 5);
         erosionSlider.setPaintLabels(true);
         // Create the label table
         Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
-        labels.put(0, new JLabel("Sharp (no erosion)"));
-        labels.put(100, new JLabel("Flat (complete erosion)"));
+        labels.put(min, new JLabel("Sharp (no erosion)"));
+        labels.put(max, new JLabel("Flat (complete erosion)"));
         erosionSlider.setLabelTable(labels);
 
         return erosionSlider;
     }
 
-    public LandscapeParameters getLandscapeParameters() {
-        return new LandscapeParameters((float) roughnessSlider.getValue() / 100,
-                (float) erosionSlider.getValue() / 100, maxHeightSlider.getValue());
+    @Override
+    public void readFromParameters() {
+        roughnessSlider.setValue((int) (parameters.getRoughness() * 100));
+        erosionSlider.setValue((int) (parameters.getErosion() * 100));
+        maxHeightSlider.setValue((int) parameters.getMaximumHeight());
+    }
+
+    @Override
+    public void writeIntoParameters() {
+        parameters.setRoughness((float) roughnessSlider.getValue() / 100);
+        parameters.setErosion((float) erosionSlider.getValue() / 100);
+        parameters.setMaximumHeight(maxHeightSlider.getValue());
     }
 
 }

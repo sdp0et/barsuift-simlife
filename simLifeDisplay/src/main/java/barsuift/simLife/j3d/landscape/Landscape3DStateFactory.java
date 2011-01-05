@@ -21,23 +21,15 @@ package barsuift.simLife.j3d.landscape;
 import java.util.Arrays;
 
 import barsuift.simLife.CommonParameters;
-import barsuift.simLife.Randomizer;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 public class Landscape3DStateFactory {
 
     public Landscape3DState createRandomLandscape3DState() {
-        // size between 32 and 512
-        int size = (int) Math.pow(2, Randomizer.randomBetween(5, 9));
-        // roughness between 0.25 and 0.75
-        float roughness = (float) (Math.random() + 0.5) / 2;
-        // erosion between 0.25 and 0.75
-        float erosion = (float) (Math.random() + 0.5) / 2;
-        // max height between 10 and 50
-        float maximumHeight = Randomizer.randomBetween(10, 50);
-        LandscapeParameters parameters = new LandscapeParameters(roughness, erosion, maximumHeight);
-        CommonParameters commonParameters = new CommonParameters(size);
-
+        LandscapeParameters parameters = new LandscapeParameters();
+        parameters.random();
+        CommonParameters commonParameters = new CommonParameters();
+        commonParameters.random();
         return createRandomLandscape3DStateWithParameters(parameters, commonParameters);
     }
 

@@ -53,11 +53,26 @@ import barsuift.simLife.Randomizer;
 // and rename the one with parameters by deleting the mention "WithParamters"in their names
 public class LandscapeParameters implements Parameters {
 
-    public static final float DEFAULT_ROUGHNESS = 0.5f;
+    public static final float ROUGHNESS_DEFAULT = 0.5f;
 
-    public static final float DEFAULT_EROSION = 0.5f;
+    public static final float ROUGHNESS_MIN = 0f;
 
-    public static final float DEFAULT_MAX_HEIGHT = 20;
+    public static final float ROUGHNESS_MAX = 1f;
+
+
+    public static final float EROSION_DEFAULT = 0.5f;
+
+    public static final float EROSION_MIN = 0f;
+
+    public static final float EROSION_MAX = 1f;
+
+
+    public static final float MAX_HEIGHT_DEFAULT = 20;
+
+    public static final int MAX_HEIGHT_MIN = 0;
+
+    public static final int MAX_HEIGHT_MAX = 50;
+
 
     private float roughness;
 
@@ -66,68 +81,74 @@ public class LandscapeParameters implements Parameters {
     private float maximumHeight;
 
     /**
-     * Constructor.
-     * 
-     * For information about the parameters, see class comments.
-     * 
-     * @param roughness must be between 0 and 1
-     * @param erosion must be between 0 and 1
-     * @param maximumHeight must be positive
-     * @throws IllegalArgumentException if one parameter is not valid
+     * Empty constructor.
      */
-    public LandscapeParameters(float roughness, float erosion, float maximumHeight) {
-        checkParameters(roughness, erosion, maximumHeight);
-
-        this.roughness = roughness;
-        this.maximumHeight = maximumHeight;
-        this.erosion = erosion;
-    }
-
-    /**
-     * Check the given parameters and throw {@link IllegalArgumentException} if one parameter is not correct
-     * 
-     * @param roughness must be between 0 and 1
-     * @param erosion must be between 0 and 1
-     * @param maximumHeight must be positive
-     * @throws IllegalArgumentException if one parameter is not valid
-     */
-    private void checkParameters(float roughness, float erosion, float maximumHeight) {
-        if (roughness < 0) {
-            throw new IllegalArgumentException("roughness must be greater than 0");
-        }
-        if (roughness > 1) {
-            throw new IllegalArgumentException("roughness must be less than 1");
-        }
-
-        if (erosion < 0) {
-            throw new IllegalArgumentException("erosion must be greater than 0");
-        }
-        if (erosion > 1) {
-            throw new IllegalArgumentException("erosion must be less than 1");
-        }
-
-        if (maximumHeight < 0) {
-            throw new IllegalArgumentException("maximumHeight must be greater than 0");
-        }
+    public LandscapeParameters() {
+        resetToDefaults();
     }
 
     public float getRoughness() {
         return roughness;
     }
 
+    /**
+     * 
+     * @param roughness must be between {@link #ROUGHNESS_MIN} and {@link #ROUGHNESS_MAX}
+     * @throws IllegalArgumentException if the roughness is not valid
+     */
+    public void setRoughness(float roughness) {
+        if (roughness < ROUGHNESS_MIN) {
+            throw new IllegalArgumentException("roughness must be greater than " + ROUGHNESS_MIN);
+        }
+        if (roughness > ROUGHNESS_MAX) {
+            throw new IllegalArgumentException("roughness must be less than " + ROUGHNESS_MAX);
+        }
+        this.roughness = roughness;
+    }
+
     public float getErosion() {
         return erosion;
+    }
+
+    /**
+     * 
+     * @param erosion must be between {@link #EROSION_MIN} and {@link #EROSION_MAX}
+     * @throws IllegalArgumentException if the erosion is not valid
+     */
+    public void setErosion(float erosion) {
+        if (erosion < EROSION_MIN) {
+            throw new IllegalArgumentException("erosion must be greater than " + EROSION_MIN);
+        }
+        if (erosion > EROSION_MAX) {
+            throw new IllegalArgumentException("erosion must be less than " + EROSION_MAX);
+        }
+        this.erosion = erosion;
     }
 
     public float getMaximumHeight() {
         return maximumHeight;
     }
 
+    /**
+     * 
+     * @param maximumHeight must be between {@link #MAX_HEIGHT_MIN} and {@link #MAX_HEIGHT_MAX}
+     * @throws IllegalArgumentException if the maximum height is not valid
+     */
+    public void setMaximumHeight(float maximumHeight) {
+        if (maximumHeight < MAX_HEIGHT_MIN) {
+            throw new IllegalArgumentException("maximumHeight must be greater than " + MAX_HEIGHT_MIN);
+        }
+        if (maximumHeight > MAX_HEIGHT_MAX) {
+            throw new IllegalArgumentException("maximumHeight must be less than " + MAX_HEIGHT_MAX);
+        }
+        this.maximumHeight = maximumHeight;
+    }
+
     @Override
     public void resetToDefaults() {
-        this.roughness = DEFAULT_ROUGHNESS;
-        this.erosion = DEFAULT_EROSION;
-        this.maximumHeight = DEFAULT_MAX_HEIGHT;
+        this.roughness = ROUGHNESS_DEFAULT;
+        this.erosion = EROSION_DEFAULT;
+        this.maximumHeight = MAX_HEIGHT_DEFAULT;
     }
 
     @Override
@@ -137,7 +158,7 @@ public class LandscapeParameters implements Parameters {
         // erosion between 0.25 and 0.75
         this.erosion = (float) (Math.random() + 0.5) / 2;
         // max height between 10 and 50
-        this.maximumHeight = Randomizer.randomBetween(10, 50);
+        this.maximumHeight = Randomizer.randomBetween(10, MAX_HEIGHT_MAX);
     }
 
     @Override

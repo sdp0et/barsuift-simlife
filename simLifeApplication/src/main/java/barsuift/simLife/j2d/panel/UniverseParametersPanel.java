@@ -24,10 +24,12 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import barsuift.simLife.universe.AllParameters;
+import barsuift.simLife.CommonParameters;
+import barsuift.simLife.j2d.ParametersPanel;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 
-public class UniverseParametersPanel extends JPanel {
+public class UniverseParametersPanel extends JPanel implements ParametersPanel {
 
     private static final long serialVersionUID = -7881514466076103277L;
 
@@ -35,22 +37,30 @@ public class UniverseParametersPanel extends JPanel {
 
     private final WorldParametersPanel worldPanel;
 
-    public UniverseParametersPanel() {
+    public UniverseParametersPanel(CommonParameters commonParameters, LandscapeParameters landscapeParameters) {
         super();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 
-        worldPanel = new WorldParametersPanel();
+        worldPanel = new WorldParametersPanel(commonParameters);
         add(worldPanel);
 
         add(Box.createRigidArea(new Dimension(0, 20)));
 
-        landscapePanel = new LandscapeParametersPanel();
+        landscapePanel = new LandscapeParametersPanel(landscapeParameters);
         add(landscapePanel);
     }
 
-    public AllParameters getParameters() {
-        return new AllParameters(worldPanel.getCommonParameters(), landscapePanel.getLandscapeParameters());
+    @Override
+    public void readFromParameters() {
+        worldPanel.readFromParameters();
+        landscapePanel.readFromParameters();
+    }
+
+    @Override
+    public void writeIntoParameters() {
+        worldPanel.writeIntoParameters();
+        landscapePanel.writeIntoParameters();
     }
 
 }

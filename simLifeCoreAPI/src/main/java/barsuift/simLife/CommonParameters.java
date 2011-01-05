@@ -32,48 +32,52 @@ package barsuift.simLife;
  */
 public class CommonParameters implements Parameters {
 
-    public static final int DEFAULT_SIZE = 128;
+    public static final int SIZE_DEFAULT_EXPONENT = 7;
+
+    public static final int SIZE_DEFAULT = 1 << SIZE_DEFAULT_EXPONENT;
+
+    public static final int SIZE_MIN_EXPONENT = 5;
+
+    public static final int SIZE_MIN = 1 << SIZE_MIN_EXPONENT;
+
+    public static final int SIZE_MAX_EXPONENT = 9;
+
+    public static final int SIZE_MAX = 1 << SIZE_MAX_EXPONENT;
 
     private int size;
 
     /**
-     * Constructor.
-     * 
-     * For information about the parameters, see class comments.
-     * 
-     * @param size the size must be a positive, greater than 0, power of 2
-     * @throws IllegalArgumentException if one parameter is not valid
+     * Empty constructor.
      */
-    public CommonParameters(int size) {
-        checkParameters(size);
-        this.size = size;
-    }
-
-    /**
-     * Check the given parameters and throw {@link IllegalArgumentException} if one parameter is not correct
-     * 
-     * @param size the size must be a positive, greater than 0, power of 2
-     * @throws IllegalArgumentException if one parameter is not valid
-     */
-    private void checkParameters(int size) {
-        if (!MathHelper.isPowerOfTwo(size)) {
-            throw new IllegalArgumentException("Size must be (2^N) sized and positive");
-        }
+    public CommonParameters() {
+        resetToDefaults();
     }
 
     public int getSize() {
         return size;
     }
 
+    /**
+     * 
+     * @param size the size must be a positive, greater than 0, power of 2
+     * @throws IllegalArgumentException if the size is not valid
+     */
+    public void setSize(int size) {
+        if (!MathHelper.isPowerOfTwo(size)) {
+            throw new IllegalArgumentException("Size must be (2^N) sized and positive");
+        }
+        this.size = size;
+    }
+
     @Override
     public void resetToDefaults() {
-        this.size = DEFAULT_SIZE;
+        this.size = SIZE_DEFAULT;
     }
 
     @Override
     public void random() {
         // size between 32 and 512
-        this.size = (int) Math.pow(2, Randomizer.randomBetween(5, 9));
+        this.size = 1 << Randomizer.randomBetween(SIZE_MIN_EXPONENT, SIZE_MAX_EXPONENT);
     }
 
     @Override
