@@ -34,9 +34,11 @@ import barsuift.simLife.j2d.panel.UniverseParametersPanel;
 import barsuift.simLife.universe.AllParameters;
 
 
-public class CreationParametersWindow extends JDialog {
+public class CreationParametersWindow extends JDialog implements ParametersDependent {
 
     private static final long serialVersionUID = 7855432806983257205L;
+
+    private final AllParameters parameters;
 
     private boolean closedByOK;
 
@@ -44,6 +46,8 @@ public class CreationParametersWindow extends JDialog {
 
     public CreationParametersWindow(AllParameters parameters) {
         super((JFrame) null, "Creation parameters", true);
+        this.parameters = parameters;
+
         int width = 500;
         int height = 500;
         setBounds(100, 100, width, height);
@@ -75,10 +79,25 @@ public class CreationParametersWindow extends JDialog {
     }
 
 
-
     private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel();
 
+        JButton buttonOk = createButtonOk();
+        buttonPanel.add(buttonOk);
+
+        JButton buttonCancel = createButtonCancel();
+        buttonPanel.add(buttonCancel);
+
+        JButton buttonRandom = createButtonRandom();
+        buttonPanel.add(buttonRandom);
+
+        JButton buttonDefault = createButtonDefault();
+        buttonPanel.add(buttonDefault);
+
+        return buttonPanel;
+    }
+
+    private JButton createButtonOk() {
         JButton buttonOK = new JButton("OK");
         buttonOK.addActionListener(new ActionListener() {
 
@@ -89,8 +108,10 @@ public class CreationParametersWindow extends JDialog {
                 setVisible(false);
             }
         });
-        buttonPanel.add(buttonOK);
+        return buttonOK;
+    }
 
+    private JButton createButtonCancel() {
         JButton buttonCancel = new JButton("Cancel");
         buttonCancel.addActionListener(new ActionListener() {
 
@@ -100,15 +121,45 @@ public class CreationParametersWindow extends JDialog {
                 setVisible(false);
             }
         });
-        buttonPanel.add(buttonCancel);
-        return buttonPanel;
+        return buttonCancel;
+    }
+
+    private JButton createButtonRandom() {
+        JButton buttonRandom = new JButton("Random");
+        buttonRandom.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parameters.random();
+                readFromParameters();
+            }
+        });
+        return buttonRandom;
+    }
+
+    private JButton createButtonDefault() {
+        JButton buttonDefault = new JButton("Default");
+        buttonDefault.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parameters.resetToDefaults();
+                readFromParameters();
+            }
+        });
+        return buttonDefault;
     }
 
     public boolean isClosedByOK() {
         return closedByOK;
     }
 
-    // TODO see if this class should implement the ParametersPanel interface
+    @Override
+    public void readFromParameters() {
+        parametersPanel.readFromParameters();
+    }
+
+    @Override
     public void writeIntoParameters() {
         parametersPanel.writeIntoParameters();
     }

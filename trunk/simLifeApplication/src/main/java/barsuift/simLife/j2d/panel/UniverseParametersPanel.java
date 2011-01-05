@@ -25,11 +25,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import barsuift.simLife.CommonParameters;
-import barsuift.simLife.j2d.ParametersPanel;
+import barsuift.simLife.j2d.ParametersDependent;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 
-public class UniverseParametersPanel extends JPanel implements ParametersPanel {
+public class UniverseParametersPanel extends JPanel implements ParametersDependent {
 
     private static final long serialVersionUID = -7881514466076103277L;
 

@@ -19,19 +19,19 @@
 package barsuift.simLife.j2d;
 
 /**
- * This interface is for all parameters panels. It allows to read the values from the parameters (to update the panel
- * accordingly), and to write the values back to the parameter object.
+ * This interface is for all object which depends on parameters. It allows to read the values from the parameters to
+ * update its own state, and to write the values back to the parameters object.
  * 
  */
-public interface ParametersPanel {
+public interface ParametersDependent {
 
     /**
-     * Read the values from the parameter object and update the status of the panel.
+     * Read the values from the parameter object and update own state.
      */
     public void readFromParameters();
 
     /**
-     * Write back the values set in the panel into the parameters object.
+     * Write back the values into the parameters object.
      */
     public void writeIntoParameters();
 
