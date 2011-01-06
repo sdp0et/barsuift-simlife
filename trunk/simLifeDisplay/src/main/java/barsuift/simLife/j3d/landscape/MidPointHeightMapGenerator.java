@@ -83,7 +83,7 @@ public class MidPointHeightMapGenerator {
         int pmi, pmj;
 
         int counter = size;
-        while (counter > 0) {
+        while (counter > 1) {
             // displace the center of the square.
             for (int i = 0; i < size; i += counter) {
                 for (int j = 0; j < size; j += counter) {
