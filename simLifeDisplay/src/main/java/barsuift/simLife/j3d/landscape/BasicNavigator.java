@@ -66,6 +66,7 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
  * from FlyingPlatform, written by Mark Pendergast.
  * 
  */
+// TODO 030. add a "Show position" menu item to display current position (same style as "Show FPS")
 public class BasicNavigator extends ViewPlatformBehavior implements Persistent<NavigatorState>, Navigator {
 
     /**
