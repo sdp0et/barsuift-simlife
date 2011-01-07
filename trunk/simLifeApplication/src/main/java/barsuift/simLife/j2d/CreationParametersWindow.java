@@ -44,7 +44,7 @@ public class CreationParametersWindow extends JDialog implements ParametersDepen
 
     private final UniverseParametersPanel parametersPanel;
 
-    public CreationParametersWindow(AllParameters parameters) {
+    public CreationParametersWindow(boolean populatedWorld, AllParameters parameters) {
         super((JFrame) null, "Creation parameters", true);
         this.parameters = parameters;
 
@@ -74,7 +74,7 @@ public class CreationParametersWindow extends JDialog implements ParametersDepen
         // TODO 003. if OK, create parameters (above AllParameters) for forests
         // TODO 004. create panel and link all together
         tabbedPane.addTab("Ecosystem", null, new JPanel(), "Ecosystem creation parameters");
-        tabbedPane.setEnabledAt(1, false);
+        tabbedPane.setEnabledAt(1, populatedWorld);
 
         JPanel buttonPanel = createButtonPanel();
         contentPane.add(buttonPanel, BorderLayout.PAGE_END);

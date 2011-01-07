@@ -58,7 +58,7 @@ public class Application implements Publisher {
 
     public void createEmptyRandomUniverseWithParameters() {
         AllParameters parameters = new AllParameters();
-        CreationParametersWindow parametersWindow = new CreationParametersWindow(parameters);
+        CreationParametersWindow parametersWindow = new CreationParametersWindow(false, parameters);
         if (parametersWindow.isClosedByOK()) {
             createEmptyRandomUniverse(parameters);
         }
@@ -81,7 +81,7 @@ public class Application implements Publisher {
 
     public void createPopulatedRandomUniverseWithParameters() {
         AllParameters parameters = new AllParameters();
-        CreationParametersWindow parametersWindow = new CreationParametersWindow(parameters);
+        CreationParametersWindow parametersWindow = new CreationParametersWindow(true, parameters);
         if (parametersWindow.isClosedByOK()) {
             createPopulatedRandomUniverse(parameters);
         }
