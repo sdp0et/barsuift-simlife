@@ -30,8 +30,11 @@ import javax.swing.event.ChangeListener;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
+import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-public class SunRisePanel extends JPanel implements ChangeListener {
+public class SunRisePanel extends JPanel implements ChangeListener, Subscriber {
 
     private static final long serialVersionUID = -6102868842517781193L;
 
@@ -47,6 +50,7 @@ public class SunRisePanel extends JPanel implements ChangeListener {
 
     public SunRisePanel(Sun sun) {
         this.sun = sun;
+        sun.addSubscriber(this);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         sliderLabel = createLabel();
         riseSlider = createSlider();
@@ -83,8 +87,15 @@ public class SunRisePanel extends JPanel implements ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
-        int riseAngle = (int) source.getValue();
+        int riseAngle = source.getValue();
         sun.setRiseAngle(PercentHelper.getDecimalValue(riseAngle));
+    }
+
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        if (arg == SunUpdateCode.riseAngle) {
+            riseSlider.setValue(PercentHelper.getIntValue(sun.getRiseAngle()));
+        }
     }
 
     protected JLabel getLabel() {

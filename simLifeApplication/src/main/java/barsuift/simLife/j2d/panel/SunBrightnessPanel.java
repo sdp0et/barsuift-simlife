@@ -34,7 +34,6 @@ import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-
 public class SunBrightnessPanel extends JPanel implements ChangeListener, Subscriber {
 
     private static final long serialVersionUID = -6102868842517781193L;

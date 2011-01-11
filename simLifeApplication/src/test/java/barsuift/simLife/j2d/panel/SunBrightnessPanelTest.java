@@ -43,7 +43,9 @@ public class SunBrightnessPanelTest extends TestCase {
     }
 
     public void testInit() {
-        assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        // allow +/- 0.5 difference, as the slider rounds the value to an integer
+        assertEquals(mockSun.getBrightness().floatValue(), PercentHelper
+                .getDecimalValue(display.getSlider().getValue()).floatValue(), 0.50001);
         mockSun.setBrightness(PercentHelper.getDecimalValue(90));
         display = new SunBrightnessPanel(mockSun);
         assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
@@ -56,8 +58,10 @@ public class SunBrightnessPanelTest extends TestCase {
     }
 
     public void testUpdate() {
+        // allow +/- 0.5 difference, as the slider rounds the value to an integer
         assertEquals("Sun brightness (100.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun.getBrightness().floatValue(), PercentHelper
+                .getDecimalValue(display.getSlider().getValue()).floatValue(), 0.50001);
         mockSun.setBrightness(PercentHelper.getDecimalValue(90));
         display.update(mockSun, SunUpdateCode.brightness);
         assertEquals("Sun brightness (90.00%)", display.getLabel().getText());
