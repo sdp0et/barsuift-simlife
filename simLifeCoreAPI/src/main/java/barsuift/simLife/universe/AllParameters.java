@@ -31,6 +31,8 @@ public class AllParameters implements Parameters {
     private final CommonParameters common;
 
     private final LandscapeParameters landscape;
+    
+    //TODO 301. add forest parameters
 
     public AllParameters() {
         super();
