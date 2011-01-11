@@ -31,7 +31,7 @@ public class SunStateFactory {
      * Creates a default sun state with following values :
      * <ul>
      * <li>brightness = 100%</li>
-     * <li>riseAngle = 25%</li>
+     * <li>riseAngle = 37%</li>
      * <li>zenithAngle = 50%</li>
      * </ul>
      */
@@ -46,7 +46,7 @@ public class SunStateFactory {
     // TODO 025. the sun sliders should be able to be decorrelated from auto move
     public SunState createSunState() {
         BigDecimal brightness = PercentHelper.getDecimalValue(100);
-        BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
+        BigDecimal riseAngle = new BigDecimal("0.375");
         BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
         Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
         Sun3DState sun3DState = sun3DStateFactory.createSun3DState();

@@ -94,7 +94,8 @@ public class BasicSun3D implements Subscriber, Sun3D {
     }
 
     private void computeRiseAngleData() {
-        double riseAngle = sun.getRiseAngle().doubleValue() * Math.PI;
+        double azimuthAngle = sun.getRiseAngle().doubleValue() * Math.PI * 2;
+        double riseAngle = azimuthAngle - Math.PI / 2;
         cosinusRiseAngle = (float) Math.cos(riseAngle);
         sinusRiseAngle = (float) Math.sin(riseAngle);
     }
