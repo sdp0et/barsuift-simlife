@@ -61,7 +61,7 @@ public class BasicUniverse3D implements Universe3D {
         elements3D = new HashSet<Node>();
     }
 
-    // TODO 888 see if this can be improved
+    // TODO 901 this might be improved if universe3D is not required anymore in tree components
     public void initFromUniverse(Universe universe) {
         addElement3D(universe.getEnvironment().getEnvironment3D().getGroup());
         addElement3D(universe.getPhysics().getPhysics3D().getGroup());
