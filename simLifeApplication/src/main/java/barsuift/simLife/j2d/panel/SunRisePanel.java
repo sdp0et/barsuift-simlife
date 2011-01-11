@@ -60,14 +60,14 @@ public class SunRisePanel extends JPanel implements ChangeListener {
         riseSlider.addChangeListener(this);
         // Turn on labels at major tick marks.
         riseSlider.setMajorTickSpacing(50);
-        riseSlider.setMinorTickSpacing(10);
+        riseSlider.setMinorTickSpacing(25);
         riseSlider.setPaintTicks(true);
 
         // Create the label table
         Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
-        labelTable.put(new Integer(ANGLE_MIN), new JLabel("Sunrise"));
+        labelTable.put(new Integer(ANGLE_MAX / 4), new JLabel("Sunrise"));
         labelTable.put(new Integer(ANGLE_MAX / 2), new JLabel("Zenith"));
-        labelTable.put(new Integer(ANGLE_MAX), new JLabel("Sunset"));
+        labelTable.put(new Integer(3 * ANGLE_MAX / 4), new JLabel("Sunset"));
         riseSlider.setLabelTable(labelTable);
         riseSlider.setPaintLabels(true);
 
@@ -75,7 +75,7 @@ public class SunRisePanel extends JPanel implements ChangeListener {
     }
 
     private JLabel createLabel() {
-        JLabel sliderLabel = new JLabel("Rise angle", JLabel.CENTER);
+        JLabel sliderLabel = new JLabel("Azimuth angle", JLabel.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return sliderLabel;
     }

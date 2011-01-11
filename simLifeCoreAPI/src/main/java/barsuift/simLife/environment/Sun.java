@@ -44,9 +44,13 @@ public interface Sun extends Publisher, Persistent<SunState> {
      * Rise angle, in percent.
      * <p>
      * <ul>
-     * <li>0 means sun is full east, lighting only along the X axis</li>
-     * <li>50 means sun is at its zenith position (neither east nor west). no X direction</li>
-     * <li>100 means sun is full west, lighting only along the reverted X axis</li>
+     * <li>0 means sun is at its nadir, lighting only along the Y axis. This is the position of the sun in the middle of
+     * the night</li>
+     * <li>25 means sun is full east, lighting only along the X axis. This is the position of sunrises.</li>
+     * <li>50 means sun is at its zenith position (neither east nor west). no X direction. This is the position of the
+     * sun in the middle of the day.</li>
+     * <li>75 means sun is full west, lighting only along the reverted X axis. this is the position of sunsets.</li>
+     * <li>100 means sun is at its nadir. This value is actually equivalent to 0.</li>
      * </ul>
      * </p>
      */

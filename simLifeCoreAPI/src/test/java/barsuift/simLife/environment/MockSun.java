@@ -34,7 +34,7 @@ public class MockSun extends BasicPublisher implements Sun {
 
     private BigDecimal brightness = PercentHelper.getDecimalValue(100);
 
-    private BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
+    private BigDecimal riseAngle = new BigDecimal("0.375");
 
     private BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
 
