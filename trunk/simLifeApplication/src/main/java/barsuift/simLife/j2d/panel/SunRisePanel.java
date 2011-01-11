@@ -75,7 +75,7 @@ public class SunRisePanel extends JPanel implements ChangeListener {
     }
 
     private JLabel createLabel() {
-        JLabel sliderLabel = new JLabel("Azimuth angle", JLabel.CENTER);
+        JLabel sliderLabel = new JLabel("Rise angle", JLabel.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return sliderLabel;
     }
