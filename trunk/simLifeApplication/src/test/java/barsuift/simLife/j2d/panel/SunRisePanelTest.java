@@ -21,6 +21,7 @@ package barsuift.simLife.j2d.panel;
 import junit.framework.TestCase;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
+import barsuift.simLife.environment.SunUpdateCode;
 
 
 public class SunRisePanelTest extends TestCase {
@@ -42,7 +43,9 @@ public class SunRisePanelTest extends TestCase {
     }
 
     public void testInit() {
-        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        // allow +/- 0.5 difference, as the slider rounds the value to an integer
+        assertEquals(sun.getRiseAngle().floatValue(), PercentHelper.getDecimalValue(display.getSlider().getValue())
+                .floatValue(), 0.50001);
         sun.setRiseAngle(PercentHelper.getDecimalValue(90));
         display = new SunRisePanel(sun);
         assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
@@ -53,5 +56,21 @@ public class SunRisePanelTest extends TestCase {
         display = new SunRisePanel(sun);
         assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
+
+    public void testUpdate() {
+        // allow +/- 0.5 difference, as the slider rounds the value to an integer
+        assertEquals(sun.getRiseAngle().floatValue(), PercentHelper.getDecimalValue(display.getSlider().getValue())
+                .floatValue(), 0.50001);
+        sun.setRiseAngle(PercentHelper.getDecimalValue(90));
+        display.update(sun, SunUpdateCode.riseAngle);
+        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        sun.setRiseAngle(PercentHelper.getDecimalValue(90));
+        display.update(sun, SunUpdateCode.riseAngle);
+        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        sun.setRiseAngle(PercentHelper.getDecimalValue(100));
+        display.update(sun, SunUpdateCode.riseAngle);
+        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+    }
+
 
 }

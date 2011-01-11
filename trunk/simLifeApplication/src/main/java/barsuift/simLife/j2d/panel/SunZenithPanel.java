@@ -31,8 +31,11 @@ import javax.swing.event.ChangeListener;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
+import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-public class SunZenithPanel extends JPanel implements ChangeListener {
+public class SunZenithPanel extends JPanel implements ChangeListener, Subscriber {
 
     private static final long serialVersionUID = -6102868842517781193L;
 
@@ -48,6 +51,7 @@ public class SunZenithPanel extends JPanel implements ChangeListener {
 
     public SunZenithPanel(Sun sun) {
         this.sun = sun;
+        sun.addSubscriber(this);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         sliderLabel = createLabel();
         zenithSlider = createSlider();
@@ -86,6 +90,13 @@ public class SunZenithPanel extends JPanel implements ChangeListener {
         JSlider source = (JSlider) e.getSource();
         int zenithAngle = (int) source.getValue();
         sun.setZenithAngle(PercentHelper.getDecimalValue(zenithAngle));
+    }
+
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        if (arg == SunUpdateCode.zenithAngle) {
+            zenithSlider.setValue(PercentHelper.getIntValue(sun.getZenithAngle()));
+        }
     }
 
     protected JLabel getLabel() {

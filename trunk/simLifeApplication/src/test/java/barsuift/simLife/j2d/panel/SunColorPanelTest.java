@@ -43,7 +43,9 @@ public class SunColorPanelTest extends TestCase {
     }
 
     public void testInit() {
-        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        // allow +/- 0.5 difference, as the slider rounds the value to an integer
+        assertEquals(mockSun.getWhiteFactor().floatValue(),
+                PercentHelper.getDecimalValue(display.getSlider().getValue()).floatValue(), 0.50001);
         mockSun.setWhiteFactor(PercentHelper.getDecimalValue(90));
         display = new SunColorPanel(mockSun);
         assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
@@ -56,7 +58,9 @@ public class SunColorPanelTest extends TestCase {
     }
 
     public void testUpdate() {
-        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        // allow +/- 0.5 difference, as the slider rounds the value to an integer
+        assertEquals(mockSun.getWhiteFactor().floatValue(),
+                PercentHelper.getDecimalValue(display.getSlider().getValue()).floatValue(), 0.50001);
         mockSun.setWhiteFactor(PercentHelper.getDecimalValue(90));
         display.update(mockSun, SunUpdateCode.color);
         assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
