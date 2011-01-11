@@ -42,7 +42,7 @@ public class CreationParametersWindow extends JDialog implements ParametersDepen
 
     private boolean closedByOK;
 
-    private final UniverseParametersPanel parametersPanel;
+    private final UniverseParametersPanel universeParamPanel;
 
     public CreationParametersWindow(boolean populatedWorld, AllParameters parameters) {
         super((JFrame) null, "Creation parameters", true);
@@ -66,12 +66,10 @@ public class CreationParametersWindow extends JDialog implements ParametersDepen
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
-        parametersPanel = new UniverseParametersPanel(parameters.getCommon(), parameters.getLandscape());
-        tabbedPane.addTab("Universe", null, parametersPanel, "Universe creation parameters");
+        universeParamPanel = new UniverseParametersPanel(parameters.getCommon(), parameters.getLandscape());
+        tabbedPane.addTab("Universe", null, universeParamPanel, "Universe creation parameters");
 
-        // TODO 001. test if we can reuse the MidPoint displacement to place the trees
-        // TODO 003. if OK, create parameters (above AllParameters) for forests
-        // TODO 004. create panel and link all together
+        // TODO 302. create forest panel
         tabbedPane.addTab("Ecosystem", null, new JPanel(), "Ecosystem creation parameters");
         tabbedPane.setEnabledAt(1, populatedWorld);
 
@@ -159,12 +157,12 @@ public class CreationParametersWindow extends JDialog implements ParametersDepen
 
     @Override
     public void readFromParameters() {
-        parametersPanel.readFromParameters();
+        universeParamPanel.readFromParameters();
     }
 
     @Override
     public void writeIntoParameters() {
-        parametersPanel.writeIntoParameters();
+        universeParamPanel.writeIntoParameters();
     }
 
 }
