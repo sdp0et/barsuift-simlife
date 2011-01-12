@@ -18,8 +18,6 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import java.math.BigDecimal;
-
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Light;
@@ -51,6 +49,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Publisher publisher = new BasicPublisher(this);
 
+    // FIXME should have the sun3DState
     public BasicSun3D(Sun sun) {
         super();
         this.sun = sun;
@@ -88,13 +87,13 @@ public class BasicSun3D implements Subscriber, Sun3D {
     }
 
     private void computeZenithAngleData() {
-        double zenithAngle = sun.getZenithAngle().doubleValue() * Math.PI / 2;
+        double zenithAngle = sun.getZenithAngle() * Math.PI / 2;
         cosinusZenithAngle = (float) Math.cos(zenithAngle);
         sinusZenithAngle = (float) Math.sin(zenithAngle);
     }
 
     private void computeRiseAngleData() {
-        double azimuthAngle = sun.getRiseAngle().doubleValue() * Math.PI * 2;
+        double azimuthAngle = sun.getRiseAngle() * Math.PI * 2;
         double riseAngle = azimuthAngle - Math.PI / 2;
         cosinusRiseAngle = (float) Math.cos(riseAngle);
         sinusRiseAngle = (float) Math.sin(riseAngle);
@@ -102,7 +101,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private Color3f computeColor() {
         float brightness = sun.getBrightness().floatValue();
-        float whiteFactor = getWhiteFactor().floatValue();
+        float whiteFactor = getWhiteFactor();
         Color3f color = new Color3f(brightness, brightness * whiteFactor, brightness * whiteFactor);
         setChanged();
         notifySubscribers(SunUpdateCode.color);
@@ -110,8 +109,8 @@ public class BasicSun3D implements Subscriber, Sun3D {
     }
 
     @Override
-    public BigDecimal getWhiteFactor() {
-        return new BigDecimal(Math.sqrt(Math.abs(sinusRiseAngle * sinusZenithAngle)));
+    public float getWhiteFactor() {
+        return (float) Math.sqrt(Math.abs(sinusRiseAngle * sinusZenithAngle));
     }
 
     public DirectionalLight getLight() {

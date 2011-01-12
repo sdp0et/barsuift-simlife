@@ -24,8 +24,6 @@ import javax.media.j3d.Shape3D;
 import javax.vecmath.Color3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
-import barsuift.simLife.j3d.landscape.Landscape3D;
-import barsuift.simLife.j3d.landscape.Landscape3DState;
 
 import com.sun.j3d.utils.geometry.GeometryInfo;
 import com.sun.j3d.utils.geometry.NormalGenerator;
@@ -72,6 +70,7 @@ public class BasicLandscape3D implements Landscape3D {
     }
 
     @Override
+    // FIXME check if float would not suffice
     public double getHeight(double x, double z) {
         if (!inLandscape(x, z)) {
             return 0;

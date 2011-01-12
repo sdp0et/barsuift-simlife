@@ -30,21 +30,21 @@ public class SunState implements State {
 
     private BigDecimal brightness;
 
-    private BigDecimal riseAngle;
+    private float riseAngle;
 
-    private BigDecimal zenithAngle;
+    private float zenithAngle;
 
     private Sun3DState sun3DState;
 
     public SunState() {
         super();
         this.brightness = new BigDecimal(0);
-        this.riseAngle = new BigDecimal(0);
-        this.zenithAngle = new BigDecimal(0);
+        this.riseAngle = 0;
+        this.zenithAngle = 0;
         this.sun3DState = new Sun3DState();
     }
 
-    public SunState(BigDecimal brightness, BigDecimal riseAngle, BigDecimal zenithAngle, Sun3DState sun3DState) {
+    public SunState(BigDecimal brightness, float riseAngle, float zenithAngle, Sun3DState sun3DState) {
         super();
         this.brightness = brightness;
         this.riseAngle = riseAngle;
@@ -60,19 +60,19 @@ public class SunState implements State {
         this.brightness = brightness;
     }
 
-    public BigDecimal getRiseAngle() {
+    public float getRiseAngle() {
         return riseAngle;
     }
 
-    public void setRiseAngle(BigDecimal riseAngle) {
+    public void setRiseAngle(float riseAngle) {
         this.riseAngle = riseAngle;
     }
 
-    public BigDecimal getZenithAngle() {
+    public float getZenithAngle() {
         return zenithAngle;
     }
 
-    public void setZenithAngle(BigDecimal zenithAngle) {
+    public void setZenithAngle(float zenithAngle) {
         this.zenithAngle = zenithAngle;
     }
 
@@ -89,9 +89,9 @@ public class SunState implements State {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((brightness == null) ? 0 : brightness.hashCode());
-        result = prime * result + ((riseAngle == null) ? 0 : riseAngle.hashCode());
+        result = prime * result + Float.floatToIntBits(riseAngle);
         result = prime * result + ((sun3DState == null) ? 0 : sun3DState.hashCode());
-        result = prime * result + ((zenithAngle == null) ? 0 : zenithAngle.hashCode());
+        result = prime * result + Float.floatToIntBits(zenithAngle);
         return result;
     }
 
@@ -110,24 +110,16 @@ public class SunState implements State {
         } else
             if (!brightness.equals(other.brightness))
                 return false;
-        if (riseAngle == null) {
-            if (other.riseAngle != null)
-                return false;
-        } else
-            if (!riseAngle.equals(other.riseAngle))
-                return false;
+        if (Float.floatToIntBits(riseAngle) != Float.floatToIntBits(other.riseAngle))
+            return false;
         if (sun3DState == null) {
             if (other.sun3DState != null)
                 return false;
         } else
             if (!sun3DState.equals(other.sun3DState))
                 return false;
-        if (zenithAngle == null) {
-            if (other.zenithAngle != null)
-                return false;
-        } else
-            if (!zenithAngle.equals(other.zenithAngle))
-                return false;
+        if (Float.floatToIntBits(zenithAngle) != Float.floatToIntBits(other.zenithAngle))
+            return false;
         return true;
     }
 

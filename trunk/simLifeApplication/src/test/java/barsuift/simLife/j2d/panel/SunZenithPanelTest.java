@@ -19,7 +19,6 @@
 package barsuift.simLife.j2d.panel;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
 
@@ -44,32 +43,30 @@ public class SunZenithPanelTest extends TestCase {
 
     public void testInit() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals(mockSun.getZenithAngle().floatValue(),
-                PercentHelper.getDecimalValue(display.getSlider().getValue()).floatValue(), 0.50001);
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(90));
+        assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setZenithAngle(0.9f);
         display = new SunZenithPanel(mockSun);
-        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(80));
+        assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setZenithAngle(0.8f);
         display = new SunZenithPanel(mockSun);
-        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
+        assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setZenithAngle(1f);
         display = new SunZenithPanel(mockSun);
-        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
     }
 
     public void testUpdate() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals(mockSun.getZenithAngle().floatValue(),
-                PercentHelper.getDecimalValue(display.getSlider().getValue()).floatValue(), 0.50001);
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(90));
+        assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setZenithAngle(0.9f);
         display.update(mockSun, SunUpdateCode.zenithAngle);
-        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(90));
+        assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setZenithAngle(0.8f);
         display.update(mockSun, SunUpdateCode.zenithAngle);
-        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
+        assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setZenithAngle(1f);
         display.update(mockSun, SunUpdateCode.zenithAngle);
-        assertEquals(mockSun.getZenithAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
     }
 
 }

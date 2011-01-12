@@ -54,9 +54,9 @@ public interface Sun extends Publisher, Persistent<SunState> {
      * </ul>
      * </p>
      */
-    public BigDecimal getRiseAngle();
+    public float getRiseAngle();
 
-    public void setRiseAngle(BigDecimal riseAngle);
+    public void setRiseAngle(float riseAngle);
 
     /**
      * Zenith angle, in percent.
@@ -68,8 +68,8 @@ public interface Sun extends Publisher, Persistent<SunState> {
      * </ul>
      * </p>
      */
-    public BigDecimal getZenithAngle();
+    public float getZenithAngle();
 
-    public void setZenithAngle(BigDecimal zenithAngle);
+    public void setZenithAngle(float zenithAngle);
 
 }

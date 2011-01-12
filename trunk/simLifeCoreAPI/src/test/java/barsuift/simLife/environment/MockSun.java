@@ -34,9 +34,9 @@ public class MockSun extends BasicPublisher implements Sun {
 
     private BigDecimal brightness = PercentHelper.getDecimalValue(100);
 
-    private BigDecimal riseAngle = new BigDecimal("0.375");
+    private float riseAngle = 0.375f;
 
-    private BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
+    private float zenithAngle = 0.5f;
 
     private Sun3D sunLight = new MockSun3D();
 
@@ -56,22 +56,22 @@ public class MockSun extends BasicPublisher implements Sun {
     }
 
     @Override
-    public BigDecimal getRiseAngle() {
+    public float getRiseAngle() {
         return riseAngle;
     }
 
     @Override
-    public void setRiseAngle(BigDecimal riseAngle) {
+    public void setRiseAngle(float riseAngle) {
         this.riseAngle = riseAngle;
     }
 
     @Override
-    public BigDecimal getZenithAngle() {
+    public float getZenithAngle() {
         return zenithAngle;
     }
 
     @Override
-    public void setZenithAngle(BigDecimal zenithAngle) {
+    public void setZenithAngle(float zenithAngle) {
         this.zenithAngle = zenithAngle;
     }
 

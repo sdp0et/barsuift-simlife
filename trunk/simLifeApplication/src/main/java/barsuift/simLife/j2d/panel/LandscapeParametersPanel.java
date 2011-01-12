@@ -85,7 +85,7 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
 
     private JSlider createMaxHeightSlider(LandscapeParameters parameters) {
         JSlider maxHeightSlider = new JSlider(JSlider.HORIZONTAL, LandscapeParameters.MAX_HEIGHT_MIN,
-                LandscapeParameters.MAX_HEIGHT_MAX, (int) parameters.getMaximumHeight());
+                LandscapeParameters.MAX_HEIGHT_MAX, Math.round(parameters.getMaximumHeight()));
         maxHeightSlider.setPaintTicks(true);
         maxHeightSlider.setMajorTickSpacing(10);
         maxHeightSlider.setPaintLabels(true);
@@ -93,9 +93,9 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
     }
 
     private JSlider createRoughnessSlider(LandscapeParameters parameters) {
-        int min = (int) (LandscapeParameters.ROUGHNESS_MIN * 100);
-        int max = (int) (LandscapeParameters.ROUGHNESS_MAX * 100);
-        int current = (int) (parameters.getRoughness() * 100);
+        int min = Math.round(LandscapeParameters.ROUGHNESS_MIN * 100);
+        int max = Math.round(LandscapeParameters.ROUGHNESS_MAX * 100);
+        int current = Math.round(parameters.getRoughness() * 100);
         JSlider roughnessSlider = new JSlider(JSlider.HORIZONTAL, min, max, current);
         roughnessSlider.setPaintTicks(true);
         roughnessSlider.setMajorTickSpacing((max - min) / 5);
@@ -110,9 +110,9 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
     }
 
     private JSlider createErosionSlider(LandscapeParameters parameters) {
-        int min = (int) (LandscapeParameters.EROSION_MIN * 100);
-        int max = (int) (LandscapeParameters.EROSION_MAX * 100);
-        int current = (int) (parameters.getErosion() * 100);
+        int min = Math.round(LandscapeParameters.EROSION_MIN * 100);
+        int max = Math.round(LandscapeParameters.EROSION_MAX * 100);
+        int current = Math.round(parameters.getErosion() * 100);
         JSlider erosionSlider = new JSlider(JSlider.HORIZONTAL, min, max, current);
         erosionSlider.setPaintTicks(true);
         erosionSlider.setMajorTickSpacing((max - min) / 5);
@@ -128,9 +128,9 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
 
     @Override
     public void readFromParameters() {
-        roughnessSlider.setValue((int) (parameters.getRoughness() * 100));
-        erosionSlider.setValue((int) (parameters.getErosion() * 100));
-        maxHeightSlider.setValue((int) parameters.getMaximumHeight());
+        roughnessSlider.setValue(Math.round(parameters.getRoughness() * 100));
+        erosionSlider.setValue(Math.round(parameters.getErosion() * 100));
+        maxHeightSlider.setValue(Math.round(parameters.getMaximumHeight()));
     }
 
     @Override

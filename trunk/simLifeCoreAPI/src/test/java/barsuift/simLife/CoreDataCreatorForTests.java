@@ -233,8 +233,8 @@ public final class CoreDataCreatorForTests {
 
     public static SunState createRandomSunState() {
         BigDecimal brightness = UtilDataCreatorForTests.createRandomBigDecimal();
-        BigDecimal riseAngle = UtilDataCreatorForTests.createRandomBigDecimal();
-        BigDecimal zenithAngle = UtilDataCreatorForTests.createRandomBigDecimal();
+        float riseAngle = (float) Math.random();
+        float zenithAngle = (float) Math.random();
         Sun3DState sun3DState = DisplayDataCreatorForTests.createRandomSun3DState();
         return new SunState(brightness, riseAngle, zenithAngle, sun3DState);
     }
@@ -243,7 +243,7 @@ public final class CoreDataCreatorForTests {
      * Create specific sun state with
      * <ul>
      * <li>brightness=70%</li>
-     * <li>rise angle=25%</li>
+     * <li>rise angle=375%</li>
      * <li>zenith angle = 50%</li>
      * </ul>
      * 
@@ -251,8 +251,8 @@ public final class CoreDataCreatorForTests {
      */
     public static SunState createSpecificSunState() {
         BigDecimal brightness = PercentHelper.getDecimalValue(70);
-        BigDecimal riseAngle = PercentHelper.getDecimalValue(25);
-        BigDecimal zenithAngle = PercentHelper.getDecimalValue(50);
+        float riseAngle = 0.375f;
+        float zenithAngle = 0.50f;
         Sun3DState sun3DState = DisplayDataCreatorForTests.createSpecificSun3DState();
         return new SunState(brightness, riseAngle, zenithAngle, sun3DState);
     }

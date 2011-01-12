@@ -57,17 +57,17 @@ public class BasicSunTest extends TestCase {
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
         assertEquals(0.0, sun.getState().getBrightness().doubleValue());
-        assertEquals(0.0, sun.getState().getRiseAngle().doubleValue());
-        assertEquals(0.0, sun.getState().getZenithAngle().doubleValue());
+        assertEquals(0.0f, sun.getState().getRiseAngle(), 0.0001);
+        assertEquals(0.0f, sun.getState().getZenithAngle(), 0.0001);
 
         sun.setBrightness(PercentHelper.getDecimalValue(32));
-        sun.setRiseAngle(PercentHelper.getDecimalValue(47));
-        sun.setZenithAngle(PercentHelper.getDecimalValue(78));
+        sun.setRiseAngle(0.47f);
+        sun.setZenithAngle(0.78f);
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
         assertEquals(0.32, sun.getState().getBrightness().doubleValue());
-        assertEquals(0.47, sun.getState().getRiseAngle().doubleValue());
-        assertEquals(0.78, sun.getState().getZenithAngle().doubleValue());
+        assertEquals(0.47f, sun.getState().getRiseAngle(), 0.0001);
+        assertEquals(0.78f, sun.getState().getZenithAngle(), 0.0001);
 
     }
 
@@ -83,25 +83,13 @@ public class BasicSunTest extends TestCase {
     }
 
     public void testGetRiseAngle() {
-        sun.setRiseAngle(PercentHelper.getDecimalValue(30));
-        assertEquals(PercentHelper.getDecimalValue(30), sun.getRiseAngle());
-        try {
-            sun.setRiseAngle(null);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+        sun.setRiseAngle(0.3f);
+        assertEquals(0.3f, sun.getRiseAngle(), 0.0001);
     }
 
     public void testGetZenithAngle() {
-        sun.setZenithAngle(PercentHelper.getDecimalValue(30));
-        assertEquals(PercentHelper.getDecimalValue(30), sun.getZenithAngle());
-        try {
-            sun.setZenithAngle(null);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+        sun.setZenithAngle(0.3f);
+        assertEquals(0.3f, sun.getZenithAngle(), 0.0001);
     }
 
     public void testSubscriberBrightness() {
@@ -126,39 +114,19 @@ public class BasicSunTest extends TestCase {
     public void testSubscriberRiseAngle() {
         publisherHelper.addSubscriberTo(sun);
         assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
-        sun.setRiseAngle(PercentHelper.getDecimalValue(50));
-        assertEquals(PercentHelper.getDecimalValue(50), sun.getRiseAngle());
+        sun.setRiseAngle(0.5f);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
         assertEquals(1, publisherHelper.nbUpdated());
         assertEquals(SunUpdateCode.riseAngle, publisherHelper.getUpdateObjects().get(0));
-    }
-
-    public void testSubscriberRiseAngleUnchanged() {
-        publisherHelper.addSubscriberTo(sun);
-        assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
-        sun.setRiseAngle(sunState.getRiseAngle());
-        assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
-        assertEquals("The subscriber should not be notified when setting the same value as before", 0,
-                publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
     public void testSubscriberZenithAngle() {
         publisherHelper.addSubscriberTo(sun);
         assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
-        sun.setZenithAngle(PercentHelper.getDecimalValue(75));
-        assertEquals(PercentHelper.getDecimalValue(75), sun.getZenithAngle());
+        sun.setZenithAngle(0.75f);
+        assertEquals(0.75f, sun.getZenithAngle(), 0.0001);
         assertEquals(1, publisherHelper.nbUpdated());
         assertEquals(SunUpdateCode.zenithAngle, publisherHelper.getUpdateObjects().get(0));
-    }
-
-    public void testSubscriberZenithAngleUnchanged() {
-        publisherHelper.addSubscriberTo(sun);
-        assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
-        sun.setZenithAngle(sunState.getZenithAngle());
-        assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
-        assertEquals("The subscriber should not be notified when setting the same value as before", 0,
-                publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
 }

@@ -29,7 +29,6 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.message.Publisher;
@@ -60,8 +59,8 @@ public class SunZenithPanel extends JPanel implements ChangeListener, Subscriber
     }
 
     private JSlider createSlider() {
-        JSlider zenithSlider = new JSlider(JSlider.VERTICAL, ANGLE_MIN, ANGLE_MAX, PercentHelper.getIntValue(sun
-                .getZenithAngle()));
+        JSlider zenithSlider = new JSlider(JSlider.VERTICAL, ANGLE_MIN, ANGLE_MAX,
+                Math.round(sun.getZenithAngle() * 100));
         zenithSlider.setMaximumSize(new Dimension(80, 180));
         zenithSlider.addChangeListener(this);
         // Turn on labels at major tick marks.
@@ -88,14 +87,14 @@ public class SunZenithPanel extends JPanel implements ChangeListener, Subscriber
     @Override
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
-        int zenithAngle = (int) source.getValue();
-        sun.setZenithAngle(PercentHelper.getDecimalValue(zenithAngle));
+        int zenithAngle = source.getValue();
+        sun.setZenithAngle((float) zenithAngle / 100);
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.zenithAngle) {
-            zenithSlider.setValue(PercentHelper.getIntValue(sun.getZenithAngle()));
+            zenithSlider.setValue(Math.round(sun.getZenithAngle() * 100));
         }
     }
 
