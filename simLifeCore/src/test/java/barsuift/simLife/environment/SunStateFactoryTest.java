@@ -38,10 +38,8 @@ public class SunStateFactoryTest extends TestCase {
         SunState sunState = factory.createSunState();
         BigDecimal brightness = sunState.getBrightness();
         assertEquals(1.00, brightness.doubleValue());
-        BigDecimal riseAngle = sunState.getRiseAngle();
-        assertEquals(0.375, riseAngle.doubleValue(), 0.0001);
-        BigDecimal zenithAngle = sunState.getZenithAngle();
-        assertEquals(0.50, zenithAngle.doubleValue());
+        assertEquals(0.375f, sunState.getRiseAngle(), 0.0001);
+        assertEquals(0.50f, sunState.getZenithAngle(), 0.0001);
     }
 
 }

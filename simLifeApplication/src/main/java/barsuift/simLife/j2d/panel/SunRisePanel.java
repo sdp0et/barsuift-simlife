@@ -28,7 +28,6 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.message.Publisher;
@@ -59,8 +58,7 @@ public class SunRisePanel extends JPanel implements ChangeListener, Subscriber {
     }
 
     private JSlider createSlider() {
-        JSlider riseSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX, PercentHelper.getIntValue(sun
-                .getRiseAngle()));
+        JSlider riseSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX, Math.round(sun.getRiseAngle() * 100));
         riseSlider.addChangeListener(this);
         // Turn on labels at major tick marks.
         riseSlider.setMajorTickSpacing(50);
@@ -88,13 +86,13 @@ public class SunRisePanel extends JPanel implements ChangeListener, Subscriber {
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         int riseAngle = source.getValue();
-        sun.setRiseAngle(PercentHelper.getDecimalValue(riseAngle));
+        sun.setRiseAngle((float) riseAngle / 100);
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.riseAngle) {
-            riseSlider.setValue(PercentHelper.getIntValue(sun.getRiseAngle()));
+            riseSlider.setValue(Math.round(sun.getRiseAngle() * 100));
         }
     }
 

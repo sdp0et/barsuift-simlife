@@ -26,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
-import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.message.Publisher;
@@ -57,8 +56,7 @@ public class SunColorPanel extends JPanel implements Subscriber {
     }
 
     private JSlider createSlider() {
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, FACTOR_MIN, FACTOR_MAX, PercentHelper.getIntValue(sun3D
-                .getWhiteFactor()));
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, FACTOR_MIN, FACTOR_MAX, Math.round(sun3D.getWhiteFactor() * 100));
         // Turn on labels at major tick marks.
         slider.setMajorTickSpacing(20);
         slider.setMinorTickSpacing(5);
@@ -92,7 +90,7 @@ public class SunColorPanel extends JPanel implements Subscriber {
     @Override
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.color) {
-            slider.setValue(PercentHelper.getIntValue(sun3D.getWhiteFactor()));
+            slider.setValue(Math.round(sun3D.getWhiteFactor() * 100));
         }
     }
 

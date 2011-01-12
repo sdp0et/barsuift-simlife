@@ -86,7 +86,7 @@ public class SunBrightnessPanel extends JPanel implements ChangeListener, Subscr
     @Override
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
-        int brightness = (int) source.getValue();
+        int brightness = source.getValue();
         sun.setBrightness(PercentHelper.getDecimalValue(brightness));
     }
 

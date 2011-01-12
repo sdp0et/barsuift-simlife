@@ -19,7 +19,6 @@
 package barsuift.simLife.j2d.panel;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
 
@@ -44,32 +43,30 @@ public class SunRisePanelTest extends TestCase {
 
     public void testInit() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals(sun.getRiseAngle().floatValue(), PercentHelper.getDecimalValue(display.getSlider().getValue())
-                .floatValue(), 0.50001);
-        sun.setRiseAngle(PercentHelper.getDecimalValue(90));
+        assertEquals(sun.getRiseAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        sun.setRiseAngle(0.9f);
         display = new SunRisePanel(sun);
-        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        sun.setRiseAngle(PercentHelper.getDecimalValue(80));
+        assertEquals(sun.getRiseAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        sun.setRiseAngle(0.8f);
         display = new SunRisePanel(sun);
-        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        sun.setRiseAngle(PercentHelper.getDecimalValue(100));
+        assertEquals(sun.getRiseAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        sun.setRiseAngle(1f);
         display = new SunRisePanel(sun);
-        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(sun.getRiseAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
     }
 
     public void testUpdate() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals(sun.getRiseAngle().floatValue(), PercentHelper.getDecimalValue(display.getSlider().getValue())
-                .floatValue(), 0.50001);
-        sun.setRiseAngle(PercentHelper.getDecimalValue(90));
+        assertEquals(sun.getRiseAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        sun.setRiseAngle(0.9f);
         display.update(sun, SunUpdateCode.riseAngle);
-        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        sun.setRiseAngle(PercentHelper.getDecimalValue(90));
+        assertEquals(sun.getRiseAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        sun.setRiseAngle(0.8f);
         display.update(sun, SunUpdateCode.riseAngle);
-        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        sun.setRiseAngle(PercentHelper.getDecimalValue(100));
+        assertEquals(sun.getRiseAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        sun.setRiseAngle(1f);
         display.update(sun, SunUpdateCode.riseAngle);
-        assertEquals(sun.getRiseAngle(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(sun.getRiseAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
     }
 
 

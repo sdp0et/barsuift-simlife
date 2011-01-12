@@ -18,7 +18,6 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import java.math.BigDecimal;
 
 import javax.media.j3d.DirectionalLight;
 
@@ -34,7 +33,7 @@ public interface Sun3D extends Publisher {
      * white factor.
      * <p>
      * <ul>
-     * <li>When the white factor is 100%, the sun is white (Red = Green = Blue).</li>
+     * <li>When the white factor is 1 (100%), the sun is white (Red = Green = Blue).</li>
      * <li>When the white factor is 0%, the sun is red (Red = 100%, Green = Blue = 0%).</li>
      * </ul>
      * </p>
@@ -45,7 +44,7 @@ public interface Sun3D extends Publisher {
      * 
      * @return the white factor
      */
-    public BigDecimal getWhiteFactor();
+    public float getWhiteFactor();
 
     public DirectionalLight getLight();
 

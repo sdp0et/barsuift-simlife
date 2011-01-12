@@ -35,9 +35,9 @@ public class BasicSun implements Sun {
 
     private BigDecimal brightness;
 
-    private BigDecimal riseAngle;
+    private float riseAngle;
 
-    private BigDecimal zenithAngle;
+    private float zenithAngle;
 
     private final Sun3D sun3D;
 
@@ -55,8 +55,23 @@ public class BasicSun implements Sun {
         this.state = state;
         brightness = state.getBrightness();
         riseAngle = state.getRiseAngle();
+        adjustRiseAngle();
+        // if (1 == riseAngle) {
+        // riseAngle = 0;
+        // }
         zenithAngle = state.getZenithAngle();
         sun3D = new BasicSun3D(this);
+    }
+
+    /**
+     * This method is to ensure the riseAngle is always comprised between 0 and 1
+     */
+    private void adjustRiseAngle() {
+        // FIXME 001 unit test
+        while (riseAngle < 0) {
+            riseAngle++;
+        }
+        riseAngle %= 1;
     }
 
     public BigDecimal getBrightness() {
@@ -74,35 +89,29 @@ public class BasicSun implements Sun {
         }
     }
 
-    public BigDecimal getRiseAngle() {
+    public float getRiseAngle() {
         return riseAngle;
     }
 
 
-    public void setRiseAngle(BigDecimal riseAngle) {
-        if (riseAngle == null) {
-            throw new IllegalArgumentException("Sun rise angle can not be null");
-        }
-        if (!this.riseAngle.equals(riseAngle)) {
-            this.riseAngle = riseAngle;
-            setChanged();
-            notifySubscribers(SunUpdateCode.riseAngle);
-        }
+    public void setRiseAngle(float riseAngle) {
+        this.riseAngle = riseAngle;
+        adjustRiseAngle();
+        // if (1 == riseAngle) {
+        // this.riseAngle = 0;
+        // }
+        setChanged();
+        notifySubscribers(SunUpdateCode.riseAngle);
     }
 
-    public BigDecimal getZenithAngle() {
+    public float getZenithAngle() {
         return zenithAngle;
     }
 
-    public void setZenithAngle(BigDecimal zenithAngle) {
-        if (zenithAngle == null) {
-            throw new IllegalArgumentException("Sun zenith angle can not be null");
-        }
-        if (!this.zenithAngle.equals(zenithAngle)) {
-            this.zenithAngle = zenithAngle;
-            setChanged();
-            notifySubscribers(SunUpdateCode.zenithAngle);
-        }
+    public void setZenithAngle(float zenithAngle) {
+        this.zenithAngle = zenithAngle;
+        setChanged();
+        notifySubscribers(SunUpdateCode.zenithAngle);
     }
 
     @Override

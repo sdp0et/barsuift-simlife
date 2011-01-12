@@ -19,7 +19,6 @@
 package barsuift.simLife.j2d.panel;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.environment.MockSun3D;
 
@@ -44,32 +43,30 @@ public class SunColorPanelTest extends TestCase {
 
     public void testInit() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals(mockSun.getWhiteFactor().floatValue(),
-                PercentHelper.getDecimalValue(display.getSlider().getValue()).floatValue(), 0.50001);
-        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(90));
+        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setWhiteFactor(0.9f);
         display = new SunColorPanel(mockSun);
-        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(80));
+        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setWhiteFactor(0.8f);
         display = new SunColorPanel(mockSun);
-        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(100));
+        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setWhiteFactor(1f);
         display = new SunColorPanel(mockSun);
-        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
     }
 
     public void testUpdate() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals(mockSun.getWhiteFactor().floatValue(),
-                PercentHelper.getDecimalValue(display.getSlider().getValue()).floatValue(), 0.50001);
-        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(90));
+        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setWhiteFactor(0.9f);
         display.update(mockSun, SunUpdateCode.color);
-        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(90));
+        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setWhiteFactor(0.8f);
         display.update(mockSun, SunUpdateCode.color);
-        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
-        mockSun.setWhiteFactor(PercentHelper.getDecimalValue(100));
+        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        mockSun.setWhiteFactor(1f);
         display.update(mockSun, SunUpdateCode.color);
-        assertEquals(mockSun.getWhiteFactor(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
     }
 
 }

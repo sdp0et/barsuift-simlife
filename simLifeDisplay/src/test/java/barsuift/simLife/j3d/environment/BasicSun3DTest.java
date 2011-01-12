@@ -18,8 +18,6 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import java.math.BigDecimal;
-
 import javax.media.j3d.DirectionalLight;
 import javax.vecmath.Color3f;
 import javax.vecmath.Vector3f;
@@ -76,7 +74,7 @@ public class BasicSun3DTest extends TestCase {
     public void testPublisher() {
         publisherHelper.addSubscriberTo(sun3D);
         // force computation of angles in the sun, and so for color in sun3D
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
+        mockSun.setZenithAngle(1f);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
 
         assertEquals(1, publisherHelper.nbUpdated());
@@ -85,8 +83,8 @@ public class BasicSun3DTest extends TestCase {
 
     public void testUpdateBrightness() {
         // set position at perfect zenith
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(50));
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
+        mockSun.setRiseAngle(0.5f);
+        mockSun.setZenithAngle(1f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
 
@@ -122,20 +120,20 @@ public class BasicSun3DTest extends TestCase {
 
         mockSun.setBrightness(PercentHelper.getDecimalValue(100));
         sun3D.update(mockSun, SunUpdateCode.brightness);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(25));
+        mockSun.setRiseAngle(0.25f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
         assertEquals(new Color3f(1f, 0f, 0f), actualSunColor);
 
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(50));
+        mockSun.setRiseAngle(0.5f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
         assertEquals(new Color3f(1f, (float) Math.sqrt(Math.sqrt(2) / 2), (float) Math.sqrt(Math.sqrt(2) / 2)),
                 actualSunColor);
 
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
+        mockSun.setZenithAngle(1f);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
@@ -145,36 +143,36 @@ public class BasicSun3DTest extends TestCase {
     public void testUpdateRiseAngle1() {
         // rise = Pi/4
         // zenith = Pi/4
-        assertEquals(new BigDecimal("0.375"), mockSun.getRiseAngle());
-        assertEquals(PercentHelper.getDecimalValue(50), mockSun.getZenithAngle());
+        assertEquals(0.375f, mockSun.getRiseAngle(), 0.0001f);
+        assertEquals(0.5f, mockSun.getZenithAngle(), 0.0001f);
         Vector3f actualDirection = new Vector3f();
         sunLight.getDirection(actualDirection);
         Vector3f expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, -0.5f, -0.5f);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(25));
+        mockSun.setRiseAngle(0.25f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(1, 0, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(50));
+        mockSun.setRiseAngle(0.5f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, -(float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        mockSun.setRiseAngle(new BigDecimal("0.625"));
+        mockSun.setRiseAngle(0.625f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, -0.5f, -0.5f);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(75));
+        mockSun.setRiseAngle(0.75f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-1, 0, 0);
@@ -186,10 +184,10 @@ public class BasicSun3DTest extends TestCase {
      * Test rise angle with zenith angle set to 0
      */
     public void testUpdateRiseAngle2() {
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(0));
+        mockSun.setZenithAngle(0f);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
         // Pi/4
-        assertEquals(new BigDecimal("0.375"), mockSun.getRiseAngle());
+        assertEquals(0.375f, mockSun.getRiseAngle(), 0.0001f);
         Vector3f actualDirection = new Vector3f();
         sunLight.getDirection(actualDirection);
         Vector3f expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, 0f, (float) -Math.sqrt(2) / 2);
@@ -197,7 +195,7 @@ public class BasicSun3DTest extends TestCase {
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // 0 Pi
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(25));
+        mockSun.setRiseAngle(0.25f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(1, 0, 0);
@@ -205,7 +203,7 @@ public class BasicSun3DTest extends TestCase {
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // Pi/2
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(50));
+        mockSun.setRiseAngle(0.5f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, 0, -1);
@@ -213,7 +211,7 @@ public class BasicSun3DTest extends TestCase {
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // 3Pi/4
-        mockSun.setRiseAngle(new BigDecimal("0.625"));
+        mockSun.setRiseAngle(0.625f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, 0, -(float) Math.sqrt(2) / 2);
@@ -221,7 +219,7 @@ public class BasicSun3DTest extends TestCase {
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // Pi
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(75));
+        mockSun.setRiseAngle(0.75f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-1, 0, 0);
@@ -233,10 +231,10 @@ public class BasicSun3DTest extends TestCase {
      * Test rise angle with zenith angle set to 100% (Pi/2)
      */
     public void testUpdateRiseAngle3() {
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
+        mockSun.setZenithAngle(1f);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
         // Pi/4
-        assertEquals(new BigDecimal("0.375"), mockSun.getRiseAngle());
+        assertEquals(0.375f, mockSun.getRiseAngle(), 0.0001f);
         Vector3f actualDirection = new Vector3f();
         sunLight.getDirection(actualDirection);
         Vector3f expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2, 0);
@@ -244,7 +242,7 @@ public class BasicSun3DTest extends TestCase {
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // 0 Pi
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(25));
+        mockSun.setRiseAngle(0.25f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(1, 0, 0);
@@ -252,7 +250,7 @@ public class BasicSun3DTest extends TestCase {
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // Pi/2
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(50));
+        mockSun.setRiseAngle(0.5f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, -1, 0);
@@ -260,7 +258,7 @@ public class BasicSun3DTest extends TestCase {
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // 3Pi/4
-        mockSun.setRiseAngle(new BigDecimal("0.625"));
+        mockSun.setRiseAngle(0.625f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2, 0);
@@ -268,7 +266,7 @@ public class BasicSun3DTest extends TestCase {
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // Pi
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(75));
+        mockSun.setRiseAngle(0.75f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-1, 0, 0);
@@ -277,22 +275,22 @@ public class BasicSun3DTest extends TestCase {
     }
 
     public void testUpdateZenithAngle() {
-        assertEquals(new BigDecimal("0.375"), mockSun.getRiseAngle());
-        assertEquals(PercentHelper.getDecimalValue(50), mockSun.getZenithAngle());
+        assertEquals(0.375f, mockSun.getRiseAngle(), 0.0001f);
+        assertEquals(0.5f, mockSun.getZenithAngle(), 0.0001f);
         Vector3f actualDirection = new Vector3f();
         sunLight.getDirection(actualDirection);
         Vector3f expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, -0.5f, -0.5f);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(0));
+        mockSun.setZenithAngle(0f);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, 0f, (float) -Math.sqrt(2) / 2);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
+        mockSun.setZenithAngle(1f);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2, 0);
@@ -301,64 +299,63 @@ public class BasicSun3DTest extends TestCase {
     }
 
     public void testGetWhiteFactor() {
-        assertEquals(new BigDecimal("0.375"), mockSun.getRiseAngle());
-        assertEquals(PercentHelper.getDecimalValue(50), mockSun.getZenithAngle());
-        assertEquals((float) Math.sqrt(2) / 2, sun3D.getWhiteFactor().floatValue());
+        assertEquals(0.375f, mockSun.getRiseAngle(), 0.0001f);
+        assertEquals(0.5f, mockSun.getZenithAngle(), 0.0001f);
+        assertEquals((float) Math.sqrt(2) / 2, sun3D.getWhiteFactor(), 0.0001f);
 
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(0));
+        mockSun.setZenithAngle(0f);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(25));
+        mockSun.setRiseAngle(0.25f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(0f, sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(new BigDecimal("0.375"));
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.375f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(0f, sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(50));
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.5f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(0f, sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(new BigDecimal("0.625"));
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.625f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(0f, sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(75));
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.75f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(0f, sun3D.getWhiteFactor().floatValue(), 0.001f);
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
 
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(50));
+        mockSun.setZenithAngle(0.5f);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(25));
+        mockSun.setRiseAngle(0.25f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(0f, sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(new BigDecimal("0.375"));
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.375f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals((float) Math.sqrt(2) / 2, sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(50));
+        assertEquals((float) Math.sqrt(2) / 2, sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.5f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals((float) Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(new BigDecimal("0.625"));
+        assertEquals((float) Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.625f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals((float) Math.sqrt(2) / 2, sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(75));
+        assertEquals((float) Math.sqrt(2) / 2, sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.75f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(0f, sun3D.getWhiteFactor().floatValue(), 0.001f);
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
 
 
-        mockSun.setZenithAngle(PercentHelper.getDecimalValue(100));
+        mockSun.setZenithAngle(1f);
         sun3D.update(mockSun, SunUpdateCode.zenithAngle);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(25));
+        mockSun.setRiseAngle(0.25f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(0f, sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(new BigDecimal("0.375"));
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.375f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals((float) Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(50));
+        assertEquals((float) Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.5f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(1f, sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(new BigDecimal("0.625"));
+        assertEquals(1f, sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.625f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals((float) Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor().floatValue(), 0.001f);
-        mockSun.setRiseAngle(PercentHelper.getDecimalValue(75));
+        assertEquals((float) Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor(), 0.001f);
+        mockSun.setRiseAngle(0.75f);
         sun3D.update(mockSun, SunUpdateCode.riseAngle);
-        assertEquals(0f, sun3D.getWhiteFactor().floatValue(), 0.001f);
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
     }
-
 }
