@@ -129,4 +129,43 @@ public class BasicSunTest extends TestCase {
         assertEquals(SunUpdateCode.zenithAngle, publisherHelper.getUpdateObjects().get(0));
     }
 
+    public void testAdjustRiseAngle() {
+        sunState.setRiseAngle(0.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+        sunState.setRiseAngle(1.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+        sunState.setRiseAngle(2.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+        sunState.setRiseAngle(-0.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+        sunState.setRiseAngle(-1.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+
+        sun.setRiseAngle(0.5f);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+        sun.setRiseAngle(1.5f);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+        sun.setRiseAngle(2.5f);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+        sun.setRiseAngle(-0.5f);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+        sun.setRiseAngle(-1.5f);
+        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+
+    }
+
 }
