@@ -21,7 +21,7 @@ package barsuift.simLife.universe;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.landscape.Landscape3D;
@@ -36,14 +36,14 @@ import barsuift.simLife.tree.TreeStateFactory;
  */
 public class BasicUniverseFactory {
 
-    private static final Map<Long, Point3d> originPoints = new HashMap<Long, Point3d>();
+    private static final Map<Long, Point3f> originPoints = new HashMap<Long, Point3f>();
 
     static {
         // TODO 300. randomize this placement code (with something ala MidPoint Displacement stuff)
-        originPoints.put(new Long(0), new Point3d(0, 0, 0));
-        originPoints.put(new Long(1), new Point3d(5, 0, 0));
-        originPoints.put(new Long(2), new Point3d(2, 0, 4));
-        originPoints.put(new Long(3), new Point3d(4, 0, 2));
+        originPoints.put(new Long(0), new Point3f(0, 0, 0));
+        originPoints.put(new Long(1), new Point3f(5, 0, 0));
+        originPoints.put(new Long(2), new Point3f(2, 0, 4));
+        originPoints.put(new Long(3), new Point3f(4, 0, 2));
     }
 
     public void populateEmptyUniverse(Universe universe) {
@@ -52,8 +52,8 @@ public class BasicUniverseFactory {
         int nbTrees = Randomizer.randomBetween(1, 4);
         TreeStateFactory treeStateFactory = new TreeStateFactory();
         for (int i = 0; i < nbTrees; i++) {
-            Point3d translationVector = originPoints.get(new Long(i));
-            double height = landscape3D.getHeight(translationVector.x, translationVector.z);
+            Point3f translationVector = originPoints.get(new Long(i));
+            float height = landscape3D.getHeight(translationVector.x, translationVector.z);
             translationVector.y = height;
             TreeState treeState = treeStateFactory.createRandomTreeState(translationVector);
             Tree tree = new BasicTree(universe, treeState);

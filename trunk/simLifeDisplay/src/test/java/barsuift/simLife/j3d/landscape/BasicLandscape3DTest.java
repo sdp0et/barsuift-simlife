@@ -20,8 +20,6 @@ package barsuift.simLife.j3d.landscape;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.landscape.BasicLandscape3D;
-import barsuift.simLife.j3d.landscape.Landscape3DState;
 
 
 public class BasicLandscape3DTest extends TestCase {
@@ -55,7 +53,7 @@ public class BasicLandscape3DTest extends TestCase {
     }
 
     public void testInLandscape() {
-        double epsilon = 0.00001;
+        float epsilon = 0.00001f;
 
         assertFalse(landscape3D.inLandscape(0, -1));
         assertFalse(landscape3D.inLandscape(epsilon, -1));
@@ -110,42 +108,42 @@ public class BasicLandscape3DTest extends TestCase {
     }
 
     public void testGetHeight() {
-        double epsilon = 0.00001;
-        double delta = 0.001;
+        float epsilon = 0.00001f;
+        float delta = 0.001f;
 
-        assertEquals(0.0, landscape3D.getHeight(0.0, 0.0), delta);
-        assertEquals(0.2, landscape3D.getHeight(0.5, 0.0), delta);
-        assertEquals(0.4, landscape3D.getHeight(1.0 - epsilon, 0.0), delta);
+        assertEquals(0.0, landscape3D.getHeight(0.0f, 0.0f), delta);
+        assertEquals(0.2, landscape3D.getHeight(0.5f, 0.0f), delta);
+        assertEquals(0.4, landscape3D.getHeight(1.0f - epsilon, 0.0f), delta);
 
-        assertEquals(0.3, landscape3D.getHeight(0.0, 0.5), delta);
-        assertEquals(0.5, landscape3D.getHeight(0.5, 0.5), delta);
-        assertEquals(0.8, landscape3D.getHeight(1.0 - epsilon, 0.5), delta);
+        assertEquals(0.3, landscape3D.getHeight(0.0f, 0.5f), delta);
+        assertEquals(0.5, landscape3D.getHeight(0.5f, 0.5f), delta);
+        assertEquals(0.8, landscape3D.getHeight(1.0f - epsilon, 0.5f), delta);
 
-        assertEquals(0.6, landscape3D.getHeight(0.0, 1.0 - epsilon), delta);
-        assertEquals(0.9, landscape3D.getHeight(0.5, 1.0 - epsilon), delta);
-        assertEquals(1.2, landscape3D.getHeight(1.0 - epsilon, 1.0 - epsilon), delta);
+        assertEquals(0.6, landscape3D.getHeight(0.0f, 1.0f - epsilon), delta);
+        assertEquals(0.9, landscape3D.getHeight(0.5f, 1.0f - epsilon), delta);
+        assertEquals(1.2, landscape3D.getHeight(1.0f - epsilon, 1.0f - epsilon), delta);
 
-        assertEquals(0.28, landscape3D.getHeight(0.4, 0.2), delta);
-        assertEquals(0.32, landscape3D.getHeight(0.2, 0.4), delta);
+        assertEquals(0.28, landscape3D.getHeight(0.4f, 0.2f), delta);
+        assertEquals(0.32, landscape3D.getHeight(0.2f, 0.4f), delta);
 
-        assertEquals(0.6, landscape3D.getHeight(0.8, 0.4), delta);
-        assertEquals(0.68, landscape3D.getHeight(0.4, 0.8), delta);
+        assertEquals(0.6, landscape3D.getHeight(0.8f, 0.4f), delta);
+        assertEquals(0.68, landscape3D.getHeight(0.4f, 0.8f), delta);
 
 
         // when the position is not in the landscape, we simply return 0
-        assertEquals(0d, landscape3D.getHeight(-1, 0));
-        assertEquals(0d, landscape3D.getHeight(0, -1));
-        assertEquals(0d, landscape3D.getHeight(2, 0));
-        assertEquals(0d, landscape3D.getHeight(0, 2));
+        assertEquals(0f, landscape3D.getHeight(-1, 0));
+        assertEquals(0f, landscape3D.getHeight(0, -1));
+        assertEquals(0f, landscape3D.getHeight(2, 0));
+        assertEquals(0f, landscape3D.getHeight(0, 2));
 
-        assertEquals(0d, landscape3D.getHeight(0, -epsilon));
-        assertEquals(0d, landscape3D.getHeight(1, -epsilon));
-        assertEquals(0d, landscape3D.getHeight(-epsilon, 0));
-        assertEquals(0d, landscape3D.getHeight(1d + epsilon, 0));
-        assertEquals(0d, landscape3D.getHeight(-epsilon, 1));
-        assertEquals(0d, landscape3D.getHeight(1 + epsilon, 1));
-        assertEquals(0d, landscape3D.getHeight(0, 1 + epsilon));
-        assertEquals(0d, landscape3D.getHeight(1, 1 + epsilon));
+        assertEquals(0f, landscape3D.getHeight(0, -epsilon));
+        assertEquals(0f, landscape3D.getHeight(1, -epsilon));
+        assertEquals(0f, landscape3D.getHeight(-epsilon, 0));
+        assertEquals(0f, landscape3D.getHeight(1f + epsilon, 0));
+        assertEquals(0f, landscape3D.getHeight(-epsilon, 1));
+        assertEquals(0f, landscape3D.getHeight(1 + epsilon, 1));
+        assertEquals(0f, landscape3D.getHeight(0, 1 + epsilon));
+        assertEquals(0f, landscape3D.getHeight(1, 1 + epsilon));
     }
 
 }

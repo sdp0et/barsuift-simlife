@@ -35,7 +35,7 @@ public interface Landscape3D extends Persistent<Landscape3DState> {
      * @param z the z coordinate
      * @return the y coordinate (height)
      */
-    public double getHeight(double x, double z);
+    public float getHeight(float x, float z);
 
     /**
      * Returns true if the given point is part of the landscape, false otherwise. The point is specified with its x and
@@ -45,7 +45,7 @@ public interface Landscape3D extends Persistent<Landscape3DState> {
      * @param z the z coordinate
      * @return true if the point is part of the landscape, false otherwise.
      */
-    public boolean inLandscape(double x, double z);
+    public boolean inLandscape(float x, float z);
 
     public BranchGroup getBranchGroup();
 

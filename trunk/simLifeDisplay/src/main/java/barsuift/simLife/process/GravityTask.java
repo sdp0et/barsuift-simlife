@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.j3d.MobileEvent;
@@ -31,7 +31,7 @@ import barsuift.simLife.j3d.landscape.Landscape3D;
 
 public class GravityTask extends AbstractSplitConditionalTask {
 
-    private static final double FALLING_DISTANCE = 0.025;
+    private static final float FALLING_DISTANCE = 0.025f;
 
     private final ConcurrentLinkedQueue<Mobile> mobiles;
 
@@ -55,18 +55,20 @@ public class GravityTask extends AbstractSplitConditionalTask {
                 // get current values
                 Transform3D transform = new Transform3D();
                 currentTG.getTransform(transform);
-                Vector3d translation = new Vector3d();
+                Vector3f translation = new Vector3f();
                 transform.get(translation);
 
-                double landscapeHeight = landscape3D.getHeight(translation.x, translation.z);
+                float landscapeHeight = landscape3D.getHeight(translation.x, translation.z);
                 // update values
-                if ((translation.y - landscapeHeight) < (FALLING_DISTANCE * stepSize)) {
+                float relativeHeight = translation.y - landscapeHeight;
+                float stepFallingDistance = FALLING_DISTANCE * stepSize;
+                if (relativeHeight <= stepFallingDistance) {
                     translation.y = landscapeHeight;
                     mobiles.remove(mobile);
                     mobile.setChanged();
                     mobile.notifySubscribers(MobileEvent.FALLEN);
                 } else {
-                    translation.y -= (FALLING_DISTANCE * stepSize);
+                    translation.y -= stepFallingDistance;
                 }
 
                 // set the new values

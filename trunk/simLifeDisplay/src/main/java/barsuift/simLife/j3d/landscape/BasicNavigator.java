@@ -29,14 +29,10 @@ import javax.media.j3d.WakeupCriterion;
 import javax.media.j3d.WakeupOnAWTEvent;
 import javax.media.j3d.WakeupOr;
 import javax.vecmath.AxisAngle4d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.Tuple3dState;
-import barsuift.simLife.j3d.landscape.Landscape3D;
-import barsuift.simLife.j3d.landscape.NavigationMode;
-import barsuift.simLife.j3d.landscape.Navigator;
-import barsuift.simLife.j3d.landscape.NavigatorState;
+import barsuift.simLife.j3d.Tuple3fState;
 
 import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
 
@@ -72,7 +68,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     /**
      * Always 50 centimeters above the ground in fly mode
      */
-    static final double MIN_DISTANCE_FROM_GROUND = 0.5;
+    static final float MIN_DISTANCE_FROM_GROUND = 0.5f;
 
     /**
      * Max value in radian for an angle
@@ -97,20 +93,20 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     /**
      * Move by 20 centimeters
      */
-    static final double MOVE_STEP = 0.2;
+    static final float MOVE_STEP = 0.2f;
 
     // movement vectors
-    private static final Vector3d FWD = new Vector3d(0, 0, -MOVE_STEP);
+    private static final Vector3f FWD = new Vector3f(0, 0, -MOVE_STEP);
 
-    private static final Vector3d BACK = new Vector3d(0, 0, MOVE_STEP);
+    private static final Vector3f BACK = new Vector3f(0, 0, MOVE_STEP);
 
-    private static final Vector3d LEFT = new Vector3d(-MOVE_STEP, 0, 0);
+    private static final Vector3f LEFT = new Vector3f(-MOVE_STEP, 0, 0);
 
-    private static final Vector3d RIGHT = new Vector3d(MOVE_STEP, 0, 0);
+    private static final Vector3f RIGHT = new Vector3f(MOVE_STEP, 0, 0);
 
-    private static final Vector3d UP = new Vector3d(0, MOVE_STEP, 0);
+    private static final Vector3f UP = new Vector3f(0, MOVE_STEP, 0);
 
-    private static final Vector3d DOWN = new Vector3d(0, -MOVE_STEP, 0);
+    private static final Vector3f DOWN = new Vector3f(0, -MOVE_STEP, 0);
 
 
     private final Landscape3D landscape3D;
@@ -119,7 +115,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
 
     private final Transform3D globalTransform = new Transform3D();
 
-    private Vector3d translation = new Vector3d();
+    private Vector3f translation = new Vector3f();
 
     /**
      * current X rotation in radian
@@ -335,75 +331,75 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         transformRotationX.set(new AxisAngle4d(1.0, 0.0, 0.0, rotationX));
     }
 
-    private void doCheckedMove(Vector3d theMove) {
+    private void doCheckedMove(Vector3f theMove) {
         // next user position
-        Vector3d nextLoc = tryMove(theMove);
+        Vector3f nextLoc = tryMove(theMove);
         // if not on landscape
         if (!landscape3D.inLandscape(nextLoc.x, nextLoc.z)) {
             return;
         }
-        double height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
-        Vector3d actualMove = theMove;
+        float height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
+        Vector3f actualMove = theMove;
         // adapt to landscape, if in WALK mode
         if (navigationMode == NavigationMode.WALK) {
             // create new translation movement, with updated y value
-            actualMove = new Vector3d(theMove.x, height - translation.y + NavigatorStateFactory.VIEWER_SIZE, theMove.z);
+            actualMove = new Vector3f(theMove.x, height - translation.y + NavigatorStateFactory.VIEWER_SIZE, theMove.z);
         }
         if (navigationMode == NavigationMode.FLY) {
             if ((nextLoc.y) < (height + MIN_DISTANCE_FROM_GROUND)) {
                 // the move make us go under the ground
-                actualMove = new Vector3d(theMove.x, height - translation.y + MIN_DISTANCE_FROM_GROUND, theMove.z);
+                actualMove = new Vector3f(theMove.x, height - translation.y + MIN_DISTANCE_FROM_GROUND, theMove.z);
             }
         }
         doMove(actualMove);
     }
 
-    private void doCheckedAbsoluteMove(Vector3d theMove) {
+    private void doCheckedAbsoluteMove(Vector3f theMove) {
         // next user position
-        Vector3d nextLoc = tryAbsoluteMove(theMove);
+        Vector3f nextLoc = tryAbsoluteMove(theMove);
         // no need to check if still in landscape, as we are only getting up or down along the Y axis.
-        double height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
-        double newY = Math.max(nextLoc.y, height + MIN_DISTANCE_FROM_GROUND);
+        float height = landscape3D.getHeight(nextLoc.x, nextLoc.z);
+        float newY = Math.max(nextLoc.y, height + MIN_DISTANCE_FROM_GROUND);
         newY -= translation.y;
-        Vector3d moveVector = new Vector3d(theMove.x, newY, theMove.z);
+        Vector3f moveVector = new Vector3f(theMove.x, newY, theMove.z);
         translation.add(moveVector);
     }
 
-    private Vector3d tryMove(Vector3d theMove) {
+    private Vector3f tryMove(Vector3f theMove) {
         Transform3D transform = new Transform3D();
         transform.mul(transformRotationY);
         if (navigationMode == NavigationMode.FLY) {
             transform.mul(transformRotationX);
         }
         // new local move vector
-        Vector3d moveVector = new Vector3d(theMove);
+        Vector3f moveVector = new Vector3f(theMove);
         // translates movement based on heading
         transform.transform(moveVector);
-        Vector3d nextPosition = new Vector3d();
+        Vector3f nextPosition = new Vector3f();
         nextPosition.add(translation, moveVector);
         return nextPosition;
     }
 
-    private Vector3d tryAbsoluteMove(Vector3d theMove) {
-        Vector3d nextPosition = new Vector3d();
+    private Vector3f tryAbsoluteMove(Vector3f theMove) {
+        Vector3f nextPosition = new Vector3f();
         nextPosition.add(translation, theMove);
         return nextPosition;
     }
 
-    private void doMove(Vector3d theMove) {
+    private void doMove(Vector3f theMove) {
         Transform3D transform = new Transform3D();
         transform.mul(transformRotationY);
         if (navigationMode == NavigationMode.FLY) {
             transform.mul(transformRotationX);
         }
         // new local move vector
-        Vector3d moveVector = new Vector3d(theMove);
+        Vector3f moveVector = new Vector3f(theMove);
         // translates movement based on heading
         transform.transform(moveVector);
         doAbsoluteMove(moveVector);
     }
 
-    private void doAbsoluteMove(Vector3d theMove) {
+    private void doAbsoluteMove(Vector3f theMove) {
         translation.add(theMove);
     }
 
@@ -440,7 +436,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     }
 
     private void adjustHeightToFlyMode() {
-        double minHeight = landscape3D.getHeight(translation.x, translation.z) + MIN_DISTANCE_FROM_GROUND;
+        float minHeight = landscape3D.getHeight(translation.x, translation.z) + MIN_DISTANCE_FROM_GROUND;
         translation.y = Math.max(minHeight, translation.y);
     }
 
@@ -453,7 +449,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
 
     @Override
     public void synchronize() {
-        state.setTranslation(new Tuple3dState(translation));
+        state.setTranslation(new Tuple3fState(translation));
         state.setRotationX(rotationX);
         state.setRotationY(rotationY);
         state.setNavigationMode(navigationMode);
@@ -469,7 +465,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         transformRotationX.set(new AxisAngle4d(1.0, 0.0, 0.0, rotationX));
         rotationY = NavigatorStateFactory.ORIGINAL_ROTATION_Y;
         transformRotationY.set(new AxisAngle4d(0.0, 1.0, 0.0, rotationY));
-        translation = new Vector3d(NavigatorStateFactory.ORIGINAL_POSITION);
+        translation = new Vector3f(NavigatorStateFactory.ORIGINAL_POSITION);
         adjustHeight();
         propagateTransforms();
     }

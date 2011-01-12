@@ -53,7 +53,7 @@ public class BasicTree3DTest extends TestCase {
         nbBranches = 5;
         for (int index = 0; index < nbBranches; index++) {
             MockTreeBranch mockBranch = new MockTreeBranch();
-            Tuple3dState translationVector = DisplayDataCreatorForTests.createRandomTupleState();
+            Tuple3dState translationVector = DisplayDataCreatorForTests.createRandomTuple3dState();
             MockTreeBranch3D mockBranch3D = (MockTreeBranch3D) mockBranch.getBranch3D();
             mockBranch3D.getState().setTranslationVector(translationVector);
             mockTree.addBranch(mockBranch);

@@ -37,7 +37,7 @@ public class Tuple3dStateTest extends JaxbTestCase {
     }
 
     public void testJaxb() throws Exception {
-        Tuple3dState tupleState = DisplayDataCreatorForTests.createRandomTupleState();
+        Tuple3dState tupleState = DisplayDataCreatorForTests.createRandomTuple3dState();
         write(tupleState);
         Tuple3dState tupleState2 = (Tuple3dState) read();
         assertEquals(tupleState, tupleState2);

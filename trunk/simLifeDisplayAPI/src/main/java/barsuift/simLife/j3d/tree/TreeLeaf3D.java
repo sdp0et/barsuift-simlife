@@ -25,7 +25,7 @@ import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.message.Subscriber;
 
-
+// FIXME use float instead of double to position 3D elements
 public interface TreeLeaf3D extends Subscriber, Mobile, Persistent<TreeLeaf3DState> {
 
     public double getArea();

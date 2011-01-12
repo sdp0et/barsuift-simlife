@@ -27,7 +27,7 @@ import javax.media.j3d.Group;
 import javax.media.j3d.Node;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.j3d.environment.Environment3D;
@@ -78,7 +78,7 @@ public class BasicUniverse3D implements Universe3D {
     public void addTree(Tree3D tree3D) {
         // TODO 050. 031. this code should be move into BasicTree3D, as done for BasicTreeLeaf3D (to be done for
         // everyone)
-        Point3d treeOriginPoint = tree3D.getState().getTranslationVector().toPointValue();
+        Point3f treeOriginPoint = tree3D.getState().getTranslationVector().toPointValue();
         Transform3D translation = TransformerHelper.getTranslationTransform3D(new Vector3d(treeOriginPoint));
         TransformGroup transformGroup = new TransformGroup(translation);
 

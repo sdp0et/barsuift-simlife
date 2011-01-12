@@ -51,9 +51,9 @@ public class UniverseContext3DStateFactoryTest extends TestCase {
         assertNotNull(navigatorState);
         assertEquals(0.0, navigatorState.getRotationX());
         assertEquals(0.0, navigatorState.getRotationY());
-        assertEquals((double) parameters.getSize() / 2, navigatorState.getTranslation().getX());
-        assertEquals(2.0, navigatorState.getTranslation().getY());
-        assertEquals((double) parameters.getSize() / 2, navigatorState.getTranslation().getZ());
+        assertEquals((float) parameters.getSize() / 2, navigatorState.getTranslation().getX());
+        assertEquals(2.0f, navigatorState.getTranslation().getY());
+        assertEquals((float) parameters.getSize() / 2, navigatorState.getTranslation().getZ());
 
     }
 

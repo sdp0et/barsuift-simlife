@@ -21,12 +21,12 @@ package barsuift.simLife.j3d.landscape;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 
 @XmlRootElement
 public class NavigatorState implements State {
 
-    private Tuple3dState translation;
+    private Tuple3fState translation;
 
     private double rotationX;
 
@@ -36,13 +36,13 @@ public class NavigatorState implements State {
 
     public NavigatorState() {
         super();
-        this.translation = new Tuple3dState();
+        this.translation = new Tuple3fState();
         this.rotationX = 0;
         this.rotationY = 0;
         this.navigationMode = NavigationMode.DEFAULT;
     }
 
-    public NavigatorState(Tuple3dState translation, double rotationX, double rotationY, NavigationMode navigationMode) {
+    public NavigatorState(Tuple3fState translation, double rotationX, double rotationY, NavigationMode navigationMode) {
         super();
         this.translation = translation;
         this.rotationX = rotationX;
@@ -50,11 +50,11 @@ public class NavigatorState implements State {
         this.navigationMode = navigationMode;
     }
 
-    public Tuple3dState getTranslation() {
+    public Tuple3fState getTranslation() {
         return translation;
     }
 
-    public void setTranslation(Tuple3dState translation) {
+    public void setTranslation(Tuple3fState translation) {
         this.translation = translation;
     }
 

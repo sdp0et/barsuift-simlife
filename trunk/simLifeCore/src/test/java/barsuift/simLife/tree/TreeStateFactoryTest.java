@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
@@ -43,7 +44,7 @@ public class TreeStateFactoryTest extends TestCase {
     }
 
     public void testCreateRandomTreeState() {
-        Point3d translationVector = new Point3d(Math.random(), Math.random(), Math.random());
+        Point3f translationVector = new Point3f((float) Math.random(), (float) Math.random(), (float) Math.random());
         TreeState treeState = factory.createRandomTreeState(translationVector);
         List<TreeBranchState> branches = treeState.getBranches();
         assertTrue(30 <= branches.size());

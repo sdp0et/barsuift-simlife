@@ -16,15 +16,31 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.tree;
+package barsuift.simLife.j3d;
 
-import barsuift.simLife.j3d.Tuple3fState;
+import barsuift.simLife.JaxbTestCase;
 
 
+public class Tuple3fStateTest extends JaxbTestCase {
 
-public class Tree3DStateFactory {
-
-    public Tree3DState createRandomTree3DState(Tuple3fState translationVector) {
-        return new Tree3DState(translationVector);
+    protected void setUp() throws Exception {
+        super.setUp();
     }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    @Override
+    protected String getPackage() {
+        return "barsuift.simLife.j3d";
+    }
+
+    public void testJaxb() throws Exception {
+        Tuple3fState tupleState = DisplayDataCreatorForTests.createRandomTuple3fState();
+        write(tupleState);
+        Tuple3fState tupleState2 = (Tuple3fState) read();
+        assertEquals(tupleState, tupleState2);
+    }
+
 }

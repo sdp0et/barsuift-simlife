@@ -24,7 +24,7 @@ import java.awt.event.MouseEvent;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CommonParameters;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
@@ -70,7 +70,7 @@ public class BasicNavigatorTest extends TestCase {
 
 
     public void testProcessKeyEvent_Basic() {
-        Tuple3dState translation;
+        Tuple3fState translation;
 
         // press UP
         navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_UP));
@@ -83,7 +83,7 @@ public class BasicNavigatorTest extends TestCase {
     }
 
     public void testProcessKeyEvent_Continuous() {
-        Tuple3dState translation;
+        Tuple3fState translation;
 
         // press UP
         navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_UP));
@@ -106,7 +106,7 @@ public class BasicNavigatorTest extends TestCase {
     }
 
     public void testProcessKeyEvent_WithCtrl() {
-        Tuple3dState translation;
+        Tuple3fState translation;
         // press RIGHT
         navigator.processKeyPressedEvent(createKeyEvent(KeyEvent.KEY_PRESSED, 0, KeyEvent.VK_RIGHT));
 
@@ -182,10 +182,10 @@ public class BasicNavigatorTest extends TestCase {
         assertSame(state, navigator.getState());
         assertEquals(0.0, navigator.getState().getRotationX());
         assertEquals(0.0, navigator.getState().getRotationY());
-        Tuple3dState translation = navigator.getState().getTranslation();
-        assertEquals((double) parameters.getSize() / 2, translation.getX());
-        assertEquals(2.0, translation.getY());
-        assertEquals((double) parameters.getSize() / 2, translation.getZ());
+        Tuple3fState translation = navigator.getState().getTranslation();
+        assertEquals((float) parameters.getSize() / 2, translation.getX());
+        assertEquals(2.0f, translation.getY());
+        assertEquals((float) parameters.getSize() / 2, translation.getZ());
         assertEquals(NavigationMode.WALK, navigator.getState().getNavigationMode());
         assertEquals(NavigationMode.DEFAULT, navigator.getState().getNavigationMode());
 
@@ -213,46 +213,45 @@ public class BasicNavigatorTest extends TestCase {
 
     public void testResetToOriginalPosition_WALK_0() {
         navigator.setNavigationMode(NavigationMode.WALK);
-        double height = 0;
+        float height = 0;
         landscape3D.setHeight(height);
-        double expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
         internalTestResetToOriginalPosition(expectedHeight1, expectedHeight2, expectedHeight3);
     }
 
     public void testResetToOriginalPosition_WALK_5() {
         navigator.setNavigationMode(NavigationMode.WALK);
-        double height = 5;
+        float height = 5;
         landscape3D.setHeight(height);
-        double expectedHeight1 = height + NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight2 = height + NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight3 = height + NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight1 = height + NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight2 = height + NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight3 = height + NavigatorStateFactory.VIEWER_SIZE;
         internalTestResetToOriginalPosition(expectedHeight1, expectedHeight2, expectedHeight3);
     }
 
     public void testResetToOriginalPosition_FLY_0() {
         navigator.setNavigationMode(NavigationMode.FLY);
-        double height = 0;
+        float height = 0;
         landscape3D.setHeight(height);
-        double expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE + BasicNavigator.MOVE_STEP;
-        double expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE + BasicNavigator.MOVE_STEP;
+        float expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
         internalTestResetToOriginalPosition(expectedHeight1, expectedHeight2, expectedHeight3);
     }
 
     public void testResetToOriginalPosition_FLY_5() {
         navigator.setNavigationMode(NavigationMode.FLY);
-        double height = 5;
+        float height = 5;
         landscape3D.setHeight(height);
-        double expectedHeight1 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
-        double expectedHeight2 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND + BasicNavigator.MOVE_STEP;
-        double expectedHeight3 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
+        float expectedHeight1 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
+        float expectedHeight2 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND + BasicNavigator.MOVE_STEP;
+        float expectedHeight3 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
         internalTestResetToOriginalPosition(expectedHeight1, expectedHeight2, expectedHeight3);
     }
 
-    private void internalTestResetToOriginalPosition(double expectedHeight1, double expectedHeight2,
-            double expectedHeight3) {
+    private void internalTestResetToOriginalPosition(float expectedHeight1, float expectedHeight2, float expectedHeight3) {
         navigator.resetToOriginalPosition();
         assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_X, navigator.getState().getRotationX());
         assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y, navigator.getState().getRotationY());
@@ -295,46 +294,45 @@ public class BasicNavigatorTest extends TestCase {
 
     public void testResetToNominalViewAngle_WALK_0() {
         navigator.setNavigationMode(NavigationMode.WALK);
-        double height = 0;
+        float height = 0;
         landscape3D.setHeight(height);
-        double expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
         internalTestResetToNominalViewAngle(expectedHeight1, expectedHeight2, expectedHeight3);
     }
 
     public void testResetToNominalViewAngle_WALK_5() {
         navigator.setNavigationMode(NavigationMode.WALK);
-        double height = 5;
+        float height = 5;
         landscape3D.setHeight(height);
-        double expectedHeight1 = height + NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight2 = height + NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight3 = height + NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight1 = height + NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight2 = height + NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight3 = height + NavigatorStateFactory.VIEWER_SIZE;
         internalTestResetToNominalViewAngle(expectedHeight1, expectedHeight2, expectedHeight3);
     }
 
     public void testResetToNominalViewAngle_FLY_0() {
         navigator.setNavigationMode(NavigationMode.FLY);
-        double height = 0;
+        float height = 0;
         landscape3D.setHeight(height);
-        double expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
-        double expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE + BasicNavigator.MOVE_STEP;
-        double expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight1 = NavigatorStateFactory.VIEWER_SIZE;
+        float expectedHeight2 = NavigatorStateFactory.VIEWER_SIZE + BasicNavigator.MOVE_STEP;
+        float expectedHeight3 = NavigatorStateFactory.VIEWER_SIZE;
         internalTestResetToNominalViewAngle(expectedHeight1, expectedHeight2, expectedHeight3);
     }
 
     public void testResetToNominalViewAngle_FLY_5() {
         navigator.setNavigationMode(NavigationMode.FLY);
-        double height = 5;
+        float height = 5;
         landscape3D.setHeight(height);
-        double expectedHeight1 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
-        double expectedHeight2 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND + BasicNavigator.MOVE_STEP;
-        double expectedHeight3 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
+        float expectedHeight1 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
+        float expectedHeight2 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND + BasicNavigator.MOVE_STEP;
+        float expectedHeight3 = height + BasicNavigator.MIN_DISTANCE_FROM_GROUND;
         internalTestResetToNominalViewAngle(expectedHeight1, expectedHeight2, expectedHeight3);
     }
 
-    private void internalTestResetToNominalViewAngle(double expectedHeight1, double expectedHeight2,
-            double expectedHeight3) {
+    private void internalTestResetToNominalViewAngle(float expectedHeight1, float expectedHeight2, float expectedHeight3) {
         navigator.resetToNominalViewAngle();
         assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_X, navigator.getState().getRotationX());
         assertEquals(NavigatorStateFactory.ORIGINAL_ROTATION_Y, navigator.getState().getRotationY());
