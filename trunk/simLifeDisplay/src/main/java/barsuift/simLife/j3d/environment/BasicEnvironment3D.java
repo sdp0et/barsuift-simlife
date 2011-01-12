@@ -31,7 +31,7 @@ import barsuift.simLife.j3d.util.ColorConstants;
 
 public class BasicEnvironment3D implements Environment3D {
 
-    private static BoundingSphere bounds = new BoundingSphere(new Point3d(0, 0, 0), 100);
+    private static BoundingSphere bounds = new BoundingSphere(new Point3d(0, 0, 0), 1000);
 
     private final Environment3DState state;
 
