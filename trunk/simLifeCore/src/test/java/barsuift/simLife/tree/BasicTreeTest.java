@@ -95,8 +95,8 @@ public class BasicTreeTest extends TestCase {
         // -> freeEnergy in branches = 51.636
         // collected energy from branches = 40 * 51.636 + 10 = 2077.44
 
-        assertEquals(2075.44, tree.getEnergy().doubleValue(), 0.00001);
-        assertEquals(0, tree.collectFreeEnergy().doubleValue(), 0.00001);
+        assertEquals(2075.44f, tree.getEnergy().floatValue(), 0.00001f);
+        assertEquals(0f, tree.collectFreeEnergy().floatValue(), 0.00001f);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), tree.collectFreeEnergy());
     }

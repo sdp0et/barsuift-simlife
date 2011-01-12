@@ -21,8 +21,8 @@ package barsuift.simLife.tree;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.helper.PointTestHelper;
@@ -31,9 +31,9 @@ import barsuift.simLife.j3d.util.DistanceHelper;
 
 public class TreeBranchStateFactoryTest extends TestCase {
 
-    private Vector3d translationVector;
+    private Vector3f translationVector;
 
-    private Point3d branchEndPoint;
+    private Point3f branchEndPoint;
 
     private TreeBranchState branchState;
 
@@ -41,8 +41,8 @@ public class TreeBranchStateFactoryTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        translationVector = new Vector3d(1.5, 3.6, 8.9);
-        branchEndPoint = new Point3d(1, 2.7, 3);
+        translationVector = new Vector3f(1.5f, 3.6f, 8.9f);
+        branchEndPoint = new Point3f(1, 2.7f, 3);
         factory = new TreeBranchStateFactory();
         branchState = factory.createRandomBranchState(translationVector, branchEndPoint);
     }
@@ -73,31 +73,31 @@ public class TreeBranchStateFactoryTest extends TestCase {
 
     public void testComputeBranchPartEndPoint() {
         int nbParts = branchState.getBranchPartStates().size();
-        Point3d partEndPoint = factory.computeBranchPartEndPoint(branchEndPoint, nbParts);
+        Point3f partEndPoint = factory.computeBranchPartEndPoint(branchEndPoint, nbParts);
         checkEndPoint(partEndPoint);
     }
 
-    private void checkEndPoint(Point3d partEndPoint) {
+    private void checkEndPoint(Point3f partEndPoint) {
         int nbParts = branchState.getBranchPartStates().size();
-        double branchLength = DistanceHelper.distanceFromOrigin(branchEndPoint);
+        float branchLength = DistanceHelper.distanceFromOrigin(branchEndPoint);
 
-        double xLength = Math.abs(branchEndPoint.getX());
-        double yLength = Math.abs(branchEndPoint.getY());
-        double zLength = Math.abs(branchEndPoint.getZ());
+        float xLength = Math.abs(branchEndPoint.getX());
+        float yLength = Math.abs(branchEndPoint.getY());
+        float zLength = Math.abs(branchEndPoint.getZ());
 
         int xCoeff = (0 < branchEndPoint.getX()) ? 1 : -1;
         int yCoeff = (0 < branchEndPoint.getY()) ? 1 : -1;
         int zCoeff = (0 < branchEndPoint.getZ()) ? 1 : -1;
 
-        double xbounds1 = (xCoeff * (0.5) * xLength / nbParts) - (xCoeff * 0.1 * branchLength);
-        double ybounds1 = (yCoeff * (0.5) * yLength / nbParts) - (yCoeff * 0.1 * branchLength);
-        double zbounds1 = (zCoeff * (0.5) * zLength / nbParts) - (zCoeff * 0.1 * branchLength);
-        Point3d bound1 = new Point3d(xbounds1, ybounds1, zbounds1);
+        float xbounds1 = (xCoeff * (0.5f) * xLength / nbParts) - (xCoeff * 0.1f * branchLength);
+        float ybounds1 = (yCoeff * (0.5f) * yLength / nbParts) - (yCoeff * 0.1f * branchLength);
+        float zbounds1 = (zCoeff * (0.5f) * zLength / nbParts) - (zCoeff * 0.1f * branchLength);
+        Point3f bound1 = new Point3f(xbounds1, ybounds1, zbounds1);
 
-        double xbounds2 = (xCoeff * (1.5) * xLength / nbParts) + (xCoeff * 0.1 * branchLength);
-        double ybounds2 = (yCoeff * (1.5) * yLength / nbParts) + (yCoeff * 0.1 * branchLength);
-        double zbounds2 = (zCoeff * (1.5) * zLength / nbParts) + (zCoeff * 0.1 * branchLength);
-        Point3d bound2 = new Point3d(xbounds2, ybounds2, zbounds2);
+        float xbounds2 = (xCoeff * (1.5f) * xLength / nbParts) + (xCoeff * 0.1f * branchLength);
+        float ybounds2 = (yCoeff * (1.5f) * yLength / nbParts) + (yCoeff * 0.1f * branchLength);
+        float zbounds2 = (zCoeff * (1.5f) * zLength / nbParts) + (zCoeff * 0.1f * branchLength);
+        Point3f bound2 = new Point3f(xbounds2, ybounds2, zbounds2);
 
         PointTestHelper.assertPointIsWithinBounds(partEndPoint, bound1, bound2);
     }

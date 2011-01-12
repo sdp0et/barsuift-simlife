@@ -28,21 +28,21 @@ import barsuift.simLife.State;
 @XmlRootElement
 public class Transform3DState implements State {
 
-    private double[] matrix;
+    private float[] matrix;
 
     public Transform3DState() {
         super();
-        this.matrix = new double[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+        this.matrix = new float[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
     }
 
-    public Transform3DState(double[] matrix) {
+    public Transform3DState(float[] matrix) {
         super();
         this.matrix = matrix;
     }
 
     public Transform3DState(Transform3D transform) {
         super();
-        this.matrix = new double[16];
+        this.matrix = new float[16];
         transform.get(matrix);
     }
 
@@ -50,11 +50,11 @@ public class Transform3DState implements State {
         return new Transform3D(matrix);
     }
 
-    public double[] getMatrix() {
+    public float[] getMatrix() {
         return matrix;
     }
 
-    public void setMatrix(double[] matrix) {
+    public void setMatrix(float[] matrix) {
         this.matrix = matrix;
     }
 

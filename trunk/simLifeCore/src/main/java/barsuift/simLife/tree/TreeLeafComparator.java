@@ -38,8 +38,8 @@ public class TreeLeafComparator implements Comparator<TreeLeaf> {
     @Override
     public int compare(TreeLeaf o1, TreeLeaf o2) {
         // distances are computed in millimeters for more precision
-        double distance1 = DistanceHelper.distanceFromOrigin(o1.getTreeLeaf3D().getPosition()) * 1000;
-        double distance2 = DistanceHelper.distanceFromOrigin(o2.getTreeLeaf3D().getPosition()) * 1000;
+        float distance1 = DistanceHelper.distanceFromOrigin(o1.getTreeLeaf3D().getPosition()) * 1000;
+        float distance2 = DistanceHelper.distanceFromOrigin(o2.getTreeLeaf3D().getPosition()) * 1000;
         return (int) (distance1 - distance2);
     }
 

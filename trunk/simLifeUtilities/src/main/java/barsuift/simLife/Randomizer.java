@@ -28,8 +28,8 @@ public final class Randomizer {
      * 
      * @return between -0.1 and 0.1
      */
-    public static double random1() {
-        double result = Math.random();
+    public static float random1() {
+        float result = (float) Math.random();
         result -= 0.5;
         result /= 5;
         return result;
@@ -39,8 +39,8 @@ public final class Randomizer {
      * 
      * @return between -0.5 and 0.5
      */
-    public static double random2() {
-        double result = Math.random();
+    public static float random2() {
+        float result = (float) Math.random();
         result -= 0.5;
         return result;
     }
@@ -49,8 +49,8 @@ public final class Randomizer {
      * 
      * @return between -1 and 1
      */
-    public static double random3() {
-        double result = Math.random();
+    public static float random3() {
+        float result = (float) Math.random();
         result -= 0.5;
         result *= 2;
         return result;
@@ -60,8 +60,8 @@ public final class Randomizer {
      * 
      * @return between 0 and 0.1
      */
-    public static double random4() {
-        double result = Math.random();
+    public static float random4() {
+        float result = (float) Math.random();
         result /= 10;
         return result;
     }
@@ -85,7 +85,7 @@ public final class Randomizer {
      * @return a random number between 0 and 2 PI
      */
     public static double randomRotation() {
-        return Math.random() * Math.PI * 2;
+        return (Math.random() * Math.PI * 2);
     }
 
 }

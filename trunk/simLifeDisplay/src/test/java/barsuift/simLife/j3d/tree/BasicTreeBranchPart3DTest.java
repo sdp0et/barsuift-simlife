@@ -23,7 +23,7 @@ import java.util.Enumeration;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.Shape3D;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
@@ -111,7 +111,7 @@ public class BasicTreeBranchPart3DTest extends TestCase {
                     nbTimesNoLeafShapeIsFound++;
                     assertEquals("We should have only one shape (the branch part)", 1, nbTimesNoLeafShapeIsFound);
                     Shape3D branchScape = (Shape3D) child;
-                    BasicTreeBranchPart3DTestHelper.testGeometry(branchScape.getGeometry(), new Point3d(0, 0, 0),
+                    BasicTreeBranchPart3DTestHelper.testGeometry(branchScape.getGeometry(), new Point3f(0, 0, 0),
                             part3DState.getEndPoint().toPointValue());
                     BasicTreeBranchPart3DTestHelper.testAppearance(branchScape.getAppearance());
                 } else {

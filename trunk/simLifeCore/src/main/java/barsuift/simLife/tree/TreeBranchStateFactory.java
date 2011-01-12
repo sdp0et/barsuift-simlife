@@ -22,8 +22,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
@@ -33,7 +33,7 @@ import barsuift.simLife.j3d.util.PointHelper;
 
 public class TreeBranchStateFactory {
 
-    public TreeBranchState createRandomBranchState(Vector3d translationVector, Point3d branchEndPoint) {
+    public TreeBranchState createRandomBranchState(Vector3f translationVector, Point3f branchEndPoint) {
         int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
@@ -44,7 +44,7 @@ public class TreeBranchStateFactory {
         // TODO 050. 025. only at this time, the branch should manage their own transforms, as done for leaves
         int nbParts = 3;
         for (int i = 0; i < nbParts; i++) {
-            Point3d branchPartEndPoint = computeBranchPartEndPoint(branchEndPoint, nbParts);
+            Point3f branchPartEndPoint = computeBranchPartEndPoint(branchEndPoint, nbParts);
             treeBranchPartStates.add(treeBranchPartStateFactory.createRandomBranchPartState(branchPartEndPoint));
         }
 
@@ -54,11 +54,11 @@ public class TreeBranchStateFactory {
         return new TreeBranchState(creationMillis, energy, freeEnergy, treeBranchPartStates, branch3DState);
     }
 
-    protected Point3d computeBranchPartEndPoint(Point3d branchEndPoint, int nbParts) {
-        Point3d startPoint = new Point3d(0, 0, 0);
-        double maxDistance = startPoint.distance(branchEndPoint);
-        double averagePartLength = maxDistance / nbParts;
-        Point3d partEndPoint = BarycentreHelper.getBarycentre(new Point3d(0, 0, 0), branchEndPoint,
+    protected Point3f computeBranchPartEndPoint(Point3f branchEndPoint, int nbParts) {
+        Point3f startPoint = new Point3f(0, 0, 0);
+        float maxDistance = startPoint.distance(branchEndPoint);
+        float averagePartLength = maxDistance / nbParts;
+        Point3f partEndPoint = BarycentreHelper.getBarycentre(new Point3f(0, 0, 0), branchEndPoint,
                 (Randomizer.random2() + 1) * averagePartLength);
         partEndPoint = PointHelper.shiftPoint(partEndPoint, maxDistance / 10);
         return partEndPoint;

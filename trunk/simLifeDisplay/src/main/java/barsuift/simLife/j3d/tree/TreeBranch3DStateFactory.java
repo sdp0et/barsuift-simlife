@@ -18,15 +18,15 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 
 public class TreeBranch3DStateFactory {
 
-    public TreeBranch3DState createRandomTreeBranch3DState(Vector3d translationVector) {
-        Tuple3dState translationVectorState = new Tuple3dState(new Point3d(translationVector));
+    public TreeBranch3DState createRandomTreeBranch3DState(Vector3f translationVector) {
+        Tuple3fState translationVectorState = new Tuple3fState(new Point3f(translationVector));
         return new TreeBranch3DState(translationVectorState);
     }
 

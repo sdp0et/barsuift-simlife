@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.Transform3DState;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 
 @XmlRootElement
 public class TreeLeaf3DState implements State {
@@ -35,34 +35,34 @@ public class TreeLeaf3DState implements State {
     /**
      * End point 1 at the creation of the leaf (its birth end point 1). The point is relative to the attach point.
      */
-    private Tuple3dState initialEndPoint1;
+    private Tuple3fState initialEndPoint1;
 
     /**
      * End point 2 at the creation of the leaf (its birth end point 2). The point is relative to the attach point.
      */
-    private Tuple3dState initialEndPoint2;
+    private Tuple3fState initialEndPoint2;
 
     /**
      * Current end point 1. The point is relative to the attach point.
      */
-    private Tuple3dState endPoint1;
+    private Tuple3fState endPoint1;
 
     /**
      * Current end point 2. The point is relative to the attach point.
      */
-    private Tuple3dState endPoint2;
+    private Tuple3fState endPoint2;
 
     public TreeLeaf3DState() {
         super();
         this.transform = new Transform3DState();
-        this.initialEndPoint1 = new Tuple3dState();
-        this.initialEndPoint2 = new Tuple3dState();
-        this.endPoint1 = new Tuple3dState();
-        this.endPoint2 = new Tuple3dState();
+        this.initialEndPoint1 = new Tuple3fState();
+        this.initialEndPoint2 = new Tuple3fState();
+        this.endPoint1 = new Tuple3fState();
+        this.endPoint2 = new Tuple3fState();
     }
 
-    public TreeLeaf3DState(Transform3DState transform, Tuple3dState initialEndPoint1, Tuple3dState initialEndPoint2,
-            Tuple3dState endPoint1, Tuple3dState endPoint2) {
+    public TreeLeaf3DState(Transform3DState transform, Tuple3fState initialEndPoint1, Tuple3fState initialEndPoint2,
+            Tuple3fState endPoint1, Tuple3fState endPoint2) {
         super();
         this.transform = transform;
         this.initialEndPoint1 = initialEndPoint1;
@@ -79,35 +79,35 @@ public class TreeLeaf3DState implements State {
         this.transform = transform;
     }
 
-    public Tuple3dState getInitialEndPoint1() {
+    public Tuple3fState getInitialEndPoint1() {
         return initialEndPoint1;
     }
 
-    public void setInitialEndPoint1(Tuple3dState initialEndPoint1) {
+    public void setInitialEndPoint1(Tuple3fState initialEndPoint1) {
         this.initialEndPoint1 = initialEndPoint1;
     }
 
-    public Tuple3dState getInitialEndPoint2() {
+    public Tuple3fState getInitialEndPoint2() {
         return initialEndPoint2;
     }
 
-    public void setInitialEndPoint2(Tuple3dState initialEndPoint2) {
+    public void setInitialEndPoint2(Tuple3fState initialEndPoint2) {
         this.initialEndPoint2 = initialEndPoint2;
     }
 
-    public Tuple3dState getEndPoint1() {
+    public Tuple3fState getEndPoint1() {
         return endPoint1;
     }
 
-    public void setEndPoint1(Tuple3dState endPoint1) {
+    public void setEndPoint1(Tuple3fState endPoint1) {
         this.endPoint1 = endPoint1;
     }
 
-    public Tuple3dState getEndPoint2() {
+    public Tuple3fState getEndPoint2() {
         return endPoint2;
     }
 
-    public void setEndPoint2(Tuple3dState endPoint2) {
+    public void setEndPoint2(Tuple3fState endPoint2) {
         this.endPoint2 = endPoint2;
     }
 

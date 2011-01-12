@@ -27,8 +27,8 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.TriangleArray;
 import javax.vecmath.Color3f;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.PercentHelper;
@@ -37,7 +37,7 @@ import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.Transform3DState;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.helper.ColorTestHelper;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.PointTestHelper;
@@ -179,20 +179,20 @@ public class BasicTreeLeaf3DTest extends TestCase {
         TriangleArray leafTriangle = (TriangleArray) leafGeometry;
         assertEquals(3, leafTriangle.getVertexCount());
 
-        Point3d actualStartPoint = new Point3d();
-        Point3d actualEndPoint1 = new Point3d();
-        Point3d actualEndPoint2 = new Point3d();
+        Point3f actualStartPoint = new Point3f();
+        Point3f actualEndPoint1 = new Point3f();
+        Point3f actualEndPoint2 = new Point3f();
         leafTriangle.getCoordinate(0, actualStartPoint);
         leafTriangle.getCoordinate(1, actualEndPoint1);
         leafTriangle.getCoordinate(2, actualEndPoint2);
-        PointTestHelper.assertPointEquals(new Point3d(0, 0, 0), actualStartPoint);
+        PointTestHelper.assertPointEquals(new Point3f(0, 0, 0), actualStartPoint);
         PointTestHelper.assertPointEquals(leaf3DState.getEndPoint1().toPointValue(), actualEndPoint1);
         PointTestHelper.assertPointEquals(leaf3DState.getEndPoint2().toPointValue(), actualEndPoint2);
     }
 
     public void testFall() {
         double initialRotation = Randomizer.randomRotation();
-        Tuple3dState initialLeafAttachPoint = new Tuple3dState(1, 2, 3);
+        Tuple3fState initialLeafAttachPoint = new Tuple3fState(1, 2, 3);
         Transform3D initialTransform = TransformerHelper.getTranslationTransform3D(initialLeafAttachPoint
                 .toVectorValue());
         Transform3D initialRotationT3D = TransformerHelper.getRotationTransform3D(initialRotation, Axis.Y);
@@ -203,7 +203,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
 
         // add the leaf into a graph with translation and rotation
         Transform3D parentTransform3D = new Transform3D();
-        Vector3d parentTranslation = new Vector3d(2, 3, 5);
+        Vector3f parentTranslation = new Vector3f(2, 3, 5);
         parentTransform3D.set(parentTranslation);
         Transform3D parentRotation = new Transform3D();
         parentRotation.rotY(Math.PI / 2);
@@ -218,7 +218,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // call to the fall() method
         leaf3D.update(null, MobileEvent.FALLING);
 
-        assertEquals(new Point3d(3 + 2, 2 + 3, -1 + 5), leaf3D.getPosition());
+        assertEquals(new Point3f(3 + 2, 2 + 3, -1 + 5), leaf3D.getPosition());
 
         TransformGroup tg = (TransformGroup) leaf3D.getBranchGroup().getChild(0);
         Transform3D newTransform = new Transform3D();
@@ -239,11 +239,11 @@ public class BasicTreeLeaf3DTest extends TestCase {
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
         assertFalse(leaf3D.isMaxSizeReached());
 
-        Tuple3dState initialEndPoint1 = leaf3DState.getInitialEndPoint1();
-        leaf3DState.setEndPoint1(new Tuple3dState(10 * initialEndPoint1.getX(), 10 * initialEndPoint1.getY(),
+        Tuple3fState initialEndPoint1 = leaf3DState.getInitialEndPoint1();
+        leaf3DState.setEndPoint1(new Tuple3fState(10 * initialEndPoint1.getX(), 10 * initialEndPoint1.getY(),
                 10 * initialEndPoint1.getZ()));
-        Tuple3dState initialEndPoint2 = leaf3DState.getInitialEndPoint2();
-        leaf3DState.setEndPoint2(new Tuple3dState(10 * initialEndPoint2.getX(), 10 * initialEndPoint2.getY(),
+        Tuple3fState initialEndPoint2 = leaf3DState.getInitialEndPoint2();
+        leaf3DState.setEndPoint2(new Tuple3fState(10 * initialEndPoint2.getX(), 10 * initialEndPoint2.getY(),
                 10 * initialEndPoint2.getZ()));
         leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
         assertTrue(leaf3D.isMaxSizeReached());
@@ -253,24 +253,24 @@ public class BasicTreeLeaf3DTest extends TestCase {
         leaf3DState = DisplayDataCreatorForTests.createSpecificTreeLeaf3DState();
         leaf3DState.setEndPoint1(leaf3DState.getInitialEndPoint1());
         leaf3DState.setEndPoint2(leaf3DState.getInitialEndPoint2());
-        Tuple3dState initialEndPoint1 = leaf3DState.getInitialEndPoint1();
-        Tuple3dState initialEndPoint2 = leaf3DState.getInitialEndPoint2();
+        Tuple3fState initialEndPoint1 = leaf3DState.getInitialEndPoint1();
+        Tuple3fState initialEndPoint2 = leaf3DState.getInitialEndPoint2();
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
         Shape3D leafShape = (Shape3D) ((TransformGroup) leaf3D.getBranchGroup().getChild(0)).getChild(0);
-        Point3d geomEndPoint1 = new Point3d();
-        Point3d geomEndPoint2 = new Point3d();
+        Point3f geomEndPoint1 = new Point3f();
+        Point3f geomEndPoint2 = new Point3f();
 
         assertFalse(leaf3D.isMaxSizeReached());
 
         leaf3D.increaseSize();
 
         // test state
-        Point3d endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
-        Point3d expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 2, initialEndPoint1.getY() * 2,
+        Point3f endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
+        Point3f expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 2, initialEndPoint1.getY() * 2,
                 initialEndPoint1.getZ() * 2);
         PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
-        Point3d endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
-        Point3d expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 2, initialEndPoint2.getY() * 2,
+        Point3f endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
+        Point3f expectedEndPoint2 = new Point3f(initialEndPoint2.getX() * 2, initialEndPoint2.getY() * 2,
                 initialEndPoint2.getZ() * 2);
         PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
         // test geometry
@@ -283,11 +283,11 @@ public class BasicTreeLeaf3DTest extends TestCase {
 
         // test state
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
-        expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 3, initialEndPoint1.getY() * 3,
+        expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 3, initialEndPoint1.getY() * 3,
                 initialEndPoint1.getZ() * 3);
         PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
         endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
-        expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 3, initialEndPoint2.getY() * 3,
+        expectedEndPoint2 = new Point3f(initialEndPoint2.getX() * 3, initialEndPoint2.getY() * 3,
                 initialEndPoint2.getZ() * 3);
         PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
         // test geometry
@@ -308,11 +308,11 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // test state
         assertTrue(leaf3D.isMaxSizeReached());
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
-        expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
+        expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
                 initialEndPoint1.getZ() * 10);
         PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
         endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
-        expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
+        expectedEndPoint2 = new Point3f(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
                 initialEndPoint2.getZ() * 10);
         PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
         // test geometry
@@ -327,11 +327,11 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // test state
         assertTrue(leaf3D.isMaxSizeReached());
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
-        expectedEndPoint1 = new Point3d(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
+        expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
                 initialEndPoint1.getZ() * 10);
         PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
         endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
-        expectedEndPoint2 = new Point3d(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
+        expectedEndPoint2 = new Point3f(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
                 initialEndPoint2.getZ() * 10);
         PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
         // test geometry

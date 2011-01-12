@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.j3d.util;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 public final class BarycentreHelper {
 
@@ -38,11 +38,11 @@ public final class BarycentreHelper {
      * @param distance
      * @return
      */
-    public static Point3d getBarycentre(Point3d startPoint, Point3d endPoint, double distance) {
-        double maxDistance = startPoint.distance(endPoint);
-        double distanceToUse = computeDistanceToUse(maxDistance, distance);
-        double ratio = distanceToUse / maxDistance;
-        Point3d result = new Point3d();
+    public static Point3f getBarycentre(Point3f startPoint, Point3f endPoint, float distance) {
+        float maxDistance = startPoint.distance(endPoint);
+        float distanceToUse = computeDistanceToUse(maxDistance, distance);
+        float ratio = distanceToUse / maxDistance;
+        Point3f result = new Point3f();
         result.interpolate(startPoint, endPoint, ratio);
         return result;
     }
@@ -54,7 +54,7 @@ public final class BarycentreHelper {
      * @param distance
      * @return
      */
-    static double computeDistanceToUse(double maxDistance, double distance) {
+    static float computeDistanceToUse(float maxDistance, float distance) {
         if (distance < 0) {
             return 0;
         }

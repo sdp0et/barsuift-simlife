@@ -21,7 +21,7 @@ package barsuift.simLife.j3d.util;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Quat4d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.Axis;
 
@@ -31,20 +31,20 @@ public final class TransformerHelper {
         // private constructor to enforce static access
     }
 
-    public static TransformGroup getTranslationTransformGroup(Vector3d translationVector) {
+    public static TransformGroup getTranslationTransformGroup(Vector3f translationVector) {
         return new TransformGroup(getTranslationTransform3D(translationVector));
     }
 
-    public static Transform3D getTranslationTransform3D(Vector3d translationVector) {
+    public static Transform3D getTranslationTransform3D(Vector3f translationVector) {
         Transform3D translation = new Transform3D();
         translation.setTranslation(translationVector);
         return translation;
     }
 
-    public static Vector3d getTranslationFromTransformGroup(TransformGroup transformGroup) {
+    public static Vector3f getTranslationFromTransformGroup(TransformGroup transformGroup) {
         Transform3D transform3D = new Transform3D();
         transformGroup.getTransform(transform3D);
-        Vector3d translation = new Vector3d();
+        Vector3f translation = new Vector3f();
         transform3D.get(translation);
         return translation;
     }

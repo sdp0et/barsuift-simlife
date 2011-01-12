@@ -19,15 +19,15 @@
 package barsuift.simLife.j3d.util;
 
 import javax.media.j3d.TriangleArray;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 public final class AreaHelper {
 
-    private static final Point3d p1 = new Point3d();
+    private static final Point3f p1 = new Point3f();
 
-    private static final Point3d p2 = new Point3d();
+    private static final Point3f p2 = new Point3f();
 
-    private static final Point3d p3 = new Point3d();
+    private static final Point3f p3 = new Point3f();
 
     private AreaHelper() {
         // private constructor to enforce static access
@@ -39,7 +39,7 @@ public final class AreaHelper {
      * @param triangle the triangle to compute area for
      * @return the area of the triangle
      */
-    public static double computeArea(TriangleArray triangle) {
+    public static float computeArea(TriangleArray triangle) {
         // retrieve triangle coordinates
         triangle.getCoordinate(0, p1);
         triangle.getCoordinate(1, p2);
@@ -56,17 +56,17 @@ public final class AreaHelper {
      * @param p3 third point of the triangle
      * @return the area of the triangle
      */
-    public static double computeArea(Point3d p1, Point3d p2, Point3d p3) {
+    public static float computeArea(Point3f p1, Point3f p2, Point3f p3) {
         // compute the triangle sides length
-        double a = p1.distance(p2);
-        double b = p2.distance(p3);
-        double c = p3.distance(p1);
+        float a = p1.distance(p2);
+        float b = p2.distance(p3);
+        float c = p3.distance(p1);
 
         // compute the semi perimeter
-        double s = (a + b + c) / 2;
+        float s = (a + b + c) / 2;
 
         // compute the area
-        double area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+        float area = (float) Math.sqrt(s * (s - a) * (s - b) * (s - c));
 
         return area;
     }

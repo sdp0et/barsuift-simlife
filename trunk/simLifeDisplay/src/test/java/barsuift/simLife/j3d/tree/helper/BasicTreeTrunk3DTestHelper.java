@@ -73,10 +73,10 @@ public final class BasicTreeTrunk3DTestHelper extends Assert {
         bottomBounds.getUpper(upperBottom);
         Point3d movedUpperBottom = new Point3d();
         transform3D.transform(upperBottom, movedUpperBottom);
-        PointTestHelper.assertPointEquals(expectedLowerBottom, lowerBottom, 0.02, 0.0001, 0.02);
-        PointTestHelper.assertPointEquals(expectedMovedLowerBottom, movedLowerBottom, 0.02, 0.0001, 0.02);
-        PointTestHelper.assertPointEquals(expectedUpperBottom, upperBottom, 0.02, 0.0001, 0.02);
-        PointTestHelper.assertPointEquals(expectedMovedUpperBottom, movedUpperBottom, 0.02, 0.0001, 0.02);
+        PointTestHelper.assertPointEquals(expectedLowerBottom, lowerBottom, 0.02f, 0.0001f, 0.02f);
+        PointTestHelper.assertPointEquals(expectedMovedLowerBottom, movedLowerBottom, 0.02f, 0.0001f, 0.02f);
+        PointTestHelper.assertPointEquals(expectedUpperBottom, upperBottom, 0.02f, 0.0001f, 0.02f);
+        PointTestHelper.assertPointEquals(expectedMovedUpperBottom, movedUpperBottom, 0.02f, 0.0001f, 0.02f);
 
         // check top of trunk
         Shape3D top = trunkCylinder.getShape(Cylinder.TOP);

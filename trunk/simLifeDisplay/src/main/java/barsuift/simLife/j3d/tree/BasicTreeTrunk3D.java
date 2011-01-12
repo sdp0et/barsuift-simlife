@@ -22,7 +22,7 @@ import javax.media.j3d.Appearance;
 import javax.media.j3d.Group;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Color3f;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
 import barsuift.simLife.j3d.universe.Universe3D;
@@ -61,7 +61,7 @@ public class BasicTreeTrunk3D implements TreeTrunk3D {
         AppearanceFactory.setColorWithMaterial(trunkAppearance, ColorConstants.brown, new Color3f(0.15f, 0.15f, 0.15f),
                 new Color3f(0.05f, 0.05f, 0.05f));
         trunkCylinder = new Cylinder(trunk.getRadius(), trunk.getHeight(), trunkAppearance);
-        Vector3d translationVector = new Vector3d();
+        Vector3f translationVector = new Vector3f();
         translationVector.setY(trunk.getHeight() / 2);
         TransformGroup transformGroup = TransformerHelper.getTranslationTransformGroup(translationVector);
         transformGroup.addChild(trunkCylinder);

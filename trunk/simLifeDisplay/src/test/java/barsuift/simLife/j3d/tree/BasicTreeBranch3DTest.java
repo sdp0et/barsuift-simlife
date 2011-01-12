@@ -26,11 +26,11 @@ import javax.media.j3d.Group;
 import javax.media.j3d.Node;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
@@ -49,18 +49,18 @@ public class BasicTreeBranch3DTest extends TestCase {
 
     private TreeBranch3DState branch3DState;
 
-    private List<Tuple3dState> previousPartEndPoints;
+    private List<Tuple3fState> previousPartEndPoints;
 
     protected void setUp() throws Exception {
         super.setUp();
         mockBranch = new MockTreeBranch();
         nbParts = 5;
-        previousPartEndPoints = new ArrayList<Tuple3dState>();
-        Tuple3dState partEndPoint = new Tuple3dState();
+        previousPartEndPoints = new ArrayList<Tuple3fState>();
+        Tuple3fState partEndPoint = new Tuple3fState();
         for (int index = 0; index < nbParts; index++) {
             previousPartEndPoints.add(partEndPoint);
             MockTreeBranchPart mockBranchPart = new MockTreeBranchPart();
-            partEndPoint = DisplayDataCreatorForTests.createRandomTuple3dState();
+            partEndPoint = DisplayDataCreatorForTests.createRandomTuple3fState();
             MockTreeBranchPart3D mockBranchPart3D = (MockTreeBranchPart3D) mockBranchPart.getBranchPart3D();
             mockBranchPart3D.getState().setEndPoint(partEndPoint);
             mockBranchPart3D.setEndPoint(partEndPoint.toPointValue());
@@ -141,9 +141,9 @@ public class BasicTreeBranch3DTest extends TestCase {
 
         Transform3D transform3D = new Transform3D();
         transformGroupPart.getTransform(transform3D);
-        Vector3d translationVector = new Vector3d();
+        Vector3f translationVector = new Vector3f();
         transform3D.get(translationVector);
-        Vector3d expectedTranslationVector = new Vector3d(previousPartEndPoints.get(nbPartsFound).toPointValue());
+        Vector3f expectedTranslationVector = new Vector3f(previousPartEndPoints.get(nbPartsFound).toPointValue());
         VectorTestHelper.assertVectorEquals(expectedTranslationVector, translationVector);
 
         Group groupPart = (Group) transformGroupPart.getChild(0);

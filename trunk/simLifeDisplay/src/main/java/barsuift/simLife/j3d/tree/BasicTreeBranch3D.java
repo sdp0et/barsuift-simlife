@@ -24,10 +24,10 @@ import java.util.List;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.TreeBranch;
@@ -39,7 +39,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     private final TreeBranch treeBranch;
 
-    private final Vector3d translationVector;
+    private final Vector3f translationVector;
 
     private final Group group;
 
@@ -72,14 +72,14 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     private BranchGroup createParts() {
         BranchGroup branchGroup = new BranchGroup();
-        Point3d currentPartStartPoint = new Point3d(0, 0, 0);
+        Point3f currentPartStartPoint = new Point3f(0, 0, 0);
         TransformGroup previousTransformGroup = new TransformGroup();
         branchGroup.addChild(previousTransformGroup);
         for (TreeBranchPart branchPart : treeBranch.getParts()) {
             TreeBranchPart3D branchPart3D = branchPart.getBranchPart3D();
             Group branchPartGroup = branchPart3D.getGroup();
             BranchGroup currentBranchGroup = new BranchGroup();
-            Vector3d translationVector = new Vector3d(currentPartStartPoint);
+            Vector3f translationVector = new Vector3f(currentPartStartPoint);
             TransformGroup currentTransformGroup = TransformerHelper.getTranslationTransformGroup(translationVector);
             currentBranchGroup.addChild(currentTransformGroup);
             currentTransformGroup.addChild(branchPartGroup);
@@ -92,12 +92,12 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     }
 
     @Override
-    public Point3d getEndPoint() {
+    public Point3f getEndPoint() {
         List<TreeBranchPart> parts = treeBranch.getParts();
         return parts.get(parts.size() - 1).getBranchPart3D().getEndPoint();
     }
 
-    public Vector3d getTranslationVector() {
+    public Vector3f getTranslationVector() {
         return translationVector;
     }
 
@@ -109,7 +109,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     @Override
     public void synchronize() {
-        state.setTranslationVector(new Tuple3dState(translationVector));
+        state.setTranslationVector(new Tuple3fState(translationVector));
     }
 
     @Override

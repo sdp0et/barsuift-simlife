@@ -30,14 +30,13 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.TriangleArray;
 import javax.vecmath.Color3f;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
 import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.Transform3DState;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.AreaHelper;
 import barsuift.simLife.j3d.util.ColorConstants;
@@ -66,22 +65,22 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     /**
      * End point 1 at the creation of the leaf (its birth end point 1). The point is relative to the attach point.
      */
-    private final Point3d initialEndPoint1;
+    private final Point3f initialEndPoint1;
 
     /**
      * End point 2 at the creation of the leaf (its birth end point 2). The point is relative to the attach point.
      */
-    private final Point3d initialEndPoint2;
+    private final Point3f initialEndPoint2;
 
     /**
      * Current end point 1. The point is relative to the attach point.
      */
-    private Point3d endPoint1;
+    private Point3f endPoint1;
 
     /**
      * Current end point 2. The point is relative to the attach point.
      */
-    private Point3d endPoint2;
+    private Point3f endPoint2;
 
 
 
@@ -93,11 +92,11 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private boolean maxSizeReached;
 
-    private final Point3d maxEndPoint1;
+    private final Point3f maxEndPoint1;
 
-    private final Point3d maxEndPoint2;
+    private final Point3f maxEndPoint2;
 
-    private double area;
+    private float area;
 
     private final Publisher publisher = new BasicPublisher(this);
 
@@ -160,17 +159,17 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     private void createLeafGeometry() {
         leafGeometry = new TriangleArray(3, GeometryArray.COORDINATES | GeometryArray.NORMALS);
         leafGeometry.setCapability(TriangleArray.ALLOW_COORDINATE_WRITE);
-        leafGeometry.setCoordinate(0, new Point3d(0, 0, 0));
+        leafGeometry.setCoordinate(0, new Point3f(0, 0, 0));
         resetGeometryPoints();
         leafShape3D.setGeometry(leafGeometry);
 
-        Vector3f polygonNormal = NormalHelper.computeNormal(new Point3d(0, 0, 0), endPoint1, endPoint2);
+        Vector3f polygonNormal = NormalHelper.computeNormal(new Point3f(0, 0, 0), endPoint1, endPoint2);
         leafGeometry.setNormal(0, polygonNormal);
         leafGeometry.setNormal(1, polygonNormal);
         leafGeometry.setNormal(2, polygonNormal);
     }
 
-    public double getArea() {
+    public float getArea() {
         return area;
     }
 
@@ -190,11 +189,11 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         return true;
     }
 
-    private Point3d computeMaxEndPoint(Point3d initialEndPoint) {
-        double maxX = MAX_INCREASE_FACTOR * initialEndPoint.getX();
-        double maxY = MAX_INCREASE_FACTOR * initialEndPoint.getY();
-        double maxZ = MAX_INCREASE_FACTOR * initialEndPoint.getZ();
-        return new Point3d(maxX, maxY, maxZ);
+    private Point3f computeMaxEndPoint(Point3f initialEndPoint) {
+        float maxX = MAX_INCREASE_FACTOR * initialEndPoint.getX();
+        float maxY = MAX_INCREASE_FACTOR * initialEndPoint.getY();
+        float maxZ = MAX_INCREASE_FACTOR * initialEndPoint.getZ();
+        return new Point3f(maxX, maxY, maxZ);
     }
 
     @Override
@@ -214,19 +213,19 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
     }
 
     @Override
-    public Point3d getPosition() {
+    public Point3f getPosition() {
         Transform3D transform3D = new Transform3D();
         tg.getTransform(transform3D);
-        Vector3d translation = new Vector3d();
+        Vector3f translation = new Vector3f();
         transform3D.get(translation);
-        return new Point3d(translation);
+        return new Point3f(translation);
     }
 
     /**
      * Set the startPoint, endPoint1 and endPoint2 points to the leafGeometry
      */
     private void resetGeometryPoints() {
-        leafGeometry.setCoordinates(1, new Point3d[] { endPoint1, endPoint2 });
+        leafGeometry.setCoordinates(1, new Point3f[] { endPoint1, endPoint2 });
         this.area = AreaHelper.computeArea(leafGeometry);
     }
 
@@ -263,10 +262,10 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
         Transform3D transform3D = new Transform3D();
         tg.getTransform(transform3D);
         state.setTransform(new Transform3DState(transform3D));
-        state.setInitialEndPoint1(new Tuple3dState(initialEndPoint1));
-        state.setInitialEndPoint2(new Tuple3dState(initialEndPoint2));
-        state.setEndPoint1(new Tuple3dState(endPoint1));
-        state.setEndPoint2(new Tuple3dState(endPoint2));
+        state.setInitialEndPoint1(new Tuple3fState(initialEndPoint1));
+        state.setInitialEndPoint2(new Tuple3fState(initialEndPoint2));
+        state.setEndPoint1(new Tuple3fState(endPoint1));
+        state.setEndPoint2(new Tuple3fState(endPoint2));
     }
 
     @Override

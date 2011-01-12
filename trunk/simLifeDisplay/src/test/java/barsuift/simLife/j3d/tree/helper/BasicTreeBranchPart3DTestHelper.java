@@ -22,7 +22,7 @@ import javax.media.j3d.Appearance;
 import javax.media.j3d.Geometry;
 import javax.media.j3d.LineArray;
 import javax.vecmath.Color3f;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import junit.framework.Assert;
 import barsuift.simLife.j3d.helper.PointTestHelper;
@@ -41,11 +41,11 @@ public final class BasicTreeBranchPart3DTestHelper extends Assert {
      * @param expectedStartPoint the expected start point
      * @param expectedEndPoint the expected end point
      */
-    public static void testGeometry(Geometry branchGeometry, Point3d expectedStartPoint, Point3d expectedEndPoint) {
+    public static void testGeometry(Geometry branchGeometry, Point3f expectedStartPoint, Point3f expectedEndPoint) {
         assertTrue(branchGeometry instanceof LineArray);
         LineArray branchLine = (LineArray) branchGeometry;
-        Point3d actualStartPoint = new Point3d();
-        Point3d actualEndPoint = new Point3d();
+        Point3f actualStartPoint = new Point3f();
+        Point3f actualEndPoint = new Point3f();
         branchLine.getCoordinate(0, actualStartPoint);
         branchLine.getCoordinate(1, actualEndPoint);
         PointTestHelper.assertPointEquals(expectedStartPoint, actualStartPoint);

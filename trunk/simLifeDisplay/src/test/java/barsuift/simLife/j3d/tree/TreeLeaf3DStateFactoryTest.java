@@ -19,13 +19,13 @@
 package barsuift.simLife.j3d.tree;
 
 import javax.media.j3d.Transform3D;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.Axis;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.util.TransformerHelper;
 
@@ -42,25 +42,25 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
 
     public void testCreateRandomTreeLeaf3DState() {
         TreeLeaf3DStateFactory factory = new TreeLeaf3DStateFactory();
-        Point3d leafAttachPoint = new Point3d(0.32, 0.33, 0.34);
+        Point3f leafAttachPoint = new Point3f(0.32f, 0.33f, 0.34f);
         double rotation = Randomizer.randomRotation();
-        Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3d(leafAttachPoint));
+        Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
         Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
         transform.mul(rotationT3D);
 
         TreeLeaf3DState leaf3DState = factory.createRandomTreeLeaf3DState(transform);
 
         Transform3D actualTransform = leaf3DState.getTransform().toTransform3D();
-        Tuple3dState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
-        Tuple3dState actualInitialEndPoint2 = leaf3DState.getInitialEndPoint2();
-        Tuple3dState actualEndPoint1 = leaf3DState.getEndPoint1();
-        Tuple3dState actualEndPoint2 = leaf3DState.getEndPoint2();
+        Tuple3fState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
+        Tuple3fState actualInitialEndPoint2 = leaf3DState.getInitialEndPoint2();
+        Tuple3fState actualEndPoint1 = leaf3DState.getEndPoint1();
+        Tuple3fState actualEndPoint2 = leaf3DState.getEndPoint2();
 
         // test transform
-        Vector3d actualTranslation = new Vector3d();
+        Vector3f actualTranslation = new Vector3f();
         actualTransform.get(actualTranslation);
         double actualRotation = TransformerHelper.getRotationFromTransform(actualTransform, Axis.Y);
-        assertEquals(leafAttachPoint, new Point3d(actualTranslation));
+        assertEquals(leafAttachPoint, new Point3f(actualTranslation));
         assertEquals(rotation, actualRotation, 0.000001);
 
         // test initial point 2 position
@@ -96,25 +96,25 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
 
     public void testCreateNewTreeLeaf3DState() {
         TreeLeaf3DStateFactory factory = new TreeLeaf3DStateFactory();
-        Point3d leafAttachPoint = new Point3d(0.32, 0.33, 0.34);
+        Point3f leafAttachPoint = new Point3f(0.32f, 0.33f, 0.34f);
         double rotation = Randomizer.randomRotation();
-        Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3d(leafAttachPoint));
+        Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
         Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
         transform.mul(rotationT3D);
 
         TreeLeaf3DState leaf3DState = factory.createNewTreeLeaf3DState(transform);
 
         Transform3D actualTransform = leaf3DState.getTransform().toTransform3D();
-        Tuple3dState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
-        Tuple3dState actualInitialEndPoint2 = leaf3DState.getInitialEndPoint2();
-        Tuple3dState actualEndPoint1 = leaf3DState.getEndPoint1();
-        Tuple3dState actualEndPoint2 = leaf3DState.getEndPoint2();
+        Tuple3fState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
+        Tuple3fState actualInitialEndPoint2 = leaf3DState.getInitialEndPoint2();
+        Tuple3fState actualEndPoint1 = leaf3DState.getEndPoint1();
+        Tuple3fState actualEndPoint2 = leaf3DState.getEndPoint2();
 
         // test transform
-        Vector3d actualTranslation = new Vector3d();
+        Vector3f actualTranslation = new Vector3f();
         actualTransform.get(actualTranslation);
         double actualRotation = TransformerHelper.getRotationFromTransform(actualTransform, Axis.Y);
-        assertEquals(leafAttachPoint, new Point3d(actualTranslation));
+        assertEquals(leafAttachPoint, new Point3f(actualTranslation));
         assertEquals(rotation, actualRotation, 0.000001);
 
         // test initial point 2 position

@@ -21,7 +21,7 @@ package barsuift.simLife.tree;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.Transform3DState;
@@ -41,7 +41,7 @@ public class TreeBranchPartStateFactoryTest extends TestCase {
     public void testCreateRandomBranchPartState() {
 
         TreeBranchPartStateFactory factory = new TreeBranchPartStateFactory();
-        Point3d branchPartEndPoint = new Point3d(Math.random(), Math.random(), Math.random());
+        Point3f branchPartEndPoint = new Point3f((float) Math.random(), (float) Math.random(), (float) Math.random());
         TreeBranchPartState branchPartState = factory.createRandomBranchPartState(branchPartEndPoint);
         assertNotNull(branchPartState.getBranchPart3DState());
 
@@ -52,10 +52,10 @@ public class TreeBranchPartStateFactoryTest extends TestCase {
         for (int index = 0; index < nbLeaves; index++) {
             TreeLeafState leafState = leaveStates.get(index);
             Transform3DState transform = leafState.getLeaf3DState().getTransform();
-            Point3d leafAttachPoint = new Point3d(transform.getMatrix()[3], transform.getMatrix()[7],
+            Point3f leafAttachPoint = new Point3f(transform.getMatrix()[3], transform.getMatrix()[7],
                     transform.getMatrix()[11]);
 
-            PointTestHelper.assertPointIsWithinBounds(leafAttachPoint, new Point3d(0, 0, 0), branchPartEndPoint);
+            PointTestHelper.assertPointIsWithinBounds(leafAttachPoint, new Point3f(0, 0, 0), branchPartEndPoint);
         }
 
         assertTrue(branchPartState.getCreationMillis() >= 0);

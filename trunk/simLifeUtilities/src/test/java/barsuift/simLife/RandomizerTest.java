@@ -24,7 +24,7 @@ public class RandomizerTest extends TestCase {
 
     public void testRandom1() {
         for (int index = 0; index < 1000; index++) {
-            double result = Randomizer.random1();
+            float result = Randomizer.random1();
             assertTrue(result <= 0.1);
             assertTrue(result >= -0.1);
         }
@@ -32,7 +32,7 @@ public class RandomizerTest extends TestCase {
 
     public void testRandom2() {
         for (int index = 0; index < 1000; index++) {
-            double result = Randomizer.random2();
+            float result = Randomizer.random2();
             assertTrue(result <= 0.5);
             assertTrue(result >= -0.5);
         }
@@ -40,7 +40,7 @@ public class RandomizerTest extends TestCase {
 
     public void testRandom3() {
         for (int index = 0; index < 1000; index++) {
-            double result = Randomizer.random3();
+            float result = Randomizer.random3();
             assertTrue(result <= 1);
             assertTrue(result >= -1);
         }
@@ -48,7 +48,7 @@ public class RandomizerTest extends TestCase {
 
     public void testRandom4() {
         for (int index = 0; index < 1000; index++) {
-            double result = Randomizer.random4();
+            float result = Randomizer.random4();
             assertTrue(result <= 0.1);
             assertTrue(result >= 0);
         }

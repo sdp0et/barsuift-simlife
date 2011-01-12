@@ -30,8 +30,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.media.j3d.Transform3D;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
@@ -156,33 +156,33 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         }
 
         // compute areas
-        Map<TreeLeaf, Double> areas = new HashMap<TreeLeaf, Double>(leavesToIncrease.size());
+        Map<TreeLeaf, Float> areas = new HashMap<TreeLeaf, Float>(leavesToIncrease.size());
         for (TreeLeaf leaf : leavesToIncrease) {
             areas.put(leaf, leaf.getTreeLeaf3D().getArea());
         }
 
         // compute area sum
-        double sumArea = 0;
-        for (Double area : areas.values()) {
+        float sumArea = 0;
+        for (Float area : areas.values()) {
             sumArea += area;
         }
 
         // compute diffArea sum
-        double sumDiffArea = (leavesToIncrease.size() - 1) * sumArea;
+        float sumDiffArea = (leavesToIncrease.size() - 1) * sumArea;
 
         // compute ratios
         // thanks to the use of sumDiffArea, the sum of ratios is equals to 1 (100%)
-        Map<TreeLeaf, Double> ratios = new HashMap<TreeLeaf, Double>(areas.size());
-        for (Entry<TreeLeaf, Double> entry : areas.entrySet()) {
+        Map<TreeLeaf, Float> ratios = new HashMap<TreeLeaf, Float>(areas.size());
+        for (Entry<TreeLeaf, Float> entry : areas.entrySet()) {
             ratios.put(entry.getKey(), (sumArea - entry.getValue()) / sumDiffArea);
         }
 
         // select one leaf
-        double random = Math.random();
-        double previousMinBound = 0;
-        for (Entry<TreeLeaf, Double> entry : ratios.entrySet()) {
+        float random = (float) Math.random();
+        float previousMinBound = 0;
+        for (Entry<TreeLeaf, Float> entry : ratios.entrySet()) {
             TreeLeaf leaf = entry.getKey();
-            Double ratio = entry.getValue();
+            Float ratio = entry.getValue();
             if (random < (previousMinBound + ratio)) {
                 return leaf;
             }
@@ -288,26 +288,26 @@ public class BasicTreeBranchPart implements TreeBranchPart {
     }
 
     private Transform3D computeTransformForNewLeaf() {
-        Point3d leafAttachPoint = computeAttachPointForNewLeaf();
+        Point3f leafAttachPoint = computeAttachPointForNewLeaf();
         double rotation = Randomizer.randomRotation();
-        Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3d(leafAttachPoint));
+        Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
         Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
         transform.mul(rotationT3D);
         return transform;
     }
 
-    protected Point3d computeAttachPointForNewLeaf() {
-        Point3d previousAttachPoint = new Point3d(0, 0, 0);
-        Point3d saveAttachPoint1 = null;
-        Point3d saveAttachPoint2 = null;
-        double distance;
-        double maxDistance = -1;
+    protected Point3f computeAttachPointForNewLeaf() {
+        Point3f previousAttachPoint = new Point3f(0, 0, 0);
+        Point3f saveAttachPoint1 = null;
+        Point3f saveAttachPoint2 = null;
+        float distance;
+        float maxDistance = -1;
         List<TreeLeaf> sortedLeaves = new ArrayList<TreeLeaf>(leaves);
         Collections.sort(sortedLeaves, new TreeLeafComparator());
 
         // compute which couple of leaves are the most distant
         for (TreeLeaf leaf : sortedLeaves) {
-            Point3d attachPoint = leaf.getTreeLeaf3D().getPosition();
+            Point3f attachPoint = leaf.getTreeLeaf3D().getPosition();
             distance = previousAttachPoint.distance(attachPoint);
             if (distance > maxDistance) {
                 maxDistance = distance;
@@ -316,7 +316,7 @@ public class BasicTreeBranchPart implements TreeBranchPart {
             }
             previousAttachPoint = attachPoint;
         }
-        Point3d attachPoint = branchPart3D.getEndPoint();
+        Point3f attachPoint = branchPart3D.getEndPoint();
         distance = previousAttachPoint.distance(attachPoint);
         if (distance > maxDistance) {
             maxDistance = distance;
@@ -325,8 +325,8 @@ public class BasicTreeBranchPart implements TreeBranchPart {
         }
 
         // once this couple is found, place the new leaf approximately in the middle +/-20%
-        Point3d newLeafAttachPoint = new Point3d();
-        newLeafAttachPoint.interpolate(saveAttachPoint1, saveAttachPoint2, 0.5 + Randomizer.random1());
+        Point3f newLeafAttachPoint = new Point3f();
+        newLeafAttachPoint.interpolate(saveAttachPoint1, saveAttachPoint2, 0.5f + Randomizer.random1());
         return newLeafAttachPoint;
     }
 
