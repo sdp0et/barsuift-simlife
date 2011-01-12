@@ -70,8 +70,7 @@ public class BasicLandscape3D implements Landscape3D {
     }
 
     @Override
-    // FIXME check if float would not suffice
-    public double getHeight(double x, double z) {
+    public float getHeight(float x, float z) {
         if (!inLandscape(x, z)) {
             return 0;
         }
@@ -87,14 +86,14 @@ public class BasicLandscape3D implements Landscape3D {
         int x3 = x1;
         int z3 = z1 + 1;
 
-        double weight1;
-        double weight2;
-        double weight3;
+        float weight1;
+        float weight2;
+        float weight3;
 
         // "distance" is the distance between P1 and Pi, where Pi is the intersection point between the orthogonal to
         // the opposite angle of P1 and its own orthogonal passing by the given point (x,y).
         // check if the point is closer to the lower point or the upper point
-        double side = ((x - x1) + (z - z1)) / 2;
+        float side = ((x - x1) + (z - z1)) / 2;
         // if side is >= 0.5 then the point is closer to the "upper" point
         if (side < 0.5) {
             weight1 = 1 - (side * 2);
@@ -121,7 +120,7 @@ public class BasicLandscape3D implements Landscape3D {
         float y3 = coordinates[vertexIdx3 * 3 + 1];
 
         // compute the weighted average height
-        double height = ((weight1 * y1) + (weight2 * y2) + (weight3 * y3)) / (weight1 + weight2 + weight3);
+        float height = ((weight1 * y1) + (weight2 * y2) + (weight3 * y3)) / (weight1 + weight2 + weight3);
 
         return height;
     }
@@ -134,7 +133,7 @@ public class BasicLandscape3D implements Landscape3D {
      * the landscape bounds are inclusive for minimum bounds, but EXCLUSIVE for maximum bounds
      */
     @Override
-    public boolean inLandscape(double x, double z) {
+    public boolean inLandscape(float x, float z) {
         return (x >= 0 && z >= 0 && x < (size - 1) && z < (size - 1));
     }
 

@@ -23,10 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 
 import barsuift.simLife.Randomizer;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.Tree3DStateFactory;
 import barsuift.simLife.process.Aging;
@@ -44,7 +45,7 @@ public class TreeStateFactory {
      */
     public static final float HEIGHT_BRANCH_RADIAL_LENGTH_RATIO = 0.5f;
 
-    public TreeState createRandomTreeState(Point3d translationVector) {
+    public TreeState createRandomTreeState(Point3f translationVector) {
         int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         int nbBranches = Randomizer.randomBetween(30, 50);
@@ -62,7 +63,7 @@ public class TreeStateFactory {
         TreeTrunkState trunkState = trunkStateFactory.createRandomTreeTrunkState(radius, height);
 
         Tree3DStateFactory tree3DStateFactory = new Tree3DStateFactory();
-        Tree3DState tree3dState = tree3DStateFactory.createRandomTree3DState(new Tuple3dState(translationVector));
+        Tree3DState tree3dState = tree3DStateFactory.createRandomTree3DState(new Tuple3fState(translationVector));
 
 
         return new TreeState(creationMillis, energy, branches, photosynthesis, aging, growth, trunkState, height,

@@ -20,9 +20,6 @@ package barsuift.simLife.j3d.landscape;
 
 import javax.media.j3d.BranchGroup;
 
-import barsuift.simLife.j3d.landscape.Landscape3D;
-import barsuift.simLife.j3d.landscape.Landscape3DState;
-
 
 
 public class MockLandscape3D implements Landscape3D {
@@ -31,7 +28,7 @@ public class MockLandscape3D implements Landscape3D {
 
     private int nbSynchronizedCalled;
 
-    private double height;
+    private float height;
 
     private boolean inLandscape;
 
@@ -68,16 +65,16 @@ public class MockLandscape3D implements Landscape3D {
     }
 
     @Override
-    public double getHeight(double x, double z) {
+    public float getHeight(float x, float z) {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 
     @Override
-    public boolean inLandscape(double x, double z) {
+    public boolean inLandscape(float x, float z) {
         return inLandscape;
     }
 

@@ -23,9 +23,9 @@ import java.util.List;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.Tree;
@@ -36,7 +36,7 @@ public class BasicTree3D implements Tree3D {
 
     private final Tree3DState state;
 
-    private final Vector3d translationVector;
+    private final Vector3f translationVector;
 
 
     private final Tree tree;
@@ -103,7 +103,7 @@ public class BasicTree3D implements Tree3D {
 
     @Override
     public void synchronize() {
-        state.setTranslationVector(new Tuple3dState(translationVector));
+        state.setTranslationVector(new Tuple3fState(translationVector));
     }
 
     @Override

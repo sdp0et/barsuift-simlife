@@ -60,7 +60,7 @@ public class BasicTreeBranch3DTest extends TestCase {
         for (int index = 0; index < nbParts; index++) {
             previousPartEndPoints.add(partEndPoint);
             MockTreeBranchPart mockBranchPart = new MockTreeBranchPart();
-            partEndPoint = DisplayDataCreatorForTests.createRandomTupleState();
+            partEndPoint = DisplayDataCreatorForTests.createRandomTuple3dState();
             MockTreeBranchPart3D mockBranchPart3D = (MockTreeBranchPart3D) mockBranchPart.getBranchPart3D();
             mockBranchPart3D.getState().setEndPoint(partEndPoint);
             mockBranchPart3D.setEndPoint(partEndPoint.toPointValue());

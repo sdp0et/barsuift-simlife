@@ -74,8 +74,12 @@ public final class DisplayDataCreatorForTests {
         return new Gravity3DState(gravityTask);
     }
 
-    public static Tuple3dState createRandomTupleState() {
+    public static Tuple3dState createRandomTuple3dState() {
         return new Tuple3dState(Math.random(), Math.random(), Math.random());
+    }
+
+    public static Tuple3fState createRandomTuple3fState() {
+        return new Tuple3fState((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
     public static Transform3DState createSpecificTransform3DState() {
@@ -139,7 +143,7 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static NavigatorState createRandomNavigatorState() {
-        Tuple3dState translation = createRandomTupleState();
+        Tuple3fState translation = createRandomTuple3fState();
         double rotationX = UtilDataCreatorForTests.createRandomRotation();
         double rotationY = UtilDataCreatorForTests.createRandomRotation();
         NavigationMode navigationMode;
@@ -152,7 +156,7 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static NavigatorState createSpecificNavigatorState() {
-        Tuple3dState translation = new Tuple3dState(0.5, 0, 0.6);
+        Tuple3fState translation = new Tuple3fState(0.5f, 0f, 0.6f);
         double rotationX = Math.PI / 2;
         double rotationY = Math.PI;
         return new NavigatorState(translation, rotationX, rotationY, NavigationMode.DEFAULT);
@@ -192,10 +196,10 @@ public final class DisplayDataCreatorForTests {
 
     public static TreeLeaf3DState createRandomTreeLeaf3DState() {
         Transform3DState transform = createRandomTransform3DState();
-        Tuple3dState initialEndPoint1 = createRandomTupleState();
-        Tuple3dState initialEndPoint2 = createRandomTupleState();
-        Tuple3dState endPoint1 = createRandomTupleState();
-        Tuple3dState endPoint2 = createRandomTupleState();
+        Tuple3dState initialEndPoint1 = createRandomTuple3dState();
+        Tuple3dState initialEndPoint2 = createRandomTuple3dState();
+        Tuple3dState endPoint1 = createRandomTuple3dState();
+        Tuple3dState endPoint2 = createRandomTuple3dState();
         return new TreeLeaf3DState(transform, initialEndPoint1, initialEndPoint2, endPoint1, endPoint2);
     }
 
@@ -222,12 +226,12 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static TreeBranchPart3DState createRandomTreeBranchPart3DState() {
-        Tuple3dState endPoint = createRandomTupleState();
+        Tuple3dState endPoint = createRandomTuple3dState();
         return new TreeBranchPart3DState(endPoint);
     }
 
     public static TreeBranch3DState createRandomTreeBranch3DState() {
-        Tuple3dState translationVector = createRandomTupleState();
+        Tuple3dState translationVector = createRandomTuple3dState();
         return new TreeBranch3DState(translationVector);
     }
 
@@ -236,7 +240,7 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Tree3DState createRandomTree3DState() {
-        Tuple3dState translationVector = createRandomTupleState();
+        Tuple3fState translationVector = createRandomTuple3fState();
         return new Tree3DState(translationVector);
     }
 
