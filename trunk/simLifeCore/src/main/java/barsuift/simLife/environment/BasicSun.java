@@ -67,7 +67,6 @@ public class BasicSun implements Sun {
      * This method is to ensure the riseAngle is always comprised between 0 and 1
      */
     private void adjustRiseAngle() {
-        // FIXME 001 unit test
         while (riseAngle < 0) {
             riseAngle++;
         }
