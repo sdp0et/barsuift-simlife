@@ -18,12 +18,12 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 
 
 public class TreeBranchPart3DStateFactory {
 
-    public TreeBranchPart3DState createRandomTreeBranchPart3DState(Tuple3dState branchPartEndPoint) {
+    public TreeBranchPart3DState createRandomTreeBranchPart3DState(Tuple3fState branchPartEndPoint) {
         return new TreeBranchPart3DState(branchPartEndPoint);
     }
 

@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.tree;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.tree.MockTreeLeaf3D;
@@ -40,13 +40,13 @@ public class TreeLeafComparatorTest extends TestCase {
 
     public void testCompare() {
         MockTreeLeaf o1 = new MockTreeLeaf();
-        ((MockTreeLeaf3D) o1.getTreeLeaf3D()).setAttachPoint(new Point3d(2, 0, 0));
+        ((MockTreeLeaf3D) o1.getTreeLeaf3D()).setAttachPoint(new Point3f(2, 0, 0));
         MockTreeLeaf o2 = new MockTreeLeaf();
-        ((MockTreeLeaf3D) o2.getTreeLeaf3D()).setAttachPoint(new Point3d(3, 0, 0));
+        ((MockTreeLeaf3D) o2.getTreeLeaf3D()).setAttachPoint(new Point3f(3, 0, 0));
         MockTreeLeaf o3 = new MockTreeLeaf();
-        ((MockTreeLeaf3D) o3.getTreeLeaf3D()).setAttachPoint(new Point3d(5.0005, 0, 0));
+        ((MockTreeLeaf3D) o3.getTreeLeaf3D()).setAttachPoint(new Point3f(5.0005f, 0, 0));
         MockTreeLeaf o4 = new MockTreeLeaf();
-        ((MockTreeLeaf3D) o4.getTreeLeaf3D()).setAttachPoint(new Point3d(5.001, 0, 0));
+        ((MockTreeLeaf3D) o4.getTreeLeaf3D()).setAttachPoint(new Point3f(5.001f, 0, 0));
 
         assertEquals(0, comparator.compare(o1, o1));
         assertEquals(-1000, comparator.compare(o1, o2));

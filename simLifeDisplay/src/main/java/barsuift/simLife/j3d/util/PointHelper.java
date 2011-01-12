@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.j3d.util;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import barsuift.simLife.Randomizer;
 
@@ -35,19 +35,19 @@ public final class PointHelper {
      * @param distanceMax
      * @return
      */
-    public static final Point3d shiftPoint(Point3d point, double distanceMax) {
-        double x = point.getX() + Randomizer.random3() * distanceMax;
-        double y = point.getY() + Randomizer.random3() * distanceMax;
-        double z = point.getZ() + Randomizer.random3() * distanceMax;
-        return new Point3d(x, y, z);
+    public static final Point3f shiftPoint(Point3f point, float distanceMax) {
+        float x = point.getX() + Randomizer.random3() * distanceMax;
+        float y = point.getY() + Randomizer.random3() * distanceMax;
+        float z = point.getZ() + Randomizer.random3() * distanceMax;
+        return new Point3f(x, y, z);
     }
 
-    public static final boolean areAlmostEquals(Point3d p1, Point3d p2) {
-        return areAlmostEquals(p1, p2, 0.0001, 0.0001, 0.0001);
+    public static final boolean areAlmostEquals(Point3f p1, Point3f p2) {
+        return areAlmostEquals(p1, p2, 0.0001f, 0.0001f, 0.0001f);
     }
 
-    public static final boolean areAlmostEquals(Point3d p1, Point3d p2, double xPrecision, double yPrecision,
-            double zPrecision) {
+    public static final boolean areAlmostEquals(Point3f p1, Point3f p2, float xPrecision, float yPrecision,
+            float zPrecision) {
         if (!(Math.abs(p1.getX() - p2.getX()) <= xPrecision))
             return false;
         if (!(Math.abs(p1.getY() - p2.getY()) <= yPrecision))
@@ -57,7 +57,7 @@ public final class PointHelper {
         return true;
     }
 
-    public static final boolean isPointWithinBounds(Point3d point, Point3d boundsStartPoint, Point3d boundsEndPoint) {
+    public static final boolean isPointWithinBounds(Point3f point, Point3f boundsStartPoint, Point3f boundsEndPoint) {
         if (point.getX() < Math.min(boundsStartPoint.getX(), boundsEndPoint.getX())) {
             return false;
         }

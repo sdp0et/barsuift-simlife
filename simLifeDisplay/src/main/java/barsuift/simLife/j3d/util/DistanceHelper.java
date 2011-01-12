@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.j3d.util;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 public final class DistanceHelper {
 
@@ -29,7 +29,7 @@ public final class DistanceHelper {
     /**
      * a Point at (0,0,0)
      */
-    private static final Point3d zeroPoint = new Point3d(0, 0, 0);
+    private static final Point3f zeroPoint = new Point3f(0, 0, 0);
 
     /**
      * Computes the distance between the given point and the origin point (0,0,0).
@@ -37,7 +37,7 @@ public final class DistanceHelper {
      * @param point the point to compute distance for
      * @return the distance between point and origin
      */
-    public static double distanceFromOrigin(Point3d point) {
+    public static float distanceFromOrigin(Point3f point) {
         return zeroPoint.distance(point);
     }
 

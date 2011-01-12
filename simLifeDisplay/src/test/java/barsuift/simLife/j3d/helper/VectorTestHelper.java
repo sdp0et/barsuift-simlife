@@ -18,7 +18,6 @@
  */
 package barsuift.simLife.j3d.helper;
 
-import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 import junit.framework.Assert;
@@ -30,22 +29,11 @@ public final class VectorTestHelper extends Assert {
     }
 
     public static final void assertVectorEquals(Vector3f v1, Vector3f v2) {
-        assertVectorEquals(v1, v2, 0.0001, 0.0001, 0.0001);
+        assertVectorEquals(v1, v2, 0.0001f, 0.0001f, 0.0001f);
     }
 
-    public static final void assertVectorEquals(Vector3f v1, Vector3f v2, double xPrecision, double yPrecision,
-            double zPrecision) {
-        assertEquals(v1.getX(), v2.getX(), xPrecision);
-        assertEquals(v1.getY(), v2.getY(), yPrecision);
-        assertEquals(v1.getZ(), v2.getZ(), zPrecision);
-    }
-
-    public static final void assertVectorEquals(Vector3d v1, Vector3d v2) {
-        assertVectorEquals(v1, v2, 0.0001, 0.0001, 0.0001);
-    }
-
-    public static final void assertVectorEquals(Vector3d v1, Vector3d v2, double xPrecision, double yPrecision,
-            double zPrecision) {
+    public static final void assertVectorEquals(Vector3f v1, Vector3f v2, float xPrecision, float yPrecision,
+            float zPrecision) {
         assertEquals(v1.getX(), v2.getX(), xPrecision);
         assertEquals(v1.getY(), v2.getY(), yPrecision);
         assertEquals(v1.getZ(), v2.getZ(), zPrecision);

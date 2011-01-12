@@ -23,15 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.Transform3D;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.j3d.Transform3DState;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
@@ -98,8 +98,8 @@ public class BasicTreeBranchPartTest extends TestCase {
         // energy = 26.424 * 0.50 + 10 = 23.212
         // free energy = 26.424 - 13.212 + 3 = 16.212
 
-        assertEquals(23.212, branchPart.getEnergy().doubleValue(), 0.00001);
-        assertEquals(16.212, branchPart.collectFreeEnergy().doubleValue(), 0.00001);
+        assertEquals(23.212f, branchPart.getEnergy().floatValue(), 0.00001f);
+        assertEquals(16.212f, branchPart.collectFreeEnergy().floatValue(), 0.00001f);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), branchPart.collectFreeEnergy());
     }
@@ -135,7 +135,7 @@ public class BasicTreeBranchPartTest extends TestCase {
         assertEquals("no leaf should have been removed", nbLeaves - 1, branchPart.getNbLeaves());
     }
 
-    private void setLeafStateTransform(TreeLeaf3DState leaf3DState, Vector3d translation) {
+    private void setLeafStateTransform(TreeLeaf3DState leaf3DState, Vector3f translation) {
         Transform3D transform1 = new Transform3D();
         transform1.setTranslation(translation);
         leaf3DState.setTransform(new Transform3DState(transform1));
@@ -145,9 +145,9 @@ public class BasicTreeBranchPartTest extends TestCase {
     public void testComputeAttachPointForNewleafState1() {
         // create object states
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        setLeafStateTransform(leaf3DState1, new Vector3d(2, 0, 0));
+        setLeafStateTransform(leaf3DState1, new Vector3f(2, 0, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        setLeafStateTransform(leaf3DState2, new Vector3d(3, 0, 0));
+        setLeafStateTransform(leaf3DState2, new Vector3f(3, 0, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -155,7 +155,7 @@ public class BasicTreeBranchPartTest extends TestCase {
         List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(2);
         leaveStates.add(leafState1);
         leaveStates.add(leafState2);
-        TreeBranchPart3DState part3D = new TreeBranchPart3DState(new Tuple3dState(3.5, 0, 0));
+        TreeBranchPart3DState part3D = new TreeBranchPart3DState(new Tuple3fState(3.5f, 0, 0));
         TreeBranchPartState partState = new TreeBranchPartState();
         partState.setLeaveStates(leaveStates);
         partState.setBranchPart3DState(part3D);
@@ -165,19 +165,19 @@ public class BasicTreeBranchPartTest extends TestCase {
         // it ends at 3.5
         // 0 ...... ...... 2 ...... 3 ... 3.5
         // the new leaf should be created around 1 (+/- 10% * distance -> 0.2)
-        Point3d boundsStartPoint = new Point3d(0.8, 0, 0);
-        Point3d boundsEndPoint = new Point3d(1.2, 0, 0);
+        Point3f boundsStartPoint = new Point3f(0.8f, 0, 0);
+        Point3f boundsEndPoint = new Point3f(1.2f, 0, 0);
         BasicTreeBranchPart part = new BasicTreeBranchPart(new MockUniverse(), partState);
-        Point3d pointForNewLeaf = part.computeAttachPointForNewLeaf();
+        Point3f pointForNewLeaf = part.computeAttachPointForNewLeaf();
         PointTestHelper.assertPointIsWithinBounds(pointForNewLeaf, boundsStartPoint, boundsEndPoint);
     }
 
     public void testComputeAttachPointForNewleafState2() {
         // create object states
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        setLeafStateTransform(leaf3DState1, new Vector3d(1, 0, 0));
+        setLeafStateTransform(leaf3DState1, new Vector3f(1, 0, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        setLeafStateTransform(leaf3DState2, new Vector3d(5, 0, 0));
+        setLeafStateTransform(leaf3DState2, new Vector3f(5, 0, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -185,7 +185,7 @@ public class BasicTreeBranchPartTest extends TestCase {
         List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(2);
         leaveStates.add(leafState1);
         leaveStates.add(leafState2);
-        TreeBranchPart3DState part3D = new TreeBranchPart3DState(new Tuple3dState(7, 0, 0));
+        TreeBranchPart3DState part3D = new TreeBranchPart3DState(new Tuple3fState(7, 0, 0));
         TreeBranchPartState partState = new TreeBranchPartState();
         partState.setLeaveStates(leaveStates);
         partState.setBranchPart3DState(part3D);
@@ -195,19 +195,19 @@ public class BasicTreeBranchPartTest extends TestCase {
         // it ends at 7
         // 0 ...... 1 ...... ...... ...... ...... 5 ...... ...... 7
         // the new leaf should be created around 3 (+/- 10% * distance -> 0.4)
-        Point3d boundsStartPoint = new Point3d(2.6, 0, 0);
-        Point3d boundsEndPoint = new Point3d(3.4, 0, 0);
+        Point3f boundsStartPoint = new Point3f(2.6f, 0, 0);
+        Point3f boundsEndPoint = new Point3f(3.4f, 0, 0);
         BasicTreeBranchPart part = new BasicTreeBranchPart(new MockUniverse(), partState);
-        Point3d pointForNewLeaf = part.computeAttachPointForNewLeaf();
+        Point3f pointForNewLeaf = part.computeAttachPointForNewLeaf();
         PointTestHelper.assertPointIsWithinBounds(pointForNewLeaf, boundsStartPoint, boundsEndPoint);
     }
 
     public void testComputeAttachPointForNewLeaf3() {
         // create object states
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        setLeafStateTransform(leaf3DState1, new Vector3d(2, 0, 0));
+        setLeafStateTransform(leaf3DState1, new Vector3f(2, 0, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        setLeafStateTransform(leaf3DState2, new Vector3d(3, 0, 0));
+        setLeafStateTransform(leaf3DState2, new Vector3f(3, 0, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -215,7 +215,7 @@ public class BasicTreeBranchPartTest extends TestCase {
         List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(2);
         leaveStates.add(leafState1);
         leaveStates.add(leafState2);
-        TreeBranchPart3DState part3D = new TreeBranchPart3DState(new Tuple3dState(6, 0, 0));
+        TreeBranchPart3DState part3D = new TreeBranchPart3DState(new Tuple3fState(6, 0, 0));
         TreeBranchPartState partState = new TreeBranchPartState();
         partState.setLeaveStates(leaveStates);
         partState.setBranchPart3DState(part3D);
@@ -225,10 +225,10 @@ public class BasicTreeBranchPartTest extends TestCase {
         // it ends at 6
         // 0 ...... ...... 2 ...... 3 ...... ...... ...... 6
         // the new leaf should be created around 4.5 (+/- 10% * distance -> 0.3)
-        Point3d boundsStartPoint = new Point3d(4.2, 0, 0);
-        Point3d boundsEndPoint = new Point3d(4.8, 0, 0);
+        Point3f boundsStartPoint = new Point3f(4.2f, 0, 0);
+        Point3f boundsEndPoint = new Point3f(4.8f, 0, 0);
         BasicTreeBranchPart part = new BasicTreeBranchPart(new MockUniverse(), partState);
-        Point3d pointForNewLeaf = part.computeAttachPointForNewLeaf();
+        Point3f pointForNewLeaf = part.computeAttachPointForNewLeaf();
         PointTestHelper.assertPointIsWithinBounds(pointForNewLeaf, boundsStartPoint, boundsEndPoint);
     }
 
@@ -238,9 +238,9 @@ public class BasicTreeBranchPartTest extends TestCase {
     public void testComputeAttachPointForNewLeaf4() {
         // create object states
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        setLeafStateTransform(leaf3DState1, new Vector3d(2, 0, 0));
+        setLeafStateTransform(leaf3DState1, new Vector3f(2, 0, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        setLeafStateTransform(leaf3DState2, new Vector3d(3, 0, 0));
+        setLeafStateTransform(leaf3DState2, new Vector3f(3, 0, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -249,7 +249,7 @@ public class BasicTreeBranchPartTest extends TestCase {
         // add the leaves in the "wrong" order
         leaveStates.add(leafState2);
         leaveStates.add(leafState1);
-        TreeBranchPart3DState part3D = new TreeBranchPart3DState(new Tuple3dState(3.5, 0, 0));
+        TreeBranchPart3DState part3D = new TreeBranchPart3DState(new Tuple3fState(3.5f, 0, 0));
         TreeBranchPartState partState = new TreeBranchPartState();
         partState.setLeaveStates(leaveStates);
         partState.setBranchPart3DState(part3D);
@@ -259,10 +259,10 @@ public class BasicTreeBranchPartTest extends TestCase {
         // it ends at 3.5
         // 0 ...... ...... 2 ...... 3 ... 3.5
         // the new leaf should be created around 1 (+/- 10% * distance -> 0.2)
-        Point3d boundsStartPoint = new Point3d(0.8, 0, 0);
-        Point3d boundsEndPoint = new Point3d(1.2, 0, 0);
+        Point3f boundsStartPoint = new Point3f(0.8f, 0, 0);
+        Point3f boundsEndPoint = new Point3f(1.2f, 0, 0);
         BasicTreeBranchPart part = new BasicTreeBranchPart(new MockUniverse(), partState);
-        Point3d pointForNewLeaf = part.computeAttachPointForNewLeaf();
+        Point3f pointForNewLeaf = part.computeAttachPointForNewLeaf();
         PointTestHelper.assertPointIsWithinBounds(pointForNewLeaf, boundsStartPoint, boundsEndPoint);
     }
 
@@ -379,11 +379,11 @@ public class BasicTreeBranchPartTest extends TestCase {
         // set all the leaves at their maximum size, so that they can not be increased anymore
         for (TreeLeafState leafState : partState.getLeaveStates()) {
             TreeLeaf3DState leaf3dState = leafState.getLeaf3DState();
-            Tuple3dState initialEndPoint1 = leaf3dState.getInitialEndPoint1();
-            leaf3dState.setEndPoint1(new Tuple3dState(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
+            Tuple3fState initialEndPoint1 = leaf3dState.getInitialEndPoint1();
+            leaf3dState.setEndPoint1(new Tuple3fState(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
                     initialEndPoint1.getZ() * 10));
-            Tuple3dState initialEndPoint2 = leaf3dState.getInitialEndPoint2();
-            leaf3dState.setEndPoint2(new Tuple3dState(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
+            Tuple3fState initialEndPoint2 = leaf3dState.getInitialEndPoint2();
+            leaf3dState.setEndPoint2(new Tuple3fState(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
                     initialEndPoint2.getZ() * 10));
         }
         part = new BasicTreeBranchPart(new MockUniverse(), partState);
@@ -452,20 +452,20 @@ public class BasicTreeBranchPartTest extends TestCase {
 
     public void testIncreaseOneLeafSize() {
         TreeLeafState firstLeafState = branchPartState.getLeaveStates().get(0);
-        Point3d firstInitialEndPoint1 = firstLeafState.getLeaf3DState().getInitialEndPoint1().toPointValue();
+        Point3f firstInitialEndPoint1 = firstLeafState.getLeaf3DState().getInitialEndPoint1().toPointValue();
         branchPartState.setEnergy(new BigDecimal(150));
         // set all the leaves at their maximum size, so that they can not be increased anymore
         for (TreeLeafState leafState : branchPartState.getLeaveStates()) {
             TreeLeaf3DState leaf3dState = leafState.getLeaf3DState();
-            Tuple3dState initialEndPoint1 = leaf3dState.getInitialEndPoint1();
-            leaf3dState.setEndPoint1(new Tuple3dState(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
+            Tuple3fState initialEndPoint1 = leaf3dState.getInitialEndPoint1();
+            leaf3dState.setEndPoint1(new Tuple3fState(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
                     initialEndPoint1.getZ() * 10));
-            Tuple3dState initialEndPoint2 = leaf3dState.getInitialEndPoint2();
-            leaf3dState.setEndPoint2(new Tuple3dState(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
+            Tuple3fState initialEndPoint2 = leaf3dState.getInitialEndPoint2();
+            leaf3dState.setEndPoint2(new Tuple3fState(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
                     initialEndPoint2.getZ() * 10));
         }
         // set the first leaf end point to (0,0,0) so that it can be increased
-        firstLeafState.getLeaf3DState().setEndPoint1(new Tuple3dState());
+        firstLeafState.getLeaf3DState().setEndPoint1(new Tuple3fState());
         BasicTreeBranchPart part = new BasicTreeBranchPart(new MockUniverse(), branchPartState);
 
         part.increaseOneLeafSize();
@@ -477,7 +477,7 @@ public class BasicTreeBranchPartTest extends TestCase {
 
         part.increaseOneLeafSize();
 
-        Point3d expectedEndPoint = new Point3d(firstInitialEndPoint1.getX() * 2, firstInitialEndPoint1.getY() * 2,
+        Point3f expectedEndPoint = new Point3f(firstInitialEndPoint1.getX() * 2, firstInitialEndPoint1.getY() * 2,
                 firstInitialEndPoint1.getZ() * 2);
         PointTestHelper.assertPointEquals(expectedEndPoint, ((TreeLeaf) part.getLeaves().toArray()[0]).getTreeLeaf3D()
                 .getState().getEndPoint1().toPointValue());
@@ -486,14 +486,14 @@ public class BasicTreeBranchPartTest extends TestCase {
 
     public void testGetRandomLeafToIncrease1() {
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        leaf3DState1.setEndPoint1(new Tuple3dState(2, 0, 0));
-        leaf3DState1.setEndPoint2(new Tuple3dState(0, 2, 0));
+        leaf3DState1.setEndPoint1(new Tuple3fState(2, 0, 0));
+        leaf3DState1.setEndPoint2(new Tuple3fState(0, 2, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        leaf3DState2.setEndPoint1(new Tuple3dState(2, 0, 0));
-        leaf3DState2.setEndPoint2(new Tuple3dState(0, 4, 0));
+        leaf3DState2.setEndPoint1(new Tuple3fState(2, 0, 0));
+        leaf3DState2.setEndPoint2(new Tuple3fState(0, 4, 0));
         TreeLeaf3DState leaf3DState3 = new TreeLeaf3DState();
-        leaf3DState3.setEndPoint1(new Tuple3dState(3, 0, 0));
-        leaf3DState3.setEndPoint2(new Tuple3dState(0, 4, 0));
+        leaf3DState3.setEndPoint1(new Tuple3fState(3, 0, 0));
+        leaf3DState3.setEndPoint2(new Tuple3fState(0, 4, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -547,16 +547,16 @@ public class BasicTreeBranchPartTest extends TestCase {
      */
     public void testGetRandomLeafToIncrease2() {
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        leaf3DState1.setEndPoint1(new Tuple3dState(2, 0, 0));
-        leaf3DState1.setEndPoint2(new Tuple3dState(0, 2, 0));
-        leaf3DState1.setInitialEndPoint1(new Tuple3dState(0.2, 0, 0));
-        leaf3DState1.setInitialEndPoint2(new Tuple3dState(0, 0.2, 0));
+        leaf3DState1.setEndPoint1(new Tuple3fState(2, 0, 0));
+        leaf3DState1.setEndPoint2(new Tuple3fState(0, 2, 0));
+        leaf3DState1.setInitialEndPoint1(new Tuple3fState(0.2f, 0, 0));
+        leaf3DState1.setInitialEndPoint2(new Tuple3fState(0, 0.2f, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        leaf3DState2.setEndPoint1(new Tuple3dState(2, 0, 0));
-        leaf3DState2.setEndPoint2(new Tuple3dState(0, 4, 0));
+        leaf3DState2.setEndPoint1(new Tuple3fState(2, 0, 0));
+        leaf3DState2.setEndPoint2(new Tuple3fState(0, 4, 0));
         TreeLeaf3DState leaf3DState3 = new TreeLeaf3DState();
-        leaf3DState3.setEndPoint1(new Tuple3dState(3, 0, 0));
-        leaf3DState3.setEndPoint2(new Tuple3dState(0, 4, 0));
+        leaf3DState3.setEndPoint1(new Tuple3fState(3, 0, 0));
+        leaf3DState3.setEndPoint2(new Tuple3fState(0, 4, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -607,18 +607,18 @@ public class BasicTreeBranchPartTest extends TestCase {
      */
     public void testGetRandomLeafToIncrease3() {
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        leaf3DState1.setEndPoint1(new Tuple3dState(2, 0, 0));
-        leaf3DState1.setEndPoint2(new Tuple3dState(0, 2, 0));
-        leaf3DState1.setInitialEndPoint1(new Tuple3dState(0.2, 0, 0));
-        leaf3DState1.setInitialEndPoint2(new Tuple3dState(0, 0.2, 0));
+        leaf3DState1.setEndPoint1(new Tuple3fState(2, 0, 0));
+        leaf3DState1.setEndPoint2(new Tuple3fState(0, 2, 0));
+        leaf3DState1.setInitialEndPoint1(new Tuple3fState(0.2f, 0, 0));
+        leaf3DState1.setInitialEndPoint2(new Tuple3fState(0, 0.2f, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        leaf3DState2.setEndPoint1(new Tuple3dState(2, 0, 0));
-        leaf3DState2.setEndPoint2(new Tuple3dState(0, 4, 0));
-        leaf3DState2.setInitialEndPoint1(new Tuple3dState(0.2, 0, 0));
-        leaf3DState2.setInitialEndPoint2(new Tuple3dState(0, 0.4, 0));
+        leaf3DState2.setEndPoint1(new Tuple3fState(2, 0, 0));
+        leaf3DState2.setEndPoint2(new Tuple3fState(0, 4, 0));
+        leaf3DState2.setInitialEndPoint1(new Tuple3fState(0.2f, 0, 0));
+        leaf3DState2.setInitialEndPoint2(new Tuple3fState(0, 0.4f, 0));
         TreeLeaf3DState leaf3DState3 = new TreeLeaf3DState();
-        leaf3DState3.setEndPoint1(new Tuple3dState(3, 0, 0));
-        leaf3DState3.setEndPoint2(new Tuple3dState(0, 4, 0));
+        leaf3DState3.setEndPoint1(new Tuple3fState(3, 0, 0));
+        leaf3DState3.setEndPoint2(new Tuple3fState(0, 4, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -665,17 +665,17 @@ public class BasicTreeBranchPartTest extends TestCase {
      */
     public void testGetRandomLeafToIncrease4() {
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        leaf3DState1.setEndPoint1(new Tuple3dState(0, 0, 0));
-        leaf3DState1.setEndPoint2(new Tuple3dState(0, 0, 0));
+        leaf3DState1.setEndPoint1(new Tuple3fState(0, 0, 0));
+        leaf3DState1.setEndPoint2(new Tuple3fState(0, 0, 0));
         // this is to ensure the leaf is not considered to have reached its maximum size
-        leaf3DState1.setInitialEndPoint1(new Tuple3dState(0.2, 0, 0));
-        leaf3DState1.setInitialEndPoint2(new Tuple3dState(0, 0.2, 0));
+        leaf3DState1.setInitialEndPoint1(new Tuple3fState(0.2f, 0, 0));
+        leaf3DState1.setInitialEndPoint2(new Tuple3fState(0, 0.2f, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        leaf3DState2.setEndPoint1(new Tuple3dState(2, 0, 0));
-        leaf3DState2.setEndPoint2(new Tuple3dState(0, 4, 0));
+        leaf3DState2.setEndPoint1(new Tuple3fState(2, 0, 0));
+        leaf3DState2.setEndPoint2(new Tuple3fState(0, 4, 0));
         TreeLeaf3DState leaf3DState3 = new TreeLeaf3DState();
-        leaf3DState3.setEndPoint1(new Tuple3dState(3, 0, 0));
-        leaf3DState3.setEndPoint2(new Tuple3dState(0, 4, 0));
+        leaf3DState3.setEndPoint1(new Tuple3fState(3, 0, 0));
+        leaf3DState3.setEndPoint2(new Tuple3fState(0, 4, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
@@ -729,14 +729,14 @@ public class BasicTreeBranchPartTest extends TestCase {
      */
     public void testGetRandomLeafToIncrease5() {
         TreeLeaf3DState leaf3DState1 = new TreeLeaf3DState();
-        leaf3DState1.setEndPoint1(new Tuple3dState(0, 0, 0));
-        leaf3DState1.setEndPoint2(new Tuple3dState(0, 0, 0));
+        leaf3DState1.setEndPoint1(new Tuple3fState(0, 0, 0));
+        leaf3DState1.setEndPoint2(new Tuple3fState(0, 0, 0));
         // this is to ensure the leaf is not considered to have reached its maximum size
-        leaf3DState1.setInitialEndPoint1(new Tuple3dState(0.2, 0, 0));
-        leaf3DState1.setInitialEndPoint2(new Tuple3dState(0, 0.2, 0));
+        leaf3DState1.setInitialEndPoint1(new Tuple3fState(0.2f, 0, 0));
+        leaf3DState1.setInitialEndPoint2(new Tuple3fState(0, 0.2f, 0));
         TreeLeaf3DState leaf3DState2 = new TreeLeaf3DState();
-        leaf3DState2.setEndPoint1(new Tuple3dState(2, 0, 0));
-        leaf3DState2.setEndPoint2(new Tuple3dState(0, 4, 0));
+        leaf3DState2.setEndPoint1(new Tuple3fState(2, 0, 0));
+        leaf3DState2.setEndPoint2(new Tuple3fState(0, 4, 0));
         TreeLeafState leafState1 = new TreeLeafState();
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();

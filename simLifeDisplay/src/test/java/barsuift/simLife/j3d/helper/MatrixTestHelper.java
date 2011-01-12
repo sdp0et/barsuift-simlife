@@ -29,10 +29,10 @@ public final class MatrixTestHelper extends Assert {
     }
 
     public static final void assertMatrixEquals(Matrix3d m1, Matrix3d m2) {
-        assertMatrixEquals(m1, m2, 0.0001);
+        assertMatrixEquals(m1, m2, 0.0001f);
     }
 
-    public static final void assertMatrixEquals(Matrix3d m1, Matrix3d m2, double precision) {
+    public static final void assertMatrixEquals(Matrix3d m1, Matrix3d m2, float precision) {
         assertEquals("expected m00 = " + m1.m00 + " - actual m00 = " + m2.m00, m1.m00, m2.m00, precision);
         assertEquals("expected m01 = " + m1.m01 + " - actual m01 = " + m2.m01, m1.m01, m2.m01, precision);
         assertEquals("expected m02 = " + m1.m02 + " - actual m02 = " + m2.m02, m1.m02, m2.m02, precision);

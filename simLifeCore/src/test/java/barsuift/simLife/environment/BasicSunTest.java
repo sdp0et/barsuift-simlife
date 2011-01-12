@@ -56,7 +56,7 @@ public class BasicSunTest extends TestCase {
     public void testGetState() {
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
-        assertEquals(0.0, sun.getState().getBrightness().doubleValue());
+        assertEquals(0.0f, sun.getState().getBrightness().floatValue());
         assertEquals(0.0f, sun.getState().getRiseAngle(), 0.0001);
         assertEquals(0.0f, sun.getState().getZenithAngle(), 0.0001);
 
@@ -65,7 +65,7 @@ public class BasicSunTest extends TestCase {
         sun.setZenithAngle(0.78f);
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
-        assertEquals(0.32, sun.getState().getBrightness().doubleValue());
+        assertEquals(0.32f, sun.getState().getBrightness().floatValue());
         assertEquals(0.47f, sun.getState().getRiseAngle(), 0.0001);
         assertEquals(0.78f, sun.getState().getZenithAngle(), 0.0001);
 

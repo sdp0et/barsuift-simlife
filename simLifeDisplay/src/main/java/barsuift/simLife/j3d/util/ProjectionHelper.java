@@ -18,7 +18,6 @@
  */
 package barsuift.simLife.j3d.util;
 
-import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 
 /**
@@ -35,18 +34,6 @@ public final class ProjectionHelper {
 
     private ProjectionHelper() {
         // private constructor to enforce static access
-    }
-
-    /**
-     * Project the given point to the X-Z plan, by setting the Y value to 0.
-     * 
-     * @param originPoint the point to project
-     * @return a new point, with the same X and Z values, but Y set to 0.
-     */
-    public static Point3d getProjectionPoint(Point3d originPoint) {
-        Point3d result = new Point3d(originPoint);
-        result.setY(0);
-        return result;
     }
 
     /**

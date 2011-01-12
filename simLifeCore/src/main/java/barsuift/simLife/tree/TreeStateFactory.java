@@ -22,9 +22,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.Tuple3fState;
@@ -71,8 +70,9 @@ public class TreeStateFactory {
     }
 
     protected TreeBranchState computeRandomBranchState(float treeRadius, float treeHeight) {
-        Vector3d branchTranslationVector = computeBranchTranslationVector(treeRadius, treeHeight);
-        Point3d branchEndPoint = computeBranchEndPoint(treeHeight, branchTranslationVector.getX() > 0, branchTranslationVector.getZ() > 0);
+        Vector3f branchTranslationVector = computeBranchTranslationVector(treeRadius, treeHeight);
+        Point3f branchEndPoint = computeBranchEndPoint(treeHeight, branchTranslationVector.getX() > 0,
+                branchTranslationVector.getZ() > 0);
         TreeBranchStateFactory branchStateFactory = new TreeBranchStateFactory();
         return branchStateFactory.createRandomBranchState(branchTranslationVector, branchEndPoint);
     }
@@ -91,12 +91,12 @@ public class TreeStateFactory {
      * @param treeHeight the tree height
      * @return the computed translation vector
      */
-    protected Vector3d computeBranchTranslationVector(float treeRadius, float treeHeight) {
-        double translationXShift = Randomizer.random3();
-        double translationZShift = Randomizer.random3() * Math.sin(Math.acos(translationXShift));
-        double translationX = translationXShift * treeRadius;
-        double translationZ = translationZShift * treeRadius;
-        Vector3d translationVector = new Vector3d(translationX, treeHeight, translationZ);
+    protected Vector3f computeBranchTranslationVector(float treeRadius, float treeHeight) {
+        float translationXShift = Randomizer.random3();
+        float translationZShift = Randomizer.random3() * (float) Math.sin(Math.acos(translationXShift));
+        float translationX = translationXShift * treeRadius;
+        float translationZ = translationZShift * treeRadius;
+        Vector3f translationVector = new Vector3f(translationX, treeHeight, translationZ);
         return translationVector;
     }
 
@@ -116,17 +116,17 @@ public class TreeStateFactory {
      * @param goingToPositiveZ true of the z should be positive, false otherwise
      * @return the computed branch end point
      */
-    protected Point3d computeBranchEndPoint(double treeHeight, boolean goingToPositiveX, boolean goingToPositiveZ) {
-        double xMove = Math.random() * HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight;
+    protected Point3f computeBranchEndPoint(float treeHeight, boolean goingToPositiveX, boolean goingToPositiveZ) {
+        float xMove = (float) Math.random() * HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight;
         if (!goingToPositiveX) {
             xMove = -xMove;
         }
-        double yMove = Math.random() * treeHeight;
-        double zMove = Math.random() * HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight;
+        float yMove = (float) Math.random() * treeHeight;
+        float zMove = (float) Math.random() * HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight;
         if (!goingToPositiveZ) {
             zMove = -zMove;
         }
-        Point3d endPoint = new Point3d(xMove, yMove, zMove);
+        Point3f endPoint = new Point3f(xMove, yMove, zMove);
         return endPoint;
     }
 

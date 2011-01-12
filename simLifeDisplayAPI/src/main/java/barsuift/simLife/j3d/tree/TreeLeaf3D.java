@@ -19,22 +19,21 @@
 package barsuift.simLife.j3d.tree;
 
 import javax.media.j3d.BranchGroup;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.message.Subscriber;
 
-// FIXME use float instead of double to position 3D elements
 public interface TreeLeaf3D extends Subscriber, Mobile, Persistent<TreeLeaf3DState> {
 
-    public double getArea();
+    public float getArea();
 
     public boolean isMaxSizeReached();
 
     public void increaseSize();
 
-    public Point3d getPosition();
+    public Point3f getPosition();
 
     /**
      * Gets the BranchGroup of the leaf 3D. This branch group contains a transform group, for relative position of the

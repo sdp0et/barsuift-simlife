@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.Group;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 
 public class MockTreeBranchPart3D implements TreeBranchPart3D {
 
-    private Point3d endPoint = new Point3d();
+    private Point3f endPoint = new Point3f();
 
     private Group group = new Group();
 
@@ -38,11 +38,11 @@ public class MockTreeBranchPart3D implements TreeBranchPart3D {
     private int synchronizedCalled;
 
     @Override
-    public Point3d getEndPoint() {
+    public Point3f getEndPoint() {
         return endPoint;
     }
 
-    public void setEndPoint(Point3d endPoint) {
+    public void setEndPoint(Point3f endPoint) {
         this.endPoint = endPoint;
     }
 

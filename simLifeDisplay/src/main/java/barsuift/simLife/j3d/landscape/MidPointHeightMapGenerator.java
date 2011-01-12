@@ -37,7 +37,7 @@ public class MidPointHeightMapGenerator {
 
     private static final Logger logger = Logger.getLogger(MidPointHeightMapGenerator.class.getName());
 
-    private final double heightReducer;
+    private final float heightReducer;
 
     private final int size;
 

@@ -2,7 +2,7 @@ package barsuift.simLife.process;
 
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.UtilDataCreatorForTests;
@@ -32,14 +32,14 @@ public class GravityTaskTest extends TestCase {
 
         // add mobile instances
         PublisherTestHelper publisher = new PublisherTestHelper();
-        MockMobile mobile = createMockMobileAtPosition(new Vector3d(1, 5.1, 3));
+        MockMobile mobile = createMockMobileAtPosition(new Vector3f(1, 5.1f, 3));
         publisher.addSubscriberTo(mobile);
         gravity.fall(mobile);
 
         // with stepSize=3, the movement should be y-=0.075
         gravity.executeSplitConditionalStep(state.getStepSize());
 
-        VectorTestHelper.assertVectorEquals(new Vector3d(1, 5.025, 3), getTranslation(mobile));
+        VectorTestHelper.assertVectorEquals(new Vector3f(1, 5.025f, 3), getTranslation(mobile));
         // not yet FALLEN
         assertEquals(0, publisher.nbUpdated());
         assertEquals(0, publisher.getUpdateObjects().size());
@@ -49,7 +49,7 @@ public class GravityTaskTest extends TestCase {
         // with stepSize=3, the movement should be y-=0.075
         gravity.executeSplitConditionalStep(state.getStepSize());
 
-        VectorTestHelper.assertVectorEquals(new Vector3d(1, 5.0, 3), getTranslation(mobile));
+        VectorTestHelper.assertVectorEquals(new Vector3f(1, 5.0f, 3), getTranslation(mobile));
         // it is now FALLEN, with height=5
         assertEquals(1, publisher.nbUpdated());
         assertEquals(MobileEvent.FALLEN, publisher.getUpdateObjects().get(0));
@@ -67,33 +67,33 @@ public class GravityTaskTest extends TestCase {
 
         // add mobile instances
         PublisherTestHelper publisher1 = new PublisherTestHelper();
-        MockMobile mobile1 = createMockMobileAtPosition(new Vector3d(1, 2, 3));
+        MockMobile mobile1 = createMockMobileAtPosition(new Vector3f(1, 2, 3));
         publisher1.addSubscriberTo(mobile1);
         gravity.fall(mobile1);
 
         PublisherTestHelper publisher2 = new PublisherTestHelper();
-        MockMobile mobile2 = createMockMobileAtPosition(new Vector3d(1, 0.076, 3));
+        MockMobile mobile2 = createMockMobileAtPosition(new Vector3f(1, 0.076f, 3));
         publisher2.addSubscriberTo(mobile2);
         gravity.fall(mobile2);
         PublisherTestHelper publisher3 = new PublisherTestHelper();
-        MockMobile mobile3 = createMockMobileAtPosition(new Vector3d(1, 0.075, 3));
+        MockMobile mobile3 = createMockMobileAtPosition(new Vector3f(1, 0.075f, 3));
         publisher3.addSubscriberTo(mobile3);
         gravity.fall(mobile3);
         PublisherTestHelper publisher4 = new PublisherTestHelper();
-        MockMobile mobile4 = createMockMobileAtPosition(new Vector3d(1, 0.074, 3));
+        MockMobile mobile4 = createMockMobileAtPosition(new Vector3f(1, 0.074f, 3));
         publisher4.addSubscriberTo(mobile4);
         gravity.fall(mobile4);
 
         PublisherTestHelper publisher5 = new PublisherTestHelper();
-        MockMobile mobile5 = createMockMobileAtPosition(new Vector3d(1, 0.026, 3));
+        MockMobile mobile5 = createMockMobileAtPosition(new Vector3f(1, 0.026f, 3));
         publisher5.addSubscriberTo(mobile5);
         gravity.fall(mobile5);
         PublisherTestHelper publisher6 = new PublisherTestHelper();
-        MockMobile mobile6 = createMockMobileAtPosition(new Vector3d(1, 0.025, 3));
+        MockMobile mobile6 = createMockMobileAtPosition(new Vector3f(1, 0.025f, 3));
         publisher6.addSubscriberTo(mobile6);
         gravity.fall(mobile6);
         PublisherTestHelper publisher7 = new PublisherTestHelper();
-        MockMobile mobile7 = createMockMobileAtPosition(new Vector3d(1, 0.024, 3));
+        MockMobile mobile7 = createMockMobileAtPosition(new Vector3f(1, 0.024f, 3));
         publisher7.addSubscriberTo(mobile7);
         gravity.fall(mobile7);
 
@@ -102,13 +102,13 @@ public class GravityTaskTest extends TestCase {
 
 
 
-        VectorTestHelper.assertVectorEquals(new Vector3d(1, 1.925, 3), getTranslation(mobile1));
-        VectorTestHelper.assertVectorEquals(new Vector3d(1, 0.001, 3), getTranslation(mobile2));
-        VectorTestHelper.assertVectorEquals(new Vector3d(1, 0, 3), getTranslation(mobile3));
-        VectorTestHelper.assertVectorEquals(new Vector3d(1, 0, 3), getTranslation(mobile4));
-        VectorTestHelper.assertVectorEquals(new Vector3d(1, 0, 3), getTranslation(mobile5));
-        VectorTestHelper.assertVectorEquals(new Vector3d(1, 0, 3), getTranslation(mobile6));
-        VectorTestHelper.assertVectorEquals(new Vector3d(1, 0, 3), getTranslation(mobile7));
+        VectorTestHelper.assertVectorEquals(new Vector3f(1, 1.925f, 3), getTranslation(mobile1));
+        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0.001f, 3), getTranslation(mobile2));
+        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile3));
+        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile4));
+        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile5));
+        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile6));
+        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile7));
 
         // every mobile except mobile1 and mobile2 should notify a FALLEN event
         assertEquals(0, publisher1.nbUpdated());
@@ -138,15 +138,15 @@ public class GravityTaskTest extends TestCase {
 
     }
 
-    private Vector3d getTranslation(MockMobile mobile) {
+    private Vector3f getTranslation(MockMobile mobile) {
         Transform3D transform3D = new Transform3D();
         mobile.getTransformGroup().getTransform(transform3D);
-        Vector3d translation = new Vector3d();
+        Vector3f translation = new Vector3f();
         transform3D.get(translation);
         return translation;
     }
 
-    private MockMobile createMockMobileAtPosition(Vector3d translation) {
+    private MockMobile createMockMobileAtPosition(Vector3f translation) {
         MockMobile mobile = new MockMobile();
         Transform3D transform3D = new Transform3D();
         transform3D.setTranslation(translation);

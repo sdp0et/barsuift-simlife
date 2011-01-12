@@ -19,7 +19,7 @@
 package barsuift.simLife.j3d;
 
 import javax.media.j3d.Transform3D;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.UtilDataCreatorForTests;
@@ -74,10 +74,6 @@ public final class DisplayDataCreatorForTests {
         return new Gravity3DState(gravityTask);
     }
 
-    public static Tuple3dState createRandomTuple3dState() {
-        return new Tuple3dState(Math.random(), Math.random(), Math.random());
-    }
-
     public static Tuple3fState createRandomTuple3fState() {
         return new Tuple3fState((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
@@ -88,7 +84,7 @@ public final class DisplayDataCreatorForTests {
 
     public static Transform3DState createRandomTransform3DState() {
         Transform3D transform = new Transform3D();
-        transform.setTranslation(new Vector3d(Math.random(), Math.random(), Math.random()));
+        transform.setTranslation(new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()));
         Transform3D rotation = new Transform3D();
         rotation.rotY(Randomizer.randomRotation());
         transform.mul(rotation);
@@ -196,10 +192,10 @@ public final class DisplayDataCreatorForTests {
 
     public static TreeLeaf3DState createRandomTreeLeaf3DState() {
         Transform3DState transform = createRandomTransform3DState();
-        Tuple3dState initialEndPoint1 = createRandomTuple3dState();
-        Tuple3dState initialEndPoint2 = createRandomTuple3dState();
-        Tuple3dState endPoint1 = createRandomTuple3dState();
-        Tuple3dState endPoint2 = createRandomTuple3dState();
+        Tuple3fState initialEndPoint1 = createRandomTuple3fState();
+        Tuple3fState initialEndPoint2 = createRandomTuple3fState();
+        Tuple3fState endPoint1 = createRandomTuple3fState();
+        Tuple3fState endPoint2 = createRandomTuple3fState();
         return new TreeLeaf3DState(transform, initialEndPoint1, initialEndPoint2, endPoint1, endPoint2);
     }
 
@@ -218,20 +214,20 @@ public final class DisplayDataCreatorForTests {
      */
     public static TreeLeaf3DState createSpecificTreeLeaf3DState() {
         Transform3DState transform = createSpecificTransform3DState();
-        Tuple3dState initialEndPoint1 = new Tuple3dState(0.2, 0.2, 0.0);
-        Tuple3dState initialEndPoint2 = new Tuple3dState(0.2, 0.1, 0.0);
-        Tuple3dState endPoint1 = new Tuple3dState(0.4, 0.0, 0.0);
-        Tuple3dState endPoint2 = new Tuple3dState(0.2, 0.4, 0.0);
+        Tuple3fState initialEndPoint1 = new Tuple3fState(0.2f, 0.2f, 0.0f);
+        Tuple3fState initialEndPoint2 = new Tuple3fState(0.2f, 0.1f, 0.0f);
+        Tuple3fState endPoint1 = new Tuple3fState(0.4f, 0.0f, 0.0f);
+        Tuple3fState endPoint2 = new Tuple3fState(0.2f, 0.4f, 0.0f);
         return new TreeLeaf3DState(transform, initialEndPoint1, initialEndPoint2, endPoint1, endPoint2);
     }
 
     public static TreeBranchPart3DState createRandomTreeBranchPart3DState() {
-        Tuple3dState endPoint = createRandomTuple3dState();
+        Tuple3fState endPoint = createRandomTuple3fState();
         return new TreeBranchPart3DState(endPoint);
     }
 
     public static TreeBranch3DState createRandomTreeBranch3DState() {
-        Tuple3dState translationVector = createRandomTuple3dState();
+        Tuple3fState translationVector = createRandomTuple3fState();
         return new TreeBranch3DState(translationVector);
     }
 
@@ -253,10 +249,10 @@ public final class DisplayDataCreatorForTests {
     }
 
     /**
-     * Return an array of double representing an identity matrix of 16 elements
+     * Return an array of float representing an identity matrix of 16 elements
      */
-    public static double[] createSpecificTransform3D() {
-        return new double[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+    public static float[] createSpecificTransform3D() {
+        return new float[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
     }
 
 }

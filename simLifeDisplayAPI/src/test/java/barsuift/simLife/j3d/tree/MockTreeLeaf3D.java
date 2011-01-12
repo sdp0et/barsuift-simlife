@@ -21,7 +21,7 @@ package barsuift.simLife.j3d.tree;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.MockSubscriber;
@@ -31,7 +31,7 @@ import barsuift.simLife.message.Subscriber;
 
 public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
-    private double area;
+    private float area;
 
     private TreeLeaf3DState state;
 
@@ -39,7 +39,7 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
     private TransformGroup tg;
 
-    private Point3d attachPoint;
+    private Point3f attachPoint;
 
     private int increaseSizeCalled;
 
@@ -61,26 +61,26 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
         tg.addChild(shape);
         bg = new BranchGroup();
         bg.addChild(tg);
-        attachPoint = new Point3d();
+        attachPoint = new Point3f();
         increaseSizeCalled = 0;
         isMaxSizeReached = false;
         synchronizedCalled = 0;
     }
 
     @Override
-    public double getArea() {
+    public float getArea() {
         return area;
     }
 
-    public void setArea(double area) {
+    public void setArea(float area) {
         this.area = area;
     }
 
-    public Point3d getPosition() {
+    public Point3f getPosition() {
         return attachPoint;
     }
 
-    public void setAttachPoint(Point3d attachPoint) {
+    public void setAttachPoint(Point3f attachPoint) {
         this.attachPoint = attachPoint;
     }
 

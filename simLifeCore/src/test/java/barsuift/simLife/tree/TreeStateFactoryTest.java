@@ -21,9 +21,8 @@ package barsuift.simLife.tree;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.helper.PointTestHelper;
@@ -65,27 +64,27 @@ public class TreeStateFactoryTest extends TestCase {
     public void testComputeBranchTranslationVector() {
         float treeRadius = 6;
         float treeHeight = 8;
-        Vector3d translationVector = factory.computeBranchTranslationVector(treeRadius, treeHeight);
-        PointTestHelper.assertPointIsWithinBounds(new Point3d(translationVector), new Point3d(-6, 8, -6), new Point3d(
+        Vector3f translationVector = factory.computeBranchTranslationVector(treeRadius, treeHeight);
+        PointTestHelper.assertPointIsWithinBounds(new Point3f(translationVector), new Point3f(-6, 8, -6), new Point3f(
                 6, 8, 6));
         treeRadius = 0.2f;
         treeHeight = 15;
         translationVector = factory.computeBranchTranslationVector(treeRadius, treeHeight);
-        PointTestHelper.assertPointIsWithinBounds(new Point3d(translationVector), new Point3d(-0.2, 15, -0.2),
-                new Point3d(0.2, 15, 0.2));
+        PointTestHelper.assertPointIsWithinBounds(new Point3f(translationVector), new Point3f(-0.2f, 15, -0.2f),
+                new Point3f(0.2f, 15, 0.2f));
     }
 
     public void testComputeBranchEndPoint() {
-        double treeHeight = 12;
+        float treeHeight = 12;
         boolean goingToPositiveX = true;
         boolean goingToPositiveZ = false;
-        Point3d branchEndPoint = factory.computeBranchEndPoint(treeHeight, goingToPositiveX, goingToPositiveZ);
-        PointTestHelper.assertPointIsWithinBounds(branchEndPoint, new Point3d(0, 0, 0), new Point3d(6, 12, -6));
-        treeHeight = 2.4;
+        Point3f branchEndPoint = factory.computeBranchEndPoint(treeHeight, goingToPositiveX, goingToPositiveZ);
+        PointTestHelper.assertPointIsWithinBounds(branchEndPoint, new Point3f(0, 0, 0), new Point3f(6, 12, -6));
+        treeHeight = 2.4f;
         goingToPositiveX = false;
         goingToPositiveZ = true;
         branchEndPoint = factory.computeBranchEndPoint(treeHeight, goingToPositiveX, goingToPositiveZ);
-        PointTestHelper.assertPointIsWithinBounds(branchEndPoint, new Point3d(0, 0, 0), new Point3d(-1.2, 2.4, 1.2));
+        PointTestHelper.assertPointIsWithinBounds(branchEndPoint, new Point3f(0, 0, 0), new Point3f(-1.2f, 2.4f, 1.2f));
     }
 
 }

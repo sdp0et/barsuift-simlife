@@ -27,10 +27,10 @@ import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Group;
 import javax.media.j3d.LineArray;
 import javax.media.j3d.Shape3D;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
-import barsuift.simLife.j3d.Tuple3dState;
+import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.tree.TreeBranchPart;
@@ -40,7 +40,7 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
 
     private final TreeBranchPart3DState state;
 
-    private final Point3d endPoint;
+    private final Point3f endPoint;
 
     private final Group group;
 
@@ -84,7 +84,7 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
 
     private LineArray createBranchLine() {
         LineArray branchLine = new LineArray(2, GeometryArray.COORDINATES);
-        branchLine.setCoordinate(0, new Point3d(0, 0, 0));
+        branchLine.setCoordinate(0, new Point3f(0, 0, 0));
         branchLine.setCoordinate(1, endPoint);
         return branchLine;
     }
@@ -93,7 +93,7 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
         group.addChild(leaf.getBranchGroup());
     }
 
-    public Point3d getEndPoint() {
+    public Point3f getEndPoint() {
         return endPoint;
     }
 
@@ -105,7 +105,7 @@ public class BasicTreeBranchPart3D implements TreeBranchPart3D {
 
     @Override
     public void synchronize() {
-        state.setEndPoint(new Tuple3dState(endPoint));
+        state.setEndPoint(new Tuple3fState(endPoint));
     }
 
     @Override

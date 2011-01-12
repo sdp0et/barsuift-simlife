@@ -93,9 +93,9 @@ public class BasicTreeLeafTest extends TestCase {
         // free energy = 6.7200002002716114 - 4.435200132179263524 = 2.284800068092347876
         // total free energy = 3 + 2.284800068092347876 = 5.284800068092347876 (scale 5 -> 5.2848)
 
-        assertEquals(0.80, leaf.getEfficiency().doubleValue(), 0.0000000001);
-        assertEquals(14.43520013, leaf.getEnergy().doubleValue(), 0.00001);
-        assertEquals(5.2848, leaf.collectFreeEnergy().doubleValue(), 0.00001);
+        assertEquals(0.80f, leaf.getEfficiency().floatValue(), 0.0000000001f);
+        assertEquals(14.43520013f, leaf.getEnergy().floatValue(), 0.00001f);
+        assertEquals(5.2848f, leaf.collectFreeEnergy().floatValue(), 0.00001f);
         // can not collect the free energy more than once
         assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
 
@@ -103,7 +103,7 @@ public class BasicTreeLeafTest extends TestCase {
         leaf = new BasicTreeLeaf(universe, leafState);
         leaf.collectSolarEnergy();
         // the energy would be more than 100, so it will be capped
-        assertEquals(100, leaf.getEnergy().doubleValue(), 0.00001);
+        assertEquals(100f, leaf.getEnergy().floatValue(), 0.00001f);
     }
 
     public void testAge() {
@@ -111,12 +111,12 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(0, publisherHelper.nbUpdated());
 
         // efficiency before aging = 0.80
-        assertEquals(0.80, leaf.getEfficiency().doubleValue(), 0.0000000001);
+        assertEquals(0.80f, leaf.getEfficiency().floatValue(), 0.0000000001f);
 
         leaf.age();
 
         // /efficiency after aging = 0.80 * 0.95 = 0.76
-        assertEquals(0.76, leaf.getEfficiency().doubleValue(), 0.0000000001);
+        assertEquals(0.76f, leaf.getEfficiency().floatValue(), 0.0000000001f);
 
         assertEquals(1, publisherHelper.nbUpdated());
         Object updateParam = publisherHelper.getUpdateObjects().get(0);
@@ -125,18 +125,18 @@ public class BasicTreeLeafTest extends TestCase {
 
     public void testImproveEfficiency() {
         publisherHelper.addSubscriberTo(leaf);
-        assertEquals(0.80, leaf.getEfficiency().doubleValue(), 0.0000000001);
-        assertEquals(10, leaf.getEnergy().doubleValue(), 0.00001);
+        assertEquals(0.80f, leaf.getEfficiency().floatValue(), 0.0000000001f);
+        assertEquals(10f, leaf.getEnergy().floatValue(), 0.00001f);
 
         leaf.improveEfficiency();
-        assertEquals(0.90, leaf.getEfficiency().doubleValue(), 0.0000000001);
-        assertEquals(0, leaf.getEnergy().doubleValue(), 0.00001);
+        assertEquals(0.90f, leaf.getEfficiency().floatValue(), 0.0000000001f);
+        assertEquals(0f, leaf.getEnergy().floatValue(), 0.00001f);
 
         leafState.setEnergy(new BigDecimal("35"));
         leaf = new BasicTreeLeaf(universe, leafState);
         leaf.improveEfficiency();
-        assertEquals(1.00, leaf.getEfficiency().doubleValue(), 0.0000000001);
-        assertEquals(15, leaf.getEnergy().doubleValue(), 0.00001);
+        assertEquals(1.00f, leaf.getEfficiency().floatValue(), 0.0000000001f);
+        assertEquals(15f, leaf.getEnergy().floatValue(), 0.00001f);
     }
 
     public void testFall() {
@@ -150,7 +150,7 @@ public class BasicTreeLeafTest extends TestCase {
 
         leaf.age();
 
-        assertTrue(leaf.getEfficiency().doubleValue() < 0.1);
+        assertTrue(leaf.getEfficiency().floatValue() < 0.1f);
         assertTrue(leaf.isTooWeak());
 
         assertEquals(2, publisherHelper.nbUpdated());
