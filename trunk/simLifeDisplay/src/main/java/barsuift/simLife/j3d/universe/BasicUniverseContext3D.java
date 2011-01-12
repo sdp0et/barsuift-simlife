@@ -35,6 +35,8 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 
 public class BasicUniverseContext3D implements UniverseContext3D {
 
+    // TODO 001. if possible the bounding sphere radius should be size/sqrt(2) and its position should be size/2
+    // TODO 001. this is to apply to all bounding spheres (3)
     private static final BoundingSphere BOUNDS_FOR_ALL = new BoundingSphere(new Point3d(0, 0, 0), 1000.0);
 
     private final UniverseContext3DState state;
@@ -71,6 +73,7 @@ public class BasicUniverseContext3D implements UniverseContext3D {
 
         Landscape3D landscape3D = universeContext.getUniverse().getEnvironment().getLandscape().getLandscape3D();
         navigator = new BasicNavigator(state.getNavigator(), landscape3D);
+        //TODO 001. here create a new bounding sphere from landscape.getSize
         navigator.setSchedulingBounds(BOUNDS_FOR_ALL);
         simpleU.getViewingPlatform().setViewPlatformBehavior(navigator);
 

@@ -33,6 +33,8 @@ import barsuift.simLife.message.Subscriber;
 
 public class BasicSun3D implements Subscriber, Sun3D {
 
+    // TODO 001. here we may have to pass the env to constructor to have the landscape size ???
+    // TODO 001. or we should have some common object somewhere to get all these informations ???
     private static BoundingSphere bounds = new BoundingSphere(new Point3d(0, 0, 0), 1000);
 
     private final Sun sun;
