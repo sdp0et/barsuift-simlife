@@ -54,6 +54,7 @@ public class BasicEnvironment3D implements Environment3D {
         this.state = state;
         this.environment = environment;
         ambientLight = new AmbientLight(ColorConstants.grey);
+        // TODO 001. here create a new sphere with getLandscape3D()..getSize()
         ambientLight.setInfluencingBounds(bounds);
         group = new BranchGroup();
         group.addChild(ambientLight);
