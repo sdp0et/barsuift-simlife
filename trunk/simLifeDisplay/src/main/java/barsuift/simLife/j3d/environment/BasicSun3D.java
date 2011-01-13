@@ -33,9 +33,11 @@ import barsuift.simLife.message.Subscriber;
 
 public class BasicSun3D implements Subscriber, Sun3D {
 
-    // TODO 001. here we may have to pass the env to constructor to have the landscape size ???
-    // TODO 001. or we should have some common object somewhere to get all these informations ???
+    // TODO 002. here we may have to pass the env to constructor to have the landscape size ???
+    // TODO 002. or we should have some common object somewhere to get all these informations ???
     private static BoundingSphere bounds = new BoundingSphere(new Point3d(0, 0, 0), 1000);
+
+    private final Sun3DState state;
 
     private final Sun sun;
 
@@ -51,9 +53,9 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Publisher publisher = new BasicPublisher(this);
 
-    // FIXME should have the sun3DState
-    public BasicSun3D(Sun sun) {
+    public BasicSun3D(Sun3DState state, Sun sun) {
         super();
+        this.state = state;
         this.sun = sun;
         sun.addSubscriber(this);
         computeRiseAngleData();
@@ -153,6 +155,18 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     public void clearChanged() {
         publisher.clearChanged();
+    }
+
+    @Override
+    public Sun3DState getState() {
+        // TODO 002. unit test
+        synchronize();
+        return state;
+    }
+
+    @Override
+    public void synchronize() {
+        // nothing to do
     }
 
 }

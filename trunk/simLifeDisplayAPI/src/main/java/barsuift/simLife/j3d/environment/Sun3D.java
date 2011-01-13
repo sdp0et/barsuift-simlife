@@ -21,12 +21,13 @@ package barsuift.simLife.j3d.environment;
 
 import javax.media.j3d.DirectionalLight;
 
+import barsuift.simLife.Persistent;
 import barsuift.simLife.message.Publisher;
 
 
 
 
-public interface Sun3D extends Publisher {
+public interface Sun3D extends Persistent<Sun3DState>, Publisher {
 
     /**
      * Computes the white factor, based on the position (rise and zenith angles). The lower the sun is, the lower the

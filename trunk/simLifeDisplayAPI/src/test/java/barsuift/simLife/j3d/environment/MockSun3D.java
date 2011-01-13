@@ -29,6 +29,10 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
 
     private DirectionalLight light = new DirectionalLight();
 
+    private Sun3DState state = new Sun3DState();
+
+    private int synchronizedCalled;
+
     public MockSun3D() {
         super(null);
     }
@@ -49,6 +53,24 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
 
     public void setLight(DirectionalLight light) {
         this.light = light;
+    }
+
+    @Override
+    public Sun3DState getState() {
+        return state;
+    }
+
+    public void setState(Sun3DState state) {
+        this.state = state;
+    }
+
+    @Override
+    public void synchronize() {
+        this.synchronizedCalled++;
+    }
+
+    public int getNbSynchronize() {
+        return synchronizedCalled;
     }
 
 }
