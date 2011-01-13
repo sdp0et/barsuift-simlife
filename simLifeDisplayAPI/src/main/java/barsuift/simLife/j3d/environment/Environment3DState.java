@@ -21,17 +21,35 @@ package barsuift.simLife.j3d.environment;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
+import barsuift.simLife.j3d.BoundingBoxState;
 
 @XmlRootElement
 public class Environment3DState implements State {
 
+    private BoundingBoxState ambientLightBounds;
+
     public Environment3DState() {
+        this.ambientLightBounds = new BoundingBoxState();
+    }
+
+    public Environment3DState(BoundingBoxState ambientLightBounds) {
+        this.ambientLightBounds = ambientLightBounds;
     }
 
     @Override
     public int hashCode() {
+        final int prime = 31;
         int result = 1;
+        result = prime * result + ((ambientLightBounds == null) ? 0 : ambientLightBounds.hashCode());
         return result;
+    }
+
+    public BoundingBoxState getAmbientLightBounds() {
+        return ambientLightBounds;
+    }
+
+    public void setAmbientLightBounds(BoundingBoxState ambientLightBounds) {
+        this.ambientLightBounds = ambientLightBounds;
     }
 
     @Override
@@ -42,12 +60,19 @@ public class Environment3DState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
+        Environment3DState other = (Environment3DState) obj;
+        if (ambientLightBounds == null) {
+            if (other.ambientLightBounds != null)
+                return false;
+        } else
+            if (!ambientLightBounds.equals(other.ambientLightBounds))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Environment3DState []";
+        return "Environment3DState [ambientLightBounds=" + ambientLightBounds + "]";
     }
 
 }
