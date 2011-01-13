@@ -60,7 +60,7 @@ public class BasicSun implements Sun {
         // riseAngle = 0;
         // }
         zenithAngle = state.getZenithAngle();
-        sun3D = new BasicSun3D(this);
+        sun3D = new BasicSun3D(state.getSun3DState(), this);
     }
 
     /**

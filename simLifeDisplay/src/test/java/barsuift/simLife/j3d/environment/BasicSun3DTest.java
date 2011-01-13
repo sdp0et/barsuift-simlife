@@ -26,6 +26,7 @@ import junit.framework.TestCase;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
 import barsuift.simLife.message.PublisherTestHelper;
@@ -34,6 +35,8 @@ import barsuift.simLife.message.PublisherTestHelper;
 public class BasicSun3DTest extends TestCase {
 
     private MockSun mockSun;
+
+    private Sun3DState sun3DState;
 
     private BasicSun3D sun3D;
 
@@ -44,7 +47,8 @@ public class BasicSun3DTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         mockSun = new MockSun();
-        sun3D = new BasicSun3D(mockSun);
+        sun3DState = DisplayDataCreatorForTests.createRandomSun3DState();
+        sun3D = new BasicSun3D(sun3DState, mockSun);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
         publisherHelper = new PublisherTestHelper();
@@ -53,6 +57,7 @@ public class BasicSun3DTest extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         mockSun = null;
+        sun3DState = null;
         sun3D = null;
         sunLight = null;
         publisherHelper = null;
