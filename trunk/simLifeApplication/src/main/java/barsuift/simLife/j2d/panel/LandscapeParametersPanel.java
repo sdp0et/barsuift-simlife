@@ -45,8 +45,6 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
 
     private JSlider roughnessSlider;
 
-    private JSlider maxHeightSlider;
-
     private JSlider erosionSlider;
 
     public LandscapeParametersPanel(LandscapeParameters parameters) {
@@ -60,7 +58,6 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
         setBorder(titledBorder);
 
         roughnessSlider = createRoughnessSlider(parameters);
-        maxHeightSlider = createMaxHeightSlider(parameters);
         erosionSlider = createErosionSlider(parameters);
 
         JLabel roughnessLabel = new JLabel("Roughness", JLabel.CENTER);
@@ -70,26 +67,10 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
 
         add(Box.createRigidArea(new Dimension(0, 20)));
 
-        JLabel maxHeightLabel = new JLabel("Maximum height (meters)", JLabel.CENTER);
-        maxHeightLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(maxHeightLabel);
-        add(maxHeightSlider);
-
-        add(Box.createRigidArea(new Dimension(0, 20)));
-
         JLabel erosionLabel = new JLabel("Erosion", JLabel.CENTER);
         erosionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(erosionLabel);
         add(erosionSlider);
-    }
-
-    private JSlider createMaxHeightSlider(LandscapeParameters parameters) {
-        JSlider maxHeightSlider = new JSlider(JSlider.HORIZONTAL, LandscapeParameters.MAX_HEIGHT_MIN,
-                LandscapeParameters.MAX_HEIGHT_MAX, Math.round(parameters.getMaximumHeight()));
-        maxHeightSlider.setPaintTicks(true);
-        maxHeightSlider.setMajorTickSpacing(10);
-        maxHeightSlider.setPaintLabels(true);
-        return maxHeightSlider;
     }
 
     private JSlider createRoughnessSlider(LandscapeParameters parameters) {
@@ -130,14 +111,12 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
     public void readFromParameters() {
         roughnessSlider.setValue(Math.round(parameters.getRoughness() * 100));
         erosionSlider.setValue(Math.round(parameters.getErosion() * 100));
-        maxHeightSlider.setValue(Math.round(parameters.getMaximumHeight()));
     }
 
     @Override
     public void writeIntoParameters() {
         parameters.setRoughness((float) roughnessSlider.getValue() / 100);
         parameters.setErosion((float) erosionSlider.getValue() / 100);
-        parameters.setMaximumHeight(maxHeightSlider.getValue());
     }
 
 }

@@ -63,7 +63,7 @@ public class MidPointHeightMapGenerator {
         // limit the erosion between 0 and 0.6 as it is already a good erosion
         // moreover it depends on the roughness because a smooth landscape can not and should not be eroded too much
         this.erosionFilter = landscapeParameters.getErosion() * (0.2f + 0.4f * landscapeParameters.getRoughness());
-        this.maximumHeight = landscapeParameters.getMaximumHeight();
+        this.maximumHeight = dimensionParameters.getMaximumHeight();
 
     }
 

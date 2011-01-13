@@ -27,6 +27,8 @@ package barsuift.simLife;
  * Those parameters are :
  * <ul>
  * <li>size : The size of the map's width (width = length = size)</li>
+ * <li>maximumHeight : The maximum height used to normalize landscape. After normalization, the landscape heights will
+ * be between 0 and this value</li>
  * </ul>
  * 
  */
@@ -44,7 +46,18 @@ public class DimensionParameters implements Parameters {
 
     public static final int SIZE_MAX = 1 << SIZE_MAX_EXPONENT;
 
+
+    public static final float MAX_HEIGHT_DEFAULT = 20;
+
+    public static final int MAX_HEIGHT_MIN = 0;
+
+    public static final int MAX_HEIGHT_MAX = 50;
+
+
+
     private int size;
+
+    private float maximumHeight;
 
     /**
      * Empty constructor.
@@ -69,20 +82,42 @@ public class DimensionParameters implements Parameters {
         this.size = size;
     }
 
+    public float getMaximumHeight() {
+        return maximumHeight;
+    }
+
+    /**
+     * 
+     * @param maximumHeight must be between {@link #MAX_HEIGHT_MIN} and {@link #MAX_HEIGHT_MAX}
+     * @throws IllegalArgumentException if the maximum height is not valid
+     */
+    public void setMaximumHeight(float maximumHeight) {
+        if (maximumHeight < MAX_HEIGHT_MIN) {
+            throw new IllegalArgumentException("maximumHeight must be greater than " + MAX_HEIGHT_MIN);
+        }
+        if (maximumHeight > MAX_HEIGHT_MAX) {
+            throw new IllegalArgumentException("maximumHeight must be less than " + MAX_HEIGHT_MAX);
+        }
+        this.maximumHeight = maximumHeight;
+    }
+
     @Override
     public void resetToDefaults() {
         this.size = SIZE_DEFAULT;
+        this.maximumHeight = MAX_HEIGHT_DEFAULT;
     }
 
     @Override
     public void random() {
         // size between 32 and 512
         this.size = 1 << Randomizer.randomBetween(SIZE_MIN_EXPONENT, SIZE_MAX_EXPONENT);
+        // max height between 10 and 50
+        this.maximumHeight = Randomizer.randomBetween(10, MAX_HEIGHT_MAX);
     }
 
     @Override
     public String toString() {
-        return "DimensionParameters [size=" + size + "]";
+        return "DimensionParameters [size=" + size + ", maximumHeight=" + maximumHeight + "]";
     }
 
 }

@@ -19,12 +19,10 @@
 package barsuift.simLife.landscape;
 
 import barsuift.simLife.Parameters;
-import barsuift.simLife.Randomizer;
-
 
 
 /**
- * The class holds the parameters required to create a landscape, especially with the {@link MidPointHeightMapGenerator}
+ * The class holds the parameters required to create a landscape, especially for the {@link MidPointHeightMapGenerator}
  * class.
  * 
  * Those parameters are :
@@ -43,8 +41,6 @@ import barsuift.simLife.Randomizer;
  * <li>1 means 100% erosion : the land is perfectly flat</li>
  * </ul>
  * It can be thought of as the age of the landscape. The older the landscape, the more eroded.</li>
- * <li>maximumHeight : The maximum height used to normalize landscape. After normalization, the landscape heights will
- * be between 0 and this value</li>
  * </ul>
  * 
  */
@@ -64,18 +60,10 @@ public class LandscapeParameters implements Parameters {
     public static final float EROSION_MAX = 1f;
 
 
-    public static final float MAX_HEIGHT_DEFAULT = 20;
-
-    public static final int MAX_HEIGHT_MIN = 0;
-
-    public static final int MAX_HEIGHT_MAX = 50;
-
 
     private float roughness;
 
     private float erosion;
-
-    private float maximumHeight;
 
     /**
      * Empty constructor.
@@ -122,30 +110,10 @@ public class LandscapeParameters implements Parameters {
         this.erosion = erosion;
     }
 
-    public float getMaximumHeight() {
-        return maximumHeight;
-    }
-
-    /**
-     * 
-     * @param maximumHeight must be between {@link #MAX_HEIGHT_MIN} and {@link #MAX_HEIGHT_MAX}
-     * @throws IllegalArgumentException if the maximum height is not valid
-     */
-    public void setMaximumHeight(float maximumHeight) {
-        if (maximumHeight < MAX_HEIGHT_MIN) {
-            throw new IllegalArgumentException("maximumHeight must be greater than " + MAX_HEIGHT_MIN);
-        }
-        if (maximumHeight > MAX_HEIGHT_MAX) {
-            throw new IllegalArgumentException("maximumHeight must be less than " + MAX_HEIGHT_MAX);
-        }
-        this.maximumHeight = maximumHeight;
-    }
-
     @Override
     public void resetToDefaults() {
         this.roughness = ROUGHNESS_DEFAULT;
         this.erosion = EROSION_DEFAULT;
-        this.maximumHeight = MAX_HEIGHT_DEFAULT;
     }
 
     @Override
@@ -154,14 +122,11 @@ public class LandscapeParameters implements Parameters {
         this.roughness = (float) (Math.random() + 0.5) / 2;
         // erosion between 0.25 and 0.75
         this.erosion = (float) (Math.random() + 0.5) / 2;
-        // max height between 10 and 50
-        this.maximumHeight = Randomizer.randomBetween(10, MAX_HEIGHT_MAX);
     }
 
     @Override
     public String toString() {
-        return "LandscapeParameters [roughness=" + roughness + ", erosion=" + erosion + ", maximumHeight="
-                + maximumHeight + "]";
+        return "LandscapeParameters [roughness=" + roughness + ", erosion=" + erosion + "]";
     }
 
 }
