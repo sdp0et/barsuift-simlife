@@ -33,7 +33,7 @@ public class EnvironmentStateFactory {
         SunStateFactory sunStateFactory = new SunStateFactory();
         SunState sunState = sunStateFactory.createSunState();
         Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
-        Environment3DState env3DState = env3DStateFactory.createEnvironment3DState();
+        Environment3DState env3DState = env3DStateFactory.createEnvironment3DState(dimensionParameters);
         LandscapeStateFactory landscapeFactory = new LandscapeStateFactory();
         LandscapeState landscape = landscapeFactory
                 .createRandomLandscapeState(landscapeParameters, dimensionParameters);

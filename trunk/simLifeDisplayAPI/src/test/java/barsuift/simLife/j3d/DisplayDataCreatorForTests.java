@@ -116,11 +116,13 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Environment3DState createRandomEnvironment3DState() {
-        return new Environment3DState();
+        BoundingBoxState ambientLightBounds = createRandomBoundingBoxState();
+        return new Environment3DState(ambientLightBounds);
     }
 
     public static Environment3DState createSpecificEnvironment3DState() {
-        return new Environment3DState();
+        BoundingBoxState ambientLightBounds = createSpecificBoundingBoxState();
+        return new Environment3DState(ambientLightBounds);
     }
 
 

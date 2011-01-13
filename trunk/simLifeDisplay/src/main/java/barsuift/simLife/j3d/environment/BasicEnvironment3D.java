@@ -19,10 +19,8 @@
 package barsuift.simLife.j3d.environment;
 
 import javax.media.j3d.AmbientLight;
-import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
-import javax.vecmath.Point3d;
 
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.landscape.Landscape3D;
@@ -30,8 +28,6 @@ import barsuift.simLife.j3d.util.ColorConstants;
 
 
 public class BasicEnvironment3D implements Environment3D {
-
-    private static BoundingSphere bounds = new BoundingSphere(new Point3d(0, 0, 0), 1000);
 
     private final Environment3DState state;
 
@@ -54,8 +50,7 @@ public class BasicEnvironment3D implements Environment3D {
         this.state = state;
         this.environment = environment;
         ambientLight = new AmbientLight(ColorConstants.grey);
-        // TODO 001. here create a new sphere with getLandscape3D()..getSize()
-        ambientLight.setInfluencingBounds(bounds);
+        ambientLight.setInfluencingBounds(state.getAmbientLightBounds().toBoundingBox());
         group = new BranchGroup();
         group.addChild(ambientLight);
         group.addChild(getSun3D().getLight());
