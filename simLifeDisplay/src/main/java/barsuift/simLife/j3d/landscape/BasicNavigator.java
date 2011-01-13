@@ -23,14 +23,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 
-import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.WakeupCondition;
 import javax.media.j3d.WakeupCriterion;
 import javax.media.j3d.WakeupOnAWTEvent;
 import javax.media.j3d.WakeupOr;
 import javax.vecmath.AxisAngle4d;
-import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 
 import barsuift.simLife.Persistent;
@@ -160,8 +158,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
                 new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
         // wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
         // new WakeupOnAWTEvent(KeyEvent.KEY_RELEASED), new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
-        // TODO 001. here create a new bounding sphere from landscape.getSize
-        setSchedulingBounds(new BoundingSphere(new Point3d(0, 0, 0), 1000.0));
+        setSchedulingBounds(state.getBounds().toBoundingBox());
     }
 
     public void initialize() {

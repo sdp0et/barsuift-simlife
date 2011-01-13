@@ -163,14 +163,16 @@ public final class DisplayDataCreatorForTests {
         } else {
             navigationMode = NavigationMode.WALK;
         }
-        return new NavigatorState(translation, rotationX, rotationY, navigationMode);
+        BoundingBoxState bounds = createRandomBoundingBoxState();
+        return new NavigatorState(translation, rotationX, rotationY, navigationMode, bounds);
     }
 
     public static NavigatorState createSpecificNavigatorState() {
         Tuple3fState translation = new Tuple3fState(0.5f, 0f, 0.6f);
         double rotationX = Math.PI / 2;
         double rotationY = Math.PI;
-        return new NavigatorState(translation, rotationX, rotationY, NavigationMode.DEFAULT);
+        BoundingBoxState bounds = createSpecificBoundingBoxState();
+        return new NavigatorState(translation, rotationX, rotationY, NavigationMode.DEFAULT, bounds);
     }
 
     public static UniverseContext3DState createRandomUniverseContext3DState() {

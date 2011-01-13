@@ -3,7 +3,9 @@ package barsuift.simLife.j3d.landscape;
 import javax.vecmath.Vector3f;
 
 import barsuift.simLife.DimensionParameters;
+import barsuift.simLife.j3d.BoundingBoxState;
 import barsuift.simLife.j3d.Tuple3fState;
+import barsuift.simLife.j3d.util.BoundingBoxHelper;
 
 
 public class NavigatorStateFactory {
@@ -28,8 +30,9 @@ public class NavigatorStateFactory {
         ORIGINAL_POSITION.setX(parameters.getSize() / 2);
         ORIGINAL_POSITION.setY(VIEWER_SIZE);
         ORIGINAL_POSITION.setZ(parameters.getSize() / 2);
+        BoundingBoxState bounds = BoundingBoxHelper.createBoundingBox(parameters);
         return new NavigatorState(new Tuple3fState(ORIGINAL_POSITION), ORIGINAL_ROTATION_X, ORIGINAL_ROTATION_Y,
-                NavigationMode.DEFAULT);
+                NavigationMode.DEFAULT, bounds);
     }
 
 }
