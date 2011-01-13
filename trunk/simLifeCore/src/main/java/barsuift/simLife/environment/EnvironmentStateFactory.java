@@ -31,7 +31,7 @@ public class EnvironmentStateFactory {
     public EnvironmentState createRandomEnvironmentState(LandscapeParameters landscapeParameters,
             DimensionParameters dimensionParameters) {
         SunStateFactory sunStateFactory = new SunStateFactory();
-        SunState sunState = sunStateFactory.createSunState();
+        SunState sunState = sunStateFactory.createSunState(dimensionParameters);
         Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
         Environment3DState env3DState = env3DStateFactory.createEnvironment3DState(dimensionParameters);
         LandscapeStateFactory landscapeFactory = new LandscapeStateFactory();

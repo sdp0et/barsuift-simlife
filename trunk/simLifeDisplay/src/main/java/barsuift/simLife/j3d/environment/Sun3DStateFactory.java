@@ -18,11 +18,16 @@
  */
 package barsuift.simLife.j3d.environment;
 
+import barsuift.simLife.DimensionParameters;
+import barsuift.simLife.j3d.BoundingBoxState;
+import barsuift.simLife.j3d.util.BoundingBoxHelper;
+
 
 public class Sun3DStateFactory {
 
-    public Sun3DState createSun3DState() {
-        return new Sun3DState();
+    public Sun3DState createSun3DState(DimensionParameters dimension) {
+        BoundingBoxState bounds = BoundingBoxHelper.createBoundingBox(dimension);
+        return new Sun3DState(bounds);
     }
 
 }
