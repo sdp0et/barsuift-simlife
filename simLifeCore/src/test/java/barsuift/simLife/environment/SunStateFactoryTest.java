@@ -21,6 +21,7 @@ package barsuift.simLife.environment;
 import java.math.BigDecimal;
 
 import junit.framework.TestCase;
+import barsuift.simLife.DimensionParameters;
 
 
 public class SunStateFactoryTest extends TestCase {
@@ -34,8 +35,9 @@ public class SunStateFactoryTest extends TestCase {
     }
 
     public void testCreateSunState() {
+        DimensionParameters dimension = new DimensionParameters();
         SunStateFactory factory = new SunStateFactory();
-        SunState sunState = factory.createSunState();
+        SunState sunState = factory.createSunState(dimension);
         BigDecimal brightness = sunState.getBrightness();
         assertEquals(1.00f, brightness.floatValue());
         assertEquals(0.375f, sunState.getRiseAngle(), 0.0001);

@@ -18,11 +18,9 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Light;
 import javax.vecmath.Color3f;
-import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 
 import barsuift.simLife.environment.Sun;
@@ -32,10 +30,6 @@ import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
 public class BasicSun3D implements Subscriber, Sun3D {
-
-    // TODO 002. here we may have to pass the env to constructor to have the landscape size ???
-    // TODO 002. or we should have some common object somewhere to get all these informations ???
-    private static BoundingSphere bounds = new BoundingSphere(new Point3d(0, 0, 0), 1000);
 
     private final Sun3DState state;
 
@@ -61,7 +55,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         computeRiseAngleData();
         computeZenithAngleData();
         light = new DirectionalLight(computeColor(), computeDirection());
-        light.setInfluencingBounds(bounds);
+        light.setInfluencingBounds(state.getBounds().toBoundingBox());
         light.setCapability(Light.ALLOW_COLOR_WRITE);
         light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
     }

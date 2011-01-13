@@ -108,11 +108,13 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Sun3DState createRandomSun3DState() {
-        return new Sun3DState();
+        BoundingBoxState bounds = createRandomBoundingBoxState();
+        return new Sun3DState(bounds);
     }
 
     public static Sun3DState createSpecificSun3DState() {
-        return new Sun3DState();
+        BoundingBoxState bounds = createSpecificBoundingBoxState();
+        return new Sun3DState(bounds);
     }
 
     public static Environment3DState createRandomEnvironment3DState() {
