@@ -78,6 +78,10 @@ public final class DisplayDataCreatorForTests {
         return new Tuple3fState((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
+    public static Tuple3dState createRandomTuple3dState() {
+        return new Tuple3dState(Math.random(), Math.random(), Math.random());
+    }
+
     public static Transform3DState createSpecificTransform3DState() {
         return new Transform3DState(new Transform3D());
     }
@@ -91,6 +95,17 @@ public final class DisplayDataCreatorForTests {
         return new Transform3DState(transform);
     }
 
+    public static BoundingBoxState createSpecificBoundingBoxState() {
+        Tuple3dState lower = new Tuple3dState(0, 0, 0);
+        Tuple3dState upper = new Tuple3dState(10, 10, 10);
+        return new BoundingBoxState(lower, upper);
+    }
+
+    public static BoundingBoxState createRandomBoundingBoxState() {
+        Tuple3dState lower = createRandomTuple3dState();
+        Tuple3dState upper = new Tuple3dState(lower.getX() + 1, lower.getY() + 1, lower.getZ() + 1);
+        return new BoundingBoxState(lower, upper);
+    }
 
     public static Sun3DState createRandomSun3DState() {
         return new Sun3DState();
