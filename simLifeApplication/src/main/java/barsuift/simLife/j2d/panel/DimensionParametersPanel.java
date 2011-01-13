@@ -31,27 +31,27 @@ import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import barsuift.simLife.CommonParameters;
+import barsuift.simLife.DimensionParameters;
 import barsuift.simLife.MathHelper;
 import barsuift.simLife.j2d.ParametersDependent;
 
 
-public class WorldParametersPanel extends JPanel implements ParametersDependent {
+public class DimensionParametersPanel extends JPanel implements ParametersDependent {
 
     private static final long serialVersionUID = 4471355030694189610L;
 
-    private final CommonParameters parameters;
+    private final DimensionParameters parameters;
 
     private JSlider sizeSlider;
 
-    public WorldParametersPanel(CommonParameters parameters) {
+    public DimensionParametersPanel(DimensionParameters parameters) {
         super();
         this.parameters = parameters;
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         Border blacklineBorder = BorderFactory.createLineBorder(Color.black);
-        TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "World");
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "Dimension");
         setBorder(titledBorder);
 
         sizeSlider = createSizeSlider(parameters);
@@ -60,23 +60,18 @@ public class WorldParametersPanel extends JPanel implements ParametersDependent 
         add(sizeSlider);
     }
 
-    private JSlider createSizeSlider(CommonParameters parameters) {
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, CommonParameters.SIZE_MIN_EXPONENT,
-                CommonParameters.SIZE_MAX_EXPONENT, MathHelper.getPowerOfTwoExponent(parameters.getSize()));
+    private JSlider createSizeSlider(DimensionParameters parameters) {
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, DimensionParameters.SIZE_MIN_EXPONENT,
+                DimensionParameters.SIZE_MAX_EXPONENT, MathHelper.getPowerOfTwoExponent(parameters.getSize()));
         slider.setPaintTicks(true);
         slider.setMajorTickSpacing(1);
         slider.setPaintLabels(true);
         slider.setSnapToTicks(true);
         // Create the label table
         Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
-        for (int exponent = CommonParameters.SIZE_MIN_EXPONENT; exponent < CommonParameters.SIZE_MAX_EXPONENT; exponent++) {
+        for (int exponent = DimensionParameters.SIZE_MIN_EXPONENT; exponent <= DimensionParameters.SIZE_MAX_EXPONENT; exponent++) {
             labels.put(exponent, new JLabel(Integer.toString(1 << exponent)));
         }
-        // labels.put(5, new JLabel("32"));
-        // labels.put(6, new JLabel("64"));
-        // labels.put(7, new JLabel("128"));
-        // labels.put(8, new JLabel("256"));
-        // labels.put(9, new JLabel("512"));
         slider.setLabelTable(labels);
 
         return slider;

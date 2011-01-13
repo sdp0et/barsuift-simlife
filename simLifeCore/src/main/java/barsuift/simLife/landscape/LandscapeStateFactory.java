@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.landscape;
 
-import barsuift.simLife.CommonParameters;
+import barsuift.simLife.DimensionParameters;
 import barsuift.simLife.j3d.landscape.Landscape3DState;
 import barsuift.simLife.j3d.landscape.Landscape3DStateFactory;
 
@@ -26,10 +26,11 @@ import barsuift.simLife.j3d.landscape.Landscape3DStateFactory;
 
 public class LandscapeStateFactory {
 
-    public LandscapeState createRandomLandscapeState(LandscapeParameters parameters, CommonParameters commonParameters) {
+    public LandscapeState createRandomLandscapeState(LandscapeParameters landscapeParameters,
+            DimensionParameters dimensionParameters) {
         Landscape3DStateFactory landscape3DStateFactory = new Landscape3DStateFactory();
-        Landscape3DState landscape3D = landscape3DStateFactory.createRandomLandscape3DState(parameters,
-                commonParameters);
+        Landscape3DState landscape3D = landscape3DStateFactory.createRandomLandscape3DState(landscapeParameters,
+                dimensionParameters);
         return new LandscapeState(landscape3D);
     }
 

@@ -24,7 +24,7 @@ package barsuift.simLife.j3d.landscape;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import barsuift.simLife.CommonParameters;
+import barsuift.simLife.DimensionParameters;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 /**
@@ -48,22 +48,22 @@ public class MidPointHeightMapGenerator {
     /**
      * Constructor.
      * 
-     * 
-     * @param parameters the parameters
+     * @param landscapeParameters the landscape parameters
+     * @param dimensionParameters the dimension parameters
      */
-    public MidPointHeightMapGenerator(LandscapeParameters parameters, CommonParameters commonParameters) {
-        this.size = commonParameters.getSize();
-        logger.info("Creating a map generator for size=" + size + " with parameters " + parameters);
-
+    public MidPointHeightMapGenerator(LandscapeParameters landscapeParameters, DimensionParameters dimensionParameters) {
+        logger.info("Creating a map generator with dimension " + dimensionParameters + " with landscape parameters "
+                + landscapeParameters);
+        this.size = dimensionParameters.getSize();
         // when height reducer is big (between 2 and 3), first iterations have a disproportionately large effect
         // creating smooth landscape
         // when it is small (between 1 and 2), late iterations have a disproportionately large effect creating chaotic
         // landscape
-        this.heightReducer = (1 - parameters.getRoughness()) * 2 + 1;
+        this.heightReducer = (1 - landscapeParameters.getRoughness()) * 2 + 1;
         // limit the erosion between 0 and 0.6 as it is already a good erosion
         // moreover it depends on the roughness because a smooth landscape can not and should not be eroded too much
-        this.erosionFilter = parameters.getErosion() * (0.2f + 0.4f * parameters.getRoughness());
-        this.maximumHeight = parameters.getMaximumHeight();
+        this.erosionFilter = landscapeParameters.getErosion() * (0.2f + 0.4f * landscapeParameters.getRoughness());
+        this.maximumHeight = landscapeParameters.getMaximumHeight();
 
     }
 

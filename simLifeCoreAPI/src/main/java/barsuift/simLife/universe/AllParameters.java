@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.CommonParameters;
+import barsuift.simLife.DimensionParameters;
 import barsuift.simLife.Parameters;
 import barsuift.simLife.landscape.LandscapeParameters;
 
@@ -28,20 +28,20 @@ import barsuift.simLife.landscape.LandscapeParameters;
  */
 public class AllParameters implements Parameters {
 
-    private final CommonParameters common;
+    private final DimensionParameters dimension;
 
     private final LandscapeParameters landscape;
-    
-    //TODO 301. add forest parameters
+
+    // TODO 301. add forest parameters
 
     public AllParameters() {
         super();
-        this.common = new CommonParameters();
+        this.dimension = new DimensionParameters();
         this.landscape = new LandscapeParameters();
     }
 
-    public CommonParameters getCommon() {
-        return common;
+    public DimensionParameters getDimension() {
+        return dimension;
     }
 
     public LandscapeParameters getLandscape() {
@@ -50,19 +50,19 @@ public class AllParameters implements Parameters {
 
     @Override
     public void resetToDefaults() {
-        common.resetToDefaults();
+        dimension.resetToDefaults();
         landscape.resetToDefaults();
     }
 
     @Override
     public void random() {
-        common.random();
+        dimension.random();
         landscape.random();
     }
 
     @Override
     public String toString() {
-        return "AllParameters [common=" + common + ", landscape=" + landscape + "]";
+        return "AllParameters [dimension=" + dimension + ", landscape=" + landscape + "]";
     }
 
 }

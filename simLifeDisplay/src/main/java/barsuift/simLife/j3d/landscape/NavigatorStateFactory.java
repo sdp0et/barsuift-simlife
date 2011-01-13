@@ -2,7 +2,7 @@ package barsuift.simLife.j3d.landscape;
 
 import javax.vecmath.Vector3f;
 
-import barsuift.simLife.CommonParameters;
+import barsuift.simLife.DimensionParameters;
 import barsuift.simLife.j3d.Tuple3fState;
 
 
@@ -24,7 +24,7 @@ public class NavigatorStateFactory {
      * Creates a navigator at its default position : in the middle of the landscape, at 2 meters high. The navigation
      * mode is the default one.
      */
-    public NavigatorState createNavigatorState(CommonParameters parameters) {
+    public NavigatorState createNavigatorState(DimensionParameters parameters) {
         ORIGINAL_POSITION.setX(parameters.getSize() / 2);
         ORIGINAL_POSITION.setY(VIEWER_SIZE);
         ORIGINAL_POSITION.setZ(parameters.getSize() / 2);
