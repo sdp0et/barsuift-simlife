@@ -29,9 +29,17 @@ public final class BoundingBoxHelper {
         // private constructor to enforce static access
     }
 
+    /**
+     * Create a bounding box from given size and height. The box width and length are equal to the size. The box height
+     * is equal to the given height + 50. This is to ensure any objects up to 50 meters above the ighest point is still
+     * under the influence of the generated bounding box.
+     * 
+     * @param dimension the dimension for which to create the bounds
+     * @return a bounding box
+     */
     public static BoundingBoxState createBoundingBox(DimensionParameters dimension) {
         return new BoundingBoxState(new Tuple3dState(0, 0, 0), new Tuple3dState(dimension.getSize(),
-                dimension.getMaximumHeight(), dimension.getSize()));
+                dimension.getMaximumHeight() + 50, dimension.getSize()));
     }
 
 }
