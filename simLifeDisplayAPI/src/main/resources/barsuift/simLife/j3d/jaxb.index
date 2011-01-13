@@ -1,3 +1,5 @@
+BoundingBoxState
 SimLifeCanvas3DState
 Transform3DState
+Tuple3dState
 Tuple3fState
