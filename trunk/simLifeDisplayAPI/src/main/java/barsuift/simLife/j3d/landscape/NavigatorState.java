@@ -21,6 +21,7 @@ package barsuift.simLife.j3d.landscape;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
+import barsuift.simLife.j3d.BoundingBoxState;
 import barsuift.simLife.j3d.Tuple3fState;
 
 @XmlRootElement
@@ -34,20 +35,25 @@ public class NavigatorState implements State {
 
     private NavigationMode navigationMode;
 
+    private BoundingBoxState bounds;
+
     public NavigatorState() {
         super();
         this.translation = new Tuple3fState();
         this.rotationX = 0;
         this.rotationY = 0;
         this.navigationMode = NavigationMode.DEFAULT;
+        this.bounds = new BoundingBoxState();
     }
 
-    public NavigatorState(Tuple3fState translation, double rotationX, double rotationY, NavigationMode navigationMode) {
+    public NavigatorState(Tuple3fState translation, double rotationX, double rotationY, NavigationMode navigationMode,
+            BoundingBoxState bounds) {
         super();
         this.translation = translation;
         this.rotationX = rotationX;
         this.rotationY = rotationY;
         this.navigationMode = navigationMode;
+        this.bounds = bounds;
     }
 
     public Tuple3fState getTranslation() {
@@ -82,17 +88,26 @@ public class NavigatorState implements State {
         this.navigationMode = navigationMode;
     }
 
+    public BoundingBoxState getBounds() {
+        return bounds;
+    }
+
+    public void setBounds(BoundingBoxState bounds) {
+        this.bounds = bounds;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((bounds == null) ? 0 : bounds.hashCode());
+        result = prime * result + ((navigationMode == null) ? 0 : navigationMode.hashCode());
         long temp;
         temp = Double.doubleToLongBits(rotationX);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(rotationY);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         result = prime * result + ((translation == null) ? 0 : translation.hashCode());
-        result = prime * result + ((navigationMode == null) ? 0 : navigationMode.hashCode());
         return result;
     }
 
@@ -105,6 +120,14 @@ public class NavigatorState implements State {
         if (getClass() != obj.getClass())
             return false;
         NavigatorState other = (NavigatorState) obj;
+        if (bounds == null) {
+            if (other.bounds != null)
+                return false;
+        } else
+            if (!bounds.equals(other.bounds))
+                return false;
+        if (navigationMode != other.navigationMode)
+            return false;
         if (Double.doubleToLongBits(rotationX) != Double.doubleToLongBits(other.rotationX))
             return false;
         if (Double.doubleToLongBits(rotationY) != Double.doubleToLongBits(other.rotationY))
@@ -115,15 +138,13 @@ public class NavigatorState implements State {
         } else
             if (!translation.equals(other.translation))
                 return false;
-        if (navigationMode != other.navigationMode)
-            return false;
         return true;
     }
 
     @Override
     public String toString() {
         return "NavigatorState [translation=" + translation + ", rotationX=" + rotationX + ", rotationY=" + rotationY
-                + ", navigationMode=" + navigationMode + "]";
+                + ", navigationMode=" + navigationMode + ", bounds=" + bounds + "]";
     }
 
 }
