@@ -70,6 +70,11 @@ public class BasicLandscape3D implements Landscape3D {
     }
 
     @Override
+    public int getSize() {
+        return size;
+    }
+
+    @Override
     public float getHeight(float x, float z) {
         if (!inLandscape(x, z)) {
             return 0;

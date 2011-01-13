@@ -28,6 +28,13 @@ import barsuift.simLife.Persistent;
 public interface Landscape3D extends Persistent<Landscape3DState> {
 
     /**
+     * Returns the size of the landscape. The landscape being a square, the size if both the width and the length.
+     * 
+     * @return the landscape size
+     */
+    public int getSize();
+
+    /**
      * Returns the height of the landscape at a specific point. The point is specified with its x and z coordinates. the
      * height is the y coordinate at the given point.
      * 

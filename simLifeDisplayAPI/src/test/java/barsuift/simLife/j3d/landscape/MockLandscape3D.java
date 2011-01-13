@@ -28,6 +28,8 @@ public class MockLandscape3D implements Landscape3D {
 
     private int nbSynchronizedCalled;
 
+    private int size;
+
     private float height;
 
     private boolean inLandscape;
@@ -62,6 +64,15 @@ public class MockLandscape3D implements Landscape3D {
 
     public int getNbSynchronizeCalled() {
         return nbSynchronizedCalled;
+    }
+
+    @Override
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
     @Override
