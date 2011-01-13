@@ -23,7 +23,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import junit.framework.TestCase;
-import barsuift.simLife.CommonParameters;
+import barsuift.simLife.DimensionParameters;
 import barsuift.simLife.j3d.Tuple3fState;
 
 import com.sun.j3d.utils.universe.ViewingPlatform;
@@ -31,7 +31,7 @@ import com.sun.j3d.utils.universe.ViewingPlatform;
 
 public class BasicNavigatorTest extends TestCase {
 
-    private CommonParameters parameters;
+    private DimensionParameters parameters;
 
     private BasicNavigator navigator;
 
@@ -41,7 +41,7 @@ public class BasicNavigatorTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        parameters = new CommonParameters();
+        parameters = new DimensionParameters();
         parameters.random();
         NavigatorStateFactory navigatorStateFactory = new NavigatorStateFactory();
         state = navigatorStateFactory.createNavigatorState(parameters);

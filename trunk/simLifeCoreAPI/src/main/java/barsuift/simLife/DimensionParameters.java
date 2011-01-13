@@ -22,7 +22,7 @@ package barsuift.simLife;
 
 
 /**
- * The class holds the common parameters required to create a universe.
+ * The class holds the dimension parameters required to create a universe.
  * 
  * Those parameters are :
  * <ul>
@@ -30,7 +30,7 @@ package barsuift.simLife;
  * </ul>
  * 
  */
-public class CommonParameters implements Parameters {
+public class DimensionParameters implements Parameters {
 
     public static final int SIZE_DEFAULT_EXPONENT = 7;
 
@@ -49,7 +49,7 @@ public class CommonParameters implements Parameters {
     /**
      * Empty constructor.
      */
-    public CommonParameters() {
+    public DimensionParameters() {
         resetToDefaults();
     }
 
@@ -82,7 +82,7 @@ public class CommonParameters implements Parameters {
 
     @Override
     public String toString() {
-        return "CommonParameters [size=" + size + "]";
+        return "DimensionParameters [size=" + size + "]";
     }
 
 }
