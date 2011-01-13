@@ -38,7 +38,7 @@ public final class BoundingBoxHelper {
      * @return a bounding box
      */
     public static BoundingBoxState createBoundingBox(DimensionParameters dimension) {
-        return new BoundingBoxState(new Tuple3dState(0, 0, 0), new Tuple3dState(dimension.getSize(),
+        return new BoundingBoxState(new Tuple3dState(0, -1, 0), new Tuple3dState(dimension.getSize(),
                 dimension.getMaximumHeight() + 50, dimension.getSize()));
     }
 
