@@ -46,13 +46,14 @@ public class BoundingBoxHelperTest extends TestCase {
         assertTrue(boundingBox.intersect(new Point3d(0, 0, 0)));
         assertTrue(boundingBox.intersect(new Point3d(4, 5, 4)));
         assertTrue(boundingBox.intersect(new Point3d(8, 10, 8)));
+        assertTrue(boundingBox.intersect(new Point3d(8, 60, 8)));
 
         assertFalse(boundingBox.intersect(new Point3d(-1, 0, 0)));
         assertFalse(boundingBox.intersect(new Point3d(0, -1, 0)));
         assertFalse(boundingBox.intersect(new Point3d(0, 0, -1)));
 
         assertFalse(boundingBox.intersect(new Point3d(9, 0, 0)));
-        assertFalse(boundingBox.intersect(new Point3d(0, 11, 0)));
+        assertFalse(boundingBox.intersect(new Point3d(0, 61, 0)));
         assertFalse(boundingBox.intersect(new Point3d(0, 0, 9)));
     }
 
