@@ -20,10 +20,12 @@ package barsuift.simLife.j2d.panel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -44,6 +46,8 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
 
     private JSlider sizeSlider;
 
+    private JSlider maxHeightSlider;
+
     public DimensionParametersPanel(DimensionParameters parameters) {
         super();
         this.parameters = parameters;
@@ -55,9 +59,17 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
         setBorder(titledBorder);
 
         sizeSlider = createSizeSlider(parameters);
+        maxHeightSlider = createMaxHeightSlider(parameters);
 
         add(createLabel("Size (meters)"));
         add(sizeSlider);
+
+        add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JLabel maxHeightLabel = new JLabel("Maximum height (meters)", JLabel.CENTER);
+        maxHeightLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(maxHeightLabel);
+        add(maxHeightSlider);
     }
 
     private JSlider createSizeSlider(DimensionParameters parameters) {
@@ -77,6 +89,15 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
         return slider;
     }
 
+    private JSlider createMaxHeightSlider(DimensionParameters parameters) {
+        JSlider maxHeightSlider = new JSlider(JSlider.HORIZONTAL, DimensionParameters.MAX_HEIGHT_MIN,
+                DimensionParameters.MAX_HEIGHT_MAX, Math.round(parameters.getMaximumHeight()));
+        maxHeightSlider.setPaintTicks(true);
+        maxHeightSlider.setMajorTickSpacing(10);
+        maxHeightSlider.setPaintLabels(true);
+        return maxHeightSlider;
+    }
+
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text, JLabel.CENTER);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -86,11 +107,13 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
     @Override
     public void readFromParameters() {
         sizeSlider.setValue(MathHelper.getPowerOfTwoExponent(parameters.getSize()));
+        maxHeightSlider.setValue(Math.round(parameters.getMaximumHeight()));
     }
 
     @Override
     public void writeIntoParameters() {
         parameters.setSize(1 << sizeSlider.getValue());
+        parameters.setMaximumHeight(maxHeightSlider.getValue());
     }
 
 }
