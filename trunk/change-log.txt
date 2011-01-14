@@ -18,6 +18,9 @@ Add terrain generation
   * many thanks to code from Ardor3D (http://www.ardor3d.com) for its MidPointHeightMapGenerator class !
 Add logging utility
   * log file is written in $HOME/.barsuift-simlife/barsuift-simlife-<n>.log
+Randomize the number of trees and their positioning
+  * the number of trees depends on the world size
+
 
 Bug fixes
 ---------
