@@ -49,7 +49,7 @@ public class BasicUniverseFactoryTest extends TestCase {
         assertNotNull(universe.getEnvironment());
         int nbTrees = universe.getTrees().size();
         assertTrue(nbTrees >= 1);
-        assertTrue(nbTrees <= 4);
+        assertTrue(nbTrees <= parameters.getDimension().getSize() / 5);
         assertEquals(0, universe.getFallenLeaves().size());
     }
 
