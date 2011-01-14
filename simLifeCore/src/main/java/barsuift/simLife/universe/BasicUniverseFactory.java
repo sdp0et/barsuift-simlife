@@ -18,9 +18,6 @@
  */
 package barsuift.simLife.universe;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.vecmath.Point3f;
 
 import barsuift.simLife.Randomizer;
@@ -36,25 +33,21 @@ import barsuift.simLife.tree.TreeStateFactory;
  */
 public class BasicUniverseFactory {
 
-    private static final Map<Long, Point3f> originPoints = new HashMap<Long, Point3f>();
-
-    static {
-        // TODO 300. randomize this placement code (with something ala MidPoint Displacement stuff)
-        originPoints.put(new Long(0), new Point3f(0, 0, 0));
-        originPoints.put(new Long(1), new Point3f(5, 0, 0));
-        originPoints.put(new Long(2), new Point3f(2, 0, 4));
-        originPoints.put(new Long(3), new Point3f(4, 0, 2));
-    }
-
     public void populateEmptyUniverse(Universe universe) {
         Landscape3D landscape3D = universe.getEnvironment().getLandscape().getLandscape3D();
+        int size = landscape3D.getSize();
+        int maxTrees = size / 5;
+        System.out.println(maxTrees);
 
-        int nbTrees = Randomizer.randomBetween(1, 4);
+        int nbTrees = Randomizer.randomBetween(1, maxTrees);
         TreeStateFactory treeStateFactory = new TreeStateFactory();
         for (int i = 0; i < nbTrees; i++) {
-            Point3f translationVector = originPoints.get(new Long(i));
-            float height = landscape3D.getHeight(translationVector.x, translationVector.z);
-            translationVector.y = height;
+            // TODO 300. improve this placement code (with something in the MidPoint Displacement style)
+            // getting 2 meters of margin
+            float x = Randomizer.randomBetween(2, size - 2);
+            float z = Randomizer.randomBetween(2, size - 2);
+            float height = landscape3D.getHeight(x, z);
+            Point3f translationVector = new Point3f(x, height, z);
             TreeState treeState = treeStateFactory.createRandomTreeState(translationVector);
             Tree tree = new BasicTree(universe, treeState);
             universe.addTree(tree);
