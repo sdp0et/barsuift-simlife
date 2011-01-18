@@ -153,7 +153,6 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     @Override
     public Sun3DState getState() {
-        // TODO 002. unit test
         synchronize();
         return state;
     }
