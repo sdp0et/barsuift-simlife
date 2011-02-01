@@ -56,9 +56,6 @@ public class BasicSun implements Sun {
         brightness = state.getBrightness();
         riseAngle = state.getRiseAngle();
         adjustRiseAngle();
-        // if (1 == riseAngle) {
-        // riseAngle = 0;
-        // }
         zenithAngle = state.getZenithAngle();
         sun3D = new BasicSun3D(state.getSun3DState(), this);
     }
@@ -96,11 +93,57 @@ public class BasicSun implements Sun {
     public void setRiseAngle(float riseAngle) {
         this.riseAngle = riseAngle;
         adjustRiseAngle();
-        // if (1 == riseAngle) {
-        // this.riseAngle = 0;
-        // }
+        // computeBrightness();
         setChanged();
         notifySubscribers(SunUpdateCode.riseAngle);
+    }
+
+    // TODO temporary code (for reminder)
+    private void computeBrightness() {
+        // FIXME take into account the zenith angle also !!
+        // ratio is the ratio between the sky perimeter and the sun diameter
+        double ratio = 20;
+        // the sun diameter is thus 2 Pi / ratio (with sky radius of 1 : unit circle)
+        // here the angles ranges from 0 to 1 (not from 0 to 2*Pi)
+        // so the sun diameter is 1 / ratio
+        // and the sun radius is 1 / (2 * ratio)
+        double sunRadius = 1 / (2 * ratio);
+
+        double zenithAngleMin = sunRadius;
+        double brightnessFromZenith;
+        if (zenithAngle > zenithAngleMin) {
+            brightnessFromZenith = 1;
+        } else {
+            brightnessFromZenith = (1 + Math.sin(Math.PI * ratio * zenithAngle)) / 2;
+        }
+
+
+        double riseStartAngleStart = 0.25 - sunRadius;
+        double riseStartAngleEnd = 0.25 + sunRadius;
+        double riseEndAngleStart = 0.75 - sunRadius;
+        double riseEndAngleEnd = 0.75 + sunRadius;
+        double brightnessFromRise;
+        if (riseAngle < riseStartAngleStart || riseAngle > riseEndAngleEnd) {
+            brightnessFromRise = 0;
+        } else {
+            if (riseAngle > riseStartAngleEnd && riseAngle < riseEndAngleStart) {
+                brightnessFromRise = 1;
+            } else {
+                if (riseAngle < riseStartAngleEnd) {
+                    // sunrise function
+                    brightnessFromRise = (1 + Math.sin(Math.PI * ratio * (riseAngle - 0.25))) / 2;
+                } else {
+                    // sunset function
+                    brightnessFromRise = (1 - Math.sin(Math.PI * ratio * (riseAngle - 0.75))) / 2;
+                }
+            }
+        }
+        double brightness = brightnessFromRise * brightnessFromZenith;
+        System.out.println("riseAngle=" + riseAngle);
+        System.out.println("zenithAngle=" + zenithAngle);
+        // System.out.println("brightnessFromRise=" + brightnessFromRise);
+        // System.out.println("brightnessFromZenith=" + brightnessFromZenith);
+        // System.out.println("-------------------- brightness=" + brightness);
     }
 
     public float getZenithAngle() {
@@ -109,6 +152,7 @@ public class BasicSun implements Sun {
 
     public void setZenithAngle(float zenithAngle) {
         this.zenithAngle = zenithAngle;
+        // computeBrightness();
         setChanged();
         notifySubscribers(SunUpdateCode.zenithAngle);
     }

@@ -81,7 +81,37 @@ public class BasicSun3D implements Subscriber, Sun3D {
         Vector3f direction = new Vector3f(cosinusRiseAngle, -(sinusRiseAngle * sinusZenithAngle), -cosinusZenithAngle
                 * sinusRiseAngle);
         direction.normalize();
+        // computeBrightness();
         return direction;
+    }
+
+    //TODO temporary code (for reminder)
+    private void computeBrightness() {
+//        double ratio = 20;
+        double ratio = 7;
+        // the sun diameter is thus 2 Pi / ratio (with sky radius of 1 : unit circle)
+        // here the angles ranges from 0 to 1 (not from 0 to 2*Pi)
+        // so the sun diameter is 1 / ratio
+        // and the sun radius is 1 / (2 * ratio)
+        // double sunRadius = 1 / (2 * ratio); // = 1/40 = 0.025
+
+        // here the ratio is 7 and represents the ratio between the sky radius and the sun diameter
+        double sunRadius = 1 / (2 * ratio); // = 1/14 = 0.075
+        System.out.println("sunRadius=" + sunRadius);
+
+        double brightness;
+        double sunHeight = sinusRiseAngle * sinusZenithAngle;
+        if (sunHeight < -sunRadius) {
+            brightness = 0;
+        } else {
+            if (sunHeight > sunRadius) {
+                brightness = 1;
+            } else {
+                brightness = (1 + Math.sin(sunHeight / sunRadius * Math.PI / 2)) / 2;
+            }
+        }
+        System.out.println("sunHeight=" + sunHeight);
+        System.out.println("-------------------- brightness=" + brightness);
     }
 
     private void computeZenithAngleData() {
