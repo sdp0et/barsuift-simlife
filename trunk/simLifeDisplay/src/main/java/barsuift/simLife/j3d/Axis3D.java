@@ -33,21 +33,21 @@ public class Axis3D extends Shape3D {
     public Axis3D(Axis axisType) {
         this.startPoint = new Point3f(0, 0, 0);
         this.endPoint = new Point3f(axisType == Axis.X ? 5 : 0, axisType == Axis.Y ? 5 : 0, axisType == Axis.Z ? 5 : 0);
-        createBranchShape();
+        createAxis();
     }
 
-    private LineArray createBranchLine() {
-        LineArray branchLine = new LineArray(2, GeometryArray.COORDINATES);
-        branchLine.setCoordinate(0, startPoint);
-        branchLine.setCoordinate(1, endPoint);
-        return branchLine;
+    private LineArray createAxisGeometry() {
+        LineArray axisLine = new LineArray(2, GeometryArray.COORDINATES);
+        axisLine.setCoordinate(0, startPoint);
+        axisLine.setCoordinate(1, endPoint);
+        return axisLine;
     }
 
-    private void createBranchShape() {
-        LineArray branchLine = createBranchLine();
-        Appearance branchAppearance = new Appearance();
-        setGeometry(branchLine);
-        setAppearance(branchAppearance);
+    private void createAxis() {
+        LineArray axisLine = createAxisGeometry();
+        Appearance axisAppearance = new Appearance();
+        setGeometry(axisLine);
+        setAppearance(axisAppearance);
     }
 
 }
