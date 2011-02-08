@@ -32,20 +32,25 @@ public final class ColorConstants {
 
     public static final Color3f blue = new Color3f(0.0f, 0.0f, 1.0f);
 
+
     public static final Color3f yellow = new Color3f(1.0f, 1.0f, 0.0f);
 
     public static final Color3f cyan = new Color3f(0.0f, 1.0f, 1.0f);
 
     public static final Color3f magenta = new Color3f(1.0f, 0.0f, 1.0f);
 
+
     public static final Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
 
     public static final Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
+
 
     public static final Color3f grey = new Color3f(0.5f, 0.5f, 0.5f);
 
     public static final Color3f brown = new Color3f(0.57f, 0.36f, 0.15f);
 
     public static final Color3f brownYellow = new Color3f(0.78f, 0.68f, 0.15f);
+
+    public static final Color3f skyBlue = new Color3f(0.25f, 0.5f, 1.0f);
 
 }
