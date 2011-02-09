@@ -18,13 +18,11 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import javax.media.j3d.AmbientLight;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.landscape.Landscape3D;
-import barsuift.simLife.j3d.util.ColorConstants;
 
 
 public class BasicEnvironment3D implements Environment3D {
@@ -32,8 +30,6 @@ public class BasicEnvironment3D implements Environment3D {
     private final Environment3DState state;
 
     private final Environment environment;
-
-    private final AmbientLight ambientLight;
 
     private final Group group;
 
@@ -49,11 +45,8 @@ public class BasicEnvironment3D implements Environment3D {
         }
         this.state = state;
         this.environment = environment;
-        ambientLight = new AmbientLight(ColorConstants.grey);
-        ambientLight.setInfluencingBounds(state.getAmbientLightBounds().toBoundingBox());
         group = new BranchGroup();
-        group.addChild(ambientLight);
-        group.addChild(getSun3D().getLight());
+        group.addChild(getSky3D().getGroup());
         group.addChild(getLandscape3D().getBranchGroup());
     }
 
@@ -62,9 +55,8 @@ public class BasicEnvironment3D implements Environment3D {
         return group;
     }
 
-    @Override
-    public Sun3D getSun3D() {
-        return environment.getSun().getSun3D();
+    public Sky3D getSky3D() {
+        return environment.getSky().getSky3D();
     }
 
     @Override
@@ -79,7 +71,7 @@ public class BasicEnvironment3D implements Environment3D {
 
     @Override
     public void synchronize() {
-        // nothing to do
+        // FIXME 002 nothing to do ??
     }
 
 }

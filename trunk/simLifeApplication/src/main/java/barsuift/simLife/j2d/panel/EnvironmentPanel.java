@@ -45,7 +45,7 @@ public class EnvironmentPanel extends JPanel {
         super();
         // this.environment = environment;
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        add(new SunPanel(environment.getSun()));
+        add(new SunPanel(environment.getSky().getSun()));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
         Border blacklineBorder = BorderFactory.createLineBorder(Color.black);

@@ -21,10 +21,12 @@ package barsuift.simLife.j3d.environment;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.Geometry;
 import javax.media.j3d.GeometryArray;
+import javax.media.j3d.PolygonAttributes;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.TriangleFanArray;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
 
@@ -34,10 +36,13 @@ public class SunDisk3D extends Shape3D {
 
     private static final double ANGLE = 2 * Math.PI / NB_TRIANGLES_IN_FAN;
 
+    private static final float Z_POSITION = 0.1f;
+
     public SunDisk3D() {
         Geometry disk = createDiskGeometry();
         Appearance appearance = new Appearance();
         AppearanceFactory.setColorWithColoringAttributes(appearance, new Color3f(1.0f, 1.0f, 0.5f));
+        AppearanceFactory.setCullFace(appearance, PolygonAttributes.CULL_NONE);
         setGeometry(disk);
         setAppearance(appearance);
     }
@@ -45,9 +50,11 @@ public class SunDisk3D extends Shape3D {
     private Geometry createDiskGeometry() {
         TriangleFanArray disk = new TriangleFanArray(NB_TRIANGLES_IN_FAN + 2, GeometryArray.COORDINATES,
                 new int[] { NB_TRIANGLES_IN_FAN + 2 });
-        disk.setCoordinate(0, new Point3d(0, 0, -0.1));
+        disk.setCoordinate(0, new Point3d(0, 0, Z_POSITION));
         for (int i = 0; i <= NB_TRIANGLES_IN_FAN; i++) {
-            Point3d coordinate = new Point3d(Math.cos(i * ANGLE) / 100, Math.sin(i * ANGLE) / 100, -0.1);
+            float xPos = (float) (Math.cos(i * ANGLE) / 100);
+            float yPos = (float) (Math.sin(i * ANGLE) / 100);
+            Point3f coordinate = new Point3f(xPos, yPos, Z_POSITION);
             disk.setCoordinate(i + 1, coordinate);
         }
 

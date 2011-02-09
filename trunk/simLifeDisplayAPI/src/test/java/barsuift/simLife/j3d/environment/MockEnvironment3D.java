@@ -8,15 +8,27 @@ import barsuift.simLife.j3d.landscape.MockLandscape3D;
 
 public class MockEnvironment3D implements Environment3D {
 
-    private Environment3DState env3DState = new Environment3DState();
+    private Environment3DState env3DState;
 
-    private int synchronizedCalled = 0;
+    private int synchronizedCalled;
 
-    private Group group = new Group();
+    private Group group;
 
-    private Sun3D sun3D = new MockSun3D();
+    private Sky3D sky3D;
 
-    private Landscape3D landscape3D = new MockLandscape3D();
+    private Landscape3D landscape3D;
+
+    public MockEnvironment3D() {
+        reset();
+    }
+
+    public void reset() {
+        env3DState = new Environment3DState();
+        synchronizedCalled = 0;
+        group = new Group();
+        sky3D = new MockSky3D();
+        landscape3D = new MockLandscape3D();
+    }
 
     @Override
     public Environment3DState getState() {
@@ -50,12 +62,12 @@ public class MockEnvironment3D implements Environment3D {
     }
 
     @Override
-    public Sun3D getSun3D() {
-        return sun3D;
+    public Sky3D getSky3D() {
+        return sky3D;
     }
 
-    public void setSun3D(Sun3D sun3d) {
-        sun3D = sun3d;
+    public void setSky3D(Sky3D sky3d) {
+        sky3D = sky3d;
     }
 
     @Override

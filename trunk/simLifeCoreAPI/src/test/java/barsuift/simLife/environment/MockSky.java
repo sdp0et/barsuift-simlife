@@ -18,51 +18,46 @@
  */
 package barsuift.simLife.environment;
 
-import barsuift.simLife.j3d.environment.Environment3D;
-import barsuift.simLife.j3d.environment.MockEnvironment3D;
-import barsuift.simLife.landscape.Landscape;
-import barsuift.simLife.landscape.MockLandscape;
+import barsuift.simLife.j3d.environment.MockSky3D;
+import barsuift.simLife.j3d.environment.Sky3D;
 
 
-public class MockEnvironment implements Environment {
+public class MockSky implements Sky {
 
-    private Sky sky;
+    private Sun sun;
 
-    private EnvironmentState state;
+    private SkyState state;
 
     private int synchronizedCalled;
 
-    private Environment3D env3D;
+    private Sky3D sky3D;
 
-    private Landscape landscape;
-
-    public MockEnvironment() {
+    public MockSky() {
         reset();
     }
 
     public void reset() {
-        sky = new MockSky();
-        state = new EnvironmentState();
+        sun = new MockSun();
+        state = new SkyState();
         synchronizedCalled = 0;
-        env3D = new MockEnvironment3D();
-        landscape = new MockLandscape();
+        sky3D = new MockSky3D();
     }
 
     @Override
-    public Sky getSky() {
-        return sky;
+    public Sun getSun() {
+        return sun;
     }
 
-    public void setSky(Sky sky) {
-        this.sky = sky;
+    public void setSun(Sun sun) {
+        this.sun = sun;
     }
 
     @Override
-    public EnvironmentState getState() {
+    public SkyState getState() {
         return state;
     }
 
-    public void setEnvironmentState(EnvironmentState state) {
+    public void setSkyState(SkyState state) {
         this.state = state;
     }
 
@@ -80,21 +75,12 @@ public class MockEnvironment implements Environment {
     }
 
     @Override
-    public Environment3D getEnvironment3D() {
-        return env3D;
+    public Sky3D getSky3D() {
+        return sky3D;
     }
 
-    public void setEnvironment3D(Environment3D env3D) {
-        this.env3D = env3D;
-    }
-
-    @Override
-    public Landscape getLandscape() {
-        return landscape;
-    }
-
-    public void setLandscape(Landscape landscape) {
-        this.landscape = landscape;
+    public void setSky3D(Sky3D sky3D) {
+        this.sky3D = sky3D;
     }
 
 }

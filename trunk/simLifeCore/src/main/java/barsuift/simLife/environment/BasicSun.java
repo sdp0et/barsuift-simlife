@@ -100,7 +100,7 @@ public class BasicSun implements Sun {
 
     // TODO temporary code (for reminder)
     private void computeBrightness() {
-        // FIXME take into account the zenith angle also !!
+        // TODO ?? take into account the zenith angle also !!
         // ratio is the ratio between the sky perimeter and the sun diameter
         double ratio = 20;
         // the sun diameter is thus 2 Pi / ratio (with sky radius of 1 : unit circle)

@@ -27,30 +27,30 @@ import barsuift.simLife.landscape.LandscapeState;
 @XmlRootElement
 public class EnvironmentState implements State {
 
-    private SunState sunState;
+    private SkyState skyState;
 
     private LandscapeState landscape;
 
     private Environment3DState environment3DState;
 
     public EnvironmentState() {
-        this.sunState = new SunState();
+        this.skyState = new SkyState();
         this.landscape = new LandscapeState();
         this.environment3DState = new Environment3DState();
     }
 
-    public EnvironmentState(SunState sunState, LandscapeState landscape, Environment3DState environment3DState) {
-        this.sunState = sunState;
+    public EnvironmentState(SkyState skyState, LandscapeState landscape, Environment3DState environment3DState) {
+        this.skyState = skyState;
         this.landscape = landscape;
         this.environment3DState = environment3DState;
     }
 
-    public void setSunState(SunState sunState) {
-        this.sunState = sunState;
+    public void setSkyState(SkyState skyState) {
+        this.skyState = skyState;
     }
 
-    public SunState getSunState() {
-        return sunState;
+    public SkyState getSkyState() {
+        return skyState;
     }
 
     public LandscapeState getLandscape() {
@@ -74,7 +74,7 @@ public class EnvironmentState implements State {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((environment3DState == null) ? 0 : environment3DState.hashCode());
-        result = prime * result + ((sunState == null) ? 0 : sunState.hashCode());
+        result = prime * result + ((skyState == null) ? 0 : skyState.hashCode());
         result = prime * result + ((landscape == null) ? 0 : landscape.hashCode());
         return result;
     }
@@ -94,11 +94,11 @@ public class EnvironmentState implements State {
         } else
             if (!environment3DState.equals(other.environment3DState))
                 return false;
-        if (sunState == null) {
-            if (other.sunState != null)
+        if (skyState == null) {
+            if (other.skyState != null)
                 return false;
         } else
-            if (!sunState.equals(other.sunState))
+            if (!skyState.equals(other.skyState))
                 return false;
         if (landscape == null) {
             if (other.landscape != null)
@@ -111,7 +111,7 @@ public class EnvironmentState implements State {
 
     @Override
     public String toString() {
-        return "EnvironmentState [sunState=" + sunState + ", landscape=" + landscape + ", environment3DState="
+        return "EnvironmentState [skyState=" + skyState + ", landscape=" + landscape + ", environment3DState="
                 + environment3DState + "]";
     }
 

@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockEnvironment;
+import barsuift.simLife.environment.MockSky;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
@@ -50,8 +51,10 @@ public class BasicTreeLeafTest extends TestCase {
         BigDecimal lightRate = PercentHelper.getDecimalValue(70);
         mockSun = new MockSun();
         mockSun.setBrightness(lightRate);
+        MockSky mockSky = new MockSky();
+        mockSky.setSun(mockSun);
         MockEnvironment mockEnv = new MockEnvironment();
-        mockEnv.setSun(mockSun);
+        mockEnv.setSky(mockSky);
         universe = new MockUniverse();
         universe.setEnvironment(mockEnv);
 

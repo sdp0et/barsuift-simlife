@@ -30,14 +30,14 @@ public class EnvironmentStateFactory {
 
     public EnvironmentState createRandomEnvironmentState(LandscapeParameters landscapeParameters,
             DimensionParameters dimensionParameters) {
-        SunStateFactory sunStateFactory = new SunStateFactory();
-        SunState sunState = sunStateFactory.createSunState(dimensionParameters);
+        SkyStateFactory skyStateFactory = new SkyStateFactory();
+        SkyState skyState = skyStateFactory.createRandomSkyState(dimensionParameters);
         Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
-        Environment3DState env3DState = env3DStateFactory.createEnvironment3DState(dimensionParameters);
+        Environment3DState env3DState = env3DStateFactory.createEnvironment3DState();
         LandscapeStateFactory landscapeFactory = new LandscapeStateFactory();
         LandscapeState landscape = landscapeFactory
                 .createRandomLandscapeState(landscapeParameters, dimensionParameters);
-        return new EnvironmentState(sunState, landscape, env3DState);
+        return new EnvironmentState(skyState, landscape, env3DState);
     }
 
 }

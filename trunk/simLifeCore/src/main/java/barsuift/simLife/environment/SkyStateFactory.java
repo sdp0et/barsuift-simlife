@@ -16,13 +16,21 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.environment;
+package barsuift.simLife.environment;
 
+import barsuift.simLife.DimensionParameters;
+import barsuift.simLife.j3d.environment.Sky3DState;
+import barsuift.simLife.j3d.environment.Sky3DStateFactory;
 
-public class Environment3DStateFactory {
+// TODO unit test
+public class SkyStateFactory {
 
-    public Environment3DState createEnvironment3DState() {
-        return new Environment3DState();
+    public SkyState createRandomSkyState(DimensionParameters dimensionParameters) {
+        SunStateFactory sunStateFactory = new SunStateFactory();
+        SunState sunState = sunStateFactory.createSunState(dimensionParameters);
+        Sky3DStateFactory sky3DStateFactory = new Sky3DStateFactory();
+        Sky3DState sky3DState = sky3DStateFactory.createSky3DState(dimensionParameters);
+        return new SkyState(sunState, sky3DState);
     }
 
 }

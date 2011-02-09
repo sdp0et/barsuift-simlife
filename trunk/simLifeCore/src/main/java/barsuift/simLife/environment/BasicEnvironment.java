@@ -27,7 +27,7 @@ public class BasicEnvironment implements Environment {
 
     private final EnvironmentState state;
 
-    private final Sun sun;
+    private final Sky sky;
 
     private final Landscape landscape;
 
@@ -44,14 +44,14 @@ public class BasicEnvironment implements Environment {
             throw new IllegalArgumentException("Null environment state");
         }
         this.state = state;
-        this.sun = new BasicSun(state.getSunState());
+        this.sky = new BasicSky(state.getSkyState());
         this.landscape = new BasicLandscape(state.getLandscape());
         this.env3D = new BasicEnvironment3D(state.getEnvironment3DState(), this);
     }
 
     @Override
-    public Sun getSun() {
-        return sun;
+    public Sky getSky() {
+        return sky;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class BasicEnvironment implements Environment {
 
     @Override
     public void synchronize() {
-        sun.synchronize();
+        sky.synchronize();
         landscape.synchronize();
         env3D.synchronize();
     }

@@ -65,7 +65,7 @@ public class BasicTreeBranchTest extends TestCase {
     }
 
     public void testCollectSolarEnergy() {
-        ((MockSun) universe.getEnvironment().getSun()).setBrightness(PercentHelper.getDecimalValue(70));
+        ((MockSun) universe.getEnvironment().getSky().getSun()).setBrightness(PercentHelper.getDecimalValue(70));
         assertEquals(3, branch.getNbParts());
         branch.collectSolarEnergy();
 
