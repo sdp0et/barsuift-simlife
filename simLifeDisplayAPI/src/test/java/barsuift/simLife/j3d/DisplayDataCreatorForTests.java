@@ -24,6 +24,7 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.j3d.environment.Environment3DState;
+import barsuift.simLife.j3d.environment.Sky3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.j3d.landscape.Landscape3DState;
 import barsuift.simLife.j3d.landscape.NavigationMode;
@@ -118,15 +119,22 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Environment3DState createRandomEnvironment3DState() {
-        BoundingBoxState ambientLightBounds = createRandomBoundingBoxState();
-        return new Environment3DState(ambientLightBounds);
+        return new Environment3DState();
     }
 
     public static Environment3DState createSpecificEnvironment3DState() {
-        BoundingBoxState ambientLightBounds = createSpecificBoundingBoxState();
-        return new Environment3DState(ambientLightBounds);
+        return new Environment3DState();
     }
 
+    public static Sky3DState createRandomSky3DState() {
+        BoundingBoxState ambientLightBounds = createRandomBoundingBoxState();
+        return new Sky3DState(ambientLightBounds);
+    }
+
+    public static Sky3DState createSpecificSky3DState() {
+        BoundingBoxState ambientLightBounds = createSpecificBoundingBoxState();
+        return new Sky3DState(ambientLightBounds);
+    }
 
     /**
      * Create a square landscape (size=2) of 4 points from (0,0) to (1,1), with random heights between 0 and 1.

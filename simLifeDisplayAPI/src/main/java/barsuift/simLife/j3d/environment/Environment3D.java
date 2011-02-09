@@ -28,7 +28,7 @@ public interface Environment3D extends Persistent<Environment3DState> {
 
     public Group getGroup();
 
-    public Sun3D getSun3D();
+    public Sky3D getSky3D();
 
     public Landscape3D getLandscape3D();
 

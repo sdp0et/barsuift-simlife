@@ -25,9 +25,11 @@ import java.util.List;
 import java.util.Set;
 
 import barsuift.simLife.environment.EnvironmentState;
+import barsuift.simLife.environment.SkyState;
 import barsuift.simLife.environment.SunState;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.environment.Environment3DState;
+import barsuift.simLife.j3d.environment.Sky3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.j3d.landscape.Landscape3DState;
 import barsuift.simLife.j3d.tree.Tree3DState;
@@ -197,22 +199,39 @@ public final class CoreDataCreatorForTests {
     }
 
     public static EnvironmentState createRandomEnvironmentState() {
-        SunState sunState = createRandomSunState();
+        SkyState skyState = createRandomSkyState();
         Environment3DState env3DState = DisplayDataCreatorForTests.createRandomEnvironment3DState();
         LandscapeState landscape = createRandomLandscapeState();
-        return new EnvironmentState(sunState, landscape, env3DState);
+        return new EnvironmentState(skyState, landscape, env3DState);
     }
 
     /**
-     * Create a specific environment state. The sun state is made through the {@link #createSpecificSunState()} method.
+     * Create a specific environment state. The sky state is made through the {@link #createSpecificSkyState()} method.
      * 
      * @return
      */
     public static EnvironmentState createSpecificEnvironmentState() {
-        SunState sunState = createSpecificSunState();
+        SkyState skyState = createSpecificSkyState();
         Environment3DState env3DState = DisplayDataCreatorForTests.createSpecificEnvironment3DState();
         LandscapeState landscape = createSpecificLandscapeState();
-        return new EnvironmentState(sunState, landscape, env3DState);
+        return new EnvironmentState(skyState, landscape, env3DState);
+    }
+
+    public static SkyState createRandomSkyState() {
+        SunState sunState = createRandomSunState();
+        Sky3DState env3DState = DisplayDataCreatorForTests.createRandomSky3DState();
+        return new SkyState(sunState, env3DState);
+    }
+
+    /**
+     * Create a specific sky state. The sun state is made through the {@link #createSpecificSunState()} method.
+     * 
+     * @return
+     */
+    public static SkyState createSpecificSkyState() {
+        SunState sunState = createSpecificSunState();
+        Sky3DState env3DState = DisplayDataCreatorForTests.createSpecificSky3DState();
+        return new SkyState(sunState, env3DState);
     }
 
     public static LandscapeState createRandomLandscapeState() {

@@ -16,13 +16,16 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.environment;
+package barsuift.simLife.environment;
+
+import barsuift.simLife.Persistent;
+import barsuift.simLife.j3d.environment.Sky3D;
 
 
-public class Environment3DStateFactory {
+public interface Sky extends Persistent<SkyState> {
 
-    public Environment3DState createEnvironment3DState() {
-        return new Environment3DState();
-    }
+    public Sun getSun();
+
+    public Sky3D getSky3D();
 
 }

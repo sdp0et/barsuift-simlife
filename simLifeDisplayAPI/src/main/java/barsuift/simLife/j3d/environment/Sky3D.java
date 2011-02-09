@@ -18,11 +18,15 @@
  */
 package barsuift.simLife.j3d.environment;
 
+import javax.media.j3d.Group;
 
-public class Environment3DStateFactory {
+import barsuift.simLife.Persistent;
 
-    public Environment3DState createEnvironment3DState() {
-        return new Environment3DState();
-    }
+
+public interface Sky3D extends Persistent<Sky3DState> {
+
+    public Group getGroup();
+
+    public Sun3D getSun3D();
 
 }

@@ -25,9 +25,9 @@ import barsuift.simLife.landscape.Landscape;
 
 public interface Environment extends Persistent<EnvironmentState> {
 
-    public Sun getSun();
-    
     public Landscape getLandscape();
+
+    public Sky getSky();
 
     public Environment3D getEnvironment3D();
 

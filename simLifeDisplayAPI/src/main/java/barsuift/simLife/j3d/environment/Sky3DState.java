@@ -21,16 +21,36 @@ package barsuift.simLife.j3d.environment;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
+import barsuift.simLife.j3d.BoundingBoxState;
 
+// TODO unit test
 @XmlRootElement
-public class Environment3DState implements State {
+public class Sky3DState implements State {
 
-    public Environment3DState() {
+    private BoundingBoxState ambientLightBounds;
+
+    public Sky3DState() {
+        this.ambientLightBounds = new BoundingBoxState();
+    }
+
+    public Sky3DState(BoundingBoxState ambientLightBounds) {
+        this.ambientLightBounds = ambientLightBounds;
     }
 
     @Override
     public int hashCode() {
-        return 1;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((ambientLightBounds == null) ? 0 : ambientLightBounds.hashCode());
+        return result;
+    }
+
+    public BoundingBoxState getAmbientLightBounds() {
+        return ambientLightBounds;
+    }
+
+    public void setAmbientLightBounds(BoundingBoxState ambientLightBounds) {
+        this.ambientLightBounds = ambientLightBounds;
     }
 
     @Override
@@ -41,12 +61,18 @@ public class Environment3DState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
+        Sky3DState other = (Sky3DState) obj;
+        if (ambientLightBounds == null) {
+            if (other.ambientLightBounds != null)
+                return false;
+        } else
+            if (!ambientLightBounds.equals(other.ambientLightBounds))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Environment3DState []";
+        return "Sky3DState [ambientLightBounds=" + ambientLightBounds + "]";
     }
-
 }
