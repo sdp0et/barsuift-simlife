@@ -27,13 +27,17 @@ import barsuift.simLife.j3d.BoundingBoxState;
 @XmlRootElement
 public class Sky3DState implements State {
 
+    private BoundingBoxState skyBounds;
+
     private BoundingBoxState ambientLightBounds;
 
     public Sky3DState() {
+        this.skyBounds = new BoundingBoxState();
         this.ambientLightBounds = new BoundingBoxState();
     }
 
-    public Sky3DState(BoundingBoxState ambientLightBounds) {
+    public Sky3DState(BoundingBoxState skyBounds, BoundingBoxState ambientLightBounds) {
+        this.skyBounds = skyBounds;
         this.ambientLightBounds = ambientLightBounds;
     }
 
@@ -41,8 +45,17 @@ public class Sky3DState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((skyBounds == null) ? 0 : skyBounds.hashCode());
         result = prime * result + ((ambientLightBounds == null) ? 0 : ambientLightBounds.hashCode());
         return result;
+    }
+
+    public BoundingBoxState getSkyBounds() {
+        return skyBounds;
+    }
+
+    public void setSkyBounds(BoundingBoxState skyBounds) {
+        this.skyBounds = skyBounds;
     }
 
     public BoundingBoxState getAmbientLightBounds() {
@@ -68,11 +81,17 @@ public class Sky3DState implements State {
         } else
             if (!ambientLightBounds.equals(other.ambientLightBounds))
                 return false;
+        if (ambientLightBounds == null) {
+            if (other.ambientLightBounds != null)
+                return false;
+        } else
+            if (!ambientLightBounds.equals(other.ambientLightBounds))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Sky3DState [ambientLightBounds=" + ambientLightBounds + "]";
+        return "Sky3DState [skyBounds=" + skyBounds + ", ambientLightBounds=" + ambientLightBounds + "]";
     }
 }

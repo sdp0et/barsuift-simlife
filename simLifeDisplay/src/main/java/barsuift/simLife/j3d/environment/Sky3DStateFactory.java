@@ -27,7 +27,8 @@ public class Sky3DStateFactory {
 
     public Sky3DState createSky3DState(DimensionParameters dimension) {
         BoundingBoxState ambientLightBounds = BoundingBoxHelper.createBoundingBox(dimension);
-        return new Sky3DState(ambientLightBounds);
+        BoundingBoxState skyBounds = BoundingBoxHelper.createBoundingBox(dimension);
+        return new Sky3DState(skyBounds, ambientLightBounds);
     }
 
 }

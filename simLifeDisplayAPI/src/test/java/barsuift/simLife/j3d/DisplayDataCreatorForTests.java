@@ -127,13 +127,15 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Sky3DState createRandomSky3DState() {
+        BoundingBoxState skyBounds = createRandomBoundingBoxState();
         BoundingBoxState ambientLightBounds = createRandomBoundingBoxState();
-        return new Sky3DState(ambientLightBounds);
+        return new Sky3DState(skyBounds, ambientLightBounds);
     }
 
     public static Sky3DState createSpecificSky3DState() {
+        BoundingBoxState skyBounds = createSpecificBoundingBoxState();
         BoundingBoxState ambientLightBounds = createSpecificBoundingBoxState();
-        return new Sky3DState(ambientLightBounds);
+        return new Sky3DState(skyBounds, ambientLightBounds);
     }
 
     /**
