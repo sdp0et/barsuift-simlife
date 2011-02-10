@@ -18,9 +18,14 @@
  */
 package barsuift.simLife.j3d.environment;
 
+import javax.media.j3d.BranchGroup;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Light;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.AxisAngle4d;
 import javax.vecmath.Color3f;
+import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 import barsuift.simLife.environment.Sun;
@@ -45,7 +50,11 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final DirectionalLight light;
 
+    private final BranchGroup group;
+
     private final Publisher publisher = new BasicPublisher(this);
+
+    private TransformGroup transformGroup;
 
     public BasicSun3D(Sun3DState state, Sun sun) {
         super();
@@ -58,6 +67,19 @@ public class BasicSun3D implements Subscriber, Sun3D {
         light.setInfluencingBounds(state.getBounds().toBoundingBox());
         light.setCapability(Light.ALLOW_COLOR_WRITE);
         light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
+        group = createSunGroup();
+    }
+
+    private BranchGroup createSunGroup() {
+        transformGroup = new TransformGroup();
+        // this is to allow the sun disk to be rotated while live
+        transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        transformGroup.setTransform(computeRiseTransform());
+        SunDisk3D sunDisk = new SunDisk3D();
+        transformGroup.addChild(sunDisk);
+        BranchGroup branchGroup = new BranchGroup();
+        branchGroup.addChild(transformGroup);
+        return branchGroup;
     }
 
     @Override
@@ -67,13 +89,18 @@ public class BasicSun3D implements Subscriber, Sun3D {
         }
         if (arg == SunUpdateCode.riseAngle) {
             computeRiseAngleData();
+            // TODO test to out the light in the same TG as the disk, instead of updating its direction
             light.setDirection(computeDirection());
             light.setColor(computeColor());
+            transformGroup.setTransform(computeRiseTransform());
         }
         if (arg == SunUpdateCode.zenithAngle) {
             computeZenithAngleData();
             light.setDirection(computeDirection());
             light.setColor(computeColor());
+            // FIXME this is a test method
+            SunDisk3D sunDisk = (SunDisk3D) transformGroup.getChild(0);
+            sunDisk.moveGeom();
         }
     }
 
@@ -85,9 +112,30 @@ public class BasicSun3D implements Subscriber, Sun3D {
         return direction;
     }
 
-    //TODO temporary code (for reminder)
+    // TODO the rotation should also depend on the zenith angle !
+    // FIXME store the rotation in state!!
+    private Transform3D computeRiseTransform() {
+        double riseAngle = sun.getRiseAngle() * Math.PI * 2;
+        System.out.println("Computing riseRotation=" + riseAngle + " from sunRiseAngle=" + sun.getRiseAngle());
+        Transform3D result = new Transform3D();
+        // result.setRotation(new AxisAngle4d(new Vector3d(1, 0, 0), Math.PI / 4));
+        // result.setTranslation(new Vector3f(0, -10, 0));
+        // Transform3D t2 = new Transform3D();
+        // t2.setRotation(new AxisAngle4d(new Vector3d(0, -1, 0), riseAngle));
+        // result.mul(t2);
+        // FIXME unable to change the height of the sun at a given angle, because the translational components of the
+        // transform are not taken into account
+        result.setRotation(new AxisAngle4d(new Vector3d(0, -1, 0), riseAngle));
+        // result.setRotation(new AxisAngle4d(new Vector3d(0, -1, 0), Math.PI));
+
+        // result.setTranslation(new Vector3f(0, Float.MAX_VALUE, 0));
+
+        return result;
+    }
+
+    // TODO temporary code (for reminder)
     private void computeBrightness() {
-//        double ratio = 20;
+        // double ratio = 20;
         double ratio = 7;
         // the sun diameter is thus 2 Pi / ratio (with sky radius of 1 : unit circle)
         // here the angles ranges from 0 to 1 (not from 0 to 2*Pi)
@@ -141,8 +189,14 @@ public class BasicSun3D implements Subscriber, Sun3D {
         return (float) Math.sqrt(Math.abs(sinusRiseAngle * sinusZenithAngle));
     }
 
+    @Override
     public DirectionalLight getLight() {
         return light;
+    }
+
+    @Override
+    public BranchGroup getGroup() {
+        return group;
     }
 
     public void addSubscriber(Subscriber subscriber) {

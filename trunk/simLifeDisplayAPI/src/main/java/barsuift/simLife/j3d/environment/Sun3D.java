@@ -19,6 +19,7 @@
 package barsuift.simLife.j3d.environment;
 
 
+import javax.media.j3d.BranchGroup;
 import javax.media.j3d.DirectionalLight;
 
 import barsuift.simLife.Persistent;
@@ -48,5 +49,13 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
     public float getWhiteFactor();
 
     public DirectionalLight getLight();
+
+    /**
+     * Returns the group which contains the graphic representation of the sun. This groupd needs to be added to the
+     * Background instance of the scene graph.
+     * 
+     * @return the sun group
+     */
+    public BranchGroup getGroup();
 
 }

@@ -30,6 +30,7 @@ import javax.vecmath.Point3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
 
+// FIXME transform the disk in a sphere and the method to move the central point and it should be fine
 public class SunDisk3D extends Shape3D {
 
     private static final int NB_TRIANGLES_IN_FAN = 24;
@@ -50,6 +51,7 @@ public class SunDisk3D extends Shape3D {
     private Geometry createDiskGeometry() {
         TriangleFanArray disk = new TriangleFanArray(NB_TRIANGLES_IN_FAN + 2, GeometryArray.COORDINATES,
                 new int[] { NB_TRIANGLES_IN_FAN + 2 });
+        disk.setCapability(TriangleFanArray.ALLOW_COORDINATE_WRITE);
         disk.setCoordinate(0, new Point3d(0, 0, Z_POSITION));
         for (int i = 0; i <= NB_TRIANGLES_IN_FAN; i++) {
             float xPos = (float) (Math.cos(i * ANGLE) / 100);
@@ -59,6 +61,19 @@ public class SunDisk3D extends Shape3D {
         }
 
         return disk;
+    }
+
+    // TODO this is a test method
+    public void moveGeom() {
+        TriangleFanArray geom = (TriangleFanArray) getGeometry();
+        for (int i = 0; i < NB_TRIANGLES_IN_FAN + 2; i++) {
+            Point3f coordinate = new Point3f();
+            geom.getCoordinate(i, coordinate);
+            System.out.println("old coord=" + coordinate);
+            coordinate.y -= 0.001;
+            geom.setCoordinate(i, coordinate);
+        }
+
     }
 
 }

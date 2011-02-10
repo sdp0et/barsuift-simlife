@@ -20,14 +20,8 @@ package barsuift.simLife.j3d.environment;
 
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Background;
-import javax.media.j3d.BoundingBox;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.vecmath.AxisAngle4d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 import barsuift.simLife.environment.Sky;
 import barsuift.simLife.j3d.util.ColorConstants;
@@ -61,27 +55,16 @@ public class BasicSky3D implements Sky3D {
         group = new BranchGroup();
         group.addChild(ambientLight);
         group.addChild(getSun3D().getLight());
-        addSkyBackGround();
+        Background background = createSkyBackGround();
+        group.addChild(background);
     }
 
-    private void addSkyBackGround() {
+    private Background createSkyBackGround() {
         Background background = new Background();
         background.setColor(ColorConstants.skyBlue);
-        // FIXME fix bounds
-        background.setApplicationBounds(new BoundingBox(new Point3d(0, 0, 0), new Point3d(1000, 1000, 1000)));
-
-        // FIXME the rest of this method should be in BasicSun3D !!
-        BranchGroup bgGroup = new BranchGroup();
-        TransformGroup bgTg = new TransformGroup();
-        Transform3D bgTransf = new Transform3D();
-        // FIXME put proper rotation here
-        bgTransf.setRotation(new AxisAngle4d(new Vector3d(0, 1, 0), Math.PI));
-        bgTg.setTransform(bgTransf);
-        bgGroup.addChild(bgTg);
-        SunDisk3D sunDisk = new SunDisk3D();
-        bgTg.addChild(sunDisk);
-        background.setGeometry(bgGroup);
-        group.addChild(background);
+        background.setApplicationBounds(state.getSkyBounds().toBoundingBox());
+        background.setGeometry(getSun3D().getGroup());
+        return background;
     }
 
     @Override
