@@ -30,8 +30,7 @@ import barsuift.simLife.j3d.AppearanceFactory;
 
 import com.sun.j3d.utils.geometry.Sphere;
 
-// FIXME transform the disk in a sphere and the method to move the central point and it should be fine
-public class SunDisk3D {
+public class SunSphere3D {
 
     private static final float Z_POSITION = 0.15f;
 
@@ -39,7 +38,7 @@ public class SunDisk3D {
 
     private final GeometryArray geometry;
 
-    public SunDisk3D() {
+    public SunSphere3D() {
         Appearance sunSphereAppearance = new Appearance();
         AppearanceFactory.setColorWithColoringAttributes(sunSphereAppearance, new Color3f(1.0f, 1.0f, 0.5f));
         this.sphere = new Sphere(0.01f, sunSphereAppearance);
