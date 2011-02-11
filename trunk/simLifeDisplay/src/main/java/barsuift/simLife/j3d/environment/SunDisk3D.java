@@ -19,61 +19,58 @@
 package barsuift.simLife.j3d.environment;
 
 import javax.media.j3d.Appearance;
-import javax.media.j3d.Geometry;
 import javax.media.j3d.GeometryArray;
-import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.Group;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.TriangleFanArray;
 import javax.vecmath.Color3f;
-import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
 
+import com.sun.j3d.utils.geometry.Sphere;
+
 // FIXME transform the disk in a sphere and the method to move the central point and it should be fine
-public class SunDisk3D extends Shape3D {
+public class SunDisk3D {
 
-    private static final int NB_TRIANGLES_IN_FAN = 24;
+    private static final float Z_POSITION = 0.15f;
 
-    private static final double ANGLE = 2 * Math.PI / NB_TRIANGLES_IN_FAN;
+    private final Sphere sphere;
 
-    private static final float Z_POSITION = 0.1f;
+    private final GeometryArray geometry;
 
     public SunDisk3D() {
-        Geometry disk = createDiskGeometry();
-        Appearance appearance = new Appearance();
-        AppearanceFactory.setColorWithColoringAttributes(appearance, new Color3f(1.0f, 1.0f, 0.5f));
-        AppearanceFactory.setCullFace(appearance, PolygonAttributes.CULL_NONE);
-        setGeometry(disk);
-        setAppearance(appearance);
+        Appearance sunSphereAppearance = new Appearance();
+        AppearanceFactory.setColorWithColoringAttributes(sunSphereAppearance, new Color3f(1.0f, 1.0f, 0.5f));
+        this.sphere = new Sphere(0.01f, sunSphereAppearance);
+
+        Shape3D shape = sphere.getShape();
+        this.geometry = (GeometryArray) shape.getGeometry();
+        // this is to allow coordinate writing
+        geometry.setCapability(TriangleFanArray.ALLOW_COORDINATE_WRITE);
+        // initial positioning of the sphere geometry
+        for (int i = 0; i < geometry.getVertexCount(); i++) {
+            Point3f coordinate = new Point3f();
+            geometry.getCoordinate(i, coordinate);
+            coordinate.z += Z_POSITION;
+            geometry.setCoordinate(i, coordinate);
+        }
     }
 
-    private Geometry createDiskGeometry() {
-        TriangleFanArray disk = new TriangleFanArray(NB_TRIANGLES_IN_FAN + 2, GeometryArray.COORDINATES,
-                new int[] { NB_TRIANGLES_IN_FAN + 2 });
-        disk.setCapability(TriangleFanArray.ALLOW_COORDINATE_WRITE);
-        disk.setCoordinate(0, new Point3d(0, 0, Z_POSITION));
-        for (int i = 0; i <= NB_TRIANGLES_IN_FAN; i++) {
-            float xPos = (float) (Math.cos(i * ANGLE) / 100);
-            float yPos = (float) (Math.sin(i * ANGLE) / 100);
-            Point3f coordinate = new Point3f(xPos, yPos, Z_POSITION);
-            disk.setCoordinate(i + 1, coordinate);
-        }
-
-        return disk;
+    public Group getGroup() {
+        return sphere;
     }
 
     // TODO this is a test method
-    public void moveGeom() {
-        TriangleFanArray geom = (TriangleFanArray) getGeometry();
-        for (int i = 0; i < NB_TRIANGLES_IN_FAN + 2; i++) {
-            Point3f coordinate = new Point3f();
-            geom.getCoordinate(i, coordinate);
-            System.out.println("old coord=" + coordinate);
-            coordinate.y -= 0.001;
-            geom.setCoordinate(i, coordinate);
-        }
+    public void moveGeom(float diff) {
+        float[] coords = new float[geometry.getVertexCount() * 3];
+        geometry.getCoordinates(0, coords);
+        for (int i = 0; i < geometry.getVertexCount(); i++) {
+            // coords[i * 3 + 1] += 0.001;
+            coords[i * 3 + 1] += diff / 10;
 
+        }
+        geometry.setCoordinates(0, coords);
     }
 
 }

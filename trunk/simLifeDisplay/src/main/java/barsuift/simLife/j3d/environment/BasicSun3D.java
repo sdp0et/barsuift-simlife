@@ -54,7 +54,11 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Publisher publisher = new BasicPublisher(this);
 
-    private TransformGroup transformGroup;
+    private final TransformGroup transformGroup;
+
+    private final SunDisk3D sunDisk;
+
+    private float oldzenith;
 
     public BasicSun3D(Sun3DState state, Sun sun) {
         super();
@@ -67,19 +71,15 @@ public class BasicSun3D implements Subscriber, Sun3D {
         light.setInfluencingBounds(state.getBounds().toBoundingBox());
         light.setCapability(Light.ALLOW_COLOR_WRITE);
         light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
-        group = createSunGroup();
-    }
-
-    private BranchGroup createSunGroup() {
         transformGroup = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         transformGroup.setTransform(computeRiseTransform());
-        SunDisk3D sunDisk = new SunDisk3D();
-        transformGroup.addChild(sunDisk);
-        BranchGroup branchGroup = new BranchGroup();
-        branchGroup.addChild(transformGroup);
-        return branchGroup;
+        sunDisk = new SunDisk3D();
+        transformGroup.addChild(sunDisk.getGroup());
+        group = new BranchGroup();
+        group.addChild(transformGroup);
+        oldzenith = sun.getZenithAngle();
     }
 
     @Override
@@ -99,8 +99,9 @@ public class BasicSun3D implements Subscriber, Sun3D {
             light.setDirection(computeDirection());
             light.setColor(computeColor());
             // FIXME this is a test method
-            SunDisk3D sunDisk = (SunDisk3D) transformGroup.getChild(0);
-            sunDisk.moveGeom();
+            float diff = sun.getZenithAngle() - oldzenith;
+            oldzenith = sun.getZenithAngle();
+            sunDisk.moveGeom(diff);
         }
     }
 
