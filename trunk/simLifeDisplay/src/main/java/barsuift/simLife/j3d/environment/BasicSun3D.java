@@ -56,7 +56,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final TransformGroup transformGroup;
 
-    private final SunDisk3D sunDisk;
+    private final SunSphere3D sunSphere;
 
     private float oldzenith;
 
@@ -75,8 +75,8 @@ public class BasicSun3D implements Subscriber, Sun3D {
         // this is to allow the sun disk to be rotated while live
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         transformGroup.setTransform(computeRiseTransform());
-        sunDisk = new SunDisk3D();
-        transformGroup.addChild(sunDisk.getGroup());
+        sunSphere = new SunSphere3D();
+        transformGroup.addChild(sunSphere.getGroup());
         group = new BranchGroup();
         group.addChild(transformGroup);
         oldzenith = sun.getZenithAngle();
@@ -101,7 +101,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
             // FIXME this is a test method
             float diff = sun.getZenithAngle() - oldzenith;
             oldzenith = sun.getZenithAngle();
-            sunDisk.moveGeom(diff);
+            sunSphere.moveGeom(diff);
         }
     }
 
