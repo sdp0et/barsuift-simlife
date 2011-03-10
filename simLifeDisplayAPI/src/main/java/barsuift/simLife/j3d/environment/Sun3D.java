@@ -26,8 +26,6 @@ import barsuift.simLife.Persistent;
 import barsuift.simLife.message.Publisher;
 
 
-
-
 public interface Sun3D extends Persistent<Sun3DState>, Publisher {
 
     /**
