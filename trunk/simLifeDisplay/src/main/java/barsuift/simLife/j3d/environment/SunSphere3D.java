@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.j3d.environment;
 
+import java.util.Arrays;
+
 import javax.media.j3d.Appearance;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Group;
@@ -38,6 +40,8 @@ public class SunSphere3D {
 
     private final GeometryArray geometry;
 
+    private final float[] initialCoords;
+
     public SunSphere3D() {
         Appearance sunSphereAppearance = new Appearance();
         AppearanceFactory.setColorWithColoringAttributes(sunSphereAppearance, new Color3f(1.0f, 1.0f, 0.5f));
@@ -54,6 +58,9 @@ public class SunSphere3D {
             coordinate.z += Z_POSITION;
             geometry.setCoordinate(i, coordinate);
         }
+
+        initialCoords = new float[geometry.getVertexCount() * 3];
+        geometry.getCoordinates(0, initialCoords);
     }
 
     public Group getGroup() {
@@ -61,12 +68,16 @@ public class SunSphere3D {
     }
 
     // TODO this is a test method
-    public void moveGeom(float diff) {
-        float[] coords = new float[geometry.getVertexCount() * 3];
-        geometry.getCoordinates(0, coords);
+    //FIXME 000. fist thing is to put a earth ecliptic angle parameter
+    public void moveGeom(float yPosition) {
+        float[] coords = Arrays.copyOf(initialCoords, initialCoords.length);
+        // float[] coords = new float[geometry.getVertexCount() * 3];
+        // geometry.getCoordinates(0, coords);
         for (int i = 0; i < geometry.getVertexCount(); i++) {
-            // coords[i * 3 + 1] += 0.001;
-            coords[i * 3 + 1] += diff / 10;
+            // move the Y coordinates
+            // coords[i * 3 + 1] += yPosition / 10;
+            // 0.065
+            coords[i * 3 + 1] += yPosition * 0.065f;
 
         }
         geometry.setCoordinates(0, coords);

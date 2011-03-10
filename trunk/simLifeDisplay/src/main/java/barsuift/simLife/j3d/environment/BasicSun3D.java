@@ -89,7 +89,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         }
         if (arg == SunUpdateCode.riseAngle) {
             computeRiseAngleData();
-            // TODO test to out the light in the same TG as the disk, instead of updating its direction
+            // TODO test to put the light in the same TG as the disk, instead of updating its direction
             light.setDirection(computeDirection());
             light.setColor(computeColor());
             transformGroup.setTransform(computeRiseTransform());
@@ -98,10 +98,11 @@ public class BasicSun3D implements Subscriber, Sun3D {
             computeZenithAngleData();
             light.setDirection(computeDirection());
             light.setColor(computeColor());
-            // FIXME this is a test method
-            float diff = sun.getZenithAngle() - oldzenith;
-            oldzenith = sun.getZenithAngle();
-            sunSphere.moveGeom(diff);
+            // FIXME this is a test method. Is should definitely not be called at this time and place.
+            // float diff = sun.getZenithAngle() - oldzenith;
+            // oldzenith = sun.getZenithAngle();
+            // sunSphere.moveGeom(diff);
+            sunSphere.moveGeom(sun.getZenithAngle());
         }
     }
 
