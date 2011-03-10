@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.j3d.environment;
 
+import javax.media.j3d.BranchGroup;
 import javax.media.j3d.DirectionalLight;
 
 import barsuift.simLife.message.BasicPublisher;
@@ -33,8 +34,19 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
 
     private int synchronizedCalled;
 
+    private BranchGroup group;
+
     public MockSun3D() {
         super(null);
+        reset();
+    }
+
+    private void reset() {
+        whiteFactor = 1f;
+        light = new DirectionalLight();
+        state = new Sun3DState();
+        synchronizedCalled = 0;
+        group = new BranchGroup();
     }
 
     @Override
@@ -71,6 +83,15 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
 
     public int getNbSynchronize() {
         return synchronizedCalled;
+    }
+
+    @Override
+    public BranchGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(BranchGroup group) {
+        this.group = group;
     }
 
 }
