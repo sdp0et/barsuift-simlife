@@ -29,6 +29,9 @@ import barsuift.simLife.Randomizer;
  * 
  * Those parameters are :
  * <ul>
+ * <li>size : The size of the map's width (width = length = size)</li>
+ * <li>maximumHeight : The maximum height used to normalize landscape. After normalization, the landscape heights will
+ * be between 0 and this value</li>
  * <li>roughness : The roughness determines how chaotic the landscape will be.
  * <ul>
  * <li>0 means very smooth landscape</li>
