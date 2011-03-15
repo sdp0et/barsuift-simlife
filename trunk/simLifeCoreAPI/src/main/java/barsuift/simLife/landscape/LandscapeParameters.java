@@ -18,7 +18,9 @@
  */
 package barsuift.simLife.landscape;
 
+import barsuift.simLife.MathHelper;
 import barsuift.simLife.Parameters;
+import barsuift.simLife.Randomizer;
 
 
 /**
@@ -46,6 +48,26 @@ import barsuift.simLife.Parameters;
  */
 public class LandscapeParameters implements Parameters {
 
+    public static final int SIZE_DEFAULT_EXPONENT = 7;
+
+    public static final int SIZE_DEFAULT = 1 << SIZE_DEFAULT_EXPONENT;
+
+    public static final int SIZE_MIN_EXPONENT = 5;
+
+    public static final int SIZE_MIN = 1 << SIZE_MIN_EXPONENT;
+
+    public static final int SIZE_MAX_EXPONENT = 9;
+
+    public static final int SIZE_MAX = 1 << SIZE_MAX_EXPONENT;
+
+
+    public static final float MAX_HEIGHT_DEFAULT = 20;
+
+    public static final int MAX_HEIGHT_MIN = 0;
+
+    public static final int MAX_HEIGHT_MAX = 50;
+
+
     public static final float ROUGHNESS_DEFAULT = 0.5f;
 
     public static final float ROUGHNESS_MIN = 0f;
@@ -61,6 +83,10 @@ public class LandscapeParameters implements Parameters {
 
 
 
+    private int size;
+
+    private float maximumHeight;
+
     private float roughness;
 
     private float erosion;
@@ -70,6 +96,42 @@ public class LandscapeParameters implements Parameters {
      */
     public LandscapeParameters() {
         resetToDefaults();
+    }
+
+
+    public int getSize() {
+        return size;
+    }
+
+    /**
+     * 
+     * @param size the size must be a positive, greater than 0, power of 2
+     * @throws IllegalArgumentException if the size is not valid
+     */
+    public void setSize(int size) {
+        if (!MathHelper.isPowerOfTwo(size)) {
+            throw new IllegalArgumentException("Size must be (2^N) sized and positive");
+        }
+        this.size = size;
+    }
+
+    public float getMaximumHeight() {
+        return maximumHeight;
+    }
+
+    /**
+     * 
+     * @param maximumHeight must be between {@link #MAX_HEIGHT_MIN} and {@link #MAX_HEIGHT_MAX}
+     * @throws IllegalArgumentException if the maximum height is not valid
+     */
+    public void setMaximumHeight(float maximumHeight) {
+        if (maximumHeight < MAX_HEIGHT_MIN) {
+            throw new IllegalArgumentException("maximumHeight must be greater than " + MAX_HEIGHT_MIN);
+        }
+        if (maximumHeight > MAX_HEIGHT_MAX) {
+            throw new IllegalArgumentException("maximumHeight must be less than " + MAX_HEIGHT_MAX);
+        }
+        this.maximumHeight = maximumHeight;
     }
 
     public float getRoughness() {
@@ -112,12 +174,16 @@ public class LandscapeParameters implements Parameters {
 
     @Override
     public void resetToDefaults() {
+        this.size = SIZE_DEFAULT;
+        this.maximumHeight = MAX_HEIGHT_DEFAULT;
         this.roughness = ROUGHNESS_DEFAULT;
         this.erosion = EROSION_DEFAULT;
     }
 
     @Override
     public void random() {
+        this.size = 1 << Randomizer.randomBetween(SIZE_MIN_EXPONENT, SIZE_MAX_EXPONENT);
+        this.maximumHeight = Randomizer.randomBetween(MAX_HEIGHT_MIN, MAX_HEIGHT_MAX);
         // roughness between 0.25 and 0.75
         this.roughness = (float) (Math.random() + 0.5) / 2;
         // erosion between 0.25 and 0.75
@@ -126,7 +192,8 @@ public class LandscapeParameters implements Parameters {
 
     @Override
     public String toString() {
-        return "LandscapeParameters [roughness=" + roughness + ", erosion=" + erosion + "]";
+        return "LandscapeParameters [size=" + size + ", maximumHeight=" + maximumHeight + ", roughness=" + roughness
+                + ", erosion=" + erosion + "]";
     }
 
 }

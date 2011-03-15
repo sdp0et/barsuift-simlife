@@ -19,7 +19,7 @@
 package barsuift.simLife.j3d.universe;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PlanetParameters;
+import barsuift.simLife.landscape.LandscapeParameters;
 import barsuift.simLife.universe.MockUniverseContext;
 
 
@@ -31,7 +31,7 @@ public class BasicUniverseContext3DTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        PlanetParameters parameters = new PlanetParameters();
+        LandscapeParameters parameters = new LandscapeParameters();
         parameters.random();
         UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
         state = factory.createUniverseContext3DState(parameters);

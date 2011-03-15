@@ -22,7 +22,7 @@ import javax.media.j3d.BoundingBox;
 import javax.vecmath.Point3d;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PlanetParameters;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 
 public class BoundingBoxHelperTest extends TestCase {
@@ -36,12 +36,12 @@ public class BoundingBoxHelperTest extends TestCase {
     }
 
     public void testCreateBoundingSphere() {
-        PlanetParameters planetParameters = new PlanetParameters();
+        LandscapeParameters landscapeParameters = new LandscapeParameters();
         BoundingBox boundingBox;
 
-        planetParameters.setSize(8);
-        planetParameters.setMaximumHeight(10);
-        boundingBox = BoundingBoxHelper.createBoundingBox(planetParameters).toBoundingBox();
+        landscapeParameters.setSize(8);
+        landscapeParameters.setMaximumHeight(10);
+        boundingBox = BoundingBoxHelper.createBoundingBox(landscapeParameters).toBoundingBox();
 
         assertTrue(boundingBox.intersect(new Point3d(0, -1, 0)));
         assertTrue(boundingBox.intersect(new Point3d(4, 5, 4)));

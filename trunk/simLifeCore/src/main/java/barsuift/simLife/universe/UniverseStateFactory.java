@@ -42,8 +42,7 @@ public class UniverseStateFactory {
      */
     public UniverseState createEmptyRandomUniverseState(AllParameters parameters) {
         EnvironmentStateFactory envStateFactory = new EnvironmentStateFactory();
-        EnvironmentState environment = envStateFactory.createRandomEnvironmentState(parameters.getLandscape(),
-                parameters.getPlanet());
+        EnvironmentState environment = envStateFactory.createRandomEnvironmentState(parameters.getLandscape());
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
         PhysicsState physics = physicsStateFactory.createPhysicsState();
         SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();
