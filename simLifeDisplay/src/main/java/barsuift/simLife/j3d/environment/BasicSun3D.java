@@ -58,7 +58,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final SunSphere3D sunSphere;
 
-    // FIXME should not be hard-coded
+    // FIXME should not be hard-coded and should be stored in state (and unit tested)
     // private final float latitude = 0f;
 
     private final float latitude = (float) Math.PI / 2;
