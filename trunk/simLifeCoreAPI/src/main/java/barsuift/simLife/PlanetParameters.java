@@ -26,10 +26,8 @@ package barsuift.simLife;
  * 
  * Those parameters are :
  * <ul>
- * <li>size : The size of the map's width (width = length = size)</li>
- * <li>maximumHeight : The maximum height used to normalize landscape. After normalization, the landscape heights will
- * be between 0 and this value</li>
  * <li>latitude : the map latitude on the planet.</li>
+ * <li>ecliptic obliquity : the angle between the normal to the planet rotation axis and the planet orbital plan</li>
  * </ul>
  * 
  */
