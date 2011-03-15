@@ -33,6 +33,7 @@ import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import barsuift.simLife.MathHelper;
 import barsuift.simLife.j2d.ParametersDependent;
 import barsuift.simLife.landscape.LandscapeParameters;
 
@@ -42,6 +43,10 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
     private static final long serialVersionUID = 2609564426686409556L;
 
     private final LandscapeParameters parameters;
+
+    private final JSlider sizeSlider;
+
+    private final JSlider maxHeightSlider;
 
     private JSlider roughnessSlider;
 
@@ -57,20 +62,60 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
         TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "Landscape");
         setBorder(titledBorder);
 
+        sizeSlider = createSizeSlider(parameters);
+        maxHeightSlider = createMaxHeightSlider(parameters);
         roughnessSlider = createRoughnessSlider(parameters);
         erosionSlider = createErosionSlider(parameters);
 
-        JLabel roughnessLabel = new JLabel("Roughness", JLabel.CENTER);
-        roughnessLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(roughnessLabel);
+        add(createLabel("Size (meters)"));
+        add(sizeSlider);
+
+        add(Box.createRigidArea(new Dimension(0, 20)));
+
+        add(createLabel("Maximum height (meters)"));
+        add(maxHeightSlider);
+
+        add(Box.createRigidArea(new Dimension(0, 20)));
+
+        add(createLabel("Roughness"));
         add(roughnessSlider);
 
         add(Box.createRigidArea(new Dimension(0, 20)));
 
-        JLabel erosionLabel = new JLabel("Erosion", JLabel.CENTER);
-        erosionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(erosionLabel);
+        add(createLabel("Erosion"));
         add(erosionSlider);
+    }
+
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text, JLabel.CENTER);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return label;
+    }
+
+    private JSlider createSizeSlider(LandscapeParameters parameters) {
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, LandscapeParameters.SIZE_MIN_EXPONENT,
+                LandscapeParameters.SIZE_MAX_EXPONENT, MathHelper.getPowerOfTwoExponent(parameters.getSize()));
+        slider.setPaintTicks(true);
+        slider.setMajorTickSpacing(1);
+        slider.setPaintLabels(true);
+        slider.setSnapToTicks(true);
+        // Create the label table
+        Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
+        for (int exponent = LandscapeParameters.SIZE_MIN_EXPONENT; exponent <= LandscapeParameters.SIZE_MAX_EXPONENT; exponent++) {
+            labels.put(exponent, new JLabel(Integer.toString(1 << exponent)));
+        }
+        slider.setLabelTable(labels);
+
+        return slider;
+    }
+
+    private JSlider createMaxHeightSlider(LandscapeParameters parameters) {
+        JSlider maxHeightSlider = new JSlider(JSlider.HORIZONTAL, LandscapeParameters.MAX_HEIGHT_MIN,
+                LandscapeParameters.MAX_HEIGHT_MAX, Math.round(parameters.getMaximumHeight()));
+        maxHeightSlider.setPaintTicks(true);
+        maxHeightSlider.setMajorTickSpacing(10);
+        maxHeightSlider.setPaintLabels(true);
+        return maxHeightSlider;
     }
 
     private JSlider createRoughnessSlider(LandscapeParameters parameters) {
@@ -109,12 +154,16 @@ public class LandscapeParametersPanel extends JPanel implements ParametersDepend
 
     @Override
     public void readFromParameters() {
+        sizeSlider.setValue(MathHelper.getPowerOfTwoExponent(parameters.getSize()));
+        maxHeightSlider.setValue(Math.round(parameters.getMaximumHeight()));
         roughnessSlider.setValue(Math.round(parameters.getRoughness() * 100));
         erosionSlider.setValue(Math.round(parameters.getErosion() * 100));
     }
 
     @Override
     public void writeIntoParameters() {
+        parameters.setSize(1 << sizeSlider.getValue());
+        parameters.setMaximumHeight(maxHeightSlider.getValue());
         parameters.setRoughness((float) roughnessSlider.getValue() / 100);
         parameters.setErosion((float) erosionSlider.getValue() / 100);
     }

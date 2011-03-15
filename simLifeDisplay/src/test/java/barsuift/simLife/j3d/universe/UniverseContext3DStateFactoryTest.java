@@ -19,9 +19,9 @@
 package barsuift.simLife.j3d.universe;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.landscape.NavigatorState;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 
 public class UniverseContext3DStateFactoryTest extends TestCase {
@@ -35,7 +35,7 @@ public class UniverseContext3DStateFactoryTest extends TestCase {
     }
 
     public void testCreateRandomUniverseContext3DState() {
-        PlanetParameters parameters = new PlanetParameters();
+        LandscapeParameters parameters = new LandscapeParameters();
         parameters.random();
 
         UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();

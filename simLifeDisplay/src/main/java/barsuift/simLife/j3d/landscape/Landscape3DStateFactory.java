@@ -20,18 +20,16 @@ package barsuift.simLife.j3d.landscape;
 
 import java.util.Arrays;
 
-import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 public class Landscape3DStateFactory {
 
-    public Landscape3DState createRandomLandscape3DState(LandscapeParameters landscapeParameters,
-            PlanetParameters planetParameters) {
-        MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(landscapeParameters, planetParameters);
+    public Landscape3DState createRandomLandscape3DState(LandscapeParameters landscapeParameters) {
+        MidPointHeightMapGenerator generator = new MidPointHeightMapGenerator(landscapeParameters);
         float[] coordinates = generator.generateHeightData();
-        int[] coordinatesIndices = generateCoordinatesIndices(planetParameters.getSize());
-        int[] stripCounts = generateStripCounts(planetParameters.getSize());
-        return new Landscape3DState(planetParameters.getSize(), coordinates, coordinatesIndices, stripCounts);
+        int[] coordinatesIndices = generateCoordinatesIndices(landscapeParameters.getSize());
+        int[] stripCounts = generateStripCounts(landscapeParameters.getSize());
+        return new Landscape3DState(landscapeParameters.getSize(), coordinates, coordinatesIndices, stripCounts);
     }
 
     /**

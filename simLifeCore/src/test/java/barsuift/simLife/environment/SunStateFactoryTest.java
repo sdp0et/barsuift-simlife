@@ -21,7 +21,7 @@ package barsuift.simLife.environment;
 import java.math.BigDecimal;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PlanetParameters;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 
 public class SunStateFactoryTest extends TestCase {
@@ -35,9 +35,9 @@ public class SunStateFactoryTest extends TestCase {
     }
 
     public void testCreateSunState() {
-        PlanetParameters planetParameters = new PlanetParameters();
+        LandscapeParameters landscapeParameters = new LandscapeParameters();
         SunStateFactory factory = new SunStateFactory();
-        SunState sunState = factory.createSunState(planetParameters);
+        SunState sunState = factory.createSunState(landscapeParameters);
         BigDecimal brightness = sunState.getBrightness();
         assertEquals(1.00f, brightness.floatValue());
         assertEquals(0.375f, sunState.getRiseAngle(), 0.0001);

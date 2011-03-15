@@ -18,16 +18,16 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.BoundingBoxState;
 import barsuift.simLife.j3d.util.BoundingBoxHelper;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 // TODO unit test
 public class Sky3DStateFactory {
 
-    public Sky3DState createSky3DState(PlanetParameters planetParameters) {
-        BoundingBoxState ambientLightBounds = BoundingBoxHelper.createBoundingBox(planetParameters);
-        BoundingBoxState skyBounds = BoundingBoxHelper.createBoundingBox(planetParameters);
+    public Sky3DState createSky3DState(LandscapeParameters landscapeParameters) {
+        BoundingBoxState ambientLightBounds = BoundingBoxHelper.createBoundingBox(landscapeParameters);
+        BoundingBoxState skyBounds = BoundingBoxHelper.createBoundingBox(landscapeParameters);
         return new Sky3DState(skyBounds, ambientLightBounds);
     }
 

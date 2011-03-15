@@ -23,15 +23,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.Tuple3fState;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
 
 public class BasicNavigatorTest extends TestCase {
 
-    private PlanetParameters parameters;
+    private LandscapeParameters parameters;
 
     private BasicNavigator navigator;
 
@@ -41,7 +41,7 @@ public class BasicNavigatorTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        parameters = new PlanetParameters();
+        parameters = new LandscapeParameters();
         parameters.random();
         NavigatorStateFactory navigatorStateFactory = new NavigatorStateFactory();
         state = navigatorStateFactory.createNavigatorState(parameters);

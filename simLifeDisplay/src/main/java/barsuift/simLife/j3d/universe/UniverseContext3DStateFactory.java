@@ -18,11 +18,11 @@
  */
 package barsuift.simLife.j3d.universe;
 
-import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.SimLifeCanvas3DStateFactory;
 import barsuift.simLife.j3d.landscape.NavigatorState;
 import barsuift.simLife.j3d.landscape.NavigatorStateFactory;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 
 public class UniverseContext3DStateFactory {
@@ -35,7 +35,7 @@ public class UniverseContext3DStateFactory {
      * <li>a default navigator</li>
      * </ul>
      */
-    public UniverseContext3DState createUniverseContext3DState(PlanetParameters parameters) {
+    public UniverseContext3DState createUniverseContext3DState(LandscapeParameters parameters) {
         boolean axisShowing = true;
         SimLifeCanvas3DStateFactory canvasStateFactory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = canvasStateFactory.createCanvas3DState();

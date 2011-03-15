@@ -20,10 +20,10 @@ package barsuift.simLife.environment;
 
 import java.math.BigDecimal;
 
-import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.j3d.environment.Sun3DStateFactory;
+import barsuift.simLife.landscape.LandscapeParameters;
 
 
 public class SunStateFactory {
@@ -44,12 +44,12 @@ public class SunStateFactory {
     // night at least)
     // TODO 020. the sun position should evolve with the time of the day
     // TODO 025. the sun sliders should be able to be decorrelated from auto move
-    public SunState createSunState(PlanetParameters planetParameters) {
+    public SunState createSunState(LandscapeParameters landscapeParameters) {
         BigDecimal brightness = PercentHelper.getDecimalValue(100);
         float riseAngle = 0.375f;
         float zenithAngle = 0.5f;
         Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
-        Sun3DState sun3DState = sun3DStateFactory.createSun3DState(planetParameters);
+        Sun3DState sun3DState = sun3DStateFactory.createSun3DState(landscapeParameters);
         return new SunState(brightness, riseAngle, zenithAngle, sun3DState);
     }
 

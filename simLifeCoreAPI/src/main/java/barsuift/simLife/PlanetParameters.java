@@ -33,28 +33,7 @@ package barsuift.simLife;
  * </ul>
  * 
  */
-// TODO move the size and maxHeight params to Landscape params instead
 public class PlanetParameters implements Parameters {
-
-    public static final int SIZE_DEFAULT_EXPONENT = 7;
-
-    public static final int SIZE_DEFAULT = 1 << SIZE_DEFAULT_EXPONENT;
-
-    public static final int SIZE_MIN_EXPONENT = 5;
-
-    public static final int SIZE_MIN = 1 << SIZE_MIN_EXPONENT;
-
-    public static final int SIZE_MAX_EXPONENT = 9;
-
-    public static final int SIZE_MAX = 1 << SIZE_MAX_EXPONENT;
-
-
-    public static final float MAX_HEIGHT_DEFAULT = 20;
-
-    public static final int MAX_HEIGHT_MIN = 0;
-
-    public static final int MAX_HEIGHT_MAX = 50;
-
 
     public static final float LATITUDE_DEFAULT = 45;
 
@@ -71,10 +50,6 @@ public class PlanetParameters implements Parameters {
 
 
 
-    private int size;
-
-    private float maximumHeight;
-
     private float latitude;
 
     private float eclipticObliquity;
@@ -84,41 +59,6 @@ public class PlanetParameters implements Parameters {
      */
     public PlanetParameters() {
         resetToDefaults();
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    /**
-     * 
-     * @param size the size must be a positive, greater than 0, power of 2
-     * @throws IllegalArgumentException if the size is not valid
-     */
-    public void setSize(int size) {
-        if (!MathHelper.isPowerOfTwo(size)) {
-            throw new IllegalArgumentException("Size must be (2^N) sized and positive");
-        }
-        this.size = size;
-    }
-
-    public float getMaximumHeight() {
-        return maximumHeight;
-    }
-
-    /**
-     * 
-     * @param maximumHeight must be between {@link #MAX_HEIGHT_MIN} and {@link #MAX_HEIGHT_MAX}
-     * @throws IllegalArgumentException if the maximum height is not valid
-     */
-    public void setMaximumHeight(float maximumHeight) {
-        if (maximumHeight < MAX_HEIGHT_MIN) {
-            throw new IllegalArgumentException("maximumHeight must be greater than " + MAX_HEIGHT_MIN);
-        }
-        if (maximumHeight > MAX_HEIGHT_MAX) {
-            throw new IllegalArgumentException("maximumHeight must be less than " + MAX_HEIGHT_MAX);
-        }
-        this.maximumHeight = maximumHeight;
     }
 
     public float getLatitude() {
@@ -158,24 +98,19 @@ public class PlanetParameters implements Parameters {
 
     @Override
     public void resetToDefaults() {
-        this.size = SIZE_DEFAULT;
-        this.maximumHeight = MAX_HEIGHT_DEFAULT;
         this.latitude = LATITUDE_DEFAULT;
         this.eclipticObliquity = ECLIPTIC_OBLIQUITY_DEFAULT;
     }
 
     @Override
     public void random() {
-        this.size = 1 << Randomizer.randomBetween(SIZE_MIN_EXPONENT, SIZE_MAX_EXPONENT);
-        this.maximumHeight = Randomizer.randomBetween(MAX_HEIGHT_MIN, MAX_HEIGHT_MAX);
         this.latitude = Randomizer.randomBetween(LATITUDE_MIN, LATITUDE_MAX);
         this.eclipticObliquity = Randomizer.randomBetween(ECLIPTIC_OBLIQUITY_MIN, ECLIPTIC_OBLIQUITY_MAX);
     }
 
     @Override
     public String toString() {
-        return "PlanetParameters [size=" + size + ", maximumHeight=" + maximumHeight + ", latitude=" + latitude
-                + ", eclipticObliquity=" + eclipticObliquity + "]";
+        return "PlanetParameters [latitude=" + latitude + ", eclipticObliquity=" + eclipticObliquity + "]";
     }
 
 }
