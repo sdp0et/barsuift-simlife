@@ -29,6 +29,7 @@ package barsuift.simLife;
  * <li>size : The size of the map's width (width = length = size)</li>
  * <li>maximumHeight : The maximum height used to normalize landscape. After normalization, the landscape heights will
  * be between 0 and this value</li>
+ * <li>latitude : the map latitude on the planet.</li>
  * </ul>
  * 
  */
@@ -54,10 +55,19 @@ public class DimensionParameters implements Parameters {
     public static final int MAX_HEIGHT_MAX = 50;
 
 
+    public static final float LATITUDE_DEFAULT = 45;
+
+    public static final int LATITUDE_MIN = 0;
+
+    public static final int LATITUDE_MAX = 90;
+
+
 
     private int size;
 
     private float maximumHeight;
+
+    private float latitude;
 
     /**
      * Empty constructor.
@@ -101,10 +111,28 @@ public class DimensionParameters implements Parameters {
         this.maximumHeight = maximumHeight;
     }
 
+    public float getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * 
+     * @param latitude the latitude must be between {@link #LATITUDE_MIN} and {@link #LATITUDE_MAX}
+     * @throws IllegalArgumentException if the latitude is not valid
+     */
+    public void setLatitude(float latitude) {
+        if (latitude > LATITUDE_MAX || latitude < LATITUDE_MIN) {
+            throw new IllegalArgumentException("latitude must be comprised between " + LATITUDE_MIN + " and "
+                    + LATITUDE_MAX);
+        }
+        this.latitude = latitude;
+    }
+
     @Override
     public void resetToDefaults() {
         this.size = SIZE_DEFAULT;
         this.maximumHeight = MAX_HEIGHT_DEFAULT;
+        this.latitude = LATITUDE_DEFAULT;
     }
 
     @Override
@@ -113,11 +141,13 @@ public class DimensionParameters implements Parameters {
         this.size = 1 << Randomizer.randomBetween(SIZE_MIN_EXPONENT, SIZE_MAX_EXPONENT);
         // max height between 10 and 50
         this.maximumHeight = Randomizer.randomBetween(10, MAX_HEIGHT_MAX);
+        this.latitude = Randomizer.randomBetween(LATITUDE_MIN, LATITUDE_MAX);
     }
 
     @Override
     public String toString() {
-        return "DimensionParameters [size=" + size + ", maximumHeight=" + maximumHeight + "]";
+        return "DimensionParameters [size=" + size + ", maximumHeight=" + maximumHeight + ", latitude=" + latitude
+                + "]";
     }
 
 }
