@@ -44,11 +44,13 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
 
     private final DimensionParameters parameters;
 
-    private JSlider sizeSlider;
+    private final JSlider sizeSlider;
 
-    private JSlider maxHeightSlider;
+    private final JSlider maxHeightSlider;
 
-    private JSlider latitudeSlider;
+    private final JSlider latitudeSlider;
+
+    private final JSlider eclipticObliquitySlider;
 
     public DimensionParametersPanel(DimensionParameters parameters) {
         super();
@@ -63,6 +65,7 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
         sizeSlider = createSizeSlider(parameters);
         maxHeightSlider = createMaxHeightSlider(parameters);
         latitudeSlider = createLatitudeSlider(parameters);
+        eclipticObliquitySlider = createEclipticObliquitySlider(parameters);
 
         add(createLabel("Size (meters)"));
         add(sizeSlider);
@@ -76,6 +79,11 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
 
         add(createLabel("Latitude (degrees)"));
         add(latitudeSlider);
+
+        add(Box.createRigidArea(new Dimension(0, 20)));
+
+        add(createLabel("Ecliptic Obliquity (degrees)"));
+        add(eclipticObliquitySlider);
     }
 
     private JSlider createSizeSlider(DimensionParameters parameters) {
@@ -113,6 +121,15 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
         return latitudeSlider;
     }
 
+    private JSlider createEclipticObliquitySlider(DimensionParameters parameters) {
+        JSlider eclipticObliquitySlider = new JSlider(JSlider.HORIZONTAL, DimensionParameters.ECLIPTIC_OBLIQUITY_MIN,
+                DimensionParameters.ECLIPTIC_OBLIQUITY_MAX, Math.round(parameters.getEclipticObliquity()));
+        eclipticObliquitySlider.setPaintTicks(true);
+        eclipticObliquitySlider.setMajorTickSpacing(10);
+        eclipticObliquitySlider.setPaintLabels(true);
+        return eclipticObliquitySlider;
+    }
+
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text, JLabel.CENTER);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -124,6 +141,7 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
         sizeSlider.setValue(MathHelper.getPowerOfTwoExponent(parameters.getSize()));
         maxHeightSlider.setValue(Math.round(parameters.getMaximumHeight()));
         latitudeSlider.setValue(Math.round(parameters.getLatitude()));
+        eclipticObliquitySlider.setValue(Math.round(parameters.getEclipticObliquity()));
     }
 
     @Override
@@ -131,6 +149,7 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
         parameters.setSize(1 << sizeSlider.getValue());
         parameters.setMaximumHeight(maxHeightSlider.getValue());
         parameters.setLatitude(latitudeSlider.getValue());
+        parameters.setEclipticObliquity(eclipticObliquitySlider.getValue());
     }
 
 }

@@ -62,12 +62,21 @@ public class DimensionParameters implements Parameters {
     public static final int LATITUDE_MAX = 90;
 
 
+    public static final float ECLIPTIC_OBLIQUITY_DEFAULT = 23;
+
+    public static final int ECLIPTIC_OBLIQUITY_MIN = 0;
+
+    public static final int ECLIPTIC_OBLIQUITY_MAX = 90;
+
+
 
     private int size;
 
     private float maximumHeight;
 
     private float latitude;
+
+    private float eclipticObliquity;
 
     /**
      * Empty constructor.
@@ -121,11 +130,29 @@ public class DimensionParameters implements Parameters {
      * @throws IllegalArgumentException if the latitude is not valid
      */
     public void setLatitude(float latitude) {
-        if (latitude > LATITUDE_MAX || latitude < LATITUDE_MIN) {
+        if (latitude < LATITUDE_MIN || latitude > LATITUDE_MAX) {
             throw new IllegalArgumentException("latitude must be comprised between " + LATITUDE_MIN + " and "
                     + LATITUDE_MAX);
         }
         this.latitude = latitude;
+    }
+
+    public float getEclipticObliquity() {
+        return eclipticObliquity;
+    }
+
+    /**
+     * 
+     * @param eclipticObliquity the ecliptic obliquity must be between {@link #ECLIPTIC_OBLIQUITY_MIN} and
+     *            {@link #ECLIPTIC_OBLIQUITY_MAX}
+     * @throws IllegalArgumentException if the ecliptic obliquity is not valid
+     */
+    public void setEclipticObliquity(float eclipticObliquity) {
+        if (eclipticObliquity < ECLIPTIC_OBLIQUITY_MIN || eclipticObliquity > ECLIPTIC_OBLIQUITY_MAX) {
+            throw new IllegalArgumentException("ecliptic obliquity must be comprised between " + ECLIPTIC_OBLIQUITY_MIN
+                    + " and " + ECLIPTIC_OBLIQUITY_MAX);
+        }
+        this.eclipticObliquity = eclipticObliquity;
     }
 
     @Override
@@ -133,21 +160,21 @@ public class DimensionParameters implements Parameters {
         this.size = SIZE_DEFAULT;
         this.maximumHeight = MAX_HEIGHT_DEFAULT;
         this.latitude = LATITUDE_DEFAULT;
+        this.eclipticObliquity = ECLIPTIC_OBLIQUITY_DEFAULT;
     }
 
     @Override
     public void random() {
-        // size between 32 and 512
         this.size = 1 << Randomizer.randomBetween(SIZE_MIN_EXPONENT, SIZE_MAX_EXPONENT);
-        // max height between 10 and 50
-        this.maximumHeight = Randomizer.randomBetween(10, MAX_HEIGHT_MAX);
+        this.maximumHeight = Randomizer.randomBetween(MAX_HEIGHT_MIN, MAX_HEIGHT_MAX);
         this.latitude = Randomizer.randomBetween(LATITUDE_MIN, LATITUDE_MAX);
+        this.eclipticObliquity = Randomizer.randomBetween(ECLIPTIC_OBLIQUITY_MIN, ECLIPTIC_OBLIQUITY_MAX);
     }
 
     @Override
     public String toString() {
         return "DimensionParameters [size=" + size + ", maximumHeight=" + maximumHeight + ", latitude=" + latitude
-                + "]";
+                + ", eclipticObliquity=" + eclipticObliquity + "]";
     }
 
 }

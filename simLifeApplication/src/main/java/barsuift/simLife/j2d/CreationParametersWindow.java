@@ -49,7 +49,7 @@ public class CreationParametersWindow extends JDialog implements ParametersDepen
         this.parameters = parameters;
 
         int width = 500;
-        int height = 500;
+        int height = 650;
         setBounds(100, 100, width, height);
         JPanel contentPane = new JPanel(new BorderLayout());
         setContentPane(contentPane);
