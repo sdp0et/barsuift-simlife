@@ -58,6 +58,11 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final SunSphere3D sunSphere;
 
+    // FIXME should not be hard-coded
+    // private final float latitude = 0f;
+
+    private final float latitude = (float) Math.PI / 2;
+
     public BasicSun3D(Sun3DState state, Sun sun) {
         super();
         this.state = state;
@@ -73,7 +78,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         // this is to allow the sun disk to be rotated while live
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         transformGroup.setTransform(computeRiseTransform());
-        sunSphere = new SunSphere3D();
+        sunSphere = new SunSphere3D(latitude);
         transformGroup.addChild(sunSphere.getGroup());
         group = new BranchGroup();
         group.addChild(transformGroup);
@@ -124,7 +129,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         // result.mul(t2);
         // FIXME unable to change the height of the sun at a given angle, because the translational components of the
         // transform are not taken into account
-        result.setRotation(new AxisAngle4d(new Vector3d(0, 0, -1), riseAngle));
+        result.setRotation(new AxisAngle4d(new Vector3d(0, -Math.sin(latitude), -Math.cos(latitude)), riseAngle));
         // result.setRotation(new AxisAngle4d(new Vector3d(0, -1, 0), Math.PI));
 
         // result.setTranslation(new Vector3f(0, Float.MAX_VALUE, 0));
