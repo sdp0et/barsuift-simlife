@@ -34,7 +34,7 @@ import com.sun.j3d.utils.geometry.Sphere;
 
 public class SunSphere3D {
 
-    private static final float Z_POSITION = 0.15f;
+    private static final float Y_POSITION = -0.15f;
 
     private final Sphere sphere;
 
@@ -55,7 +55,7 @@ public class SunSphere3D {
         for (int i = 0; i < geometry.getVertexCount(); i++) {
             Point3f coordinate = new Point3f();
             geometry.getCoordinate(i, coordinate);
-            coordinate.z += Z_POSITION;
+            coordinate.y += Y_POSITION;
             geometry.setCoordinate(i, coordinate);
         }
 
@@ -68,16 +68,16 @@ public class SunSphere3D {
     }
 
     // TODO this is a test method
-    //FIXME 000. fist thing is to put a earth ecliptic angle parameter
+    // FIXME 000. fist thing is to put a earth ecliptic angle parameter
     public void moveGeom(float yPosition) {
         float[] coords = Arrays.copyOf(initialCoords, initialCoords.length);
         // float[] coords = new float[geometry.getVertexCount() * 3];
         // geometry.getCoordinates(0, coords);
         for (int i = 0; i < geometry.getVertexCount(); i++) {
-            // move the Y coordinates
-            // coords[i * 3 + 1] += yPosition / 10;
+            // move the Z coordinates
+            // coords[i * 3 + 2] += yPosition / 10;
             // 0.065
-            coords[i * 3 + 1] += yPosition * 0.065f;
+            coords[i * 3 + 2] += yPosition * 0.065f;
 
         }
         geometry.setCoordinates(0, coords);
