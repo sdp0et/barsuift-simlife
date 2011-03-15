@@ -19,7 +19,7 @@
 package barsuift.simLife.j3d.universe;
 
 import junit.framework.TestCase;
-import barsuift.simLife.DimensionParameters;
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.landscape.NavigatorState;
 
@@ -35,7 +35,7 @@ public class UniverseContext3DStateFactoryTest extends TestCase {
     }
 
     public void testCreateRandomUniverseContext3DState() {
-        DimensionParameters parameters = new DimensionParameters();
+        PlanetParameters parameters = new PlanetParameters();
         parameters.random();
 
         UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();

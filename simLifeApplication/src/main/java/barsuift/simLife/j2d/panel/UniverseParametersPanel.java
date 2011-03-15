@@ -24,7 +24,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import barsuift.simLife.DimensionParameters;
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j2d.ParametersDependent;
 import barsuift.simLife.landscape.LandscapeParameters;
 
@@ -35,15 +35,15 @@ public class UniverseParametersPanel extends JPanel implements ParametersDepende
 
     private final LandscapeParametersPanel landscapePanel;
 
-    private final DimensionParametersPanel dimensionPanel;
+    private final PlanetParametersPanel planetPanel;
 
-    public UniverseParametersPanel(DimensionParameters dimensionParameters, LandscapeParameters landscapeParameters) {
+    public UniverseParametersPanel(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
         super();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 
-        dimensionPanel = new DimensionParametersPanel(dimensionParameters);
-        add(dimensionPanel);
+        planetPanel = new PlanetParametersPanel(planetParameters);
+        add(planetPanel);
 
         add(Box.createRigidArea(new Dimension(0, 20)));
 
@@ -53,13 +53,13 @@ public class UniverseParametersPanel extends JPanel implements ParametersDepende
 
     @Override
     public void readFromParameters() {
-        dimensionPanel.readFromParameters();
+        planetPanel.readFromParameters();
         landscapePanel.readFromParameters();
     }
 
     @Override
     public void writeIntoParameters() {
-        dimensionPanel.writeIntoParameters();
+        planetPanel.writeIntoParameters();
         landscapePanel.writeIntoParameters();
     }
 

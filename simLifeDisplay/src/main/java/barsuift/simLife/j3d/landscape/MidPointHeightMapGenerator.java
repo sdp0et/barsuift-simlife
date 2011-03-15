@@ -24,7 +24,7 @@ package barsuift.simLife.j3d.landscape;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import barsuift.simLife.DimensionParameters;
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 /**
@@ -49,12 +49,12 @@ public class MidPointHeightMapGenerator {
      * Constructor.
      * 
      * @param landscapeParameters the landscape parameters
-     * @param dimensionParameters the dimension parameters
+     * @param planetParameters the planet parameters
      */
-    public MidPointHeightMapGenerator(LandscapeParameters landscapeParameters, DimensionParameters dimensionParameters) {
-        logger.info("Creating a map generator with dimension " + dimensionParameters + " with landscape parameters "
-                + landscapeParameters);
-        this.size = dimensionParameters.getSize();
+    public MidPointHeightMapGenerator(LandscapeParameters landscapeParameters, PlanetParameters planetParameters) {
+        logger.info("Creating a map generator with planet parameters " + planetParameters
+                + " and landscape parameters " + landscapeParameters);
+        this.size = planetParameters.getSize();
         // when height reducer is big (between 2 and 3), first iterations have a disproportionately large effect
         // creating smooth landscape
         // when it is small (between 1 and 2), late iterations have a disproportionately large effect creating chaotic
@@ -63,7 +63,7 @@ public class MidPointHeightMapGenerator {
         // limit the erosion between 0 and 0.6 as it is already a good erosion
         // moreover it depends on the roughness because a smooth landscape can not and should not be eroded too much
         this.erosionFilter = landscapeParameters.getErosion() * (0.2f + 0.4f * landscapeParameters.getRoughness());
-        this.maximumHeight = dimensionParameters.getMaximumHeight();
+        this.maximumHeight = planetParameters.getMaximumHeight();
 
     }
 

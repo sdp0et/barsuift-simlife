@@ -66,7 +66,7 @@ public class CreationParametersWindow extends JDialog implements ParametersDepen
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
-        universeParamPanel = new UniverseParametersPanel(parameters.getDimension(), parameters.getLandscape());
+        universeParamPanel = new UniverseParametersPanel(parameters.getPlanet(), parameters.getLandscape());
         tabbedPane.addTab("Universe", null, universeParamPanel, "Universe creation parameters");
 
         // TODO 302. create forest panel

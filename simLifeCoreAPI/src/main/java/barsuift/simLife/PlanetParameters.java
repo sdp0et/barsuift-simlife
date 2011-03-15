@@ -22,7 +22,7 @@ package barsuift.simLife;
 
 
 /**
- * The class holds the dimension parameters required to create a universe.
+ * The class holds the planet parameters required to create a universe.
  * 
  * Those parameters are :
  * <ul>
@@ -33,7 +33,8 @@ package barsuift.simLife;
  * </ul>
  * 
  */
-public class DimensionParameters implements Parameters {
+// TODO move the size and maxHeight params to Landscape params instead
+public class PlanetParameters implements Parameters {
 
     public static final int SIZE_DEFAULT_EXPONENT = 7;
 
@@ -81,7 +82,7 @@ public class DimensionParameters implements Parameters {
     /**
      * Empty constructor.
      */
-    public DimensionParameters() {
+    public PlanetParameters() {
         resetToDefaults();
     }
 
@@ -173,7 +174,7 @@ public class DimensionParameters implements Parameters {
 
     @Override
     public String toString() {
-        return "DimensionParameters [size=" + size + ", maximumHeight=" + maximumHeight + ", latitude=" + latitude
+        return "PlanetParameters [size=" + size + ", maximumHeight=" + maximumHeight + ", latitude=" + latitude
                 + ", eclipticObliquity=" + eclipticObliquity + "]";
     }
 

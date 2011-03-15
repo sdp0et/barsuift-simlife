@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.j3d.util;
 
-import barsuift.simLife.DimensionParameters;
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.BoundingBoxState;
 import barsuift.simLife.j3d.Tuple3dState;
 
@@ -34,12 +34,12 @@ public final class BoundingBoxHelper {
      * is equal to the given height + 50. This is to ensure any objects up to 50 meters above the ighest point is still
      * under the influence of the generated bounding box.
      * 
-     * @param dimension the dimension for which to create the bounds
+     * @param planetParameters the planet parameters for which to create the bounds
      * @return a bounding box
      */
-    public static BoundingBoxState createBoundingBox(DimensionParameters dimension) {
-        return new BoundingBoxState(new Tuple3dState(0, -1, 0), new Tuple3dState(dimension.getSize(),
-                dimension.getMaximumHeight() + 50, dimension.getSize()));
+    public static BoundingBoxState createBoundingBox(PlanetParameters planetParameters) {
+        return new BoundingBoxState(new Tuple3dState(0, -1, 0), new Tuple3dState(planetParameters.getSize(),
+                planetParameters.getMaximumHeight() + 50, planetParameters.getSize()));
     }
 
 }

@@ -45,7 +45,7 @@ public class UniverseContextStateFactory {
         MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
         UniverseContext3DStateFactory universeContext3DStateFactory = new UniverseContext3DStateFactory();
         UniverseContext3DState universeContext3DState = universeContext3DStateFactory
-                .createUniverseContext3DState(parameters.getDimension());
+                .createUniverseContext3DState(parameters.getPlanet());
         return new UniverseContextState(universeState, synchronizerState, fpsShowing, universeContext3DState);
     }
 
