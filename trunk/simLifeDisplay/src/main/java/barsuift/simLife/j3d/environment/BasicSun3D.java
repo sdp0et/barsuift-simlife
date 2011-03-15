@@ -124,7 +124,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         // result.mul(t2);
         // FIXME unable to change the height of the sun at a given angle, because the translational components of the
         // transform are not taken into account
-        result.setRotation(new AxisAngle4d(new Vector3d(0, -1, 0), riseAngle));
+        result.setRotation(new AxisAngle4d(new Vector3d(0, 0, -1), riseAngle));
         // result.setRotation(new AxisAngle4d(new Vector3d(0, -1, 0), Math.PI));
 
         // result.setTranslation(new Vector3f(0, Float.MAX_VALUE, 0));
