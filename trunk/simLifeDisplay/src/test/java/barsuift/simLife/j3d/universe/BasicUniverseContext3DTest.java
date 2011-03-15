@@ -19,7 +19,7 @@
 package barsuift.simLife.j3d.universe;
 
 import junit.framework.TestCase;
-import barsuift.simLife.DimensionParameters;
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.universe.MockUniverseContext;
 
 
@@ -31,7 +31,7 @@ public class BasicUniverseContext3DTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        DimensionParameters parameters = new DimensionParameters();
+        PlanetParameters parameters = new PlanetParameters();
         parameters.random();
         UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
         state = factory.createUniverseContext3DState(parameters);

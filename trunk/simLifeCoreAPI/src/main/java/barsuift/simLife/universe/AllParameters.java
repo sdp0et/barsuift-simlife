@@ -18,8 +18,8 @@
  */
 package barsuift.simLife.universe;
 
-import barsuift.simLife.DimensionParameters;
 import barsuift.simLife.Parameters;
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 /**
@@ -28,7 +28,7 @@ import barsuift.simLife.landscape.LandscapeParameters;
  */
 public class AllParameters implements Parameters {
 
-    private final DimensionParameters dimension;
+    private final PlanetParameters planet;
 
     private final LandscapeParameters landscape;
 
@@ -36,12 +36,12 @@ public class AllParameters implements Parameters {
 
     public AllParameters() {
         super();
-        this.dimension = new DimensionParameters();
+        this.planet = new PlanetParameters();
         this.landscape = new LandscapeParameters();
     }
 
-    public DimensionParameters getDimension() {
-        return dimension;
+    public PlanetParameters getPlanet() {
+        return planet;
     }
 
     public LandscapeParameters getLandscape() {
@@ -50,19 +50,19 @@ public class AllParameters implements Parameters {
 
     @Override
     public void resetToDefaults() {
-        dimension.resetToDefaults();
+        planet.resetToDefaults();
         landscape.resetToDefaults();
     }
 
     @Override
     public void random() {
-        dimension.random();
+        planet.random();
         landscape.random();
     }
 
     @Override
     public String toString() {
-        return "AllParameters [dimension=" + dimension + ", landscape=" + landscape + "]";
+        return "AllParameters [planet=" + planet + ", landscape=" + landscape + "]";
     }
 
 }

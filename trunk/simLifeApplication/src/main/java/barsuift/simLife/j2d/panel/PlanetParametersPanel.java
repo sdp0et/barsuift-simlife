@@ -33,16 +33,16 @@ import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import barsuift.simLife.DimensionParameters;
 import barsuift.simLife.MathHelper;
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j2d.ParametersDependent;
 
 
-public class DimensionParametersPanel extends JPanel implements ParametersDependent {
+public class PlanetParametersPanel extends JPanel implements ParametersDependent {
 
     private static final long serialVersionUID = 4471355030694189610L;
 
-    private final DimensionParameters parameters;
+    private final PlanetParameters parameters;
 
     private final JSlider sizeSlider;
 
@@ -52,14 +52,14 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
 
     private final JSlider eclipticObliquitySlider;
 
-    public DimensionParametersPanel(DimensionParameters parameters) {
+    public PlanetParametersPanel(PlanetParameters parameters) {
         super();
         this.parameters = parameters;
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         Border blacklineBorder = BorderFactory.createLineBorder(Color.black);
-        TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "Dimension");
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "Planet");
         setBorder(titledBorder);
 
         sizeSlider = createSizeSlider(parameters);
@@ -67,35 +67,35 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
         latitudeSlider = createLatitudeSlider(parameters);
         eclipticObliquitySlider = createEclipticObliquitySlider(parameters);
 
-        add(createLabel("Size (meters)"));
+        add(createLabel("Landscape size (meters)"));
         add(sizeSlider);
 
         add(Box.createRigidArea(new Dimension(0, 20)));
 
-        add(createLabel("Maximum height (meters)"));
+        add(createLabel("Landscape maximum height (meters)"));
         add(maxHeightSlider);
 
         add(Box.createRigidArea(new Dimension(0, 20)));
 
-        add(createLabel("Latitude (degrees)"));
+        add(createLabel("Landscape latitude (degrees)"));
         add(latitudeSlider);
 
         add(Box.createRigidArea(new Dimension(0, 20)));
 
-        add(createLabel("Ecliptic Obliquity (degrees)"));
+        add(createLabel("Planet Ecliptic Obliquity (degrees)"));
         add(eclipticObliquitySlider);
     }
 
-    private JSlider createSizeSlider(DimensionParameters parameters) {
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, DimensionParameters.SIZE_MIN_EXPONENT,
-                DimensionParameters.SIZE_MAX_EXPONENT, MathHelper.getPowerOfTwoExponent(parameters.getSize()));
+    private JSlider createSizeSlider(PlanetParameters parameters) {
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, PlanetParameters.SIZE_MIN_EXPONENT,
+                PlanetParameters.SIZE_MAX_EXPONENT, MathHelper.getPowerOfTwoExponent(parameters.getSize()));
         slider.setPaintTicks(true);
         slider.setMajorTickSpacing(1);
         slider.setPaintLabels(true);
         slider.setSnapToTicks(true);
         // Create the label table
         Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
-        for (int exponent = DimensionParameters.SIZE_MIN_EXPONENT; exponent <= DimensionParameters.SIZE_MAX_EXPONENT; exponent++) {
+        for (int exponent = PlanetParameters.SIZE_MIN_EXPONENT; exponent <= PlanetParameters.SIZE_MAX_EXPONENT; exponent++) {
             labels.put(exponent, new JLabel(Integer.toString(1 << exponent)));
         }
         slider.setLabelTable(labels);
@@ -103,27 +103,27 @@ public class DimensionParametersPanel extends JPanel implements ParametersDepend
         return slider;
     }
 
-    private JSlider createMaxHeightSlider(DimensionParameters parameters) {
-        JSlider maxHeightSlider = new JSlider(JSlider.HORIZONTAL, DimensionParameters.MAX_HEIGHT_MIN,
-                DimensionParameters.MAX_HEIGHT_MAX, Math.round(parameters.getMaximumHeight()));
+    private JSlider createMaxHeightSlider(PlanetParameters parameters) {
+        JSlider maxHeightSlider = new JSlider(JSlider.HORIZONTAL, PlanetParameters.MAX_HEIGHT_MIN,
+                PlanetParameters.MAX_HEIGHT_MAX, Math.round(parameters.getMaximumHeight()));
         maxHeightSlider.setPaintTicks(true);
         maxHeightSlider.setMajorTickSpacing(10);
         maxHeightSlider.setPaintLabels(true);
         return maxHeightSlider;
     }
 
-    private JSlider createLatitudeSlider(DimensionParameters parameters) {
-        JSlider latitudeSlider = new JSlider(JSlider.HORIZONTAL, DimensionParameters.LATITUDE_MIN,
-                DimensionParameters.LATITUDE_MAX, Math.round(parameters.getLatitude()));
+    private JSlider createLatitudeSlider(PlanetParameters parameters) {
+        JSlider latitudeSlider = new JSlider(JSlider.HORIZONTAL, PlanetParameters.LATITUDE_MIN,
+                PlanetParameters.LATITUDE_MAX, Math.round(parameters.getLatitude()));
         latitudeSlider.setPaintTicks(true);
         latitudeSlider.setMajorTickSpacing(10);
         latitudeSlider.setPaintLabels(true);
         return latitudeSlider;
     }
 
-    private JSlider createEclipticObliquitySlider(DimensionParameters parameters) {
-        JSlider eclipticObliquitySlider = new JSlider(JSlider.HORIZONTAL, DimensionParameters.ECLIPTIC_OBLIQUITY_MIN,
-                DimensionParameters.ECLIPTIC_OBLIQUITY_MAX, Math.round(parameters.getEclipticObliquity()));
+    private JSlider createEclipticObliquitySlider(PlanetParameters parameters) {
+        JSlider eclipticObliquitySlider = new JSlider(JSlider.HORIZONTAL, PlanetParameters.ECLIPTIC_OBLIQUITY_MIN,
+                PlanetParameters.ECLIPTIC_OBLIQUITY_MAX, Math.round(parameters.getEclipticObliquity()));
         eclipticObliquitySlider.setPaintTicks(true);
         eclipticObliquitySlider.setMajorTickSpacing(10);
         eclipticObliquitySlider.setPaintLabels(true);
