@@ -34,7 +34,7 @@ import com.sun.j3d.utils.geometry.Sphere;
 
 public class SunSphere3D {
 
-    private static final float Y_POSITION = -0.15f;
+    private static final float SHIFT = 0.15f;
 
     private final Sphere sphere;
 
@@ -42,7 +42,7 @@ public class SunSphere3D {
 
     private final float[] initialCoords;
 
-    public SunSphere3D() {
+    public SunSphere3D(float latitude) {
         Appearance sunSphereAppearance = new Appearance();
         AppearanceFactory.setColorWithColoringAttributes(sunSphereAppearance, new Color3f(1.0f, 1.0f, 0.5f));
         this.sphere = new Sphere(0.01f, sunSphereAppearance);
@@ -55,7 +55,8 @@ public class SunSphere3D {
         for (int i = 0; i < geometry.getVertexCount(); i++) {
             Point3f coordinate = new Point3f();
             geometry.getCoordinate(i, coordinate);
-            coordinate.y += Y_POSITION;
+            coordinate.y -= SHIFT * Math.cos(latitude);
+            coordinate.z += SHIFT * Math.sin(latitude);
             geometry.setCoordinate(i, coordinate);
         }
 
