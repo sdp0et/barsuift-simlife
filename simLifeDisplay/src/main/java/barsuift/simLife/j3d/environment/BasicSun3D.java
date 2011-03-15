@@ -58,8 +58,6 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final SunSphere3D sunSphere;
 
-    private float oldzenith;
-
     public BasicSun3D(Sun3DState state, Sun sun) {
         super();
         this.state = state;
@@ -79,7 +77,6 @@ public class BasicSun3D implements Subscriber, Sun3D {
         transformGroup.addChild(sunSphere.getGroup());
         group = new BranchGroup();
         group.addChild(transformGroup);
-        oldzenith = sun.getZenithAngle();
     }
 
     @Override
