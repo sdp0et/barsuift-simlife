@@ -35,6 +35,9 @@ public class BasicSun implements Sun {
 
     private BigDecimal brightness;
 
+    // FIXME 000. 001. riseAngle -> earthRotation
+    // FIXME 000. 002. add earthRevolution
+    // FIXME 000. 003. remove zenithAngle
     private float riseAngle;
 
     private float zenithAngle;
