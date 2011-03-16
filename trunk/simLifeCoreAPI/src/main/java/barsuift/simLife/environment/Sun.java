@@ -41,22 +41,25 @@ public interface Sun extends Publisher, Persistent<SunState> {
     public void setBrightness(BigDecimal brightness) throws IllegalArgumentException;
 
     /**
-     * Rise angle, in percent.
+     * Earth rotation, in percent.
      * <p>
      * <ul>
-     * <li>0 means sun is at its nadir, lighting only along the Y axis. This is the position of the sun in the middle of
-     * the night</li>
-     * <li>25 means sun is full east, lighting only along the X axis. This is the position of sunrises.</li>
-     * <li>50 means sun is at its zenith position (neither east nor west). no X direction. This is the position of the
-     * sun in the middle of the day.</li>
-     * <li>75 means sun is full west, lighting only along the reverted X axis. this is the position of sunsets.</li>
-     * <li>100 means sun is at its nadir. This value is actually equivalent to 0.</li>
+     * <li>0 means midnight. At the equator during the equinox, the sun is at its nadir, lighting only along the Y axis.
+     * </li>
+     * <li>0.25 means middle of the morning. At the equator during the equinox, the sun is full east, lighting only
+     * along the X axis (sunrise).</li>
+     * <li>0.50 means middle of the day (noon). At the equator during the equinox, the sun is at its zenith position
+     * (neither east nor west). no X direction.</li>
+     * <li>0.75 means middle of the afternoon. At the equator during the equinox, the sun is full west, lighting only
+     * along the reverted X axis (sunsets).</li>
+     * <li>1 also means midnight. At the equator during the equinox, the sun is at its nadir. This value is actually
+     * equivalent to 0.</li>
      * </ul>
      * </p>
      */
-    public float getRiseAngle();
+    public float getEarthRotation();
 
-    public void setRiseAngle(float riseAngle);
+    public void setEarthRotation(float earthRotation);
 
     /**
      * Zenith angle, in percent.

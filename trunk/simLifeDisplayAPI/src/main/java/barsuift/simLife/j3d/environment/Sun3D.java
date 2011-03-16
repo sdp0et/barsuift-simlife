@@ -29,17 +29,12 @@ import barsuift.simLife.message.Publisher;
 public interface Sun3D extends Persistent<Sun3DState>, Publisher {
 
     /**
-     * Computes the white factor, based on the position (rise and zenith angles). The lower the sun is, the lower the
-     * white factor.
+     * Computes the white factor, based on the sun position. The lower the sun is, the lower the white factor.
      * <p>
      * <ul>
      * <li>When the white factor is 1 (100%), the sun is white (Red = Green = Blue).</li>
      * <li>When the white factor is 0%, the sun is red (Red = 100%, Green = Blue = 0%).</li>
      * </ul>
-     * </p>
-     * <p>
-     * Concretely, here is the computation :<br/>
-     * <code>whiteFactor = sqrt(abs(sinus(riseAngle) * sinus(zenithAngle)))</code>
      * </p>
      * 
      * @return the white factor
@@ -49,7 +44,7 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
     public DirectionalLight getLight();
 
     /**
-     * Returns the group which contains the graphic representation of the sun. This groupd needs to be added to the
+     * Returns the group which contains the graphic representation of the sun. This group needs to be added to the
      * Background instance of the scene graph.
      * 
      * @return the sun group

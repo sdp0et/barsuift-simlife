@@ -35,10 +35,9 @@ public class BasicSun implements Sun {
 
     private BigDecimal brightness;
 
-    // FIXME 000. 001. riseAngle -> earthRotation
     // FIXME 000. 002. add earthRevolution
     // FIXME 000. 003. remove zenithAngle
-    private float riseAngle;
+    private float earthRotation;
 
     private float zenithAngle;
 
@@ -57,20 +56,20 @@ public class BasicSun implements Sun {
         }
         this.state = state;
         brightness = state.getBrightness();
-        riseAngle = state.getRiseAngle();
-        adjustRiseAngle();
+        earthRotation = state.getEarthRotation();
+        adjustEarthRotation();
         zenithAngle = state.getZenithAngle();
         sun3D = new BasicSun3D(state.getSun3DState(), this);
     }
 
     /**
-     * This method is to ensure the riseAngle is always comprised between 0 and 1
+     * This method is to ensure the earthRotation is always comprised between 0 and 1
      */
-    private void adjustRiseAngle() {
-        while (riseAngle < 0) {
-            riseAngle++;
+    private void adjustEarthRotation() {
+        while (earthRotation < 0) {
+            earthRotation++;
         }
-        riseAngle %= 1;
+        earthRotation %= 1;
     }
 
     public BigDecimal getBrightness() {
@@ -84,21 +83,21 @@ public class BasicSun implements Sun {
         if (!this.brightness.equals(brightness)) {
             this.brightness = brightness;
             setChanged();
-            notifySubscribers(SunUpdateCode.brightness);
+            notifySubscribers(SunUpdateCode.BRIGHTNESS);
         }
     }
 
-    public float getRiseAngle() {
-        return riseAngle;
+    public float getEarthRotation() {
+        return earthRotation;
     }
 
 
-    public void setRiseAngle(float riseAngle) {
-        this.riseAngle = riseAngle;
-        adjustRiseAngle();
+    public void setEarthRotation(float earthRotation) {
+        this.earthRotation = earthRotation;
+        adjustEarthRotation();
         // computeBrightness();
         setChanged();
-        notifySubscribers(SunUpdateCode.riseAngle);
+        notifySubscribers(SunUpdateCode.EARTH_ROTATION);
     }
 
     // TODO temporary code (for reminder)
@@ -121,30 +120,30 @@ public class BasicSun implements Sun {
         }
 
 
-        double riseStartAngleStart = 0.25 - sunRadius;
-        double riseStartAngleEnd = 0.25 + sunRadius;
-        double riseEndAngleStart = 0.75 - sunRadius;
-        double riseEndAngleEnd = 0.75 + sunRadius;
-        double brightnessFromRise;
-        if (riseAngle < riseStartAngleStart || riseAngle > riseEndAngleEnd) {
-            brightnessFromRise = 0;
+        double earthRotationStartAngleStart = 0.25 - sunRadius;
+        double earthRotationStartAngleEnd = 0.25 + sunRadius;
+        double earthRotationEndAngleStart = 0.75 - sunRadius;
+        double earthRotationEndAngleEnd = 0.75 + sunRadius;
+        double brightnessFromEarthRotation;
+        if (earthRotation < earthRotationStartAngleStart || earthRotation > earthRotationEndAngleEnd) {
+            brightnessFromEarthRotation = 0;
         } else {
-            if (riseAngle > riseStartAngleEnd && riseAngle < riseEndAngleStart) {
-                brightnessFromRise = 1;
+            if (earthRotation > earthRotationStartAngleEnd && earthRotation < earthRotationEndAngleStart) {
+                brightnessFromEarthRotation = 1;
             } else {
-                if (riseAngle < riseStartAngleEnd) {
-                    // sunrise function
-                    brightnessFromRise = (1 + Math.sin(Math.PI * ratio * (riseAngle - 0.25))) / 2;
+                if (earthRotation < earthRotationStartAngleEnd) {
+                    // earthRotation function
+                    brightnessFromEarthRotation = (1 + Math.sin(Math.PI * ratio * (earthRotation - 0.25))) / 2;
                 } else {
-                    // sunset function
-                    brightnessFromRise = (1 - Math.sin(Math.PI * ratio * (riseAngle - 0.75))) / 2;
+                    // earthRotation function
+                    brightnessFromEarthRotation = (1 - Math.sin(Math.PI * ratio * (earthRotation - 0.75))) / 2;
                 }
             }
         }
-        double brightness = brightnessFromRise * brightnessFromZenith;
-        System.out.println("riseAngle=" + riseAngle);
+        double brightness = brightnessFromEarthRotation * brightnessFromZenith;
+        System.out.println("earthRotation=" + earthRotation);
         System.out.println("zenithAngle=" + zenithAngle);
-        // System.out.println("brightnessFromRise=" + brightnessFromRise);
+        // System.out.println("brightnessFromEarthRotation=" + brightnessFromEarthRotation);
         // System.out.println("brightnessFromZenith=" + brightnessFromZenith);
         // System.out.println("-------------------- brightness=" + brightness);
     }
@@ -157,7 +156,7 @@ public class BasicSun implements Sun {
         this.zenithAngle = zenithAngle;
         // computeBrightness();
         setChanged();
-        notifySubscribers(SunUpdateCode.zenithAngle);
+        notifySubscribers(SunUpdateCode.ZENITH_ANGLE);
     }
 
     @Override
@@ -169,7 +168,7 @@ public class BasicSun implements Sun {
     @Override
     public void synchronize() {
         state.setBrightness(brightness);
-        state.setRiseAngle(riseAngle);
+        state.setEarthRotation(earthRotation);
         state.setZenithAngle(zenithAngle);
     }
 

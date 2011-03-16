@@ -89,7 +89,7 @@ public class SunColorPanel extends JPanel implements Subscriber {
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (arg == SunUpdateCode.color) {
+        if (arg == SunUpdateCode.COLOR) {
             slider.setValue(Math.round(sun3D.getWhiteFactor() * 100));
         }
     }

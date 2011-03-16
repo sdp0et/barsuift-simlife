@@ -33,7 +33,7 @@ import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-public class SunRisePanel extends JPanel implements ChangeListener, Subscriber {
+public class EarthRotationPanel extends JPanel implements ChangeListener, Subscriber {
 
     private static final long serialVersionUID = -6102868842517781193L;
 
@@ -45,39 +45,42 @@ public class SunRisePanel extends JPanel implements ChangeListener, Subscriber {
 
     private final JLabel sliderLabel;
 
-    private final JSlider riseSlider;
+    private final JSlider earthRotationSlider;
 
-    public SunRisePanel(Sun sun) {
+    public EarthRotationPanel(Sun sun) {
         this.sun = sun;
         sun.addSubscriber(this);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         sliderLabel = createLabel();
-        riseSlider = createSlider();
+        earthRotationSlider = createSlider();
         add(sliderLabel);
-        add(riseSlider);
+        add(earthRotationSlider);
     }
 
     private JSlider createSlider() {
-        JSlider riseSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX, Math.round(sun.getRiseAngle() * 100));
-        riseSlider.addChangeListener(this);
+        JSlider earthRotationSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX,
+                Math.round(sun.getEarthRotation() * 100));
+        earthRotationSlider.addChangeListener(this);
         // Turn on labels at major tick marks.
-        riseSlider.setMajorTickSpacing(50);
-        riseSlider.setMinorTickSpacing(25);
-        riseSlider.setPaintTicks(true);
+        earthRotationSlider.setMajorTickSpacing(50);
+        earthRotationSlider.setMinorTickSpacing(25);
+        earthRotationSlider.setPaintTicks(true);
 
         // Create the label table
         Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
+        labelTable.put(new Integer(ANGLE_MIN), new JLabel("Midnight"));
         labelTable.put(new Integer(ANGLE_MAX / 4), new JLabel("Sunrise"));
-        labelTable.put(new Integer(ANGLE_MAX / 2), new JLabel("Zenith"));
+        labelTable.put(new Integer(ANGLE_MAX / 2), new JLabel("Noon"));
         labelTable.put(new Integer(3 * ANGLE_MAX / 4), new JLabel("Sunset"));
-        riseSlider.setLabelTable(labelTable);
-        riseSlider.setPaintLabels(true);
+        labelTable.put(new Integer(ANGLE_MAX), new JLabel("Noon"));
+        earthRotationSlider.setLabelTable(labelTable);
+        earthRotationSlider.setPaintLabels(true);
 
-        return riseSlider;
+        return earthRotationSlider;
     }
 
     private JLabel createLabel() {
-        JLabel sliderLabel = new JLabel("Rise angle", JLabel.CENTER);
+        JLabel sliderLabel = new JLabel("Earth rotation", JLabel.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return sliderLabel;
     }
@@ -85,14 +88,14 @@ public class SunRisePanel extends JPanel implements ChangeListener, Subscriber {
     @Override
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
-        int riseAngle = source.getValue();
-        sun.setRiseAngle((float) riseAngle / 100);
+        int earthRotation = source.getValue();
+        sun.setEarthRotation((float) earthRotation / 100);
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (arg == SunUpdateCode.riseAngle) {
-            riseSlider.setValue(Math.round(sun.getRiseAngle() * 100));
+        if (arg == SunUpdateCode.EARTH_ROTATION) {
+            earthRotationSlider.setValue(Math.round(sun.getEarthRotation() * 100));
         }
     }
 
@@ -101,7 +104,7 @@ public class SunRisePanel extends JPanel implements ChangeListener, Subscriber {
     }
 
     protected JSlider getSlider() {
-        return riseSlider;
+        return earthRotationSlider;
     }
 
 }

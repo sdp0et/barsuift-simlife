@@ -93,7 +93,7 @@ public class SunZenithPanel extends JPanel implements ChangeListener, Subscriber
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (arg == SunUpdateCode.zenithAngle) {
+        if (arg == SunUpdateCode.ZENITH_ANGLE) {
             zenithSlider.setValue(Math.round(sun.getZenithAngle() * 100));
         }
     }
