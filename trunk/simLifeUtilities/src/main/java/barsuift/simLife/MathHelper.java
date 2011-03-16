@@ -46,4 +46,24 @@ public final class MathHelper {
         return result;
     }
 
+    /**
+     * Transforms the given angle from degree to radian
+     * 
+     * @param degree the angle in degree
+     * @return the angle in radian
+     */
+    public static double toRadian(double degree) {
+        return degree * 2 * Math.PI / 360;
+    }
+
+    /**
+     * Transforms the given angle from radian to degree
+     * 
+     * @param radian the angle in radian
+     * @return the angle in degree
+     */
+    public static double toDegree(double radian) {
+        return radian * 360 / 2 / Math.PI;
+    }
+
 }
