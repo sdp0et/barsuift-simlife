@@ -59,13 +59,13 @@ public class SunColorPanelTest extends TestCase {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
         assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
         mockSun.setWhiteFactor(0.9f);
-        display.update(mockSun, SunUpdateCode.color);
+        display.update(mockSun, SunUpdateCode.COLOR);
         assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
         mockSun.setWhiteFactor(0.8f);
-        display.update(mockSun, SunUpdateCode.color);
+        display.update(mockSun, SunUpdateCode.COLOR);
         assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
         mockSun.setWhiteFactor(1f);
-        display.update(mockSun, SunUpdateCode.color);
+        display.update(mockSun, SunUpdateCode.COLOR);
         assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
     }
 

@@ -92,7 +92,7 @@ public class SunBrightnessPanel extends JPanel implements ChangeListener, Subscr
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (arg == SunUpdateCode.brightness) {
+        if (arg == SunUpdateCode.BRIGHTNESS) {
             sliderLabel.setText(createBrightnessLabelText());
             brightnessSlider.setValue(PercentHelper.getIntValue(sun.getBrightness()));
         }

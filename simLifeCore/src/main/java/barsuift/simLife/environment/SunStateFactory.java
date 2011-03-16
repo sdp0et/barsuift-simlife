@@ -33,25 +33,24 @@ public class SunStateFactory {
      * Creates a default sun state with following values :
      * <ul>
      * <li>brightness = 100%</li>
-     * <li>riseAngle = 37.5%</li>
+     * <li>earth rotation = 37.5%</li>
      * <li>zenithAngle = 50%</li>
      * </ul>
      */
     // TODO 010. the sun position should depend on the current date, at init time
     // TODO 010. 001. zenith=(1-cosinus(dayOfYear*2*Pi/72)/2
     // TODO 010. 002. dayLight = same function = % of day where sun is "visible"
-    // TODO 010. 003. rise = to define later (bounds will depend on dayLight)
     // TODO 007. the sun brightness should depend on the sun position (same function as white factor ?? should be 0 at
     // night at least)
     // TODO 020. the sun position should evolve with the time of the day
     // TODO 025. the sun sliders should be able to be decorrelated from auto move
     public SunState createSunState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
         BigDecimal brightness = PercentHelper.getDecimalValue(100);
-        float riseAngle = 0.375f;
+        float earthRotation = 0.375f;
         float zenithAngle = 0.5f;
         Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
         Sun3DState sun3DState = sun3DStateFactory.createSun3DState(planetParameters, landscapeParameters);
-        return new SunState(brightness, riseAngle, zenithAngle, sun3DState);
+        return new SunState(brightness, earthRotation, zenithAngle, sun3DState);
     }
 
 }

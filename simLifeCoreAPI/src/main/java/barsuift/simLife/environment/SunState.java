@@ -30,7 +30,7 @@ public class SunState implements State {
 
     private BigDecimal brightness;
 
-    private float riseAngle;
+    private float earthRotation;
 
     private float zenithAngle;
 
@@ -39,15 +39,15 @@ public class SunState implements State {
     public SunState() {
         super();
         this.brightness = new BigDecimal(0);
-        this.riseAngle = 0;
+        this.earthRotation = 0;
         this.zenithAngle = 0;
         this.sun3DState = new Sun3DState();
     }
 
-    public SunState(BigDecimal brightness, float riseAngle, float zenithAngle, Sun3DState sun3DState) {
+    public SunState(BigDecimal brightness, float earthRotation, float zenithAngle, Sun3DState sun3DState) {
         super();
         this.brightness = brightness;
-        this.riseAngle = riseAngle;
+        this.earthRotation = earthRotation;
         this.zenithAngle = zenithAngle;
         this.sun3DState = sun3DState;
     }
@@ -60,12 +60,12 @@ public class SunState implements State {
         this.brightness = brightness;
     }
 
-    public float getRiseAngle() {
-        return riseAngle;
+    public float getEarthRotation() {
+        return earthRotation;
     }
 
-    public void setRiseAngle(float riseAngle) {
-        this.riseAngle = riseAngle;
+    public void setEarthRotation(float earthRotation) {
+        this.earthRotation = earthRotation;
     }
 
     public float getZenithAngle() {
@@ -89,7 +89,7 @@ public class SunState implements State {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((brightness == null) ? 0 : brightness.hashCode());
-        result = prime * result + Float.floatToIntBits(riseAngle);
+        result = prime * result + Float.floatToIntBits(earthRotation);
         result = prime * result + ((sun3DState == null) ? 0 : sun3DState.hashCode());
         result = prime * result + Float.floatToIntBits(zenithAngle);
         return result;
@@ -110,7 +110,7 @@ public class SunState implements State {
         } else
             if (!brightness.equals(other.brightness))
                 return false;
-        if (Float.floatToIntBits(riseAngle) != Float.floatToIntBits(other.riseAngle))
+        if (Float.floatToIntBits(earthRotation) != Float.floatToIntBits(other.earthRotation))
             return false;
         if (sun3DState == null) {
             if (other.sun3DState != null)
@@ -125,7 +125,7 @@ public class SunState implements State {
 
     @Override
     public String toString() {
-        return "SunState [brightness=" + brightness + ", riseAngle=" + riseAngle + ", zenithAngle=" + zenithAngle
+        return "SunState [brightness=" + brightness + ", earthRotation=" + earthRotation + ", zenithAngle=" + zenithAngle
                 + ", sun3DState=" + sun3DState + "]";
     }
 

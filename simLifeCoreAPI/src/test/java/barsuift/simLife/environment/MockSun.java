@@ -34,7 +34,7 @@ public class MockSun extends BasicPublisher implements Sun {
 
     private BigDecimal brightness = PercentHelper.getDecimalValue(100);
 
-    private float riseAngle = 0.375f;
+    private float earthRotation = 0.375f;
 
     private float zenithAngle = 0.5f;
 
@@ -56,13 +56,13 @@ public class MockSun extends BasicPublisher implements Sun {
     }
 
     @Override
-    public float getRiseAngle() {
-        return riseAngle;
+    public float getEarthRotation() {
+        return earthRotation;
     }
 
     @Override
-    public void setRiseAngle(float riseAngle) {
-        this.riseAngle = riseAngle;
+    public void setEarthRotation(float earthRotation) {
+        this.earthRotation = earthRotation;
     }
 
     @Override

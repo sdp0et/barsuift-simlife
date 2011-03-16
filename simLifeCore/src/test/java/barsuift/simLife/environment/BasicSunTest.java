@@ -57,16 +57,16 @@ public class BasicSunTest extends TestCase {
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
         assertEquals(0.0f, sun.getState().getBrightness().floatValue());
-        assertEquals(0.0f, sun.getState().getRiseAngle(), 0.0001);
+        assertEquals(0.0f, sun.getState().getEarthRotation(), 0.0001);
         assertEquals(0.0f, sun.getState().getZenithAngle(), 0.0001);
 
         sun.setBrightness(PercentHelper.getDecimalValue(32));
-        sun.setRiseAngle(0.47f);
+        sun.setEarthRotation(0.47f);
         sun.setZenithAngle(0.78f);
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
         assertEquals(0.32f, sun.getState().getBrightness().floatValue());
-        assertEquals(0.47f, sun.getState().getRiseAngle(), 0.0001);
+        assertEquals(0.47f, sun.getState().getEarthRotation(), 0.0001);
         assertEquals(0.78f, sun.getState().getZenithAngle(), 0.0001);
 
     }
@@ -82,9 +82,9 @@ public class BasicSunTest extends TestCase {
         }
     }
 
-    public void testGetRiseAngle() {
-        sun.setRiseAngle(0.3f);
-        assertEquals(0.3f, sun.getRiseAngle(), 0.0001);
+    public void testGetEarthRotation() {
+        sun.setEarthRotation(0.3f);
+        assertEquals(0.3f, sun.getEarthRotation(), 0.0001);
     }
 
     public void testGetZenithAngle() {
@@ -98,7 +98,7 @@ public class BasicSunTest extends TestCase {
         sun.setBrightness(PercentHelper.getDecimalValue(90));
         assertEquals(PercentHelper.getDecimalValue(90), sun.getBrightness());
         assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(SunUpdateCode.brightness, publisherHelper.getUpdateObjects().get(0));
+        assertEquals(SunUpdateCode.BRIGHTNESS, publisherHelper.getUpdateObjects().get(0));
     }
 
     public void testSubscriberBrightnessUnchanged() {
@@ -111,13 +111,13 @@ public class BasicSunTest extends TestCase {
         assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
-    public void testSubscriberRiseAngle() {
+    public void testSubscriberEarthRotation() {
         publisherHelper.addSubscriberTo(sun);
-        assertEquals(sunState.getRiseAngle(), sun.getRiseAngle());
-        sun.setRiseAngle(0.5f);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        assertEquals(sunState.getEarthRotation(), sun.getEarthRotation());
+        sun.setEarthRotation(0.5f);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
         assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(SunUpdateCode.riseAngle, publisherHelper.getUpdateObjects().get(0));
+        assertEquals(SunUpdateCode.EARTH_ROTATION, publisherHelper.getUpdateObjects().get(0));
     }
 
     public void testSubscriberZenithAngle() {
@@ -126,45 +126,45 @@ public class BasicSunTest extends TestCase {
         sun.setZenithAngle(0.75f);
         assertEquals(0.75f, sun.getZenithAngle(), 0.0001);
         assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(SunUpdateCode.zenithAngle, publisherHelper.getUpdateObjects().get(0));
+        assertEquals(SunUpdateCode.ZENITH_ANGLE, publisherHelper.getUpdateObjects().get(0));
     }
 
-    public void testAdjustRiseAngle() {
-        sunState.setRiseAngle(0.5f);
+    public void testAdjustEarthRotation() {
+        sunState.setEarthRotation(0.5f);
         sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
-        sunState.setRiseAngle(1.5f);
+        sunState.setEarthRotation(1.5f);
         sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
-        sunState.setRiseAngle(2.5f);
+        sunState.setEarthRotation(2.5f);
         sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
-        sunState.setRiseAngle(-0.5f);
+        sunState.setEarthRotation(-0.5f);
         sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
-        sunState.setRiseAngle(-1.5f);
+        sunState.setEarthRotation(-1.5f);
         sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
 
-        sun.setRiseAngle(0.5f);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        sun.setEarthRotation(0.5f);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
-        sun.setRiseAngle(1.5f);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        sun.setEarthRotation(1.5f);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
-        sun.setRiseAngle(2.5f);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        sun.setEarthRotation(2.5f);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
-        sun.setRiseAngle(-0.5f);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        sun.setEarthRotation(-0.5f);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
-        sun.setRiseAngle(-1.5f);
-        assertEquals(0.5f, sun.getRiseAngle(), 0.0001);
+        sun.setEarthRotation(-1.5f);
+        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
 
     }
 

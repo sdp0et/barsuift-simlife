@@ -59,13 +59,13 @@ public class SunZenithPanelTest extends TestCase {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
         assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
         mockSun.setZenithAngle(0.9f);
-        display.update(mockSun, SunUpdateCode.zenithAngle);
+        display.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
         assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
         mockSun.setZenithAngle(0.8f);
-        display.update(mockSun, SunUpdateCode.zenithAngle);
+        display.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
         assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
         mockSun.setZenithAngle(1f);
-        display.update(mockSun, SunUpdateCode.zenithAngle);
+        display.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
         assertEquals(mockSun.getZenithAngle(), (float) display.getSlider().getValue() / 100, 0.0050001);
     }
 

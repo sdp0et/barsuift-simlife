@@ -40,9 +40,9 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Sun sun;
 
-    private float cosinusRiseAngle;
+    private float cosinusEarthRotation;
 
-    private float sinusRiseAngle;
+    private float sinusEarthRotation;
 
     private float cosinusZenithAngle;
 
@@ -58,25 +58,25 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final SunSphere3D sunSphere;
 
-    private final Vector3d riseAngleRotationVector;
+    private final Vector3d earthRotationVector;
 
     public BasicSun3D(Sun3DState state, Sun sun) {
         super();
         this.state = state;
         this.sun = sun;
         sun.addSubscriber(this);
-        computeRiseAngleData();
+        computeEarthRotationData();
         computeZenithAngleData();
         light = new DirectionalLight(computeColor(), computeDirection());
         light.setInfluencingBounds(state.getBounds().toBoundingBox());
         light.setCapability(Light.ALLOW_COLOR_WRITE);
         light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
 
-        riseAngleRotationVector = new Vector3d(0, -Math.sin(state.getLatitude()), -Math.cos(state.getLatitude()));
+        earthRotationVector = new Vector3d(0, -Math.sin(state.getLatitude()), -Math.cos(state.getLatitude()));
         transformGroup = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        transformGroup.setTransform(computeRiseTransform());
+        transformGroup.setTransform(computeSunSphereTransform());
         sunSphere = new SunSphere3D(state.getLatitude());
         transformGroup.addChild(sunSphere.getGroup());
         group = new BranchGroup();
@@ -85,17 +85,17 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     @Override
     public void update(Publisher o, Object arg) {
-        if (arg == SunUpdateCode.brightness) {
+        if (arg == SunUpdateCode.BRIGHTNESS) {
             light.setColor(computeColor());
         }
-        if (arg == SunUpdateCode.riseAngle) {
-            computeRiseAngleData();
+        if (arg == SunUpdateCode.EARTH_ROTATION) {
+            computeEarthRotationData();
             // TODO test to put the light in the same TG as the disk, instead of updating its direction
             light.setDirection(computeDirection());
             light.setColor(computeColor());
-            transformGroup.setTransform(computeRiseTransform());
+            transformGroup.setTransform(computeSunSphereTransform());
         }
-        if (arg == SunUpdateCode.zenithAngle) {
+        if (arg == SunUpdateCode.ZENITH_ANGLE) {
             computeZenithAngleData();
             light.setDirection(computeDirection());
             light.setColor(computeColor());
@@ -108,8 +108,8 @@ public class BasicSun3D implements Subscriber, Sun3D {
     }
 
     private Vector3f computeDirection() {
-        Vector3f direction = new Vector3f(cosinusRiseAngle, -(sinusRiseAngle * sinusZenithAngle), -cosinusZenithAngle
-                * sinusRiseAngle);
+        Vector3f direction = new Vector3f(cosinusEarthRotation, -(sinusEarthRotation * sinusZenithAngle),
+                -cosinusZenithAngle * sinusEarthRotation);
         direction.normalize();
         // computeBrightness();
         return direction;
@@ -117,10 +117,10 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     // TODO the rotation should also depend on the zenith angle !
     // FIXME store the rotation in state!!
-    private Transform3D computeRiseTransform() {
-        double riseAngle = sun.getRiseAngle() * Math.PI * 2;
+    private Transform3D computeSunSphereTransform() {
+        double earthRotation = sun.getEarthRotation() * Math.PI * 2;
         Transform3D result = new Transform3D();
-        result.setRotation(new AxisAngle4d(riseAngleRotationVector, riseAngle));
+        result.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
         return result;
     }
 
@@ -139,7 +139,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         System.out.println("sunRadius=" + sunRadius);
 
         double brightness;
-        double sunHeight = sinusRiseAngle * sinusZenithAngle;
+        double sunHeight = sinusEarthRotation * sinusZenithAngle;
         if (sunHeight < -sunRadius) {
             brightness = 0;
         } else {
@@ -159,11 +159,11 @@ public class BasicSun3D implements Subscriber, Sun3D {
         sinusZenithAngle = (float) Math.sin(zenithAngle);
     }
 
-    private void computeRiseAngleData() {
-        double azimuthAngle = sun.getRiseAngle() * Math.PI * 2;
-        double riseAngle = azimuthAngle - Math.PI / 2;
-        cosinusRiseAngle = (float) Math.cos(riseAngle);
-        sinusRiseAngle = (float) Math.sin(riseAngle);
+    private void computeEarthRotationData() {
+        double azimuthAngle = sun.getEarthRotation() * Math.PI * 2;
+        double earthRotation = azimuthAngle - Math.PI / 2;
+        cosinusEarthRotation = (float) Math.cos(earthRotation);
+        sinusEarthRotation = (float) Math.sin(earthRotation);
     }
 
     private Color3f computeColor() {
@@ -171,13 +171,13 @@ public class BasicSun3D implements Subscriber, Sun3D {
         float whiteFactor = getWhiteFactor();
         Color3f color = new Color3f(brightness, brightness * whiteFactor, brightness * whiteFactor);
         setChanged();
-        notifySubscribers(SunUpdateCode.color);
+        notifySubscribers(SunUpdateCode.COLOR);
         return color;
     }
 
     @Override
     public float getWhiteFactor() {
-        return (float) Math.sqrt(Math.abs(sinusRiseAngle * sinusZenithAngle));
+        return (float) Math.sqrt(Math.abs(sinusEarthRotation * sinusZenithAngle));
     }
 
     @Override
