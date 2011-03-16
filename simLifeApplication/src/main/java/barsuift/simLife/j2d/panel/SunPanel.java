@@ -34,9 +34,10 @@ public class SunPanel extends JPanel {
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 
+        rightPanel.add(new EarthRevolutionPanel(sun));
+        rightPanel.add(new EarthRotationPanel(sun));
         rightPanel.add(new SunBrightnessPanel(sun));
         rightPanel.add(new SunColorPanel(sun.getSun3D()));
-        rightPanel.add(new EarthRotationPanel(sun));
 
         add(rightPanel);
         add(new SunZenithPanel(sun));

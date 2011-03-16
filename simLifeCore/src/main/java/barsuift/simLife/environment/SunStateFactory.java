@@ -47,10 +47,11 @@ public class SunStateFactory {
     public SunState createSunState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
         BigDecimal brightness = PercentHelper.getDecimalValue(100);
         float earthRotation = 0.375f;
+        float earthRevolution = 0f;
         float zenithAngle = 0.5f;
         Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
         Sun3DState sun3DState = sun3DStateFactory.createSun3DState(planetParameters, landscapeParameters);
-        return new SunState(brightness, earthRotation, zenithAngle, sun3DState);
+        return new SunState(brightness, earthRotation, earthRevolution, zenithAngle, sun3DState);
     }
 
 }

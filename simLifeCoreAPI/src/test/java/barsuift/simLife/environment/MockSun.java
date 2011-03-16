@@ -36,6 +36,8 @@ public class MockSun extends BasicPublisher implements Sun {
 
     private float earthRotation = 0.375f;
 
+    private float earthRevolution = 0.5f;
+
     private float zenithAngle = 0.5f;
 
     private Sun3D sunLight = new MockSun3D();
@@ -63,6 +65,16 @@ public class MockSun extends BasicPublisher implements Sun {
     @Override
     public void setEarthRotation(float earthRotation) {
         this.earthRotation = earthRotation;
+    }
+
+    @Override
+    public float getEarthRevolution() {
+        return earthRevolution;
+    }
+
+    @Override
+    public void setEarthRevolution(float earthRevolution) {
+        this.earthRevolution = earthRevolution;
     }
 
     @Override

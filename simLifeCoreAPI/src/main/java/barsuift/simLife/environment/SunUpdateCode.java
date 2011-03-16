@@ -25,6 +25,7 @@ public enum SunUpdateCode {
 
     BRIGHTNESS,
     EARTH_ROTATION,
+    EARTH_REVOLUTION,
     ZENITH_ANGLE,
     COLOR;
 

@@ -59,6 +59,22 @@ public interface Sun extends Publisher, Persistent<SunState> {
      */
     public float getEarthRotation();
 
+    public void setEarthRevolution(float earthRevolution);
+
+    /**
+     * Earth revolution, in percent.
+     * <p>
+     * <ul>
+     * <li>0 means start of wim season (first day of year).</li>
+     * <li>0.25 means start of sprim season.</li>
+     * <li>0.50 means start of sum season.</li>
+     * <li>0.75 means start of tom season.</li>
+     * <li>1 also means start of wim season (and thus end of tom season). This value is actually equivalent to 0.</li>
+     * </ul>
+     * </p>
+     */
+    public float getEarthRevolution();
+
     public void setEarthRotation(float earthRotation);
 
     /**
