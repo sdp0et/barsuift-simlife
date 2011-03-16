@@ -56,4 +56,32 @@ public class MathHelperTest extends TestCase {
         }
     }
 
+    public void testToRadian() {
+        double epsilon = 0.00001;
+        assertEquals(0, MathHelper.toRadian(0), epsilon);
+        assertEquals(Math.PI / 4, MathHelper.toRadian(45), epsilon);
+        assertEquals(Math.PI / 2, MathHelper.toRadian(90), epsilon);
+        assertEquals(Math.PI, MathHelper.toRadian(180), epsilon);
+        assertEquals(2 * Math.PI, MathHelper.toRadian(360), epsilon);
+
+        assertEquals(-Math.PI / 4, MathHelper.toRadian(-45), epsilon);
+        assertEquals(-Math.PI / 2, MathHelper.toRadian(-90), epsilon);
+        assertEquals(-Math.PI, MathHelper.toRadian(-180), epsilon);
+        assertEquals(-2 * Math.PI, MathHelper.toRadian(-360), epsilon);
+    }
+
+    public void testToDegree() {
+        double epsilon = 0.00001;
+        assertEquals(0, MathHelper.toDegree(0), epsilon);
+        assertEquals(45, MathHelper.toDegree(Math.PI / 4), epsilon);
+        assertEquals(90, MathHelper.toDegree(Math.PI / 2), epsilon);
+        assertEquals(180, MathHelper.toDegree(Math.PI), epsilon);
+        assertEquals(360, MathHelper.toDegree(2 * Math.PI), epsilon);
+
+        assertEquals(-45, MathHelper.toDegree(-Math.PI / 4), epsilon);
+        assertEquals(-90, MathHelper.toDegree(-Math.PI / 2), epsilon);
+        assertEquals(-180, MathHelper.toDegree(-Math.PI), epsilon);
+        assertEquals(-360, MathHelper.toDegree(-2 * Math.PI), epsilon);
+    }
+
 }
