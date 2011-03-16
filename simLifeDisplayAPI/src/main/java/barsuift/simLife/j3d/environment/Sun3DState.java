@@ -10,12 +10,19 @@ public class Sun3DState implements State {
 
     private BoundingBoxState bounds;
 
+    /**
+     * The latitude should be between 0 and Pi/2
+     */
+    private float latitude;
+
     public Sun3DState() {
         this.bounds = new BoundingBoxState();
+        this.latitude = 0;
     }
 
-    public Sun3DState(BoundingBoxState bounds) {
+    public Sun3DState(BoundingBoxState bounds, float latitude) {
         this.bounds = bounds;
+        this.latitude = latitude;
     }
 
     public BoundingBoxState getBounds() {
@@ -26,11 +33,20 @@ public class Sun3DState implements State {
         this.bounds = bounds;
     }
 
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((bounds == null) ? 0 : bounds.hashCode());
+        result = prime * result + Float.floatToIntBits(latitude);
         return result;
     }
 
@@ -49,12 +65,14 @@ public class Sun3DState implements State {
         } else
             if (!bounds.equals(other.bounds))
                 return false;
+        if (Float.floatToIntBits(latitude) != Float.floatToIntBits(other.latitude))
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Sun3DState [bounds=" + bounds + "]";
+        return "Sun3DState [bounds=" + bounds + ", latitude=" + latitude + "]";
     }
 
 }

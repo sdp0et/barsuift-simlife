@@ -110,12 +110,14 @@ public final class DisplayDataCreatorForTests {
 
     public static Sun3DState createRandomSun3DState() {
         BoundingBoxState bounds = createRandomBoundingBoxState();
-        return new Sun3DState(bounds);
+        float latitude = (float) Randomizer.randomRotation() / 4;
+        return new Sun3DState(bounds, latitude);
     }
 
     public static Sun3DState createSpecificSun3DState() {
         BoundingBoxState bounds = createSpecificBoundingBoxState();
-        return new Sun3DState(bounds);
+        float latitude = (float) Randomizer.randomRotation() / 4;
+        return new Sun3DState(bounds, latitude);
     }
 
     public static Environment3DState createRandomEnvironment3DState() {

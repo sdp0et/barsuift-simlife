@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.environment;
 
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.environment.Sky3DState;
 import barsuift.simLife.j3d.environment.Sky3DStateFactory;
 import barsuift.simLife.landscape.LandscapeParameters;
@@ -25,9 +26,9 @@ import barsuift.simLife.landscape.LandscapeParameters;
 // TODO unit test
 public class SkyStateFactory {
 
-    public SkyState createRandomSkyState(LandscapeParameters landscapeParameters) {
+    public SkyState createRandomSkyState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
         SunStateFactory sunStateFactory = new SunStateFactory();
-        SunState sunState = sunStateFactory.createSunState(landscapeParameters);
+        SunState sunState = sunStateFactory.createSunState(planetParameters, landscapeParameters);
         Sky3DStateFactory sky3DStateFactory = new Sky3DStateFactory();
         Sky3DState sky3DState = sky3DStateFactory.createSky3DState(landscapeParameters);
         return new SkyState(sunState, sky3DState);

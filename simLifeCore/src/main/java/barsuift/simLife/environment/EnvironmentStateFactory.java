@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.environment;
 
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Environment3DStateFactory;
 import barsuift.simLife.landscape.LandscapeParameters;
@@ -27,9 +28,10 @@ import barsuift.simLife.landscape.LandscapeStateFactory;
 
 public class EnvironmentStateFactory {
 
-    public EnvironmentState createRandomEnvironmentState(LandscapeParameters landscapeParameters) {
+    public EnvironmentState createRandomEnvironmentState(PlanetParameters planetParameters,
+            LandscapeParameters landscapeParameters) {
         SkyStateFactory skyStateFactory = new SkyStateFactory();
-        SkyState skyState = skyStateFactory.createRandomSkyState(landscapeParameters);
+        SkyState skyState = skyStateFactory.createRandomSkyState(planetParameters, landscapeParameters);
         Environment3DStateFactory env3DStateFactory = new Environment3DStateFactory();
         Environment3DState env3DState = env3DStateFactory.createEnvironment3DState();
         LandscapeStateFactory landscapeFactory = new LandscapeStateFactory();
