@@ -35,9 +35,10 @@ public class BasicSun implements Sun {
 
     private BigDecimal brightness;
 
-    // FIXME 000. 002. add earthRevolution
     // FIXME 000. 003. remove zenithAngle
     private float earthRotation;
+
+    private float earthRevolution;
 
     private float zenithAngle;
 
@@ -57,7 +58,9 @@ public class BasicSun implements Sun {
         this.state = state;
         brightness = state.getBrightness();
         earthRotation = state.getEarthRotation();
+        earthRevolution = state.getEarthRevolution();
         adjustEarthRotation();
+        adjustEarthRevolution();
         zenithAngle = state.getZenithAngle();
         sun3D = new BasicSun3D(state.getSun3DState(), this);
     }
@@ -70,6 +73,16 @@ public class BasicSun implements Sun {
             earthRotation++;
         }
         earthRotation %= 1;
+    }
+
+    /**
+     * This method is to ensure the earthRevolution is always comprised between 0 and 1
+     */
+    private void adjustEarthRevolution() {
+        while (earthRevolution < 0) {
+            earthRevolution++;
+        }
+        earthRevolution %= 1;
     }
 
     public BigDecimal getBrightness() {
@@ -91,13 +104,24 @@ public class BasicSun implements Sun {
         return earthRotation;
     }
 
-
     public void setEarthRotation(float earthRotation) {
         this.earthRotation = earthRotation;
         adjustEarthRotation();
         // computeBrightness();
         setChanged();
         notifySubscribers(SunUpdateCode.EARTH_ROTATION);
+    }
+
+    public float getEarthRevolution() {
+        return earthRevolution;
+    }
+
+    public void setEarthRevolution(float earthRevolution) {
+        this.earthRevolution = earthRevolution;
+        adjustEarthRevolution();
+        // computeBrightness();
+        setChanged();
+        notifySubscribers(SunUpdateCode.EARTH_REVOLUTION);
     }
 
     // TODO temporary code (for reminder)
@@ -169,6 +193,7 @@ public class BasicSun implements Sun {
     public void synchronize() {
         state.setBrightness(brightness);
         state.setEarthRotation(earthRotation);
+        state.setEarthRevolution(earthRevolution);
         state.setZenithAngle(zenithAngle);
     }
 
