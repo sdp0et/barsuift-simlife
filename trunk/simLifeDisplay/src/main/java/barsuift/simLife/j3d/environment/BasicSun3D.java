@@ -58,10 +58,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final SunSphere3D sunSphere;
 
-    // FIXME should not be hard-coded and should be stored in state (and unit tested)
-    // private final float latitude = 0f;
-
-    private final float latitude = (float) Math.PI / 2;
+    private final Vector3d riseAngleRotationVector;
 
     public BasicSun3D(Sun3DState state, Sun sun) {
         super();
@@ -74,11 +71,13 @@ public class BasicSun3D implements Subscriber, Sun3D {
         light.setInfluencingBounds(state.getBounds().toBoundingBox());
         light.setCapability(Light.ALLOW_COLOR_WRITE);
         light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
+
+        riseAngleRotationVector = new Vector3d(0, -Math.sin(state.getLatitude()), -Math.cos(state.getLatitude()));
         transformGroup = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         transformGroup.setTransform(computeRiseTransform());
-        sunSphere = new SunSphere3D(latitude);
+        sunSphere = new SunSphere3D(state.getLatitude());
         transformGroup.addChild(sunSphere.getGroup());
         group = new BranchGroup();
         group.addChild(transformGroup);
@@ -120,20 +119,8 @@ public class BasicSun3D implements Subscriber, Sun3D {
     // FIXME store the rotation in state!!
     private Transform3D computeRiseTransform() {
         double riseAngle = sun.getRiseAngle() * Math.PI * 2;
-        System.out.println("Computing riseRotation=" + riseAngle + " from sunRiseAngle=" + sun.getRiseAngle());
         Transform3D result = new Transform3D();
-        // result.setRotation(new AxisAngle4d(new Vector3d(1, 0, 0), Math.PI / 4));
-        // result.setTranslation(new Vector3f(0, -10, 0));
-        // Transform3D t2 = new Transform3D();
-        // t2.setRotation(new AxisAngle4d(new Vector3d(0, -1, 0), riseAngle));
-        // result.mul(t2);
-        // FIXME unable to change the height of the sun at a given angle, because the translational components of the
-        // transform are not taken into account
-        result.setRotation(new AxisAngle4d(new Vector3d(0, -Math.sin(latitude), -Math.cos(latitude)), riseAngle));
-        // result.setRotation(new AxisAngle4d(new Vector3d(0, -1, 0), Math.PI));
-
-        // result.setTranslation(new Vector3f(0, Float.MAX_VALUE, 0));
-
+        result.setRotation(new AxisAngle4d(riseAngleRotationVector, riseAngle));
         return result;
     }
 
