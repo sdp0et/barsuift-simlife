@@ -31,6 +31,7 @@ import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import barsuift.simLife.MathHelper;
 import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j2d.ParametersDependent;
 
@@ -93,13 +94,13 @@ public class PlanetParametersPanel extends JPanel implements ParametersDependent
 
     @Override
     public void readFromParameters() {
-        latitudeSlider.setValue(Math.round(parameters.getLatitude()));
+        latitudeSlider.setValue(Math.round((float) MathHelper.toRadian(parameters.getLatitude())));
         eclipticObliquitySlider.setValue(Math.round(parameters.getEclipticObliquity()));
     }
 
     @Override
     public void writeIntoParameters() {
-        parameters.setLatitude(latitudeSlider.getValue());
+        parameters.setLatitude((float) MathHelper.toRadian(latitudeSlider.getValue()));
         parameters.setEclipticObliquity(eclipticObliquitySlider.getValue());
     }
 
