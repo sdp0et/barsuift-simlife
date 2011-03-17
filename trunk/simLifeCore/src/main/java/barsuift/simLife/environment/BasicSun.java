@@ -119,7 +119,6 @@ public class BasicSun implements Sun {
     public void setEarthRevolution(float earthRevolution) {
         this.earthRevolution = earthRevolution;
         adjustEarthRevolution();
-        // computeBrightness();
         setChanged();
         notifySubscribers(SunUpdateCode.EARTH_REVOLUTION);
     }
