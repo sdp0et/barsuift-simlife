@@ -94,7 +94,7 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (arg == SunUpdateCode.EARTH_ROTATION) {
+        if (arg == SunUpdateCode.EARTH_REVOLUTION) {
             earthRevolutionSlider.setValue(Math.round(sun.getEarthRevolution() * 100));
         }
     }
