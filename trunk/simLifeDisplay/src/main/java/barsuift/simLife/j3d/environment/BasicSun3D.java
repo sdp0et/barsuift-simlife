@@ -34,6 +34,7 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
+// FIXME double check the computeDirection methods and sinus/cosinus computations for sun light direction.
 public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Sun3DState state;
@@ -54,7 +55,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Publisher publisher = new BasicPublisher(this);
 
-    private final TransformGroup transformGroup;
+    private final TransformGroup earthRotationTG;
 
     private final SunSphere3D sunSphere;
 
@@ -73,14 +74,16 @@ public class BasicSun3D implements Subscriber, Sun3D {
         light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
 
         earthRotationVector = new Vector3d(0, -Math.sin(state.getLatitude()), -Math.cos(state.getLatitude()));
-        transformGroup = new TransformGroup();
+        earthRotationTG = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
-        transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        transformGroup.setTransform(computeSunSphereTransform());
-        sunSphere = new SunSphere3D(state.getLatitude());
-        transformGroup.addChild(sunSphere.getGroup());
+        earthRotationTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        earthRotationTG.setTransform(computeEarthRotationTransform());
+        sunSphere = new SunSphere3D(state.getLatitude(), state.getEclipticObliquity());
+        earthRotationTG.addChild(sunSphere.getGroup());
         group = new BranchGroup();
-        group.addChild(transformGroup);
+        group.addChild(earthRotationTG);
+
+        sunSphere.updateForEclipticShift(sun.getEarthRevolution() * 2 * (float) Math.PI);
     }
 
     @Override
@@ -93,17 +96,15 @@ public class BasicSun3D implements Subscriber, Sun3D {
             // TODO test to put the light in the same TG as the disk, instead of updating its direction
             light.setDirection(computeDirection());
             light.setColor(computeColor());
-            transformGroup.setTransform(computeSunSphereTransform());
+            earthRotationTG.setTransform(computeEarthRotationTransform());
         }
         if (arg == SunUpdateCode.ZENITH_ANGLE) {
             computeZenithAngleData();
             light.setDirection(computeDirection());
             light.setColor(computeColor());
-            // FIXME this is a test method. Is should definitely not be called at this time and place.
-            // float diff = sun.getZenithAngle() - oldzenith;
-            // oldzenith = sun.getZenithAngle();
-            // sunSphere.moveGeom(diff);
-            sunSphere.moveGeom(sun.getZenithAngle());
+        }
+        if (arg == SunUpdateCode.EARTH_REVOLUTION) {
+            sunSphere.updateForEclipticShift(sun.getEarthRevolution() * 2 * (float) Math.PI);
         }
     }
 
@@ -117,7 +118,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     // TODO the rotation should also depend on the zenith angle !
     // FIXME store the rotation in state!!
-    private Transform3D computeSunSphereTransform() {
+    private Transform3D computeEarthRotationTransform() {
         double earthRotation = sun.getEarthRotation() * Math.PI * 2;
         Transform3D result = new Transform3D();
         result.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));

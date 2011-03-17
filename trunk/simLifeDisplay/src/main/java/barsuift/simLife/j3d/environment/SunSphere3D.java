@@ -42,10 +42,17 @@ public class SunSphere3D {
 
     private final float[] initialCoords;
 
-    public SunSphere3D(float latitude) {
+    private final float latitude;
+
+    private final float solsticeMaxShift;
+
+    public SunSphere3D(float latitude, float eclipticObliquity) {
         Appearance sunSphereAppearance = new Appearance();
         AppearanceFactory.setColorWithColoringAttributes(sunSphereAppearance, new Color3f(1.0f, 1.0f, 0.5f));
         this.sphere = new Sphere(0.01f, sunSphereAppearance);
+
+        this.solsticeMaxShift = SHIFT * (float) Math.tan(eclipticObliquity);
+        this.latitude = latitude;
 
         Shape3D shape = sphere.getShape();
         this.geometry = (GeometryArray) shape.getGeometry();
@@ -68,18 +75,15 @@ public class SunSphere3D {
         return sphere;
     }
 
-    // TODO this is a test method
-    // FIXME 000. fist thing is to put a earth ecliptic angle parameter
-    public void moveGeom(float yPosition) {
+    // TODO unit test
+    public void updateForEclipticShift(float earthRevolution) {
+        float solsticeShift = -solsticeMaxShift * (float) Math.cos(earthRevolution);
         float[] coords = Arrays.copyOf(initialCoords, initialCoords.length);
-        // float[] coords = new float[geometry.getVertexCount() * 3];
-        // geometry.getCoordinates(0, coords);
         for (int i = 0; i < geometry.getVertexCount(); i++) {
-            // move the Z coordinates
-            // coords[i * 3 + 2] += yPosition / 10;
-            // 0.065
-            coords[i * 3 + 2] += yPosition * 0.065f;
-
+            // shift Y position
+            coords[i * 3 + 1] += solsticeShift * (float) Math.sin(latitude) * Math.cos(solsticeShift);
+            // shift Z position
+            coords[i * 3 + 2] += solsticeShift * (float) Math.cos(latitude) * Math.cos(solsticeShift);
         }
         geometry.setCoordinates(0, coords);
     }

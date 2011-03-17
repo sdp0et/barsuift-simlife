@@ -15,14 +15,21 @@ public class Sun3DState implements State {
      */
     private float latitude;
 
+    /**
+     * The ecliptic obliquity should be between 0 and Pi/2
+     */
+    private float eclipticObliquity;
+
     public Sun3DState() {
         this.bounds = new BoundingBoxState();
         this.latitude = 0;
+        this.eclipticObliquity = 0;
     }
 
-    public Sun3DState(BoundingBoxState bounds, float latitude) {
+    public Sun3DState(BoundingBoxState bounds, float latitude, float eclipticObliquity) {
         this.bounds = bounds;
         this.latitude = latitude;
+        this.eclipticObliquity = eclipticObliquity;
     }
 
     public BoundingBoxState getBounds() {
@@ -41,12 +48,21 @@ public class Sun3DState implements State {
         this.latitude = latitude;
     }
 
+    public float getEclipticObliquity() {
+        return eclipticObliquity;
+    }
+
+    public void setEclipticObliquity(float eclipticObliquity) {
+        this.eclipticObliquity = eclipticObliquity;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((bounds == null) ? 0 : bounds.hashCode());
         result = prime * result + Float.floatToIntBits(latitude);
+        result = prime * result + Float.floatToIntBits(eclipticObliquity);
         return result;
     }
 
@@ -67,12 +83,15 @@ public class Sun3DState implements State {
                 return false;
         if (Float.floatToIntBits(latitude) != Float.floatToIntBits(other.latitude))
             return false;
+        if (Float.floatToIntBits(eclipticObliquity) != Float.floatToIntBits(other.eclipticObliquity))
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Sun3DState [bounds=" + bounds + ", latitude=" + latitude + "]";
+        return "Sun3DState [bounds=" + bounds + ", latitude=" + latitude + ", eclipticObliquity=" + eclipticObliquity
+                + "]";
     }
 
 }
