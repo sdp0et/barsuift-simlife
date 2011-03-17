@@ -28,7 +28,7 @@ public class Sun3DStateFactory {
 
     public Sun3DState createSun3DState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
         BoundingBoxState bounds = BoundingBoxHelper.createBoundingBox(landscapeParameters);
-        return new Sun3DState(bounds, planetParameters.getLatitude());
+        return new Sun3DState(bounds, planetParameters.getLatitude(), planetParameters.getEclipticObliquity());
     }
 
 }
