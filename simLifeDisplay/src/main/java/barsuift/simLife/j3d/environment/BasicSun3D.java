@@ -25,6 +25,7 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.AxisAngle4d;
 import javax.vecmath.Color3f;
+import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
@@ -34,16 +35,12 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-// FIXME 000. 001. double check the getWhiteFactor method and sinus/cosinus computations for sun light direction.
+// FIXME 000. 001. implement in proper way the computeBrightness (should be easy now).
 public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Sun3DState state;
 
     private final Sun sun;
-
-    private float sinusEarthRotation;
-
-    private float sinusZenithAngle;
 
     private final DirectionalLight light;
 
@@ -66,13 +63,6 @@ public class BasicSun3D implements Subscriber, Sun3D {
         sun.addSubscriber(this);
         this.latitude = state.getLatitude();
 
-        computeEarthRotationData();
-        computeZenithAngleData();
-        light = new DirectionalLight(computeColor(), computeDirection());
-        light.setInfluencingBounds(state.getBounds().toBoundingBox());
-        light.setCapability(Light.ALLOW_COLOR_WRITE);
-        light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
-
         earthRotationVector = new Vector3d(0, -Math.sin(latitude), -Math.cos(latitude));
         earthRotationTG = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
@@ -82,8 +72,12 @@ public class BasicSun3D implements Subscriber, Sun3D {
         earthRotationTG.addChild(sunSphere.getGroup());
         group = new BranchGroup();
         group.addChild(earthRotationTG);
-
         sunSphere.updateForEclipticShift(sun.getEarthRevolution() * 2 * (float) Math.PI);
+
+        light = new DirectionalLight(computeColor(), computeDirection());
+        light.setInfluencingBounds(state.getBounds().toBoundingBox());
+        light.setCapability(Light.ALLOW_COLOR_WRITE);
+        light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
     }
 
     @Override
@@ -92,30 +86,40 @@ public class BasicSun3D implements Subscriber, Sun3D {
             light.setColor(computeColor());
         }
         if (arg == SunUpdateCode.EARTH_ROTATION) {
-            computeEarthRotationData();
-            // TODO test to put the light in the same TG as the disk, instead of updating its direction
             light.setDirection(computeDirection());
             light.setColor(computeColor());
             earthRotationTG.setTransform(computeEarthRotationTransform());
         }
         if (arg == SunUpdateCode.ZENITH_ANGLE) {
-            computeZenithAngleData();
             light.setDirection(computeDirection());
             light.setColor(computeColor());
         }
         if (arg == SunUpdateCode.EARTH_REVOLUTION) {
             sunSphere.updateForEclipticShift(sun.getEarthRevolution() * 2 * (float) Math.PI);
+            light.setColor(computeColor());
         }
     }
 
     // TODO unit test
     Vector3f computeDirection() {
-        float x = (float) Math.sin(sun.getEarthRotation() * 2 * Math.PI);
-        float y = (float) Math.cos(sun.getEarthRotation() * 2 * Math.PI) * (float) Math.cos(latitude);
-        float z = -(float) Math.cos(sun.getEarthRotation() * 2 * Math.PI) * (float) Math.sin(latitude);
+        float x = computeXDirection();
+        float y = computeYDirection();
+        float z = computeZDirection();
         Vector3f direction = new Vector3f(x, y, z);
         direction.normalize();
         return direction;
+    }
+
+    private float computeZDirection() {
+        return -(float) Math.cos(sun.getEarthRotation() * 2 * Math.PI) * (float) Math.sin(latitude);
+    }
+
+    private float computeYDirection() {
+        return (float) Math.cos(sun.getEarthRotation() * 2 * Math.PI) * (float) Math.cos(latitude);
+    }
+
+    private float computeXDirection() {
+        return (float) Math.sin(sun.getEarthRotation() * 2 * Math.PI);
     }
 
     private Transform3D computeEarthRotationTransform() {
@@ -140,7 +144,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         System.out.println("sunRadius=" + sunRadius);
 
         double brightness;
-        double sunHeight = sinusEarthRotation * sinusZenithAngle;
+        double sunHeight = computeSunHeight();
         if (sunHeight < -sunRadius) {
             brightness = 0;
         } else {
@@ -154,17 +158,6 @@ public class BasicSun3D implements Subscriber, Sun3D {
         System.out.println("-------------------- brightness=" + brightness);
     }
 
-    private void computeZenithAngleData() {
-        double zenithAngle = sun.getZenithAngle() * Math.PI / 2;
-        sinusZenithAngle = (float) Math.sin(zenithAngle);
-    }
-
-    private void computeEarthRotationData() {
-        double azimuthAngle = sun.getEarthRotation() * Math.PI * 2;
-        double earthRotation = azimuthAngle - Math.PI / 2;
-        sinusEarthRotation = (float) Math.sin(earthRotation);
-    }
-
     private Color3f computeColor() {
         float brightness = sun.getBrightness().floatValue();
         float whiteFactor = getWhiteFactor();
@@ -176,7 +169,15 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     @Override
     public float getWhiteFactor() {
-        return (float) Math.sqrt(Math.abs(sinusEarthRotation * sinusZenithAngle));
+        float sunHeight = computeSunHeight();
+        return (float) Math.sqrt(Math.abs(sunHeight));
+    }
+
+    private float computeSunHeight() {
+        Point3f transformedPoint = new Point3f();
+        computeEarthRotationTransform().transform(sunSphere.getSunCenter(), transformedPoint);
+        float sunHeight = transformedPoint.y / 0.15f;
+        return sunHeight;
     }
 
     @Override
