@@ -46,6 +46,10 @@ public class SunSphere3D {
 
     private final float solsticeMaxShift;
 
+    private final Point3f initialSunCenter;
+
+    private Point3f sunCenter;
+
     public SunSphere3D(float latitude, float eclipticObliquity) {
         Appearance sunSphereAppearance = new Appearance();
         AppearanceFactory.setColorWithColoringAttributes(sunSphereAppearance, new Color3f(1.0f, 1.0f, 0.5f));
@@ -66,6 +70,7 @@ public class SunSphere3D {
             coordinate.z += SHIFT * Math.sin(latitude);
             geometry.setCoordinate(i, coordinate);
         }
+        initialSunCenter = new Point3f(0, -SHIFT * (float) Math.cos(latitude), SHIFT * (float) Math.sin(latitude));
 
         initialCoords = new float[geometry.getVertexCount() * 3];
         geometry.getCoordinates(0, initialCoords);
@@ -78,14 +83,22 @@ public class SunSphere3D {
     // TODO unit test
     public void updateForEclipticShift(float earthRevolution) {
         float solsticeShift = -solsticeMaxShift * (float) Math.cos(earthRevolution);
+        float yShift = solsticeShift * (float) Math.sin(latitude) * (float) Math.cos(solsticeShift);
+        float zShift = solsticeShift * (float) Math.cos(latitude) * (float) Math.cos(solsticeShift);
+
         float[] coords = Arrays.copyOf(initialCoords, initialCoords.length);
         for (int i = 0; i < geometry.getVertexCount(); i++) {
             // shift Y position
-            coords[i * 3 + 1] += solsticeShift * (float) Math.sin(latitude) * Math.cos(solsticeShift);
+            coords[i * 3 + 1] += yShift;
             // shift Z position
-            coords[i * 3 + 2] += solsticeShift * (float) Math.cos(latitude) * Math.cos(solsticeShift);
+            coords[i * 3 + 2] += zShift;
         }
+        sunCenter = new Point3f(initialSunCenter.x, initialSunCenter.y + yShift, initialSunCenter.z + zShift);
         geometry.setCoordinates(0, coords);
+    }
+
+    public Point3f getSunCenter() {
+        return sunCenter;
     }
 
 }
