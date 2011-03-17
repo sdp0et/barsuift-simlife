@@ -34,18 +34,14 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-// FIXME double check the computeDirection methods and sinus/cosinus computations for sun light direction.
+// FIXME 000. 001. double check the getWhiteFactor method and sinus/cosinus computations for sun light direction.
 public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Sun3DState state;
 
     private final Sun sun;
 
-    private float cosinusEarthRotation;
-
     private float sinusEarthRotation;
-
-    private float cosinusZenithAngle;
 
     private float sinusZenithAngle;
 
@@ -61,11 +57,15 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Vector3d earthRotationVector;
 
+    private final float latitude;
+
     public BasicSun3D(Sun3DState state, Sun sun) {
         super();
         this.state = state;
         this.sun = sun;
         sun.addSubscriber(this);
+        this.latitude = state.getLatitude();
+
         computeEarthRotationData();
         computeZenithAngleData();
         light = new DirectionalLight(computeColor(), computeDirection());
@@ -73,12 +73,12 @@ public class BasicSun3D implements Subscriber, Sun3D {
         light.setCapability(Light.ALLOW_COLOR_WRITE);
         light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
 
-        earthRotationVector = new Vector3d(0, -Math.sin(state.getLatitude()), -Math.cos(state.getLatitude()));
+        earthRotationVector = new Vector3d(0, -Math.sin(latitude), -Math.cos(latitude));
         earthRotationTG = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
         earthRotationTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         earthRotationTG.setTransform(computeEarthRotationTransform());
-        sunSphere = new SunSphere3D(state.getLatitude(), state.getEclipticObliquity());
+        sunSphere = new SunSphere3D(latitude, state.getEclipticObliquity());
         earthRotationTG.addChild(sunSphere.getGroup());
         group = new BranchGroup();
         group.addChild(earthRotationTG);
@@ -108,16 +108,16 @@ public class BasicSun3D implements Subscriber, Sun3D {
         }
     }
 
-    private Vector3f computeDirection() {
-        Vector3f direction = new Vector3f(cosinusEarthRotation, -(sinusEarthRotation * sinusZenithAngle),
-                -cosinusZenithAngle * sinusEarthRotation);
+    // TODO unit test
+    Vector3f computeDirection() {
+        float x = (float) Math.sin(sun.getEarthRotation() * 2 * Math.PI);
+        float y = (float) Math.cos(sun.getEarthRotation() * 2 * Math.PI) * (float) Math.cos(latitude);
+        float z = -(float) Math.cos(sun.getEarthRotation() * 2 * Math.PI) * (float) Math.sin(latitude);
+        Vector3f direction = new Vector3f(x, y, z);
         direction.normalize();
-        // computeBrightness();
         return direction;
     }
 
-    // TODO the rotation should also depend on the zenith angle !
-    // FIXME store the rotation in state!!
     private Transform3D computeEarthRotationTransform() {
         double earthRotation = sun.getEarthRotation() * Math.PI * 2;
         Transform3D result = new Transform3D();
@@ -156,14 +156,12 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private void computeZenithAngleData() {
         double zenithAngle = sun.getZenithAngle() * Math.PI / 2;
-        cosinusZenithAngle = (float) Math.cos(zenithAngle);
         sinusZenithAngle = (float) Math.sin(zenithAngle);
     }
 
     private void computeEarthRotationData() {
         double azimuthAngle = sun.getEarthRotation() * Math.PI * 2;
         double earthRotation = azimuthAngle - Math.PI / 2;
-        cosinusEarthRotation = (float) Math.cos(earthRotation);
         sinusEarthRotation = (float) Math.sin(earthRotation);
     }
 
