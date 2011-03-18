@@ -59,13 +59,13 @@ public class EarthRevolutionPanelTest extends TestCase {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
         assertEquals(sun.getEarthRevolution(), (float) display.getSlider().getValue() / 100, 0.0050001);
         sun.setEarthRevolution(0.9f);
-        display.update(sun, SunUpdateCode.EARTH_ROTATION);
+        display.update(sun, SunUpdateCode.EARTH_REVOLUTION);
         assertEquals(sun.getEarthRevolution(), (float) display.getSlider().getValue() / 100, 0.0050001);
         sun.setEarthRevolution(0.8f);
-        display.update(sun, SunUpdateCode.EARTH_ROTATION);
+        display.update(sun, SunUpdateCode.EARTH_REVOLUTION);
         assertEquals(sun.getEarthRevolution(), (float) display.getSlider().getValue() / 100, 0.0050001);
         sun.setEarthRevolution(1f);
-        display.update(sun, SunUpdateCode.EARTH_ROTATION);
+        display.update(sun, SunUpdateCode.EARTH_REVOLUTION);
         assertEquals(sun.getEarthRevolution(), (float) display.getSlider().getValue() / 100, 0.0050001);
     }
 
