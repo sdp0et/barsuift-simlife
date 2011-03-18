@@ -34,7 +34,7 @@ import com.sun.j3d.utils.geometry.Sphere;
 
 public class SunSphere3D {
 
-    private static final float SHIFT = 0.15f;
+    public static final float SHIFT = 0.15f;
 
     private final Sphere sphere;
 
