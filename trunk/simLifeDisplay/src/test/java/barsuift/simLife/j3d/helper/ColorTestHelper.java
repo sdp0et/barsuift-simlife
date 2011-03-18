@@ -30,6 +30,12 @@ public final class ColorTestHelper extends Assert {
         // private constructor to enforce static access
     }
 
+    public static void assertEquals(Color3f expectedColor, Color3f actualColor) {
+        assertEquals(expectedColor.x, actualColor.x, 0.001);
+        assertEquals(expectedColor.y, actualColor.y, 0.001);
+        assertEquals(expectedColor.z, actualColor.z, 0.001);
+    }
+
     /**
      * Test the given appearance is not null, and that the associated color is equals to the given expected one
      * 
