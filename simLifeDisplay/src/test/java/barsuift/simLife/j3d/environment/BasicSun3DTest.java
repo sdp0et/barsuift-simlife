@@ -27,6 +27,7 @@ import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+import barsuift.simLife.j3d.helper.ColorTestHelper;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
 import barsuift.simLife.message.PublisherTestHelper;
@@ -68,7 +69,7 @@ public class BasicSun3DTest extends TestCase {
      */
     public void testSubscribers() {
         assertEquals(1, mockSun.countSubscribers());
-        // check the subscriber is the sunLight
+        // check the subscriber is the sun3D
         mockSun.deleteSubscriber(sun3D);
         assertEquals(0, mockSun.countSubscribers());
     }
@@ -79,49 +80,61 @@ public class BasicSun3DTest extends TestCase {
     public void testPublisher() {
         publisherHelper.addSubscriberTo(sun3D);
         // force computation of angles in the sun, and so for color in sun3D
-        mockSun.setZenithAngle(1f);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
+        mockSun.setEarthRotation(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
 
         assertEquals(1, publisherHelper.nbUpdated());
         assertEquals(SunUpdateCode.COLOR, publisherHelper.getUpdateObjects().get(0));
     }
 
     public void testUpdateBrightness() {
-        // set position at perfect zenith
-        mockSun.setEarthRotation(0.5f);
-        mockSun.setZenithAngle(1f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
+        setToZenith();
 
         Color3f actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
-        assertEquals(new Color3f(1, 1, 1), actualSunColor);
+        ColorTestHelper.assertEquals(new Color3f(1, 1, 1), actualSunColor);
 
         mockSun.setBrightness(PercentHelper.getDecimalValue(40));
         sun3D.update(mockSun, SunUpdateCode.BRIGHTNESS);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
-        assertEquals(new Color3f(0.4f, 0.4f, 0.4f), actualSunColor);
+        ColorTestHelper.assertEquals(new Color3f(0.4f, 0.4f, 0.4f), actualSunColor);
 
         mockSun.setBrightness(PercentHelper.getDecimalValue(70));
         sun3D.update(mockSun, SunUpdateCode.BRIGHTNESS);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
-        assertEquals(new Color3f(0.7f, 0.7f, 0.7f), actualSunColor);
+        ColorTestHelper.assertEquals(new Color3f(0.7f, 0.7f, 0.7f), actualSunColor);
+    }
+
+    /**
+     * set position at perfect zenith
+     */
+    private void setToZenith() {
+        // time of day = noon
+        mockSun.setEarthRotation(0.5f);
+        // time of year = sprim equinox
+        mockSun.setEarthRevolution(0.25f);
+        // latitude = equator
+        sun3DState.setLatitude(0);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sunLight = sun3D.getLight();
+        CompilerHelper.compile(sunLight);
     }
 
 
     public void testUpdateColor() {
+        setToZenith();
+
         Color3f actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
-        assertEquals(new Color3f(1f, (float) Math.sqrt(2) / 2, (float) Math.sqrt(2) / 2), actualSunColor);
+        ColorTestHelper.assertEquals(new Color3f(1f, 1, 1), actualSunColor);
 
         mockSun.setBrightness(PercentHelper.getDecimalValue(50));
         sun3D.update(mockSun, SunUpdateCode.BRIGHTNESS);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
-        assertEquals(new Color3f(0.5f, (float) (0.5 * Math.sqrt(2) / 2), (float) (0.5 * Math.sqrt(2) / 2)),
-                actualSunColor);
+        ColorTestHelper.assertEquals(new Color3f(0.5f, 0.5f, 0.5f), actualSunColor);
 
         mockSun.setBrightness(PercentHelper.getDecimalValue(100));
         sun3D.update(mockSun, SunUpdateCode.BRIGHTNESS);
@@ -129,33 +142,41 @@ public class BasicSun3DTest extends TestCase {
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
-        assertEquals(new Color3f(1f, 0f, 0f), actualSunColor);
+        ColorTestHelper.assertEquals(new Color3f(1f, 0f, 0f), actualSunColor);
+
 
         mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        actualSunColor = new Color3f();
-        sunLight.getColor(actualSunColor);
-        assertEquals(new Color3f(1f, (float) Math.sqrt(Math.sqrt(2) / 2), (float) Math.sqrt(Math.sqrt(2) / 2)),
-                actualSunColor);
+        sun3DState.setLatitude((float) Math.PI / 4);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sunLight = sun3D.getLight();
+        CompilerHelper.compile(sunLight);
 
-        mockSun.setZenithAngle(1f);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
-        assertEquals(new Color3f(1f, 1f, 1f), actualSunColor);
+        ColorTestHelper.assertEquals(
+                new Color3f(1f, (float) Math.sqrt(Math.sqrt(2) / 2), (float) Math.sqrt(Math.sqrt(2) / 2)),
+                actualSunColor);
     }
 
     public void testUpdateEarthRotation1() {
-        // earthRotation = Pi/4
-        // zenith = Pi/4
-        assertEquals(0.375f, mockSun.getEarthRotation(), 0.0001f);
-        assertEquals(0.5f, mockSun.getZenithAngle(), 0.0001f);
+        // latitude = equator
+        sun3DState.setLatitude(0);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sunLight = sun3D.getLight();
+        CompilerHelper.compile(sunLight);
+
         Vector3f actualDirection = new Vector3f();
+        Vector3f expectedDirection;
+
+        // the sun is at its nadir
+        mockSun.setEarthRotation(0f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         sunLight.getDirection(actualDirection);
-        Vector3f expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, -0.5f, -0.5f);
+        expectedDirection = new Vector3f(0, 1, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
+        // sun rise
         mockSun.setEarthRotation(0.25f);
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         sunLight.getDirection(actualDirection);
@@ -163,98 +184,7 @@ public class BasicSun3DTest extends TestCase {
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f(0, -(float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-
-        mockSun.setEarthRotation(0.625f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, -0.5f, -0.5f);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f(-1, 0, 0);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-    }
-
-    /**
-     * Test earth rotation with zenith angle set to 0
-     */
-    public void testUpdateEarthRotation2() {
-        mockSun.setZenithAngle(0f);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
-        // Pi/4
-        assertEquals(0.375f, mockSun.getEarthRotation(), 0.0001f);
-        Vector3f actualDirection = new Vector3f();
-        sunLight.getDirection(actualDirection);
-        Vector3f expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, 0f, (float) -Math.sqrt(2) / 2);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-
-        // 0 Pi
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f(1, 0, 0);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-
-        // Pi/2
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f(0, 0, -1);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-
-        // 3Pi/4
-        mockSun.setEarthRotation(0.625f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, 0, -(float) Math.sqrt(2) / 2);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-
-        // Pi
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f(-1, 0, 0);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-    }
-
-    /**
-     * Test earth rotation with zenith angle set to 100% (Pi/2)
-     */
-    public void testUpdateEarthRotation3() {
-        mockSun.setZenithAngle(1f);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
-        // Pi/4
-        assertEquals(0.375f, mockSun.getEarthRotation(), 0.0001f);
-        Vector3f actualDirection = new Vector3f();
-        sunLight.getDirection(actualDirection);
-        Vector3f expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2, 0);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-
-        // 0 Pi
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f(1, 0, 0);
-        expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
-
-        // Pi/2
+        // sun at its zenith
         mockSun.setEarthRotation(0.5f);
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         sunLight.getDirection(actualDirection);
@@ -262,7 +192,7 @@ public class BasicSun3DTest extends TestCase {
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        // 3Pi/4
+        // 5/8
         mockSun.setEarthRotation(0.625f);
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         sunLight.getDirection(actualDirection);
@@ -270,7 +200,7 @@ public class BasicSun3DTest extends TestCase {
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        // Pi
+        // sunset
         mockSun.setEarthRotation(0.75f);
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         sunLight.getDirection(actualDirection);
@@ -279,30 +209,138 @@ public class BasicSun3DTest extends TestCase {
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
     }
 
-    public void testUpdateZenithAngle() {
-        assertEquals(0.375f, mockSun.getEarthRotation(), 0.0001f);
-        assertEquals(0.5f, mockSun.getZenithAngle(), 0.0001f);
+    public void testUpdateEarthRotation2() {
+        // latitude = 45°
+        sun3DState.setLatitude((float) Math.PI / 4);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sunLight = sun3D.getLight();
+        CompilerHelper.compile(sunLight);
+
         Vector3f actualDirection = new Vector3f();
+        Vector3f expectedDirection;
+
+        // the sun is at its nadir
+        mockSun.setEarthRotation(0f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         sunLight.getDirection(actualDirection);
-        Vector3f expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, -0.5f, -0.5f);
+        expectedDirection = new Vector3f(0, (float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        mockSun.setZenithAngle(0f);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
+        // sun rise
+        mockSun.setEarthRotation(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, 0f, (float) -Math.sqrt(2) / 2);
+        expectedDirection = new Vector3f(1, 0, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        mockSun.setZenithAngle(1f);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
+        // noon
+        mockSun.setEarthRotation(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         sunLight.getDirection(actualDirection);
-        expectedDirection = new Vector3f((float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2, 0);
+        expectedDirection = new Vector3f(0, -(float) Math.sqrt(2) / 2, (float) Math.sqrt(2) / 2);
+        expectedDirection.normalize();
+        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+
+        // sunset
+        mockSun.setEarthRotation(0.75f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sunLight.getDirection(actualDirection);
+        expectedDirection = new Vector3f(-1, 0, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
     }
 
+    public void testUpdateEarthRotation3() {
+        // latitude = 90°
+        sun3DState.setLatitude((float) Math.PI / 2);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sunLight = sun3D.getLight();
+        CompilerHelper.compile(sunLight);
+
+        Vector3f actualDirection = new Vector3f();
+        Vector3f expectedDirection;
+
+        // the sun is at its nadir
+        mockSun.setEarthRotation(0f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sunLight.getDirection(actualDirection);
+        expectedDirection = new Vector3f(0, 0, -1);
+        expectedDirection.normalize();
+        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+
+        // sun rise
+        mockSun.setEarthRotation(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sunLight.getDirection(actualDirection);
+        expectedDirection = new Vector3f(1, 0, 0);
+        expectedDirection.normalize();
+        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+
+        // noon
+        mockSun.setEarthRotation(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sunLight.getDirection(actualDirection);
+        expectedDirection = new Vector3f(0, 0, 1);
+        expectedDirection.normalize();
+        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+
+        // 5Pi/8
+        mockSun.setEarthRotation(0.625f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sunLight.getDirection(actualDirection);
+        expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, 0, (float) Math.sqrt(2) / 2);
+        expectedDirection.normalize();
+        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+
+        // sunset
+        mockSun.setEarthRotation(0.75f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sunLight.getDirection(actualDirection);
+        expectedDirection = new Vector3f(-1, 0, 0);
+        expectedDirection.normalize();
+        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+    }
+
+    public void testUpdateEarthRevolution() {
+        // latitude = 90°
+        sun3DState.setLatitude((float) Math.PI / 2);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sunLight = sun3D.getLight();
+        CompilerHelper.compile(sunLight);
+
+        // time of year = wim solstice
+        mockSun.setEarthRevolution(0f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        Color3f wimColor = new Color3f();
+        sunLight.getColor(wimColor);
+
+        // time of year = sprim equinox
+        mockSun.setEarthRevolution(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        Color3f sprimColor = new Color3f();
+        sunLight.getColor(sprimColor);
+
+        // time of year = sum solstice
+        mockSun.setEarthRevolution(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        Color3f sumColor = new Color3f();
+        sunLight.getColor(sumColor);
+
+        // time of year = tom equinox
+        mockSun.setEarthRevolution(0.75f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        Color3f tomColor = new Color3f();
+        sunLight.getColor(tomColor);
+
+        ColorTestHelper.assertEquals(wimColor, sumColor);
+        ColorTestHelper.assertEquals(sprimColor, tomColor);
+        assertFalse(wimColor.equals(sprimColor));
+        assertFalse(sumColor.equals(tomColor));
+    }
+
+    // FIXME fix test
     public void testGetWhiteFactor() {
         assertEquals(0.375f, mockSun.getEarthRotation(), 0.0001f);
         assertEquals(0.5f, mockSun.getZenithAngle(), 0.0001f);
