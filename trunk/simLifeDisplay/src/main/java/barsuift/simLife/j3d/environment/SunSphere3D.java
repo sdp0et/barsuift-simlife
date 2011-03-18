@@ -53,7 +53,9 @@ public class SunSphere3D {
     public SunSphere3D(float latitude, float eclipticObliquity) {
         Appearance sunSphereAppearance = new Appearance();
         AppearanceFactory.setColorWithColoringAttributes(sunSphereAppearance, new Color3f(1.0f, 1.0f, 0.5f));
-        this.sphere = new Sphere(0.01f, sunSphereAppearance);
+        // the GEOMETRY_NOT_SHARED flag is necessary or creating a new SunSphere3D would resuse the same geometry, and
+        // we would not be able to set the capability bits.
+        this.sphere = new Sphere(0.01f, Sphere.GEOMETRY_NOT_SHARED, sunSphereAppearance);
 
         this.solsticeMaxShift = SHIFT * (float) Math.tan(eclipticObliquity);
         this.latitude = latitude;
