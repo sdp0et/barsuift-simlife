@@ -188,6 +188,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         return (float) Math.sqrt(Math.abs(sunHeight));
     }
 
+    // TODO unit test
     private void computeSunHeight() {
         Point3f transformedPoint = new Point3f();
         computeEarthRotationTransform().transform(sunSphere.getSunCenter(), transformedPoint);
