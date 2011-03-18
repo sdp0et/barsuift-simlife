@@ -340,7 +340,7 @@ public class BasicSun3DTest extends TestCase {
         assertFalse(sumColor.equals(tomColor));
     }
 
-    // FIXME fix test
+    // FIXME 000. 002. fix test
     public void testGetWhiteFactor() {
         assertEquals(0.375f, mockSun.getEarthRotation(), 0.0001f);
         assertEquals(0.5f, mockSun.getZenithAngle(), 0.0001f);
