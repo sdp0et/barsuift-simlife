@@ -20,6 +20,7 @@ Add logging utility
   * log file is written in $HOME/.barsuift-simlife/barsuift-simlife-<n>.log
 Randomize the number of trees and their positioning
   * the number of trees depends on the world size
+Add proper management of the sun, depending on terrain latitude and planet ecliptic obliquity
 
 
 Bug fixes
