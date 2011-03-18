@@ -35,8 +35,7 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-// FIXME 000. 001. fix existing unit tests
-// FIXME 000. 002. add missing unit tests
+// FIXME 000. 001. add missing unit tests
 // FIXME 000. 003. remove zenithAngle stuff
 // FIXME 000. 004. implement in proper way the computeBrightness (should be easy now).
 // FIXME 000. 005. make the sun sphere color change in a way similar (but not identical) to BasicSun3D#GetColor()
