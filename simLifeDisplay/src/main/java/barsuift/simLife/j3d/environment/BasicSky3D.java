@@ -84,7 +84,7 @@ public class BasicSky3D implements Sky3D {
 
     @Override
     public void synchronize() {
-        // FIXME 002 nothing to do ??
+        // nothing to do
     }
 
 }

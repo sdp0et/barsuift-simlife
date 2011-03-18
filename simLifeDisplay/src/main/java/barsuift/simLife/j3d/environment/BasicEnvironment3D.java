@@ -71,7 +71,7 @@ public class BasicEnvironment3D implements Environment3D {
 
     @Override
     public void synchronize() {
-        // FIXME 002 nothing to do ??
+        // nothing to do
     }
 
 }

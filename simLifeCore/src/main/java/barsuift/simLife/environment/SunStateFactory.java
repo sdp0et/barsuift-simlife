@@ -37,13 +37,6 @@ public class SunStateFactory {
      * <li>zenithAngle = 50%</li>
      * </ul>
      */
-    // TODO 010. the sun position should depend on the current date, at init time
-    // TODO 010. 001. zenith=(1-cosinus(dayOfYear*2*Pi/72)/2
-    // TODO 010. 002. dayLight = same function = % of day where sun is "visible"
-    // TODO 007. the sun brightness should depend on the sun position (same function as white factor ?? should be 0 at
-    // night at least)
-    // TODO 020. the sun position should evolve with the time of the day
-    // TODO 025. the sun sliders should be able to be decorrelated from auto move
     public SunState createSunState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
         BigDecimal brightness = PercentHelper.getDecimalValue(100);
         float earthRotation = 0.375f;

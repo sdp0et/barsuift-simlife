@@ -35,7 +35,18 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-// FIXME 000. 001. implement in proper way the computeBrightness (should be easy now).
+// FIXME 000. 001. fix existing unit tests
+// FIXME 000. 002. add missing unit tests
+// FIXME 000. 003. remove zenithAngle stuff
+// FIXME 000. 004. implement in proper way the computeBrightness (should be easy now).
+// FIXME 000. 005. make the sun sphere color change in a way similar (but not identical) to BasicSun3D#GetColor()
+// FIXME 000. 006. make the sky color change from blue to dark at night
+// FIXME 000. 007. make the earthRotation depends on the hour of the day (at init time)
+// FIXME 000. 008. make the earthRevolution depends on the time of year (at init time)
+// FIXME 000. 009. make the earthRotation depends on the time of day (dynamic)
+// FIXME 000. 010. make the earthRevolution depends on the time of day (dynamic)
+// FIXME 000. 011. be able to deactivate the earth rotation computation to switch to manual mode
+// FIXME 000. 012. be able to deactivate the earth revolution computation to switch to manual mode
 public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Sun3DState state;
