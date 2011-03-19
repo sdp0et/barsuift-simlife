@@ -133,6 +133,7 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
 	<developers>
 		<developer>
 			<id>cyrille.gachot</id>
@@ -143,21 +144,5 @@
 			</roles>
 		</developer>
 	</developers>
-	<reporting>
-		<!-- plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-				<inherited>false</inherited>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>aggregate</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-		</plugins-->
-	</reporting>
+
 </project>
