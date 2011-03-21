@@ -44,9 +44,7 @@ public class SunSphere3D {
 
     private final float latitude;
 
-    private final float solsticeMaxShift;
-
-    private final Point3f initialSunCenter;
+    private final float eclipticObliquity;
 
     private Point3f sunCenter;
 
@@ -57,36 +55,30 @@ public class SunSphere3D {
         // we would not be able to set the capability bits.
         this.sphere = new Sphere(0.01f, Sphere.GEOMETRY_NOT_SHARED, sunSphereAppearance);
 
-        this.solsticeMaxShift = SHIFT * (float) Math.tan(eclipticObliquity);
         this.latitude = latitude;
+        this.eclipticObliquity = eclipticObliquity;
 
         Shape3D shape = sphere.getShape();
         this.geometry = (GeometryArray) shape.getGeometry();
         // this is to allow coordinate writing
         geometry.setCapability(TriangleFanArray.ALLOW_COORDINATE_WRITE);
-        // initial positioning of the sphere geometry
-        for (int i = 0; i < geometry.getVertexCount(); i++) {
-            Point3f coordinate = new Point3f();
-            geometry.getCoordinate(i, coordinate);
-            coordinate.y -= SHIFT * Math.cos(latitude);
-            coordinate.z += SHIFT * Math.sin(latitude);
-            geometry.setCoordinate(i, coordinate);
-        }
-        initialSunCenter = new Point3f(0, -SHIFT * (float) Math.cos(latitude), SHIFT * (float) Math.sin(latitude));
-
         initialCoords = new float[geometry.getVertexCount() * 3];
         geometry.getCoordinates(0, initialCoords);
+        // FIXME revolution should be passed as an argument
+        updateForEclipticShift(0);
     }
 
     public Group getGroup() {
         return sphere;
     }
 
-    // TODO unit test
     public void updateForEclipticShift(float earthRevolution) {
-        float solsticeShift = -solsticeMaxShift * (float) Math.cos(earthRevolution);
-        float yShift = solsticeShift * (float) Math.sin(latitude) * (float) Math.cos(solsticeShift);
-        float zShift = solsticeShift * (float) Math.cos(latitude) * (float) Math.cos(solsticeShift);
+        float effectiveEarthRevolution = (earthRevolution < Math.PI) ? (float) (Math.PI / 2 - earthRevolution)
+                : (float) (-3 * Math.PI / 2 + earthRevolution);
+        float adjustedRotation = effectiveEarthRevolution / (float) (Math.PI / 2) * eclipticObliquity;
+        float actualRotation = -(float) Math.PI / 2 - latitude + adjustedRotation;
+        float yShift = (float) Math.sin(actualRotation) * SHIFT;
+        float zShift = -(float) Math.cos(actualRotation) * SHIFT;
 
         float[] coords = Arrays.copyOf(initialCoords, initialCoords.length);
         for (int i = 0; i < geometry.getVertexCount(); i++) {
@@ -95,8 +87,8 @@ public class SunSphere3D {
             // shift Z position
             coords[i * 3 + 2] += zShift;
         }
-        sunCenter = new Point3f(initialSunCenter.x, initialSunCenter.y + yShift, initialSunCenter.z + zShift);
         geometry.setCoordinates(0, coords);
+        sunCenter = new Point3f(0, yShift, zShift);
     }
 
     public Point3f getSunCenter() {
