@@ -64,7 +64,6 @@ public class SunSphere3D {
         geometry.setCapability(TriangleFanArray.ALLOW_COORDINATE_WRITE);
         initialCoords = new float[geometry.getVertexCount() * 3];
         geometry.getCoordinates(0, initialCoords);
-        // FIXME revolution should be passed as an argument
         updateForEclipticShift(earthRevolution);
     }
 
