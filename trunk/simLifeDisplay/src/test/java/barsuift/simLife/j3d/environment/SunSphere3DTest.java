@@ -36,7 +36,9 @@ public class SunSphere3DTest extends TestCase {
     }
 
     public void testUpdateForEclipticShift1() {
-        SunSphere3D sphere = new SunSphere3D(0, (float) Math.PI / 2);
+        SunSphere3D sphere = new SunSphere3D(0, (float) Math.PI / 2, 0);
+        PointTestHelper.assertPointEquals(new Point3f(0, 0, -0.15f), sphere.getSunCenter());
+
         sphere.updateForEclipticShift(0);
         PointTestHelper.assertPointEquals(new Point3f(0, 0, -0.15f), sphere.getSunCenter());
 
@@ -51,7 +53,11 @@ public class SunSphere3DTest extends TestCase {
     }
 
     public void testUpdateForEclipticShift2() {
-        SunSphere3D sphere = new SunSphere3D((float) Math.PI / 4, (float) Math.PI / 2);
+        SunSphere3D sphere = new SunSphere3D((float) Math.PI / 4, (float) Math.PI / 2, 0);
+        PointTestHelper.assertPointEquals(
+                new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, -0.15f * (float) Math.sqrt(2) / 2),
+                sphere.getSunCenter());
+
         sphere.updateForEclipticShift(0);
         PointTestHelper.assertPointEquals(
                 new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, -0.15f * (float) Math.sqrt(2) / 2),
@@ -74,7 +80,9 @@ public class SunSphere3DTest extends TestCase {
     }
 
     public void testUpdateForEclipticShift3() {
-        SunSphere3D sphere = new SunSphere3D((float) Math.PI / 2, (float) Math.PI / 2);
+        SunSphere3D sphere = new SunSphere3D((float) Math.PI / 2, (float) Math.PI / 2, 0);
+        PointTestHelper.assertPointEquals(new Point3f(0, -0.15f, 0), sphere.getSunCenter());
+
         sphere.updateForEclipticShift(0);
         PointTestHelper.assertPointEquals(new Point3f(0, -0.15f, 0), sphere.getSunCenter());
 

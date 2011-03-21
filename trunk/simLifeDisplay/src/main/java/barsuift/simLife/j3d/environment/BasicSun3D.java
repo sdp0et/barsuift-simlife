@@ -80,11 +80,11 @@ public class BasicSun3D implements Subscriber, Sun3D {
         // this is to allow the sun disk to be rotated while live
         earthRotationTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         earthRotationTG.setTransform(computeEarthRotationTransform());
-        sunSphere = new SunSphere3D(latitude, state.getEclipticObliquity());
+        sunSphere = new SunSphere3D(latitude, state.getEclipticObliquity(), sun.getEarthRevolution() * 2
+                * (float) Math.PI);
         earthRotationTG.addChild(sunSphere.getGroup());
         group = new BranchGroup();
         group.addChild(earthRotationTG);
-        sunSphere.updateForEclipticShift(sun.getEarthRevolution() * 2 * (float) Math.PI);
         computeSunHeight();
 
         light = new DirectionalLight(computeColor(), computeDirection());
