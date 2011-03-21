@@ -557,65 +557,33 @@ public class BasicSun3DTest extends TestCase {
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
     }
 
-    // FIXME 000. 002. fix test
     public void testGetWhiteFactor() {
-        assertEquals(0.375f, mockSun.getEarthRotation(), 0.0001f);
-        assertEquals(0.5f, mockSun.getZenithAngle(), 0.0001f);
-        assertEquals((float) Math.sqrt(2) / 2, sun3D.getWhiteFactor(), 0.0001f);
-
-        mockSun.setZenithAngle(0f);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.375f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.625f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
-
-        mockSun.setZenithAngle(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.375f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals((float) Math.sqrt(2) / 2, sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals((float) Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.625f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals((float) Math.sqrt(2) / 2, sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
-
-
-        mockSun.setZenithAngle(1f);
-        sun3D.update(mockSun, SunUpdateCode.ZENITH_ANGLE);
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.375f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals((float) Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        setToZenith();
+        assertEquals(1f, sun3D.getHeight(), 0.0001);
         assertEquals(1f, sun3D.getWhiteFactor(), 0.001f);
-        mockSun.setEarthRotation(0.625f);
+
+        // time of day = sun rise
+        mockSun.setEarthRotation(0.25f);
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
-        assertEquals((float) Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor(), 0.001f);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+        assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
+
+        // time of day = midnight
+        mockSun.setEarthRotation(0f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(-1f, sun3D.getHeight(), 0.0001);
+        assertEquals(1f, sun3D.getWhiteFactor(), 0.001f);
+
+        // time of day = sunset
         mockSun.setEarthRotation(0.75f);
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
         assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
+
+        // time of day = middle of the morning
+        mockSun.setEarthRotation(0.375f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+        assertEquals(Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor(), 0.001f);
     }
 }
