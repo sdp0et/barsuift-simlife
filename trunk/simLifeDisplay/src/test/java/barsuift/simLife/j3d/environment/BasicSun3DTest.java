@@ -340,15 +340,18 @@ public class BasicSun3DTest extends TestCase {
         assertFalse(sumColor.equals(tomColor));
     }
 
-    public void testComputeSunHeight1() {
-        // time of year = sprim equinox
-        mockSun.setEarthRevolution(0.25f);
+    public void testComputeSunHeightLatitude0() {
         // latitude = equator
         sun3DState.setLatitude(0);
         sun3DState.setEclipticObliquity((float) Math.PI / 4);
         sun3D = new BasicSun3D(sun3DState, mockSun);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
+
+        // /////////////////////////////
+        // time of year = sprim equinox
+        mockSun.setEarthRevolution(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
 
         mockSun.setEarthRotation(0f);
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
@@ -374,14 +377,184 @@ public class BasicSun3DTest extends TestCase {
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
+        mockSun.setEarthRotation(1f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(-1f, sun3D.getHeight(), 0.0001);
+
+        // /////////////////////////////
         // time of year = sum solstice
         mockSun.setEarthRevolution(0.5f);
         sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
 
-        // FIXME complete this test and duplicate it for latitude 45° and 90°
         mockSun.setEarthRotation(0f);
         sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
         assertEquals(-Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.125f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(-0.5f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.375f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0.5, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.75f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(1f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(-Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+    }
+
+    public void testComputeSunHeightLatitude45() {
+        // latitude = middle of the planet
+        sun3DState.setLatitude((float) Math.PI / 4);
+        sun3DState.setEclipticObliquity((float) Math.PI / 4);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sunLight = sun3D.getLight();
+        CompilerHelper.compile(sunLight);
+
+        // /////////////////////////////
+        // time of year = sprim equinox
+        mockSun.setEarthRevolution(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+
+        mockSun.setEarthRotation(0f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(-Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.125f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(-0.5, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.375f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0.5, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.75f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(1f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(-Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        // /////////////////////////////
+        // time of year = sum solstice
+        mockSun.setEarthRevolution(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+
+        mockSun.setEarthRotation(0f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0.5f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(1f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.75f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0.5f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(1f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+    }
+
+    public void testComputeSunHeightLatitude90() {
+        // latitude = north pole
+        sun3DState.setLatitude((float) Math.PI / 2);
+        sun3DState.setEclipticObliquity((float) Math.PI / 4);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sunLight = sun3D.getLight();
+        CompilerHelper.compile(sunLight);
+
+        // /////////////////////////////
+        // time of year = sprim equinox
+        mockSun.setEarthRevolution(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+
+        mockSun.setEarthRotation(0f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.125f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.375f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.75f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(1f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(0f, sun3D.getHeight(), 0.0001);
+
+        // /////////////////////////////
+        // time of year = sum solstice
+        mockSun.setEarthRevolution(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+
+        mockSun.setEarthRotation(0f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.125f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.25f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.375f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.5f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(0.75f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
+
+        mockSun.setEarthRotation(1f);
+        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
     }
 
     // FIXME 000. 002. fix test
