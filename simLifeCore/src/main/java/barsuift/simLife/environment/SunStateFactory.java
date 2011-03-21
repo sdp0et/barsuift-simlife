@@ -37,6 +37,7 @@ public class SunStateFactory {
      * <li>zenithAngle = 50%</li>
      * </ul>
      */
+    // FIXME earthRotation and earthRevolution should be computed from the current date (how to do that ???)
     public SunState createSunState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
         BigDecimal brightness = PercentHelper.getDecimalValue(100);
         float earthRotation = 0.375f;
