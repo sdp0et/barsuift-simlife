@@ -48,7 +48,7 @@ public class SunSphere3D {
 
     private Point3f sunCenter;
 
-    public SunSphere3D(float latitude, float eclipticObliquity) {
+    public SunSphere3D(float latitude, float eclipticObliquity, float earthRevolution) {
         Appearance sunSphereAppearance = new Appearance();
         AppearanceFactory.setColorWithColoringAttributes(sunSphereAppearance, new Color3f(1.0f, 1.0f, 0.5f));
         // the GEOMETRY_NOT_SHARED flag is necessary or creating a new SunSphere3D would resuse the same geometry, and
@@ -65,7 +65,7 @@ public class SunSphere3D {
         initialCoords = new float[geometry.getVertexCount() * 3];
         geometry.getCoordinates(0, initialCoords);
         // FIXME revolution should be passed as an argument
-        updateForEclipticShift(0);
+        updateForEclipticShift(earthRevolution);
     }
 
     public Group getGroup() {
