@@ -37,7 +37,6 @@ public class BasicUniverseFactory {
         Landscape3D landscape3D = universe.getEnvironment().getLandscape().getLandscape3D();
         int size = landscape3D.getSize();
         int maxTrees = size / 5;
-        System.out.println(maxTrees);
 
         int nbTrees = Randomizer.randomBetween(1, maxTrees);
         TreeStateFactory treeStateFactory = new TreeStateFactory();
