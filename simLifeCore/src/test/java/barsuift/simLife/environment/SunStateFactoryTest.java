@@ -41,9 +41,9 @@ public class SunStateFactoryTest extends TestCase {
         SunStateFactory factory = new SunStateFactory();
         SunState sunState = factory.createSunState(planetParameters, landscapeParameters);
         BigDecimal brightness = sunState.getBrightness();
-        assertEquals(1.00f, brightness.floatValue());
-        assertEquals(0.375f, sunState.getEarthRotation(), 0.0001);
-        assertEquals(0.50f, sunState.getZenithAngle(), 0.0001);
+        assertEquals(0.0f, brightness.floatValue());
+        assertEquals(0.0f, sunState.getEarthRotation(), 0.0001);
+        assertEquals(0.0f, sunState.getEarthRevolution(), 0.0001);
     }
 
 }
