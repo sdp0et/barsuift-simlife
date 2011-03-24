@@ -18,16 +18,18 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import barsuift.simLife.j3d.BoundingBoxState;
-import barsuift.simLife.j3d.util.BoundingBoxHelper;
+import junit.framework.TestCase;
 import barsuift.simLife.landscape.LandscapeParameters;
 
-public class Sky3DStateFactory {
 
-    public Sky3DState createSky3DState(LandscapeParameters landscapeParameters) {
-        BoundingBoxState ambientLightBounds = BoundingBoxHelper.createBoundingBox(landscapeParameters);
-        BoundingBoxState skyBounds = BoundingBoxHelper.createBoundingBox(landscapeParameters);
-        return new Sky3DState(skyBounds, ambientLightBounds);
+public class Sky3DStateFactoryTest extends TestCase {
+
+    public void testCreateSky3DState() {
+        LandscapeParameters landscapeParameters = new LandscapeParameters();
+        Sky3DStateFactory factory = new Sky3DStateFactory();
+        Sky3DState sky3DState = factory.createSky3DState(landscapeParameters);
+        assertNotNull(sky3DState.getAmbientLightBounds());
+        assertNotNull(sky3DState.getSkyBounds());
     }
 
 }
