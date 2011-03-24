@@ -59,7 +59,7 @@ public interface Sun extends Publisher, Persistent<SunState> {
      */
     public float getEarthRotation();
 
-    public void setEarthRevolution(float earthRevolution);
+    public void setEarthRotation(float earthRotation);
 
     /**
      * Earth revolution, in percent.
@@ -75,20 +75,6 @@ public interface Sun extends Publisher, Persistent<SunState> {
      */
     public float getEarthRevolution();
 
-    public void setEarthRotation(float earthRotation);
-
-    /**
-     * Zenith angle, in percent.
-     * <p>
-     * <ul>
-     * <li>0 means sun is always at the horizon</li>
-     * <li>50 means sun is at 45° (Pi/4)</li>
-     * <li>100 means sun is at its zenith position. no Z direction</li>
-     * </ul>
-     * </p>
-     */
-    public float getZenithAngle();
-
-    public void setZenithAngle(float zenithAngle);
+    public void setEarthRevolution(float earthRevolution);
 
 }

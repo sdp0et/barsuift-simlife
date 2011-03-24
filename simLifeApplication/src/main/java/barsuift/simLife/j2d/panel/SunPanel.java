@@ -29,19 +29,12 @@ public class SunPanel extends JPanel {
     private static final long serialVersionUID = -6102868842517781193L;
 
     public SunPanel(Sun sun) {
-        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
-
-        rightPanel.add(new EarthRevolutionPanel(sun));
-        rightPanel.add(new EarthRotationPanel(sun));
-        rightPanel.add(new SunBrightnessPanel(sun));
-        rightPanel.add(new SunColorPanel(sun.getSun3D()));
-
-        add(rightPanel);
-        add(new SunZenithPanel(sun));
-
+        add(new EarthRevolutionPanel(sun));
+        add(new EarthRotationPanel(sun));
+        add(new SunBrightnessPanel(sun));
+        add(new SunColorPanel(sun.getSun3D()));
     }
 
 }

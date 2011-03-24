@@ -36,7 +36,6 @@ import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
 // FIXME 000. 001. add missing unit tests
-// FIXME 000. 003. remove zenithAngle stuff
 // FIXME 000. 004. implement in proper way the computeBrightness (should be easy now).
 // FIXME 000. 006. make the sky color change from blue to dark at night
 // FIXME 000. 007. make the earthRotation depends on the time of day (dynamic)
@@ -102,10 +101,6 @@ public class BasicSun3D implements Subscriber, Sun3D {
             light.setDirection(computeDirection());
             light.setColor(computeColor());
             earthRotationTG.setTransform(computeEarthRotationTransform());
-        }
-        if (arg == SunUpdateCode.ZENITH_ANGLE) {
-            light.setDirection(computeDirection());
-            light.setColor(computeColor());
         }
         if (arg == SunUpdateCode.EARTH_REVOLUTION) {
             sunSphere.updateForEclipticShift(sun.getEarthRevolution() * 2 * (float) Math.PI);

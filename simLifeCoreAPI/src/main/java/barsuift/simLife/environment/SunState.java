@@ -34,8 +34,6 @@ public class SunState implements State {
 
     private float earthRevolution;
 
-    private float zenithAngle;
-
     private Sun3DState sun3DState;
 
     public SunState() {
@@ -43,17 +41,14 @@ public class SunState implements State {
         this.brightness = new BigDecimal(0);
         this.earthRotation = 0;
         this.earthRevolution = 0;
-        this.zenithAngle = 0;
         this.sun3DState = new Sun3DState();
     }
 
-    public SunState(BigDecimal brightness, float earthRotation, float earthRevolution, float zenithAngle,
-            Sun3DState sun3DState) {
+    public SunState(BigDecimal brightness, float earthRotation, float earthRevolution, Sun3DState sun3DState) {
         super();
         this.brightness = brightness;
         this.earthRotation = earthRotation;
         this.earthRevolution = earthRevolution;
-        this.zenithAngle = zenithAngle;
         this.sun3DState = sun3DState;
     }
 
@@ -81,14 +76,6 @@ public class SunState implements State {
         this.earthRevolution = earthRevolution;
     }
 
-    public float getZenithAngle() {
-        return zenithAngle;
-    }
-
-    public void setZenithAngle(float zenithAngle) {
-        this.zenithAngle = zenithAngle;
-    }
-
     public Sun3DState getSun3DState() {
         return sun3DState;
     }
@@ -105,7 +92,6 @@ public class SunState implements State {
         result = prime * result + Float.floatToIntBits(earthRotation);
         result = prime * result + Float.floatToIntBits(earthRevolution);
         result = prime * result + ((sun3DState == null) ? 0 : sun3DState.hashCode());
-        result = prime * result + Float.floatToIntBits(zenithAngle);
         return result;
     }
 
@@ -134,15 +120,13 @@ public class SunState implements State {
         } else
             if (!sun3DState.equals(other.sun3DState))
                 return false;
-        if (Float.floatToIntBits(zenithAngle) != Float.floatToIntBits(other.zenithAngle))
-            return false;
         return true;
     }
 
     @Override
     public String toString() {
         return "SunState [brightness=" + brightness + ", earthRotation=" + earthRotation + ", earthRevolution="
-                + earthRevolution + ", zenithAngle=" + zenithAngle + ", sun3DState=" + sun3DState + "]";
+                + earthRevolution + ", sun3DState=" + sun3DState + "]";
     }
 
 }

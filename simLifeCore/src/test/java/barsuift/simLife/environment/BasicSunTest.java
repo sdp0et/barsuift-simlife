@@ -59,18 +59,15 @@ public class BasicSunTest extends TestCase {
         assertEquals(0.0f, sun.getState().getBrightness().floatValue());
         assertEquals(0.0f, sun.getState().getEarthRotation(), 0.0001);
         assertEquals(0.0f, sun.getState().getEarthRevolution(), 0.0001);
-        assertEquals(0.0f, sun.getState().getZenithAngle(), 0.0001);
 
         sun.setBrightness(PercentHelper.getDecimalValue(32));
         sun.setEarthRotation(0.47f);
         sun.setEarthRevolution(0.39f);
-        sun.setZenithAngle(0.78f);
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
         assertEquals(0.32f, sun.getState().getBrightness().floatValue());
         assertEquals(0.47f, sun.getState().getEarthRotation(), 0.0001);
         assertEquals(0.39f, sun.getState().getEarthRevolution(), 0.0001);
-        assertEquals(0.78f, sun.getState().getZenithAngle(), 0.0001);
 
     }
 
@@ -90,9 +87,9 @@ public class BasicSunTest extends TestCase {
         assertEquals(0.3f, sun.getEarthRotation(), 0.0001);
     }
 
-    public void testGetZenithAngle() {
-        sun.setZenithAngle(0.3f);
-        assertEquals(0.3f, sun.getZenithAngle(), 0.0001);
+    public void testGetEarthRevolution() {
+        sun.setEarthRevolution(0.3f);
+        assertEquals(0.3f, sun.getEarthRevolution(), 0.0001);
     }
 
     public void testSubscriberBrightness() {
@@ -123,13 +120,13 @@ public class BasicSunTest extends TestCase {
         assertEquals(SunUpdateCode.EARTH_ROTATION, publisherHelper.getUpdateObjects().get(0));
     }
 
-    public void testSubscriberZenithAngle() {
+    public void testSubscriberEarthRevolution() {
         publisherHelper.addSubscriberTo(sun);
-        assertEquals(sunState.getZenithAngle(), sun.getZenithAngle());
-        sun.setZenithAngle(0.75f);
-        assertEquals(0.75f, sun.getZenithAngle(), 0.0001);
+        assertEquals(sunState.getEarthRevolution(), sun.getEarthRevolution());
+        sun.setEarthRevolution(0.5f);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
         assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(SunUpdateCode.ZENITH_ANGLE, publisherHelper.getUpdateObjects().get(0));
+        assertEquals(SunUpdateCode.EARTH_REVOLUTION, publisherHelper.getUpdateObjects().get(0));
     }
 
     public void testAdjustEarthRotation() {
@@ -168,7 +165,45 @@ public class BasicSunTest extends TestCase {
 
         sun.setEarthRotation(-1.5f);
         assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
+    }
 
+
+    public void testAdjustEarthRevolution() {
+        sunState.setEarthRevolution(0.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
+
+        sunState.setEarthRevolution(1.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
+
+        sunState.setEarthRevolution(2.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
+
+        sunState.setEarthRevolution(-0.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
+
+        sunState.setEarthRevolution(-1.5f);
+        sun = new BasicSun(sunState);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
+
+
+        sun.setEarthRevolution(0.5f);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
+
+        sun.setEarthRevolution(1.5f);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
+
+        sun.setEarthRevolution(2.5f);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
+
+        sun.setEarthRevolution(-0.5f);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
+
+        sun.setEarthRevolution(-1.5f);
+        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
     }
 
 }

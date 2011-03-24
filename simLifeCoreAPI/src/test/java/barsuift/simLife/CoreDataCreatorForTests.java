@@ -254,9 +254,8 @@ public final class CoreDataCreatorForTests {
         BigDecimal brightness = UtilDataCreatorForTests.createRandomBigDecimal();
         float earthRotation = (float) Math.random();
         float earthRevolution = (float) Math.random();
-        float zenithAngle = (float) Math.random();
         Sun3DState sun3DState = DisplayDataCreatorForTests.createRandomSun3DState();
-        return new SunState(brightness, earthRotation, earthRevolution, zenithAngle, sun3DState);
+        return new SunState(brightness, earthRotation, earthRevolution, sun3DState);
     }
 
     /**
@@ -265,7 +264,6 @@ public final class CoreDataCreatorForTests {
      * <li>brightness=70%</li>
      * <li>earth rotation=375%</li>
      * <li>earth revolution=50%</li>
-     * <li>zenith angle = 50%</li>
      * </ul>
      * 
      * @return
@@ -274,9 +272,8 @@ public final class CoreDataCreatorForTests {
         BigDecimal brightness = PercentHelper.getDecimalValue(70);
         float earthRotation = 0.375f;
         float earthRevolution = 0.5f;
-        float zenithAngle = 0.50f;
         Sun3DState sun3DState = DisplayDataCreatorForTests.createSpecificSun3DState();
-        return new SunState(brightness, earthRotation, earthRevolution, zenithAngle, sun3DState);
+        return new SunState(brightness, earthRotation, earthRevolution, sun3DState);
     }
 
     public static TreeState createRandomTreeState() {
