@@ -54,21 +54,41 @@ public class RandomizerTest extends TestCase {
         }
     }
 
-    public void testRandomBetween() {
-        internalTestRandomBetween(5, 10);
-        internalTestRandomBetween(-10, -5);
-        internalTestRandomBetween(-5, 5);
+    public void testRandomBetweenInt() {
+        internalTestRandomBetweenInt(5, 10);
+        internalTestRandomBetweenInt(-10, -5);
+        internalTestRandomBetweenInt(-5, 5);
         try {
             Randomizer.randomBetween(10, 5);
-            fail("Should throw an IllegalARgumentException");
+            fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
     }
 
-    private void internalTestRandomBetween(int min, int max) {
+    private void internalTestRandomBetweenInt(int min, int max) {
         for (int index = 0; index < 1000; index++) {
             int result = Randomizer.randomBetween(min, max);
+            assertTrue(result + " <= " + max, result <= max);
+            assertTrue(result + " >= " + min, result >= min);
+        }
+    }
+
+    public void testRandomBetweenFloat() {
+        internalTestRandomBetweenFloat(0.05f, 0.10f);
+        internalTestRandomBetweenFloat(-0.10f, -0.05f);
+        internalTestRandomBetweenFloat(-1.5f, 1.5f);
+        try {
+            Randomizer.randomBetween(0.10f, 0.05f);
+            fail("Should throw an IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // OK expected exception
+        }
+    }
+
+    private void internalTestRandomBetweenFloat(float min, float max) {
+        for (int index = 0; index < 1000; index++) {
+            float result = Randomizer.randomBetween(min, max);
             assertTrue(result + " <= " + max, result <= max);
             assertTrue(result + " >= " + min, result >= min);
         }

@@ -80,6 +80,19 @@ public final class Randomizer {
     }
 
     /**
+     * Returns a random number comprised between min and max (both inclusive)
+     * 
+     * @return random float between min and max
+     * @throws IllegalArgumentException if min > max
+     */
+    public static float randomBetween(float min, float max) {
+        if (min > max) {
+            throw new IllegalArgumentException("min (" + min + ") > max (" + max + ")");
+        }
+        return (float) (Math.random() * (max - min)) + min;
+    }
+
+    /**
      * Random angle for rotation
      * 
      * @return a random number between 0 and 2 PI
