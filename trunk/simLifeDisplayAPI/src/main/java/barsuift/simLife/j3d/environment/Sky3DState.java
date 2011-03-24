@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.BoundingBoxState;
 
-// TODO unit test
 @XmlRootElement
 public class Sky3DState implements State {
 

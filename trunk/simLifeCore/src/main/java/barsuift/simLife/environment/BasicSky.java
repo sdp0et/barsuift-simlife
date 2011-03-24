@@ -21,7 +21,6 @@ package barsuift.simLife.environment;
 import barsuift.simLife.j3d.environment.BasicSky3D;
 import barsuift.simLife.j3d.environment.Sky3D;
 
-// TODO unit test
 public class BasicSky implements Sky {
 
     private final SkyState state;

@@ -35,7 +35,6 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-// FIXME 000. 001. add missing unit tests
 // FIXME 000. 004. implement in proper way the computeBrightness (should be easy now).
 // FIXME 000. 006. make the sky color change from blue to dark at night
 // FIXME 000. 007. make the earthRotation depends on the time of day (dynamic)
@@ -109,7 +108,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         }
     }
 
-    // TODO unit test
+    // FIXME 000. 001. unit test
     Vector3f computeDirection() {
         float x = computeXDirection();
         float y = computeYDirection();
@@ -187,7 +186,7 @@ public class BasicSun3D implements Subscriber, Sun3D {
         this.sunHeight = transformedPoint.y / SunSphere3D.SHIFT;
     }
 
-    // TODO add to interface
+    // FIXME 000. 003. add to interface
     public float getHeight() {
         return sunHeight;
     }

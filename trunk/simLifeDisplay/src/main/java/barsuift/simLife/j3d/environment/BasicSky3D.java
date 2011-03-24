@@ -26,7 +26,6 @@ import javax.media.j3d.Group;
 import barsuift.simLife.environment.Sky;
 import barsuift.simLife.j3d.util.ColorConstants;
 
-// TODO unit test
 public class BasicSky3D implements Sky3D {
 
     private final Sky3DState state;

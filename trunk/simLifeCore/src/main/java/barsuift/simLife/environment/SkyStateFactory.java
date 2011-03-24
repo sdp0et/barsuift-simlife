@@ -23,7 +23,6 @@ import barsuift.simLife.j3d.environment.Sky3DState;
 import barsuift.simLife.j3d.environment.Sky3DStateFactory;
 import barsuift.simLife.landscape.LandscapeParameters;
 
-// TODO unit test
 public class SkyStateFactory {
 
     public SkyState createRandomSkyState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {

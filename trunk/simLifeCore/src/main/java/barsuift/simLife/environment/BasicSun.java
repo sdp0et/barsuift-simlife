@@ -35,10 +35,10 @@ public class BasicSun implements Sun {
 
     private BigDecimal brightness;
 
-    // TODO remove
+    // FIXME 000. 002. remove
     private float earthRotation;
 
-    // TODO remove
+    // FIXME 000. 002. remove
     private float earthRevolution;
 
     private final Sun3D sun3D;
@@ -122,51 +122,51 @@ public class BasicSun implements Sun {
     }
 
     // TODO temporary code (for reminder)
-//    private void computeBrightness() {
-//        // ratio is the ratio between the sky perimeter and the sun diameter
-//        double ratio = 20;
-//        // the sun diameter is thus 2 Pi / ratio (with sky radius of 1 : unit circle)
-//        // here the angles ranges from 0 to 1 (not from 0 to 2*Pi)
-//        // so the sun diameter is 1 / ratio
-//        // and the sun radius is 1 / (2 * ratio)
-//        double sunRadius = 1 / (2 * ratio);
-//
-//        double zenithAngleMin = sunRadius;
-//        double brightnessFromZenith;
-//        if (zenithAngle > zenithAngleMin) {
-//            brightnessFromZenith = 1;
-//        } else {
-//            brightnessFromZenith = (1 + Math.sin(Math.PI * ratio * zenithAngle)) / 2;
-//        }
-//
-//
-//        double earthRotationStartAngleStart = 0.25 - sunRadius;
-//        double earthRotationStartAngleEnd = 0.25 + sunRadius;
-//        double earthRotationEndAngleStart = 0.75 - sunRadius;
-//        double earthRotationEndAngleEnd = 0.75 + sunRadius;
-//        double brightnessFromEarthRotation;
-//        if (earthRotation < earthRotationStartAngleStart || earthRotation > earthRotationEndAngleEnd) {
-//            brightnessFromEarthRotation = 0;
-//        } else {
-//            if (earthRotation > earthRotationStartAngleEnd && earthRotation < earthRotationEndAngleStart) {
-//                brightnessFromEarthRotation = 1;
-//            } else {
-//                if (earthRotation < earthRotationStartAngleEnd) {
-//                    // earthRotation function
-//                    brightnessFromEarthRotation = (1 + Math.sin(Math.PI * ratio * (earthRotation - 0.25))) / 2;
-//                } else {
-//                    // earthRotation function
-//                    brightnessFromEarthRotation = (1 - Math.sin(Math.PI * ratio * (earthRotation - 0.75))) / 2;
-//                }
-//            }
-//        }
-//        double brightness = brightnessFromEarthRotation * brightnessFromZenith;
-//        System.out.println("earthRotation=" + earthRotation);
-//        System.out.println("zenithAngle=" + zenithAngle);
-//        // System.out.println("brightnessFromEarthRotation=" + brightnessFromEarthRotation);
-//        // System.out.println("brightnessFromZenith=" + brightnessFromZenith);
-//        // System.out.println("-------------------- brightness=" + brightness);
-//    }
+    // private void computeBrightness() {
+    // // ratio is the ratio between the sky perimeter and the sun diameter
+    // double ratio = 20;
+    // // the sun diameter is thus 2 Pi / ratio (with sky radius of 1 : unit circle)
+    // // here the angles ranges from 0 to 1 (not from 0 to 2*Pi)
+    // // so the sun diameter is 1 / ratio
+    // // and the sun radius is 1 / (2 * ratio)
+    // double sunRadius = 1 / (2 * ratio);
+    //
+    // double zenithAngleMin = sunRadius;
+    // double brightnessFromZenith;
+    // if (zenithAngle > zenithAngleMin) {
+    // brightnessFromZenith = 1;
+    // } else {
+    // brightnessFromZenith = (1 + Math.sin(Math.PI * ratio * zenithAngle)) / 2;
+    // }
+    //
+    //
+    // double earthRotationStartAngleStart = 0.25 - sunRadius;
+    // double earthRotationStartAngleEnd = 0.25 + sunRadius;
+    // double earthRotationEndAngleStart = 0.75 - sunRadius;
+    // double earthRotationEndAngleEnd = 0.75 + sunRadius;
+    // double brightnessFromEarthRotation;
+    // if (earthRotation < earthRotationStartAngleStart || earthRotation > earthRotationEndAngleEnd) {
+    // brightnessFromEarthRotation = 0;
+    // } else {
+    // if (earthRotation > earthRotationStartAngleEnd && earthRotation < earthRotationEndAngleStart) {
+    // brightnessFromEarthRotation = 1;
+    // } else {
+    // if (earthRotation < earthRotationStartAngleEnd) {
+    // // earthRotation function
+    // brightnessFromEarthRotation = (1 + Math.sin(Math.PI * ratio * (earthRotation - 0.25))) / 2;
+    // } else {
+    // // earthRotation function
+    // brightnessFromEarthRotation = (1 - Math.sin(Math.PI * ratio * (earthRotation - 0.75))) / 2;
+    // }
+    // }
+    // }
+    // double brightness = brightnessFromEarthRotation * brightnessFromZenith;
+    // System.out.println("earthRotation=" + earthRotation);
+    // System.out.println("zenithAngle=" + zenithAngle);
+    // // System.out.println("brightnessFromEarthRotation=" + brightnessFromEarthRotation);
+    // // System.out.println("brightnessFromZenith=" + brightnessFromZenith);
+    // // System.out.println("-------------------- brightness=" + brightness);
+    // }
 
 
     @Override

@@ -16,18 +16,22 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.environment;
+package barsuift.simLife.environment;
 
-import barsuift.simLife.j3d.BoundingBoxState;
-import barsuift.simLife.j3d.util.BoundingBoxHelper;
+import junit.framework.TestCase;
+import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.landscape.LandscapeParameters;
 
-public class Sky3DStateFactory {
 
-    public Sky3DState createSky3DState(LandscapeParameters landscapeParameters) {
-        BoundingBoxState ambientLightBounds = BoundingBoxHelper.createBoundingBox(landscapeParameters);
-        BoundingBoxState skyBounds = BoundingBoxHelper.createBoundingBox(landscapeParameters);
-        return new Sky3DState(skyBounds, ambientLightBounds);
+public class SkyStateFactoryTest extends TestCase {
+
+    public void testCreateRandomSkyState() {
+        LandscapeParameters landscapeParameters = new LandscapeParameters();
+        PlanetParameters planetParameters = new PlanetParameters();
+        SkyStateFactory factory = new SkyStateFactory();
+        SkyState skyState = factory.createRandomSkyState(planetParameters, landscapeParameters);
+        assertNotNull(skyState.getSky3DState());
+        assertNotNull(skyState.getSunState());
     }
 
 }
