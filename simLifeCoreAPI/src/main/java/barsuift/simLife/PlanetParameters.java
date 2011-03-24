@@ -33,18 +33,18 @@ package barsuift.simLife;
  */
 public class PlanetParameters implements Parameters {
 
-    public static final float LATITUDE_DEFAULT = 45;
+    public static final float LATITUDE_DEFAULT = (float) Math.PI / 4;
 
-    public static final int LATITUDE_MIN = 0;
+    public static final float LATITUDE_MIN = 0;
 
-    public static final int LATITUDE_MAX = 90;
+    public static final float LATITUDE_MAX = (float) Math.PI / 2;
 
 
-    public static final float ECLIPTIC_OBLIQUITY_DEFAULT = 23;
+    public static final float ECLIPTIC_OBLIQUITY_DEFAULT = (float) Math.PI / 8;
 
-    public static final int ECLIPTIC_OBLIQUITY_MIN = 0;
+    public static final float ECLIPTIC_OBLIQUITY_MIN = 0;
 
-    public static final int ECLIPTIC_OBLIQUITY_MAX = 90;
+    public static final float ECLIPTIC_OBLIQUITY_MAX = (float) Math.PI / 2;
 
 
 
@@ -104,6 +104,32 @@ public class PlanetParameters implements Parameters {
     public void random() {
         this.latitude = Randomizer.randomBetween(LATITUDE_MIN, LATITUDE_MAX);
         this.eclipticObliquity = Randomizer.randomBetween(ECLIPTIC_OBLIQUITY_MIN, ECLIPTIC_OBLIQUITY_MAX);
+    }
+
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Float.floatToIntBits(eclipticObliquity);
+        result = prime * result + Float.floatToIntBits(latitude);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PlanetParameters other = (PlanetParameters) obj;
+        if (Float.floatToIntBits(eclipticObliquity) != Float.floatToIntBits(other.eclipticObliquity))
+            return false;
+        if (Float.floatToIntBits(latitude) != Float.floatToIntBits(other.latitude))
+            return false;
+        return true;
     }
 
     @Override
