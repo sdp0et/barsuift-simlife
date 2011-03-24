@@ -43,13 +43,13 @@ public class PlanetParametersTest extends TestCase {
         param.setLatitude(PlanetParameters.LATITUDE_MAX);
         assertEquals(PlanetParameters.LATITUDE_MAX, param.getLatitude(), 0.0001);
         try {
-            param.setLatitude(-1);
+            param.setLatitude(PlanetParameters.LATITUDE_MIN - 1);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
-            param.setLatitude((float) Math.PI / 2 + 1);
+            param.setLatitude(PlanetParameters.LATITUDE_MAX + 1);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
@@ -64,13 +64,13 @@ public class PlanetParametersTest extends TestCase {
         param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_MAX);
         assertEquals(PlanetParameters.ECLIPTIC_OBLIQUITY_MAX, param.getEclipticObliquity(), 0.0001);
         try {
-            param.setEclipticObliquity(-1);
+            param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_MIN - 1);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
-            param.setEclipticObliquity((float) Math.PI / 2 + 1);
+            param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_MIN + 1);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
@@ -96,7 +96,6 @@ public class PlanetParametersTest extends TestCase {
         assertTrue(PlanetParameters.LATITUDE_DEFAULT <= PlanetParameters.LATITUDE_MAX);
         assertTrue(PlanetParameters.ECLIPTIC_OBLIQUITY_DEFAULT >= PlanetParameters.ECLIPTIC_OBLIQUITY_MIN);
         assertTrue(PlanetParameters.ECLIPTIC_OBLIQUITY_DEFAULT <= PlanetParameters.ECLIPTIC_OBLIQUITY_MAX);
-
     }
 
 }
