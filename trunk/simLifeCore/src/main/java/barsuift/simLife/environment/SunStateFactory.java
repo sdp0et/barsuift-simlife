@@ -32,15 +32,14 @@ public class SunStateFactory {
     /**
      * Creates a default sun state with following values :
      * <ul>
-     * <li>brightness = 100%</li>
-     * <li>earth rotation = 37.5%</li>
-     * <li>zenithAngle = 50%</li>
+     * <li>brightness = 0%</li>
+     * <li>earth rotation = 0%</li>
+     * <li>earth revolution = 0%</li>
      * </ul>
      */
-    // FIXME earthRotation and earthRevolution should be computed from the current date (how to do that ???)
     public SunState createSunState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
-        BigDecimal brightness = PercentHelper.getDecimalValue(100);
-        float earthRotation = 0.375f;
+        BigDecimal brightness = PercentHelper.getDecimalValue(0);
+        float earthRotation = 0f;
         float earthRevolution = 0f;
         float zenithAngle = 0.5f;
         Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
