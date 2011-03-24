@@ -194,6 +194,39 @@ public class LandscapeParameters implements Parameters {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Float.floatToIntBits(erosion);
+        result = prime * result + Float.floatToIntBits(maximumHeight);
+        result = prime * result + Float.floatToIntBits(roughness);
+        result = prime * result + size;
+        return result;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LandscapeParameters other = (LandscapeParameters) obj;
+        if (Float.floatToIntBits(erosion) != Float.floatToIntBits(other.erosion))
+            return false;
+        if (Float.floatToIntBits(maximumHeight) != Float.floatToIntBits(other.maximumHeight))
+            return false;
+        if (Float.floatToIntBits(roughness) != Float.floatToIntBits(other.roughness))
+            return false;
+        if (size != other.size)
+            return false;
+        return true;
+    }
+
+
+    @Override
     public String toString() {
         return "LandscapeParameters [size=" + size + ", maximumHeight=" + maximumHeight + ", roughness=" + roughness
                 + ", erosion=" + erosion + "]";

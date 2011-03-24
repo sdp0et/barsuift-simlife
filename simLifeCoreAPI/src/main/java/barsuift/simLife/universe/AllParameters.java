@@ -61,6 +61,39 @@ public class AllParameters implements Parameters {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((landscape == null) ? 0 : landscape.hashCode());
+        result = prime * result + ((planet == null) ? 0 : planet.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AllParameters other = (AllParameters) obj;
+        if (landscape == null) {
+            if (other.landscape != null)
+                return false;
+        } else
+            if (!landscape.equals(other.landscape))
+                return false;
+        if (planet == null) {
+            if (other.planet != null)
+                return false;
+        } else
+            if (!planet.equals(other.planet))
+                return false;
+        return true;
+    }
+
+    @Override
     public String toString() {
         return "AllParameters [planet=" + planet + ", landscape=" + landscape + "]";
     }

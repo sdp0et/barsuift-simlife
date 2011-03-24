@@ -46,4 +46,5 @@ public class PlanetParametersPanelTest extends TestCase {
         assertEquals(originalParameters.getLatitude(), parameters.getLatitude(), 0.01);
         assertEquals(originalParameters.getEclipticObliquity(), parameters.getEclipticObliquity(), 0.01);
     }
+
 }
