@@ -42,8 +42,14 @@ public class PlanetParametersPanel extends JPanel implements ParametersDependent
 
     private final PlanetParameters parameters;
 
+    /**
+     * the slider value is in degree
+     */
     private final JSlider latitudeSlider;
 
+    /**
+     * the slider value is in degree
+     */
     private final JSlider eclipticObliquitySlider;
 
     public PlanetParametersPanel(PlanetParameters parameters) {
@@ -69,8 +75,9 @@ public class PlanetParametersPanel extends JPanel implements ParametersDependent
     }
 
     private JSlider createLatitudeSlider(PlanetParameters parameters) {
-        JSlider latitudeSlider = new JSlider(JSlider.HORIZONTAL, PlanetParameters.LATITUDE_MIN,
-                PlanetParameters.LATITUDE_MAX, Math.round(parameters.getLatitude()));
+        JSlider latitudeSlider = new JSlider(JSlider.HORIZONTAL, Math.round(MathHelper
+                .toDegree(PlanetParameters.LATITUDE_MIN)), Math.round(MathHelper
+                .toDegree(PlanetParameters.LATITUDE_MAX)), Math.round(MathHelper.toDegree(parameters.getLatitude())));
         latitudeSlider.setPaintTicks(true);
         latitudeSlider.setMajorTickSpacing(10);
         latitudeSlider.setPaintLabels(true);
@@ -78,8 +85,10 @@ public class PlanetParametersPanel extends JPanel implements ParametersDependent
     }
 
     private JSlider createEclipticObliquitySlider(PlanetParameters parameters) {
-        JSlider eclipticObliquitySlider = new JSlider(JSlider.HORIZONTAL, PlanetParameters.ECLIPTIC_OBLIQUITY_MIN,
-                PlanetParameters.ECLIPTIC_OBLIQUITY_MAX, Math.round(parameters.getEclipticObliquity()));
+        JSlider eclipticObliquitySlider = new JSlider(JSlider.HORIZONTAL, Math.round(MathHelper
+                .toDegree(PlanetParameters.ECLIPTIC_OBLIQUITY_MIN)), Math.round(MathHelper
+                .toDegree(PlanetParameters.ECLIPTIC_OBLIQUITY_MAX)), Math.round(MathHelper.toDegree(parameters
+                .getEclipticObliquity())));
         eclipticObliquitySlider.setPaintTicks(true);
         eclipticObliquitySlider.setMajorTickSpacing(10);
         eclipticObliquitySlider.setPaintLabels(true);
@@ -94,8 +103,8 @@ public class PlanetParametersPanel extends JPanel implements ParametersDependent
 
     @Override
     public void readFromParameters() {
-        latitudeSlider.setValue(Math.round((float) MathHelper.toRadian(parameters.getLatitude())));
-        eclipticObliquitySlider.setValue(Math.round((float) MathHelper.toRadian(parameters.getEclipticObliquity())));
+        latitudeSlider.setValue(Math.round(MathHelper.toDegree(parameters.getLatitude())));
+        eclipticObliquitySlider.setValue(Math.round(MathHelper.toDegree(parameters.getEclipticObliquity())));
     }
 
     @Override
