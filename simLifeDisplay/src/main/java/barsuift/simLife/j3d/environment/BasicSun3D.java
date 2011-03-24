@@ -41,8 +41,8 @@ import barsuift.simLife.message.Subscriber;
 // FIXME 000. 008. make the earthRevolution depends on the time of day (dynamic)
 // FIXME 000. 009. make the earthRotation depends on the hour of the day (at init time)
 // FIXME 000. 010. make the earthRevolution depends on the time of year (at init time)
-// FIXME 000. 011. be able to deactivate the earth rotation computation to switch to manual mode
-// FIXME 000. 012. be able to deactivate the earth revolution computation to switch to manual mode
+// FIXME 000. 011. be able to deactivate the earth rotation/revolution, sun brightness/color computation to switch to
+// manual mode
 public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Sun3DState state;
