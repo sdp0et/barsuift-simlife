@@ -30,6 +30,8 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
 
     private float earthRevolution;
 
+    private float height;
+
     private float whiteFactor;
 
     private DirectionalLight light;
@@ -48,6 +50,7 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
     private void reset() {
         earthRotation = (float) (3 * Math.PI / 4);
         earthRevolution = (float) Math.PI;
+        height = 0.5f;
         whiteFactor = 1f;
         light = new DirectionalLight();
         state = new Sun3DState();
@@ -73,6 +76,14 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
     @Override
     public void setEarthRevolution(float earthRevolution) {
         this.earthRevolution = earthRevolution;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 
     @Override

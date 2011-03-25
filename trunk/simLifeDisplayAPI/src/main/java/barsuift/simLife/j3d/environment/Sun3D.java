@@ -66,6 +66,13 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
     public void setEarthRevolution(float earthRevolution);
 
     /**
+     * Get the sun height, ranged from -1 (nadir) to +1 (zenith)
+     * 
+     * @return the scaled sun height (-1;1]
+     */
+    public float getHeight();
+
+    /**
      * Computes the white factor, based on the sun position. The lower the sun is, the lower the white factor.
      * <p>
      * <ul>
