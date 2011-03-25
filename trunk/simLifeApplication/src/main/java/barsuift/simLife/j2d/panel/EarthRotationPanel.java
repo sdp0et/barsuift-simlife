@@ -28,8 +28,9 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import barsuift.simLife.environment.Sun;
+import barsuift.simLife.MathHelper;
 import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
@@ -39,17 +40,17 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
 
     private static final int ANGLE_MIN = 0;
 
-    private static final int ANGLE_MAX = 100;
+    private static final int ANGLE_MAX = 360;
 
-    private final Sun sun;
+    private final Sun3D sun3D;
 
     private final JLabel sliderLabel;
 
     private final JSlider earthRotationSlider;
 
-    public EarthRotationPanel(Sun sun) {
-        this.sun = sun;
-        sun.addSubscriber(this);
+    public EarthRotationPanel(Sun3D sun3D) {
+        this.sun3D = sun3D;
+        sun3D.addSubscriber(this);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         sliderLabel = createLabel();
         earthRotationSlider = createSlider();
@@ -58,12 +59,12 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
     }
 
     private JSlider createSlider() {
-        JSlider earthRotationSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX,
-                Math.round(sun.getEarthRotation() * 100));
+        JSlider earthRotationSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX, Math.round(MathHelper
+                .toDegree(sun3D.getEarthRotation())));
         earthRotationSlider.addChangeListener(this);
         // Turn on labels at major tick marks.
-        earthRotationSlider.setMajorTickSpacing(50);
-        earthRotationSlider.setMinorTickSpacing(25);
+        earthRotationSlider.setMajorTickSpacing(90);
+        earthRotationSlider.setMinorTickSpacing(45);
         earthRotationSlider.setPaintTicks(true);
 
         // Create the label table
@@ -72,7 +73,7 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
         labelTable.put(new Integer(ANGLE_MAX / 4), new JLabel("Sunrise"));
         labelTable.put(new Integer(ANGLE_MAX / 2), new JLabel("Noon"));
         labelTable.put(new Integer(3 * ANGLE_MAX / 4), new JLabel("Sunset"));
-        labelTable.put(new Integer(ANGLE_MAX), new JLabel("Noon"));
+        labelTable.put(new Integer(ANGLE_MAX), new JLabel("Midnight"));
         earthRotationSlider.setLabelTable(labelTable);
         earthRotationSlider.setPaintLabels(true);
 
@@ -80,7 +81,7 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
     }
 
     private JLabel createLabel() {
-        JLabel sliderLabel = new JLabel("Earth rotation", JLabel.CENTER);
+        JLabel sliderLabel = new JLabel("Earth rotation (degree)", JLabel.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return sliderLabel;
     }
@@ -89,13 +90,13 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         int earthRotation = source.getValue();
-        sun.setEarthRotation((float) earthRotation / 100);
+        sun3D.setEarthRotation(MathHelper.toRadian(earthRotation));
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.EARTH_ROTATION) {
-            earthRotationSlider.setValue(Math.round(sun.getEarthRotation() * 100));
+            earthRotationSlider.setValue(Math.round(MathHelper.toDegree(sun3D.getEarthRotation())));
         }
     }
 

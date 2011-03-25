@@ -28,22 +28,26 @@ import barsuift.simLife.message.BasicPublisher;
 
 public class MockSun extends BasicPublisher implements Sun {
 
-    public MockSun() {
-        super(null);
-    }
+    private BigDecimal brightness;
 
-    private BigDecimal brightness = PercentHelper.getDecimalValue(100);
+    private Sun3D sunLight;
 
-    private float earthRotation = 0.375f;
-
-    private float earthRevolution = 0.5f;
-
-    private Sun3D sunLight = new MockSun3D();
-
-    private SunState state = new SunState();
+    private SunState state;
 
     private int synchronizedCalled;
 
+    public MockSun() {
+        super(null);
+        reset();
+    }
+
+    public void reset() {
+        brightness = PercentHelper.getDecimalValue(100);
+        sunLight = new MockSun3D();
+        state = new SunState();
+        synchronizedCalled = 0;
+        ;
+    }
 
     @Override
     public BigDecimal getBrightness() {
@@ -53,26 +57,6 @@ public class MockSun extends BasicPublisher implements Sun {
     @Override
     public void setBrightness(BigDecimal brightness) {
         this.brightness = brightness;
-    }
-
-    @Override
-    public float getEarthRotation() {
-        return earthRotation;
-    }
-
-    @Override
-    public void setEarthRotation(float earthRotation) {
-        this.earthRotation = earthRotation;
-    }
-
-    @Override
-    public float getEarthRevolution() {
-        return earthRevolution;
-    }
-
-    @Override
-    public void setEarthRevolution(float earthRevolution) {
-        this.earthRevolution = earthRevolution;
     }
 
     @Override

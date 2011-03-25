@@ -28,8 +28,9 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import barsuift.simLife.environment.Sun;
+import barsuift.simLife.MathHelper;
 import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
@@ -39,17 +40,17 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
 
     private static final int ANGLE_MIN = 0;
 
-    private static final int ANGLE_MAX = 100;
+    private static final int ANGLE_MAX = 360;
 
-    private final Sun sun;
+    private final Sun3D sun3D;
 
     private final JLabel sliderLabel;
 
     private final JSlider earthRevolutionSlider;
 
-    public EarthRevolutionPanel(Sun sun) {
-        this.sun = sun;
-        sun.addSubscriber(this);
+    public EarthRevolutionPanel(Sun3D sun3D) {
+        this.sun3D = sun3D;
+        sun3D.addSubscriber(this);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         sliderLabel = createLabel();
         earthRevolutionSlider = createSlider();
@@ -58,12 +59,12 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
     }
 
     private JSlider createSlider() {
-        JSlider earthRevolutionSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX, Math.round(sun
-                .getEarthRevolution() * 100));
+        JSlider earthRevolutionSlider = new JSlider(JSlider.HORIZONTAL, ANGLE_MIN, ANGLE_MAX, Math.round(MathHelper
+                .toDegree(sun3D.getEarthRevolution())));
         earthRevolutionSlider.addChangeListener(this);
         // Turn on labels at major tick marks.
-        earthRevolutionSlider.setMajorTickSpacing(50);
-        earthRevolutionSlider.setMinorTickSpacing(25);
+        earthRevolutionSlider.setMajorTickSpacing(90);
+        earthRevolutionSlider.setMinorTickSpacing(45);
         earthRevolutionSlider.setPaintTicks(true);
 
         // Create the label table
@@ -80,7 +81,7 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
     }
 
     private JLabel createLabel() {
-        JLabel sliderLabel = new JLabel("Earth revolution", JLabel.CENTER);
+        JLabel sliderLabel = new JLabel("Earth revolution (degree)", JLabel.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return sliderLabel;
     }
@@ -89,13 +90,13 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         int earthRevolution = source.getValue();
-        sun.setEarthRevolution((float) earthRevolution / 100);
+        sun3D.setEarthRevolution(MathHelper.toRadian(earthRevolution));
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.EARTH_REVOLUTION) {
-            earthRevolutionSlider.setValue(Math.round(sun.getEarthRevolution() * 100));
+            earthRevolutionSlider.setValue(Math.round(MathHelper.toDegree(sun3D.getEarthRevolution())));
         }
     }
 

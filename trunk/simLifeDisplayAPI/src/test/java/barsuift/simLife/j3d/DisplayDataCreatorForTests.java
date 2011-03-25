@@ -112,14 +112,27 @@ public final class DisplayDataCreatorForTests {
         BoundingBoxState bounds = createRandomBoundingBoxState();
         float latitude = (float) Randomizer.randomRotation() / 4;
         float eclipticObliquity = (float) Randomizer.randomRotation() / 4;
-        return new Sun3DState(bounds, latitude, eclipticObliquity);
+        float earthRotation = (float) Randomizer.randomRotation();
+        float earthRevolution = (float) Randomizer.randomRotation();
+        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRevolution);
     }
 
+    /**
+     * Create specific sun 3D state with
+     * <ul>
+     * <li>latitude=Pi/4</li>
+     * <li>ecliptic obliquity=Pi/3</li>
+     * <li>earth rotation=3*Pi/4</li>
+     * <li>earth revolution=Pi</li>
+     * </ul>
+     */
     public static Sun3DState createSpecificSun3DState() {
         BoundingBoxState bounds = createSpecificBoundingBoxState();
         float latitude = (float) Math.PI / 4;
         float eclipticObliquity = (float) Math.PI / 3;
-        return new Sun3DState(bounds, latitude, eclipticObliquity);
+        float earthRotation = (float) (3 * Math.PI / 4);
+        float earthRevolution = (float) Math.PI;
+        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRevolution);
     }
 
     public static Environment3DState createRandomEnvironment3DState() {
