@@ -185,6 +185,7 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static NavigatorState createRandomNavigatorState() {
+        Tuple3fState originalTranslation = createRandomTuple3fState();
         Tuple3fState translation = createRandomTuple3fState();
         double rotationX = UtilDataCreatorForTests.createRandomRotation();
         double rotationY = UtilDataCreatorForTests.createRandomRotation();
@@ -195,15 +196,17 @@ public final class DisplayDataCreatorForTests {
             navigationMode = NavigationMode.WALK;
         }
         BoundingBoxState bounds = createRandomBoundingBoxState();
-        return new NavigatorState(translation, rotationX, rotationY, navigationMode, bounds);
+        return new NavigatorState(originalTranslation, translation, rotationX, rotationY, navigationMode, bounds);
     }
 
     public static NavigatorState createSpecificNavigatorState() {
+        Tuple3fState originalTranslation = new Tuple3fState(0.4f, 0f, 0.5f);
         Tuple3fState translation = new Tuple3fState(0.5f, 0f, 0.6f);
         double rotationX = Math.PI / 2;
         double rotationY = Math.PI;
         BoundingBoxState bounds = createSpecificBoundingBoxState();
-        return new NavigatorState(translation, rotationX, rotationY, NavigationMode.DEFAULT, bounds);
+        return new NavigatorState(originalTranslation, translation, rotationX, rotationY, NavigationMode.DEFAULT,
+                bounds);
     }
 
     public static UniverseContext3DState createRandomUniverseContext3DState() {
