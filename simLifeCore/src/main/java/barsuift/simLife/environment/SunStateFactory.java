@@ -33,17 +33,13 @@ public class SunStateFactory {
      * Creates a default sun state with following values :
      * <ul>
      * <li>brightness = 0%</li>
-     * <li>earth rotation = 0%</li>
-     * <li>earth revolution = 0%</li>
      * </ul>
      */
     public SunState createSunState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
         BigDecimal brightness = PercentHelper.getDecimalValue(0);
-        float earthRotation = 0f;
-        float earthRevolution = 0f;
         Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
         Sun3DState sun3DState = sun3DStateFactory.createSun3DState(planetParameters, landscapeParameters);
-        return new SunState(brightness, earthRotation, earthRevolution, sun3DState);
+        return new SunState(brightness, sun3DState);
     }
 
 }

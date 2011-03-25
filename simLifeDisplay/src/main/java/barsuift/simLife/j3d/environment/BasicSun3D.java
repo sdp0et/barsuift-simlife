@@ -65,6 +65,12 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private float sunHeight;
 
+    // angle in radian, from 0 to 2*Pi
+    private float earthRotation;
+
+    // angle in radian, from 0 to 2*Pi
+    private float earthRevolution;
+
     public BasicSun3D(Sun3DState state, Sun sun) {
         super();
         this.state = state;
@@ -72,13 +78,17 @@ public class BasicSun3D implements Subscriber, Sun3D {
         sun.addSubscriber(this);
         this.latitude = state.getLatitude();
 
+        earthRotation = state.getEarthRotation();
+        adjustEarthRotation();
+        earthRevolution = state.getEarthRevolution();
+        adjustEarthRevolution();
+
         earthRotationVector = new Vector3d(0, -Math.sin(latitude), -Math.cos(latitude));
         earthRotationTG = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
         earthRotationTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         earthRotationTG.setTransform(computeEarthRotationTransform());
-        sunSphere = new SunSphere3D(latitude, state.getEclipticObliquity(), sun.getEarthRevolution() * 2
-                * (float) Math.PI);
+        sunSphere = new SunSphere3D(latitude, state.getEclipticObliquity(), earthRevolution);
         earthRotationTG.addChild(sunSphere.getGroup());
         group = new BranchGroup();
         group.addChild(earthRotationTG);
@@ -90,20 +100,59 @@ public class BasicSun3D implements Subscriber, Sun3D {
         light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
     }
 
+    /**
+     * This method is to ensure the earthRotation is always comprised between 0 and 2*Pi
+     */
+    private void adjustEarthRotation() {
+        while (earthRotation < 0) {
+            earthRotation += 2 * Math.PI;
+        }
+        earthRotation %= 2 * Math.PI;
+    }
+
+    /**
+     * This method is to ensure the earthRevolution is always comprised between 0 and 2*Pi
+     */
+    private void adjustEarthRevolution() {
+        while (earthRevolution < 0) {
+            earthRevolution += 2 * Math.PI;
+        }
+        earthRevolution %= 2 * Math.PI;
+    }
+
+    public float getEarthRotation() {
+        return earthRotation;
+    }
+
+    public void setEarthRotation(float earthRotation) {
+        this.earthRotation = earthRotation;
+        adjustEarthRotation();
+        computeSunHeight();
+        light.setDirection(computeDirection());
+        light.setColor(computeColor());
+        earthRotationTG.setTransform(computeEarthRotationTransform());
+        // computeBrightness();
+        setChanged();
+        notifySubscribers(SunUpdateCode.EARTH_ROTATION);
+    }
+
+    public float getEarthRevolution() {
+        return earthRevolution;
+    }
+
+    public void setEarthRevolution(float earthRevolution) {
+        this.earthRevolution = earthRevolution;
+        adjustEarthRevolution();
+        sunSphere.updateForEclipticShift(earthRevolution);
+        computeSunHeight();
+        light.setColor(computeColor());
+        setChanged();
+        notifySubscribers(SunUpdateCode.EARTH_REVOLUTION);
+    }
+
     @Override
     public void update(Publisher o, Object arg) {
         if (arg == SunUpdateCode.BRIGHTNESS) {
-            light.setColor(computeColor());
-        }
-        if (arg == SunUpdateCode.EARTH_ROTATION) {
-            computeSunHeight();
-            light.setDirection(computeDirection());
-            light.setColor(computeColor());
-            earthRotationTG.setTransform(computeEarthRotationTransform());
-        }
-        if (arg == SunUpdateCode.EARTH_REVOLUTION) {
-            sunSphere.updateForEclipticShift(sun.getEarthRevolution() * 2 * (float) Math.PI);
-            computeSunHeight();
             light.setColor(computeColor());
         }
     }
@@ -119,19 +168,18 @@ public class BasicSun3D implements Subscriber, Sun3D {
     }
 
     private float computeZDirection() {
-        return -(float) Math.cos(sun.getEarthRotation() * 2 * Math.PI) * (float) Math.sin(latitude);
+        return -(float) Math.cos(earthRotation) * (float) Math.sin(latitude);
     }
 
     private float computeYDirection() {
-        return (float) Math.cos(sun.getEarthRotation() * 2 * Math.PI) * (float) Math.cos(latitude);
+        return (float) Math.cos(earthRotation) * (float) Math.cos(latitude);
     }
 
     private float computeXDirection() {
-        return (float) Math.sin(sun.getEarthRotation() * 2 * Math.PI);
+        return (float) Math.sin(earthRotation);
     }
 
     private Transform3D computeEarthRotationTransform() {
-        double earthRotation = sun.getEarthRotation() * Math.PI * 2;
         Transform3D result = new Transform3D();
         result.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
         return result;
@@ -245,7 +293,8 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     @Override
     public void synchronize() {
-        // nothing to do
+        state.setEarthRotation(earthRotation);
+        state.setEarthRevolution(earthRevolution);
     }
 
 }

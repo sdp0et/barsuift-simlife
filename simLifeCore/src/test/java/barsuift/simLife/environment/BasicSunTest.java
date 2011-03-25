@@ -57,18 +57,14 @@ public class BasicSunTest extends TestCase {
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
         assertEquals(0.0f, sun.getState().getBrightness().floatValue());
-        assertEquals(0.0f, sun.getState().getEarthRotation(), 0.0001);
-        assertEquals(0.0f, sun.getState().getEarthRevolution(), 0.0001);
+        assertEquals(0.0f, sun.getState().getSun3DState().getEarthRevolution());
 
         sun.setBrightness(PercentHelper.getDecimalValue(32));
-        sun.setEarthRotation(0.47f);
-        sun.setEarthRevolution(0.39f);
+        sun.getSun3D().setEarthRevolution(0.123f);
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
         assertEquals(0.32f, sun.getState().getBrightness().floatValue());
-        assertEquals(0.47f, sun.getState().getEarthRotation(), 0.0001);
-        assertEquals(0.39f, sun.getState().getEarthRevolution(), 0.0001);
-
+        assertEquals(0.123f, sun.getState().getSun3DState().getEarthRevolution());
     }
 
     public void testGetBrightness() {
@@ -80,16 +76,6 @@ public class BasicSunTest extends TestCase {
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
-    }
-
-    public void testGetEarthRotation() {
-        sun.setEarthRotation(0.3f);
-        assertEquals(0.3f, sun.getEarthRotation(), 0.0001);
-    }
-
-    public void testGetEarthRevolution() {
-        sun.setEarthRevolution(0.3f);
-        assertEquals(0.3f, sun.getEarthRevolution(), 0.0001);
     }
 
     public void testSubscriberBrightness() {
@@ -109,101 +95,6 @@ public class BasicSunTest extends TestCase {
         assertEquals("The subscriber should not be notified when setting the same value as before", 0,
                 publisherHelper.nbUpdated());
         assertEquals(0, publisherHelper.getUpdateObjects().size());
-    }
-
-    public void testSubscriberEarthRotation() {
-        publisherHelper.addSubscriberTo(sun);
-        assertEquals(sunState.getEarthRotation(), sun.getEarthRotation());
-        sun.setEarthRotation(0.5f);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(SunUpdateCode.EARTH_ROTATION, publisherHelper.getUpdateObjects().get(0));
-    }
-
-    public void testSubscriberEarthRevolution() {
-        publisherHelper.addSubscriberTo(sun);
-        assertEquals(sunState.getEarthRevolution(), sun.getEarthRevolution());
-        sun.setEarthRevolution(0.5f);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(SunUpdateCode.EARTH_REVOLUTION, publisherHelper.getUpdateObjects().get(0));
-    }
-
-    public void testAdjustEarthRotation() {
-        sunState.setEarthRotation(0.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-
-        sunState.setEarthRotation(1.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-
-        sunState.setEarthRotation(2.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-
-        sunState.setEarthRotation(-0.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-
-        sunState.setEarthRotation(-1.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-
-
-        sun.setEarthRotation(0.5f);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-
-        sun.setEarthRotation(1.5f);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-
-        sun.setEarthRotation(2.5f);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-
-        sun.setEarthRotation(-0.5f);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-
-        sun.setEarthRotation(-1.5f);
-        assertEquals(0.5f, sun.getEarthRotation(), 0.0001);
-    }
-
-
-    public void testAdjustEarthRevolution() {
-        sunState.setEarthRevolution(0.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-
-        sunState.setEarthRevolution(1.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-
-        sunState.setEarthRevolution(2.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-
-        sunState.setEarthRevolution(-0.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-
-        sunState.setEarthRevolution(-1.5f);
-        sun = new BasicSun(sunState);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-
-
-        sun.setEarthRevolution(0.5f);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-
-        sun.setEarthRevolution(1.5f);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-
-        sun.setEarthRevolution(2.5f);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-
-        sun.setEarthRevolution(-0.5f);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
-
-        sun.setEarthRevolution(-1.5f);
-        assertEquals(0.5f, sun.getEarthRevolution(), 0.0001);
     }
 
 }

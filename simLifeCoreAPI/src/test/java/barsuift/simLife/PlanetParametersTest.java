@@ -70,7 +70,7 @@ public class PlanetParametersTest extends TestCase {
             // OK expected exception
         }
         try {
-            param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_MIN + 1);
+            param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_MAX + 1);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception

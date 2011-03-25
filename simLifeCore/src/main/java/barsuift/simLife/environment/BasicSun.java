@@ -35,12 +35,6 @@ public class BasicSun implements Sun {
 
     private BigDecimal brightness;
 
-    // FIXME 000. 002. remove
-    private float earthRotation;
-
-    // FIXME 000. 002. remove
-    private float earthRevolution;
-
     private final Sun3D sun3D;
 
     private final Publisher publisher = new BasicPublisher(this);
@@ -56,31 +50,7 @@ public class BasicSun implements Sun {
         }
         this.state = state;
         brightness = state.getBrightness();
-        earthRotation = state.getEarthRotation();
-        earthRevolution = state.getEarthRevolution();
-        adjustEarthRotation();
-        adjustEarthRevolution();
         sun3D = new BasicSun3D(state.getSun3DState(), this);
-    }
-
-    /**
-     * This method is to ensure the earthRotation is always comprised between 0 and 1
-     */
-    private void adjustEarthRotation() {
-        while (earthRotation < 0) {
-            earthRotation++;
-        }
-        earthRotation %= 1;
-    }
-
-    /**
-     * This method is to ensure the earthRevolution is always comprised between 0 and 1
-     */
-    private void adjustEarthRevolution() {
-        while (earthRevolution < 0) {
-            earthRevolution++;
-        }
-        earthRevolution %= 1;
     }
 
     public BigDecimal getBrightness() {
@@ -96,29 +66,6 @@ public class BasicSun implements Sun {
             setChanged();
             notifySubscribers(SunUpdateCode.BRIGHTNESS);
         }
-    }
-
-    public float getEarthRotation() {
-        return earthRotation;
-    }
-
-    public void setEarthRotation(float earthRotation) {
-        this.earthRotation = earthRotation;
-        adjustEarthRotation();
-        // computeBrightness();
-        setChanged();
-        notifySubscribers(SunUpdateCode.EARTH_ROTATION);
-    }
-
-    public float getEarthRevolution() {
-        return earthRevolution;
-    }
-
-    public void setEarthRevolution(float earthRevolution) {
-        this.earthRevolution = earthRevolution;
-        adjustEarthRevolution();
-        setChanged();
-        notifySubscribers(SunUpdateCode.EARTH_REVOLUTION);
     }
 
     // TODO temporary code (for reminder)
@@ -178,8 +125,7 @@ public class BasicSun implements Sun {
     @Override
     public void synchronize() {
         state.setBrightness(brightness);
-        state.setEarthRotation(earthRotation);
-        state.setEarthRevolution(earthRevolution);
+        sun3D.synchronize();
     }
 
     @Override

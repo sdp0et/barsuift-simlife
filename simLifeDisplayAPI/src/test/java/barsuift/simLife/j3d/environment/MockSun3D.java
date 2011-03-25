@@ -26,11 +26,15 @@ import barsuift.simLife.message.BasicPublisher;
 
 public class MockSun3D extends BasicPublisher implements Sun3D {
 
-    private float whiteFactor = 1f;
+    private float earthRotation;
 
-    private DirectionalLight light = new DirectionalLight();
+    private float earthRevolution;
 
-    private Sun3DState state = new Sun3DState();
+    private float whiteFactor;
+
+    private DirectionalLight light;
+
+    private Sun3DState state;
 
     private int synchronizedCalled;
 
@@ -42,11 +46,33 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
     }
 
     private void reset() {
+        earthRotation = (float) (3 * Math.PI / 4);
+        earthRevolution = (float) Math.PI;
         whiteFactor = 1f;
         light = new DirectionalLight();
         state = new Sun3DState();
         synchronizedCalled = 0;
         group = new BranchGroup();
+    }
+
+    @Override
+    public float getEarthRotation() {
+        return earthRotation;
+    }
+
+    @Override
+    public void setEarthRotation(float earthRotation) {
+        this.earthRotation = earthRotation;
+    }
+
+    @Override
+    public float getEarthRevolution() {
+        return earthRevolution;
+    }
+
+    @Override
+    public void setEarthRevolution(float earthRevolution) {
+        this.earthRevolution = earthRevolution;
     }
 
     @Override

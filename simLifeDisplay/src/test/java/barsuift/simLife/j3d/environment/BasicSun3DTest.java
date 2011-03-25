@@ -75,16 +75,22 @@ public class BasicSun3DTest extends TestCase {
     }
 
     /**
-     * Test that the sun3D is a publisher : it notifies its subscribers when the color change
+     * Test that the sun3D is a publisher : it notifies its subscribers when the earth rotation change
      */
     public void testPublisher() {
         publisherHelper.addSubscriberTo(sun3D);
-        // force computation of angles in the sun, and so for color in sun3D
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
 
-        assertEquals(1, publisherHelper.nbUpdated());
+        sun3D.setEarthRevolution((float) Math.PI);
+        assertEquals(2, publisherHelper.nbUpdated());
         assertEquals(SunUpdateCode.COLOR, publisherHelper.getUpdateObjects().get(0));
+        assertEquals(SunUpdateCode.EARTH_REVOLUTION, publisherHelper.getUpdateObjects().get(1));
+
+        publisherHelper.reset();
+
+        sun3D.setEarthRotation((float) Math.PI);
+        assertEquals(2, publisherHelper.nbUpdated());
+        assertEquals(SunUpdateCode.COLOR, publisherHelper.getUpdateObjects().get(0));
+        assertEquals(SunUpdateCode.EARTH_ROTATION, publisherHelper.getUpdateObjects().get(1));
     }
 
     public void testUpdateBrightness() {
@@ -112,9 +118,9 @@ public class BasicSun3DTest extends TestCase {
      */
     private void setToZenith() {
         // time of day = noon
-        mockSun.setEarthRotation(0.5f);
+        sun3DState.setEarthRotation((float) Math.PI);
         // time of year = sprim equinox
-        mockSun.setEarthRevolution(0.25f);
+        sun3DState.setEarthRevolution((float) Math.PI / 2);
         // latitude = equator
         sun3DState.setLatitude(0);
         sun3D = new BasicSun3D(sun3DState, mockSun);
@@ -138,14 +144,13 @@ public class BasicSun3DTest extends TestCase {
 
         mockSun.setBrightness(PercentHelper.getDecimalValue(100));
         sun3D.update(mockSun, SunUpdateCode.BRIGHTNESS);
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
         ColorTestHelper.assertEquals(new Color3f(1f, 0f, 0f), actualSunColor);
 
 
-        mockSun.setEarthRotation(0.5f);
+        sun3DState.setEarthRotation((float) Math.PI);
         sun3DState.setLatitude((float) Math.PI / 4);
         sun3D = new BasicSun3D(sun3DState, mockSun);
         sunLight = sun3D.getLight();
@@ -169,40 +174,35 @@ public class BasicSun3DTest extends TestCase {
         Vector3f expectedDirection;
 
         // the sun is at its nadir
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, 1, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // sun rise
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(1, 0, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // sun at its zenith
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, -1, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // 5/8
-        mockSun.setEarthRotation(0.625f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (5 * Math.PI / 4));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // sunset
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-1, 0, 0);
         expectedDirection.normalize();
@@ -220,32 +220,28 @@ public class BasicSun3DTest extends TestCase {
         Vector3f expectedDirection;
 
         // the sun is at its nadir
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, (float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // sun rise
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(1, 0, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // noon
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, -(float) Math.sqrt(2) / 2, (float) Math.sqrt(2) / 2);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // sunset
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-1, 0, 0);
         expectedDirection.normalize();
@@ -263,40 +259,35 @@ public class BasicSun3DTest extends TestCase {
         Vector3f expectedDirection;
 
         // the sun is at its nadir
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, 0, -1);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // sun rise
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(1, 0, 0);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // noon
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, 0, 1);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
-        // 5Pi/8
-        mockSun.setEarthRotation(0.625f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        // 5/8
+        sun3D.setEarthRotation((float) (5 * Math.PI / 4));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, 0, (float) Math.sqrt(2) / 2);
         expectedDirection.normalize();
         VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
 
         // sunset
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-1, 0, 0);
         expectedDirection.normalize();
@@ -311,26 +302,22 @@ public class BasicSun3DTest extends TestCase {
         CompilerHelper.compile(sunLight);
 
         // time of year = wim solstice
-        mockSun.setEarthRevolution(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution(0f);
         Color3f wimColor = new Color3f();
         sunLight.getColor(wimColor);
 
         // time of year = sprim equinox
-        mockSun.setEarthRevolution(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution((float) Math.PI / 2);
         Color3f sprimColor = new Color3f();
         sunLight.getColor(sprimColor);
 
         // time of year = sum solstice
-        mockSun.setEarthRevolution(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution((float) Math.PI);
         Color3f sumColor = new Color3f();
         sunLight.getColor(sumColor);
 
         // time of year = tom equinox
-        mockSun.setEarthRevolution(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution((float) (3 * Math.PI / 2));
         Color3f tomColor = new Color3f();
         sunLight.getColor(tomColor);
 
@@ -350,68 +337,52 @@ public class BasicSun3DTest extends TestCase {
 
         // /////////////////////////////
         // time of year = sprim equinox
-        mockSun.setEarthRevolution(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution((float) Math.PI / 2);
 
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         assertEquals(-1f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.125f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 4);
         assertEquals(-Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.375f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 4));
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI);
         assertEquals(1f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(1f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (2 * Math.PI));
         assertEquals(-1f, sun3D.getHeight(), 0.0001);
 
         // /////////////////////////////
         // time of year = sum solstice
-        mockSun.setEarthRevolution(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution((float) Math.PI);
 
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         assertEquals(-Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.125f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 4);
         assertEquals(-0.5f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.375f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 4));
         assertEquals(0.5, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI);
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(1f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (2 * Math.PI));
         assertEquals(-Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
     }
 
@@ -425,60 +396,46 @@ public class BasicSun3DTest extends TestCase {
 
         // /////////////////////////////
         // time of year = sprim equinox
-        mockSun.setEarthRevolution(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution((float) Math.PI / 2);
 
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         assertEquals(-Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.125f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 4);
         assertEquals(-0.5, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.375f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 4));
         assertEquals(0.5, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI);
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(1f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (2 * Math.PI));
         assertEquals(-Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
         // /////////////////////////////
         // time of year = sum solstice
-        mockSun.setEarthRevolution(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution((float) Math.PI);
 
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         assertEquals(0, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         assertEquals(0.5f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI);
         assertEquals(1f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         assertEquals(0.5f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(1f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (2 * Math.PI));
         assertEquals(0f, sun3D.getHeight(), 0.0001);
     }
 
@@ -492,68 +449,52 @@ public class BasicSun3DTest extends TestCase {
 
         // /////////////////////////////
         // time of year = sprim equinox
-        mockSun.setEarthRevolution(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution((float) Math.PI / 2);
 
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.125f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 4);
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.375f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 4));
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI);
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(1f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (2 * Math.PI));
         assertEquals(0f, sun3D.getHeight(), 0.0001);
 
         // /////////////////////////////
         // time of year = sum solstice
-        mockSun.setEarthRevolution(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_REVOLUTION);
+        sun3D.setEarthRevolution((float) Math.PI);
 
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.125f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 4);
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.375f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 4));
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.5f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI);
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
 
-        mockSun.setEarthRotation(1f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (2 * Math.PI));
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
     }
 
@@ -563,27 +504,127 @@ public class BasicSun3DTest extends TestCase {
         assertEquals(1f, sun3D.getWhiteFactor(), 0.001f);
 
         // time of day = sun rise
-        mockSun.setEarthRotation(0.25f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) Math.PI / 2);
         assertEquals(0f, sun3D.getHeight(), 0.0001);
         assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
 
         // time of day = midnight
-        mockSun.setEarthRotation(0f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation(0f);
         assertEquals(-1f, sun3D.getHeight(), 0.0001);
         assertEquals(1f, sun3D.getWhiteFactor(), 0.001f);
 
         // time of day = sunset
-        mockSun.setEarthRotation(0.75f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         assertEquals(0f, sun3D.getHeight(), 0.0001);
         assertEquals(0f, sun3D.getWhiteFactor(), 0.001f);
 
         // time of day = middle of the morning
-        mockSun.setEarthRotation(0.375f);
-        sun3D.update(mockSun, SunUpdateCode.EARTH_ROTATION);
+        sun3D.setEarthRotation((float) (3 * Math.PI / 4));
         assertEquals(Math.sqrt(2) / 2, sun3D.getHeight(), 0.0001);
         assertEquals(Math.sqrt(Math.sqrt(2) / 2), sun3D.getWhiteFactor(), 0.001f);
     }
+
+    public void testGetState() {
+        sun3DState = new Sun3DState();
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals(sun3DState, sun3D.getState());
+        assertSame(sun3DState, sun3D.getState());
+        assertEquals(0.0f, sun3D.getState().getEarthRotation(), 0.0001);
+        assertEquals(0.0f, sun3D.getState().getEarthRevolution(), 0.0001);
+
+        sun3D.setEarthRotation(0.47f);
+        sun3D.setEarthRevolution(0.39f);
+        assertEquals(sun3DState, sun3D.getState());
+        assertSame(sun3DState, sun3D.getState());
+        assertEquals(0.47f, sun3D.getState().getEarthRotation(), 0.0001);
+        assertEquals(0.39f, sun3D.getState().getEarthRevolution(), 0.0001);
+    }
+
+    public void testGetEarthRotation() {
+        sun3D.setEarthRotation(0.3f);
+        assertEquals(0.3f, sun3D.getEarthRotation(), 0.0001);
+    }
+
+    public void testGetEarthRevolution() {
+        sun3D.setEarthRevolution(0.3f);
+        assertEquals(0.3f, sun3D.getEarthRevolution(), 0.0001);
+    }
+
+    public void testAdjustEarthRotation() {
+        sun3DState.setEarthRotation((float) Math.PI);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+
+        sun3DState.setEarthRotation((float) (3 * Math.PI));
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+
+        sun3DState.setEarthRotation((float) (5 * Math.PI));
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+
+        sun3DState.setEarthRotation(-(float) Math.PI);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+
+        sun3DState.setEarthRotation(-(float) (3 * Math.PI));
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+
+
+        sun3D.setEarthRotation((float) Math.PI);
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+
+        sun3D.setEarthRotation((float) (3 * Math.PI));
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+
+        sun3D.setEarthRotation((float) (5 * Math.PI));
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+
+        sun3D.setEarthRotation(-(float) Math.PI);
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+
+        sun3D.setEarthRotation(-(float) (3 * Math.PI));
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+    }
+
+
+    public void testAdjustEarthRevolution() {
+        sun3DState.setEarthRevolution((float) Math.PI);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+
+        sun3DState.setEarthRevolution((float) (3 * Math.PI));
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+
+        sun3DState.setEarthRevolution((float) (5 * Math.PI));
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+
+        sun3DState.setEarthRevolution(-(float) Math.PI);
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+
+        sun3DState.setEarthRevolution(-(float) (3 * Math.PI));
+        sun3D = new BasicSun3D(sun3DState, mockSun);
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+
+
+        sun3D.setEarthRevolution((float) Math.PI);
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+
+        sun3D.setEarthRevolution((float) (3 * Math.PI));
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+
+        sun3D.setEarthRevolution((float) (5 * Math.PI));
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+
+        sun3D.setEarthRevolution(-(float) Math.PI);
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+
+        sun3D.setEarthRevolution(-(float) (3 * Math.PI));
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+    }
+
 }

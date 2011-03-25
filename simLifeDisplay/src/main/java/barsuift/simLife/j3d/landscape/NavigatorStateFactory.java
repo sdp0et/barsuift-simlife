@@ -16,6 +16,10 @@ public class NavigatorStateFactory {
      * The original viewer position. Be careful that the Y coordinate may not fit with the landscape. Please adjust the
      * height to the landscape when using this constant.
      */
+    // FIXME this original position is not set correctly when loading a file. It is ok when creating a new unvierse.
+    // maybe it should be stored in state.
+    // Or maybe it should not be computed here ??
+    // or it should be updated also in the BasicNavigator constroctor ??
     public static final Vector3f ORIGINAL_POSITION = new Vector3f();
 
     public static final double ORIGINAL_ROTATION_X = 0;
@@ -27,6 +31,7 @@ public class NavigatorStateFactory {
      * mode is the default one.
      */
     public NavigatorState createNavigatorState(LandscapeParameters landscapeParameters) {
+        System.out.println("createNavigatorState:landscapeParameters=" + landscapeParameters);
         ORIGINAL_POSITION.setX(landscapeParameters.getSize() / 2);
         ORIGINAL_POSITION.setY(VIEWER_SIZE);
         ORIGINAL_POSITION.setZ(landscapeParameters.getSize() / 2);

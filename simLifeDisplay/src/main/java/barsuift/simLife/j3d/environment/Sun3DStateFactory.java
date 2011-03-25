@@ -26,9 +26,19 @@ import barsuift.simLife.landscape.LandscapeParameters;
 
 public class Sun3DStateFactory {
 
+    /**
+     * Creates a default sun 3D state with following values :
+     * <ul>
+     * <li>earth rotation = 0%</li>
+     * <li>earth revolution = 0%</li>
+     * </ul>
+     */
     public Sun3DState createSun3DState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
         BoundingBoxState bounds = BoundingBoxHelper.createBoundingBox(landscapeParameters);
-        return new Sun3DState(bounds, planetParameters.getLatitude(), planetParameters.getEclipticObliquity());
+        float earthRotation = 0f;
+        float earthRevolution = 0f;
+        return new Sun3DState(bounds, planetParameters.getLatitude(), planetParameters.getEclipticObliquity(),
+                earthRotation, earthRevolution);
     }
 
 }
