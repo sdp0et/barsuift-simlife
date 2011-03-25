@@ -466,7 +466,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         transformRotationX.set(new AxisAngle4d(1.0, 0.0, 0.0, rotationX));
         rotationY = NavigatorStateFactory.ORIGINAL_ROTATION_Y;
         transformRotationY.set(new AxisAngle4d(0.0, 1.0, 0.0, rotationY));
-        translation = new Vector3f(NavigatorStateFactory.ORIGINAL_POSITION);
+        translation = state.getOriginalTranslation().toVectorValue();
         adjustHeight();
         propagateTransforms();
     }

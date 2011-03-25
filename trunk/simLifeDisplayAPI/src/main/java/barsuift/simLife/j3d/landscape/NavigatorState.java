@@ -27,6 +27,8 @@ import barsuift.simLife.j3d.Tuple3fState;
 @XmlRootElement
 public class NavigatorState implements State {
 
+    private Tuple3fState originalTranslation;
+
     private Tuple3fState translation;
 
     private double rotationX;
@@ -39,6 +41,7 @@ public class NavigatorState implements State {
 
     public NavigatorState() {
         super();
+        this.originalTranslation = new Tuple3fState();
         this.translation = new Tuple3fState();
         this.rotationX = 0;
         this.rotationY = 0;
@@ -46,14 +49,27 @@ public class NavigatorState implements State {
         this.bounds = new BoundingBoxState();
     }
 
-    public NavigatorState(Tuple3fState translation, double rotationX, double rotationY, NavigationMode navigationMode,
-            BoundingBoxState bounds) {
+    public NavigatorState(Tuple3fState originalTranslation, Tuple3fState translation, double rotationX,
+            double rotationY, NavigationMode navigationMode, BoundingBoxState bounds) {
         super();
+        this.originalTranslation = originalTranslation;
         this.translation = translation;
         this.rotationX = rotationX;
         this.rotationY = rotationY;
         this.navigationMode = navigationMode;
         this.bounds = bounds;
+    }
+
+    /**
+     * The original viewer position. Be careful that the Y coordinate may not fit with the landscape. Please adjust the
+     * height to the landscape when using this constant.
+     */
+    public Tuple3fState getOriginalTranslation() {
+        return originalTranslation;
+    }
+
+    public void setOriginalTranslation(Tuple3fState originalTranslation) {
+        this.originalTranslation = originalTranslation;
     }
 
     public Tuple3fState getTranslation() {
@@ -107,6 +123,7 @@ public class NavigatorState implements State {
         result = prime * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(rotationY);
         result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((originalTranslation == null) ? 0 : originalTranslation.hashCode());
         result = prime * result + ((translation == null) ? 0 : translation.hashCode());
         return result;
     }
@@ -132,6 +149,12 @@ public class NavigatorState implements State {
             return false;
         if (Double.doubleToLongBits(rotationY) != Double.doubleToLongBits(other.rotationY))
             return false;
+        if (originalTranslation == null) {
+            if (other.originalTranslation != null)
+                return false;
+        } else
+            if (!originalTranslation.equals(other.originalTranslation))
+                return false;
         if (translation == null) {
             if (other.translation != null)
                 return false;
@@ -143,8 +166,9 @@ public class NavigatorState implements State {
 
     @Override
     public String toString() {
-        return "NavigatorState [translation=" + translation + ", rotationX=" + rotationX + ", rotationY=" + rotationY
-                + ", navigationMode=" + navigationMode + ", bounds=" + bounds + "]";
+        return "NavigatorState [originalTranslation=" + originalTranslation + ", translation=" + translation
+                + ", rotationX=" + rotationX + ", rotationY=" + rotationY + ", navigationMode=" + navigationMode
+                + ", bounds=" + bounds + "]";
     }
 
 }
