@@ -157,7 +157,6 @@ public class BasicSun3D implements Subscriber, Sun3D {
         }
     }
 
-    // FIXME 000. 001. unit test
     Vector3f computeDirection() {
         float x = computeXDirection();
         float y = computeYDirection();
@@ -231,10 +230,11 @@ public class BasicSun3D implements Subscriber, Sun3D {
     private void computeSunHeight() {
         Point3f transformedPoint = new Point3f();
         computeEarthRotationTransform().transform(sunSphere.getSunCenter(), transformedPoint);
+        System.out.println("sun height=" + sunHeight + ", earthRevolution=" + earthRevolution + ", earthRotation="
+                + earthRotation);
         this.sunHeight = transformedPoint.y / SunSphere3D.SHIFT;
     }
 
-    // FIXME 000. 003. add to interface
     public float getHeight() {
         return sunHeight;
     }
