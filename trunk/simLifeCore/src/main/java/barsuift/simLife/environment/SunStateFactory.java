@@ -18,9 +18,6 @@
  */
 package barsuift.simLife.environment;
 
-import java.math.BigDecimal;
-
-import barsuift.simLife.PercentHelper;
 import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.j3d.environment.Sun3DStateFactory;
@@ -30,16 +27,12 @@ import barsuift.simLife.landscape.LandscapeParameters;
 public class SunStateFactory {
 
     /**
-     * Creates a default sun state with following values :
-     * <ul>
-     * <li>brightness = 0%</li>
-     * </ul>
+     * Creates a default sun state.
      */
     public SunState createSunState(PlanetParameters planetParameters, LandscapeParameters landscapeParameters) {
-        BigDecimal brightness = PercentHelper.getDecimalValue(0);
         Sun3DStateFactory sun3DStateFactory = new Sun3DStateFactory();
         Sun3DState sun3DState = sun3DStateFactory.createSun3DState(planetParameters, landscapeParameters);
-        return new SunState(brightness, sun3DState);
+        return new SunState(sun3DState);
     }
 
 }

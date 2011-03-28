@@ -23,8 +23,6 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Vector3f;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PercentHelper;
-import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.ColorTestHelper;
@@ -34,8 +32,6 @@ import barsuift.simLife.message.PublisherTestHelper;
 
 
 public class BasicSun3DTest extends TestCase {
-
-    private MockSun mockSun;
 
     private Sun3DState sun3DState;
 
@@ -47,9 +43,8 @@ public class BasicSun3DTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        mockSun = new MockSun();
         sun3DState = DisplayDataCreatorForTests.createRandomSun3DState();
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
         publisherHelper = new PublisherTestHelper();
@@ -57,21 +52,10 @@ public class BasicSun3DTest extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        mockSun = null;
         sun3DState = null;
         sun3D = null;
         sunLight = null;
         publisherHelper = null;
-    }
-
-    /**
-     * Test that the sun3D is subscribed to the sun
-     */
-    public void testSubscribers() {
-        assertEquals(1, mockSun.countSubscribers());
-        // check the subscriber is the sun3D
-        mockSun.deleteSubscriber(sun3D);
-        assertEquals(0, mockSun.countSubscribers());
     }
 
     /**
@@ -81,36 +65,30 @@ public class BasicSun3DTest extends TestCase {
         publisherHelper.addSubscriberTo(sun3D);
 
         sun3D.setEarthRevolution((float) Math.PI);
-        assertEquals(2, publisherHelper.nbUpdated());
-        assertEquals(SunUpdateCode.COLOR, publisherHelper.getUpdateObjects().get(0));
-        assertEquals(SunUpdateCode.EARTH_REVOLUTION, publisherHelper.getUpdateObjects().get(1));
+        assertEquals(3, publisherHelper.nbUpdated());
+        assertEquals(SunUpdateCode.EARTH_REVOLUTION, publisherHelper.getUpdateObjects().get(0));
+        assertEquals(SunUpdateCode.BRIGHTNESS, publisherHelper.getUpdateObjects().get(1));
+        assertEquals(SunUpdateCode.COLOR, publisherHelper.getUpdateObjects().get(2));
 
         publisherHelper.reset();
 
         sun3D.setEarthRotation((float) Math.PI);
-        assertEquals(2, publisherHelper.nbUpdated());
-        assertEquals(SunUpdateCode.COLOR, publisherHelper.getUpdateObjects().get(0));
-        assertEquals(SunUpdateCode.EARTH_ROTATION, publisherHelper.getUpdateObjects().get(1));
+        assertEquals(3, publisherHelper.nbUpdated());
+        assertEquals(SunUpdateCode.EARTH_ROTATION, publisherHelper.getUpdateObjects().get(0));
+        assertEquals(SunUpdateCode.BRIGHTNESS, publisherHelper.getUpdateObjects().get(1));
+        assertEquals(SunUpdateCode.COLOR, publisherHelper.getUpdateObjects().get(2));
     }
 
     public void testUpdateBrightness() {
         setToZenith();
 
-        Color3f actualSunColor = new Color3f();
-        sunLight.getColor(actualSunColor);
-        ColorTestHelper.assertEquals(new Color3f(1, 1, 1), actualSunColor);
+        assertEquals(1f, sun3D.getBrightness().floatValue(), 0.0001);
 
-        mockSun.setBrightness(PercentHelper.getDecimalValue(40));
-        sun3D.update(mockSun, SunUpdateCode.BRIGHTNESS);
-        actualSunColor = new Color3f();
-        sunLight.getColor(actualSunColor);
-        ColorTestHelper.assertEquals(new Color3f(0.4f, 0.4f, 0.4f), actualSunColor);
+        sun3D.setEarthRotation((float) Math.PI / 2);
+        assertEquals(0.5f, sun3D.getBrightness().floatValue(), 0.0001);
 
-        mockSun.setBrightness(PercentHelper.getDecimalValue(70));
-        sun3D.update(mockSun, SunUpdateCode.BRIGHTNESS);
-        actualSunColor = new Color3f();
-        sunLight.getColor(actualSunColor);
-        ColorTestHelper.assertEquals(new Color3f(0.7f, 0.7f, 0.7f), actualSunColor);
+        sun3D.setEarthRotation(0f);
+        assertEquals(0f, sun3D.getBrightness().floatValue(), 0.0001);
     }
 
     /**
@@ -123,7 +101,7 @@ public class BasicSun3DTest extends TestCase {
         sun3DState.setEarthRevolution((float) Math.PI / 2);
         // latitude = equator
         sun3DState.setLatitude(0);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
     }
@@ -136,23 +114,20 @@ public class BasicSun3DTest extends TestCase {
         sunLight.getColor(actualSunColor);
         ColorTestHelper.assertEquals(new Color3f(1f, 1, 1), actualSunColor);
 
-        mockSun.setBrightness(PercentHelper.getDecimalValue(50));
-        sun3D.update(mockSun, SunUpdateCode.BRIGHTNESS);
-        actualSunColor = new Color3f();
-        sunLight.getColor(actualSunColor);
-        ColorTestHelper.assertEquals(new Color3f(0.5f, 0.5f, 0.5f), actualSunColor);
-
-        mockSun.setBrightness(PercentHelper.getDecimalValue(100));
-        sun3D.update(mockSun, SunUpdateCode.BRIGHTNESS);
         sun3D.setEarthRotation((float) Math.PI / 2);
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
-        ColorTestHelper.assertEquals(new Color3f(1f, 0f, 0f), actualSunColor);
+        ColorTestHelper.assertEquals(new Color3f(0.5f, 0.0f, 0.0f), actualSunColor);
+
+        sun3D.setEarthRotation(0f);
+        actualSunColor = new Color3f();
+        sunLight.getColor(actualSunColor);
+        ColorTestHelper.assertEquals(new Color3f(0.0f, 0.0f, 0.0f), actualSunColor);
 
 
         sun3DState.setEarthRotation((float) Math.PI);
         sun3DState.setLatitude((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -166,7 +141,7 @@ public class BasicSun3DTest extends TestCase {
     public void testUpdateEarthRotation1() {
         // latitude = equator
         sun3DState.setLatitude(0);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -212,7 +187,7 @@ public class BasicSun3DTest extends TestCase {
     public void testUpdateEarthRotation2() {
         // latitude = 45°
         sun3DState.setLatitude((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -251,7 +226,7 @@ public class BasicSun3DTest extends TestCase {
     public void testUpdateEarthRotation3() {
         // latitude = 90°
         sun3DState.setLatitude((float) Math.PI / 2);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -295,9 +270,10 @@ public class BasicSun3DTest extends TestCase {
     }
 
     public void testUpdateEarthRevolution() {
+        sun3DState.setEclipticObliquity((float) Math.PI / 2);
         // latitude = 90°
         sun3DState.setLatitude((float) Math.PI / 2);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -305,33 +281,38 @@ public class BasicSun3DTest extends TestCase {
         sun3D.setEarthRevolution(0f);
         Color3f wimColor = new Color3f();
         sunLight.getColor(wimColor);
+        assertEquals(0f, sun3D.getBrightness().floatValue(), 0.0001);
 
         // time of year = sprim equinox
         sun3D.setEarthRevolution((float) Math.PI / 2);
         Color3f sprimColor = new Color3f();
         sunLight.getColor(sprimColor);
+        assertEquals(0.5f, sun3D.getBrightness().floatValue(), 0.0001);
 
         // time of year = sum solstice
         sun3D.setEarthRevolution((float) Math.PI);
         Color3f sumColor = new Color3f();
         sunLight.getColor(sumColor);
+        assertEquals(1f, sun3D.getBrightness().floatValue(), 0.0001);
 
         // time of year = tom equinox
         sun3D.setEarthRevolution((float) (3 * Math.PI / 2));
         Color3f tomColor = new Color3f();
         sunLight.getColor(tomColor);
+        assertEquals(0.5f, sun3D.getBrightness().floatValue(), 0.0001);
 
-        ColorTestHelper.assertEquals(wimColor, sumColor);
+        ColorTestHelper.assertEquals(new Color3f(0, 0, 0), wimColor);
+        ColorTestHelper.assertEquals(new Color3f(1, 1, 1), sumColor);
         ColorTestHelper.assertEquals(sprimColor, tomColor);
         assertFalse(wimColor.equals(sprimColor));
-        assertFalse(sumColor.equals(tomColor));
+        assertFalse(wimColor.equals(tomColor));
     }
 
     public void testComputeSunHeightLatitude0() {
         // latitude = equator
         sun3DState.setLatitude(0);
         sun3DState.setEclipticObliquity((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -390,7 +371,7 @@ public class BasicSun3DTest extends TestCase {
         // latitude = middle of the planet
         sun3DState.setLatitude((float) Math.PI / 4);
         sun3DState.setEclipticObliquity((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -443,7 +424,7 @@ public class BasicSun3DTest extends TestCase {
         // latitude = north pole
         sun3DState.setLatitude((float) Math.PI / 2);
         sun3DState.setEclipticObliquity((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -526,7 +507,7 @@ public class BasicSun3DTest extends TestCase {
 
     public void testGetState() {
         sun3DState = new Sun3DState();
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals(sun3DState, sun3D.getState());
         assertSame(sun3DState, sun3D.getState());
         assertEquals(0.0f, sun3D.getState().getEarthRotation(), 0.0001);
@@ -552,23 +533,23 @@ public class BasicSun3DTest extends TestCase {
 
     public void testAdjustEarthRotation() {
         sun3DState.setEarthRotation((float) Math.PI);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
         sun3DState.setEarthRotation((float) (3 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
         sun3DState.setEarthRotation((float) (5 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
         sun3DState.setEarthRotation(-(float) Math.PI);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
         sun3DState.setEarthRotation(-(float) (3 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
 
@@ -591,23 +572,23 @@ public class BasicSun3DTest extends TestCase {
 
     public void testAdjustEarthRevolution() {
         sun3DState.setEarthRevolution((float) Math.PI);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
         sun3DState.setEarthRevolution((float) (3 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
         sun3DState.setEarthRevolution((float) (5 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
         sun3DState.setEarthRevolution(-(float) Math.PI);
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
         sun3DState.setEarthRevolution(-(float) (3 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState, mockSun);
+        sun3D = new BasicSun3D(sun3DState);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
 

@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
-import barsuift.simLife.environment.MockSun;
+import barsuift.simLife.j3d.environment.MockSun3D;
 import barsuift.simLife.universe.MockUniverse;
 
 public class BasicTreeBranchTest extends TestCase {
@@ -65,7 +65,8 @@ public class BasicTreeBranchTest extends TestCase {
     }
 
     public void testCollectSolarEnergy() {
-        ((MockSun) universe.getEnvironment().getSky().getSun()).setBrightness(PercentHelper.getDecimalValue(70));
+        ((MockSun3D) universe.getEnvironment().getSky().getSun().getSun3D()).setBrightness(PercentHelper
+                .getDecimalValue(70));
         assertEquals(3, branch.getNbParts());
         branch.collectSolarEnergy();
 

@@ -18,9 +18,6 @@
  */
 package barsuift.simLife.environment;
 
-import java.math.BigDecimal;
-
-import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.environment.MockSun3D;
 import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.message.BasicPublisher;
@@ -28,9 +25,7 @@ import barsuift.simLife.message.BasicPublisher;
 
 public class MockSun extends BasicPublisher implements Sun {
 
-    private BigDecimal brightness;
-
-    private Sun3D sunLight;
+    private Sun3D sun3D;
 
     private SunState state;
 
@@ -42,30 +37,18 @@ public class MockSun extends BasicPublisher implements Sun {
     }
 
     public void reset() {
-        brightness = PercentHelper.getDecimalValue(100);
-        sunLight = new MockSun3D();
+        sun3D = new MockSun3D();
         state = new SunState();
         synchronizedCalled = 0;
-        ;
-    }
-
-    @Override
-    public BigDecimal getBrightness() {
-        return brightness;
-    }
-
-    @Override
-    public void setBrightness(BigDecimal brightness) {
-        this.brightness = brightness;
     }
 
     @Override
     public Sun3D getSun3D() {
-        return sunLight;
+        return sun3D;
     }
 
-    public void setSunLight(Sun3D sunLight) {
-        this.sunLight = sunLight;
+    public void setSun3D(Sun3D sun3D) {
+        this.sun3D = sun3D;
     }
 
     @Override

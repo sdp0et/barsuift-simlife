@@ -18,8 +18,6 @@
  */
 package barsuift.simLife.environment;
 
-import java.math.BigDecimal;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
@@ -28,28 +26,16 @@ import barsuift.simLife.j3d.environment.Sun3DState;
 @XmlRootElement
 public class SunState implements State {
 
-    private BigDecimal brightness;
-
     private Sun3DState sun3DState;
 
     public SunState() {
         super();
-        this.brightness = new BigDecimal(0);
         this.sun3DState = new Sun3DState();
     }
 
-    public SunState(BigDecimal brightness, Sun3DState sun3DState) {
+    public SunState(Sun3DState sun3DState) {
         super();
-        this.brightness = brightness;
         this.sun3DState = sun3DState;
-    }
-
-    public BigDecimal getBrightness() {
-        return brightness;
-    }
-
-    public void setBrightness(BigDecimal brightness) {
-        this.brightness = brightness;
     }
 
     public Sun3DState getSun3DState() {
@@ -64,7 +50,6 @@ public class SunState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((brightness == null) ? 0 : brightness.hashCode());
         result = prime * result + ((sun3DState == null) ? 0 : sun3DState.hashCode());
         return result;
     }
@@ -78,12 +63,6 @@ public class SunState implements State {
         if (getClass() != obj.getClass())
             return false;
         SunState other = (SunState) obj;
-        if (brightness == null) {
-            if (other.brightness != null)
-                return false;
-        } else
-            if (!brightness.equals(other.brightness))
-                return false;
         if (sun3DState == null) {
             if (other.sun3DState != null)
                 return false;
@@ -95,7 +74,7 @@ public class SunState implements State {
 
     @Override
     public String toString() {
-        return "SunState [brightness=" + brightness + ", earthRotation=" + ", sun3DState=" + sun3DState + "]";
+        return "SunState [sun3DState=" + sun3DState + "]";
     }
 
 }

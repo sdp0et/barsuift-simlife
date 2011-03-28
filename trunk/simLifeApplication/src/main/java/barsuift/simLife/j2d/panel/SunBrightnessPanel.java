@@ -25,16 +25,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import barsuift.simLife.PercentHelper;
-import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-public class SunBrightnessPanel extends JPanel implements ChangeListener, Subscriber {
+public class SunBrightnessPanel extends JPanel implements Subscriber {
 
     private static final long serialVersionUID = -6102868842517781193L;
 
@@ -44,15 +42,15 @@ public class SunBrightnessPanel extends JPanel implements ChangeListener, Subscr
 
     private static final MessageFormat LABEL_FORMAT = new MessageFormat("Sun brightness ({0})");
 
-    private final Sun sun;
+    private final Sun3D sun3D;
 
     private final JLabel sliderLabel;
 
     private final JSlider brightnessSlider;
 
-    public SunBrightnessPanel(Sun sun) {
-        this.sun = sun;
-        sun.addSubscriber(this);
+    public SunBrightnessPanel(Sun3D sun3D) {
+        this.sun3D = sun3D;
+        sun3D.addSubscriber(this);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         sliderLabel = createLabel();
         brightnessSlider = createSlider();
@@ -61,15 +59,15 @@ public class SunBrightnessPanel extends JPanel implements ChangeListener, Subscr
     }
 
     private JSlider createSlider() {
-        JSlider brightnessSlider = new JSlider(JSlider.HORIZONTAL, LUMINOSITY_MIN, LUMINOSITY_MAX,
-                PercentHelper.getIntValue(sun.getBrightness()));
-        brightnessSlider.addChangeListener(this);
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, LUMINOSITY_MIN, LUMINOSITY_MAX,
+                PercentHelper.getIntValue(sun3D.getBrightness()));
+        slider.setEnabled(false);
         // Turn on labels at major tick marks.
-        brightnessSlider.setMajorTickSpacing(20);
-        brightnessSlider.setMinorTickSpacing(5);
-        brightnessSlider.setPaintTicks(true);
-        brightnessSlider.setPaintLabels(true);
-        return brightnessSlider;
+        slider.setMajorTickSpacing(20);
+        slider.setMinorTickSpacing(5);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        return slider;
     }
 
     private JLabel createLabel() {
@@ -80,21 +78,14 @@ public class SunBrightnessPanel extends JPanel implements ChangeListener, Subscr
     }
 
     private String createLabelText() {
-        return LABEL_FORMAT.format(new Object[] { PercentHelper.getStringValue(sun.getBrightness()) });
-    }
-
-    @Override
-    public void stateChanged(ChangeEvent e) {
-        JSlider source = (JSlider) e.getSource();
-        int brightness = source.getValue();
-        sun.setBrightness(PercentHelper.getDecimalValue(brightness));
+        return LABEL_FORMAT.format(new Object[] { PercentHelper.getStringValue(sun3D.getBrightness()) });
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.BRIGHTNESS) {
             sliderLabel.setText(createLabelText());
-            brightnessSlider.setValue(PercentHelper.getIntValue(sun.getBrightness()));
+            brightnessSlider.setValue(PercentHelper.getIntValue(sun3D.getBrightness()));
         }
     }
 

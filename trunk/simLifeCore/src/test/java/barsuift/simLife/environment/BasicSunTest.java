@@ -19,13 +19,9 @@
 package barsuift.simLife.environment;
 
 import junit.framework.TestCase;
-import barsuift.simLife.PercentHelper;
-import barsuift.simLife.message.PublisherTestHelper;
 
 
 public class BasicSunTest extends TestCase {
-
-    private PublisherTestHelper publisherHelper;
 
     private SunState sunState;
 
@@ -35,13 +31,11 @@ public class BasicSunTest extends TestCase {
         super.setUp();
         sunState = new SunState();
         sun = new BasicSun(sunState);
-        publisherHelper = new PublisherTestHelper();
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
         sun = null;
-        publisherHelper = null;
     }
 
     public void testConstructor() {
@@ -56,45 +50,12 @@ public class BasicSunTest extends TestCase {
     public void testGetState() {
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
-        assertEquals(0.0f, sun.getState().getBrightness().floatValue());
         assertEquals(0.0f, sun.getState().getSun3DState().getEarthRevolution());
 
-        sun.setBrightness(PercentHelper.getDecimalValue(32));
         sun.getSun3D().setEarthRevolution(0.123f);
         assertEquals(sunState, sun.getState());
         assertSame(sunState, sun.getState());
-        assertEquals(0.32f, sun.getState().getBrightness().floatValue());
         assertEquals(0.123f, sun.getState().getSun3DState().getEarthRevolution());
-    }
-
-    public void testGetBrightness() {
-        sun.setBrightness(PercentHelper.getDecimalValue(30));
-        assertEquals(PercentHelper.getDecimalValue(30), sun.getBrightness());
-        try {
-            sun.setBrightness(null);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-    }
-
-    public void testSubscriberBrightness() {
-        publisherHelper.addSubscriberTo(sun);
-        assertEquals(sunState.getBrightness(), sun.getBrightness());
-        sun.setBrightness(PercentHelper.getDecimalValue(90));
-        assertEquals(PercentHelper.getDecimalValue(90), sun.getBrightness());
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(SunUpdateCode.BRIGHTNESS, publisherHelper.getUpdateObjects().get(0));
-    }
-
-    public void testSubscriberBrightnessUnchanged() {
-        publisherHelper.addSubscriberTo(sun);
-        assertEquals(sunState.getBrightness(), sun.getBrightness());
-        sun.setBrightness(sunState.getBrightness());
-        assertEquals(sunState.getBrightness(), sun.getBrightness());
-        assertEquals("The subscriber should not be notified when setting the same value as before", 0,
-                publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
     }
 
 }

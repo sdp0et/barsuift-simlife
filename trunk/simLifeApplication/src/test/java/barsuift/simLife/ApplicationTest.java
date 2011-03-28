@@ -21,6 +21,7 @@ package barsuift.simLife;
 import java.io.File;
 
 import junit.framework.TestCase;
+import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.universe.AllParameters;
 import barsuift.simLife.universe.BasicUniverseContextFactory;
 import barsuift.simLife.universe.Universe;
@@ -67,7 +68,8 @@ public class ApplicationTest extends TestCase {
         // this should work fine
         application.saveUniverseAs(saveFile);
         // change the universe
-        universe.getEnvironment().getSky().getSun().setBrightness(PercentHelper.getDecimalValue(13));
+        Sun3D sun3D = universe.getEnvironment().getSky().getSun().getSun3D();
+        sun3D.setEarthRevolution((sun3D.getEarthRevolution() + 0.1f) / 2);
         // this should work fine
         application.saveUniverse();
         application.createEmptyRandomUniverse();

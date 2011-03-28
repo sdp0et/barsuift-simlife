@@ -18,13 +18,18 @@
  */
 package barsuift.simLife.j3d.environment;
 
+import java.math.BigDecimal;
+
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.DirectionalLight;
 
+import barsuift.simLife.PercentHelper;
 import barsuift.simLife.message.BasicPublisher;
 
 
 public class MockSun3D extends BasicPublisher implements Sun3D {
+
+    private BigDecimal brightness;
 
     private float earthRotation;
 
@@ -48,6 +53,7 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
     }
 
     private void reset() {
+        brightness = PercentHelper.getDecimalValue(100);
         earthRotation = (float) (3 * Math.PI / 4);
         earthRevolution = (float) Math.PI;
         height = 0.5f;
@@ -56,6 +62,15 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
         state = new Sun3DState();
         synchronizedCalled = 0;
         group = new BranchGroup();
+    }
+
+    @Override
+    public BigDecimal getBrightness() {
+        return brightness;
+    }
+
+    public void setBrightness(BigDecimal brightness) {
+        this.brightness = brightness;
     }
 
     @Override

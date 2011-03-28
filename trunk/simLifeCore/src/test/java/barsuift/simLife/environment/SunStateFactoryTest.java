@@ -18,10 +18,9 @@
  */
 package barsuift.simLife.environment;
 
-import java.math.BigDecimal;
-
 import junit.framework.TestCase;
 import barsuift.simLife.PlanetParameters;
+import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 
@@ -40,8 +39,10 @@ public class SunStateFactoryTest extends TestCase {
         PlanetParameters planetParameters = new PlanetParameters();
         SunStateFactory factory = new SunStateFactory();
         SunState sunState = factory.createSunState(planetParameters, landscapeParameters);
-        BigDecimal brightness = sunState.getBrightness();
-        assertEquals(0.0f, brightness.floatValue());
+        assertNotNull(sunState);
+        Sun3DState sun3DState = sunState.getSun3DState();
+        assertNotNull(sun3DState);
+        assertEquals(planetParameters.getLatitude(), sun3DState.getLatitude());
     }
 
 }
