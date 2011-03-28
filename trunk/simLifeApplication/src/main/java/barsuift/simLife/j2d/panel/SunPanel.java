@@ -21,21 +21,20 @@ package barsuift.simLife.j2d.panel;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import barsuift.simLife.environment.Sun;
+import barsuift.simLife.j3d.environment.Sun3D;
 
 
 public class SunPanel extends JPanel {
 
     private static final long serialVersionUID = -6102868842517781193L;
 
-    // TODO pass sun3D directly
-    public SunPanel(Sun sun) {
+    public SunPanel(Sun3D sun3D) {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        add(new EarthRevolutionPanel(sun.getSun3D()));
-        add(new EarthRotationPanel(sun.getSun3D()));
-        add(new SunBrightnessPanel(sun.getSun3D()));
-        add(new SunColorPanel(sun.getSun3D()));
+        add(new EarthRevolutionPanel(sun3D));
+        add(new EarthRotationPanel(sun3D));
+        add(new SunBrightnessPanel(sun3D));
+        add(new SunColorPanel(sun3D));
     }
 
 }
