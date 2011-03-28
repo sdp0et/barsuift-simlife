@@ -36,6 +36,10 @@ public class SunSphere3D {
 
     public static final float SHIFT = 0.15f;
 
+    private static final float INTERNAL_RADIUS = 0.01f;
+
+    public static final float RADIUS = INTERNAL_RADIUS / SHIFT;
+
     private final Sphere sphere;
 
     private final GeometryArray geometry;
@@ -51,9 +55,9 @@ public class SunSphere3D {
     public SunSphere3D(float latitude, float eclipticObliquity, float earthRevolution) {
         Appearance sunSphereAppearance = new Appearance();
         AppearanceFactory.setColorWithColoringAttributes(sunSphereAppearance, new Color3f(1.0f, 1.0f, 0.5f));
-        // the GEOMETRY_NOT_SHARED flag is necessary or creating a new SunSphere3D would resuse the same geometry, and
+        // the GEOMETRY_NOT_SHARED flag is necessary or creating a new SunSphere3D would reuse the same geometry, and
         // we would not be able to set the capability bits.
-        this.sphere = new Sphere(0.01f, Sphere.GEOMETRY_NOT_SHARED, sunSphereAppearance);
+        this.sphere = new Sphere(INTERNAL_RADIUS, Sphere.GEOMETRY_NOT_SHARED, sunSphereAppearance);
 
         this.latitude = latitude;
         this.eclipticObliquity = eclipticObliquity;
