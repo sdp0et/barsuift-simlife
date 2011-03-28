@@ -44,16 +44,23 @@ public class SunBrightnessPanelTest extends TestCase {
 
     public void testInit() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
+        assertEquals("Sun brightness (100.00%)", display.getLabel().getText());
         assertEquals(mockSun.getBrightness().floatValue(), PercentHelper
                 .getDecimalValue(display.getSlider().getValue()).floatValue(), 0.0050001);
+
         mockSun.setBrightness(PercentHelper.getDecimalValue(90));
         display = new SunBrightnessPanel(mockSun);
+        assertEquals("Sun brightness (90.00%)", display.getLabel().getText());
         assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+
         mockSun.setBrightness(PercentHelper.getDecimalValue(80));
         display = new SunBrightnessPanel(mockSun);
+        assertEquals("Sun brightness (80.00%)", display.getLabel().getText());
         assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+
         mockSun.setBrightness(PercentHelper.getDecimalValue(100));
         display = new SunBrightnessPanel(mockSun);
+        assertEquals("Sun brightness (100.00%)", display.getLabel().getText());
         assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
 
@@ -62,14 +69,17 @@ public class SunBrightnessPanelTest extends TestCase {
         assertEquals("Sun brightness (100.00%)", display.getLabel().getText());
         assertEquals(mockSun.getBrightness().floatValue(), PercentHelper
                 .getDecimalValue(display.getSlider().getValue()).floatValue(), 0.0050001);
+
         mockSun.setBrightness(PercentHelper.getDecimalValue(90));
         display.update(mockSun, SunUpdateCode.BRIGHTNESS);
         assertEquals("Sun brightness (90.00%)", display.getLabel().getText());
         assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+
         mockSun.setBrightness(PercentHelper.getDecimalValue(90));
         display.update(mockSun, SunUpdateCode.BRIGHTNESS);
         assertEquals("Sun brightness (90.00%)", display.getLabel().getText());
         assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+
         mockSun.setBrightness(PercentHelper.getDecimalValue(100));
         display.update(mockSun, SunUpdateCode.BRIGHTNESS);
         assertEquals("Sun brightness (100.00%)", display.getLabel().getText());

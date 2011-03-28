@@ -44,29 +44,43 @@ public class EarthRotationPanelTest extends TestCase {
 
     public void testInit() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
+        assertEquals("Earth rotation (135°)", display.getLabel().getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
-        sun3D.setEarthRotation((float) (Math.PI * 2 * 0.9));
-        display = new EarthRotationPanel(sun3D);
-        assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
-        sun3D.setEarthRotation((float) (Math.PI * 2 * 0.8));
-        display = new EarthRotationPanel(sun3D);
-        assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
+
         sun3D.setEarthRotation((float) (Math.PI * 2));
         display = new EarthRotationPanel(sun3D);
+        assertEquals("Earth rotation (360°)", display.getLabel().getText());
+        assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
+
+        sun3D.setEarthRotation((float) (Math.PI / 2));
+        display = new EarthRotationPanel(sun3D);
+        assertEquals("Earth rotation (90°)", display.getLabel().getText());
+        assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
+
+        sun3D.setEarthRotation((float) (Math.PI / 4));
+        display = new EarthRotationPanel(sun3D);
+        assertEquals("Earth rotation (45°)", display.getLabel().getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
     }
 
     public void testUpdate() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
+        assertEquals("Earth rotation (135°)", display.getLabel().getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
-        sun3D.setEarthRotation((float) (Math.PI * 2 * 0.9));
-        display.update(sun3D, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
-        sun3D.setEarthRotation((float) (Math.PI * 2 * 0.8));
-        display.update(sun3D, SunUpdateCode.EARTH_ROTATION);
-        assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
+
         sun3D.setEarthRotation((float) (Math.PI * 2));
         display.update(sun3D, SunUpdateCode.EARTH_ROTATION);
+        assertEquals("Earth rotation (360°)", display.getLabel().getText());
+        assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
+
+        sun3D.setEarthRotation((float) (Math.PI / 2));
+        display.update(sun3D, SunUpdateCode.EARTH_ROTATION);
+        assertEquals("Earth rotation (90°)", display.getLabel().getText());
+        assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
+
+        sun3D.setEarthRotation((float) (Math.PI / 4));
+        display.update(sun3D, SunUpdateCode.EARTH_ROTATION);
+        assertEquals("Earth rotation (45°)", display.getLabel().getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
     }
 
