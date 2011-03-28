@@ -19,6 +19,7 @@
 package barsuift.simLife.j2d.panel;
 
 import java.awt.Component;
+import java.text.MessageFormat;
 import java.util.Hashtable;
 
 import javax.swing.BoxLayout;
@@ -41,6 +42,8 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
     private static final int ANGLE_MIN = 0;
 
     private static final int ANGLE_MAX = 360;
+
+    private static final MessageFormat LABEL_FORMAT = new MessageFormat("Earth revolution ({0}°)");
 
     private final Sun3D sun3D;
 
@@ -81,9 +84,13 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
     }
 
     private JLabel createLabel() {
-        JLabel sliderLabel = new JLabel("Earth revolution (degree)", JLabel.CENTER);
+        JLabel sliderLabel = new JLabel(createLabelText(), JLabel.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return sliderLabel;
+    }
+
+    private String createLabelText() {
+        return LABEL_FORMAT.format(new Object[] { Math.round(MathHelper.toDegree(sun3D.getEarthRevolution())) });
     }
 
     @Override
@@ -96,6 +103,7 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
     @Override
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.EARTH_REVOLUTION) {
+            sliderLabel.setText(createLabelText());
             earthRevolutionSlider.setValue(Math.round(MathHelper.toDegree(sun3D.getEarthRevolution())));
         }
     }

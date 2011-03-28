@@ -73,13 +73,13 @@ public class SunBrightnessPanel extends JPanel implements ChangeListener, Subscr
     }
 
     private JLabel createLabel() {
-        JLabel sliderLabel = new JLabel(createBrightnessLabelText(), JLabel.CENTER);
+        JLabel sliderLabel = new JLabel(createLabelText(), JLabel.CENTER);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         sliderLabel.setMinimumSize(sliderLabel.getPreferredSize());
         return sliderLabel;
     }
 
-    private String createBrightnessLabelText() {
+    private String createLabelText() {
         return LABEL_FORMAT.format(new Object[] { PercentHelper.getStringValue(sun.getBrightness()) });
     }
 
@@ -93,7 +93,7 @@ public class SunBrightnessPanel extends JPanel implements ChangeListener, Subscr
     @Override
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.BRIGHTNESS) {
-            sliderLabel.setText(createBrightnessLabelText());
+            sliderLabel.setText(createLabelText());
             brightnessSlider.setValue(PercentHelper.getIntValue(sun.getBrightness()));
         }
     }
