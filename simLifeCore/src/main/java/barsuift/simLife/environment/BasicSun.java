@@ -18,13 +18,8 @@
  */
 package barsuift.simLife.environment;
 
-import java.math.BigDecimal;
-
 import barsuift.simLife.j3d.environment.BasicSun3D;
 import barsuift.simLife.j3d.environment.Sun3D;
-import barsuift.simLife.message.BasicPublisher;
-import barsuift.simLife.message.Publisher;
-import barsuift.simLife.message.Subscriber;
 
 /**
  * Class representing the sun.
@@ -33,11 +28,7 @@ public class BasicSun implements Sun {
 
     private final SunState state;
 
-    private BigDecimal brightness;
-
     private final Sun3D sun3D;
-
-    private final Publisher publisher = new BasicPublisher(this);
 
     /**
      * Creates a Sun instance with given state
@@ -49,72 +40,8 @@ public class BasicSun implements Sun {
             throw new IllegalArgumentException("Null sun state");
         }
         this.state = state;
-        brightness = state.getBrightness();
-        sun3D = new BasicSun3D(state.getSun3DState(), this);
+        sun3D = new BasicSun3D(state.getSun3DState());
     }
-
-    public BigDecimal getBrightness() {
-        return brightness;
-    }
-
-    public void setBrightness(BigDecimal brightness) throws IllegalArgumentException {
-        if (brightness == null) {
-            throw new IllegalArgumentException("Sun brightness can not be null");
-        }
-        if (!this.brightness.equals(brightness)) {
-            this.brightness = brightness;
-            setChanged();
-            notifySubscribers(SunUpdateCode.BRIGHTNESS);
-        }
-    }
-
-    // TODO temporary code (for reminder)
-    // private void computeBrightness() {
-    // // ratio is the ratio between the sky perimeter and the sun diameter
-    // double ratio = 20;
-    // // the sun diameter is thus 2 Pi / ratio (with sky radius of 1 : unit circle)
-    // // here the angles ranges from 0 to 1 (not from 0 to 2*Pi)
-    // // so the sun diameter is 1 / ratio
-    // // and the sun radius is 1 / (2 * ratio)
-    // double sunRadius = 1 / (2 * ratio);
-    //
-    // double zenithAngleMin = sunRadius;
-    // double brightnessFromZenith;
-    // if (zenithAngle > zenithAngleMin) {
-    // brightnessFromZenith = 1;
-    // } else {
-    // brightnessFromZenith = (1 + Math.sin(Math.PI * ratio * zenithAngle)) / 2;
-    // }
-    //
-    //
-    // double earthRotationStartAngleStart = 0.25 - sunRadius;
-    // double earthRotationStartAngleEnd = 0.25 + sunRadius;
-    // double earthRotationEndAngleStart = 0.75 - sunRadius;
-    // double earthRotationEndAngleEnd = 0.75 + sunRadius;
-    // double brightnessFromEarthRotation;
-    // if (earthRotation < earthRotationStartAngleStart || earthRotation > earthRotationEndAngleEnd) {
-    // brightnessFromEarthRotation = 0;
-    // } else {
-    // if (earthRotation > earthRotationStartAngleEnd && earthRotation < earthRotationEndAngleStart) {
-    // brightnessFromEarthRotation = 1;
-    // } else {
-    // if (earthRotation < earthRotationStartAngleEnd) {
-    // // earthRotation function
-    // brightnessFromEarthRotation = (1 + Math.sin(Math.PI * ratio * (earthRotation - 0.25))) / 2;
-    // } else {
-    // // earthRotation function
-    // brightnessFromEarthRotation = (1 - Math.sin(Math.PI * ratio * (earthRotation - 0.75))) / 2;
-    // }
-    // }
-    // }
-    // double brightness = brightnessFromEarthRotation * brightnessFromZenith;
-    // System.out.println("earthRotation=" + earthRotation);
-    // System.out.println("zenithAngle=" + zenithAngle);
-    // // System.out.println("brightnessFromEarthRotation=" + brightnessFromEarthRotation);
-    // // System.out.println("brightnessFromZenith=" + brightnessFromZenith);
-    // // System.out.println("-------------------- brightness=" + brightness);
-    // }
-
 
     @Override
     public SunState getState() {
@@ -124,49 +51,12 @@ public class BasicSun implements Sun {
 
     @Override
     public void synchronize() {
-        state.setBrightness(brightness);
         sun3D.synchronize();
     }
 
     @Override
     public Sun3D getSun3D() {
         return sun3D;
-    }
-
-    public void addSubscriber(Subscriber subscriber) {
-        publisher.addSubscriber(subscriber);
-    }
-
-    public void deleteSubscriber(Subscriber subscriber) {
-        publisher.deleteSubscriber(subscriber);
-    }
-
-    public void notifySubscribers() {
-        publisher.notifySubscribers();
-    }
-
-    public void notifySubscribers(Object arg) {
-        publisher.notifySubscribers(arg);
-    }
-
-    public void deleteSubscribers() {
-        publisher.deleteSubscribers();
-    }
-
-    public boolean hasChanged() {
-        return publisher.hasChanged();
-    }
-
-    public int countSubscribers() {
-        return publisher.countSubscribers();
-    }
-
-    public void setChanged() {
-        publisher.setChanged();
-    }
-
-    public void clearChanged() {
-        publisher.clearChanged();
     }
 
 }

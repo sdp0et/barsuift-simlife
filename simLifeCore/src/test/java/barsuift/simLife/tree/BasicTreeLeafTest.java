@@ -27,6 +27,7 @@ import barsuift.simLife.environment.MockEnvironment;
 import barsuift.simLife.environment.MockSky;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.j3d.MobileEvent;
+import barsuift.simLife.j3d.environment.MockSun3D;
 import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
@@ -41,7 +42,7 @@ public class BasicTreeLeafTest extends TestCase {
 
     private TreeLeafState leafState;
 
-    private MockSun mockSun;
+    private MockSun3D mockSun3D;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -49,8 +50,10 @@ public class BasicTreeLeafTest extends TestCase {
         leafState = CoreDataCreatorForTests.createSpecificTreeLeafState();
 
         BigDecimal lightRate = PercentHelper.getDecimalValue(70);
-        mockSun = new MockSun();
-        mockSun.setBrightness(lightRate);
+        mockSun3D = new MockSun3D();
+        mockSun3D.setBrightness(lightRate);
+        MockSun mockSun = new MockSun();
+        mockSun.setSun3D(mockSun3D);
         MockSky mockSky = new MockSky();
         mockSky.setSun(mockSun);
         MockEnvironment mockEnv = new MockEnvironment();
@@ -64,7 +67,7 @@ public class BasicTreeLeafTest extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        mockSun = null;
+        mockSun3D = null;
         leaf = null;
         publisherHelper = null;
         universe = null;

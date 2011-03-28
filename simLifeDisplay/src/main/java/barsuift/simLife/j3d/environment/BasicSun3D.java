@@ -18,6 +18,8 @@
  */
 package barsuift.simLife.j3d.environment;
 
+import java.math.BigDecimal;
+
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Light;
@@ -29,13 +31,11 @@ import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
-import barsuift.simLife.environment.Sun;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-// FIXME 000. 004. implement in proper way the computeBrightness (should be easy now).
 // FIXME 000. 006. make the sky color change from blue to dark at night
 // FIXME 000. 007. make the earthRotation depends on the time of day (dynamic)
 // FIXME 000. 008. make the earthRevolution depends on the time of day (dynamic)
@@ -43,11 +43,9 @@ import barsuift.simLife.message.Subscriber;
 // FIXME 000. 010. make the earthRevolution depends on the time of year (at init time)
 // FIXME 000. 011. be able to deactivate the earth rotation/revolution, sun brightness/color computation to switch to
 // manual mode
-public class BasicSun3D implements Subscriber, Sun3D {
+public class BasicSun3D implements Sun3D {
 
     private final Sun3DState state;
-
-    private final Sun sun;
 
     private final DirectionalLight light;
 
@@ -61,6 +59,8 @@ public class BasicSun3D implements Subscriber, Sun3D {
 
     private final Vector3d earthRotationVector;
 
+    private final Transform3D earthRotationTransform;
+
     private final float latitude;
 
     private float sunHeight;
@@ -71,33 +71,42 @@ public class BasicSun3D implements Subscriber, Sun3D {
     // angle in radian, from 0 to 2*Pi
     private float earthRevolution;
 
-    public BasicSun3D(Sun3DState state, Sun sun) {
+    private BigDecimal brightness;
+
+    public BasicSun3D(Sun3DState state) {
         super();
         this.state = state;
-        this.sun = sun;
-        sun.addSubscriber(this);
         this.latitude = state.getLatitude();
 
-        earthRotation = state.getEarthRotation();
-        adjustEarthRotation();
         earthRevolution = state.getEarthRevolution();
         adjustEarthRevolution();
+        sunSphere = new SunSphere3D(latitude, state.getEclipticObliquity(), earthRevolution);
 
         earthRotationVector = new Vector3d(0, -Math.sin(latitude), -Math.cos(latitude));
+        earthRotationTransform = new Transform3D();
+        earthRotation = state.getEarthRotation();
+        adjustEarthRotation();
+        earthRotationTransform.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
         earthRotationTG = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
         earthRotationTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        earthRotationTG.setTransform(computeEarthRotationTransform());
-        sunSphere = new SunSphere3D(latitude, state.getEclipticObliquity(), earthRevolution);
+        earthRotationTG.setTransform(earthRotationTransform);
+
+
         earthRotationTG.addChild(sunSphere.getGroup());
         group = new BranchGroup();
         group.addChild(earthRotationTG);
-        computeSunHeight();
 
-        light = new DirectionalLight(computeColor(), computeDirection());
+
+        light = new DirectionalLight();
         light.setInfluencingBounds(state.getBounds().toBoundingBox());
         light.setCapability(Light.ALLOW_COLOR_WRITE);
         light.setCapability(DirectionalLight.ALLOW_DIRECTION_WRITE);
+
+        updateSunHeight();
+        // no need to update brightness because it is already updated with the sun height
+        updateLightDirection();
+        // no need to update light color because it is already updated with the sun height
     }
 
     /**
@@ -127,13 +136,13 @@ public class BasicSun3D implements Subscriber, Sun3D {
     public void setEarthRotation(float earthRotation) {
         this.earthRotation = earthRotation;
         adjustEarthRotation();
-        computeSunHeight();
-        light.setDirection(computeDirection());
-        light.setColor(computeColor());
-        earthRotationTG.setTransform(computeEarthRotationTransform());
-        // computeBrightness();
+        earthRotationTransform.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
+        earthRotationTG.setTransform(earthRotationTransform);
         setChanged();
         notifySubscribers(SunUpdateCode.EARTH_ROTATION);
+        updateLightDirection();
+        updateSunHeight();
+        // no need to update brightness and color because they are already updated with sun height
     }
 
     public float getEarthRevolution() {
@@ -144,26 +153,20 @@ public class BasicSun3D implements Subscriber, Sun3D {
         this.earthRevolution = earthRevolution;
         adjustEarthRevolution();
         sunSphere.updateForEclipticShift(earthRevolution);
-        computeSunHeight();
-        light.setColor(computeColor());
         setChanged();
         notifySubscribers(SunUpdateCode.EARTH_REVOLUTION);
+        updateSunHeight();
+        // no need to update brightness and color because they are already updated with sun height
+
     }
 
-    @Override
-    public void update(Publisher o, Object arg) {
-        if (arg == SunUpdateCode.BRIGHTNESS) {
-            light.setColor(computeColor());
-        }
-    }
-
-    Vector3f computeDirection() {
+    private void updateLightDirection() {
         float x = computeXDirection();
         float y = computeYDirection();
         float z = computeZDirection();
         Vector3f direction = new Vector3f(x, y, z);
         direction.normalize();
-        return direction;
+        light.setDirection(direction);
     }
 
     private float computeZDirection() {
@@ -178,48 +181,28 @@ public class BasicSun3D implements Subscriber, Sun3D {
         return (float) Math.sin(earthRotation);
     }
 
-    private Transform3D computeEarthRotationTransform() {
-        Transform3D result = new Transform3D();
-        result.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
-        return result;
+    private void updateBrightness() {
+        if (sunHeight < -SunSphere3D.RADIUS) {
+            brightness = new BigDecimal(0);
+        } else {
+            if (sunHeight > SunSphere3D.RADIUS) {
+                brightness = new BigDecimal(1);
+            } else {
+                brightness = new BigDecimal((1 + (float) Math.sin(sunHeight / SunSphere3D.RADIUS * Math.PI / 2)) / 2);
+            }
+        }
+        setChanged();
+        notifySubscribers(SunUpdateCode.BRIGHTNESS);
+        updateLightColor();
     }
 
-    // TODO temporary code (for reminder)
-    // private void computeBrightness() {
-    // // double ratio = 20;
-    // double ratio = 7;
-    // // the sun diameter is thus 2 Pi / ratio (with sky radius of 1 : unit circle)
-    // // here the angles ranges from 0 to 1 (not from 0 to 2*Pi)
-    // // so the sun diameter is 1 / ratio
-    // // and the sun radius is 1 / (2 * ratio)
-    // // double sunRadius = 1 / (2 * ratio); // = 1/40 = 0.025
-    //
-    // // here the ratio is 7 and represents the ratio between the sky radius and the sun diameter
-    // double sunRadius = 1 / (2 * ratio); // = 1/14 = 0.075
-    // System.out.println("sunRadius=" + sunRadius);
-    //
-    // double brightness;
-    // double sunHeight = computeSunHeight();
-    // if (sunHeight < -sunRadius) {
-    // brightness = 0;
-    // } else {
-    // if (sunHeight > sunRadius) {
-    // brightness = 1;
-    // } else {
-    // brightness = (1 + Math.sin(sunHeight / sunRadius * Math.PI / 2)) / 2;
-    // }
-    // }
-    // System.out.println("sunHeight=" + sunHeight);
-    // System.out.println("-------------------- brightness=" + brightness);
-    // }
-
-    private Color3f computeColor() {
-        float brightness = sun.getBrightness().floatValue();
+    private void updateLightColor() {
+        float brightnessFloat = brightness.floatValue();
         float whiteFactor = getWhiteFactor();
-        Color3f color = new Color3f(brightness, brightness * whiteFactor, brightness * whiteFactor);
+        Color3f color = new Color3f(brightnessFloat, brightnessFloat * whiteFactor, brightnessFloat * whiteFactor);
+        light.setColor(color);
         setChanged();
         notifySubscribers(SunUpdateCode.COLOR);
-        return color;
     }
 
     @Override
@@ -227,16 +210,23 @@ public class BasicSun3D implements Subscriber, Sun3D {
         return (float) Math.sqrt(Math.abs(sunHeight));
     }
 
-    private void computeSunHeight() {
+    private void updateSunHeight() {
         Point3f transformedPoint = new Point3f();
-        computeEarthRotationTransform().transform(sunSphere.getSunCenter(), transformedPoint);
+        earthRotationTransform.transform(sunSphere.getSunCenter(), transformedPoint);
         System.out.println("sun height=" + sunHeight + ", earthRevolution=" + earthRevolution + ", earthRotation="
                 + earthRotation);
         this.sunHeight = transformedPoint.y / SunSphere3D.SHIFT;
+        updateBrightness();
+        // no need to recompute the sun color, as it is recomputed after the brightness anyway
     }
 
     public float getHeight() {
         return sunHeight;
+    }
+
+    @Override
+    public BigDecimal getBrightness() {
+        return brightness;
     }
 
     @Override

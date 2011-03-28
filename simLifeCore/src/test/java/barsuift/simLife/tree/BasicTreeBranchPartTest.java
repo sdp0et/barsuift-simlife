@@ -29,9 +29,9 @@ import javax.vecmath.Vector3f;
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
-import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.Tuple3fState;
+import barsuift.simLife.j3d.environment.MockSun3D;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
@@ -88,7 +88,8 @@ public class BasicTreeBranchPartTest extends TestCase {
     }
 
     public void testCollectSolarEnergy() {
-        ((MockSun) universe.getEnvironment().getSky().getSun()).setBrightness(PercentHelper.getDecimalValue(70));
+        ((MockSun3D) universe.getEnvironment().getSky().getSun().getSun3D()).setBrightness(PercentHelper
+                .getDecimalValue(70));
         assertEquals(5, branchPart.getNbLeaves());
         branchPart.collectSolarEnergy();
 

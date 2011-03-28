@@ -20,70 +20,70 @@ package barsuift.simLife.j2d.panel;
 
 import junit.framework.TestCase;
 import barsuift.simLife.PercentHelper;
-import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.j3d.environment.MockSun3D;
 
 
 public class SunBrightnessPanelTest extends TestCase {
 
-    private MockSun mockSun;
+    private MockSun3D mockSun3D;
 
     private SunBrightnessPanel display;
 
     protected void setUp() throws Exception {
         super.setUp();
-        mockSun = new MockSun();
-        display = new SunBrightnessPanel(mockSun);
+        mockSun3D = new MockSun3D();
+        display = new SunBrightnessPanel(mockSun3D);
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        mockSun = null;
+        mockSun3D = null;
         display = null;
     }
 
     public void testInit() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
         assertEquals("Sun brightness (100.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getBrightness().floatValue(), PercentHelper
-                .getDecimalValue(display.getSlider().getValue()).floatValue(), 0.0050001);
+        assertEquals(mockSun3D.getBrightness().floatValue(),
+                PercentHelper.getDecimalValue(display.getSlider().getValue()).floatValue(), 0.0050001);
 
-        mockSun.setBrightness(PercentHelper.getDecimalValue(90));
-        display = new SunBrightnessPanel(mockSun);
+        mockSun3D.setBrightness(PercentHelper.getDecimalValue(90));
+        display = new SunBrightnessPanel(mockSun3D);
         assertEquals("Sun brightness (90.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun3D.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
 
-        mockSun.setBrightness(PercentHelper.getDecimalValue(80));
-        display = new SunBrightnessPanel(mockSun);
+        mockSun3D.setBrightness(PercentHelper.getDecimalValue(80));
+        display = new SunBrightnessPanel(mockSun3D);
         assertEquals("Sun brightness (80.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun3D.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
 
-        mockSun.setBrightness(PercentHelper.getDecimalValue(100));
-        display = new SunBrightnessPanel(mockSun);
+        mockSun3D.setBrightness(PercentHelper.getDecimalValue(100));
+        display = new SunBrightnessPanel(mockSun3D);
         assertEquals("Sun brightness (100.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun3D.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
 
     public void testUpdate() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
         assertEquals("Sun brightness (100.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getBrightness().floatValue(), PercentHelper
-                .getDecimalValue(display.getSlider().getValue()).floatValue(), 0.0050001);
+        assertEquals(mockSun3D.getBrightness().floatValue(),
+                PercentHelper.getDecimalValue(display.getSlider().getValue()).floatValue(), 0.0050001);
 
-        mockSun.setBrightness(PercentHelper.getDecimalValue(90));
-        display.update(mockSun, SunUpdateCode.BRIGHTNESS);
+        mockSun3D.setBrightness(PercentHelper.getDecimalValue(90));
+        display.update(mockSun3D, SunUpdateCode.BRIGHTNESS);
         assertEquals("Sun brightness (90.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun3D.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
 
-        mockSun.setBrightness(PercentHelper.getDecimalValue(90));
-        display.update(mockSun, SunUpdateCode.BRIGHTNESS);
+        mockSun3D.setBrightness(PercentHelper.getDecimalValue(90));
+        display.update(mockSun3D, SunUpdateCode.BRIGHTNESS);
         assertEquals("Sun brightness (90.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun3D.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
 
-        mockSun.setBrightness(PercentHelper.getDecimalValue(100));
-        display.update(mockSun, SunUpdateCode.BRIGHTNESS);
+        mockSun3D.setBrightness(PercentHelper.getDecimalValue(100));
+        display.update(mockSun3D, SunUpdateCode.BRIGHTNESS);
         assertEquals("Sun brightness (100.00%)", display.getLabel().getText());
-        assertEquals(mockSun.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
+        assertEquals(mockSun3D.getBrightness(), PercentHelper.getDecimalValue(display.getSlider().getValue()));
     }
 
 }

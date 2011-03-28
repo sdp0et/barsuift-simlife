@@ -28,12 +28,13 @@ public class SunPanel extends JPanel {
 
     private static final long serialVersionUID = -6102868842517781193L;
 
+    // TODO pass sun3D directly
     public SunPanel(Sun sun) {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         add(new EarthRevolutionPanel(sun.getSun3D()));
         add(new EarthRotationPanel(sun.getSun3D()));
-        add(new SunBrightnessPanel(sun));
+        add(new SunBrightnessPanel(sun.getSun3D()));
         add(new SunColorPanel(sun.getSun3D()));
     }
 

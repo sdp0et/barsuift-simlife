@@ -19,6 +19,8 @@
 package barsuift.simLife.j3d.environment;
 
 
+import java.math.BigDecimal;
+
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.DirectionalLight;
 
@@ -71,6 +73,13 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
      * @return the scaled sun height (-1;1]
      */
     public float getHeight();
+
+    /**
+     * Gets the sun brightness, ranged from 0 (night) to 1 (day)
+     * 
+     * @return the scaled sun brightness (0;1]
+     */
+    public BigDecimal getBrightness();
 
     /**
      * Computes the white factor, based on the sun position. The lower the sun is, the lower the white factor.

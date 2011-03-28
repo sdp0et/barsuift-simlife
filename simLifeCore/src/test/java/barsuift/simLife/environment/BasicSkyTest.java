@@ -18,8 +18,6 @@
  */
 package barsuift.simLife.environment;
 
-import java.math.BigDecimal;
-
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 
@@ -31,14 +29,14 @@ public class BasicSkyTest extends TestCase {
         BasicSky sky = new BasicSky(state);
         assertEquals(state, sky.getState());
         assertSame(state, sky.getState());
-        assertEquals(state.getSunState().getBrightness(), sky.getSun().getBrightness());
+        assertEquals(state.getSunState().getSun3DState().getEarthRevolution(), sky.getSun().getSun3D()
+                .getEarthRevolution());
 
-        sky.getSun().setBrightness(
-                state.getSunState().getBrightness().divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP));
+        sky.getSun().getSun3D().setEarthRevolution(sky.getSun().getSun3D().getEarthRevolution() / 2);
         assertEquals(state, sky.getState());
         assertSame(state, sky.getState());
-        assertEquals(state.getSunState().getBrightness(), sky.getSun().getBrightness());
-
+        assertEquals(state.getSunState().getSun3DState().getEarthRevolution(), sky.getSun().getSun3D()
+                .getEarthRevolution());
     }
 
 }

@@ -22,12 +22,11 @@ import java.math.BigDecimal;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.environment.Sun3D;
-import barsuift.simLife.message.Publisher;
 
 /**
  * Class representing the sun.
  */
-public interface Sun extends Publisher, Persistent<SunState> {
+public interface Sun extends Persistent<SunState> {
 
     /**
      * This is the energy provided by a 100% brightness sun on 1 m²
@@ -35,9 +34,5 @@ public interface Sun extends Publisher, Persistent<SunState> {
     public static final BigDecimal ENERGY_DENSITY = new BigDecimal(150);
 
     public Sun3D getSun3D();
-
-    public BigDecimal getBrightness();
-
-    public void setBrightness(BigDecimal brightness) throws IllegalArgumentException;
 
 }
