@@ -22,11 +22,15 @@ import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Background;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
+import javax.vecmath.Color3f;
 
 import barsuift.simLife.environment.Sky;
+import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.util.ColorConstants;
+import barsuift.simLife.message.Publisher;
+import barsuift.simLife.message.Subscriber;
 
-public class BasicSky3D implements Sky3D {
+public class BasicSky3D implements Sky3D, Subscriber {
 
     private final Sky3DState state;
 
@@ -35,6 +39,8 @@ public class BasicSky3D implements Sky3D {
     private final AmbientLight ambientLight;
 
     private final Group group;
+
+    private final Background background;
 
     /**
      * Creates the sky3D with given state
@@ -54,14 +60,19 @@ public class BasicSky3D implements Sky3D {
         group = new BranchGroup();
         group.addChild(ambientLight);
         group.addChild(getSun3D().getLight());
-        Background background = createSkyBackGround();
+        // TODO unit test subscriber
+        getSun3D().addSubscriber(this);
+        background = createSkyBackGround();
+        // TODO test update color at init time
+        updateColor();
         group.addChild(background);
     }
 
     private Background createSkyBackGround() {
         Background background = new Background();
-        background.setColor(ColorConstants.skyBlue);
         background.setApplicationBounds(state.getSkyBounds().toBoundingBox());
+        // TODO test capabilitty
+        background.setCapability(Background.ALLOW_COLOR_WRITE);
         background.setGeometry(getSun3D().getGroup());
         return background;
     }
@@ -74,6 +85,22 @@ public class BasicSky3D implements Sky3D {
     @Override
     public Sun3D getSun3D() {
         return sky.getSun().getSun3D();
+    }
+
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        // TODO test update
+        if (arg == SunUpdateCode.BRIGHTNESS) {
+            updateColor();
+        }
+
+    }
+
+    private void updateColor() {
+        Color3f backgroundColor = new Color3f();
+        backgroundColor.interpolate(ColorConstants.black, ColorConstants.skyBlue, getSun3D().getBrightness()
+                .floatValue());
+        background.setColor(backgroundColor);
     }
 
     public Sky3DState getState() {

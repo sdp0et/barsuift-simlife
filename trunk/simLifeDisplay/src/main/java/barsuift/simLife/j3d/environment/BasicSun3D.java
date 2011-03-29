@@ -36,7 +36,6 @@ import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-// FIXME 000. 006. make the sky color change from blue to dark at night
 // FIXME 000. 007. make the earthRotation depends on the time of day (dynamic)
 // FIXME 000. 008. make the earthRevolution depends on the time of day (dynamic)
 // FIXME 000. 009. make the earthRotation depends on the hour of the day (at init time)
