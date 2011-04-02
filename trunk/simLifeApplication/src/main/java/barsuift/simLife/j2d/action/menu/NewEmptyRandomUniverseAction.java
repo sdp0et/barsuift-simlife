@@ -30,7 +30,6 @@ import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.universe.UniverseContext;
 
-// TODO 200. add a confirmation popup before creating the new universe
 public class NewEmptyRandomUniverseAction extends AbstractAction {
 
     private static final Logger logger = Logger.getLogger(NewEmptyRandomUniverseAction.class.getName());
