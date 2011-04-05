@@ -70,6 +70,7 @@ public abstract class AbstractSplitConditionalTask extends AbstractSynchronizedT
     @Override
     public final void executeStep() {
         if (endingCondition.evaluate(stepSize)) {
+            // ask the process to stop. This will NOT prevent the current step to execute.
             stop();
             setChanged();
             notifySubscribers();
