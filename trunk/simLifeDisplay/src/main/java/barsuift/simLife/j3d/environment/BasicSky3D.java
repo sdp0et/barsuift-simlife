@@ -60,10 +60,8 @@ public class BasicSky3D implements Sky3D, Subscriber {
         group = new BranchGroup();
         group.addChild(ambientLight);
         group.addChild(getSun3D().getLight());
-        // TODO unit test subscriber
         getSun3D().addSubscriber(this);
         background = createSkyBackGround();
-        // TODO test update color at init time
         updateColor();
         group.addChild(background);
     }
@@ -71,7 +69,6 @@ public class BasicSky3D implements Sky3D, Subscriber {
     private Background createSkyBackGround() {
         Background background = new Background();
         background.setApplicationBounds(state.getSkyBounds().toBoundingBox());
-        // TODO test capabilitty
         background.setCapability(Background.ALLOW_COLOR_WRITE);
         background.setGeometry(getSun3D().getGroup());
         return background;
@@ -89,7 +86,6 @@ public class BasicSky3D implements Sky3D, Subscriber {
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        // TODO test update
         if (arg == SunUpdateCode.BRIGHTNESS) {
             updateColor();
         }
