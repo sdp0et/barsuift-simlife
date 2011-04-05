@@ -28,12 +28,15 @@ import barsuift.simLife.message.Subscriber;
 
 
 /**
- * This abstract class represents a split task. It is split in increments. The {@code stepSize} parameter allow to run
- * more than one increment in a row. Note that executing more than one increment in a row does NOT mean executing them
- * one after the other, but to execute the whole increment range in one action.
- */
-/**
- * A abstract conditional task with an execution condition and an ending condition.
+ * This abstract class represents a split conditional task.
+ * <p>
+ * The <i>split</i> part means it is split in increments. The {@code stepSize} parameter allow to run more than one
+ * increment in a row. Note that executing more than one increment in a row does NOT mean executing them one after the
+ * other, but to execute the whole increment range in one action.
+ * </p>
+ * <p>
+ * The <i>conditional</i> part means it has an execution condition and an ending condition.
+ * </p>
  * <p>
  * The task notifies its subscribers when it reaches its bound and stops.
  * </p>
