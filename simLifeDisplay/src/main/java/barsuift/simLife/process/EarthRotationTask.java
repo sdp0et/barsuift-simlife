@@ -21,8 +21,6 @@ package barsuift.simLife.process;
 import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.time.SimLifeDate;
 
-// FIXME use
-// FIXME unit test
 public class EarthRotationTask extends AbstractSplitConditionalTask {
 
     private final Sun3D sun3D;
