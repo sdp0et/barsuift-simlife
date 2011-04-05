@@ -32,8 +32,6 @@ public class AllParameters implements Parameters {
 
     private final LandscapeParameters landscape;
 
-    // TODO 301. add forest parameters
-
     public AllParameters() {
         super();
         this.planet = new PlanetParameters();

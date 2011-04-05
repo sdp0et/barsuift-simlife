@@ -41,7 +41,6 @@ public class BasicUniverseFactory {
         int nbTrees = Randomizer.randomBetween(1, maxTrees);
         TreeStateFactory treeStateFactory = new TreeStateFactory();
         for (int i = 0; i < nbTrees; i++) {
-            // TODO 300. improve this placement code (with something in the MidPoint Displacement style)
             // getting 2 meters of margin
             float x = Randomizer.randomBetween(2, size - 2);
             float z = Randomizer.randomBetween(2, size - 2);
