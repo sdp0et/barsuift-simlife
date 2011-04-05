@@ -22,6 +22,8 @@ public interface Synchronizer extends Publisher {
      */
     public static final int CYCLE_LENGTH_3D_MS = 25;
 
+    public static final int RATIO_CORE_3D = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
+
     /**
      * Tests if the synchronizer is running.
      * 

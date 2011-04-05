@@ -28,6 +28,7 @@ import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.ColorTestHelper;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
+import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.message.PublisherTestHelper;
 
 
@@ -41,10 +42,13 @@ public class BasicSun3DTest extends TestCase {
 
     private PublisherTestHelper publisherHelper;
 
+    private MockUniverse3D universe3D;
+
     protected void setUp() throws Exception {
         super.setUp();
         sun3DState = DisplayDataCreatorForTests.createRandomSun3DState();
-        sun3D = new BasicSun3D(sun3DState);
+        universe3D = new MockUniverse3D();
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
         publisherHelper = new PublisherTestHelper();
@@ -56,6 +60,7 @@ public class BasicSun3DTest extends TestCase {
         sun3D = null;
         sunLight = null;
         publisherHelper = null;
+        universe3D = null;
     }
 
     /**
@@ -101,7 +106,7 @@ public class BasicSun3DTest extends TestCase {
         sun3DState.setEarthRevolution((float) Math.PI / 2);
         // latitude = equator
         sun3DState.setLatitude(0);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
     }
@@ -127,7 +132,7 @@ public class BasicSun3DTest extends TestCase {
 
         sun3DState.setEarthRotation((float) Math.PI);
         sun3DState.setLatitude((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -141,7 +146,7 @@ public class BasicSun3DTest extends TestCase {
     public void testUpdateEarthRotation1() {
         // latitude = equator
         sun3DState.setLatitude(0);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -187,7 +192,7 @@ public class BasicSun3DTest extends TestCase {
     public void testUpdateEarthRotation2() {
         // latitude = 45°
         sun3DState.setLatitude((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -226,7 +231,7 @@ public class BasicSun3DTest extends TestCase {
     public void testUpdateEarthRotation3() {
         // latitude = 90°
         sun3DState.setLatitude((float) Math.PI / 2);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -273,7 +278,7 @@ public class BasicSun3DTest extends TestCase {
         sun3DState.setEclipticObliquity((float) Math.PI / 2);
         // latitude = 90°
         sun3DState.setLatitude((float) Math.PI / 2);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -312,7 +317,7 @@ public class BasicSun3DTest extends TestCase {
         // latitude = equator
         sun3DState.setLatitude(0);
         sun3DState.setEclipticObliquity((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -371,7 +376,7 @@ public class BasicSun3DTest extends TestCase {
         // latitude = middle of the planet
         sun3DState.setLatitude((float) Math.PI / 4);
         sun3DState.setEclipticObliquity((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -424,7 +429,7 @@ public class BasicSun3DTest extends TestCase {
         // latitude = north pole
         sun3DState.setLatitude((float) Math.PI / 2);
         sun3DState.setEclipticObliquity((float) Math.PI / 4);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
 
@@ -507,7 +512,7 @@ public class BasicSun3DTest extends TestCase {
 
     public void testGetState() {
         sun3DState = new Sun3DState();
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals(sun3DState, sun3D.getState());
         assertSame(sun3DState, sun3D.getState());
         assertEquals(0.0f, sun3D.getState().getEarthRotation(), 0.0001);
@@ -533,23 +538,23 @@ public class BasicSun3DTest extends TestCase {
 
     public void testAdjustEarthRotation() {
         sun3DState.setEarthRotation((float) Math.PI);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
         sun3DState.setEarthRotation((float) (3 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
         sun3DState.setEarthRotation((float) (5 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
         sun3DState.setEarthRotation(-(float) Math.PI);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
         sun3DState.setEarthRotation(-(float) (3 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
 
 
@@ -572,23 +577,23 @@ public class BasicSun3DTest extends TestCase {
 
     public void testAdjustEarthRevolution() {
         sun3DState.setEarthRevolution((float) Math.PI);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
         sun3DState.setEarthRevolution((float) (3 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
         sun3DState.setEarthRevolution((float) (5 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
         sun3DState.setEarthRevolution(-(float) Math.PI);
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
         sun3DState.setEarthRevolution(-(float) (3 * Math.PI));
-        sun3D = new BasicSun3D(sun3DState);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
 
 

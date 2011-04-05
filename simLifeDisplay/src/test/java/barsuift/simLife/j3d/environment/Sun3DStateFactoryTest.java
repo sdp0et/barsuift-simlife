@@ -22,6 +22,7 @@ public class Sun3DStateFactoryTest extends TestCase {
         Sun3DState sunState = factory.createSun3DState(planetParameters, landscapeParameters);
         assertEquals(0.0f, sunState.getEarthRotation(), 0.0001);
         assertEquals(0.0f, sunState.getEarthRevolution(), 0.0001);
+        assertNotNull(sunState.getEarthRotationTask());
     }
 
 }

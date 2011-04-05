@@ -30,23 +30,42 @@ import barsuift.simLife.j3d.universe.physic.MockPhysics3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
 import barsuift.simLife.process.MockSynchronizer3D;
 import barsuift.simLife.process.Synchronizer3D;
+import barsuift.simLife.time.SimLifeDate;
 
 
 public class MockUniverse3D implements Universe3D {
 
-    private Set<Node> elements3D = new HashSet<Node>();
+    private Set<Node> elements3D;
 
-    private Physics3D physics3D = new MockPhysics3D();
+    private Physics3D physics3D;
 
-    private Environment3D environment3D = new MockEnvironment3D();
+    private Environment3D environment3D;
 
-    private BranchGroup branchGroup = new BranchGroup();
+    private BranchGroup branchGroup;
 
-    private Universe3DState state = new Universe3DState();
+    private Universe3DState state;
 
-    private int synchronizedCalled = 0;
+    private int synchronizedCalled;
 
-    private Synchronizer3D synchronizer = new MockSynchronizer3D();
+    private Synchronizer3D synchronizer;
+
+    private SimLifeDate date;
+
+    public MockUniverse3D() {
+        super();
+        reset();
+    }
+
+    public void reset() {
+        elements3D = new HashSet<Node>();
+        physics3D = new MockPhysics3D();
+        environment3D = new MockEnvironment3D();
+        branchGroup = new BranchGroup();
+        state = new Universe3DState();
+        synchronizedCalled = 0;
+        synchronizer = new MockSynchronizer3D();
+        date = new SimLifeDate();
+    }
 
     @Override
     public void addElement3D(Node element3d) {
@@ -110,6 +129,15 @@ public class MockUniverse3D implements Universe3D {
 
     public void setSynchronizer(Synchronizer3D synchronizer) {
         this.synchronizer = synchronizer;
+    }
+
+    @Override
+    public SimLifeDate getDate() {
+        return date;
+    }
+
+    public void setDate(SimLifeDate date) {
+        this.date = date;
     }
 
 }

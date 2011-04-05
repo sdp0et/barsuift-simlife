@@ -31,7 +31,7 @@ import barsuift.simLife.j3d.landscape.Landscape3D;
 
 public class GravityTask extends AbstractSplitConditionalTask {
 
-    private static final float FALLING_DISTANCE = 0.025f;
+    private static final float FALLING_DISTANCE = 0.5f / Synchronizer.RATIO_CORE_3D;
 
     private final ConcurrentLinkedQueue<Mobile> mobiles;
 

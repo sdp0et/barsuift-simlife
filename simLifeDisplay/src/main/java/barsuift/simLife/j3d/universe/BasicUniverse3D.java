@@ -36,6 +36,7 @@ import barsuift.simLife.j3d.universe.physic.Physics3D;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.process.BasicSynchronizer3D;
 import barsuift.simLife.process.Synchronizer3D;
+import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeLeaf;
 import barsuift.simLife.universe.Universe;
@@ -96,6 +97,11 @@ public class BasicUniverse3D implements Universe3D {
 
     public Set<Node> getElements3D() {
         return Collections.unmodifiableSet(elements3D);
+    }
+
+    @Override
+    public SimLifeDate getDate() {
+        return universe.getDate();
     }
 
     @Override

@@ -20,6 +20,7 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.j3d.environment.BasicSun3D;
 import barsuift.simLife.j3d.environment.Sun3D;
+import barsuift.simLife.universe.Universe;
 
 /**
  * Class representing the sun.
@@ -35,12 +36,12 @@ public class BasicSun implements Sun {
      * 
      * @throws IllegalArgumentException if the given sun state is null
      */
-    public BasicSun(SunState state) throws IllegalArgumentException {
+    public BasicSun(SunState state, Universe universe) throws IllegalArgumentException {
         if (state == null) {
             throw new IllegalArgumentException("Null sun state");
         }
         this.state = state;
-        sun3D = new BasicSun3D(state.getSun3DState());
+        sun3D = new BasicSun3D(state.getSun3DState(), universe.getUniverse3D());
     }
 
     @Override
