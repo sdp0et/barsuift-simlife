@@ -212,8 +212,6 @@ public class BasicSun3D implements Sun3D {
     private void updateSunHeight() {
         Point3f transformedPoint = new Point3f();
         earthRotationTransform.transform(sunSphere.getSunCenter(), transformedPoint);
-        System.out.println("sun height=" + sunHeight + ", earthRevolution=" + earthRevolution + ", earthRotation="
-                + earthRotation);
         this.sunHeight = transformedPoint.y / SunSphere3D.SHIFT;
         updateBrightness();
         // no need to recompute the sun color, as it is recomputed after the brightness anyway
