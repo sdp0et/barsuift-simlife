@@ -139,7 +139,6 @@ public class BasicSun3D implements Sun3D {
     }
 
     public void setEarthRotation(float earthRotation) {
-        System.out.println("BasicSun3D#setEartRotation(" + earthRotation + ")");
         this.earthRotation = earthRotation;
         adjustEarthRotation();
         earthRotationTransform.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
