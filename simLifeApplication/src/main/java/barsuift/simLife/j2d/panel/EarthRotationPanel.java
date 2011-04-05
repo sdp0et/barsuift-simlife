@@ -97,6 +97,7 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         int earthRotation = source.getValue();
+        // FIXME should propagate value only if slider is in manual mode
         sun3D.setEarthRotation(MathHelper.toRadian(earthRotation));
     }
 
@@ -104,6 +105,7 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.EARTH_ROTATION) {
             sliderLabel.setText(createLabelText());
+            // FIXME should update value only if slider is in automatic mode
             earthRotationSlider.setValue(Math.round(MathHelper.toDegree(sun3D.getEarthRotation())));
         }
     }
