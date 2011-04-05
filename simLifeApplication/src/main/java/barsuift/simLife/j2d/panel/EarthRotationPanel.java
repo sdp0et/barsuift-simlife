@@ -23,19 +23,22 @@ import java.text.MessageFormat;
 import java.util.Hashtable;
 
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import barsuift.simLife.Automatable;
 import barsuift.simLife.MathHelper;
 import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.j2d.action.menu.AutomaticAction;
 import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 
-public class EarthRotationPanel extends JPanel implements ChangeListener, Subscriber {
+public class EarthRotationPanel extends JPanel implements ChangeListener, Subscriber, Automatable {
 
     private static final long serialVersionUID = -6102868842517781193L;
 
@@ -47,17 +50,26 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
 
     private final Sun3D sun3D;
 
-    private final JLabel sliderLabel;
-
     private final JSlider earthRotationSlider;
+
+    private boolean automatic;
+
+    private JCheckBox checkbox;
 
     public EarthRotationPanel(Sun3D sun3D) {
         this.sun3D = sun3D;
         sun3D.addSubscriber(this);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        sliderLabel = createLabel();
         earthRotationSlider = createSlider();
-        add(sliderLabel);
+
+        checkbox = new JCheckBox();
+        checkbox.setAlignmentX(Component.CENTER_ALIGNMENT);
+        setAutomatic(true);
+        checkbox.setAction(new AutomaticAction(this));
+        checkbox.setText(createLabelText());
+
+
+        add(checkbox);
         add(earthRotationSlider);
     }
 
@@ -83,39 +95,47 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
         return earthRotationSlider;
     }
 
-    private JLabel createLabel() {
-        JLabel sliderLabel = new JLabel(createLabelText(), JLabel.CENTER);
-        sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        return sliderLabel;
-    }
-
     private String createLabelText() {
         return LABEL_FORMAT.format(new Object[] { Math.round(MathHelper.toDegree(sun3D.getEarthRotation())) });
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        JSlider source = (JSlider) e.getSource();
-        int earthRotation = source.getValue();
-        // FIXME should propagate value only if slider is in manual mode
-        sun3D.setEarthRotation(MathHelper.toRadian(earthRotation));
+        if (!automatic) {
+            int earthRotation = earthRotationSlider.getValue();
+            sun3D.setEarthRotation(MathHelper.toRadian(earthRotation));
+            checkbox.setText(createLabelText());
+        }
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
         if (arg == SunUpdateCode.EARTH_ROTATION) {
-            sliderLabel.setText(createLabelText());
-            // FIXME should update value only if slider is in automatic mode
-            earthRotationSlider.setValue(Math.round(MathHelper.toDegree(sun3D.getEarthRotation())));
+            if (automatic) {
+                checkbox.setText(createLabelText());
+                earthRotationSlider.setValue(Math.round(MathHelper.toDegree(sun3D.getEarthRotation())));
+            }
         }
     }
 
-    protected JLabel getLabel() {
-        return sliderLabel;
+    protected JCheckBox getCheckBox() {
+        return checkbox;
     }
 
     protected JSlider getSlider() {
         return earthRotationSlider;
+    }
+
+    @Override
+    public void setAutomatic(boolean automatic) {
+        this.automatic = automatic;
+        earthRotationSlider.setEnabled(!automatic);
+        sun3D.getEarthRotationTask().setAutomatic(automatic);
+    }
+
+    @Override
+    public boolean isAutomatic() {
+        return automatic;
     }
 
 }

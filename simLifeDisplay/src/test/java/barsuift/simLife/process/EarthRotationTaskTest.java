@@ -62,7 +62,7 @@ public class EarthRotationTaskTest extends TestCase {
         task = null;
     }
 
-    public void testExecuteSplitConditionalStep() {
+    public void testExecuteSplitConditionalStepAutomatic() {
         // cycle = 0/20
         // end = 0/40
         assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
@@ -83,8 +83,41 @@ public class EarthRotationTaskTest extends TestCase {
         // end = 30/40
         // secondsOfDay = 3*60 + 15 = 195
         assertEquals(EarthRotationTask.ROTATION_ANGLE_PER_SECOND * 195, sun3D.getEarthRotation(), 0.0001);
+    }
 
+    public void testExecuteSplitConditionalStepManual() {
+        task.setAutomatic(false);
+        // cycle = 0/20
+        // end = 0/40
+        assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
 
+        task.executeStep();
+        // cycle = 10/20
+        // end = 10/40
+        assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+
+        task.executeStep();
+        // cycle = 0/20
+        // end = 20/40
+        assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+
+        task.executeStep();
+        // cycle = 10/20
+        // end = 30/40
+        assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+    }
+
+    public void testSetAutomatic() {
+        task.executeStep();
+        task.executeStep();
+        assertEquals(EarthRotationTask.ROTATION_ANGLE_PER_SECOND * 195, sun3D.getEarthRotation(), 0.0001);
+
+        sun3D.setEarthRotation(0f);
+        assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+
+        task.setAutomatic(true);
+        // this should force the computation of the sun position
+        assertEquals(EarthRotationTask.ROTATION_ANGLE_PER_SECOND * 195, sun3D.getEarthRotation(), 0.0001);
     }
 
 }
