@@ -53,6 +53,7 @@ public abstract class AbstractConditionalTask extends AbstractSynchronizedTask i
     @Override
     public final void executeStep() {
         if (endingCondition.evaluate()) {
+            // ask the process to stop. This will NOT prevent the current step to execute.
             stop();
             setChanged();
             notifySubscribers();
