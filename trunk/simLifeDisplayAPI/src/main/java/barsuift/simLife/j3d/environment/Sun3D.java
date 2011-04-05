@@ -31,7 +31,7 @@ import barsuift.simLife.message.Publisher;
 public interface Sun3D extends Persistent<Sun3DState>, Publisher {
 
     /**
-     * Earth rotation, in radian.
+     * Earth rotation, in radian, in the range [0; 2Pi[.
      * <p>
      * <ul>
      * <li>0 means midnight. At the equator during the equinox, the sun is at its nadir, lighting only along the Y axis.
@@ -49,10 +49,15 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
      */
     public float getEarthRotation();
 
+    /**
+     * 
+     * @param earthRotation the earth rotation
+     * @see #getEarthRotation()
+     */
     public void setEarthRotation(float earthRotation);
 
     /**
-     * Earth revolution, in radian.
+     * Earth revolution, in radian, in the range [0; 2Pi[.
      * <p>
      * <ul>
      * <li>0 means start of wim season (first day of year).</li>
@@ -65,6 +70,11 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
      */
     public float getEarthRevolution();
 
+    /**
+     * 
+     * @param earthRevolution the earth revolution
+     * @see #getEarthRevolution()
+     */
     public void setEarthRevolution(float earthRevolution);
 
     /**
