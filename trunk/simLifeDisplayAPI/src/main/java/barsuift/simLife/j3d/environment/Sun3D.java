@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.DirectionalLight;
 
+import barsuift.simLife.Automatable;
 import barsuift.simLife.Persistent;
 import barsuift.simLife.message.Publisher;
 
@@ -55,6 +56,8 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
      * @see #getEarthRotation()
      */
     public void setEarthRotation(float earthRotation);
+
+    public Automatable getEarthRotationTask();
 
     /**
      * Earth revolution, in radian, in the range [0; 2Pi[.

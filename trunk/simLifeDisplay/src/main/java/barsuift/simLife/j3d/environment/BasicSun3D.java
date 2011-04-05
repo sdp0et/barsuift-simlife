@@ -31,6 +31,7 @@ import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
+import barsuift.simLife.Automatable;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.message.BasicPublisher;
@@ -40,7 +41,7 @@ import barsuift.simLife.process.EarthRotationTask;
 
 // FIXME 000. 008. make the earthRevolution depends on the time of day (dynamic)
 // FIXME 000. 010. make the earthRevolution depends on the time of year (at init time)
-// FIXME 000. 011. be able to deactivate the earth rotation/revolution, sun brightness/color computation to switch to
+// FIXME 000. 011. be able to deactivate the earth revolution, sun brightness/color computation to switch to
 // manual mode
 public class BasicSun3D implements Sun3D {
 
@@ -147,6 +148,10 @@ public class BasicSun3D implements Sun3D {
         updateLightDirection();
         updateSunHeight();
         // no need to update brightness and color because they are already updated with sun height
+    }
+
+    public Automatable getEarthRotationTask() {
+        return earthRotationTask;
     }
 
     public float getEarthRevolution() {

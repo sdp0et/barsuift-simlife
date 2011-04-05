@@ -23,6 +23,8 @@ import java.math.BigDecimal;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.DirectionalLight;
 
+import barsuift.simLife.Automatable;
+import barsuift.simLife.MockAutomatable;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.message.BasicPublisher;
 
@@ -47,6 +49,8 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
 
     private BranchGroup group;
 
+    private Automatable earthRotationTask;
+
     public MockSun3D() {
         super(null);
         reset();
@@ -62,6 +66,7 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
         state = new Sun3DState();
         synchronizedCalled = 0;
         group = new BranchGroup();
+        earthRotationTask = new MockAutomatable();
     }
 
     @Override
@@ -144,6 +149,15 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
 
     public void setGroup(BranchGroup group) {
         this.group = group;
+    }
+
+    @Override
+    public Automatable getEarthRotationTask() {
+        return earthRotationTask;
+    }
+
+    public void setEarthRotationTask(Automatable earthRotationTask) {
+        this.earthRotationTask = earthRotationTask;
     }
 
 }
