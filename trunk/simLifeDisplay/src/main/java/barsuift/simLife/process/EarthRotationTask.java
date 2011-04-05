@@ -16,33 +16,31 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.j3d.universe;
+package barsuift.simLife.process;
 
-import java.util.Set;
-
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Node;
-
-import barsuift.simLife.Persistent;
-import barsuift.simLife.j3d.environment.Environment3D;
-import barsuift.simLife.j3d.universe.physic.Physics3D;
-import barsuift.simLife.process.Synchronizer3D;
+import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.time.SimLifeDate;
 
-public interface Universe3D extends Persistent<Universe3DState> {
+// FIXME use
+// FIXME unit test
+public class EarthRotationTask extends AbstractSplitConditionalTask {
 
-    public SimLifeDate getDate();
+    private final Sun3D sun3D;
 
-    public Synchronizer3D getSynchronizer();
+    private final SimLifeDate date;
 
-    public BranchGroup getUniverseRoot();
+    protected final static float ROTATION_ANGLE_PER_SECOND = (float) (Math.PI * 2 / (SimLifeDate.SECOND_PER_MINUTE * SimLifeDate.MINUTE_PER_DAY));
 
-    public void addElement3D(Node element3D);
+    public EarthRotationTask(SplitConditionalTaskState state, Sun3D sun3D, SimLifeDate date) {
+        super(state);
+        this.sun3D = sun3D;
+        this.date = date;
+    }
 
-    public Set<Node> getElements3D();
-
-    public Environment3D getEnvironment3D();
-
-    public Physics3D getPhysics3D();
+    @Override
+    public void executeSplitConditionalStep(int stepSize) {
+        int secondsForDay = date.getMinuteOfDay() * SimLifeDate.SECOND_PER_MINUTE + date.getSecondOfMinute();
+        sun3D.setEarthRotation(secondsForDay * ROTATION_ANGLE_PER_SECOND);
+    }
 
 }

@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.BoundingBoxState;
+import barsuift.simLife.process.SplitConditionalTaskState;
 
 @XmlRootElement
 public class Sun3DState implements State {
@@ -25,6 +26,8 @@ public class Sun3DState implements State {
      */
     private float earthRotation;
 
+    private SplitConditionalTaskState earthRotationTask;
+
     /**
      * The earth revolution angle, in radian, between 0 and 2*Pi
      */
@@ -36,15 +39,17 @@ public class Sun3DState implements State {
         this.latitude = 0;
         this.eclipticObliquity = 0;
         this.earthRotation = 0;
+        this.earthRotationTask = new SplitConditionalTaskState();
         this.earthRevolution = 0;
     }
 
     public Sun3DState(BoundingBoxState bounds, float latitude, float eclipticObliquity, float earthRotation,
-            float earthRevolution) {
+            SplitConditionalTaskState earthRotationTask, float earthRevolution) {
         this.bounds = bounds;
         this.latitude = latitude;
         this.eclipticObliquity = eclipticObliquity;
         this.earthRotation = earthRotation;
+        this.earthRotationTask = earthRotationTask;
         this.earthRevolution = earthRevolution;
     }
 
@@ -80,6 +85,14 @@ public class Sun3DState implements State {
         this.earthRotation = earthRotation;
     }
 
+    public SplitConditionalTaskState getEarthRotationTask() {
+        return earthRotationTask;
+    }
+
+    public void setEarthRotationTask(SplitConditionalTaskState earthRotationTask) {
+        this.earthRotationTask = earthRotationTask;
+    }
+
     public float getEarthRevolution() {
         return earthRevolution;
     }
@@ -96,6 +109,7 @@ public class Sun3DState implements State {
         result = prime * result + Float.floatToIntBits(latitude);
         result = prime * result + Float.floatToIntBits(eclipticObliquity);
         result = prime * result + Float.floatToIntBits(earthRotation);
+        result = prime * result + ((earthRotationTask == null) ? 0 : earthRotationTask.hashCode());
         result = prime * result + Float.floatToIntBits(earthRevolution);
         return result;
     }
@@ -121,6 +135,12 @@ public class Sun3DState implements State {
             return false;
         if (Float.floatToIntBits(earthRotation) != Float.floatToIntBits(other.earthRotation))
             return false;
+        if (earthRotationTask == null) {
+            if (other.earthRotationTask != null)
+                return false;
+        } else
+            if (!earthRotationTask.equals(other.earthRotationTask))
+                return false;
         if (Float.floatToIntBits(earthRevolution) != Float.floatToIntBits(other.earthRevolution))
             return false;
         return true;
@@ -129,7 +149,8 @@ public class Sun3DState implements State {
     @Override
     public String toString() {
         return "Sun3DState [bounds=" + bounds + ", latitude=" + latitude + ", eclipticObliquity=" + eclipticObliquity
-                + earthRotation + ", earthRevolution=" + earthRevolution + "]";
+                + ", earthRotation=" + earthRotation + ", earthRotationTask=" + earthRotationTask
+                + ", earthRevolution=" + earthRevolution + "]";
     }
 
 }

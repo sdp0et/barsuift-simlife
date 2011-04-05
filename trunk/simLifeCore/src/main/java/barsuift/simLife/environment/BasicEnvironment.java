@@ -22,6 +22,7 @@ import barsuift.simLife.j3d.environment.BasicEnvironment3D;
 import barsuift.simLife.j3d.environment.Environment3D;
 import barsuift.simLife.landscape.BasicLandscape;
 import barsuift.simLife.landscape.Landscape;
+import barsuift.simLife.universe.Universe;
 
 public class BasicEnvironment implements Environment {
 
@@ -39,12 +40,12 @@ public class BasicEnvironment implements Environment {
      * @param state the environment state
      * @throws IllegalArgumentException if the given environment state is null
      */
-    public BasicEnvironment(EnvironmentState state) {
+    public BasicEnvironment(EnvironmentState state, Universe universe) {
         if (state == null) {
             throw new IllegalArgumentException("Null environment state");
         }
         this.state = state;
-        this.sky = new BasicSky(state.getSkyState());
+        this.sky = new BasicSky(state.getSkyState(), universe);
         this.landscape = new BasicLandscape(state.getLandscape());
         this.env3D = new BasicEnvironment3D(state.getEnvironment3DState(), this);
     }

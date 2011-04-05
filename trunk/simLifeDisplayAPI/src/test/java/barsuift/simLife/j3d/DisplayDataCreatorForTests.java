@@ -113,8 +113,9 @@ public final class DisplayDataCreatorForTests {
         float latitude = (float) Randomizer.randomRotation() / 4;
         float eclipticObliquity = (float) Randomizer.randomRotation() / 4;
         float earthRotation = (float) Randomizer.randomRotation();
+        SplitConditionalTaskState earthRotationTask = UtilDataCreatorForTests.createRandomSplitConditionalTaskState();
         float earthRevolution = (float) Randomizer.randomRotation();
-        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRevolution);
+        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRotationTask, earthRevolution);
     }
 
     /**
@@ -131,8 +132,9 @@ public final class DisplayDataCreatorForTests {
         float latitude = (float) Math.PI / 4;
         float eclipticObliquity = (float) Math.PI / 3;
         float earthRotation = (float) (3 * Math.PI / 4);
+        SplitConditionalTaskState earthRotationTask = UtilDataCreatorForTests.createSpecificSplitConditionalTaskState();
         float earthRevolution = (float) Math.PI;
-        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRevolution);
+        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRotationTask, earthRevolution);
     }
 
     public static Environment3DState createRandomEnvironment3DState() {

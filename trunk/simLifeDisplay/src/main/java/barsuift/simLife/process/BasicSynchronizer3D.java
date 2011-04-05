@@ -24,8 +24,6 @@ package barsuift.simLife.process;
  */
 public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitConditionalTask> implements Synchronizer3D {
 
-    private static final int RATIO_CORE_3D = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
-
     private final Synchronizer3DState state;
 
     private int stepSize;

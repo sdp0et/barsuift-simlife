@@ -20,6 +20,7 @@ package barsuift.simLife.environment;
 
 import barsuift.simLife.j3d.environment.BasicSky3D;
 import barsuift.simLife.j3d.environment.Sky3D;
+import barsuift.simLife.universe.Universe;
 
 public class BasicSky implements Sky {
 
@@ -35,12 +36,12 @@ public class BasicSky implements Sky {
      * @param state the sky state
      * @throws IllegalArgumentException if the given sky state is null
      */
-    public BasicSky(SkyState state) {
+    public BasicSky(SkyState state, Universe universe) {
         if (state == null) {
             throw new IllegalArgumentException("Null sky state");
         }
         this.state = state;
-        this.sun = new BasicSun(state.getSunState());
+        this.sun = new BasicSun(state.getSunState(), universe);
         this.sky3D = new BasicSky3D(state.getSky3DState(), this);
     }
 

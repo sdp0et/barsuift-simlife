@@ -64,11 +64,11 @@ public class BasicUniverse implements Universe {
 
     public BasicUniverse(UniverseState state) {
         this.state = state;
+        this.dateHandler = new DateHandler(state.getDateHandler());
         this.universe3D = new BasicUniverse3D(state.getUniv3DState(), this);
-        this.environment = new BasicEnvironment(state.getEnvironment());
+        this.environment = new BasicEnvironment(state.getEnvironment(), this);
         this.physics = new BasicPhysics(this, state.getPhysics());
         this.synchronizer = new BasicSynchronizerCore(state.getSynchronizerState());
-        this.dateHandler = new DateHandler(state.getDateHandler());
         ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
         ConditionalTaskState dateUpdaterState = taskStateFactory.createConditionalTaskState(DateUpdater.class);
         DateUpdater dateUpdater = new DateUpdater(dateUpdaterState, dateHandler.getDate());

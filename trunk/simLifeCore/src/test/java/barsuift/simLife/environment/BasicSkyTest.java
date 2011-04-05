@@ -20,13 +20,14 @@ package barsuift.simLife.environment;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
+import barsuift.simLife.universe.MockUniverse;
 
 
 public class BasicSkyTest extends TestCase {
 
     public void testGetState() {
         SkyState state = CoreDataCreatorForTests.createRandomSkyState();
-        BasicSky sky = new BasicSky(state);
+        BasicSky sky = new BasicSky(state, new MockUniverse());
         assertEquals(state, sky.getState());
         assertSame(state, sky.getState());
         assertEquals(state.getSunState().getSun3DState().getEarthRevolution(), sky.getSun().getSun3D()

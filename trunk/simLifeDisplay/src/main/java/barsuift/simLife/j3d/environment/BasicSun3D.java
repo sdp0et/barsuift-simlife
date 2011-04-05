@@ -32,11 +32,12 @@ import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 import barsuift.simLife.environment.SunUpdateCode;
+import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
+import barsuift.simLife.process.EarthRotationTask;
 
-// FIXME 000. 007. make the earthRotation depends on the time of day (dynamic)
 // FIXME 000. 008. make the earthRevolution depends on the time of day (dynamic)
 // FIXME 000. 009. make the earthRotation depends on the hour of the day (at init time)
 // FIXME 000. 010. make the earthRevolution depends on the time of year (at init time)
@@ -67,12 +68,14 @@ public class BasicSun3D implements Sun3D {
     // angle in radian, from 0 to 2*Pi
     private float earthRotation;
 
+    private final EarthRotationTask earthRotationTask;
+
     // angle in radian, from 0 to 2*Pi
     private float earthRevolution;
 
     private BigDecimal brightness;
 
-    public BasicSun3D(Sun3DState state) {
+    public BasicSun3D(Sun3DState state, Universe3D universe3D) {
         super();
         this.state = state;
         this.latitude = state.getLatitude();
@@ -106,6 +109,9 @@ public class BasicSun3D implements Sun3D {
         // no need to update brightness because it is already updated with the sun height
         updateLightDirection();
         // no need to update light color because it is already updated with the sun height
+
+        this.earthRotationTask = new EarthRotationTask(state.getEarthRotationTask(), this, universe3D.getDate());
+        universe3D.getSynchronizer().schedule(earthRotationTask);
     }
 
     /**
@@ -133,6 +139,7 @@ public class BasicSun3D implements Sun3D {
     }
 
     public void setEarthRotation(float earthRotation) {
+        System.out.println("BasicSun3D#setEartRotation(" + earthRotation + ")");
         this.earthRotation = earthRotation;
         adjustEarthRotation();
         earthRotationTransform.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
