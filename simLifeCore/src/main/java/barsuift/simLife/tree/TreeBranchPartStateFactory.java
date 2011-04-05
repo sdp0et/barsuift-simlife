@@ -43,7 +43,6 @@ public class TreeBranchPartStateFactory {
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
         TreeLeafStateFactory leafStateFactory = new TreeLeafStateFactory();
         List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>();
-        // TODO 080. the number of leaves should be related to the length of the branch
         int nbLeaves = Randomizer.randomBetween(2, 4);
         float maxDistance = DistanceHelper.distanceFromOrigin(branchPartEndPoint);
         float shift = maxDistance / nbLeaves;
