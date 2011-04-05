@@ -27,9 +27,27 @@ public class AgingTest extends TestCase {
 
     public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
-        Aging aging = new Aging(UtilDataCreatorForTests.createSpecificConditionalTaskState(), mockTree);
+        ConditionalTaskState conditionalTaskState = UtilDataCreatorForTests.createSpecificConditionalTaskState();
+        // this is to ensure the task can be executed exactly once.
+        conditionalTaskState.getEndingCondition().setBound(conditionalTaskState.getExecutionCondition().getCycle() + 1);
+        Aging aging = new Aging(conditionalTaskState, mockTree);
         aging.executeConditionalStep();
         assertEquals(1, mockTree.getNbAgeCalled());
+
+        // cyclic condition = 2/5
+        aging.executeStep();
+        // the cyclic condition does not return true
+        assertEquals(1, mockTree.getNbAgeCalled());
+
+        // cyclic condition = 3/5
+        aging.executeStep();
+        // the cyclic condition does not return true
+        assertEquals(1, mockTree.getNbAgeCalled());
+
+        // cyclic condition = 4/5
+        aging.executeStep();
+        // the cyclic condition return true
+        assertEquals(2, mockTree.getNbAgeCalled());
     }
 
 }
