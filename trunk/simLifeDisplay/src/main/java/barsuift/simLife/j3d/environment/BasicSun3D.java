@@ -39,10 +39,9 @@ import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.process.EarthRotationTask;
 
-// FIXME 000. 008. make the earthRevolution depends on the time of day (dynamic)
-// FIXME 000. 010. make the earthRevolution depends on the time of year (at init time)
-// FIXME 000. 011. be able to deactivate the earth revolution, sun brightness/color computation to switch to
-// manual mode
+// TODO 001. make the earth revolution depends on the time of day (dynamic)
+// TODO 002. be able to disable the earth revolution slider
+// TODO 003. display values for sliders on creation parameters window
 public class BasicSun3D implements Sun3D {
 
     private final Sun3DState state;
