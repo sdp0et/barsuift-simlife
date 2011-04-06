@@ -6,7 +6,6 @@ import javax.media.j3d.Group;
 import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.process.GravityTask;
-import barsuift.simLife.process.Synchronizer3D;
 
 
 public class BasicGravity3D implements Gravity3D {
@@ -22,9 +21,8 @@ public class BasicGravity3D implements Gravity3D {
         group = new BranchGroup();
         group.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         group.setCapability(Group.ALLOW_CHILDREN_WRITE);
-        Synchronizer3D synchronizer3D = universe3D.getSynchronizer();
         gravityTask = new GravityTask(state.getGravityTask(), universe3D.getEnvironment3D().getLandscape3D());
-        synchronizer3D.schedule(gravityTask);
+        universe3D.getSynchronizer().scheduleFast(gravityTask);
     }
 
     @Override

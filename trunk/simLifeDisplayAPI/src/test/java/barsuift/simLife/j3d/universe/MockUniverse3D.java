@@ -28,8 +28,8 @@ import barsuift.simLife.j3d.environment.Environment3D;
 import barsuift.simLife.j3d.environment.MockEnvironment3D;
 import barsuift.simLife.j3d.universe.physic.MockPhysics3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
-import barsuift.simLife.process.MockSynchronizer3D;
-import barsuift.simLife.process.Synchronizer3D;
+import barsuift.simLife.process.MainSynchronizer;
+import barsuift.simLife.process.MockMainSynchronizer;
 import barsuift.simLife.time.SimLifeDate;
 
 
@@ -47,7 +47,7 @@ public class MockUniverse3D implements Universe3D {
 
     private int synchronizedCalled;
 
-    private Synchronizer3D synchronizer;
+    private MainSynchronizer synchronizer;
 
     private SimLifeDate date;
 
@@ -63,7 +63,7 @@ public class MockUniverse3D implements Universe3D {
         branchGroup = new BranchGroup();
         state = new Universe3DState();
         synchronizedCalled = 0;
-        synchronizer = new MockSynchronizer3D();
+        synchronizer = new MockMainSynchronizer();
         date = new SimLifeDate();
     }
 
@@ -123,11 +123,11 @@ public class MockUniverse3D implements Universe3D {
     }
 
     @Override
-    public Synchronizer3D getSynchronizer() {
+    public MainSynchronizer getSynchronizer() {
         return synchronizer;
     }
 
-    public void setSynchronizer(Synchronizer3D synchronizer) {
+    public void setSynchronizer(MainSynchronizer synchronizer) {
         this.synchronizer = synchronizer;
     }
 

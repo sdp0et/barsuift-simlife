@@ -23,38 +23,45 @@ import java.util.concurrent.CyclicBarrier;
 import barsuift.simLife.Persistent;
 
 /**
- * The core synchronizer allows to run a list of given {@link ConditionalTask} at a given rate.
- * 
+ * The synchronizerFast allows to run a list of given {@link SplitConditionalTask} at a constant rate.
+ * <p>
+ * The synchronizer is able to manage a {@code stepSize} parameter, which is reflected to its synchronized
+ * {@code SplitConditionalTask}.
+ * </p>
+ * <p>
+ * When the speed is increased, the tasks are still executed at a constant rate, but several "steps" are executed at
+ * each iteration.
+ * </p>
  */
-public interface SynchronizerCore extends TaskSynchronizer<ConditionalTask>, Persistent<SynchronizerCoreState> {
+public interface SynchronizerFast extends TaskSynchronizer<SplitConditionalTask>, Persistent<SynchronizerFastState> {
 
     /**
-     * Sets the speed of the current core synchronizer.
+     * Sets the step size of the current 3D synchronizer.
      * 
-     * @param speed the speed
+     * @param stepSize the step size
      */
-    public void setSpeed(Speed speed);
+    public void setStepSize(int stepSize);
 
     /**
-     * Returns the speed of the core synchronizer.
+     * Returns the step size of the 3D synchronizer.
      * 
-     * @return the speed of the synchronizer
+     * @return the step size of the synchronizer
      */
-    public Speed getSpeed();
+    public int getStepSize();
 
     /**
      * Adds the given task to the list of synchronized tasks.
      * 
      * @param task the task to synchronize
      */
-    public void schedule(ConditionalTask task);
+    public void schedule(SplitConditionalTask task);
 
     /**
      * Remove the given task from the list of synchronized tasks.
      * 
      * @param task the task to desynchronize
      */
-    public void unschedule(ConditionalTask task);
+    public void unschedule(SplitConditionalTask task);
 
     /**
      * Set the barrier to use for synchronization purpose.

@@ -33,6 +33,10 @@ public abstract class AbstractTaskSynchronizer<E extends ConditionalTask> implem
 
     private boolean isStopAsked;
 
+    private long nbStarts;
+
+    private long nbStops;
+
 
     private final ScheduledExecutorService scheduledThreadPool;
 
@@ -127,6 +131,7 @@ public abstract class AbstractTaskSynchronizer<E extends ConditionalTask> implem
 
     @Override
     public synchronized void start() {
+        nbStarts++;
         isStopAsked = false;
         if (running == true) {
             throw new IllegalStateException("The synchronizer is already running");
@@ -144,6 +149,11 @@ public abstract class AbstractTaskSynchronizer<E extends ConditionalTask> implem
         notifySubscribers();
     }
 
+    @Override
+    public final long getNbStarts() {
+        return nbStarts;
+    }
+
     protected abstract int getTemporizerPeriod();
 
     @Override
@@ -152,6 +162,11 @@ public abstract class AbstractTaskSynchronizer<E extends ConditionalTask> implem
             throw new IllegalStateException("The synchronizer is not running");
         }
         isStopAsked = true;
+    }
+
+    @Override
+    public final long getNbStops() {
+        return nbStops;
     }
 
     public synchronized void stopAndWait() {
@@ -170,6 +185,7 @@ public abstract class AbstractTaskSynchronizer<E extends ConditionalTask> implem
     }
 
     protected void internalStop() {
+        nbStops++;
         if (running == false) {
             throw new IllegalStateException("The synchronizer is not running");
         }

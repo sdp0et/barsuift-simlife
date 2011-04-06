@@ -1,2 +1,5 @@
 ConditionalTaskState
+MainSynchronizerState
 SplitConditionalTaskState
+SynchronizerFastState
+SynchronizerSlowState

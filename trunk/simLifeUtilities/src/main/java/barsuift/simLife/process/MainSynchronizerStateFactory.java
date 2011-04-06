@@ -18,29 +18,15 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.JaxbTestCase;
 
+public class MainSynchronizerStateFactory {
 
-public class MainSynchronizerStateTest extends JaxbTestCase {
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.process";
-    }
-
-    public void testJaxb() throws Exception {
-        MainSynchronizerState synchro = new MainSynchronizerState();
-        write(synchro);
-        MainSynchronizerState synchro2 = (MainSynchronizerState) read();
-        assertEquals(synchro, synchro2);
+    public MainSynchronizerState createMainSynchronizerState() {
+        SynchronizerSlowStateFactory synchronizerSlowStateFactory = new SynchronizerSlowStateFactory();
+        SynchronizerSlowState synchronizerSlowState = synchronizerSlowStateFactory.createSynchronizerSlowState();
+        SynchronizerFastStateFactory synchronizerFastStateFactory = new SynchronizerFastStateFactory();
+        SynchronizerFastState synchronizerFastState = synchronizerFastStateFactory.createSynchronizerFastState();
+        return new MainSynchronizerState(synchronizerSlowState, synchronizerFastState);
     }
 
 }

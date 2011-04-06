@@ -13,12 +13,8 @@ public class DateUpdater extends AbstractSplitConditionalTask {
     }
 
     @Override
-    // public void executeConditionalStep() {
-    // date.addMillis(Synchronizer.CYCLE_LENGTH_CORE_MS);
-    //
-    // }
     public void executeSplitConditionalStep(int stepSize) {
-        date.addMillis(stepSize * Synchronizer.CYCLE_LENGTH_3D_MS);
+        date.addMillis(stepSize * BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS);
 
     }
 

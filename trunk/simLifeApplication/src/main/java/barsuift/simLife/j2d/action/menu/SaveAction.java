@@ -61,7 +61,7 @@ public class SaveAction extends AbstractAction implements Subscriber {
         boolean wasRunning = stopApp();
         saveOrSaveAs();
         if (wasRunning) {
-            MainSynchronizer synchronizer = application.getUniverseContext().getSynchronizer();
+            MainSynchronizer synchronizer = application.getUniverseContext().getUniverse().getSynchronizer();
             synchronizer.start();
         }
     }
@@ -90,7 +90,7 @@ public class SaveAction extends AbstractAction implements Subscriber {
      * @return true if the application was running, false otherwise
      */
     private boolean stopApp() {
-        MainSynchronizer synchronizer = application.getUniverseContext().getSynchronizer();
+        MainSynchronizer synchronizer = application.getUniverseContext().getUniverse().getSynchronizer();
         if (synchronizer.isRunning()) {
             synchronizer.stop();
             return true;

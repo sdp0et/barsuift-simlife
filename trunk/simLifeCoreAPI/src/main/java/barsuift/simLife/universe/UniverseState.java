@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import barsuift.simLife.State;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.j3d.universe.Universe3DState;
-import barsuift.simLife.process.SynchronizerCoreState;
+import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
@@ -43,7 +43,7 @@ public class UniverseState implements State {
 
     private PhysicsState physics;
 
-    private SynchronizerCoreState synchronizerState;
+    private MainSynchronizerState mainSynchronizerState;
 
     private DateHandlerState dateHandler;
 
@@ -55,20 +55,20 @@ public class UniverseState implements State {
         this.fallenLeaves = new HashSet<TreeLeafState>();
         this.environment = new EnvironmentState();
         this.physics = new PhysicsState();
-        this.synchronizerState = new SynchronizerCoreState();
+        this.mainSynchronizerState = new MainSynchronizerState();
         this.dateHandler = new DateHandlerState();
         this.univ3DState = new Universe3DState();
     }
 
     public UniverseState(Set<TreeState> trees, Set<TreeLeafState> fallenLeaves, EnvironmentState environment,
-            PhysicsState physics, SynchronizerCoreState synchronizerState, DateHandlerState dateHandler,
+            PhysicsState physics, MainSynchronizerState mainSynchronizerState, DateHandlerState dateHandler,
             Universe3DState univ3DState) {
         super();
         this.trees = trees;
         this.fallenLeaves = fallenLeaves;
         this.environment = environment;
         this.physics = physics;
-        this.synchronizerState = synchronizerState;
+        this.mainSynchronizerState = mainSynchronizerState;
         this.dateHandler = dateHandler;
         this.univ3DState = univ3DState;
     }
@@ -105,12 +105,12 @@ public class UniverseState implements State {
         this.physics = physics;
     }
 
-    public SynchronizerCoreState getSynchronizerState() {
-        return synchronizerState;
+    public MainSynchronizerState getMainSynchronizerState() {
+        return mainSynchronizerState;
     }
 
-    public void setSynchronizerState(SynchronizerCoreState synchronizerState) {
-        this.synchronizerState = synchronizerState;
+    public void setMainSynchronizerState(MainSynchronizerState mainSynchronizerState) {
+        this.mainSynchronizerState = mainSynchronizerState;
     }
 
     public DateHandlerState getDateHandler() {
@@ -135,7 +135,7 @@ public class UniverseState implements State {
         int result = 1;
         result = prime * result + ((environment == null) ? 0 : environment.hashCode());
         result = prime * result + ((physics == null) ? 0 : physics.hashCode());
-        result = prime * result + ((synchronizerState == null) ? 0 : synchronizerState.hashCode());
+        result = prime * result + ((mainSynchronizerState == null) ? 0 : mainSynchronizerState.hashCode());
         result = prime * result + ((dateHandler == null) ? 0 : dateHandler.hashCode());
         result = prime * result + ((fallenLeaves == null) ? 0 : fallenLeaves.hashCode());
         result = prime * result + ((trees == null) ? 0 : trees.hashCode());
@@ -164,11 +164,11 @@ public class UniverseState implements State {
         } else
             if (!physics.equals(other.physics))
                 return false;
-        if (synchronizerState == null) {
-            if (other.synchronizerState != null)
+        if (mainSynchronizerState == null) {
+            if (other.mainSynchronizerState != null)
                 return false;
         } else
-            if (!synchronizerState.equals(other.synchronizerState))
+            if (!mainSynchronizerState.equals(other.mainSynchronizerState))
                 return false;
         if (dateHandler == null) {
             if (other.dateHandler != null)
@@ -200,8 +200,8 @@ public class UniverseState implements State {
     @Override
     public String toString() {
         return "UniverseState [trees=" + trees + ", fallenLeaves=" + fallenLeaves + ", environment=" + environment
-                + ", physics=" + physics + ", synchronizerState=" + synchronizerState + ", dateHandler=" + dateHandler
-                + ", univ3DState=" + univ3DState + "]";
+                + ", physics=" + physics + ", mainSynchronizerState=" + mainSynchronizerState + ", dateHandler="
+                + dateHandler + ", univ3DState=" + univ3DState + "]";
     }
 
 }

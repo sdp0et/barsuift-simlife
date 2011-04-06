@@ -20,14 +20,11 @@ package barsuift.simLife.universe;
 
 import barsuift.simLife.Persistent;
 import barsuift.simLife.j3d.universe.UniverseContext3D;
-import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.time.FpsCounter;
 
 public interface UniverseContext extends Persistent<UniverseContextState> {
 
     public Universe getUniverse();
-
-    public MainSynchronizer getSynchronizer();
 
     public void setFpsShowing(boolean fpsShowing);
 

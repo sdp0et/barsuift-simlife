@@ -20,8 +20,6 @@ package barsuift.simLife.universe;
 
 import barsuift.simLife.j3d.universe.UniverseContext3DState;
 import barsuift.simLife.j3d.universe.UniverseContext3DStateFactory;
-import barsuift.simLife.process.MainSynchronizerState;
-import barsuift.simLife.process.MainSynchronizerStateFactory;
 
 
 public class UniverseContextStateFactory {
@@ -30,7 +28,6 @@ public class UniverseContextStateFactory {
      * Creates an empty universe context state with the following values :
      * <ul>
      * <li>an empty random universe state, from parameters</li>
-     * <li>a default synchronizer state</li>
      * <li>fpsShowing = false</li>
      * <li>a default universe context 3D state</li>
      * </ul>
@@ -41,12 +38,10 @@ public class UniverseContextStateFactory {
         boolean fpsShowing = false;
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createEmptyRandomUniverseState(parameters);
-        MainSynchronizerStateFactory synchroStateFactory = new MainSynchronizerStateFactory();
-        MainSynchronizerState synchronizerState = synchroStateFactory.createMainSynchronizerState();
         UniverseContext3DStateFactory universeContext3DStateFactory = new UniverseContext3DStateFactory();
         UniverseContext3DState universeContext3DState = universeContext3DStateFactory
                 .createUniverseContext3DState(parameters.getLandscape());
-        return new UniverseContextState(universeState, synchronizerState, fpsShowing, universeContext3DState);
+        return new UniverseContextState(universeState, fpsShowing, universeContext3DState);
     }
 
 }

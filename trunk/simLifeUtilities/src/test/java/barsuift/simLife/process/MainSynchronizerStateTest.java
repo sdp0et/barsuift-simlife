@@ -18,11 +18,11 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.UtilDataCreatorForTests;
 
 
-public class SynchronizerCoreStateTest extends JaxbTestCase {
+public class MainSynchronizerStateTest extends JaxbTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -38,9 +38,9 @@ public class SynchronizerCoreStateTest extends JaxbTestCase {
     }
 
     public void testJaxb() throws Exception {
-        SynchronizerCoreState synchro = CoreDataCreatorForTests.createRandomSynchronizerCoreState();
+        MainSynchronizerState synchro = UtilDataCreatorForTests.createRandomMainSynchronizerState();
         write(synchro);
-        SynchronizerCoreState synchro2 = (SynchronizerCoreState) read();
+        MainSynchronizerState synchro2 = (MainSynchronizerState) read();
         assertEquals(synchro, synchro2);
     }
 

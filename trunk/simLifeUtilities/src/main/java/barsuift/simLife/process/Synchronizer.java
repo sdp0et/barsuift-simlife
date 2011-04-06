@@ -12,19 +12,6 @@ import barsuift.simLife.message.Publisher;
 public interface Synchronizer extends Publisher {
 
     /**
-     * Length of a core cycle, used to schedule the core temporizer, and to know how much to add to the date at each
-     * iteration.
-     */
-    public static final int CYCLE_LENGTH_CORE_MS = 500;
-
-    /**
-     * Length of a 3D cycle, used to schedule the 3D temporizer.
-     */
-    public static final int CYCLE_LENGTH_3D_MS = 25;
-
-    public static final int RATIO_CORE_3D = Synchronizer.CYCLE_LENGTH_CORE_MS / Synchronizer.CYCLE_LENGTH_3D_MS;
-
-    /**
      * Tests if the synchronizer is running.
      * 
      * @return true if the synchronizer is running, false otherwise
@@ -42,6 +29,11 @@ public interface Synchronizer extends Publisher {
     public void start();
 
     /**
+     * Number of times the {@link #start()} method has been called.
+     */
+    public long getNbStarts();
+
+    /**
      * Stop the synchronizer.
      * <p>
      * The synchronized elements are asked to stop, once they have completed their current execution.
@@ -50,5 +42,10 @@ public interface Synchronizer extends Publisher {
      * @throws IllegalStateException if the synchronizer is not running
      */
     public void stop();
+
+    /**
+     * Number of times the {@link #stop()} method has been called.
+     */
+    public long getNbStops();
 
 }

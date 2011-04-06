@@ -110,7 +110,7 @@ public class BasicSun3D implements Sun3D {
         // no need to update light color because it is already updated with the sun height
 
         this.earthRotationTask = new EarthRotationTask(state.getEarthRotationTask(), this, universe3D.getDate());
-        universe3D.getSynchronizer().schedule(earthRotationTask);
+        universe3D.getSynchronizer().scheduleFast(earthRotationTask);
     }
 
     /**

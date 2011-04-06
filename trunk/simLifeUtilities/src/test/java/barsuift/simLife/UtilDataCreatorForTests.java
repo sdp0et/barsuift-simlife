@@ -23,7 +23,11 @@ import java.math.BigDecimal;
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.process.ConditionalTaskState;
+import barsuift.simLife.process.MainSynchronizerState;
+import barsuift.simLife.process.Speed;
 import barsuift.simLife.process.SplitConditionalTaskState;
+import barsuift.simLife.process.SynchronizerFastState;
+import barsuift.simLife.process.SynchronizerSlowState;
 import barsuift.simLife.time.SimLifeDateState;
 
 
@@ -170,6 +174,34 @@ public final class UtilDataCreatorForTests {
         ConditionalTaskState conditionalTask = createSpecificConditionalTaskState();
         int stepSize = 3;
         return new SplitConditionalTaskState(conditionalTask, stepSize);
+    }
+
+    public static SynchronizerSlowState createRandomSynchronizerSlowState() {
+        return new SynchronizerSlowState(Speed.values()[Randomizer.randomBetween(0, 2)]);
+    }
+
+    public static SynchronizerSlowState createSpecificSynchronizerSlowState() {
+        return new SynchronizerSlowState(Speed.NORMAL);
+    }
+
+    public static MainSynchronizerState createRandomMainSynchronizerState() {
+        SynchronizerSlowState synchronizerSlowState = createRandomSynchronizerSlowState();
+        SynchronizerFastState synchronizerFastState = createRandomSynchronizerFastState();
+        return new MainSynchronizerState(synchronizerSlowState, synchronizerFastState);
+    }
+
+    public static MainSynchronizerState createSpecificMainSynchronizerState() {
+        SynchronizerSlowState synchronizerSlowState = createSpecificSynchronizerSlowState();
+        SynchronizerFastState synchronizerFastState = createSpecificSynchronizerFastState();
+        return new MainSynchronizerState(synchronizerSlowState, synchronizerFastState);
+    }
+
+    public static SynchronizerFastState createRandomSynchronizerFastState() {
+        return new SynchronizerFastState(Randomizer.randomBetween(1, 20));
+    }
+
+    public static SynchronizerFastState createSpecificSynchronizerFastState() {
+        return new SynchronizerFastState(1);
     }
 
 }

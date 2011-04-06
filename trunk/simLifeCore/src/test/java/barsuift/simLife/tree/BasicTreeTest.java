@@ -19,13 +19,15 @@
 package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.environment.MockSun3D;
 import barsuift.simLife.process.Aging;
-import barsuift.simLife.process.MockSynchronizerCore;
+import barsuift.simLife.process.ConditionalTask;
+import barsuift.simLife.process.MockMainSynchronizer;
 import barsuift.simLife.process.Photosynthesis;
 import barsuift.simLife.process.TreeGrowth;
 import barsuift.simLife.universe.MockUniverse;
@@ -66,12 +68,12 @@ public class BasicTreeTest extends TestCase {
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
-        MockSynchronizerCore synchronizer = (MockSynchronizerCore) universe.getSynchronizer();
-        assertEquals(3, synchronizer.getNbScheduleCalled());
-        assertEquals(3, synchronizer.getScheduledTasks().size());
-        assertEquals(Photosynthesis.class, synchronizer.getScheduledTasks().get(0).getClass());
-        assertEquals(Aging.class, synchronizer.getScheduledTasks().get(1).getClass());
-        assertEquals(TreeGrowth.class, synchronizer.getScheduledTasks().get(2).getClass());
+        MockMainSynchronizer synchronizer = (MockMainSynchronizer) universe.getSynchronizer();
+        List<ConditionalTask> slowScheduled = synchronizer.getSlowScheduled();
+        assertEquals(3, slowScheduled.size());
+        assertEquals(Photosynthesis.class, slowScheduled.get(0).getClass());
+        assertEquals(Aging.class, slowScheduled.get(1).getClass());
+        assertEquals(TreeGrowth.class, slowScheduled.get(2).getClass());
     }
 
     public void testGetState() {

@@ -61,7 +61,7 @@ public class NewPopulatedRandomUniverseAction extends AbstractAction {
     private void stopApp() {
         UniverseContext universeContext = application.getUniverseContext();
         if (universeContext != null) {
-            MainSynchronizer synchronizer = universeContext.getSynchronizer();
+            MainSynchronizer synchronizer = universeContext.getUniverse().getSynchronizer();
             if (synchronizer.isRunning()) {
                 synchronizer.stop();
             }

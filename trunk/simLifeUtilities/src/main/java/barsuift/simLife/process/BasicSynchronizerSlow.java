@@ -23,13 +23,18 @@ package barsuift.simLife.process;
  * This synchronizer allows to change the speed of the synchronizer.
  * 
  */
-public class BasicSynchronizerCore extends AbstractTaskSynchronizer<ConditionalTask> implements SynchronizerCore {
+public class BasicSynchronizerSlow extends AbstractTaskSynchronizer<ConditionalTask> implements SynchronizerSlow {
 
-    private final SynchronizerCoreState state;
+    /**
+     * Length of a slow cycle, used to schedule the temporizerSlow.
+     */
+    public static final int CYCLE_LENGTH_SLOW_MS = 500;
+
+    private final SynchronizerSlowState state;
 
     private Speed speed;
 
-    public BasicSynchronizerCore(SynchronizerCoreState state) {
+    public BasicSynchronizerSlow(SynchronizerSlowState state) {
         super();
         this.state = state;
         this.speed = state.getSpeed();
@@ -47,11 +52,11 @@ public class BasicSynchronizerCore extends AbstractTaskSynchronizer<ConditionalT
 
     @Override
     protected int getTemporizerPeriod() {
-        return CYCLE_LENGTH_CORE_MS / speed.getSpeed();
+        return CYCLE_LENGTH_SLOW_MS / speed.getSpeed();
     }
 
     @Override
-    public SynchronizerCoreState getState() {
+    public SynchronizerSlowState getState() {
         synchronize();
         return state;
     }

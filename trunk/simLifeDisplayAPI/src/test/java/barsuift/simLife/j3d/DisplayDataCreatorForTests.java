@@ -39,7 +39,6 @@ import barsuift.simLife.j3d.universe.UniverseContext3DState;
 import barsuift.simLife.j3d.universe.physic.Gravity3DState;
 import barsuift.simLife.j3d.universe.physic.Physics3DState;
 import barsuift.simLife.process.SplitConditionalTaskState;
-import barsuift.simLife.process.Synchronizer3DState;
 
 
 
@@ -47,14 +46,6 @@ public final class DisplayDataCreatorForTests {
 
     private DisplayDataCreatorForTests() {
         // private constructor to enforce static access
-    }
-
-    public static Synchronizer3DState createRandomSynchronizer3DState() {
-        return new Synchronizer3DState(Randomizer.randomBetween(1, 20));
-    }
-
-    public static Synchronizer3DState createSpecificSynchronizer3DState() {
-        return new Synchronizer3DState(1);
     }
 
     public static Physics3DState createRandomPhysics3DState() {
@@ -234,13 +225,11 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static Universe3DState createRandomUniverse3DState() {
-        Synchronizer3DState synchronizerState = createRandomSynchronizer3DState();
-        return new Universe3DState(synchronizerState);
+        return new Universe3DState();
     }
 
     public static Universe3DState createSpecificUniverse3DState() {
-        Synchronizer3DState synchronizerState = createSpecificSynchronizer3DState();
-        return new Universe3DState(synchronizerState);
+        return new Universe3DState();
     }
 
     public static TreeLeaf3DState createRandomTreeLeaf3DState() {

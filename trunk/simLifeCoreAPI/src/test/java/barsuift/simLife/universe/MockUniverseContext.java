@@ -20,8 +20,6 @@ package barsuift.simLife.universe;
 
 import barsuift.simLife.j3d.universe.MockUniverseContext3D;
 import barsuift.simLife.j3d.universe.UniverseContext3D;
-import barsuift.simLife.process.MainSynchronizer;
-import barsuift.simLife.process.MockMainSynchronizer;
 import barsuift.simLife.time.FpsCounter;
 
 public class MockUniverseContext implements UniverseContext {
@@ -31,8 +29,6 @@ public class MockUniverseContext implements UniverseContext {
     private int nbSynchronizedCalled;
 
     private Universe universe;
-
-    private MainSynchronizer synchronizer;
 
     private boolean fpsShowing;
 
@@ -48,7 +44,6 @@ public class MockUniverseContext implements UniverseContext {
         this.state = new UniverseContextState();
         this.nbSynchronizedCalled = 0;
         this.universe = new MockUniverse();
-        this.synchronizer = new MockMainSynchronizer();
         this.fpsShowing = false;
         this.fpsCounter = new FpsCounter();
         this.universeContext3D = new MockUniverseContext3D();
@@ -79,15 +74,6 @@ public class MockUniverseContext implements UniverseContext {
 
     public void setUniverse(Universe universe) {
         this.universe = universe;
-    }
-
-    @Override
-    public MainSynchronizer getSynchronizer() {
-        return synchronizer;
-    }
-
-    public void setSynchronizer(MainSynchronizer synchronizer) {
-        this.synchronizer = synchronizer;
     }
 
     @Override

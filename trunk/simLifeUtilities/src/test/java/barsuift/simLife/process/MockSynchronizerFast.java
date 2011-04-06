@@ -22,10 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
+import barsuift.simLife.UtilDataCreatorForTests;
+import barsuift.simLife.message.BasicPublisher;
+import barsuift.simLife.message.Publisher;
 
-public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
+
+public class MockSynchronizerFast extends BasicPublisher implements SynchronizerFast {
 
     private CyclicBarrier barrier;
+
+    private boolean running;
 
     private int scheduleCalled;
 
@@ -39,26 +45,41 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
 
     private int stopCalled;
 
+    private SynchronizerFastState state;
+
     private int synchronizeCalled;
 
-    public MockInstrumentedSynchronizer3D(Synchronizer3DState state) {
-        super(state);
+    private int stepSize;
+
+    private int updateCounter;
+
+    private List<Publisher> publisherObjectsSubscribed;
+
+    private List<Object> arguments;
+
+    public MockSynchronizerFast() {
+        super(null);
         reset();
     }
 
     public void reset() {
         barrier = new CyclicBarrier(1);
+        running = false;
         scheduleCalled = 0;
         tasksToSchedule = new ArrayList<SplitConditionalTask>();
         unscheduleCalled = 0;
         tasksToUnschedule = new ArrayList<SplitConditionalTask>();
         startCalled = 0;
         stopCalled = 0;
+        state = UtilDataCreatorForTests.createSpecificSynchronizerFastState();
         synchronizeCalled = 0;
+        stepSize = 1;
+        updateCounter = 0;
+        publisherObjectsSubscribed = new ArrayList<Publisher>();
+        arguments = new ArrayList<Object>();
     }
 
     public void setBarrier(CyclicBarrier barrier) {
-        super.setBarrier(barrier);
         this.barrier = barrier;
     }
 
@@ -68,12 +89,15 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
 
     @Override
     public boolean isRunning() {
-        return super.isRunning();
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     @Override
     public void schedule(SplitConditionalTask task) {
-        super.schedule(task);
         scheduleCalled++;
         tasksToSchedule.add(task);
     }
@@ -88,7 +112,6 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
 
     @Override
     public void unschedule(SplitConditionalTask task) {
-        super.unschedule(task);
         unscheduleCalled++;
         tasksToUnschedule.add(task);
     }
@@ -104,32 +127,35 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
 
     @Override
     public void start() throws IllegalStateException {
-        super.start();
         startCalled++;
     }
 
-    public int getNbStartCalled() {
+    @Override
+    public long getNbStarts() {
         return startCalled;
     }
 
     @Override
     public void stop() {
-        super.stop();
         stopCalled++;
     }
 
-    public int getNbStopCalled() {
+    @Override
+    public long getNbStops() {
         return stopCalled;
     }
 
     @Override
-    public Synchronizer3DState getState() {
-        return super.getState();
+    public SynchronizerFastState getState() {
+        return state;
+    }
+
+    public void setState(SynchronizerFastState state) {
+        this.state = state;
     }
 
     @Override
     public void synchronize() {
-        super.synchronize();
         synchronizeCalled++;
     }
 
@@ -139,7 +165,30 @@ public class MockInstrumentedSynchronizer3D extends BasicSynchronizer3D {
 
     @Override
     public void setStepSize(int stepSize) {
-        super.setStepSize(stepSize);
+        this.stepSize = stepSize;
+    }
+
+    public int getStepSize() {
+        return stepSize;
+    }
+
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        updateCounter++;
+        publisherObjectsSubscribed.add(publisher);
+        arguments.add(arg);
+    }
+
+    public List<Object> getArguments() {
+        return arguments;
+    }
+
+    public List<Publisher> getPublisherObjectsSubscribed() {
+        return publisherObjectsSubscribed;
+    }
+
+    public int getUpdateCounter() {
+        return updateCounter;
     }
 
 }

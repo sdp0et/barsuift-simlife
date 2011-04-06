@@ -1,55 +1,37 @@
-/**
- * barsuift-simlife is a life simulator program
- * 
- * Copyright (C) 2010 Cyrille GACHOT
- * 
- * This file is part of barsuift-simlife.
- * 
- * barsuift-simlife is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * barsuift-simlife is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
- * <http://www.gnu.org/licenses/>.
- */
 package barsuift.simLife.process;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
-import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 
 
-public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D {
+public class MockSynchronizerSlow extends BasicPublisher implements SynchronizerSlow {
 
     private CyclicBarrier barrier;
+
+    private Speed speed;
 
     private boolean running;
 
     private int scheduleCalled;
 
-    private List<SplitConditionalTask> tasksToSchedule;
+    private List<ConditionalTask> tasksToSchedule;
 
     private int unscheduleCalled;
 
-    private List<SplitConditionalTask> tasksToUnschedule;
+    private List<ConditionalTask> tasksToUnschedule;
 
     private int startCalled;
 
     private int stopCalled;
 
-    private Synchronizer3DState state;
+    private SynchronizerSlowState state;
 
     private int synchronizeCalled;
-
-    private int stepSize;
 
     private int updateCounter;
 
@@ -57,23 +39,23 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
 
     private List<Object> arguments;
 
-    public MockSynchronizer3D() {
+    public MockSynchronizerSlow() {
         super(null);
         reset();
     }
 
     public void reset() {
         barrier = new CyclicBarrier(1);
+        speed = Speed.DEFAULT_SPEED;
         running = false;
         scheduleCalled = 0;
-        tasksToSchedule = new ArrayList<SplitConditionalTask>();
+        tasksToSchedule = new ArrayList<ConditionalTask>();
         unscheduleCalled = 0;
-        tasksToUnschedule = new ArrayList<SplitConditionalTask>();
+        tasksToUnschedule = new ArrayList<ConditionalTask>();
         startCalled = 0;
         stopCalled = 0;
-        state = DisplayDataCreatorForTests.createSpecificSynchronizer3DState();
+        state = UtilDataCreatorForTests.createSpecificSynchronizerSlowState();
         synchronizeCalled = 0;
-        stepSize = 1;
         updateCounter = 0;
         publisherObjectsSubscribed = new ArrayList<Publisher>();
         arguments = new ArrayList<Object>();
@@ -88,6 +70,16 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
     }
 
     @Override
+    public void setSpeed(Speed speed) {
+        this.speed = speed;
+    }
+
+    @Override
+    public Speed getSpeed() {
+        return speed;
+    }
+
+    @Override
     public boolean isRunning() {
         return running;
     }
@@ -97,7 +89,7 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
     }
 
     @Override
-    public void schedule(SplitConditionalTask task) {
+    public void schedule(ConditionalTask task) {
         scheduleCalled++;
         tasksToSchedule.add(task);
     }
@@ -106,12 +98,12 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
         return scheduleCalled;
     }
 
-    public List<SplitConditionalTask> getScheduledTasks() {
+    public List<ConditionalTask> getScheduledTasks() {
         return tasksToSchedule;
     }
 
     @Override
-    public void unschedule(SplitConditionalTask task) {
+    public void unschedule(ConditionalTask task) {
         unscheduleCalled++;
         tasksToUnschedule.add(task);
     }
@@ -120,7 +112,7 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
         return unscheduleCalled;
     }
 
-    public List<SplitConditionalTask> getUnscheduledTasks() {
+    public List<ConditionalTask> getUnscheduledTasks() {
         return tasksToUnschedule;
     }
 
@@ -130,7 +122,8 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
         startCalled++;
     }
 
-    public int getNbStartCalled() {
+    @Override
+    public long getNbStarts() {
         return startCalled;
     }
 
@@ -139,16 +132,17 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
         stopCalled++;
     }
 
-    public int getNbStopCalled() {
+    @Override
+    public long getNbStops() {
         return stopCalled;
     }
 
     @Override
-    public Synchronizer3DState getState() {
+    public SynchronizerSlowState getState() {
         return state;
     }
 
-    public void setState(Synchronizer3DState state) {
+    public void setState(SynchronizerSlowState state) {
         this.state = state;
     }
 
@@ -159,15 +153,6 @@ public class MockSynchronizer3D extends BasicPublisher implements Synchronizer3D
 
     public int getNbSynchronizeCalled() {
         return synchronizeCalled;
-    }
-
-    @Override
-    public void setStepSize(int stepSize) {
-        this.stepSize = stepSize;
-    }
-
-    public int getStepSize() {
-        return stepSize;
     }
 
     @Override

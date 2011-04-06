@@ -22,14 +22,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
 import barsuift.simLife.j3d.universe.UniverseContext3DState;
-import barsuift.simLife.process.MainSynchronizerState;
 
 @XmlRootElement
 public class UniverseContextState implements State {
 
     private UniverseState universe;
-
-    private MainSynchronizerState synchronizer;
 
     private boolean fpsShowing;
 
@@ -38,16 +35,13 @@ public class UniverseContextState implements State {
     public UniverseContextState() {
         super();
         this.universe = new UniverseState();
-        this.synchronizer = new MainSynchronizerState();
         this.fpsShowing = false;
         this.universeContext3D = new UniverseContext3DState();
     }
 
-    public UniverseContextState(UniverseState universe, MainSynchronizerState synchronizer, boolean fpsShowing,
-            UniverseContext3DState universeContext3D) {
+    public UniverseContextState(UniverseState universe, boolean fpsShowing, UniverseContext3DState universeContext3D) {
         super();
         this.universe = universe;
-        this.synchronizer = synchronizer;
         this.fpsShowing = fpsShowing;
         this.universeContext3D = universeContext3D;
     }
@@ -68,14 +62,6 @@ public class UniverseContextState implements State {
         this.universe = universe;
     }
 
-    public MainSynchronizerState getSynchronizer() {
-        return synchronizer;
-    }
-
-    public void setSynchronizer(MainSynchronizerState synchronizer) {
-        this.synchronizer = synchronizer;
-    }
-
     public UniverseContext3DState getUniverseContext3D() {
         return universeContext3D;
     }
@@ -90,7 +76,6 @@ public class UniverseContextState implements State {
         int result = 1;
         result = prime * result + (fpsShowing ? 1231 : 1237);
         result = prime * result + ((universe == null) ? 0 : universe.hashCode());
-        result = prime * result + ((synchronizer == null) ? 0 : synchronizer.hashCode());
         result = prime * result + ((universeContext3D == null) ? 0 : universeContext3D.hashCode());
         return result;
     }
@@ -112,12 +97,6 @@ public class UniverseContextState implements State {
         } else
             if (!universe.equals(other.universe))
                 return false;
-        if (synchronizer == null) {
-            if (other.synchronizer != null)
-                return false;
-        } else
-            if (!synchronizer.equals(other.synchronizer))
-                return false;
         if (universeContext3D == null) {
             if (other.universeContext3D != null)
                 return false;
@@ -131,8 +110,8 @@ public class UniverseContextState implements State {
 
     @Override
     public String toString() {
-        return "UniverseContextState [universe=" + universe + ", synchronizer=" + synchronizer + ", fpsShowing="
-                + fpsShowing + ", universeContext3D=" + universeContext3D + "]";
+        return "UniverseContextState [universe=" + universe + ", fpsShowing=" + fpsShowing + ", universeContext3D="
+                + universeContext3D + "]";
     }
 
 }

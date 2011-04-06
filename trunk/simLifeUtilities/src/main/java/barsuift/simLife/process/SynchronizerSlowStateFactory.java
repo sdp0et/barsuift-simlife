@@ -19,11 +19,11 @@
 package barsuift.simLife.process;
 
 
-public class SynchronizerCoreStateFactory {
+public class SynchronizerSlowStateFactory {
 
-    public SynchronizerCoreState createSynchronizerCoreState() {
+    public SynchronizerSlowState createSynchronizerSlowState() {
         Speed speed = Speed.DEFAULT_SPEED;
-        return new SynchronizerCoreState(speed);
+        return new SynchronizerSlowState(speed);
     }
 
 }
