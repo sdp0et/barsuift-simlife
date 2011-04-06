@@ -41,8 +41,8 @@ public class BasicUniverseContextTest extends TestCase {
         assertFalse(context.getState().isFpsShowing());
         assertEquals(100000, context.getState().getUniverse().getDateHandler().getDate().getValue());
         context.setFpsShowing(true);
-        context.getUniverse().getSynchronizer().start();
-        context.getUniverse().getSynchronizer().stop();
+        context.getUniverse().getUniverse3D().getSynchronizer().start();
+        context.getUniverse().getUniverse3D().getSynchronizer().stop();
         // wait a little bit to ensure the time controller ends its treatments
         Thread.sleep(600);
 
