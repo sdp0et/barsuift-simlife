@@ -23,16 +23,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import barsuift.simLife.State;
 
 @XmlRootElement
-public class Synchronizer3DState implements State {
+public class SynchronizerFastState implements State {
 
     private int stepSize;
 
-    public Synchronizer3DState() {
+    public SynchronizerFastState() {
         super();
         this.stepSize = Speed.DEFAULT_SPEED.getSpeed();
     }
 
-    public Synchronizer3DState(int stepSize) {
+    public SynchronizerFastState(int stepSize) {
         super();
         this.stepSize = stepSize;
     }
@@ -61,7 +61,7 @@ public class Synchronizer3DState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Synchronizer3DState other = (Synchronizer3DState) obj;
+        SynchronizerFastState other = (SynchronizerFastState) obj;
         if (stepSize != other.stepSize)
             return false;
         return true;
@@ -69,7 +69,7 @@ public class Synchronizer3DState implements State {
 
     @Override
     public String toString() {
-        return "Synchronizer3DState [stepSize=" + stepSize + "]";
+        return "SynchronizerFastState [stepSize=" + stepSize + "]";
     }
 
 }

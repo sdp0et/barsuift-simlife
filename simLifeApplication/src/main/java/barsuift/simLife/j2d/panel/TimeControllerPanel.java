@@ -40,7 +40,6 @@ import barsuift.simLife.j2d.menu.Mnemonics;
 import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.process.Speed;
 import barsuift.simLife.universe.Universe;
-import barsuift.simLife.universe.UniverseContext;
 
 public class TimeControllerPanel extends JPanel {
 
@@ -53,18 +52,17 @@ public class TimeControllerPanel extends JPanel {
      * 
      * @param synchronizer the synchronizer
      */
-    public TimeControllerPanel(UniverseContext universeContext) {
+    public TimeControllerPanel(Universe universe) {
         super();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setMaximumSize(new Dimension(220, 100));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        Universe universe = universeContext.getUniverse();
         dateDisplay = new DateDisplay(universe.getDate());
         dateDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(dateDisplay);
 
-        MainSynchronizer synchronizer = universeContext.getSynchronizer();
+        MainSynchronizer synchronizer = universe.getSynchronizer();
         JPanel speedPanel = createSpeedPanel(synchronizer);
         add(speedPanel);
 

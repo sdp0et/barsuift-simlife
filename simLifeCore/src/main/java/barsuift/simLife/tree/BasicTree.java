@@ -72,11 +72,11 @@ public class BasicTree implements Tree {
         this.trunk = new BasicTreeTrunk(universe, state.getTrunkState());
         this.tree3D = new BasicTree3D(universe.getUniverse3D(), state.getTree3DState(), this);
         this.photosynthesis = new Photosynthesis(state.getPhotosynthesis(), this);
-        universe.getSynchronizer().schedule(photosynthesis);
+        universe.getSynchronizer().scheduleSlow(photosynthesis);
         this.aging = new Aging(state.getAging(), this);
-        universe.getSynchronizer().schedule(aging);
+        universe.getSynchronizer().scheduleSlow(aging);
         this.growth = new TreeGrowth(state.getGrowth(), this);
-        universe.getSynchronizer().schedule(growth);
+        universe.getSynchronizer().scheduleSlow(growth);
     }
 
     @Override

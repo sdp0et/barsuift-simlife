@@ -43,7 +43,6 @@ public class EarthRotationTask extends AbstractSplitConditionalTask implements A
 
     @Override
     public void executeSplitConditionalStep(int stepSize) {
-        System.out.println("exec task. date=" + date);
         if (automatic) {
             updateSunPosition();
         }

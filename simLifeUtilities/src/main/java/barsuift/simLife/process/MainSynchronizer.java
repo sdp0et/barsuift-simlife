@@ -3,10 +3,42 @@ package barsuift.simLife.process;
 import barsuift.simLife.Persistent;
 
 /**
- * The main synchronizer allows to synchronize the {@link SynchronizerCore} and the {@link Synchronizer3D}.
+ * The main synchronizer allows to synchronize the {@link SynchronizerSlow} and the {@link SynchronizerFast}.
  * 
  */
 public interface MainSynchronizer extends Synchronizer, Persistent<MainSynchronizerState> {
+
+    public SynchronizerFast getSynchronizerFast();
+
+    /**
+     * Adds the given fast task to the list of synchronized tasks.
+     * 
+     * @param task the task to synchronize
+     */
+    public void scheduleFast(SplitConditionalTask task);
+
+    /**
+     * Remove the given fast task from the list of synchronized tasks.
+     * 
+     * @param task the task to desynchronize
+     */
+    public void unscheduleFast(SplitConditionalTask task);
+
+    public SynchronizerSlow getSynchronizerSlow();
+
+    /**
+     * Adds the given slow task to the list of synchronized tasks.
+     * 
+     * @param task the task to synchronize
+     */
+    public void scheduleSlow(ConditionalTask task);
+
+    /**
+     * Remove the given slow task from the list of synchronized tasks.
+     * 
+     * @param task the task to desynchronize
+     */
+    public void unscheduleSlow(ConditionalTask task);
 
     /**
      * Sets the speed of the current main synchronizer.

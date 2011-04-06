@@ -25,8 +25,8 @@ import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.EnvironmentStateFactory;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
-import barsuift.simLife.process.SynchronizerCoreState;
-import barsuift.simLife.process.SynchronizerCoreStateFactory;
+import barsuift.simLife.process.MainSynchronizerState;
+import barsuift.simLife.process.MainSynchronizerStateFactory;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
@@ -46,8 +46,9 @@ public class UniverseStateFactory {
                 parameters.getLandscape());
         PhysicsStateFactory physicsStateFactory = new PhysicsStateFactory();
         PhysicsState physics = physicsStateFactory.createPhysicsState();
-        SynchronizerCoreStateFactory synchronizerStateFactory = new SynchronizerCoreStateFactory();
-        SynchronizerCoreState synchronizerState = synchronizerStateFactory.createSynchronizerCoreState();
+        MainSynchronizerStateFactory mainSynchroStateFactory = new MainSynchronizerStateFactory();
+        MainSynchronizerState mainSynchroState = mainSynchroStateFactory.createMainSynchronizerState();
+
         DateHandlerState dateHandler = new DateHandlerState();
 
         Set<TreeState> trees = new HashSet<TreeState>(0);
@@ -56,7 +57,7 @@ public class UniverseStateFactory {
         Universe3DStateFactory univ3DStateFactory = new Universe3DStateFactory();
         Universe3DState univ3DState = univ3DStateFactory.createUniverse3DState();
 
-        return new UniverseState(trees, fallenLeaves, environment, physics, synchronizerState, dateHandler, univ3DState);
+        return new UniverseState(trees, fallenLeaves, environment, physics, mainSynchroState, dateHandler, univ3DState);
     }
 
 }

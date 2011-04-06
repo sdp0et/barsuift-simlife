@@ -23,16 +23,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import barsuift.simLife.State;
 
 @XmlRootElement
-public class SynchronizerCoreState implements State {
+public class SynchronizerSlowState implements State {
 
     private Speed speed;
 
-    public SynchronizerCoreState() {
+    public SynchronizerSlowState() {
         super();
         this.speed = Speed.DEFAULT_SPEED;
     }
 
-    public SynchronizerCoreState(Speed speed) {
+    public SynchronizerSlowState(Speed speed) {
         super();
         this.speed = speed;
     }
@@ -61,7 +61,7 @@ public class SynchronizerCoreState implements State {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SynchronizerCoreState other = (SynchronizerCoreState) obj;
+        SynchronizerSlowState other = (SynchronizerSlowState) obj;
         if (speed != other.speed)
             return false;
         return true;
@@ -69,7 +69,7 @@ public class SynchronizerCoreState implements State {
 
     @Override
     public String toString() {
-        return "SynchronizerCoreState [speed=" + speed + "]";
+        return "SynchronizerSlowState [speed=" + speed + "]";
     }
 
 }

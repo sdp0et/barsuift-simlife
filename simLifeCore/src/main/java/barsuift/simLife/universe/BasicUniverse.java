@@ -27,11 +27,11 @@ import barsuift.simLife.environment.BasicEnvironment;
 import barsuift.simLife.environment.Environment;
 import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.process.BasicSynchronizerCore;
+import barsuift.simLife.process.BasicMainSynchronizer;
 import barsuift.simLife.process.ConditionalTaskStateFactory;
 import barsuift.simLife.process.DateUpdater;
+import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.process.SplitConditionalTaskState;
-import barsuift.simLife.process.SynchronizerCore;
 import barsuift.simLife.time.DateHandler;
 import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.tree.BasicTree;
@@ -55,7 +55,7 @@ public class BasicUniverse implements Universe {
 
     private final Physics physics;
 
-    private final BasicSynchronizerCore synchronizer;
+    private final MainSynchronizer synchronizer;
 
     private final DateHandler dateHandler;
 
@@ -64,18 +64,16 @@ public class BasicUniverse implements Universe {
 
     public BasicUniverse(UniverseState state) {
         this.state = state;
+        this.synchronizer = new BasicMainSynchronizer(state.getMainSynchronizerState());
         this.dateHandler = new DateHandler(state.getDateHandler());
         this.universe3D = new BasicUniverse3D(state.getUniv3DState(), this);
         this.environment = new BasicEnvironment(state.getEnvironment(), this);
         this.physics = new BasicPhysics(this, state.getPhysics());
-        this.synchronizer = new BasicSynchronizerCore(state.getSynchronizerState());
         ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
-        // ConditionalTaskState dateUpdaterState = taskStateFactory.createConditionalTaskState(DateUpdater.class);
         SplitConditionalTaskState dateUpdaterState = taskStateFactory
                 .createSplitConditionalTaskState(DateUpdater.class);
         DateUpdater dateUpdater = new DateUpdater(dateUpdaterState, dateHandler.getDate());
-        // synchronizer.schedule(dateUpdater);
-        universe3D.getSynchronizer().schedule(dateUpdater);
+        synchronizer.scheduleFast(dateUpdater);
         this.trees = new HashSet<Tree>();
         Set<TreeState> treeStates = state.getTrees();
         for (TreeState treeState : treeStates) {
@@ -132,7 +130,7 @@ public class BasicUniverse implements Universe {
     }
 
     @Override
-    public SynchronizerCore getSynchronizer() {
+    public MainSynchronizer getSynchronizer() {
         return synchronizer;
     }
 

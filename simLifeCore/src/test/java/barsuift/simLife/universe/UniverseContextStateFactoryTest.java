@@ -20,7 +20,6 @@ package barsuift.simLife.universe;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.universe.UniverseContext3DState;
-import barsuift.simLife.process.MainSynchronizerState;
 
 
 public class UniverseContextStateFactoryTest extends TestCase {
@@ -46,9 +45,6 @@ public class UniverseContextStateFactoryTest extends TestCase {
 
         assertEquals(0, universeState.getTrees().size());
         assertEquals(0, universeState.getFallenLeaves().size());
-
-        MainSynchronizerState synchronizer = universeContextState.getSynchronizer();
-        assertNotNull(synchronizer);
 
         UniverseContext3DState universeContext3D = universeContextState.getUniverseContext3D();
         assertNotNull(universeContext3D);

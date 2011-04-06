@@ -20,11 +20,9 @@ package barsuift.simLife.universe;
 
 import barsuift.simLife.j3d.universe.BasicUniverseContext3D;
 import barsuift.simLife.j3d.universe.UniverseContext3D;
-import barsuift.simLife.process.BasicMainSynchronizer;
 import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.ConditionalTaskStateFactory;
 import barsuift.simLife.process.FpsTicker;
-import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.time.FpsCounter;
 
 public class BasicUniverseContext implements UniverseContext {
@@ -33,13 +31,9 @@ public class BasicUniverseContext implements UniverseContext {
 
     private final Universe universe;
 
-    private final MainSynchronizer synchronizer;
-
     private boolean fpsShowing;
 
     private final UniverseContext3D universeContext3D;
-
-
 
     private final FpsCounter fpsCounter = new FpsCounter();
 
@@ -49,7 +43,6 @@ public class BasicUniverseContext implements UniverseContext {
     public BasicUniverseContext(UniverseContextState state) {
         this.state = state;
         this.universe = new BasicUniverse(state.getUniverse());
-        this.synchronizer = new BasicMainSynchronizer(state.getSynchronizer(), universe);
         this.universeContext3D = new BasicUniverseContext3D(state.getUniverseContext3D(), this);
         setFpsShowing(state.isFpsShowing());
     }
@@ -60,22 +53,17 @@ public class BasicUniverseContext implements UniverseContext {
     }
 
     @Override
-    public MainSynchronizer getSynchronizer() {
-        return synchronizer;
-    }
-
-    @Override
     public void setFpsShowing(boolean fpsShowing) {
         if (fpsShowing) {
             fpsCounter.reset();
             ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
             ConditionalTaskState fpsTickerState = taskStateFactory.createConditionalTaskState(FpsTicker.class);
             fpsTicker = new FpsTicker(fpsTickerState, fpsCounter);
-            universe.getSynchronizer().schedule(fpsTicker);
+            universe.getSynchronizer().scheduleSlow(fpsTicker);
         } else {
             if (this.fpsShowing) {
                 // only unschedule the fpsTicker if it was previously scheduled
-                universe.getSynchronizer().unschedule(fpsTicker);
+                universe.getSynchronizer().unscheduleSlow(fpsTicker);
             }
         }
         universeContext3D.setFpsShowing(fpsShowing);
@@ -106,7 +94,6 @@ public class BasicUniverseContext implements UniverseContext {
     @Override
     public void synchronize() {
         universe.synchronize();
-        synchronizer.synchronize();
         state.setFpsShowing(fpsShowing);
         universeContext3D.synchronize();
     }

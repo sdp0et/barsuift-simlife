@@ -18,30 +18,11 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.JaxbTestCase;
-import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+public class SynchronizerFastStateFactory {
 
-
-public class Synchronizer3DStateTest extends JaxbTestCase {
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.process";
-    }
-
-    public void testJaxb() throws Exception {
-        Synchronizer3DState synchroState = DisplayDataCreatorForTests.createRandomSynchronizer3DState();
-        write(synchroState);
-        Synchronizer3DState synchroState2 = (Synchronizer3DState) read();
-        assertEquals(synchroState, synchroState2);
+    public SynchronizerFastState createSynchronizerFastState() {
+        int stepSize = Speed.DEFAULT_SPEED.getSpeed();
+        return new SynchronizerFastState(stepSize);
     }
 
 }

@@ -41,7 +41,7 @@ public class UniverseStateFactoryTest extends TestCase {
         assertNotNull(universeState.getEnvironment());
         assertNotNull(universeState.getDateHandler());
         assertNotNull(universeState.getPhysics());
-        assertNotNull(universeState.getSynchronizerState());
+        assertNotNull(universeState.getMainSynchronizerState());
         assertNotNull(universeState.getUniv3DState());
 
         assertEquals(0, universeState.getTrees().size());

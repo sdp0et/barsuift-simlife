@@ -18,11 +18,25 @@
  */
 package barsuift.simLife.process;
 
-public class Synchronizer3DStateFactory {
+import junit.framework.TestCase;
 
-    public Synchronizer3DState createSynchronizer3DState() {
-        int stepSize = Speed.DEFAULT_SPEED.getSpeed();
-        return new Synchronizer3DState(stepSize);
+
+public class MainSynchronizerStateFactoryTest extends TestCase {
+
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    public void testCreateEmptyUniverseState() {
+        MainSynchronizerStateFactory factory = new MainSynchronizerStateFactory();
+        MainSynchronizerState mainSynchroState = factory.createMainSynchronizerState();
+
+        assertNotNull(mainSynchroState.getSynchronizerFastState());
+        assertNotNull(mainSynchroState.getSynchronizerSlowState());
     }
 
 }

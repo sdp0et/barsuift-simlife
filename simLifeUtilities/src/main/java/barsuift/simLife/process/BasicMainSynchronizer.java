@@ -23,7 +23,6 @@ import java.util.concurrent.CyclicBarrier;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
-import barsuift.simLife.universe.Universe;
 
 public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
 
@@ -31,50 +30,75 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
 
     private boolean isStopAsked;
 
+    private long nbStarts;
+
+    private long nbStops;
+
+
     private CyclicBarrier barrier;
 
-    private final SynchronizerCore synchroCore;
+    private final SynchronizerSlow synchroSlow;
 
-    private final Synchronizer3D synchro3D;
+    private final SynchronizerFast synchroFast;
 
     private final Publisher publisher = new BasicPublisher(this);
 
-    private boolean notifiedFromCore;
+    private boolean notifiedFromSlow;
 
-    private boolean notifiedFrom3D;
+    private boolean notifiedFromFast;
 
 
-    public BasicMainSynchronizer(MainSynchronizerState state, Universe universe) {
+    public BasicMainSynchronizer(MainSynchronizerState state) {
         this.state = state;
         this.isStopAsked = false;
         this.barrier = new CyclicBarrier(2, new BarrierTask());
 
-        this.synchroCore = universe.getSynchronizer();
-        this.synchroCore.addSubscriber(this);
-        this.synchroCore.setBarrier(barrier);
+        this.synchroSlow = new BasicSynchronizerSlow(state.getSynchronizerSlowState());
+        this.synchroSlow.addSubscriber(this);
+        this.synchroSlow.setBarrier(barrier);
 
-        this.synchro3D = universe.getUniverse3D().getSynchronizer();
-        this.synchro3D.addSubscriber(this);
-        this.synchro3D.setBarrier(barrier);
+        this.synchroFast = new BasicSynchronizerFast(state.getSynchronizerFastState());
+        this.synchroFast.addSubscriber(this);
+        this.synchroFast.setBarrier(barrier);
+    }
+
+    @Override
+    public void scheduleFast(SplitConditionalTask task) {
+        synchroFast.schedule(task);
+    }
+
+    @Override
+    public void unscheduleFast(SplitConditionalTask task) {
+        synchroFast.unschedule(task);
+    }
+
+    @Override
+    public void scheduleSlow(ConditionalTask task) {
+        synchroSlow.schedule(task);
+    }
+
+    @Override
+    public void unscheduleSlow(ConditionalTask task) {
+        synchroSlow.unschedule(task);
     }
 
     @Override
     public void setSpeed(Speed speed) {
-        synchroCore.setSpeed(speed);
-        synchro3D.setStepSize(speed.getSpeed());
+        synchroSlow.setSpeed(speed);
+        synchroFast.setStepSize(speed.getSpeed());
     }
 
     @Override
     public Speed getSpeed() {
-        return synchroCore.getSpeed();
+        return synchroSlow.getSpeed();
     }
 
     /**
-     * Returns true if the core synchronizer or the 3D synchronizer is running.
+     * Returns true if the slow synchronizer or fast synchronizer is running.
      */
     @Override
     public boolean isRunning() {
-        return synchroCore.isRunning() || synchro3D.isRunning();
+        return synchroSlow.isRunning() || synchroFast.isRunning();
     }
 
     @Override
@@ -89,12 +113,18 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
         internalStart();
     }
 
+    @Override
+    public final long getNbStarts() {
+        return nbStarts;
+    }
+
     private void internalStart() {
+        nbStarts++;
         if (isRunning() == true) {
             throw new IllegalStateException("The synchronizer is already running");
         }
-        synchroCore.start();
-        synchro3D.start();
+        synchroSlow.start();
+        synchroFast.start();
     }
 
     @Override
@@ -105,12 +135,18 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
         isStopAsked = true;
     }
 
+    @Override
+    public final long getNbStops() {
+        return nbStops;
+    }
+
     private void internalStop() {
+        nbStops++;
         if (isRunning() == false) {
             throw new IllegalStateException("The synchronizer is not running");
         }
-        synchroCore.stop();
-        synchro3D.stop();
+        synchroSlow.stop();
+        synchroFast.stop();
     }
 
     public synchronized void stopAndWait() {
@@ -124,6 +160,14 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
         }
     }
 
+    public SynchronizerSlow getSynchronizerSlow() {
+        return synchroSlow;
+    }
+
+    public SynchronizerFast getSynchronizerFast() {
+        return synchroFast;
+    }
+
     @Override
     public MainSynchronizerState getState() {
         synchronize();
@@ -132,20 +176,21 @@ public class BasicMainSynchronizer implements MainSynchronizer, Subscriber {
 
     @Override
     public void synchronize() {
-        // nothing to do
+        synchroFast.synchronize();
+        synchroSlow.synchronize();
     }
 
     @Override
     public void update(Publisher publisher, Object arg) {
-        if (publisher instanceof BasicSynchronizer3D) {
-            notifiedFrom3D = true;
+        if (publisher instanceof BasicSynchronizerFast) {
+            notifiedFromFast = true;
         }
-        if (publisher instanceof BasicSynchronizerCore) {
-            notifiedFromCore = true;
+        if (publisher instanceof BasicSynchronizerSlow) {
+            notifiedFromSlow = true;
         }
-        if (notifiedFrom3D && notifiedFromCore) {
-            notifiedFrom3D = false;
-            notifiedFromCore = false;
+        if (notifiedFromFast && notifiedFromSlow) {
+            notifiedFromFast = false;
+            notifiedFromSlow = false;
             setChanged();
             notifySubscribers();
         }

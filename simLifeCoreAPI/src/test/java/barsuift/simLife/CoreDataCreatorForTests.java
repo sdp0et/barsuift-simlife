@@ -44,8 +44,6 @@ import barsuift.simLife.j3d.universe.physic.Physics3DState;
 import barsuift.simLife.landscape.LandscapeState;
 import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.MainSynchronizerState;
-import barsuift.simLife.process.Speed;
-import barsuift.simLife.process.SynchronizerCoreState;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.time.SimLifeDateState;
 import barsuift.simLife.tree.TreeBranchPartState;
@@ -66,10 +64,9 @@ public final class CoreDataCreatorForTests {
 
     public static UniverseContextState createRandomUniverseContextState() {
         UniverseState universeState = createRandomUniverseState();
-        MainSynchronizerState synchroState = createRandomMainSynchronizerState();
         boolean fpsShowing = UtilDataCreatorForTests.createRandomBoolean();
         UniverseContext3DState universeContext3DState = DisplayDataCreatorForTests.createRandomUniverseContext3DState();
-        return new UniverseContextState(universeState, synchroState, fpsShowing, universeContext3DState);
+        return new UniverseContextState(universeState, fpsShowing, universeContext3DState);
     }
 
     /**
@@ -84,11 +81,10 @@ public final class CoreDataCreatorForTests {
      */
     public static UniverseContextState createSpecificUniverseContextState() {
         UniverseState universeState = createSpecificUniverseState();
-        MainSynchronizerState synchroState = createSpecificMainSynchronizerState();
         boolean fpsShowing = false;
         UniverseContext3DState universeContext3DState = DisplayDataCreatorForTests
                 .createSpecificUniverseContext3DState();
-        return new UniverseContextState(universeState, synchroState, fpsShowing, universeContext3DState);
+        return new UniverseContextState(universeState, fpsShowing, universeContext3DState);
     }
 
     public static PhysicsState createRandomPhysicsState() {
@@ -133,22 +129,6 @@ public final class CoreDataCreatorForTests {
         return new DateHandlerState(date);
     }
 
-    public static SynchronizerCoreState createRandomSynchronizerCoreState() {
-        return new SynchronizerCoreState(Speed.values()[Randomizer.randomBetween(0, 2)]);
-    }
-
-    public static SynchronizerCoreState createSpecificSynchronizerCoreState() {
-        return new SynchronizerCoreState(Speed.NORMAL);
-    }
-
-    public static MainSynchronizerState createRandomMainSynchronizerState() {
-        return new MainSynchronizerState();
-    }
-
-    public static MainSynchronizerState createSpecificMainSynchronizerState() {
-        return new MainSynchronizerState();
-    }
-
     public static UniverseState createRandomUniverseState() {
         Set<TreeState> trees = new HashSet<TreeState>();
         trees.add(createRandomTreeState());
@@ -161,10 +141,10 @@ public final class CoreDataCreatorForTests {
         }
         EnvironmentState environmentState = createRandomEnvironmentState();
         PhysicsState physicsState = createRandomPhysicsState();
-        SynchronizerCoreState synchronizerState = createRandomSynchronizerCoreState();
+        MainSynchronizerState synchroState = UtilDataCreatorForTests.createRandomMainSynchronizerState();
         DateHandlerState dateHandler = createRandomDateHandlerState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverse3DState();
-        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchronizerState, dateHandler,
+        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchroState, dateHandler,
                 univ3DState);
     }
 
@@ -192,9 +172,9 @@ public final class CoreDataCreatorForTests {
         EnvironmentState environmentState = createSpecificEnvironmentState();
         PhysicsState physicsState = createSpecificPhysicsState();
         Universe3DState univ3DState = DisplayDataCreatorForTests.createSpecificUniverse3DState();
-        SynchronizerCoreState synchronizerState = createSpecificSynchronizerCoreState();
+        MainSynchronizerState synchroState = UtilDataCreatorForTests.createSpecificMainSynchronizerState();
         DateHandlerState dateHandler = createSpecificDateHandlerState();
-        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchronizerState, dateHandler,
+        return new UniverseState(trees, fallenLeaves, environmentState, physicsState, synchroState, dateHandler,
                 univ3DState);
     }
 

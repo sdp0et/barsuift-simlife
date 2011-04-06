@@ -22,9 +22,16 @@ package barsuift.simLife.process;
 /**
  * This synchronizer is able to work by steps of increments.
  */
-public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitConditionalTask> implements Synchronizer3D {
+public class BasicSynchronizerFast extends AbstractTaskSynchronizer<SplitConditionalTask> implements SynchronizerFast {
 
-    private final Synchronizer3DState state;
+    /**
+     * Length of a fast cycle, used to schedule the temporizerFast.
+     */
+    public static final int CYCLE_LENGTH_FAST_MS = 25;
+
+    public static final int RATIO_SLOW_FAST = BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / CYCLE_LENGTH_FAST_MS;
+
+    private final SynchronizerFastState state;
 
     private int stepSize;
 
@@ -33,18 +40,18 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitCondition
     private int currentStep;
 
 
-    public BasicSynchronizer3D(Synchronizer3DState state) {
+    public BasicSynchronizerFast(SynchronizerFastState state) {
         super();
         this.state = state;
         this.stepSize = state.getStepSize();
-        this.stepBeforeSynchro = RATIO_CORE_3D / stepSize;
+        this.stepBeforeSynchro = RATIO_SLOW_FAST / stepSize;
         this.currentStep = 0;
     }
 
     @Override
     public void setStepSize(int stepSize) {
         this.stepSize = stepSize;
-        stepBeforeSynchro = RATIO_CORE_3D / stepSize;
+        stepBeforeSynchro = RATIO_SLOW_FAST / stepSize;
         // change step size for started tasks
         for (SplitConditionalTask task : getTasks()) {
             task.setStepSize(stepSize);
@@ -62,7 +69,7 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitCondition
 
     @Override
     protected int getTemporizerPeriod() {
-        return CYCLE_LENGTH_3D_MS;
+        return CYCLE_LENGTH_FAST_MS;
     }
 
     @Override
@@ -72,7 +79,7 @@ public class BasicSynchronizer3D extends AbstractTaskSynchronizer<SplitCondition
     }
 
     @Override
-    public Synchronizer3DState getState() {
+    public SynchronizerFastState getState() {
         synchronize();
         return state;
     }
