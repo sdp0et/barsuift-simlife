@@ -24,7 +24,8 @@ import barsuift.simLife.time.SimLifeDate;
 
 public class EarthRotationTask extends AbstractSplitConditionalTask implements Automatable {
 
-    protected final static float ROTATION_ANGLE_PER_SECOND = (float) (Math.PI * 2 / (SimLifeDate.SECOND_PER_MINUTE * SimLifeDate.MINUTE_PER_DAY));
+    protected final static double ROTATION_ANGLE_PER_MS = Math.PI * 2
+            / (SimLifeDate.MS_PER_SECOND * SimLifeDate.SECOND_PER_MINUTE * SimLifeDate.MINUTE_PER_DAY);
 
     private final Sun3D sun3D;
 
@@ -42,14 +43,16 @@ public class EarthRotationTask extends AbstractSplitConditionalTask implements A
 
     @Override
     public void executeSplitConditionalStep(int stepSize) {
+        System.out.println("exec task. date=" + date);
         if (automatic) {
             updateSunPosition();
         }
     }
 
     private void updateSunPosition() {
-        int secondsForDay = date.getMinuteOfDay() * SimLifeDate.SECOND_PER_MINUTE + date.getSecondOfMinute();
-        sun3D.setEarthRotation(secondsForDay * ROTATION_ANGLE_PER_SECOND);
+        int secondsForDay = (date.getMinuteOfDay() * SimLifeDate.SECOND_PER_MINUTE + date.getSecondOfMinute())
+                * SimLifeDate.MS_PER_SECOND + date.getMillisOfSecond();
+        sun3D.setEarthRotation((float) (secondsForDay * ROTATION_ANGLE_PER_MS));
     }
 
     @Override
