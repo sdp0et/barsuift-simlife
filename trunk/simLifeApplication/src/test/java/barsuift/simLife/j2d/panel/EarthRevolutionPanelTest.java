@@ -44,45 +44,91 @@ public class EarthRevolutionPanelTest extends TestCase {
 
     public void testInit() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals("Earth revolution (180°)", display.getLabel().getText());
+        assertEquals("Earth revolution (180°)", display.getCheckBox().getText());
         assertEquals(sun3D.getEarthRevolution(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRevolution((float) (Math.PI * 2));
         display = new EarthRevolutionPanel(sun3D);
-        assertEquals("Earth revolution (360°)", display.getLabel().getText());
+        assertEquals("Earth revolution (360°)", display.getCheckBox().getText());
         assertEquals(sun3D.getEarthRevolution(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRevolution((float) (Math.PI / 2));
         display = new EarthRevolutionPanel(sun3D);
-        assertEquals("Earth revolution (90°)", display.getLabel().getText());
+        assertEquals("Earth revolution (90°)", display.getCheckBox().getText());
         assertEquals(sun3D.getEarthRevolution(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRevolution((float) (Math.PI / 4));
         display = new EarthRevolutionPanel(sun3D);
-        assertEquals("Earth revolution (45°)", display.getLabel().getText());
+        assertEquals("Earth revolution (45°)", display.getCheckBox().getText());
         assertEquals(sun3D.getEarthRevolution(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
     }
 
     public void testUpdate() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals("Earth revolution (180°)", display.getLabel().getText());
+        assertEquals("Earth revolution (180°)", display.getCheckBox().getText());
         assertEquals(sun3D.getEarthRevolution(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRevolution((float) (Math.PI * 2));
         display.update(sun3D, SunUpdateCode.EARTH_REVOLUTION);
-        assertEquals("Earth revolution (360°)", display.getLabel().getText());
+        assertEquals("Earth revolution (360°)", display.getCheckBox().getText());
         assertEquals(sun3D.getEarthRevolution(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRevolution((float) (Math.PI / 2));
         display.update(sun3D, SunUpdateCode.EARTH_REVOLUTION);
-        assertEquals("Earth revolution (90°)", display.getLabel().getText());
+        assertEquals("Earth revolution (90°)", display.getCheckBox().getText());
         assertEquals(sun3D.getEarthRevolution(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRevolution((float) (Math.PI / 4));
         display.update(sun3D, SunUpdateCode.EARTH_REVOLUTION);
-        assertEquals("Earth revolution (45°)", display.getLabel().getText());
+        assertEquals("Earth revolution (45°)", display.getCheckBox().getText());
         assertEquals(sun3D.getEarthRevolution(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
+
+        display.setAutomatic(false);
+
+        sun3D.setEarthRevolution((float) (Math.PI / 2));
+        display.update(sun3D, SunUpdateCode.EARTH_REVOLUTION);
+        // the values should not change this time
+        assertEquals("Earth revolution (45°)", display.getCheckBox().getText());
+        assertEquals(Math.PI / 2, sun3D.getEarthRevolution(), 0.0050001);
+        assertEquals(Math.PI / 4, MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
     }
 
+    public void testStateChanged() {
+        // initial value
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0050001);
+        assertEquals("Earth revolution (180°)", display.getCheckBox().getText());
+
+        display.getSlider().setValue(90);
+        // stateChanged not called yet, so the value remains unchanged
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0050001);
+        assertEquals("Earth revolution (180°)", display.getCheckBox().getText());
+
+        display.stateChanged(null);
+        // stateChanged called, but the mode is automatic, so the value remains unchanged
+        assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0050001);
+        assertEquals("Earth revolution (180°)", display.getCheckBox().getText());
+
+        display.setAutomatic(false);
+        display.stateChanged(null);
+        // stateChanged called, and the mode is manual, so the value is updated
+        assertEquals((float) (Math.PI / 2), sun3D.getEarthRevolution(), 0.0050001);
+        assertEquals("Earth revolution (90°)", display.getCheckBox().getText());
+    }
+
+    public void testSetAutomatic() {
+        // initial state
+        assertFalse(display.getSlider().isEnabled());
+        assertTrue(sun3D.getEarthRevolutionTask().isAutomatic());
+
+        display.setAutomatic(true);
+        // should not change anything
+        assertFalse(display.getSlider().isEnabled());
+        assertTrue(sun3D.getEarthRevolutionTask().isAutomatic());
+
+        display.setAutomatic(false);
+        // the values are now inverted
+        assertTrue(display.getSlider().isEnabled());
+        assertFalse(sun3D.getEarthRevolutionTask().isAutomatic());
+    }
 
 }

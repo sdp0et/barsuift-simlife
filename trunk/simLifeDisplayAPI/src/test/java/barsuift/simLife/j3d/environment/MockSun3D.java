@@ -51,6 +51,8 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
 
     private Automatable earthRotationTask;
 
+    private Automatable earthRevolutionTask;
+
     public MockSun3D() {
         super(null);
         reset();
@@ -67,6 +69,7 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
         synchronizedCalled = 0;
         group = new BranchGroup();
         earthRotationTask = new MockAutomatable();
+        earthRevolutionTask = new MockAutomatable();
     }
 
     @Override
@@ -158,6 +161,15 @@ public class MockSun3D extends BasicPublisher implements Sun3D {
 
     public void setEarthRotationTask(Automatable earthRotationTask) {
         this.earthRotationTask = earthRotationTask;
+    }
+
+    @Override
+    public Automatable getEarthRevolutionTask() {
+        return earthRevolutionTask;
+    }
+
+    public void setEarthRevolutionTask(Automatable earthRevolutionTask) {
+        this.earthRevolutionTask = earthRevolutionTask;
     }
 
 }

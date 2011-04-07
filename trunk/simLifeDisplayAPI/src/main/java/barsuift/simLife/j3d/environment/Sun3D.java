@@ -80,6 +80,8 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
      */
     public void setEarthRevolution(float earthRevolution);
 
+    public Automatable getEarthRevolutionTask();
+
     /**
      * Get the sun height, ranged from -1 (nadir) to +1 (zenith)
      * 

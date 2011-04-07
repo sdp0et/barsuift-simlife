@@ -44,7 +44,7 @@ public class BasicUniverseContextTest extends TestCase {
         context.getUniverse().getUniverse3D().getSynchronizer().start();
         context.getUniverse().getUniverse3D().getSynchronizer().stop();
         // wait a little bit to ensure the time controller ends its treatments
-        Thread.sleep(600);
+        Thread.sleep(1500);
 
         assertEquals(state, context.getState());
         assertSame(state, context.getState());

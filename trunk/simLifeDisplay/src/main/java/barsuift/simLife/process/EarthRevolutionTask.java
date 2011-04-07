@@ -22,10 +22,10 @@ import barsuift.simLife.Automatable;
 import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.time.SimLifeDate;
 
-public class EarthRotationTask extends AbstractSplitConditionalTask implements Automatable {
+public class EarthRevolutionTask extends AbstractSplitConditionalTask implements Automatable {
 
-    protected final static double ROTATION_ANGLE_PER_MS = Math.PI * 2
-            / (SimLifeDate.MS_PER_SECOND * SimLifeDate.SECOND_PER_MINUTE * SimLifeDate.MINUTE_PER_DAY);
+    protected final static double REVOLUTION_ANGLE_PER_SECOND = Math.PI * 2
+            / (SimLifeDate.SECOND_PER_MINUTE * SimLifeDate.MINUTE_PER_DAY * SimLifeDate.DAY_PER_YEAR);
 
     private final Sun3D sun3D;
 
@@ -34,7 +34,7 @@ public class EarthRotationTask extends AbstractSplitConditionalTask implements A
     private boolean automatic;
 
 
-    public EarthRotationTask(SplitConditionalTaskState state, Sun3D sun3D, SimLifeDate date) {
+    public EarthRevolutionTask(SplitConditionalTaskState state, Sun3D sun3D, SimLifeDate date) {
         super(state);
         this.sun3D = sun3D;
         this.date = date;
@@ -49,14 +49,14 @@ public class EarthRotationTask extends AbstractSplitConditionalTask implements A
     }
 
     private void updateSunPosition() {
-        int msForDay = (date.getMinuteOfDay() * SimLifeDate.SECOND_PER_MINUTE + date.getSecondOfMinute())
-                * SimLifeDate.MS_PER_SECOND + date.getMillisOfSecond();
-        sun3D.setEarthRotation((float) (msForDay * ROTATION_ANGLE_PER_MS));
+        int daysForYear = (date.getMonthOfYear().getIndex() - 1) * SimLifeDate.DAY_PER_MONTH + date.getDayOfMonth() - 1;
+        int minutesForYear = daysForYear * SimLifeDate.MINUTE_PER_DAY + date.getMinuteOfDay();
+        int secondsForYear = minutesForYear * SimLifeDate.SECOND_PER_MINUTE + date.getSecondOfMinute();
+        sun3D.setEarthRevolution((float) (secondsForYear * REVOLUTION_ANGLE_PER_SECOND));
     }
 
     @Override
     public void setAutomatic(boolean automatic) {
-        System.out.println("Task.setAuto " + automatic);
         this.automatic = automatic;
         if (automatic) {
             updateSunPosition();

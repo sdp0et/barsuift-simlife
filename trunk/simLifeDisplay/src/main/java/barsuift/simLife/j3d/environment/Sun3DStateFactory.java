@@ -23,6 +23,7 @@ import barsuift.simLife.j3d.BoundingBoxState;
 import barsuift.simLife.j3d.util.BoundingBoxHelper;
 import barsuift.simLife.landscape.LandscapeParameters;
 import barsuift.simLife.process.ConditionalTaskStateFactory;
+import barsuift.simLife.process.EarthRevolutionTask;
 import barsuift.simLife.process.EarthRotationTask;
 import barsuift.simLife.process.SplitConditionalTaskState;
 
@@ -43,8 +44,10 @@ public class Sun3DStateFactory {
         ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
         SplitConditionalTaskState earthRotationTask = taskStateFactory
                 .createSplitConditionalTaskState(EarthRotationTask.class);
+        SplitConditionalTaskState earthRevolutionTask = taskStateFactory
+                .createSplitConditionalTaskState(EarthRevolutionTask.class);
         return new Sun3DState(bounds, planetParameters.getLatitude(), planetParameters.getEclipticObliquity(),
-                earthRotation, earthRotationTask, earthRevolution);
+                earthRotation, earthRotationTask, earthRevolution, earthRevolutionTask);
     }
 
 }
