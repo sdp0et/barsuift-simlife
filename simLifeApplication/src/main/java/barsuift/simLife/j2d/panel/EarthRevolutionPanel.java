@@ -64,7 +64,7 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
 
         checkbox = new JCheckBox();
         checkbox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        // FIXME the automatic flag must be stored in a state instance
+        // FIXME the automatic flag must be stored in a state instance (find a unit test about that !)
         setAutomatic(true);
         checkbox.setAction(new AutomaticAction(this));
         checkbox.setText(createLabelText());
