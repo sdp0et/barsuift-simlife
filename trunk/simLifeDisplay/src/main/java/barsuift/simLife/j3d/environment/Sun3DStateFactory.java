@@ -46,8 +46,11 @@ public class Sun3DStateFactory {
                 .createSplitConditionalTaskState(EarthRotationTask.class);
         SplitConditionalTaskState earthRevolutionTask = taskStateFactory
                 .createSplitConditionalTaskState(EarthRevolutionTask.class);
+        boolean earthRotationTaskAutomatic = true;
+        boolean earthRevolutionTaskAutomatic = true;
         return new Sun3DState(bounds, planetParameters.getLatitude(), planetParameters.getEclipticObliquity(),
-                earthRotation, earthRotationTask, earthRevolution, earthRevolutionTask);
+                earthRotation, earthRotationTask, earthRotationTaskAutomatic, earthRevolution, earthRevolutionTask,
+                earthRevolutionTaskAutomatic);
     }
 
 }

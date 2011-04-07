@@ -38,7 +38,7 @@ public class EarthRevolutionTask extends AbstractSplitConditionalTask implements
         super(state);
         this.sun3D = sun3D;
         this.date = date;
-        this.automatic = true;
+        this.automatic = sun3D.isEarthRevolutionTaskAutomatic();
     }
 
     @Override

@@ -118,17 +118,17 @@ public class EarthRevolutionPanelTest extends TestCase {
     public void testSetAutomatic() {
         // initial state
         assertFalse(display.getSlider().isEnabled());
-        assertTrue(sun3D.getEarthRevolutionTask().isAutomatic());
+        assertTrue(sun3D.isEarthRevolutionTaskAutomatic());
 
         display.setAutomatic(true);
         // should not change anything
         assertFalse(display.getSlider().isEnabled());
-        assertTrue(sun3D.getEarthRevolutionTask().isAutomatic());
+        assertTrue(sun3D.isEarthRevolutionTaskAutomatic());
 
         display.setAutomatic(false);
         // the values are now inverted
         assertTrue(display.getSlider().isEnabled());
-        assertFalse(sun3D.getEarthRevolutionTask().isAutomatic());
+        assertFalse(sun3D.isEarthRevolutionTaskAutomatic());
     }
 
 }

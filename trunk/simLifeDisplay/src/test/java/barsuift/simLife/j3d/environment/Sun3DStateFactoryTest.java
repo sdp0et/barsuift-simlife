@@ -23,6 +23,8 @@ public class Sun3DStateFactoryTest extends TestCase {
         assertEquals(0.0f, sunState.getEarthRotation(), 0.0001);
         assertEquals(0.0f, sunState.getEarthRevolution(), 0.0001);
         assertNotNull(sunState.getEarthRotationTask());
+        assertTrue(sunState.isEarthRotationTaskAutomatic());
+        assertTrue(sunState.isEarthRevolutionTaskAutomatic());
     }
 
 }
