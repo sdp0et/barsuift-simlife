@@ -64,8 +64,7 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
 
         checkbox = new JCheckBox();
         checkbox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        // FIXME the automatic flag must be stored in a state instance
-        setAutomatic(true);
+        setAutomatic(sun3D.isEarthRotationTaskAutomatic());
         checkbox.setAction(new AutomaticAction(this));
         checkbox.setText(createLabelText());
 
@@ -128,10 +127,9 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
 
     @Override
     public void setAutomatic(boolean automatic) {
-        System.out.println("Panel.setAuto " + automatic);
         this.automatic = automatic;
         earthRotationSlider.setEnabled(!automatic);
-        sun3D.getEarthRotationTask().setAutomatic(automatic);
+        sun3D.setEarthRotationTaskAutomatic(automatic);
     }
 
     @Override

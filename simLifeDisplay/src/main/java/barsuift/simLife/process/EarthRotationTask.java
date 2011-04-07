@@ -38,7 +38,7 @@ public class EarthRotationTask extends AbstractSplitConditionalTask implements A
         super(state);
         this.sun3D = sun3D;
         this.date = date;
-        this.automatic = true;
+        this.automatic = sun3D.isEarthRotationTaskAutomatic();
     }
 
     @Override
@@ -56,7 +56,6 @@ public class EarthRotationTask extends AbstractSplitConditionalTask implements A
 
     @Override
     public void setAutomatic(boolean automatic) {
-        System.out.println("Task.setAuto " + automatic);
         this.automatic = automatic;
         if (automatic) {
             updateSunPosition();

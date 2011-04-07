@@ -64,8 +64,7 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
 
         checkbox = new JCheckBox();
         checkbox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        // FIXME the automatic flag must be stored in a state instance (find a unit test about that !)
-        setAutomatic(true);
+        setAutomatic(sun3D.isEarthRevolutionTaskAutomatic());
         checkbox.setAction(new AutomaticAction(this));
         checkbox.setText(createLabelText());
 
@@ -130,7 +129,7 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
     public void setAutomatic(boolean automatic) {
         this.automatic = automatic;
         earthRevolutionSlider.setEnabled(!automatic);
-        sun3D.getEarthRevolutionTask().setAutomatic(automatic);
+        sun3D.setEarthRevolutionTaskAutomatic(automatic);
     }
 
     @Override

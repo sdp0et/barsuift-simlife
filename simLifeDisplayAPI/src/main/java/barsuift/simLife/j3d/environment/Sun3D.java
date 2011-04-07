@@ -59,6 +59,11 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
 
     public Automatable getEarthRotationTask();
 
+    public void setEarthRotationTaskAutomatic(boolean automatic);
+
+    public boolean isEarthRotationTaskAutomatic();
+
+
     /**
      * Earth revolution, in radian, in the range [0; 2Pi[.
      * <p>
@@ -81,6 +86,11 @@ public interface Sun3D extends Persistent<Sun3DState>, Publisher {
     public void setEarthRevolution(float earthRevolution);
 
     public Automatable getEarthRevolutionTask();
+
+    public void setEarthRevolutionTaskAutomatic(boolean automatic);
+
+    public boolean isEarthRevolutionTaskAutomatic();
+
 
     /**
      * Get the sun height, ranged from -1 (nadir) to +1 (zenith)

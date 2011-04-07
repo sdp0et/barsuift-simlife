@@ -30,6 +30,7 @@ import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.VectorTestHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.message.PublisherTestHelper;
+import barsuift.simLife.time.SimLifeDate;
 
 
 public class BasicSun3DTest extends TestCase {
@@ -61,6 +62,20 @@ public class BasicSun3DTest extends TestCase {
         sunLight = null;
         publisherHelper = null;
         universe3D = null;
+    }
+
+    public void testBasicSun3D() {
+        sun3DState = DisplayDataCreatorForTests.createSpecificSun3DState();
+        SimLifeDate date = new SimLifeDate();
+        date.setMinuteOfDay(10);
+        universe3D.setDate(date);
+        sun3D = new BasicSun3D(sun3DState, universe3D);
+
+        // The earth rotation is automatic, the value from the state is not used. the value is recomputed from the date
+        assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
+        assertEquals((float) (2 * Math.PI / 144), sun3D.getEarthRevolution(), 0.0001);
+        assertTrue(sun3D.isEarthRotationTaskAutomatic());
+        assertTrue(sun3D.isEarthRevolutionTaskAutomatic());
     }
 
     /**
@@ -106,6 +121,8 @@ public class BasicSun3DTest extends TestCase {
         sun3DState.setEarthRevolution((float) Math.PI / 2);
         // latitude = equator
         sun3DState.setLatitude(0);
+        sun3DState.setEarthRevolutionTaskAutomatic(false);
+        sun3DState.setEarthRotationTaskAutomatic(false);
         sun3D = new BasicSun3D(sun3DState, universe3D);
         sunLight = sun3D.getLight();
         CompilerHelper.compile(sunLight);
@@ -511,19 +528,35 @@ public class BasicSun3DTest extends TestCase {
     }
 
     public void testGetState() {
-        sun3DState = new Sun3DState();
+        sun3DState = DisplayDataCreatorForTests.createSpecificSun3DState();
+        SimLifeDate date = new SimLifeDate();
+        date.setMinuteOfDay(10);
+        universe3D.setDate(date);
         sun3D = new BasicSun3D(sun3DState, universe3D);
+
         assertEquals(sun3DState, sun3D.getState());
         assertSame(sun3DState, sun3D.getState());
-        assertEquals(0.0f, sun3D.getState().getEarthRotation(), 0.0001);
-        assertEquals(0.0f, sun3D.getState().getEarthRevolution(), 0.0001);
+        assertEquals((float) (Math.PI / 4), sun3D.getState().getLatitude(), 0.0001);
+        assertEquals((float) (Math.PI / 3), sun3D.getState().getEclipticObliquity(), 0.0001);
+        // The earth rotation is automatic, the value from the state is not used. the value is recomputed from the date
+        assertEquals((float) Math.PI, sun3D.getState().getEarthRotation(), 0.0001);
+        assertEquals((float) (2 * Math.PI / 144), sun3D.getState().getEarthRevolution(), 0.0001);
+        assertTrue(sun3D.getState().isEarthRotationTaskAutomatic());
+        assertTrue(sun3D.getState().isEarthRevolutionTaskAutomatic());
 
         sun3D.setEarthRotation(0.47f);
         sun3D.setEarthRevolution(0.39f);
+        sun3D.setEarthRevolutionTaskAutomatic(false);
+        sun3D.setEarthRotationTaskAutomatic(false);
+
         assertEquals(sun3DState, sun3D.getState());
         assertSame(sun3DState, sun3D.getState());
+        assertEquals((float) (Math.PI / 4), sun3D.getState().getLatitude(), 0.0001);
+        assertEquals((float) (Math.PI / 3), sun3D.getState().getEclipticObliquity(), 0.0001);
         assertEquals(0.47f, sun3D.getState().getEarthRotation(), 0.0001);
         assertEquals(0.39f, sun3D.getState().getEarthRevolution(), 0.0001);
+        assertFalse(sun3D.getState().isEarthRotationTaskAutomatic());
+        assertFalse(sun3D.getState().isEarthRevolutionTaskAutomatic());
     }
 
     public void testGetEarthRotation() {
@@ -537,6 +570,7 @@ public class BasicSun3DTest extends TestCase {
     }
 
     public void testAdjustEarthRotation() {
+        sun3DState.setEarthRotationTaskAutomatic(false);
         sun3DState.setEarthRotation((float) Math.PI);
         sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRotation(), 0.0001);
@@ -576,6 +610,7 @@ public class BasicSun3DTest extends TestCase {
 
 
     public void testAdjustEarthRevolution() {
+        sun3DState.setEarthRevolutionTaskAutomatic(false);
         sun3DState.setEarthRevolution((float) Math.PI);
         sun3D = new BasicSun3D(sun3DState, universe3D);
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
@@ -611,6 +646,36 @@ public class BasicSun3DTest extends TestCase {
 
         sun3D.setEarthRevolution(-(float) (3 * Math.PI));
         assertEquals((float) Math.PI, sun3D.getEarthRevolution(), 0.0001);
+    }
+
+    public void testSetEarthRotationTaskAutomatic() {
+        sun3DState = DisplayDataCreatorForTests.createSpecificSun3DState();
+        sun3D = new BasicSun3D(sun3DState, universe3D);
+        assertTrue(sun3D.isEarthRotationTaskAutomatic());
+        assertTrue(sun3D.getEarthRotationTask().isAutomatic());
+
+        sun3D.setEarthRotationTaskAutomatic(true);
+        assertTrue(sun3D.isEarthRotationTaskAutomatic());
+        assertTrue(sun3D.getEarthRotationTask().isAutomatic());
+
+        sun3D.setEarthRotationTaskAutomatic(false);
+        assertFalse(sun3D.isEarthRotationTaskAutomatic());
+        assertFalse(sun3D.getEarthRotationTask().isAutomatic());
+    }
+
+    public void testSetEarthRevolutionTaskAutomatic() {
+        sun3DState = DisplayDataCreatorForTests.createSpecificSun3DState();
+        sun3D = new BasicSun3D(sun3DState, universe3D);
+        assertTrue(sun3D.isEarthRevolutionTaskAutomatic());
+        assertTrue(sun3D.getEarthRevolutionTask().isAutomatic());
+
+        sun3D.setEarthRevolutionTaskAutomatic(true);
+        assertTrue(sun3D.isEarthRevolutionTaskAutomatic());
+        assertTrue(sun3D.getEarthRevolutionTask().isAutomatic());
+
+        sun3D.setEarthRevolutionTaskAutomatic(false);
+        assertFalse(sun3D.isEarthRevolutionTaskAutomatic());
+        assertFalse(sun3D.getEarthRevolutionTask().isAutomatic());
     }
 
 }

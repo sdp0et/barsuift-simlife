@@ -118,17 +118,17 @@ public class EarthRotationPanelTest extends TestCase {
     public void testSetAutomatic() {
         // initial state
         assertFalse(display.getSlider().isEnabled());
-        assertTrue(sun3D.getEarthRotationTask().isAutomatic());
+        assertTrue(sun3D.isEarthRotationTaskAutomatic());
 
         display.setAutomatic(true);
         // should not change anything
         assertFalse(display.getSlider().isEnabled());
-        assertTrue(sun3D.getEarthRotationTask().isAutomatic());
+        assertTrue(sun3D.isEarthRotationTaskAutomatic());
 
         display.setAutomatic(false);
         // the values are now inverted
         assertTrue(display.getSlider().isEnabled());
-        assertFalse(sun3D.getEarthRotationTask().isAutomatic());
+        assertFalse(sun3D.isEarthRotationTaskAutomatic());
     }
 
 }

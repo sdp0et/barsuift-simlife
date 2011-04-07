@@ -68,10 +68,14 @@ public class BasicSun3D implements Sun3D {
 
     private final EarthRotationTask earthRotationTask;
 
+    private boolean earthRotationTaskAutomatic;
+
     // angle in radian, from 0 to 2*Pi
     private float earthRevolution;
 
     private final EarthRevolutionTask earthRevolutionTask;
+
+    private boolean earthRevolutionTaskAutomatic;
 
     private BigDecimal brightness;
 
@@ -88,7 +92,6 @@ public class BasicSun3D implements Sun3D {
         earthRotationTransform = new Transform3D();
         earthRotation = state.getEarthRotation();
         adjustEarthRotation();
-        System.out.println("BasicSun3D.initial rotation = " + earthRotation);
         earthRotationTransform.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
         earthRotationTG = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
@@ -113,8 +116,11 @@ public class BasicSun3D implements Sun3D {
 
         this.earthRotationTask = new EarthRotationTask(state.getEarthRotationTask(), this, universe3D.getDate());
         universe3D.getSynchronizer().scheduleFast(earthRotationTask);
+        setEarthRotationTaskAutomatic(state.isEarthRotationTaskAutomatic());
+
         this.earthRevolutionTask = new EarthRevolutionTask(state.getEarthRevolutionTask(), this, universe3D.getDate());
         universe3D.getSynchronizer().scheduleFast(earthRevolutionTask);
+        setEarthRevolutionTaskAutomatic(state.isEarthRevolutionTaskAutomatic());
     }
 
     /**
@@ -142,7 +148,6 @@ public class BasicSun3D implements Sun3D {
     }
 
     public void setEarthRotation(float earthRotation) {
-        System.out.println("BasicSun3D.setEarthRotation " + earthRotation);
         this.earthRotation = earthRotation;
         adjustEarthRotation();
         earthRotationTransform.setRotation(new AxisAngle4d(earthRotationVector, this.earthRotation));
@@ -157,6 +162,15 @@ public class BasicSun3D implements Sun3D {
     @Override
     public Automatable getEarthRotationTask() {
         return earthRotationTask;
+    }
+
+    public void setEarthRotationTaskAutomatic(boolean automatic) {
+        this.earthRotationTaskAutomatic = automatic;
+        earthRotationTask.setAutomatic(automatic);
+    }
+
+    public boolean isEarthRotationTaskAutomatic() {
+        return earthRotationTaskAutomatic;
     }
 
     @Override
@@ -178,6 +192,15 @@ public class BasicSun3D implements Sun3D {
     @Override
     public Automatable getEarthRevolutionTask() {
         return earthRevolutionTask;
+    }
+
+    public void setEarthRevolutionTaskAutomatic(boolean automatic) {
+        this.earthRevolutionTaskAutomatic = automatic;
+        earthRevolutionTask.setAutomatic(automatic);
+    }
+
+    public boolean isEarthRevolutionTaskAutomatic() {
+        return earthRevolutionTaskAutomatic;
     }
 
     private void updateLightDirection() {
@@ -202,7 +225,6 @@ public class BasicSun3D implements Sun3D {
     }
 
     private void updateBrightness() {
-        System.out.println("BasicSun3D.updateBrightness. sunHeight=" + sunHeight);
         if (sunHeight < -SunSphere3D.RADIUS) {
             brightness = new BigDecimal(0);
         } else {
@@ -314,7 +336,11 @@ public class BasicSun3D implements Sun3D {
     public void synchronize() {
         // FIXME the tasks are not synchronized (which means it is not tested !!)
         state.setEarthRotation(earthRotation);
+        state.setEarthRotationTaskAutomatic(earthRotationTaskAutomatic);
+
         state.setEarthRevolution(earthRevolution);
+        state.setEarthRevolutionTaskAutomatic(earthRevolutionTaskAutomatic);
+
     }
 
 }

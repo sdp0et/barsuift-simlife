@@ -107,8 +107,10 @@ public final class DisplayDataCreatorForTests {
         SplitConditionalTaskState earthRotationTask = UtilDataCreatorForTests.createRandomSplitConditionalTaskState();
         float earthRevolution = (float) Randomizer.randomRotation();
         SplitConditionalTaskState earthRevolutionTask = UtilDataCreatorForTests.createRandomSplitConditionalTaskState();
-        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRotationTask, earthRevolution,
-                earthRevolutionTask);
+        boolean earthRotationTaskAutomatic = UtilDataCreatorForTests.createRandomBoolean();
+        boolean earthRevolutionTaskAutomatic = UtilDataCreatorForTests.createRandomBoolean();
+        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRotationTask,
+                earthRotationTaskAutomatic, earthRevolution, earthRevolutionTask, earthRevolutionTaskAutomatic);
     }
 
     /**
@@ -118,6 +120,8 @@ public final class DisplayDataCreatorForTests {
      * <li>ecliptic obliquity=Pi/3</li>
      * <li>earth rotation=3*Pi/4</li>
      * <li>earth revolution=Pi</li>
+     * <li>earth rotation task automatic = true</li>
+     * <li>earth revolution task automatic = true</li>
      * </ul>
      */
     public static Sun3DState createSpecificSun3DState() {
@@ -129,8 +133,10 @@ public final class DisplayDataCreatorForTests {
         float earthRevolution = (float) Math.PI;
         SplitConditionalTaskState earthRevolutionTask = UtilDataCreatorForTests
                 .createSpecificSplitConditionalTaskState();
-        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRotationTask, earthRevolution,
-                earthRevolutionTask);
+        boolean earthRotationTaskAutomatic = true;
+        boolean earthRevolutionTaskAutomatic = true;
+        return new Sun3DState(bounds, latitude, eclipticObliquity, earthRotation, earthRotationTask,
+                earthRotationTaskAutomatic, earthRevolution, earthRevolutionTask, earthRevolutionTaskAutomatic);
     }
 
     public static Environment3DState createRandomEnvironment3DState() {
