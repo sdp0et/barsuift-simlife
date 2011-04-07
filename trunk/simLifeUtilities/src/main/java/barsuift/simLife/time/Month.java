@@ -50,11 +50,16 @@ public enum Month {
         this.name = name;
     }
 
+    /**
+     * Return the month index, in the range between 1 and 4
+     * 
+     * @return
+     */
     public int getIndex() {
         return index;
     }
 
-    public String geTName() {
+    public String getName() {
         return name;
     }
 
