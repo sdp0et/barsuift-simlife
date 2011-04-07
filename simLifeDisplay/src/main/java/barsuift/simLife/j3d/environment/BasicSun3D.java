@@ -37,10 +37,9 @@ import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.message.BasicPublisher;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.message.Subscriber;
+import barsuift.simLife.process.EarthRevolutionTask;
 import barsuift.simLife.process.EarthRotationTask;
 
-// TODO 001. make the earth revolution depends on the time of day (dynamic)
-// TODO 002. be able to disable the earth revolution slider
 // TODO 003. display values for sliders on creation parameters window
 public class BasicSun3D implements Sun3D {
 
@@ -72,6 +71,8 @@ public class BasicSun3D implements Sun3D {
     // angle in radian, from 0 to 2*Pi
     private float earthRevolution;
 
+    private final EarthRevolutionTask earthRevolutionTask;
+
     private BigDecimal brightness;
 
     public BasicSun3D(Sun3DState state, Universe3D universe3D) {
@@ -87,6 +88,7 @@ public class BasicSun3D implements Sun3D {
         earthRotationTransform = new Transform3D();
         earthRotation = state.getEarthRotation();
         adjustEarthRotation();
+        System.out.println("BasicSun3D.initial rotation = " + earthRotation);
         earthRotationTransform.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
         earthRotationTG = new TransformGroup();
         // this is to allow the sun disk to be rotated while live
@@ -111,6 +113,8 @@ public class BasicSun3D implements Sun3D {
 
         this.earthRotationTask = new EarthRotationTask(state.getEarthRotationTask(), this, universe3D.getDate());
         universe3D.getSynchronizer().scheduleFast(earthRotationTask);
+        this.earthRevolutionTask = new EarthRevolutionTask(state.getEarthRevolutionTask(), this, universe3D.getDate());
+        universe3D.getSynchronizer().scheduleFast(earthRevolutionTask);
     }
 
     /**
@@ -138,9 +142,10 @@ public class BasicSun3D implements Sun3D {
     }
 
     public void setEarthRotation(float earthRotation) {
+        System.out.println("BasicSun3D.setEarthRotation " + earthRotation);
         this.earthRotation = earthRotation;
         adjustEarthRotation();
-        earthRotationTransform.setRotation(new AxisAngle4d(earthRotationVector, earthRotation));
+        earthRotationTransform.setRotation(new AxisAngle4d(earthRotationVector, this.earthRotation));
         earthRotationTG.setTransform(earthRotationTransform);
         setChanged();
         notifySubscribers(SunUpdateCode.EARTH_ROTATION);
@@ -149,14 +154,17 @@ public class BasicSun3D implements Sun3D {
         // no need to update brightness and color because they are already updated with sun height
     }
 
+    @Override
     public Automatable getEarthRotationTask() {
         return earthRotationTask;
     }
 
+    @Override
     public float getEarthRevolution() {
         return earthRevolution;
     }
 
+    @Override
     public void setEarthRevolution(float earthRevolution) {
         this.earthRevolution = earthRevolution;
         adjustEarthRevolution();
@@ -165,7 +173,11 @@ public class BasicSun3D implements Sun3D {
         notifySubscribers(SunUpdateCode.EARTH_REVOLUTION);
         updateSunHeight();
         // no need to update brightness and color because they are already updated with sun height
+    }
 
+    @Override
+    public Automatable getEarthRevolutionTask() {
+        return earthRevolutionTask;
     }
 
     private void updateLightDirection() {
@@ -190,6 +202,7 @@ public class BasicSun3D implements Sun3D {
     }
 
     private void updateBrightness() {
+        System.out.println("BasicSun3D.updateBrightness. sunHeight=" + sunHeight);
         if (sunHeight < -SunSphere3D.RADIUS) {
             brightness = new BigDecimal(0);
         } else {
@@ -226,6 +239,7 @@ public class BasicSun3D implements Sun3D {
         // no need to recompute the sun color, as it is recomputed after the brightness anyway
     }
 
+    @Override
     public float getHeight() {
         return sunHeight;
     }
@@ -245,38 +259,47 @@ public class BasicSun3D implements Sun3D {
         return group;
     }
 
+    @Override
     public void addSubscriber(Subscriber subscriber) {
         publisher.addSubscriber(subscriber);
     }
 
+    @Override
     public void deleteSubscriber(Subscriber subscriber) {
         publisher.deleteSubscriber(subscriber);
     }
 
+    @Override
     public void notifySubscribers() {
         publisher.notifySubscribers();
     }
 
+    @Override
     public void notifySubscribers(Object arg) {
         publisher.notifySubscribers(arg);
     }
 
+    @Override
     public void deleteSubscribers() {
         publisher.deleteSubscribers();
     }
 
+    @Override
     public boolean hasChanged() {
         return publisher.hasChanged();
     }
 
+    @Override
     public int countSubscribers() {
         return publisher.countSubscribers();
     }
 
+    @Override
     public void setChanged() {
         publisher.setChanged();
     }
 
+    @Override
     public void clearChanged() {
         publisher.clearChanged();
     }
@@ -289,6 +312,7 @@ public class BasicSun3D implements Sun3D {
 
     @Override
     public void synchronize() {
+        // FIXME the tasks are not synchronized (which means it is not tested !!)
         state.setEarthRotation(earthRotation);
         state.setEarthRevolution(earthRevolution);
     }
