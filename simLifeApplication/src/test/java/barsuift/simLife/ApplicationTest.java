@@ -85,6 +85,8 @@ public class ApplicationTest extends TestCase {
     public void testOpen() throws Exception {
         AllParameters parameters = new AllParameters();
         parameters.random();
+        // this is only to improve test performance
+        parameters.getLandscape().setSize(32);
 
         // create a test file to be read
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
@@ -94,7 +96,6 @@ public class ApplicationTest extends TestCase {
         // now try to read it
         application.openUniverse(saveFile);
         UniverseContext universeContext2 = application.getUniverseContext();
-        application.getUniverseContext();
         assertEquals(universeContext.getState(), universeContext2.getState());
     }
 
