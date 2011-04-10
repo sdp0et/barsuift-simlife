@@ -334,10 +334,11 @@ public class BasicSun3D implements Sun3D {
 
     @Override
     public void synchronize() {
-        // FIXME the tasks are not synchronized (which means it is not tested !!)
+        earthRevolutionTask.synchronize();
         state.setEarthRotation(earthRotation);
         state.setEarthRotationTaskAutomatic(earthRotationTaskAutomatic);
 
+        earthRevolutionTask.synchronize();
         state.setEarthRevolution(earthRevolution);
         state.setEarthRevolutionTaskAutomatic(earthRevolutionTaskAutomatic);
 
