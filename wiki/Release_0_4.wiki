@@ -2,6 +2,8 @@
 
 This is an intermediary release. The interesting part of the application has not changed a lot.
 
+*Release date* : 11th October 2011
+
 = New features =
 
   * Addition of this change-log
