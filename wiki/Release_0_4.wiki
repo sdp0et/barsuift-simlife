@@ -2,7 +2,7 @@
 
 This is an intermediary release. The interesting part of the application has not changed a lot.
 
-*Release date* : 11th October 2011
+*Release date* : 11^th^ October 2010
 
 = New features =
 
