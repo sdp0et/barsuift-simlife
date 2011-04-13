@@ -1,0 +1,27 @@
+#summary The release note for the release 0.6
+
+This is yet another an intermediary release, focused on planet management.
+The rest of the application has not changed a lot.
+
+*Release date* : _to be released_
+
+= New features =
+
+  * Improve the navigation controls
+    * navigation style is first-person style
+    * create a walking mode and a fly mode
+  * Add terrain generation
+    * the terrain is a square whose sides are a power of 2
+    * random terrain generation using the midpoint displacement algorithm
+    * new menu entry to create a terrain from user input parameters (size, erosion, roughness, height, ...)
+    * many thanks to code from Ardor3D (http://www.ardor3d.com) for its `MidPointHeightMapGenerator` class !
+  * Add logging utility
+    * log file is written in `$HOME/.barsuift-simlife/barsuift-simlife-<n>.log`
+  * Randomize the number of trees and their positioning
+    * the number of trees depends on the world size
+  * Add proper management of the sun, depending on terrain latitude and planet ecliptic obliquity
+
+
+= Bug fixes =
+
+  * None yet
