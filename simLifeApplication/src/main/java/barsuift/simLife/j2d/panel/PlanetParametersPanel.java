@@ -21,6 +21,7 @@ package barsuift.simLife.j2d.panel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.text.MessageFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -30,15 +31,23 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import barsuift.simLife.MathHelper;
 import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j2d.ParametersDependent;
 
 
-public class PlanetParametersPanel extends JPanel implements ParametersDependent {
+public class PlanetParametersPanel extends JPanel implements ChangeListener, ParametersDependent {
 
     private static final long serialVersionUID = 4471355030694189610L;
+
+    private static final MessageFormat LATITUDE_LABEL_FORMAT = new MessageFormat("Latitude ({0}°)");
+
+    private static final MessageFormat ECLIPTIC_OBLIQUITY_LABEL_FORMAT = new MessageFormat(
+            "Planet Ecliptic Obliquity ({0}°)");
+
 
     private final PlanetParameters parameters;
 
@@ -47,10 +56,14 @@ public class PlanetParametersPanel extends JPanel implements ParametersDependent
      */
     private final JSlider latitudeSlider;
 
+    private final JLabel latitudeLabel;
+
     /**
      * the slider value is in degree
      */
     private final JSlider eclipticObliquitySlider;
+
+    private final JLabel eclipticObliquityLabel;
 
     public PlanetParametersPanel(PlanetParameters parameters) {
         super();
@@ -62,43 +75,80 @@ public class PlanetParametersPanel extends JPanel implements ParametersDependent
         TitledBorder titledBorder = BorderFactory.createTitledBorder(blacklineBorder, "Planet");
         setBorder(titledBorder);
 
-        latitudeSlider = createLatitudeSlider(parameters);
-        eclipticObliquitySlider = createEclipticObliquitySlider(parameters);
+        this.latitudeSlider = createLatitudeSlider(parameters);
+        this.latitudeLabel = createLabel(createLatitudeLabelText());
+        this.eclipticObliquitySlider = createEclipticObliquitySlider(parameters);
+        this.eclipticObliquityLabel = createLabel(createEclipticObliquityLabelText());
 
-        add(createLabel("Latitude (degrees)"));
+        add(latitudeLabel);
         add(latitudeSlider);
-
         add(Box.createRigidArea(new Dimension(0, 20)));
-
-        add(createLabel("Planet Ecliptic Obliquity (degrees)"));
+        add(eclipticObliquityLabel);
         add(eclipticObliquitySlider);
     }
 
     private JSlider createLatitudeSlider(PlanetParameters parameters) {
-        JSlider latitudeSlider = new JSlider(JSlider.HORIZONTAL, Math.round(MathHelper
-                .toDegree(PlanetParameters.LATITUDE_MIN)), Math.round(MathHelper
-                .toDegree(PlanetParameters.LATITUDE_MAX)), Math.round(MathHelper.toDegree(parameters.getLatitude())));
-        latitudeSlider.setPaintTicks(true);
-        latitudeSlider.setMajorTickSpacing(10);
-        latitudeSlider.setPaintLabels(true);
-        return latitudeSlider;
+        JSlider slider = new JSlider(JSlider.HORIZONTAL,
+                Math.round(MathHelper.toDegree(PlanetParameters.LATITUDE_MIN)), Math.round(MathHelper
+                        .toDegree(PlanetParameters.LATITUDE_MAX)), Math.round(MathHelper.toDegree(parameters
+                        .getLatitude())));
+        slider.addChangeListener(this);
+        slider.setPaintTicks(true);
+        slider.setMajorTickSpacing(10);
+        slider.setPaintLabels(true);
+        return slider;
     }
 
     private JSlider createEclipticObliquitySlider(PlanetParameters parameters) {
-        JSlider eclipticObliquitySlider = new JSlider(JSlider.HORIZONTAL, Math.round(MathHelper
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, Math.round(MathHelper
                 .toDegree(PlanetParameters.ECLIPTIC_OBLIQUITY_MIN)), Math.round(MathHelper
                 .toDegree(PlanetParameters.ECLIPTIC_OBLIQUITY_MAX)), Math.round(MathHelper.toDegree(parameters
                 .getEclipticObliquity())));
-        eclipticObliquitySlider.setPaintTicks(true);
-        eclipticObliquitySlider.setMajorTickSpacing(10);
-        eclipticObliquitySlider.setPaintLabels(true);
-        return eclipticObliquitySlider;
+        slider.addChangeListener(this);
+        slider.setPaintTicks(true);
+        slider.setMajorTickSpacing(10);
+        slider.setPaintLabels(true);
+        return slider;
     }
 
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text, JLabel.CENTER);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
+    }
+
+    private String createLatitudeLabelText() {
+        return LATITUDE_LABEL_FORMAT.format(new Object[] { latitudeSlider.getValue() });
+    }
+
+    private String createEclipticObliquityLabelText() {
+        return ECLIPTIC_OBLIQUITY_LABEL_FORMAT.format(new Object[] { eclipticObliquitySlider.getValue() });
+    }
+
+    protected String getLatitudeText() {
+        return latitudeLabel.getText();
+    }
+
+    protected JSlider getLatitudeSlider() {
+        return latitudeSlider;
+    }
+
+    protected String getEclipticObliquityText() {
+        return eclipticObliquityLabel.getText();
+    }
+
+    protected JSlider getEclipticObliquitySlider() {
+        return eclipticObliquitySlider;
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if (e.getSource() == latitudeSlider) {
+            latitudeLabel.setText(createLatitudeLabelText());
+        }
+        if (e.getSource() == eclipticObliquitySlider) {
+            eclipticObliquityLabel.setText(createEclipticObliquityLabelText());
+        }
     }
 
     @Override
