@@ -19,6 +19,7 @@
 package barsuift.simLife.j2d.panel;
 
 import junit.framework.TestCase;
+import barsuift.simLife.MathHelper;
 import barsuift.simLife.PlanetParameters;
 
 
@@ -45,6 +46,48 @@ public class PlanetParametersPanelTest extends TestCase {
         panel.writeIntoParameters();
         assertEquals(originalParameters.getLatitude(), parameters.getLatitude(), 0.01);
         assertEquals(originalParameters.getEclipticObliquity(), parameters.getEclipticObliquity(), 0.01);
+    }
+
+    public void testInit() {
+        PlanetParameters parameters = new PlanetParameters();
+        PlanetParametersPanel panel = new PlanetParametersPanel(parameters);
+
+        assertEquals("Latitude (45°)", panel.getLatitudeText());
+        assertEquals(parameters.getLatitude(), MathHelper.toRadian(panel.getLatitudeSlider().getValue()), 0.01);
+        assertEquals("Planet Ecliptic Obliquity (23°)", panel.getEclipticObliquityText());
+        assertEquals(parameters.getEclipticObliquity(),
+                MathHelper.toRadian(panel.getEclipticObliquitySlider().getValue()), 0.01);
+
+
+        parameters = new PlanetParameters();
+        parameters.setLatitude((float) (Math.PI / 3));
+        parameters.setEclipticObliquity((float) (Math.PI / 4));
+        panel = new PlanetParametersPanel(parameters);
+
+        assertEquals("Latitude (60°)", panel.getLatitudeText());
+        assertEquals(parameters.getLatitude(), MathHelper.toRadian(panel.getLatitudeSlider().getValue()), 0.01);
+        assertEquals("Planet Ecliptic Obliquity (45°)", panel.getEclipticObliquityText());
+        assertEquals(parameters.getEclipticObliquity(),
+                MathHelper.toRadian(panel.getEclipticObliquitySlider().getValue()), 0.01);
+    }
+
+    public void testStateChanged() {
+        PlanetParameters parameters = new PlanetParameters();
+        PlanetParametersPanel panel = new PlanetParametersPanel(parameters);
+
+        // initial value
+        assertEquals("Latitude (45°)", panel.getLatitudeText());
+        assertEquals("Planet Ecliptic Obliquity (23°)", panel.getEclipticObliquityText());
+
+        // stateChanged is automatically called
+        panel.getLatitudeSlider().setValue(60);
+        assertEquals("Latitude (60°)", panel.getLatitudeText());
+        assertEquals("Planet Ecliptic Obliquity (23°)", panel.getEclipticObliquityText());
+
+        // stateChanged is automatically called
+        panel.getEclipticObliquitySlider().setValue(88);
+        assertEquals("Latitude (60°)", panel.getLatitudeText());
+        assertEquals("Planet Ecliptic Obliquity (88°)", panel.getEclipticObliquityText());
     }
 
 }
