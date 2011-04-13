@@ -117,8 +117,8 @@ public class EarthRevolutionPanel extends JPanel implements ChangeListener, Subs
         }
     }
 
-    protected JCheckBox getCheckBox() {
-        return checkbox;
+    protected String getText() {
+        return checkbox.getText();
     }
 
     protected JSlider getSlider() {

@@ -44,43 +44,43 @@ public class EarthRotationPanelTest extends TestCase {
 
     public void testInit() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals("Earth rotation (135°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (135°)", display.getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRotation((float) (Math.PI * 2));
         display = new EarthRotationPanel(sun3D);
-        assertEquals("Earth rotation (360°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (360°)", display.getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRotation((float) (Math.PI / 2));
         display = new EarthRotationPanel(sun3D);
-        assertEquals("Earth rotation (90°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (90°)", display.getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRotation((float) (Math.PI / 4));
         display = new EarthRotationPanel(sun3D);
-        assertEquals("Earth rotation (45°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (45°)", display.getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
     }
 
     public void testUpdate() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals("Earth rotation (135°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (135°)", display.getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRotation((float) (Math.PI * 2));
         display.update(sun3D, SunUpdateCode.EARTH_ROTATION);
-        assertEquals("Earth rotation (360°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (360°)", display.getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRotation((float) (Math.PI / 2));
         display.update(sun3D, SunUpdateCode.EARTH_ROTATION);
-        assertEquals("Earth rotation (90°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (90°)", display.getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         sun3D.setEarthRotation((float) (Math.PI / 4));
         display.update(sun3D, SunUpdateCode.EARTH_ROTATION);
-        assertEquals("Earth rotation (45°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (45°)", display.getText());
         assertEquals(sun3D.getEarthRotation(), MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
 
         display.setAutomatic(false);
@@ -88,7 +88,7 @@ public class EarthRotationPanelTest extends TestCase {
         sun3D.setEarthRotation((float) (Math.PI / 2));
         display.update(sun3D, SunUpdateCode.EARTH_ROTATION);
         // the values should not change this time
-        assertEquals("Earth rotation (45°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (45°)", display.getText());
         assertEquals(Math.PI / 2, sun3D.getEarthRotation(), 0.0050001);
         assertEquals(Math.PI / 4, MathHelper.toRadian(display.getSlider().getValue()), 0.0050001);
     }
@@ -96,23 +96,23 @@ public class EarthRotationPanelTest extends TestCase {
     public void testStateChanged() {
         // initial value
         assertEquals((float) (3 * Math.PI / 4), sun3D.getEarthRotation(), 0.0050001);
-        assertEquals("Earth rotation (135°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (135°)", display.getText());
 
         display.getSlider().setValue(90);
         // stateChanged not called yet, so the value remains unchanged
         assertEquals((float) (3 * Math.PI / 4), sun3D.getEarthRotation(), 0.0050001);
-        assertEquals("Earth rotation (135°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (135°)", display.getText());
 
         display.stateChanged(null);
         // stateChanged called, but the mode is automatic, so the value remains unchanged
         assertEquals((float) (3 * Math.PI / 4), sun3D.getEarthRotation(), 0.0050001);
-        assertEquals("Earth rotation (135°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (135°)", display.getText());
 
         display.setAutomatic(false);
         display.stateChanged(null);
         // stateChanged called, and the mode is manual, so the value is updated
         assertEquals((float) (Math.PI / 2), sun3D.getEarthRotation(), 0.0050001);
-        assertEquals("Earth rotation (90°)", display.getCheckBox().getText());
+        assertEquals("Earth rotation (90°)", display.getText());
     }
 
     public void testSetAutomatic() {
