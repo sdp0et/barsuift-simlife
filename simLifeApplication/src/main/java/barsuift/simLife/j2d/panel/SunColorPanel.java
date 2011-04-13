@@ -79,10 +79,6 @@ public class SunColorPanel extends JPanel implements Subscriber {
         return sliderLabel;
     }
 
-    protected JLabel getLabel() {
-        return sliderLabel;
-    }
-
     protected JSlider getSlider() {
         return slider;
     }

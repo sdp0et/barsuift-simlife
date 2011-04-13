@@ -117,8 +117,8 @@ public class EarthRotationPanel extends JPanel implements ChangeListener, Subscr
         }
     }
 
-    protected JCheckBox getCheckBox() {
-        return checkbox;
+    protected String getText() {
+        return checkbox.getText();
     }
 
     protected JSlider getSlider() {
