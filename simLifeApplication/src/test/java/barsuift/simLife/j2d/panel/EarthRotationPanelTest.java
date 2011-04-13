@@ -99,12 +99,12 @@ public class EarthRotationPanelTest extends TestCase {
         assertEquals("Earth rotation (135°)", display.getText());
 
         display.getSlider().setValue(90);
-        // stateChanged not called yet, so the value remains unchanged
+        // stateChanged automatically called, but the mode is automatic, so the value remains unchanged
         assertEquals((float) (3 * Math.PI / 4), sun3D.getEarthRotation(), 0.0050001);
         assertEquals("Earth rotation (135°)", display.getText());
 
         display.stateChanged(null);
-        // stateChanged called, but the mode is automatic, so the value remains unchanged
+        // force stateChanged call, but the mode is still automatic, so the value remains unchanged
         assertEquals((float) (3 * Math.PI / 4), sun3D.getEarthRotation(), 0.0050001);
         assertEquals("Earth rotation (135°)", display.getText());
 
@@ -113,6 +113,11 @@ public class EarthRotationPanelTest extends TestCase {
         // stateChanged called, and the mode is manual, so the value is updated
         assertEquals((float) (Math.PI / 2), sun3D.getEarthRotation(), 0.0050001);
         assertEquals("Earth rotation (90°)", display.getText());
+
+        display.getSlider().setValue(45);
+        // stateChanged automatically called, and the mode is manual, so the value is updated
+        assertEquals((float) (Math.PI / 4), sun3D.getEarthRotation(), 0.0050001);
+        assertEquals("Earth rotation (45°)", display.getText());
     }
 
     public void testSetAutomatic() {
