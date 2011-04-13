@@ -40,7 +40,6 @@ import barsuift.simLife.message.Subscriber;
 import barsuift.simLife.process.EarthRevolutionTask;
 import barsuift.simLife.process.EarthRotationTask;
 
-// TODO 003. display values for sliders on creation parameters window
 public class BasicSun3D implements Sun3D {
 
     private final Sun3DState state;
