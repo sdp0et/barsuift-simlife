@@ -2,6 +2,8 @@
 
 This is the very first version of barsuift-simlife. Its acts as a proof of concept version.
 
+*Release date* : 18th August 2010
+
 = New features =
 
   * Trees are generated randomly
