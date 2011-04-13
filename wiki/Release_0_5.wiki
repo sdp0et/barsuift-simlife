@@ -3,6 +3,8 @@
 This is yet another an intermediary release, focused on time management.
 The rest of the application has not changed a lot.
 
+*Release date* : 18^th^ November 2010
+
 = New features =
 
   * Replace the calendar system with a simpler date system
