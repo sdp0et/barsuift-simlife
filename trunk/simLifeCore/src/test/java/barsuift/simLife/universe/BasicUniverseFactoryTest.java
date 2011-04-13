@@ -34,6 +34,8 @@ public class BasicUniverseFactoryTest extends TestCase {
     public void testPopulateEmptyUniverse() {
         AllParameters parameters = new AllParameters();
         parameters.random();
+        // for test performance, limit landscape size to minimum
+        parameters.getLandscape().setSize(32);
 
         UniverseStateFactory universeStateFactory = new UniverseStateFactory();
         UniverseState universeState = universeStateFactory.createEmptyRandomUniverseState(parameters);
