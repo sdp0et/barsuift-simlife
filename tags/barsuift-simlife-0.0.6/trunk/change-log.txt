@@ -1,0 +1,108 @@
+# barsuift-simlife
+
+
+
+--------------------------------------------------
+---                    v0.6                    ---
+--------------------------------------------------
+
+New features
+------------
+Improve the navigation controls
+  * navigation style is first-person style
+  * create a walking mode and a fly mode
+Add terrain generation
+  * the terrain is a square whose sides are a power of 2
+  * random terrain generation using the midpoint displacement algorithm
+  * new menu entry to create a terrain from user input parameters (size, erosion, roughness, height, ...)
+  * many thanks to code from Ardor3D (http://www.ardor3d.com) for its MidPointHeightMapGenerator class !
+Add logging utility
+  * log file is written in $HOME/.barsuift-simlife/barsuift-simlife-<n>.log
+Randomize the number of trees and their positioning
+  * the number of trees depends on the world size
+Add proper management of the sun position, depending on terrain latitude and planet ecliptic obliquity
+
+
+Bug fixes
+---------
+None yet
+
+
+
+--------------------------------------------------
+---                    v0.5                    ---
+--------------------------------------------------
+
+This is yet another an intermediary release, focused on time management.
+The rest of the application has not changed a lot.
+
+
+New features
+------------
+Replace the calendar system with a simpler date system
+Important internal rework to get rid of Observable/Observer and use homemade Publisher/Subscriber instead
+Important internal rework to add a synchronization framework to manage concurrent continuous actions
+Use of this synchronization framework for falling leaves, so they follow application speed. they can also be stopped.
+File menu actions now stop the application before executing its actions
+Addition of a "Very fast" speed radio button (and rename others to "Normal" and "Fast")
+When changing speed, stop the application if running, set the new value, and restart if it was running
+
+
+Bug fixes
+---------
+None yet
+
+
+
+--------------------------------------------------
+---                    v0.4                    ---
+--------------------------------------------------
+
+This is an intermediary release. The interesting part of the application has not changed a lot.
+
+
+New features
+------------
+Addition of this change-log
+Important rework of inner code for better design and performance
+Ability to show/hide FPS (new menu item), stored in save file
+Ability to show/hide the axis (new menu item), stored in save file
+The camera position and angle of view is stored in save file
+Ability to reset the camera to its original point of view (new menu item)
+Ability to reset the camera view angle to nominal one (along Z axis, parallel to the ground, and at 2 meters high)
+Improvement of the "File" menu to prevent potential IllegalStateException
+Improvement of the "File" menu to allow "Save" item to behave as "Save As..." item if no current save file is known
+Addition of a help menu to display navigation keys
+Addition of a speed switch radio button
+Addition of a MAX_ENERGY limit for leaf, branchPart, branch and tree
+#### Add a calendar system (not used yet)
+
+
+Bug fixes
+---------
+Fix some unit tests that were generating errors randomly
+
+
+--------------------------------------------------
+---                    v0.3                    ---
+--------------------------------------------------
+This is the very first version of barsuift-simlife. Its acts as a proof of concept version.
+
+New features
+------------
+Trees are generated randomly
+Leaves can grow ?
+Leaves are getting older and less efficient with time
+Leaves can use solar energy to get back strength (efficiency)
+Leaves fall when too weak
+Sun can be manually moved in the sky. Its light gets red with sunset and sunrise
+A time counter shows the simulation time
+The universe can be saved in xml files and loaded from xml files
+The application is managed by Maven
+The application can generate a distribution zip with the application and required libs
+The application generates an exe to run itself
+The application is hosted on Google Code and version controlled
+
+Bug fixes
+---------
+None, as it is the first version
