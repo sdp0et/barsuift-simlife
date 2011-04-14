@@ -55,7 +55,11 @@ public class ApplicationTest extends TestCase {
         } catch (IllegalStateException e) {
             // OK expected exception
         }
-        application.createEmptyRandomUniverse();
+        // this is for test performance
+        AllParameters parameters = new AllParameters();
+        parameters.random();
+        parameters.getLandscape().setSize(32);
+        application.createEmptyRandomUniverse(parameters);
         UniverseContext universeContext = application.getUniverseContext();
         Universe universe = universeContext.getUniverse();
         // now there is a current universe, but still no current save file
