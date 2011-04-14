@@ -3,7 +3,7 @@
 	<groupId>barsuift.simLife</groupId>
 	<artifactId>barsuift-simlife</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.6-SNAPSHOT</version>
 	<name>simLife module aggregator</name>
 	<description>Aggregator for the simLife project modules</description>
 	<url>http://cyrille.gachot.free.fr/</url>
