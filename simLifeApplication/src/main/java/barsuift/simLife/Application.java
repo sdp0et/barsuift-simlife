@@ -64,7 +64,7 @@ public class Application implements Publisher {
         }
     }
 
-    private void createEmptyRandomUniverse(AllParameters parameters) {
+    protected void createEmptyRandomUniverse(AllParameters parameters) {
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         this.currentUniverseContext = factory.createEmptyRandom(parameters);
         this.currentSaveFile = null;
