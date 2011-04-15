@@ -95,11 +95,11 @@
 	</build>
 
 	<distributionManagement>
-		<repository>
+		<!--repository>
 			<id>java.net-m2-repository</id>
 			<url>java-net:/maven2-repository/trunk/repository/</url>
 			<uniqueVersion>false</uniqueVersion>
-		</repository>
+		</repository-->
 		<!--site>
 			<id>cyrille.gachot.free.website</id>
 			<name>Cyrille Gachot Personal Website</name>
