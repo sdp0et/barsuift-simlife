@@ -47,6 +47,8 @@ public class UniverseContextIOTest extends TestCase {
     public void testWriteAndReadRandom() throws Exception {
         AllParameters parameters = new AllParameters();
         parameters.random();
+        // for tests performance
+        parameters.getLandscape().setSize(32);
 
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         UniverseContext universeContext = factory.createPopulatedRandom(parameters);
@@ -58,6 +60,8 @@ public class UniverseContextIOTest extends TestCase {
     public void testWriteAndReadEmpty() throws Exception {
         AllParameters parameters = new AllParameters();
         parameters.random();
+        // for tests performance
+        parameters.getLandscape().setSize(32);
 
         BasicUniverseContextFactory factory = new BasicUniverseContextFactory();
         UniverseContext universeContext = factory.createEmptyRandom(parameters);
