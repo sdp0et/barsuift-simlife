@@ -2,53 +2,53 @@
 	<parent>
 		<artifactId>barsuift-simlife</artifactId>
 		<groupId>barsuift.simLife</groupId>
-		<version>0.0.7-SNAPSHOT</version>
+		<version>0.0.6-01</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>simLifeDisplay</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.6-01</version>
 	<name>simLifeDisplay module</name>
 	<description>This module is used to render elements for the simLife project, using Java3D</description>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeUtilities</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.6-01</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeUtilities</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.6-01</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeDisplayAPI</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.6-01</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeDisplayAPI</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.6-01</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeCoreAPI</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.6-01</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>simLifeCoreAPI</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.6-01</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
