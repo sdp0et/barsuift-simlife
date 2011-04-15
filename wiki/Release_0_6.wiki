@@ -3,7 +3,7 @@
 This is yet another an intermediary release, focused on planet management.
 The rest of the application has not changed a lot.
 
-*Release date* : _to be released_
+*Release date* : 15^th April 2011
 
 = New features =
 
