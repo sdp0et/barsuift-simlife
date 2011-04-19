@@ -42,13 +42,13 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     private TreeBranch3D branch3D = new MockTreeBranch3D();
 
-    private int nbParts = 0;
-
-    private List<TreeBranchPart> parts = new ArrayList<TreeBranchPart>();
+    private List<TreeLeaf> leaves = new ArrayList<TreeLeaf>();
 
     private TreeBranchState state = new TreeBranchState();
 
     private int synchronizedCalled;
+
+    private int growCalled = 0;
 
     @Override
     public long getCreationMillis() {
@@ -114,25 +114,16 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
     }
 
     @Override
-    public int getNbParts() {
-        return nbParts;
+    public List<TreeLeaf> getLeaves() {
+        return leaves;
     }
 
-    public void setNbParts(int nbParts) {
-        this.nbParts = nbParts;
+    public void addLeaf(TreeLeaf leaf) {
+        leaves.add(leaf);
     }
 
-    @Override
-    public List<TreeBranchPart> getParts() {
-        return parts;
-    }
-
-    public void addPart(TreeBranchPart part) {
-        parts.add(part);
-    }
-
-    public void removePart(TreeBranchPart part) {
-        parts.remove(part);
+    public void removeLeaf(TreeLeaf leaf) {
+        leaves.remove(leaf);
     }
 
     @Override
@@ -151,6 +142,15 @@ public class MockTreeBranch extends MockSubscriber implements TreeBranch {
 
     public int getNbSynchronize() {
         return synchronizedCalled;
+    }
+
+    @Override
+    public void grow() {
+        growCalled++;
+    }
+
+    public int getNbGrowCalled() {
+        return growCalled;
     }
 
 }

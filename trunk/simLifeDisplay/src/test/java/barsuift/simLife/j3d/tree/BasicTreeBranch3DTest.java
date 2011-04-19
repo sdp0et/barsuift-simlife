@@ -18,30 +18,24 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Enumeration;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
-import javax.media.j3d.Node;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.vecmath.Vector3f;
+import javax.media.j3d.Shape3D;
+import javax.vecmath.Point3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.helper.CompilerHelper;
-import barsuift.simLife.j3d.helper.Structure3DHelper;
-import barsuift.simLife.j3d.helper.VectorTestHelper;
+import barsuift.simLife.j3d.tree.helper.BasicTreeBranch3DTestHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.tree.MockTreeBranch;
-import barsuift.simLife.tree.MockTreeBranchPart;
-import barsuift.simLife.tree.TreeBranchPart;
+import barsuift.simLife.tree.MockTreeLeaf;
 
 public class BasicTreeBranch3DTest extends TestCase {
 
-    private int nbParts;
+    private int nbLeaves;
 
     private MockUniverse3D mockUniverse3D;
 
@@ -49,22 +43,15 @@ public class BasicTreeBranch3DTest extends TestCase {
 
     private TreeBranch3DState branch3DState;
 
-    private List<Tuple3fState> previousPartEndPoints;
-
     protected void setUp() throws Exception {
         super.setUp();
         mockBranch = new MockTreeBranch();
-        nbParts = 5;
-        previousPartEndPoints = new ArrayList<Tuple3fState>();
-        Tuple3fState partEndPoint = new Tuple3fState();
-        for (int index = 0; index < nbParts; index++) {
-            previousPartEndPoints.add(partEndPoint);
-            MockTreeBranchPart mockBranchPart = new MockTreeBranchPart();
-            partEndPoint = DisplayDataCreatorForTests.createRandomTuple3fState();
-            MockTreeBranchPart3D mockBranchPart3D = (MockTreeBranchPart3D) mockBranchPart.getBranchPart3D();
-            mockBranchPart3D.getState().setEndPoint(partEndPoint);
-            mockBranchPart3D.setEndPoint(partEndPoint.toPointValue());
-            mockBranch.addPart(mockBranchPart);
+        nbLeaves = 5;
+        nbLeaves = 5;
+        for (int index = 0; index < nbLeaves; index++) {
+            MockTreeLeaf mockLeaf = new MockTreeLeaf();
+            mockLeaf.getTreeLeaf3D().getState().setTransform(DisplayDataCreatorForTests.createRandomTransform3DState());
+            mockBranch.addLeaf(mockLeaf);
         }
         mockUniverse3D = new MockUniverse3D();
         branch3DState = DisplayDataCreatorForTests.createRandomTreeBranch3DState();
@@ -72,11 +59,10 @@ public class BasicTreeBranch3DTest extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        nbParts = 0;
+        nbLeaves = 0;
         mockUniverse3D = null;
         mockBranch = null;
         branch3DState = null;
-        previousPartEndPoints = null;
     }
 
     public void testConstructor() {
@@ -106,50 +92,38 @@ public class BasicTreeBranch3DTest extends TestCase {
         assertSame(branch3DState, branch3D.getState());
     }
 
+    @SuppressWarnings("rawtypes")
     public void testTreeBranch3D() {
         BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
         CompilerHelper.compile(branch3D.getGroup());
-        assertEquals(nbParts, branch3D.getBranchParts().size());
-        List<TreeBranchPart> parts = mockBranch.getParts();
-        assertEquals(parts.get(parts.size() - 1).getBranchPart3D().getEndPoint(), branch3D.getEndPoint());
-        Node firstChild = branch3D.getGroup().getChild(0);
-        assertTrue(firstChild instanceof BranchGroup);
-        BranchGroup branchGroup = (BranchGroup) firstChild;
-        int nbPartsFound = 0;
-        Structure3DHelper.assertExactlyOneTransformGroup(branchGroup);
-        TransformGroup firstTransformGroup = (TransformGroup) branchGroup.getChild(0);
+        assertEquals(nbLeaves, branch3D.getLeaves().size());
 
-        nbPartsFound = checkCurrentTransformGroup(nbPartsFound, firstTransformGroup);
-        assertEquals(nbParts, nbPartsFound);
+
+        assertEquals(branch3DState.getEndPoint().toPointValue(), branch3D.getEndPoint());
+        Group branchGroup = branch3D.getGroup();
+        assertTrue(branchGroup.getCapability(Group.ALLOW_CHILDREN_WRITE));
+        assertTrue(branchGroup.getCapability(Group.ALLOW_CHILDREN_EXTEND));
+        int nbTimesNoLeafShapeIsFound = 0;
+        int nbLeavesFound = 0;
+        for (Enumeration enumeration = branchGroup.getAllChildren(); enumeration.hasMoreElements();) {
+            Object child = enumeration.nextElement();
+            if (child instanceof BranchGroup) {
+                nbLeavesFound++;
+            } else {
+                if (child instanceof Shape3D) {
+                    nbTimesNoLeafShapeIsFound++;
+                    assertEquals("We should have only one shape (the branch)", 1, nbTimesNoLeafShapeIsFound);
+                    Shape3D branchScape = (Shape3D) child;
+                    BasicTreeBranch3DTestHelper.testGeometry(branchScape.getGeometry(), new Point3f(0, 0, 0),
+                            branch3DState.getEndPoint().toPointValue());
+                    BasicTreeBranch3DTestHelper.testAppearance(branchScape.getAppearance());
+                } else {
+                    fail("There should be no other children. child is instance of " + child.getClass());
+                }
+            }
+        }
+        assertEquals(nbLeaves, nbLeavesFound);
     }
 
-    private int checkCurrentTransformGroup(int nbPartsFound, TransformGroup transformGroup) {
-        if (nbPartsFound == nbParts) {
-            // we have reached the end of the parts structure
-            return nbPartsFound;
-        }
-        BranchGroup branchGroupPart;
-        if (nbPartsFound == 0) {
-            Structure3DHelper.assertExactlyOneBranchGroup(transformGroup);
-            branchGroupPart = (BranchGroup) transformGroup.getChild(0);
-        } else {
-            branchGroupPart = (BranchGroup) transformGroup.getChild(1);
-        }
-
-        Structure3DHelper.assertExactlyOneTransformGroup(branchGroupPart);
-        TransformGroup transformGroupPart = (TransformGroup) branchGroupPart.getChild(0);
-
-        Transform3D transform3D = new Transform3D();
-        transformGroupPart.getTransform(transform3D);
-        Vector3f translationVector = new Vector3f();
-        transform3D.get(translationVector);
-        Vector3f expectedTranslationVector = new Vector3f(previousPartEndPoints.get(nbPartsFound).toPointValue());
-        VectorTestHelper.assertVectorEquals(expectedTranslationVector, translationVector);
-
-        Group groupPart = (Group) transformGroupPart.getChild(0);
-        assertNotNull(groupPart);
-
-        return checkCurrentTransformGroup(nbPartsFound + 1, transformGroupPart);
-    }
 
 }

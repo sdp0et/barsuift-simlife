@@ -22,14 +22,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.j3d.Transform3D;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
 import barsuift.simLife.Randomizer;
+import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DStateFactory;
 import barsuift.simLife.j3d.util.BarycentreHelper;
-import barsuift.simLife.j3d.util.PointHelper;
+import barsuift.simLife.j3d.util.DistanceHelper;
+import barsuift.simLife.j3d.util.TransformerHelper;
 
 public class TreeBranchStateFactory {
 
@@ -37,29 +40,26 @@ public class TreeBranchStateFactory {
         int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
-        TreeBranchPartStateFactory treeBranchPartStateFactory = new TreeBranchPartStateFactory();
-        List<TreeBranchPartState> treeBranchPartStates = new ArrayList<TreeBranchPartState>();
-        // TODO 050. 025. once parts are removed and branches are added to branches, branches should manage their own transforms, as done for leaves
-        int nbParts = 3;
-        for (int i = 0; i < nbParts; i++) {
-            Point3f branchPartEndPoint = computeBranchPartEndPoint(branchEndPoint, nbParts);
-            treeBranchPartStates.add(treeBranchPartStateFactory.createRandomBranchPartState(branchPartEndPoint));
+        TreeLeafStateFactory leafStateFactory = new TreeLeafStateFactory();
+        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>();
+        int nbLeaves = Randomizer.randomBetween(6, 12);
+        float maxDistance = DistanceHelper.distanceFromOrigin(branchEndPoint);
+        float shift = maxDistance / nbLeaves;
+        for (int index = 0; index < nbLeaves; index++) {
+            Point3f leafAttachPoint = BarycentreHelper.getBarycentre(new Point3f(0, 0, 0), branchEndPoint,
+                    (index + Randomizer.random2()) * shift);
+            double rotation = Randomizer.randomRotation();
+            Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
+            Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
+            transform.mul(rotationT3D);
+            leaveStates.add(leafStateFactory.createRandomTreeLeafState(transform));
         }
 
         TreeBranch3DStateFactory branch3DStateFactory = new TreeBranch3DStateFactory();
-        TreeBranch3DState branch3DState = branch3DStateFactory.createRandomTreeBranch3DState(translationVector);
+        TreeBranch3DState branch3DState = branch3DStateFactory.createRandomTreeBranch3DState(translationVector,
+                branchEndPoint);
 
-        return new TreeBranchState(creationMillis, energy, freeEnergy, treeBranchPartStates, branch3DState);
-    }
-
-    protected Point3f computeBranchPartEndPoint(Point3f branchEndPoint, int nbParts) {
-        Point3f startPoint = new Point3f(0, 0, 0);
-        float maxDistance = startPoint.distance(branchEndPoint);
-        float averagePartLength = maxDistance / nbParts;
-        Point3f partEndPoint = BarycentreHelper.getBarycentre(new Point3f(0, 0, 0), branchEndPoint,
-                (Randomizer.random2() + 1) * averagePartLength);
-        partEndPoint = PointHelper.shiftPoint(partEndPoint, maxDistance / 10);
-        return partEndPoint;
+        return new TreeBranchState(creationMillis, energy, freeEnergy, leaveStates, branch3DState);
     }
 
 }

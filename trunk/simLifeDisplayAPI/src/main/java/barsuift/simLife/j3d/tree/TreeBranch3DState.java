@@ -28,14 +28,18 @@ public class TreeBranch3DState implements State {
 
     private Tuple3fState translationVector;
 
+    private Tuple3fState endPoint;
+
     public TreeBranch3DState() {
         super();
         this.translationVector = new Tuple3fState();
+        this.endPoint = new Tuple3fState();
     }
 
-    public TreeBranch3DState(Tuple3fState translationVector) {
+    public TreeBranch3DState(Tuple3fState translationVector, Tuple3fState endPoint) {
         super();
         this.translationVector = translationVector;
+        this.endPoint = endPoint;
     }
 
     public Tuple3fState getTranslationVector() {
@@ -46,11 +50,20 @@ public class TreeBranch3DState implements State {
         this.translationVector = translationVector;
     }
 
+    public Tuple3fState getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(Tuple3fState endPoint) {
+        this.endPoint = endPoint;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((translationVector == null) ? 0 : translationVector.hashCode());
+        result = prime * result + ((endPoint == null) ? 0 : endPoint.hashCode());
         return result;
     }
 
@@ -69,12 +82,18 @@ public class TreeBranch3DState implements State {
         } else
             if (!translationVector.equals(other.translationVector))
                 return false;
+        if (endPoint == null) {
+            if (other.endPoint != null)
+                return false;
+        } else
+            if (!endPoint.equals(other.endPoint))
+                return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "TreeBranch3DState [translationVector=" + translationVector + "]";
+        return "TreeBranch3DState [translationVector=" + translationVector + ", endPoint=" + endPoint + "]";
     }
 
 }

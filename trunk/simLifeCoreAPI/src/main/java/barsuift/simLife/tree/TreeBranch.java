@@ -19,18 +19,22 @@
 package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Collection;
 
 import barsuift.simLife.LivingPart;
 import barsuift.simLife.j3d.tree.TreeBranch3D;
+import barsuift.simLife.message.Subscriber;
 
-public interface TreeBranch extends LivingPart, Photosynthetic {
+public interface TreeBranch extends LivingPart, Photosynthetic, Subscriber {
+
+    /**
+     * Potentially create new leaves, or increase size of existing ones.
+     */
+    public void grow();
 
     public int getNbLeaves();
 
-    public List<TreeBranchPart> getParts();
-
-    public int getNbParts();
+    public Collection<TreeLeaf> getLeaves();
 
     public TreeBranch3D getBranch3D();
 

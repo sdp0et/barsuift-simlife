@@ -34,7 +34,6 @@ import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.j3d.landscape.Landscape3DState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
-import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
@@ -46,7 +45,6 @@ import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.MainSynchronizerState;
 import barsuift.simLife.time.DateHandlerState;
 import barsuift.simLife.time.SimLifeDateState;
-import barsuift.simLife.tree.TreeBranchPartState;
 import barsuift.simLife.tree.TreeBranchState;
 import barsuift.simLife.tree.TreeLeafState;
 import barsuift.simLife.tree.TreeState;
@@ -295,13 +293,13 @@ public final class CoreDataCreatorForTests {
         int age = Randomizer.randomBetween(0, 100);
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
-        int nbParts = Randomizer.randomBetween(2, 4);
-        List<TreeBranchPartState> branchPartStates = new ArrayList<TreeBranchPartState>(nbParts);
-        for (int i = 0; i < nbParts; i++) {
-            branchPartStates.add(createRandomTreeBranchPartState());
+        int nbLeaves = Randomizer.randomBetween(1, 18);
+        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(nbLeaves);
+        for (int i = 0; i < nbLeaves; i++) {
+            leaveStates.add(createRandomTreeLeafState());
         }
         TreeBranch3DState branch3DState = DisplayDataCreatorForTests.createRandomTreeBranch3DState();
-        return new TreeBranchState(age, energy, freeEnergy, branchPartStates, branch3DState);
+        return new TreeBranchState(age, energy, freeEnergy, leaveStates, branch3DState);
     }
 
     /**
@@ -310,9 +308,9 @@ public final class CoreDataCreatorForTests {
      * <li>age=15</li>
      * <li>energy=10</li>
      * <li>freeEnergy=3</li>
-     * <li>nb parts=3</li>
+     * <li>nb leaves=15</li>
      * </ul>
-     * All parts are made through {@link #createSpecificTreeBranchPartState()} method
+     * All leaves are made through {@link #createSpecificTreeLeafState()} method
      * 
      * @return
      */
@@ -320,51 +318,13 @@ public final class CoreDataCreatorForTests {
         int age = 15;
         BigDecimal energy = new BigDecimal(10);
         BigDecimal freeEnergy = new BigDecimal(3);
-        int nbParts = 3;
-        List<TreeBranchPartState> branchPartStates = new ArrayList<TreeBranchPartState>(nbParts);
-        for (int i = 0; i < nbParts; i++) {
-            branchPartStates.add(createSpecificTreeBranchPartState());
-        }
-        TreeBranch3DState branch3DState = DisplayDataCreatorForTests.createRandomTreeBranch3DState();
-        return new TreeBranchState(age, energy, freeEnergy, branchPartStates, branch3DState);
-    }
-
-    public static TreeBranchPartState createRandomTreeBranchPartState() {
-        int age = Randomizer.randomBetween(0, 100);
-        BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
-        BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
-        int nbLeaves = Randomizer.randomBetween(1, 6);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(nbLeaves);
-        for (int i = 0; i < nbLeaves; i++) {
-            leaveStates.add(createRandomTreeLeafState());
-        }
-        TreeBranchPart3DState branchPart3DState = DisplayDataCreatorForTests.createRandomTreeBranchPart3DState();
-        return new TreeBranchPartState(age, energy, freeEnergy, leaveStates, branchPart3DState);
-    }
-
-    /**
-     * Create specific branch part with
-     * <ul>
-     * <li>age=15</li>
-     * <li>energy=10</li>
-     * <li>freeEnergy=3</li>
-     * <li>nb leaves=5</li>
-     * </ul>
-     * All leaves are made through {@link #createSpecificTreeLeafState()} method
-     * 
-     * @return
-     */
-    public static TreeBranchPartState createSpecificTreeBranchPartState() {
-        int age = 15;
-        BigDecimal energy = new BigDecimal(10);
-        BigDecimal freeEnergy = new BigDecimal(3);
-        int nbLeaves = 5;
+        int nbLeaves = 15;
         List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(nbLeaves);
         for (int i = 0; i < nbLeaves; i++) {
             leaveStates.add(createSpecificTreeLeafState());
         }
-        TreeBranchPart3DState branchPart3DState = DisplayDataCreatorForTests.createRandomTreeBranchPart3DState();
-        return new TreeBranchPartState(age, energy, freeEnergy, leaveStates, branchPart3DState);
+        TreeBranch3DState branch3DState = DisplayDataCreatorForTests.createRandomTreeBranch3DState();
+        return new TreeBranchState(age, energy, freeEnergy, leaveStates, branch3DState);
     }
 
     public static TreeTrunkState createRandomTreeTrunkState() {

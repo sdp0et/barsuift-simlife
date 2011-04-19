@@ -31,7 +31,6 @@ import barsuift.simLife.j3d.landscape.NavigationMode;
 import barsuift.simLife.j3d.landscape.NavigatorState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
-import barsuift.simLife.j3d.tree.TreeBranchPart3DState;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 import barsuift.simLife.j3d.tree.TreeTrunk3DState;
 import barsuift.simLife.j3d.universe.Universe3DState;
@@ -274,14 +273,10 @@ public final class DisplayDataCreatorForTests {
         return new TreeLeaf3DState(transform, initialEndPoint1, initialEndPoint2, endPoint1, endPoint2);
     }
 
-    public static TreeBranchPart3DState createRandomTreeBranchPart3DState() {
-        Tuple3fState endPoint = createRandomTuple3fState();
-        return new TreeBranchPart3DState(endPoint);
-    }
-
     public static TreeBranch3DState createRandomTreeBranch3DState() {
         Tuple3fState translationVector = createRandomTuple3fState();
-        return new TreeBranch3DState(translationVector);
+        Tuple3fState endPoint = createRandomTuple3fState();
+        return new TreeBranch3DState(translationVector, endPoint);
     }
 
     public static TreeTrunk3DState createRandomTreeTrunk3DState() {
