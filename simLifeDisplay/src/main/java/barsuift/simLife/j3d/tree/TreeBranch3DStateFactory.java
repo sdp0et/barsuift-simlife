@@ -25,9 +25,10 @@ import barsuift.simLife.j3d.Tuple3fState;
 
 public class TreeBranch3DStateFactory {
 
-    public TreeBranch3DState createRandomTreeBranch3DState(Vector3f translationVector) {
-        Tuple3fState translationVectorState = new Tuple3fState(new Point3f(translationVector));
-        return new TreeBranch3DState(translationVectorState);
+    public TreeBranch3DState createRandomTreeBranch3DState(Vector3f translationVector, Point3f branchEndPoint) {
+        Tuple3fState translationVectorState = new Tuple3fState(translationVector);
+        Tuple3fState branchEndPointState = new Tuple3fState(branchEndPoint);
+        return new TreeBranch3DState(translationVectorState, branchEndPointState);
     }
 
 }

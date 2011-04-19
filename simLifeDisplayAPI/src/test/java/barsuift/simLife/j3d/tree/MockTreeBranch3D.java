@@ -28,7 +28,7 @@ import javax.vecmath.Vector3f;
 
 public class MockTreeBranch3D implements TreeBranch3D {
 
-    private List<TreeBranchPart3D> branchParts3D = new ArrayList<TreeBranchPart3D>();
+    private List<TreeLeaf3D> leaves = new ArrayList<TreeLeaf3D>();
 
     private Point3f endPoint = new Point3f();
 
@@ -41,16 +41,17 @@ public class MockTreeBranch3D implements TreeBranch3D {
     private Vector3f translationVector = new Vector3f();
 
     @Override
-    public List<TreeBranchPart3D> getBranchParts() {
-        return branchParts3D;
+    public List<TreeLeaf3D> getLeaves() {
+        return leaves;
     }
 
-    public void addTreeBranchPart3D(TreeBranchPart3D branchPart3D) {
-        branchParts3D.add(branchPart3D);
+    @Override
+    public void addLeaf(TreeLeaf3D leaf3D) {
+        leaves.add(leaf3D);
     }
 
-    public void removeTreeBranchPart3D(TreeBranchPart3D branchPart3D) {
-        branchParts3D.remove(branchPart3D);
+    public void removeLeaf(TreeLeaf3D leaf3D) {
+        leaves.remove(leaf3D);
     }
 
     @Override

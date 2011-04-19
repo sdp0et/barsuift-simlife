@@ -19,24 +19,64 @@
 package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import javax.media.j3d.Transform3D;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.PercentHelper;
+import barsuift.simLife.Randomizer;
+import barsuift.simLife.j3d.Axis;
+import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.tree.BasicTreeBranch3D;
 import barsuift.simLife.j3d.tree.TreeBranch3D;
+import barsuift.simLife.j3d.util.TransformerHelper;
+import barsuift.simLife.message.Publisher;
 import barsuift.simLife.universe.Universe;
 
 public class BasicTreeBranch implements TreeBranch {
 
-    private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(0);
+    private static final BigDecimal ENERGY_RATIO_TO_KEEP = PercentHelper.getDecimalValue(50);
 
+    /**
+     * The maximum energy the branch can stock
+     */
     private static final BigDecimal MAX_ENERGY = new BigDecimal(200);
+
+    /**
+     * The maximum number of leaves per branch
+     */
+    protected static final int MAX_NB_LEAVES = 12;
+
+    /**
+     * energy consumed to create a new leaf
+     */
+    private static final BigDecimal NEW_LEAF_CREATION_COST = new BigDecimal(40);
+
+    /**
+     * Energy to give to the newly created leaf
+     */
+    private static final BigDecimal NEW_LEAF_ENERGY_PROVIDED = new BigDecimal(50);
+
+    /**
+     * Energy consumed to increase a leaf size
+     */
+    private static final BigDecimal INCREASE_LEAF_COST = new BigDecimal(20);
+
+
 
     private final TreeBranchState state;
 
-    private final List<TreeBranchPart> parts;
+    private final ConcurrentLinkedQueue<TreeLeaf> leaves;
 
     private final TreeBranch3D branch3D;
 
@@ -46,6 +86,9 @@ public class BasicTreeBranch implements TreeBranch {
 
     private BigDecimal freeEnergy;
 
+    private final Universe universe;
+
+
     public BasicTreeBranch(Universe universe, TreeBranchState state) {
         if (universe == null) {
             throw new IllegalArgumentException("null universe");
@@ -53,18 +96,24 @@ public class BasicTreeBranch implements TreeBranch {
         if (state == null) {
             throw new IllegalArgumentException("null branch state");
         }
+        this.universe = universe;
         this.state = state;
         this.creationMillis = state.getCreationMillis();
         this.energy = state.getEnergy();
         this.freeEnergy = state.getFreeEnergy();
-        List<TreeBranchPartState> partStates = state.getBranchPartStates();
-        this.parts = new ArrayList<TreeBranchPart>(partStates.size());
-        for (TreeBranchPartState treeBranchPartState : partStates) {
-            BasicTreeBranchPart branchPart = new BasicTreeBranchPart(universe, treeBranchPartState);
-            parts.add(branchPart);
+        List<TreeLeafState> leaveStates = state.getLeaveStates();
+        this.leaves = new ConcurrentLinkedQueue<TreeLeaf>();
+        for (TreeLeafState treeLeafState : leaveStates) {
+            BasicTreeLeaf leaf = new BasicTreeLeaf(universe, treeLeafState);
+            leaf.addSubscriber(this);
+            leaves.add(leaf);
         }
         branch3D = new BasicTreeBranch3D(universe.getUniverse3D(), state.getBranch3DState(), this);
+    }
 
+    @Override
+    public TreeBranch3D getBranch3D() {
+        return branch3D;
     }
 
     @Override
@@ -73,14 +122,220 @@ public class BasicTreeBranch implements TreeBranch {
     }
 
     public void age() {
-        for (TreeBranchPart part : parts) {
-            part.age();
+        for (TreeLeaf leaf : leaves) {
+            leaf.age();
         }
     }
 
+    @Override
+    public void grow() {
+        if (shouldCreateOneNewLeaf() && canCreateOneNewLeaf()) {
+            createOneNewLeaf();
+        }
+        if (shouldIncreaseOneLeafSize() && canIncreaseOneLeafSize()) {
+            increaseOneLeafSize();
+        }
+    }
+
+    protected void increaseOneLeafSize() {
+        TreeLeaf leaf = getRandomLeafToIncrease();
+        leaf.getTreeLeaf3D().increaseSize();
+        energy = energy.subtract(INCREASE_LEAF_COST);
+    }
+
     /**
-     * Return the sum of branch parts energies
+     * Returns one random leaf, with max odd to smallest leaf
      */
+    protected TreeLeaf getRandomLeafToIncrease() {
+        // get applicable leaves
+        List<TreeLeaf> leavesToIncrease = new ArrayList<TreeLeaf>(leaves.size());
+        for (TreeLeaf leaf : leaves) {
+            if (!leaf.getTreeLeaf3D().isMaxSizeReached()) {
+                leavesToIncrease.add(leaf);
+            }
+        }
+        if (leavesToIncrease.size() == 0) {
+            return null;
+        }
+        if (leavesToIncrease.size() == 1) {
+            return leavesToIncrease.get(0);
+        }
+
+        // compute areas
+        Map<TreeLeaf, Float> areas = new HashMap<TreeLeaf, Float>(leavesToIncrease.size());
+        for (TreeLeaf leaf : leavesToIncrease) {
+            areas.put(leaf, leaf.getTreeLeaf3D().getArea());
+        }
+
+        // compute area sum
+        float sumArea = 0;
+        for (Float area : areas.values()) {
+            sumArea += area;
+        }
+
+        // compute diffArea sum
+        float sumDiffArea = (leavesToIncrease.size() - 1) * sumArea;
+
+        // compute ratios
+        // thanks to the use of sumDiffArea, the sum of ratios is equals to 1 (100%)
+        Map<TreeLeaf, Float> ratios = new HashMap<TreeLeaf, Float>(areas.size());
+        for (Entry<TreeLeaf, Float> entry : areas.entrySet()) {
+            ratios.put(entry.getKey(), (sumArea - entry.getValue()) / sumDiffArea);
+        }
+
+        // select one leaf
+        float random = (float) Math.random();
+        float previousMinBound = 0;
+        for (Entry<TreeLeaf, Float> entry : ratios.entrySet()) {
+            TreeLeaf leaf = entry.getKey();
+            Float ratio = entry.getValue();
+            if (random < (previousMinBound + ratio)) {
+                return leaf;
+            }
+            previousMinBound += ratio;
+        }
+
+        // return last leaf
+        return null;
+    }
+
+    protected boolean canIncreaseOneLeafSize() {
+        if (energy.compareTo(INCREASE_LEAF_COST) < 0) {
+            // there is not enough energy to increase a leaf size
+            return false;
+        }
+        if (!hasAtLeastOneLeafToIncrease()) {
+            // all leaves have reached their maximum size
+            return false;
+        }
+        return true;
+    }
+
+    private boolean hasAtLeastOneLeafToIncrease() {
+        for (TreeLeaf leaf : leaves) {
+            if (!leaf.getTreeLeaf3D().isMaxSizeReached()) {
+                return true;
+            }
+        }
+        // all leaves have reached their maximum size
+        return false;
+    }
+
+    /**
+     * Test if we should increase a leaf size or not. The result is a random function with :
+     * <ol>
+     * <li>0% odd to be true if energy <= increaseLeafCost</li>
+     * <li>100% odd to be true if energy >= 5 * increaseLeafCost</li>
+     * <li>a linear progression between these two values</li>
+     * </ol>
+     */
+    protected boolean shouldIncreaseOneLeafSize() {
+        if (energy.compareTo(INCREASE_LEAF_COST) <= 0) {
+            // there is not enough energy to increase a leaf size
+            return false;
+        }
+        BigDecimal maxBound = INCREASE_LEAF_COST.multiply(new BigDecimal(5));
+        if (energy.compareTo(maxBound) >= 0) {
+            // there is enough energy to increase 5 leaves size, so we should at least increase one
+            return true;
+        }
+        BigDecimal remainingEnergy = energy.subtract(INCREASE_LEAF_COST);
+        BigDecimal increaseLength = maxBound.subtract(INCREASE_LEAF_COST);
+        BigDecimal ratio = remainingEnergy.divide(increaseLength, 4, RoundingMode.HALF_UP);
+        return ratio.compareTo(new BigDecimal(Math.random())) >= 0;
+    }
+
+    protected boolean canCreateOneNewLeaf() {
+        if (getNbLeaves() >= MAX_NB_LEAVES) {
+            // there is no more leaves to create
+            return false;
+        }
+        if (energy.compareTo(NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED)) < 0) {
+            // there is not enough energy to create a new leaf
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Test if we should create a new leaf or not. The result is a random function with :
+     * <ol>
+     * <li>0% odd to be true if energy < totalLeafCreationCost</li>
+     * <li>100% odd to be true if energy >= 2 * totalLeafCreationCost</li>
+     * <li>a linear progression between the two values</li>
+     * </ol>
+     */
+    protected boolean shouldCreateOneNewLeaf() {
+        BigDecimal totalCostOfLeafCreation = NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED);
+        if (energy.compareTo(totalCostOfLeafCreation) <= 0) {
+            // there is not enough energy to create a new leaf
+            return false;
+        }
+        if (energy.compareTo(totalCostOfLeafCreation.multiply(new BigDecimal(2))) >= 0) {
+            // there is enough energy to create 2 leaves, so we should at least create one
+            return true;
+        }
+        BigDecimal remainingEnergy = energy.subtract(totalCostOfLeafCreation);
+        BigDecimal ratio = remainingEnergy.divide(totalCostOfLeafCreation, 4, RoundingMode.HALF_UP);
+        return ratio.compareTo(new BigDecimal(Math.random())) >= 0;
+    }
+
+    protected void createOneNewLeaf() {
+        Transform3D transform = computeTransformForNewLeaf();
+        TreeLeafStateFactory treeLeafStateFactory = new TreeLeafStateFactory();
+        TreeLeafState treeLeafState = treeLeafStateFactory.createNewTreeLeafState(transform, NEW_LEAF_ENERGY_PROVIDED,
+                universe.getDate().getTimeInMillis());
+        TreeLeaf leaf = new BasicTreeLeaf(universe, treeLeafState);
+        leaf.addSubscriber(this);
+        leaves.add(leaf);
+        branch3D.addLeaf(leaf.getTreeLeaf3D());
+        BigDecimal totalLeafCreationCost = NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED);
+        energy = energy.subtract(totalLeafCreationCost);
+    }
+
+    private Transform3D computeTransformForNewLeaf() {
+        Point3f leafAttachPoint = computeAttachPointForNewLeaf();
+        double rotation = Randomizer.randomRotation();
+        Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
+        Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
+        transform.mul(rotationT3D);
+        return transform;
+    }
+
+    protected Point3f computeAttachPointForNewLeaf() {
+        Point3f previousAttachPoint = new Point3f(0, 0, 0);
+        Point3f saveAttachPoint1 = null;
+        Point3f saveAttachPoint2 = null;
+        float distance;
+        float maxDistance = -1;
+        List<TreeLeaf> sortedLeaves = new ArrayList<TreeLeaf>(leaves);
+        Collections.sort(sortedLeaves, new TreeLeafComparator());
+
+        // compute which couple of leaves are the most distant
+        for (TreeLeaf leaf : sortedLeaves) {
+            Point3f attachPoint = leaf.getTreeLeaf3D().getPosition();
+            distance = previousAttachPoint.distance(attachPoint);
+            if (distance > maxDistance) {
+                maxDistance = distance;
+                saveAttachPoint1 = previousAttachPoint;
+                saveAttachPoint2 = attachPoint;
+            }
+            previousAttachPoint = attachPoint;
+        }
+        Point3f attachPoint = branch3D.getEndPoint();
+        distance = previousAttachPoint.distance(attachPoint);
+        if (distance > maxDistance) {
+            maxDistance = distance;
+            saveAttachPoint1 = previousAttachPoint;
+            saveAttachPoint2 = attachPoint;
+        }
+
+        // once this couple is found, place the new leaf approximately in the middle +/-10%
+        Point3f newLeafAttachPoint = new Point3f();
+        newLeafAttachPoint.interpolate(saveAttachPoint1, saveAttachPoint2, 0.5f + Randomizer.random1());
+        return newLeafAttachPoint;
+    }
+
     @Override
     public BigDecimal getEnergy() {
         return energy;
@@ -95,33 +350,33 @@ public class BasicTreeBranch implements TreeBranch {
 
     @Override
     public void collectSolarEnergy() {
-        BigDecimal freeEnergyCollectedFromParts = new BigDecimal(0);
-        for (TreeBranchPart part : parts) {
-            part.collectSolarEnergy();
-            freeEnergyCollectedFromParts = freeEnergyCollectedFromParts.add(part.collectFreeEnergy());
+        BigDecimal freeEnergyCollectedFromLeaf = new BigDecimal(0);
+        for (TreeLeaf leaf : leaves) {
+            leaf.collectSolarEnergy();
+            freeEnergyCollectedFromLeaf = freeEnergyCollectedFromLeaf.add(leaf.collectFreeEnergy());
         }
-        BigDecimal energyCollectedForBranch = freeEnergyCollectedFromParts.multiply(ENERGY_RATIO_TO_KEEP);
-        BigDecimal freeEnergyCollected = freeEnergyCollectedFromParts.subtract(energyCollectedForBranch);
-        this.energy = energy.add(energyCollectedForBranch);
-        // limit energy to MAX_ENERGY
+        BigDecimal energyCollectedForBranch = freeEnergyCollectedFromLeaf.multiply(ENERGY_RATIO_TO_KEEP);
+        BigDecimal freeEnergyCollected = freeEnergyCollectedFromLeaf.subtract(energyCollectedForBranch);
+        energy = energy.add(energyCollectedForBranch);
+        // limit the branch part energy to MAX_ENERGY
         energy = energy.min(MAX_ENERGY);
-        this.freeEnergy = freeEnergy.add(freeEnergyCollected);
+        freeEnergy = freeEnergy.add(freeEnergyCollected);
     }
 
     public int getNbLeaves() {
-        int result = 0;
-        for (TreeBranchPart branchPart : parts) {
-            result += branchPart.getNbLeaves();
+        return leaves.size();
+    }
+
+    public Collection<TreeLeaf> getLeaves() {
+        return Collections.unmodifiableCollection(leaves);
+    }
+
+    @Override
+    public void update(Publisher publisher, Object arg) {
+        if (arg == MobileEvent.FALLING) {
+            TreeLeaf leaf = (TreeLeaf) publisher;
+            leaves.remove(leaf);
         }
-        return result;
-    }
-
-    public List<TreeBranchPart> getParts() {
-        return Collections.unmodifiableList(parts);
-    }
-
-    public int getNbParts() {
-        return parts.size();
     }
 
     @Override
@@ -134,17 +389,12 @@ public class BasicTreeBranch implements TreeBranch {
     public void synchronize() {
         state.setEnergy(energy);
         state.setFreeEnergy(freeEnergy);
-        List<TreeBranchPartState> branchPartStates = new ArrayList<TreeBranchPartState>();
-        for (TreeBranchPart branchPart : parts) {
-            branchPartStates.add((TreeBranchPartState) branchPart.getState());
+        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>();
+        for (TreeLeaf leaf : leaves) {
+            leaveStates.add((TreeLeafState) leaf.getState());
         }
-        state.setBranchPartStates(branchPartStates);
+        state.setLeaveStates(leaveStates);
         branch3D.synchronize();
-    }
-
-    @Override
-    public TreeBranch3D getBranch3D() {
-        return branch3D;
     }
 
 }

@@ -28,9 +28,9 @@ import junit.framework.Assert;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.util.ColorConstants;
 
-public final class BasicTreeBranchPart3DTestHelper extends Assert {
+public final class BasicTreeBranch3DTestHelper extends Assert {
 
-    private BasicTreeBranchPart3DTestHelper() {
+    private BasicTreeBranch3DTestHelper() {
         // private constructor to enforce static access
     }
 
@@ -56,8 +56,7 @@ public final class BasicTreeBranchPart3DTestHelper extends Assert {
     public static void testAppearance(Appearance branchAppearance) {
         Color3f actualColor = new Color3f();
         branchAppearance.getColoringAttributes().getColor(actualColor);
-        Color3f expectedColor = ColorConstants.brown;
-        assertEquals(expectedColor, actualColor);
+        assertEquals(ColorConstants.brown, actualColor);
     }
 
 }

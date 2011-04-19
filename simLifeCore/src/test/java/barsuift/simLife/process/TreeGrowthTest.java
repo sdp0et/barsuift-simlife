@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.tree.MockTree;
 import barsuift.simLife.tree.MockTreeBranch;
-import barsuift.simLife.tree.MockTreeBranchPart;
 import barsuift.simLife.tree.MockTreeLeaf;
 
 
@@ -31,11 +30,8 @@ public class TreeGrowthTest extends TestCase {
     public void testExecuteCyclicStep() {
         MockTreeLeaf mockLeaf = new MockTreeLeaf();
 
-        MockTreeBranchPart mockBranchPart = new MockTreeBranchPart();
-        mockBranchPart.addLeaf(mockLeaf);
-
         MockTreeBranch mockBranch = new MockTreeBranch();
-        mockBranch.addPart(mockBranchPart);
+        mockBranch.addLeaf(mockLeaf);
 
         MockTree mockTree = new MockTree();
         mockTree.addBranch(mockBranch);
@@ -45,7 +41,7 @@ public class TreeGrowthTest extends TestCase {
 
         assertEquals(1, mockLeaf.getNbImproveEfficiencyCalled());
 
-        assertEquals(1, mockBranchPart.getNbGrowCalled());
+        assertEquals(1, mockBranch.getNbGrowCalled());
     }
 
 }

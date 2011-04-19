@@ -30,7 +30,9 @@ public interface TreeBranch3D extends Persistent<TreeBranch3DState> {
 
     public Point3f getEndPoint();
 
-    public List<TreeBranchPart3D> getBranchParts();
+    public void addLeaf(TreeLeaf3D leaf);
+
+    public List<TreeLeaf3D> getLeaves();
 
     public Group getGroup();
 

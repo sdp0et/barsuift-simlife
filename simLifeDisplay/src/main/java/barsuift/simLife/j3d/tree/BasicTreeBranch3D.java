@@ -19,19 +19,23 @@
 package barsuift.simLife.j3d.tree;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Group;
-import javax.media.j3d.TransformGroup;
+import javax.media.j3d.LineArray;
+import javax.media.j3d.Shape3D;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import barsuift.simLife.j3d.AppearanceFactory;
 import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.universe.Universe3D;
-import barsuift.simLife.j3d.util.TransformerHelper;
+import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.tree.TreeBranch;
-import barsuift.simLife.tree.TreeBranchPart;
+import barsuift.simLife.tree.TreeLeaf;
 
 public class BasicTreeBranch3D implements TreeBranch3D {
 
@@ -41,15 +45,15 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     private final Vector3f translationVector;
 
+    private final Point3f endPoint;
+
     private final Group group;
 
     /**
-     * Creates a 3D tree branch, with data from the model one, and going towards to given end point. The end point is
-     * indicative, and the actual branch end point may differ somehow from the given one, as the branch is created with
-     * some randomization.
+     * Creates a 3D tree branch, with data from the model one, and given state.
      * 
      * @param universe3D the 3D universe
-     * @param endPoint indicative end point for the branch
+     * @param state the branch 3D state
      * @param treeBranch tree branch data
      */
     public BasicTreeBranch3D(Universe3D universe3D, TreeBranch3DState state, TreeBranch treeBranch) {
@@ -64,37 +68,45 @@ public class BasicTreeBranch3D implements TreeBranch3D {
         }
         this.state = state;
         this.translationVector = state.getTranslationVector().toVectorValue();
+        this.endPoint = state.getEndPoint().toPointValue();
         this.treeBranch = treeBranch;
-        BranchGroup parts = createParts();
         this.group = new Group();
-        group.addChild(parts);
+        group.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        group.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+        createFullTreeBranch();
     }
 
-    private BranchGroup createParts() {
-        BranchGroup branchGroup = new BranchGroup();
-        Point3f currentPartStartPoint = new Point3f(0, 0, 0);
-        TransformGroup previousTransformGroup = new TransformGroup();
-        branchGroup.addChild(previousTransformGroup);
-        for (TreeBranchPart branchPart : treeBranch.getParts()) {
-            TreeBranchPart3D branchPart3D = branchPart.getBranchPart3D();
-            Group branchPartGroup = branchPart3D.getGroup();
-            BranchGroup currentBranchGroup = new BranchGroup();
-            Vector3f translationVector = new Vector3f(currentPartStartPoint);
-            TransformGroup currentTransformGroup = TransformerHelper.getTranslationTransformGroup(translationVector);
-            currentBranchGroup.addChild(currentTransformGroup);
-            currentTransformGroup.addChild(branchPartGroup);
-            previousTransformGroup.addChild(currentBranchGroup);
-            // set pointer for next round
-            currentPartStartPoint = branchPart3D.getEndPoint();
-            previousTransformGroup = currentTransformGroup;
+    private void createFullTreeBranch() {
+        addBranchShape();
+        for (TreeLeaf treeLeaf : treeBranch.getLeaves()) {
+            addLeaf(treeLeaf.getTreeLeaf3D());
         }
-        return branchGroup;
+    }
+
+    private void addBranchShape() {
+        Shape3D branchShape = new Shape3D();
+        LineArray branchLine = createBranchLine();
+        Appearance branchAppearance = new Appearance();
+        AppearanceFactory.setColorWithColoringAttributes(branchAppearance, ColorConstants.brown);
+        branchShape.setGeometry(branchLine);
+        branchShape.setAppearance(branchAppearance);
+        group.addChild(branchShape);
+    }
+
+    private LineArray createBranchLine() {
+        LineArray branchLine = new LineArray(2, GeometryArray.COORDINATES);
+        branchLine.setCoordinate(0, new Point3f(0, 0, 0));
+        branchLine.setCoordinate(1, endPoint);
+        return branchLine;
+    }
+
+    public void addLeaf(TreeLeaf3D leaf) {
+        group.addChild(leaf.getBranchGroup());
     }
 
     @Override
     public Point3f getEndPoint() {
-        List<TreeBranchPart> parts = treeBranch.getParts();
-        return parts.get(parts.size() - 1).getBranchPart3D().getEndPoint();
+        return endPoint;
     }
 
     public Vector3f getTranslationVector() {
@@ -110,6 +122,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     @Override
     public void synchronize() {
         state.setTranslationVector(new Tuple3fState(translationVector));
+        state.setEndPoint(new Tuple3fState(endPoint));
     }
 
     @Override
@@ -118,11 +131,11 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     }
 
     @Override
-    public List<TreeBranchPart3D> getBranchParts() {
-        List<TreeBranchPart3D> result = new ArrayList<TreeBranchPart3D>();
-        List<TreeBranchPart> parts = treeBranch.getParts();
-        for (TreeBranchPart treeBranchPart : parts) {
-            result.add(treeBranchPart.getBranchPart3D());
+    public List<TreeLeaf3D> getLeaves() {
+        List<TreeLeaf3D> result = new ArrayList<TreeLeaf3D>();
+        Collection<TreeLeaf> leaves = treeBranch.getLeaves();
+        for (TreeLeaf leaf : leaves) {
+            result.add(leaf.getTreeLeaf3D());
         }
         return result;
     }
