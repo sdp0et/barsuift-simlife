@@ -18,9 +18,6 @@
  */
 package barsuift.simLife;
 
-
-
-
 /**
  * The class holds the planet parameters required to create a universe.
  * 
