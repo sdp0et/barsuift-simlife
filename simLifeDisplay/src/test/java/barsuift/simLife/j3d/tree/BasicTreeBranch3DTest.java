@@ -23,11 +23,13 @@ import java.util.Enumeration;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.Shape3D;
+import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.CompilerHelper;
+import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.tree.helper.BasicTreeBranch3DTestHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.tree.MockTreeBranch;
@@ -95,24 +97,25 @@ public class BasicTreeBranch3DTest extends TestCase {
     @SuppressWarnings("rawtypes")
     public void testTreeBranch3D() {
         BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
-        CompilerHelper.compile(branch3D.getGroup());
+        BranchGroup bg = branch3D.getBranchGroup();
+        CompilerHelper.compile(bg);
         assertEquals(nbLeaves, branch3D.getLeaves().size());
 
-
         assertEquals(branch3DState.getEndPoint().toPointValue(), branch3D.getEndPoint());
-        Group branchGroup = branch3D.getGroup();
-        assertTrue(branchGroup.getCapability(Group.ALLOW_CHILDREN_WRITE));
-        assertTrue(branchGroup.getCapability(Group.ALLOW_CHILDREN_EXTEND));
+        Structure3DHelper.assertExactlyOneTransformGroup(bg);
+        TransformGroup tg = (TransformGroup) bg.getChild(0);
+
+        assertTrue(tg.getCapability(Group.ALLOW_CHILDREN_WRITE));
+        assertTrue(tg.getCapability(Group.ALLOW_CHILDREN_EXTEND));
         int nbTimesNoLeafShapeIsFound = 0;
         int nbLeavesFound = 0;
-        for (Enumeration enumeration = branchGroup.getAllChildren(); enumeration.hasMoreElements();) {
+        for (Enumeration enumeration = tg.getAllChildren(); enumeration.hasMoreElements();) {
             Object child = enumeration.nextElement();
-            if (child instanceof BranchGroup) {
+            if (child.getClass().equals(BranchGroup.class)) {
                 nbLeavesFound++;
             } else {
-                if (child instanceof Shape3D) {
+                if (child.getClass().equals(Shape3D.class)) {
                     nbTimesNoLeafShapeIsFound++;
-                    assertEquals("We should have only one shape (the branch)", 1, nbTimesNoLeafShapeIsFound);
                     Shape3D branchScape = (Shape3D) child;
                     BasicTreeBranch3DTestHelper.testGeometry(branchScape.getGeometry(), new Point3f(0, 0, 0),
                             branch3DState.getEndPoint().toPointValue());
@@ -122,6 +125,7 @@ public class BasicTreeBranch3DTest extends TestCase {
                 }
             }
         }
+        assertEquals("We should have only one shape (the branch)", 1, nbTimesNoLeafShapeIsFound);
         assertEquals(nbLeaves, nbLeavesFound);
     }
 
