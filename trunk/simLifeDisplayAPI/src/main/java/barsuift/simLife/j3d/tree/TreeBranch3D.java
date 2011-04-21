@@ -20,7 +20,7 @@ package barsuift.simLife.j3d.tree;
 
 import java.util.List;
 
-import javax.media.j3d.Group;
+import javax.media.j3d.BranchGroup;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
@@ -34,7 +34,7 @@ public interface TreeBranch3D extends Persistent<TreeBranch3DState> {
 
     public List<TreeLeaf3D> getLeaves();
 
-    public Group getGroup();
+    public BranchGroup getBranchGroup();
 
     public Vector3f getTranslationVector();
 

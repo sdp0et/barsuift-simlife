@@ -72,20 +72,8 @@ public class BasicTree3D implements Tree3D {
 
         List<TreeBranch> branches = tree.getBranches();
         for (TreeBranch branch : branches) {
-            TreeBranch3D branch3D = branch.getBranch3D();
-            BranchGroup branchBG = createBranch(branch3D);
-            tg.addChild(branchBG);
+            tg.addChild(branch.getBranch3D().getBranchGroup());
         }
-    }
-
-    private BranchGroup createBranch(TreeBranch3D branch3D) {
-        //FIXME wrong ?? if yes, then change testTree:
-        BranchGroup branchBG = new BranchGroup();
-        TransformGroup transformGroup = TransformerHelper.getTranslationTransformGroup(branch3D.getTranslationVector());
-        branchBG.addChild(transformGroup);
-
-        transformGroup.addChild(branch3D.getGroup());
-        return branchBG;
     }
 
     @Override

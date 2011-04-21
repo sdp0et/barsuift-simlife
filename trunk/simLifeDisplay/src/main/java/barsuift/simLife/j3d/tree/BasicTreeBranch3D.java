@@ -23,10 +23,12 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.media.j3d.Appearance;
+import javax.media.j3d.BranchGroup;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Group;
 import javax.media.j3d.LineArray;
 import javax.media.j3d.Shape3D;
+import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
@@ -34,6 +36,7 @@ import barsuift.simLife.j3d.AppearanceFactory;
 import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ColorConstants;
+import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.TreeBranch;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -47,7 +50,9 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     private final Point3f endPoint;
 
-    private final Group group;
+    private final BranchGroup bg;
+
+    private final TransformGroup tg;
 
     /**
      * Creates a 3D tree branch, with data from the model one, and given state.
@@ -70,9 +75,14 @@ public class BasicTreeBranch3D implements TreeBranch3D {
         this.translationVector = state.getTranslationVector().toVectorValue();
         this.endPoint = state.getEndPoint().toPointValue();
         this.treeBranch = treeBranch;
-        this.group = new Group();
-        group.setCapability(Group.ALLOW_CHILDREN_WRITE);
-        group.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+
+        this.tg = TransformerHelper.getTranslationTransformGroup(translationVector);
+        tg.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        tg.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+
+        this.bg = new BranchGroup();
+        bg.addChild(tg);
+
         createFullTreeBranch();
     }
 
@@ -90,7 +100,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
         AppearanceFactory.setColorWithColoringAttributes(branchAppearance, ColorConstants.brown);
         branchShape.setGeometry(branchLine);
         branchShape.setAppearance(branchAppearance);
-        group.addChild(branchShape);
+        tg.addChild(branchShape);
     }
 
     private LineArray createBranchLine() {
@@ -101,7 +111,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     }
 
     public void addLeaf(TreeLeaf3D leaf) {
-        group.addChild(leaf.getBranchGroup());
+        tg.addChild(leaf.getBranchGroup());
     }
 
     @Override
@@ -126,8 +136,8 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     }
 
     @Override
-    public Group getGroup() {
-        return group;
+    public BranchGroup getBranchGroup() {
+        return bg;
     }
 
     @Override

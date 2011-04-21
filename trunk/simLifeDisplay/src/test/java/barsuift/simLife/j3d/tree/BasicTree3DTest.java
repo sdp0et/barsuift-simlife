@@ -22,20 +22,15 @@ import java.util.Enumeration;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
-import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Vector3f;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
-import barsuift.simLife.j3d.helper.VectorTestHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.tree.MockTree;
 import barsuift.simLife.tree.MockTreeBranch;
-import barsuift.simLife.tree.TreeBranch;
 
 public class BasicTree3DTest extends TestCase {
 
@@ -52,11 +47,7 @@ public class BasicTree3DTest extends TestCase {
         mockTree = new MockTree();
         nbBranches = 5;
         for (int index = 0; index < nbBranches; index++) {
-            MockTreeBranch mockBranch = new MockTreeBranch();
-            Tuple3fState translationVector = DisplayDataCreatorForTests.createRandomTuple3fState();
-            MockTreeBranch3D mockBranch3D = (MockTreeBranch3D) mockBranch.getBranch3D();
-            mockBranch3D.getState().setTranslationVector(translationVector);
-            mockTree.addBranch(mockBranch);
+            mockTree.addBranch(new MockTreeBranch());
         }
         mockUniverse3D = new MockUniverse3D();
         tree3DState = DisplayDataCreatorForTests.createRandomTree3DState();
@@ -112,24 +103,6 @@ public class BasicTree3DTest extends TestCase {
             Object child = enumeration.nextElement();
             if (child.getClass().equals(BranchGroup.class)) {
                 // we found a branch
-                BranchGroup branchBranchGroup = (BranchGroup) child;
-
-                Structure3DHelper.assertExactlyOneTransformGroup(branchBranchGroup);
-                TransformGroup transformGroup = (TransformGroup) branchBranchGroup.getChild(0);
-
-                // test translation
-                Transform3D transform3D = new Transform3D();
-                transformGroup.getTransform(transform3D);
-                Vector3f translationVector = new Vector3f();
-                transform3D.get(translationVector);
-                TreeBranch treeBranch = mockTree.getBranches().get(nbBranchesFound);
-                Vector3f expectedTranslationVector = treeBranch.getBranch3D().getTranslationVector();
-                VectorTestHelper.assertVectorEquals(expectedTranslationVector, translationVector);
-
-                // test one branch found
-                Structure3DHelper.assertExactlyOneGroup(transformGroup);
-                Group specificGroupForTheBranch = (Group) transformGroup.getChild(0);
-                assertNotNull(specificGroupForTheBranch);
                 nbBranchesFound++;
             } else {
                 if (child.getClass().equals(Group.class)) {

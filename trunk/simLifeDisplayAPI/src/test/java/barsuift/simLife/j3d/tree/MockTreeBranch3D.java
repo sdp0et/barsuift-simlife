@@ -21,7 +21,7 @@ package barsuift.simLife.j3d.tree;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.j3d.Group;
+import javax.media.j3d.BranchGroup;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
@@ -32,11 +32,11 @@ public class MockTreeBranch3D implements TreeBranch3D {
 
     private Point3f endPoint = new Point3f();
 
-    private Group group = new Group();
+    private BranchGroup branchGroup = new BranchGroup();
 
     private TreeBranch3DState state = new TreeBranch3DState();
 
-    private int synchronizedCalled;
+    private int synchronizedCalled = 0;
 
     private Vector3f translationVector = new Vector3f();
 
@@ -64,12 +64,12 @@ public class MockTreeBranch3D implements TreeBranch3D {
     }
 
     @Override
-    public Group getGroup() {
-        return group;
+    public BranchGroup getBranchGroup() {
+        return branchGroup;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroup(BranchGroup branchGroup) {
+        this.branchGroup = branchGroup;
     }
 
     @Override
