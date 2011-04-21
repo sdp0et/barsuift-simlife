@@ -104,11 +104,14 @@ public class BasicTree3DTest extends TestCase {
         CompilerHelper.compile(branchGroup);
         assertEquals(nbBranches, tree3D.getBranches().size());
 
+        Structure3DHelper.assertExactlyOneTransformGroup(branchGroup);
+        TransformGroup tg = (TransformGroup) branchGroup.getChild(0);
         int nbTimesTrunkGroupIsFound = 0;
         int nbBranchesFound = 0;
-        for (Enumeration enumeration = branchGroup.getAllChildren(); enumeration.hasMoreElements();) {
+        for (Enumeration enumeration = tg.getAllChildren(); enumeration.hasMoreElements();) {
             Object child = enumeration.nextElement();
-            if (child instanceof BranchGroup) {
+            if (child.getClass().equals(BranchGroup.class)) {
+                // we found a branch
                 BranchGroup branchBranchGroup = (BranchGroup) child;
 
                 Structure3DHelper.assertExactlyOneTransformGroup(branchBranchGroup);
@@ -129,14 +132,15 @@ public class BasicTree3DTest extends TestCase {
                 assertNotNull(specificGroupForTheBranch);
                 nbBranchesFound++;
             } else {
-                if (child instanceof Group) {
+                if (child.getClass().equals(Group.class)) {
+                    // we found the trunk
                     nbTimesTrunkGroupIsFound++;
-                    assertEquals("We should have only one trunk", 1, nbTimesTrunkGroupIsFound);
                 } else {
                     fail("There should be no other children. child is instance of " + child.getClass());
                 }
             }
         }
+        assertEquals("We should have exactly one trunk", 1, nbTimesTrunkGroupIsFound);
         assertEquals(nbBranches, nbBranchesFound);
     }
 

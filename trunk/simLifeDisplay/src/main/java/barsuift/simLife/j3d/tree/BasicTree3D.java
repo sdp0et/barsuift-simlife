@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3f;
 
@@ -43,6 +44,8 @@ public class BasicTree3D implements Tree3D {
 
     private final BranchGroup branchGroup;
 
+    private final TransformGroup tg;
+
     public BasicTree3D(Universe3D universe3D, Tree3DState state, Tree tree) {
         super();
         if (universe3D == null) {
@@ -57,22 +60,26 @@ public class BasicTree3D implements Tree3D {
         this.state = state;
         this.translationVector = state.getTranslationVector().toVectorValue();
         this.tree = tree;
+        Transform3D translation = TransformerHelper.getTranslationTransform3D(translationVector);
+        this.tg = new TransformGroup(translation);
         this.branchGroup = new BranchGroup();
+        branchGroup.addChild(tg);
         createTrunkAndBranchesBG();
     }
 
     private void createTrunkAndBranchesBG() {
-        branchGroup.addChild(tree.getTrunk().getTreeTrunk3D().getGroup());
+        tg.addChild(tree.getTrunk().getTreeTrunk3D().getGroup());
 
         List<TreeBranch> branches = tree.getBranches();
         for (TreeBranch branch : branches) {
             TreeBranch3D branch3D = branch.getBranch3D();
             BranchGroup branchBG = createBranch(branch3D);
-            branchGroup.addChild(branchBG);
+            tg.addChild(branchBG);
         }
     }
 
     private BranchGroup createBranch(TreeBranch3D branch3D) {
+        //FIXME wrong ?? if yes, then change testTree:
         BranchGroup branchBG = new BranchGroup();
         TransformGroup transformGroup = TransformerHelper.getTranslationTransformGroup(branch3D.getTranslationVector());
         branchBG.addChild(transformGroup);
