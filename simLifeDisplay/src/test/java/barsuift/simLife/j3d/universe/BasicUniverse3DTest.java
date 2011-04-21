@@ -73,10 +73,7 @@ public class BasicUniverse3DTest extends TestCase {
         Set<Node> elements3d = universe3D.getElements3D();
         assertNotNull(elements3d);
         assertEquals(4, elements3d.size());
-        // the 3D node is added to a transform group, itself added to a branch group
-        // that's why i test the parent of the parent
-        // TODO 050. 032. the test will need to be fixed then
-        assertTrue(elements3d.contains(tree.getTree3D().getBranchGroup().getParent().getParent()));
+        assertTrue(elements3d.contains(tree.getTree3D().getBranchGroup()));
         assertTrue(elements3d.contains(treeLeaf.getTreeLeaf3D().getBranchGroup()));
 
     }

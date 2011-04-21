@@ -25,15 +25,9 @@ import java.util.Set;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.Node;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.environment.Environment3D;
-import barsuift.simLife.j3d.tree.Tree3D;
 import barsuift.simLife.j3d.universe.physic.Physics3D;
-import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.process.MainSynchronizer;
 import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.tree.Tree;
@@ -64,26 +58,12 @@ public class BasicUniverse3D implements Universe3D {
         addElement3D(universe.getPhysics().getPhysics3D().getGroup());
 
         for (Tree tree : universe.getTrees()) {
-            addTree(tree.getTree3D());
+            addElement3D(tree.getTree3D().getBranchGroup());
         }
 
         for (TreeLeaf treeLeaf : universe.getFallenLeaves()) {
             addElement3D(treeLeaf.getTreeLeaf3D().getBranchGroup());
         }
-    }
-
-    public void addTree(Tree3D tree3D) {
-        // TODO 050. 031. this code should be move into BasicTree3D, as done for BasicTreeLeaf3D (to be done for
-        // everyone)
-        Point3f treeOriginPoint = tree3D.getState().getTranslationVector().toPointValue();
-        Transform3D translation = TransformerHelper.getTranslationTransform3D(new Vector3f(treeOriginPoint));
-        TransformGroup transformGroup = new TransformGroup(translation);
-
-        BranchGroup treeBranchGroup = new BranchGroup();
-        treeBranchGroup.addChild(transformGroup);
-        transformGroup.addChild(tree3D.getBranchGroup());
-
-        addElement3D(treeBranchGroup);
     }
 
     public void addElement3D(Node element3D) {
