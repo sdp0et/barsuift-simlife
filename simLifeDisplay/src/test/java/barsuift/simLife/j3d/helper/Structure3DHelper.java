@@ -38,7 +38,7 @@ public final class Structure3DHelper extends Assert {
     public static void assertExactlyOneTransformGroup(BranchGroup branchGroup) {
         Enumeration children = branchGroup.getAllChildren();
         assertTrue(children.hasMoreElements());
-        assertTrue(children.nextElement() instanceof TransformGroup);
+        assertTrue(children.nextElement().getClass().equals(TransformGroup.class));
         assertFalse(children.hasMoreElements());
     }
 
@@ -46,7 +46,7 @@ public final class Structure3DHelper extends Assert {
     public static void assertExactlyOneBranchGroup(TransformGroup transformGroup) {
         Enumeration children = transformGroup.getAllChildren();
         assertTrue(children.hasMoreElements());
-        assertTrue(children.nextElement() instanceof BranchGroup);
+        assertTrue(children.nextElement().getClass().equals(BranchGroup.class));
         assertFalse(children.hasMoreElements());
     }
 
@@ -54,7 +54,7 @@ public final class Structure3DHelper extends Assert {
     public static void assertExactlyOneGroup(TransformGroup transformGroup) {
         Enumeration children = transformGroup.getAllChildren();
         assertTrue(children.hasMoreElements());
-        assertTrue(children.nextElement() instanceof Group);
+        assertTrue(children.nextElement().getClass().equals(Group.class));
         assertFalse(children.hasMoreElements());
     }
 
