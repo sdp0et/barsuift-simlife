@@ -69,6 +69,8 @@ public class TreeStateFactory {
                 tree3dState);
     }
 
+    // FIXME this code should be in TreeBranchStateFactory pass the tree radius and hieght instead of computation
+    // results (do the same for leaves)
     protected TreeBranchState computeRandomBranchState(float treeRadius, float treeHeight) {
         Vector3f branchTranslationVector = computeBranchTranslationVector(treeRadius, treeHeight);
         Point3f branchEndPoint = computeBranchEndPoint(treeHeight, branchTranslationVector.getX() > 0,
