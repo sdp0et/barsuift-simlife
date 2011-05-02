@@ -83,11 +83,11 @@ public class BasicGravity implements Gravity {
 
     @Override
     public void synchronize() {
-        Set<TreeLeafState> fallingLeaveStates = new HashSet<TreeLeafState>();
+        Set<TreeLeafState> fallingLeavesStates = new HashSet<TreeLeafState>();
         for (TreeLeaf leaf : fallingLeaves) {
-            fallingLeaveStates.add((TreeLeafState) leaf.getState());
+            fallingLeavesStates.add((TreeLeafState) leaf.getState());
         }
-        state.setFallingLeaves(fallingLeaveStates);
+        state.setFallingLeaves(fallingLeavesStates);
         gravity3D.synchronize();
     }
 

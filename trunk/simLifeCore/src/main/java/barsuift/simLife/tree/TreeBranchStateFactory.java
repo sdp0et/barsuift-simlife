@@ -41,7 +41,7 @@ public class TreeBranchStateFactory {
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
         TreeLeafStateFactory leafStateFactory = new TreeLeafStateFactory();
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>();
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>();
         int nbLeaves = Randomizer.randomBetween(6, 12);
         float maxDistance = DistanceHelper.distanceFromOrigin(branchEndPoint);
         float shift = maxDistance / nbLeaves;
@@ -52,14 +52,14 @@ public class TreeBranchStateFactory {
             Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
             Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
             transform.mul(rotationT3D);
-            leaveStates.add(leafStateFactory.createRandomTreeLeafState(transform));
+            leavesStates.add(leafStateFactory.createRandomTreeLeafState(transform));
         }
 
         TreeBranch3DStateFactory branch3DStateFactory = new TreeBranch3DStateFactory();
         TreeBranch3DState branch3DState = branch3DStateFactory.createRandomTreeBranch3DState(translationVector,
                 branchEndPoint);
 
-        return new TreeBranchState(creationMillis, energy, freeEnergy, leaveStates, branch3DState);
+        return new TreeBranchState(creationMillis, energy, freeEnergy, leavesStates, branch3DState);
     }
 
 }

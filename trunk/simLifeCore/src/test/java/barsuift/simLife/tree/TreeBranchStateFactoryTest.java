@@ -57,12 +57,12 @@ public class TreeBranchStateFactoryTest extends TestCase {
 
     public void testCreateBranchState() {
         assertNotNull(branchState.getBranch3DState());
-        List<TreeLeafState> leaveStates = branchState.getLeaveStates();
-        int nbLeaves = leaveStates.size();
+        List<TreeLeafState> leavesStates = branchState.getLeavesStates();
+        int nbLeaves = leavesStates.size();
         assertTrue(nbLeaves >= 6);
         assertTrue(nbLeaves <= 12);
         for (int index = 0; index < nbLeaves; index++) {
-            TreeLeafState leafState = leaveStates.get(index);
+            TreeLeafState leafState = leavesStates.get(index);
             Transform3DState transform = leafState.getLeaf3DState().getTransform();
             Point3f leafAttachPoint = new Point3f(transform.getMatrix()[3], transform.getMatrix()[7],
                     transform.getMatrix()[11]);
