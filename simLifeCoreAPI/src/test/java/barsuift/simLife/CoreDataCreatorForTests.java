@@ -294,12 +294,12 @@ public final class CoreDataCreatorForTests {
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
         int nbLeaves = Randomizer.randomBetween(1, 18);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(nbLeaves);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(nbLeaves);
         for (int i = 0; i < nbLeaves; i++) {
-            leaveStates.add(createRandomTreeLeafState());
+            leavesStates.add(createRandomTreeLeafState());
         }
         TreeBranch3DState branch3DState = DisplayDataCreatorForTests.createRandomTreeBranch3DState();
-        return new TreeBranchState(age, energy, freeEnergy, leaveStates, branch3DState);
+        return new TreeBranchState(age, energy, freeEnergy, leavesStates, branch3DState);
     }
 
     /**
@@ -319,12 +319,12 @@ public final class CoreDataCreatorForTests {
         BigDecimal energy = new BigDecimal(10);
         BigDecimal freeEnergy = new BigDecimal(3);
         int nbLeaves = 15;
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(nbLeaves);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(nbLeaves);
         for (int i = 0; i < nbLeaves; i++) {
-            leaveStates.add(createSpecificTreeLeafState());
+            leavesStates.add(createSpecificTreeLeafState());
         }
         TreeBranch3DState branch3DState = DisplayDataCreatorForTests.createRandomTreeBranch3DState();
-        return new TreeBranchState(age, energy, freeEnergy, leaveStates, branch3DState);
+        return new TreeBranchState(age, energy, freeEnergy, leavesStates, branch3DState);
     }
 
     public static TreeTrunkState createRandomTreeTrunkState() {

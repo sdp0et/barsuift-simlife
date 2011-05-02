@@ -101,9 +101,9 @@ public class BasicTreeBranch implements TreeBranch {
         this.creationMillis = state.getCreationMillis();
         this.energy = state.getEnergy();
         this.freeEnergy = state.getFreeEnergy();
-        List<TreeLeafState> leaveStates = state.getLeaveStates();
+        List<TreeLeafState> leavesStates = state.getLeavesStates();
         this.leaves = new ConcurrentLinkedQueue<TreeLeaf>();
-        for (TreeLeafState treeLeafState : leaveStates) {
+        for (TreeLeafState treeLeafState : leavesStates) {
             BasicTreeLeaf leaf = new BasicTreeLeaf(universe, treeLeafState);
             leaf.addSubscriber(this);
             leaves.add(leaf);
@@ -389,11 +389,11 @@ public class BasicTreeBranch implements TreeBranch {
     public void synchronize() {
         state.setEnergy(energy);
         state.setFreeEnergy(freeEnergy);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>();
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>();
         for (TreeLeaf leaf : leaves) {
-            leaveStates.add((TreeLeafState) leaf.getState());
+            leavesStates.add((TreeLeafState) leaf.getState());
         }
-        state.setLeaveStates(leaveStates);
+        state.setLeavesStates(leavesStates);
         branch3D.synchronize();
     }
 

@@ -36,13 +36,13 @@ public class TreeBranchState implements State {
 
     private BigDecimal freeEnergy;
 
-    private List<TreeLeafState> leaveStates;
+    private List<TreeLeafState> leavesStates;
 
     private TreeBranch3DState branch3DState;
 
     public TreeBranchState() {
         super();
-        this.leaveStates = new ArrayList<TreeLeafState>();
+        this.leavesStates = new ArrayList<TreeLeafState>();
         this.creationMillis = 0;
         this.energy = new BigDecimal(0);
         this.freeEnergy = new BigDecimal(0);
@@ -50,12 +50,12 @@ public class TreeBranchState implements State {
     }
 
     public TreeBranchState(long creationMillis, BigDecimal energy, BigDecimal freeEnergy,
-            List<TreeLeafState> leaveStates, TreeBranch3DState branch3DState) {
+            List<TreeLeafState> leavesStates, TreeBranch3DState branch3DState) {
         super();
         this.creationMillis = creationMillis;
         this.energy = energy;
         this.freeEnergy = freeEnergy;
-        this.leaveStates = leaveStates;
+        this.leavesStates = leavesStates;
         this.branch3DState = branch3DState;
     }
 
@@ -83,12 +83,12 @@ public class TreeBranchState implements State {
         this.freeEnergy = freeEnergy;
     }
 
-    public List<TreeLeafState> getLeaveStates() {
-        return leaveStates;
+    public List<TreeLeafState> getLeavesStates() {
+        return leavesStates;
     }
 
-    public void setLeaveStates(List<TreeLeafState> leaveStates) {
-        this.leaveStates = leaveStates;
+    public void setLeavesStates(List<TreeLeafState> leavesStates) {
+        this.leavesStates = leavesStates;
     }
 
     public TreeBranch3DState getBranch3DState() {
@@ -107,7 +107,7 @@ public class TreeBranchState implements State {
         result = prime * result + (int) (creationMillis ^ (creationMillis >>> 32));
         result = prime * result + ((energy == null) ? 0 : energy.hashCode());
         result = prime * result + ((freeEnergy == null) ? 0 : freeEnergy.hashCode());
-        result = prime * result + ((leaveStates == null) ? 0 : leaveStates.hashCode());
+        result = prime * result + ((leavesStates == null) ? 0 : leavesStates.hashCode());
         return result;
     }
 
@@ -140,11 +140,11 @@ public class TreeBranchState implements State {
         } else
             if (!freeEnergy.equals(other.freeEnergy))
                 return false;
-        if (leaveStates == null) {
-            if (other.leaveStates != null)
+        if (leavesStates == null) {
+            if (other.leavesStates != null)
                 return false;
         } else
-            if (!leaveStates.equals(other.leaveStates))
+            if (!leavesStates.equals(other.leavesStates))
                 return false;
         return true;
     }
@@ -152,7 +152,7 @@ public class TreeBranchState implements State {
     @Override
     public String toString() {
         return "TreeBranchState [branch3DState=" + branch3DState + ", creationMillis=" + creationMillis + ", energy="
-                + energy + ", freeEnergy=" + freeEnergy + ", leaveStates=" + leaveStates + "]";
+                + energy + ", freeEnergy=" + freeEnergy + ", leavesStates=" + leavesStates + "]";
     }
 
 }

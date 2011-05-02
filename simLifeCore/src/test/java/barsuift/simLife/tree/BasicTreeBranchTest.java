@@ -71,8 +71,8 @@ public class BasicTreeBranchTest extends TestCase {
     }
 
     public void testBasicTreeBranch() {
-        assertEquals(branchState.getLeaveStates().size(), branch.getNbLeaves());
-        assertEquals(branchState.getLeaveStates().size(), branch.getLeaves().size());
+        assertEquals(branchState.getLeavesStates().size(), branch.getNbLeaves());
+        assertEquals(branchState.getLeavesStates().size(), branch.getLeaves().size());
         try {
             new BasicTreeBranch(null, branchState);
             fail("Should throw an IllegalArgumentException");
@@ -120,7 +120,7 @@ public class BasicTreeBranchTest extends TestCase {
     }
 
     public void testFallingLeaf() {
-        TreeLeafState firstLeafState = branchState.getLeaveStates().get(0);
+        TreeLeafState firstLeafState = branchState.getLeavesStates().get(0);
         firstLeafState.setEfficiency(PercentHelper.getDecimalValue(10));
         branch = new BasicTreeBranch(universe, branchState);
         int nbLeaves = branch.getNbLeaves();
@@ -156,12 +156,12 @@ public class BasicTreeBranchTest extends TestCase {
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
         leafState2.setLeaf3DState(leaf3DState2);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(2);
-        leaveStates.add(leafState1);
-        leaveStates.add(leafState2);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(2);
+        leavesStates.add(leafState1);
+        leavesStates.add(leafState2);
         TreeBranch3DState branch3DState = new TreeBranch3DState(new Tuple3fState(), new Tuple3fState(3.5f, 0, 0));
         TreeBranchState branchState = new TreeBranchState();
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         branchState.setBranch3DState(branch3DState);
         // the branch is along the X axis
         // it starts at 0
@@ -186,12 +186,12 @@ public class BasicTreeBranchTest extends TestCase {
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
         leafState2.setLeaf3DState(leaf3DState2);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(2);
-        leaveStates.add(leafState1);
-        leaveStates.add(leafState2);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(2);
+        leavesStates.add(leafState1);
+        leavesStates.add(leafState2);
         TreeBranch3DState branch3DState = new TreeBranch3DState(new Tuple3fState(), new Tuple3fState(7, 0, 0));
         TreeBranchState branchState = new TreeBranchState();
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         branchState.setBranch3DState(branch3DState);
         // the branch is along the X axis
         // it starts at 0
@@ -216,12 +216,12 @@ public class BasicTreeBranchTest extends TestCase {
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
         leafState2.setLeaf3DState(leaf3DState2);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(2);
-        leaveStates.add(leafState1);
-        leaveStates.add(leafState2);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(2);
+        leavesStates.add(leafState1);
+        leavesStates.add(leafState2);
         TreeBranch3DState branch3DState = new TreeBranch3DState(new Tuple3fState(), new Tuple3fState(6, 0, 0));
         TreeBranchState branchState = new TreeBranchState();
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         branchState.setBranch3DState(branch3DState);
         // the branch is along the X axis
         // it starts at 0
@@ -249,13 +249,13 @@ public class BasicTreeBranchTest extends TestCase {
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
         leafState2.setLeaf3DState(leaf3DState2);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(2);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(2);
         // add the leaves in the "wrong" order
-        leaveStates.add(leafState2);
-        leaveStates.add(leafState1);
+        leavesStates.add(leafState2);
+        leavesStates.add(leafState1);
         TreeBranch3DState branch3DState = new TreeBranch3DState(new Tuple3fState(), new Tuple3fState(3.5f, 0, 0));
         TreeBranchState branchState = new TreeBranchState();
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         branchState.setBranch3DState(branch3DState);
         // the branch is along the X axis
         // it starts at 0
@@ -303,16 +303,16 @@ public class BasicTreeBranchTest extends TestCase {
         assertTrue(branch.canCreateOneNewLeaf());
 
         // add some leaves, but let some room for one leaf
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>();
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>();
         for (int i = 0; i < BasicTreeBranch.MAX_NB_LEAVES - 1; i++) {
-            leaveStates.add(new TreeLeafState());
+            leavesStates.add(new TreeLeafState());
         }
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         branch = new BasicTreeBranch(new MockUniverse(), branchState);
         assertTrue(branch.canCreateOneNewLeaf());
 
         // add the last possible leaf
-        leaveStates.add(new TreeLeafState());
+        leavesStates.add(new TreeLeafState());
         branch = new BasicTreeBranch(new MockUniverse(), branchState);
         assertFalse(branch.canCreateOneNewLeaf());
     }
@@ -383,7 +383,7 @@ public class BasicTreeBranchTest extends TestCase {
         assertTrue(branch.canIncreaseOneLeafSize());
 
         // set all the leaves at their maximum size, so that they can not be increased anymore
-        for (TreeLeafState leafState : branchState.getLeaveStates()) {
+        for (TreeLeafState leafState : branchState.getLeavesStates()) {
             TreeLeaf3DState leaf3dState = leafState.getLeaf3DState();
             Tuple3fState initialEndPoint1 = leaf3dState.getInitialEndPoint1();
             leaf3dState.setEndPoint1(new Tuple3fState(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
@@ -396,8 +396,8 @@ public class BasicTreeBranchTest extends TestCase {
         assertFalse(branch.canIncreaseOneLeafSize());
 
         // reset the end point 1 of leaf 1, so that it can be increased again
-        branchState.getLeaveStates().get(0).getLeaf3DState()
-                .setEndPoint1(branchState.getLeaveStates().get(0).getLeaf3DState().getInitialEndPoint1());
+        branchState.getLeavesStates().get(0).getLeaf3DState()
+                .setEndPoint1(branchState.getLeavesStates().get(0).getLeaf3DState().getInitialEndPoint1());
         branch = new BasicTreeBranch(new MockUniverse(), branchState);
         assertTrue(branch.canIncreaseOneLeafSize());
     }
@@ -457,11 +457,11 @@ public class BasicTreeBranchTest extends TestCase {
     }
 
     public void testIncreaseOneLeafSize() {
-        TreeLeafState firstLeafState = branchState.getLeaveStates().get(0);
+        TreeLeafState firstLeafState = branchState.getLeavesStates().get(0);
         Point3f firstInitialEndPoint1 = firstLeafState.getLeaf3DState().getInitialEndPoint1().toPointValue();
         branchState.setEnergy(new BigDecimal(150));
         // set all the leaves at their maximum size, so that they can not be increased anymore
-        for (TreeLeafState leafState : branchState.getLeaveStates()) {
+        for (TreeLeafState leafState : branchState.getLeavesStates()) {
             TreeLeaf3DState leaf3dState = leafState.getLeaf3DState();
             Tuple3fState initialEndPoint1 = leaf3dState.getInitialEndPoint1();
             leaf3dState.setEndPoint1(new Tuple3fState(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
@@ -506,12 +506,12 @@ public class BasicTreeBranchTest extends TestCase {
         leafState2.setLeaf3DState(leaf3DState2);
         TreeLeafState leafState3 = new TreeLeafState();
         leafState3.setLeaf3DState(leaf3DState3);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(3);
-        leaveStates.add(leafState1);
-        leaveStates.add(leafState2);
-        leaveStates.add(leafState3);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(3);
+        leavesStates.add(leafState1);
+        leavesStates.add(leafState2);
+        leavesStates.add(leafState3);
         TreeBranchState branchState = new TreeBranchState();
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         BasicTreeBranch branch = new BasicTreeBranch(new MockUniverse(), branchState);
         // area1 = 2
         // area2 = 4
@@ -569,12 +569,12 @@ public class BasicTreeBranchTest extends TestCase {
         leafState2.setLeaf3DState(leaf3DState2);
         TreeLeafState leafState3 = new TreeLeafState();
         leafState3.setLeaf3DState(leaf3DState3);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(3);
-        leaveStates.add(leafState1);
-        leaveStates.add(leafState2);
-        leaveStates.add(leafState3);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(3);
+        leavesStates.add(leafState1);
+        leavesStates.add(leafState2);
+        leavesStates.add(leafState3);
         TreeBranchState branchState = new TreeBranchState();
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         BasicTreeBranch branch = new BasicTreeBranch(new MockUniverse(), branchState);
         // area1 = 2 (not taken into account, because leaf is already at its maximum size)
         // area2 = 4
@@ -631,12 +631,12 @@ public class BasicTreeBranchTest extends TestCase {
         leafState2.setLeaf3DState(leaf3DState2);
         TreeLeafState leafState3 = new TreeLeafState();
         leafState3.setLeaf3DState(leaf3DState3);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(3);
-        leaveStates.add(leafState1);
-        leaveStates.add(leafState2);
-        leaveStates.add(leafState3);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(3);
+        leavesStates.add(leafState1);
+        leavesStates.add(leafState2);
+        leavesStates.add(leafState3);
         TreeBranchState branchState = new TreeBranchState();
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         BasicTreeBranch branch = new BasicTreeBranch(new MockUniverse(), branchState);
         // area1 = 2 (not taken into account, because leaf is already at its maximum size)
         // area2 = 4 (not taken into account, because leaf is already at its maximum size)
@@ -688,12 +688,12 @@ public class BasicTreeBranchTest extends TestCase {
         leafState2.setLeaf3DState(leaf3DState2);
         TreeLeafState leafState3 = new TreeLeafState();
         leafState3.setLeaf3DState(leaf3DState3);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(3);
-        leaveStates.add(leafState1);
-        leaveStates.add(leafState2);
-        leaveStates.add(leafState3);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(3);
+        leavesStates.add(leafState1);
+        leavesStates.add(leafState2);
+        leavesStates.add(leafState3);
         TreeBranchState branchState = new TreeBranchState();
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         BasicTreeBranch branch = new BasicTreeBranch(new MockUniverse(), branchState);
         // area1 = 0
         // area2 = 4
@@ -747,11 +747,11 @@ public class BasicTreeBranchTest extends TestCase {
         leafState1.setLeaf3DState(leaf3DState1);
         TreeLeafState leafState2 = new TreeLeafState();
         leafState2.setLeaf3DState(leaf3DState2);
-        List<TreeLeafState> leaveStates = new ArrayList<TreeLeafState>(2);
-        leaveStates.add(leafState1);
-        leaveStates.add(leafState2);
+        List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>(2);
+        leavesStates.add(leafState1);
+        leavesStates.add(leafState2);
         TreeBranchState branchState = new TreeBranchState();
-        branchState.setLeaveStates(leaveStates);
+        branchState.setLeavesStates(leavesStates);
         BasicTreeBranch branch = new BasicTreeBranch(new MockUniverse(), branchState);
         // area1 = 0
         // area2 = 4

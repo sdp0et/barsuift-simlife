@@ -81,8 +81,8 @@ public class BasicUniverse implements Universe {
             trees.add(newTree);
         }
         this.fallenLeaves = new HashSet<TreeLeaf>();
-        Set<TreeLeafState> fallenLeafStates = state.getFallenLeaves();
-        for (TreeLeafState fallenLeafState : fallenLeafStates) {
+        Set<TreeLeafState> fallenLeavesStates = state.getFallenLeaves();
+        for (TreeLeafState fallenLeafState : fallenLeavesStates) {
             fallenLeaves.add(new BasicTreeLeaf(this, fallenLeafState));
         }
         this.universe3D.initFromUniverse(this);
@@ -150,11 +150,11 @@ public class BasicUniverse implements Universe {
             treeStates.add((TreeState) tree.getState());
         }
         state.setTrees(treeStates);
-        Set<TreeLeafState> fallenLeaveStates = new HashSet<TreeLeafState>();
+        Set<TreeLeafState> fallenLeavesStates = new HashSet<TreeLeafState>();
         for (TreeLeaf leaf : fallenLeaves) {
-            fallenLeaveStates.add((TreeLeafState) leaf.getState());
+            fallenLeavesStates.add((TreeLeafState) leaf.getState());
         }
-        state.setFallenLeaves(fallenLeaveStates);
+        state.setFallenLeaves(fallenLeavesStates);
         environment.synchronize();
         physics.synchronize();
         synchronizer.synchronize();
