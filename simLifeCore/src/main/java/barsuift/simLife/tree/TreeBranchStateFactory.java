@@ -42,7 +42,6 @@ public class TreeBranchStateFactory {
 
     public TreeBranchState createRandomBranchState(float treeHeight) {
         float length = computeLength(treeHeight);
-        // TODO unit test
         float radius = length / BRANCH_LENGTH_RADIUS_RATIO;
         int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));

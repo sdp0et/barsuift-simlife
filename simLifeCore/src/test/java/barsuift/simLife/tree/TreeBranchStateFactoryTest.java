@@ -52,6 +52,7 @@ public class TreeBranchStateFactoryTest extends TestCase {
         int nbLeaves = leavesStates.size();
         assertTrue(nbLeaves >= 6);
         assertTrue(nbLeaves <= 12);
+        assertEquals(branchState.getBranch3DState().getLength() / 40, branchState.getBranch3DState().getRadius(), 0.0001);
         assertTrue(branchState.getCreationMillis() >= 0);
         assertTrue(branchState.getCreationMillis() <= 100000);
         assertTrue(branchState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
