@@ -57,7 +57,7 @@ public class GravityTaskTest extends TestCase {
         // with stepSize=3, the movement should be y-=0.075
         gravity.executeSplitConditionalStep(state.getStepSize());
 
-        VectorTestHelper.assertVectorEquals(new Vector3f(1, 5.025f, 3), getTranslation(mobile));
+        VectorTestHelper.assertEquals(new Vector3f(1, 5.025f, 3), getTranslation(mobile));
         // not yet FALLEN
         assertEquals(0, publisher.nbUpdated());
         assertEquals(0, publisher.getUpdateObjects().size());
@@ -67,7 +67,7 @@ public class GravityTaskTest extends TestCase {
         // with stepSize=3, the movement should be y-=0.075
         gravity.executeSplitConditionalStep(state.getStepSize());
 
-        VectorTestHelper.assertVectorEquals(new Vector3f(1, 5.0f, 3), getTranslation(mobile));
+        VectorTestHelper.assertEquals(new Vector3f(1, 5.0f, 3), getTranslation(mobile));
         // it is now FALLEN, with height=5
         assertEquals(1, publisher.nbUpdated());
         assertEquals(MobileEvent.FALLEN, publisher.getUpdateObjects().get(0));
@@ -120,13 +120,13 @@ public class GravityTaskTest extends TestCase {
 
 
 
-        VectorTestHelper.assertVectorEquals(new Vector3f(1, 1.925f, 3), getTranslation(mobile1));
-        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0.001f, 3), getTranslation(mobile2));
-        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile3));
-        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile4));
-        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile5));
-        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile6));
-        VectorTestHelper.assertVectorEquals(new Vector3f(1, 0, 3), getTranslation(mobile7));
+        VectorTestHelper.assertEquals(new Vector3f(1, 1.925f, 3), getTranslation(mobile1));
+        VectorTestHelper.assertEquals(new Vector3f(1, 0.001f, 3), getTranslation(mobile2));
+        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile3));
+        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile4));
+        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile5));
+        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile6));
+        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile7));
 
         // every mobile except mobile1 and mobile2 should notify a FALLEN event
         assertEquals(0, publisher1.nbUpdated());

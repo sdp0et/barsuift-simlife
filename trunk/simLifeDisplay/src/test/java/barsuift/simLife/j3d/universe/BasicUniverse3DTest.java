@@ -23,7 +23,6 @@ import java.util.Set;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.Node;
-import javax.media.j3d.Transform3D;
 
 import junit.framework.TestCase;
 import barsuift.simLife.CoreDataCreatorForTests;
@@ -81,7 +80,7 @@ public class BasicUniverse3DTest extends TestCase {
     public void testAddElement3D() {
         BasicUniverse3D universe3D = new BasicUniverse3D(new Universe3DState(), new MockUniverse());
         TreeLeaf3DStateFactory stateFactory = new TreeLeaf3DStateFactory();
-        TreeLeaf3DState leaf3dState = stateFactory.createRandomTreeLeaf3DState(new Transform3D());
+        TreeLeaf3DState leaf3dState = stateFactory.createRandomTreeLeaf3DState();
         BasicTreeLeaf3D treeLeaf3D = new BasicTreeLeaf3D(universe3D, leaf3dState, new MockTreeLeaf());
         universe3D.addElement3D(treeLeaf3D.getBranchGroup());
         Set<Node> elements3d = universe3D.getElements3D();

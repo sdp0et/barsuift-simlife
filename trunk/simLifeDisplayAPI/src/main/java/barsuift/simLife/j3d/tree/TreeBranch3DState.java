@@ -21,49 +21,52 @@ package barsuift.simLife.j3d.tree;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import barsuift.simLife.State;
-import barsuift.simLife.j3d.Tuple3fState;
+import barsuift.simLife.j3d.Transform3DState;
 
 @XmlRootElement
 public class TreeBranch3DState implements State {
 
-    private Tuple3fState translationVector;
+    /**
+     * Branch transform, relative to its attach branchGroup
+     */
+    private Transform3DState transform;
 
-    private Tuple3fState endPoint;
+    private float length;
 
     public TreeBranch3DState() {
         super();
-        this.translationVector = new Tuple3fState();
-        this.endPoint = new Tuple3fState();
+        this.transform = new Transform3DState();
+        this.length = 0;
     }
 
-    public TreeBranch3DState(Tuple3fState translationVector, Tuple3fState endPoint) {
+    public TreeBranch3DState(Transform3DState transform, float length) {
         super();
-        this.translationVector = translationVector;
-        this.endPoint = endPoint;
+        this.transform = transform;
+        this.length = length;
     }
 
-    public Tuple3fState getTranslationVector() {
-        return translationVector;
+    public Transform3DState getTransform() {
+        return transform;
     }
 
-    public void setTranslationVector(Tuple3fState translationVector) {
-        this.translationVector = translationVector;
+    public void setTransform(Transform3DState transform) {
+        this.transform = transform;
     }
 
-    public Tuple3fState getEndPoint() {
-        return endPoint;
+    public float getLength() {
+        return length;
     }
 
-    public void setEndPoint(Tuple3fState endPoint) {
-        this.endPoint = endPoint;
+    public void setLength(float length) {
+        this.length = length;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((translationVector == null) ? 0 : translationVector.hashCode());
-        result = prime * result + ((endPoint == null) ? 0 : endPoint.hashCode());
+        result = prime * result + Float.floatToIntBits(length);
+        result = prime * result + ((transform == null) ? 0 : transform.hashCode());
         return result;
     }
 
@@ -76,24 +79,20 @@ public class TreeBranch3DState implements State {
         if (getClass() != obj.getClass())
             return false;
         TreeBranch3DState other = (TreeBranch3DState) obj;
-        if (translationVector == null) {
-            if (other.translationVector != null)
+        if (Float.floatToIntBits(length) != Float.floatToIntBits(other.length))
+            return false;
+        if (transform == null) {
+            if (other.transform != null)
                 return false;
         } else
-            if (!translationVector.equals(other.translationVector))
-                return false;
-        if (endPoint == null) {
-            if (other.endPoint != null)
-                return false;
-        } else
-            if (!endPoint.equals(other.endPoint))
+            if (!transform.equals(other.transform))
                 return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "TreeBranch3DState [translationVector=" + translationVector + ", endPoint=" + endPoint + "]";
+        return "TreeBranch3DState [transform=" + transform + ", length=" + length + "]";
     }
 
 }

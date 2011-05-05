@@ -39,7 +39,7 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
 
     private TransformGroup tg;
 
-    private Point3f attachPoint;
+    private Point3f position;
 
     private int increaseSizeCalled;
 
@@ -61,7 +61,7 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
         tg.addChild(shape);
         bg = new BranchGroup();
         bg.addChild(tg);
-        attachPoint = new Point3f();
+        position = new Point3f();
         increaseSizeCalled = 0;
         isMaxSizeReached = false;
         synchronizedCalled = 0;
@@ -77,11 +77,11 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
     }
 
     public Point3f getPosition() {
-        return attachPoint;
+        return position;
     }
 
-    public void setAttachPoint(Point3f attachPoint) {
-        this.attachPoint = attachPoint;
+    public void setPosition(Point3f position) {
+        this.position = position;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class MockTreeLeaf3D extends MockSubscriber implements TreeLeaf3D {
         increaseSizeCalled++;
     }
 
-    public int getNbnTimesIncreaseSizeCalled() {
+    public int getNbTimesIncreaseSizeCalled() {
         return increaseSizeCalled;
     }
 

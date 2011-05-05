@@ -18,12 +18,21 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import barsuift.simLife.j3d.Transform3DState;
+import barsuift.simLife.Randomizer;
+import barsuift.simLife.j3d.Tuple3fState;
+import barsuift.simLife.j3d.landscape.Landscape3D;
 
-public class TreeBranch3DStateFactory {
 
-    public TreeBranch3DState createRandomTreeBranch3DState(float length) {
-        return new TreeBranch3DState(new Transform3DState(), length);
+public class TreeOrganizer {
+
+    public void placeNewTree(Tree3DState tree3D, Landscape3D landscape3D) {
+        int size = landscape3D.getSize();
+        // getting 2 meters of margin
+        float x = Randomizer.randomBetween(2, size - 2);
+        float z = Randomizer.randomBetween(2, size - 2);
+        float height = landscape3D.getHeight(x, z);
+        Tuple3fState translationVector = new Tuple3fState(x, height, z);
+        tree3D.setTranslationVector(translationVector);
     }
 
 }

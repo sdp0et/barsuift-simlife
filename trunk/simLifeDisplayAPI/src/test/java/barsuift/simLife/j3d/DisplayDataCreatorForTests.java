@@ -274,9 +274,9 @@ public final class DisplayDataCreatorForTests {
     }
 
     public static TreeBranch3DState createRandomTreeBranch3DState() {
-        Tuple3fState translationVector = createRandomTuple3fState();
-        Tuple3fState endPoint = createRandomTuple3fState();
-        return new TreeBranch3DState(translationVector, endPoint);
+        Transform3DState transform = createRandomTransform3DState();
+        float length = (float) Math.random();
+        return new TreeBranch3DState(transform, length);
     }
 
     public static TreeTrunk3DState createRandomTreeTrunk3DState() {

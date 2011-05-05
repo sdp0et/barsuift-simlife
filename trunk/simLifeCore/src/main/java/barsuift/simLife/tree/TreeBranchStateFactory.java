@@ -22,44 +22,45 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.j3d.Transform3D;
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
-
 import barsuift.simLife.Randomizer;
-import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DStateFactory;
-import barsuift.simLife.j3d.util.BarycentreHelper;
-import barsuift.simLife.j3d.util.DistanceHelper;
-import barsuift.simLife.j3d.util.TransformerHelper;
+import barsuift.simLife.j3d.tree.TreeLeaf3DState;
+import barsuift.simLife.j3d.tree.TreeLeavesOrganizer;
 
 public class TreeBranchStateFactory {
 
-    public TreeBranchState createRandomBranchState(Vector3f translationVector, Point3f branchEndPoint) {
+    /**
+     * Ratio between the length of branches compared to the tree height
+     */
+    public static final float HEIGHT_BRANCH_RADIAL_LENGTH_RATIO = 0.5f;
+
+    public TreeBranchState createRandomBranchState(float treeHeight) {
+        float length = computeLength(treeHeight);
         int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
-        TreeLeafStateFactory leafStateFactory = new TreeLeafStateFactory();
         List<TreeLeafState> leavesStates = new ArrayList<TreeLeafState>();
+        List<TreeLeaf3DState> leaves3DStates = new ArrayList<TreeLeaf3DState>();
+        TreeLeafStateFactory leafStateFactory = new TreeLeafStateFactory();
         int nbLeaves = Randomizer.randomBetween(6, 12);
-        float maxDistance = DistanceHelper.distanceFromOrigin(branchEndPoint);
-        float shift = maxDistance / nbLeaves;
         for (int index = 0; index < nbLeaves; index++) {
-            Point3f leafAttachPoint = BarycentreHelper.getBarycentre(new Point3f(0, 0, 0), branchEndPoint,
-                    (index + Randomizer.random2()) * shift);
-            double rotation = Randomizer.randomRotation();
-            Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
-            Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
-            transform.mul(rotationT3D);
-            leavesStates.add(leafStateFactory.createRandomTreeLeafState(transform));
+            TreeLeafState leafState = leafStateFactory.createRandomTreeLeafState();
+            leavesStates.add(leafState);
+            leaves3DStates.add(leafState.getLeaf3DState());
         }
-
+        TreeLeavesOrganizer leavesOrganizer = new TreeLeavesOrganizer();
+        leavesOrganizer.organizeLeaves(leaves3DStates, length);
         TreeBranch3DStateFactory branch3DStateFactory = new TreeBranch3DStateFactory();
-        TreeBranch3DState branch3DState = branch3DStateFactory.createRandomTreeBranch3DState(translationVector,
-                branchEndPoint);
+        TreeBranch3DState branch3DState = branch3DStateFactory.createRandomTreeBranch3DState(length);
 
         return new TreeBranchState(creationMillis, energy, freeEnergy, leavesStates, branch3DState);
+    }
+
+    protected float computeLength(float treeHeight) {
+        float ratio = Randomizer.randomBetween(0.5f, 1);
+        float maxBranchLength = HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight;
+        return ratio * maxBranchLength;
     }
 
 }

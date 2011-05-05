@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.tree;
+package barsuift.simLife.j3d.tree;
 
 import java.util.Comparator;
 
 import barsuift.simLife.j3d.util.DistanceHelper;
 
 
-public class TreeLeafComparator implements Comparator<TreeLeaf> {
+public class TreeLeaf3DComparator implements Comparator<TreeLeaf3D> {
 
     /**
      * Returns the difference of distance of the 2 arguments from the origin.
@@ -36,10 +36,10 @@ public class TreeLeafComparator implements Comparator<TreeLeaf> {
      * </p>
      */
     @Override
-    public int compare(TreeLeaf o1, TreeLeaf o2) {
+    public int compare(TreeLeaf3D o1, TreeLeaf3D o2) {
         // distances are computed in millimeters for more precision
-        float distance1 = DistanceHelper.distanceFromOrigin(o1.getTreeLeaf3D().getPosition()) * 1000;
-        float distance2 = DistanceHelper.distanceFromOrigin(o2.getTreeLeaf3D().getPosition()) * 1000;
+        float distance1 = DistanceHelper.distanceFromOrigin(o1.getPosition()) * 1000;
+        float distance2 = DistanceHelper.distanceFromOrigin(o2.getPosition()) * 1000;
         return (int) (distance1 - distance2);
     }
 

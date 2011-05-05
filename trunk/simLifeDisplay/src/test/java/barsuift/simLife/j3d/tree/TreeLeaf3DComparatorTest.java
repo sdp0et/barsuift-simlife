@@ -16,21 +16,20 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.tree;
+package barsuift.simLife.j3d.tree;
 
 import javax.vecmath.Point3f;
 
 import junit.framework.TestCase;
-import barsuift.simLife.j3d.tree.MockTreeLeaf3D;
 
 
-public class TreeLeafComparatorTest extends TestCase {
+public class TreeLeaf3DComparatorTest extends TestCase {
 
-    private TreeLeafComparator comparator;
+    private TreeLeaf3DComparator comparator;
 
     protected void setUp() throws Exception {
         super.setUp();
-        comparator = new TreeLeafComparator();
+        comparator = new TreeLeaf3DComparator();
     }
 
     protected void tearDown() throws Exception {
@@ -39,14 +38,14 @@ public class TreeLeafComparatorTest extends TestCase {
     }
 
     public void testCompare() {
-        MockTreeLeaf o1 = new MockTreeLeaf();
-        ((MockTreeLeaf3D) o1.getTreeLeaf3D()).setAttachPoint(new Point3f(2, 0, 0));
-        MockTreeLeaf o2 = new MockTreeLeaf();
-        ((MockTreeLeaf3D) o2.getTreeLeaf3D()).setAttachPoint(new Point3f(3, 0, 0));
-        MockTreeLeaf o3 = new MockTreeLeaf();
-        ((MockTreeLeaf3D) o3.getTreeLeaf3D()).setAttachPoint(new Point3f(5.0005f, 0, 0));
-        MockTreeLeaf o4 = new MockTreeLeaf();
-        ((MockTreeLeaf3D) o4.getTreeLeaf3D()).setAttachPoint(new Point3f(5.001f, 0, 0));
+        MockTreeLeaf3D o1 = new MockTreeLeaf3D();
+        o1.setPosition(new Point3f(2, 0, 0));
+        MockTreeLeaf3D o2 = new MockTreeLeaf3D();
+        o2.setPosition(new Point3f(3, 0, 0));
+        MockTreeLeaf3D o3 = new MockTreeLeaf3D();
+        o3.setPosition(new Point3f(5.0005f, 0, 0));
+        MockTreeLeaf3D o4 = new MockTreeLeaf3D();
+        o4.setPosition(new Point3f(5.001f, 0, 0));
 
         assertEquals(0, comparator.compare(o1, o1));
         assertEquals(-1000, comparator.compare(o1, o2));

@@ -67,7 +67,7 @@ public final class Randomizer {
     }
 
     /**
-     * Returns a random number comprised between min and max (both inclusive)
+     * Returns a random number in the range [min; max[
      * 
      * @return random int between min and max
      * @throws IllegalArgumentException if min > max
@@ -80,7 +80,7 @@ public final class Randomizer {
     }
 
     /**
-     * Returns a random number comprised between min and max (both inclusive)
+     * Returns a random number in the range [min; max[
      * 
      * @return random float between min and max
      * @throws IllegalArgumentException if min > max
@@ -95,7 +95,7 @@ public final class Randomizer {
     /**
      * Random angle for rotation
      * 
-     * @return a random number between 0 and 2 PI
+     * @return a random number in the range [0; 2 PI[
      */
     public static double randomRotation() {
         return (Math.random() * Math.PI * 2);

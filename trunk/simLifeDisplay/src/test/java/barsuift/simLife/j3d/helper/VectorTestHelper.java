@@ -28,11 +28,11 @@ public final class VectorTestHelper extends Assert {
         // private constructor to enforce static access
     }
 
-    public static final void assertVectorEquals(Vector3f v1, Vector3f v2) {
-        assertVectorEquals(v1, v2, 0.0001f, 0.0001f, 0.0001f);
+    public static final void assertEquals(Vector3f v1, Vector3f v2) {
+        assertEquals(v1, v2, 0.0001f, 0.0001f, 0.0001f);
     }
 
-    public static final void assertVectorEquals(Vector3f v1, Vector3f v2, float xPrecision, float yPrecision,
+    public static final void assertEquals(Vector3f v1, Vector3f v2, float xPrecision, float yPrecision,
             float zPrecision) {
         assertEquals(v1.getX(), v2.getX(), xPrecision);
         assertEquals(v1.getY(), v2.getY(), yPrecision);

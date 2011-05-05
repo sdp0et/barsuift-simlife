@@ -21,14 +21,13 @@ package barsuift.simLife.j3d.tree;
 import java.util.List;
 
 import javax.media.j3d.BranchGroup;
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
+import javax.media.j3d.Transform3D;
 
 import barsuift.simLife.Persistent;
 
 public interface TreeBranch3D extends Persistent<TreeBranch3DState> {
 
-    public Point3f getEndPoint();
+    public float getLength();
 
     public void addLeaf(TreeLeaf3D leaf);
 
@@ -36,6 +35,8 @@ public interface TreeBranch3D extends Persistent<TreeBranch3DState> {
 
     public BranchGroup getBranchGroup();
 
-    public Vector3f getTranslationVector();
+    public Transform3D getTransform();
+
+    public void increaseOneLeafSize();
 
 }
