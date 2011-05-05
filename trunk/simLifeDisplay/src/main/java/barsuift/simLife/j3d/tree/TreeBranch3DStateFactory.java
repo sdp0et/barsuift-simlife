@@ -22,8 +22,8 @@ import barsuift.simLife.j3d.Transform3DState;
 
 public class TreeBranch3DStateFactory {
 
-    public TreeBranch3DState createRandomTreeBranch3DState(float length) {
-        return new TreeBranch3DState(new Transform3DState(), length);
+    public TreeBranch3DState createRandomTreeBranch3DState(float length, float radius) {
+        return new TreeBranch3DState(new Transform3DState(), length, radius);
     }
 
 }

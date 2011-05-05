@@ -276,7 +276,8 @@ public final class DisplayDataCreatorForTests {
     public static TreeBranch3DState createRandomTreeBranch3DState() {
         Transform3DState transform = createRandomTransform3DState();
         float length = (float) Math.random();
-        return new TreeBranch3DState(transform, length);
+        float radius = (float) Math.random();
+        return new TreeBranch3DState(transform, length, radius);
     }
 
     public static TreeTrunk3DState createRandomTreeTrunk3DState() {

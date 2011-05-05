@@ -31,6 +31,8 @@ public class MockTreeBranch3D implements TreeBranch3D {
 
     private float length;
 
+    private float radius;
+
     private BranchGroup branchGroup;
 
     private TreeBranch3DState state;
@@ -49,6 +51,7 @@ public class MockTreeBranch3D implements TreeBranch3D {
     public void reset() {
         leaves = new ArrayList<TreeLeaf3D>();
         length = 0;
+        radius = 0;
         branchGroup = new BranchGroup();
         state = new TreeBranch3DState();
         synchronizedCalled = 0;
@@ -77,6 +80,15 @@ public class MockTreeBranch3D implements TreeBranch3D {
 
     public void setLength(float length) {
         this.length = length;
+    }
+
+    @Override
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
     }
 
     @Override

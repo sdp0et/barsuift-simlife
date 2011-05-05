@@ -31,12 +31,19 @@ import barsuift.simLife.j3d.tree.TreeLeavesOrganizer;
 public class TreeBranchStateFactory {
 
     /**
-     * Ratio between the length of branches compared to the tree height
+     * Ratio between the tree height and the branch length
      */
-    public static final float HEIGHT_BRANCH_RADIAL_LENGTH_RATIO = 0.5f;
+    public static final float TREE_HEIGHT_BRANCH_LENGTH_RATIO = 2f;
+
+    /**
+     * Ratio between the the branch length and the branch radius
+     */
+    public static final float BRANCH_LENGTH_RADIUS_RATIO = 40f;
 
     public TreeBranchState createRandomBranchState(float treeHeight) {
         float length = computeLength(treeHeight);
+        // TODO unit test
+        float radius = length / BRANCH_LENGTH_RADIUS_RATIO;
         int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
@@ -52,14 +59,14 @@ public class TreeBranchStateFactory {
         TreeLeavesOrganizer leavesOrganizer = new TreeLeavesOrganizer();
         leavesOrganizer.organizeLeaves(leaves3DStates, length);
         TreeBranch3DStateFactory branch3DStateFactory = new TreeBranch3DStateFactory();
-        TreeBranch3DState branch3DState = branch3DStateFactory.createRandomTreeBranch3DState(length);
+        TreeBranch3DState branch3DState = branch3DStateFactory.createRandomTreeBranch3DState(length, radius);
 
         return new TreeBranchState(creationMillis, energy, freeEnergy, leavesStates, branch3DState);
     }
 
     protected float computeLength(float treeHeight) {
         float ratio = Randomizer.randomBetween(0.5f, 1);
-        float maxBranchLength = HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight;
+        float maxBranchLength = treeHeight / TREE_HEIGHT_BRANCH_LENGTH_RATIO;
         return ratio * maxBranchLength;
     }
 

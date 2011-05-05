@@ -52,6 +52,8 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     private final float length;
 
+    private final float radius;
+
     private final BranchGroup bg;
 
     private final TransformGroup tg;
@@ -76,6 +78,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
         this.state = state;
         this.transform = state.getTransform().toTransform3D();
         this.length = state.getLength();
+        this.radius = state.getRadius();
         this.treeBranch = treeBranch;
 
         this.tg = new TransformGroup(transform);
@@ -119,6 +122,11 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     @Override
     public float getLength() {
         return length;
+    }
+
+    @Override
+    public float getRadius() {
+        return radius;
     }
 
     public Transform3D getTransform() {
@@ -198,6 +206,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     public void synchronize() {
         state.setTransform(new Transform3DState(transform));
         state.setLength(length);
+        state.setRadius(radius);
     }
 
     @Override

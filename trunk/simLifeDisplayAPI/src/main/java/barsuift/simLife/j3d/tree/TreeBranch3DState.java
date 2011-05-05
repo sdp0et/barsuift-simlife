@@ -33,16 +33,20 @@ public class TreeBranch3DState implements State {
 
     private float length;
 
+    private float radius;
+
     public TreeBranch3DState() {
         super();
         this.transform = new Transform3DState();
         this.length = 0;
+        this.radius = 0;
     }
 
-    public TreeBranch3DState(Transform3DState transform, float length) {
+    public TreeBranch3DState(Transform3DState transform, float length, float radius) {
         super();
         this.transform = transform;
         this.length = length;
+        this.radius = radius;
     }
 
     public Transform3DState getTransform() {
@@ -61,11 +65,20 @@ public class TreeBranch3DState implements State {
         this.length = length;
     }
 
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + Float.floatToIntBits(length);
+        result = prime * result + Float.floatToIntBits(radius);
         result = prime * result + ((transform == null) ? 0 : transform.hashCode());
         return result;
     }
@@ -81,6 +94,8 @@ public class TreeBranch3DState implements State {
         TreeBranch3DState other = (TreeBranch3DState) obj;
         if (Float.floatToIntBits(length) != Float.floatToIntBits(other.length))
             return false;
+        if (Float.floatToIntBits(radius) != Float.floatToIntBits(other.radius))
+            return false;
         if (transform == null) {
             if (other.transform != null)
                 return false;
@@ -92,7 +107,7 @@ public class TreeBranch3DState implements State {
 
     @Override
     public String toString() {
-        return "TreeBranch3DState [transform=" + transform + ", length=" + length + "]";
+        return "TreeBranch3DState [transform=" + transform + ", length=" + length + ", radius=" + radius + "]";
     }
 
 }
