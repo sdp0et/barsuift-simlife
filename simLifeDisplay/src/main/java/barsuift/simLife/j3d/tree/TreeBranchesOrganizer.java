@@ -35,8 +35,7 @@ public class TreeBranchesOrganizer {
         for (TreeBranch3DState treeBranch3DState : branchesStates) {
             double yRotation = Randomizer.randomRotation();
             Transform3D transform = TransformerHelper.getRotationTransform3D(yRotation, Axis.Y);
-            // double zRotation = Randomizer.randomBetween(-(float) Math.PI / 2, (float) Math.PI / 2);
-            double zRotation = Randomizer.randomBetween(0, (float) Math.PI / 2);
+            double zRotation = Randomizer.randomBetween(-(float) Math.PI / 2, 0);
             Transform3D rotationZ = TransformerHelper.getRotationTransform3D(zRotation, Axis.Z);
             transform.mul(rotationZ);
             transform.setTranslation(new Vector3f(0, treeHeight, 0));
