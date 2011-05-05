@@ -39,9 +39,9 @@ public class TreeLeavesOrganizer {
         float shift = branchLength / nbLeaves;
         for (int index = 0; index < nbLeaves; index++) {
             TreeLeaf3DState leaf3DState = leavesStates.get(index);
-            Point3f leafAttachPoint = new Point3f((index + (float) Math.random()) * shift, 0, 0);
+            Point3f leafAttachPoint = new Point3f(0, (index + (float) Math.random()) * shift, 0);
             Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
-            Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(Randomizer.randomRotation(), Axis.Y);
+            Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(Randomizer.randomRotation(), Axis.X);
             transform.mul(rotationT3D);
             leaf3DState.setTransform(new Transform3DState(transform));
         }
@@ -58,7 +58,7 @@ public class TreeLeavesOrganizer {
 
         // compute which couple of leaves are the most distant
         for (TreeLeaf3D leaf3D : sortedLeaves3D) {
-            float attachPoint = leaf3D.getPosition().getX();
+            float attachPoint = leaf3D.getPosition().getY();
             distance = attachPoint - previousAttachPoint;
             if (distance > maxDistance) {
                 maxDistance = distance;
@@ -77,13 +77,13 @@ public class TreeLeavesOrganizer {
         // once this couple is found, place the new leaf approximately in the middle +/-10%
         float middle = (saveAttachPoint1 + saveAttachPoint2) / 2;
         float random = Randomizer.random1() * maxDistance;
-        float newX = middle + random;
-        return new Vector3f(newX, 0, 0);
+        float newY = middle + random;
+        return new Vector3f(0, newY, 0);
     }
 
     public void placeNewLeaf(TreeLeaf3DState leaf3DState, TreeBranch3D branch3D) {
         Transform3D transform1 = new Transform3D();
-        transform1.rotY(Randomizer.randomRotation());
+        transform1.rotX(Randomizer.randomRotation());
         transform1.setTranslation(computeNewLeafTranslation(branch3D.getLeaves(), branch3D.getLength()));
         Transform3D transform = transform1;
         leaf3DState.setTransform(new Transform3DState(transform));
