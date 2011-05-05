@@ -29,6 +29,8 @@ public interface TreeBranch3D extends Persistent<TreeBranch3DState> {
 
     public float getLength();
 
+    public float getRadius();
+
     public void addLeaf(TreeLeaf3D leaf);
 
     public List<TreeLeaf3D> getLeaves();
