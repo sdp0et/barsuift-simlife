@@ -28,21 +28,21 @@ public class TreeLeaf3DStateFactory {
     /**
      * Create a random leaf3D state with :
      * <ul>
-     * <li>initial end point 1 : (-0.02&plusmn;0.01, -0.04&plusmn;0.01, 0)</li>
-     * <li>initial end point 2 : (0.02&plusmn;0.01, -0.04&plusmn;0.01, 0)</li>
+     * <li>initial end point 1 : (0.04&plusmn;0.01, -0.02&plusmn;0.01, 0)</li>
+     * <li>initial end point 2 : (0.04&plusmn;0.01, 0.02&plusmn;0.01, 0)</li>
      * <li>end point 1 : 10 * initial end point 1</li>
      * <li>end point 2 : 10 * initial end point 2</li>
      * </ul>
      * The leaf has no transform.
      */
     public TreeLeaf3DState createRandomTreeLeaf3DState() {
-        float x1 = -0.02f + Randomizer.random1() / 10;
-        float y1 = -0.04f + Randomizer.random1() / 10;
+        float x1 = 0.04f + Randomizer.random1() / 10;
+        float y1 = -0.02f + Randomizer.random1() / 10;
         int z1 = 0;
         Tuple3fState initialEndPoint1 = new Tuple3fState(x1, y1, z1);
 
-        float x2 = 0.02f + Randomizer.random1() / 10;
-        float y2 = -0.04f + Randomizer.random1() / 10;
+        float x2 = 0.04f + Randomizer.random1() / 10;
+        float y2 = 0.02f + Randomizer.random1() / 10;
         int z2 = 0;
         Tuple3fState initialEndPoint2 = new Tuple3fState(x2, y2, z2);
 
@@ -55,21 +55,21 @@ public class TreeLeaf3DStateFactory {
     /**
      * Create a new leaf3D state with :
      * <ul>
-     * <li>initial end point 1 : (-0.02&plusmn;0.01, -0.04&plusmn;0.01, 0)</li>
-     * <li>initial end point 2 : (0.02&plusmn;0.01, -0.04&plusmn;0.01, 0)</li>
+     * <li>initial end point 1 : (0.04&plusmn;0.01, -0.02&plusmn;0.01, 0)</li>
+     * <li>initial end point 2 : (0.04&plusmn;0.01, 0.02&plusmn;0.01, 0)</li>
      * <li>end point 1 : initial end point 1</li>
      * <li>end point 2 : initial end point 2</li>
      * </ul>
      * The leaf has no transform.
      */
     public TreeLeaf3DState createNewTreeLeaf3DState() {
-        float x1 = -0.02f + Randomizer.random1() / 10;
-        float y1 = -0.04f + Randomizer.random1() / 10;
+        float x1 = 0.04f + Randomizer.random1() / 10;
+        float y1 = -0.02f + Randomizer.random1() / 10;
         int z1 = 0;
         Tuple3fState initialEndPoint1 = new Tuple3fState(x1, y1, z1);
 
-        float x2 = 0.02f + Randomizer.random1() / 10;
-        float y2 = -0.04f + Randomizer.random1() / 10;
+        float x2 = 0.04f + Randomizer.random1() / 10;
+        float y2 = 0.02f + Randomizer.random1() / 10;
         int z2 = 0;
         Tuple3fState initialEndPoint2 = new Tuple3fState(x2, y2, z2);
 

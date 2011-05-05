@@ -111,7 +111,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     private LineArray createBranchLine() {
         LineArray branchLine = new LineArray(2, GeometryArray.COORDINATES);
         branchLine.setCoordinate(0, new Point3f(0, 0, 0));
-        branchLine.setCoordinate(1, new Point3f(length, 0, 0));
+        branchLine.setCoordinate(1, new Point3f(0, length, 0));
         return branchLine;
     }
 
