@@ -20,8 +20,6 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 
-import javax.media.j3d.Transform3D;
-
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
@@ -40,13 +38,13 @@ public class TreeLeafStateFactory {
      * <li>random 3D state</li>
      * </ul>
      */
-    public TreeLeafState createRandomTreeLeafState(Transform3D transform) {
+    public TreeLeafState createRandomTreeLeafState() {
         BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
         long creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
         BigDecimal freeEnergy = new BigDecimal(Randomizer.randomBetween(0, 50));
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
-        TreeLeaf3DState leaf3dState = leaf3DStateFactory.createRandomTreeLeaf3DState(transform);
+        TreeLeaf3DState leaf3dState = leaf3DStateFactory.createRandomTreeLeaf3DState();
         return new TreeLeafState(creationMillis, energy, freeEnergy, efficiency, leaf3dState);
     }
 
@@ -58,11 +56,11 @@ public class TreeLeafStateFactory {
      * <li>new 3D state</li>
      * </ul>
      */
-    public TreeLeafState createNewTreeLeafState(Transform3D transform, BigDecimal energy, long creationMillis) {
+    public TreeLeafState createNewTreeLeafState(BigDecimal energy, long creationMillis) {
         BigDecimal efficiency = PercentHelper.getDecimalValue(Randomizer.randomBetween(90, 100));
         BigDecimal freeEnergy = new BigDecimal(0);
         TreeLeaf3DStateFactory leaf3DStateFactory = new TreeLeaf3DStateFactory();
-        TreeLeaf3DState leaf3dState = leaf3DStateFactory.createNewTreeLeaf3DState(transform);
+        TreeLeaf3DState leaf3dState = leaf3DStateFactory.createNewTreeLeaf3DState();
         return new TreeLeafState(creationMillis, energy, freeEnergy, efficiency, leaf3dState);
     }
 

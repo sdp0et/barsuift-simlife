@@ -22,23 +22,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.BranchGroup;
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
+import javax.media.j3d.Transform3D;
 
 
 public class MockTreeBranch3D implements TreeBranch3D {
 
-    private List<TreeLeaf3D> leaves = new ArrayList<TreeLeaf3D>();
+    private List<TreeLeaf3D> leaves;
 
-    private Point3f endPoint = new Point3f();
+    private float length;
 
-    private BranchGroup branchGroup = new BranchGroup();
+    private BranchGroup branchGroup;
 
-    private TreeBranch3DState state = new TreeBranch3DState();
+    private TreeBranch3DState state;
 
-    private int synchronizedCalled = 0;
+    private int synchronizedCalled;
 
-    private Vector3f translationVector = new Vector3f();
+    private int increaseOneLeafSizeCalled;
+
+    private Transform3D transform;
+
+    public MockTreeBranch3D() {
+        super();
+        reset();
+    }
+
+    public void reset() {
+        leaves = new ArrayList<TreeLeaf3D>();
+        length = 0;
+        branchGroup = new BranchGroup();
+        state = new TreeBranch3DState();
+        synchronizedCalled = 0;
+        increaseOneLeafSizeCalled = 0;
+        transform = new Transform3D();
+    }
 
     @Override
     public List<TreeLeaf3D> getLeaves() {
@@ -55,12 +71,12 @@ public class MockTreeBranch3D implements TreeBranch3D {
     }
 
     @Override
-    public Point3f getEndPoint() {
-        return endPoint;
+    public float getLength() {
+        return length;
     }
 
-    public void setEndPoint(Point3f endPoint) {
-        this.endPoint = endPoint;
+    public void setLength(float length) {
+        this.length = length;
     }
 
     @Override
@@ -91,12 +107,21 @@ public class MockTreeBranch3D implements TreeBranch3D {
     }
 
     @Override
-    public Vector3f getTranslationVector() {
-        return translationVector;
+    public void increaseOneLeafSize() {
+        this.increaseOneLeafSizeCalled++;
     }
 
-    public void setTranslationVector(Vector3f translationVector) {
-        this.translationVector = translationVector;
+    public int getNbIncreaseOneLeafSizeCalled() {
+        return increaseOneLeafSizeCalled;
+    }
+
+    @Override
+    public Transform3D getTransform() {
+        return transform;
+    }
+
+    public void setTransform(Transform3D transform) {
+        this.transform = transform;
     }
 
 }

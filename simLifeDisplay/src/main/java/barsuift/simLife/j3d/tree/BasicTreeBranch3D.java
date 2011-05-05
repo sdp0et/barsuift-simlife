@@ -20,7 +20,10 @@ package barsuift.simLife.j3d.tree;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
@@ -28,15 +31,14 @@ import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Group;
 import javax.media.j3d.LineArray;
 import javax.media.j3d.Shape3D;
+import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
-import barsuift.simLife.j3d.Tuple3fState;
+import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ColorConstants;
-import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.TreeBranch;
 import barsuift.simLife.tree.TreeLeaf;
 
@@ -46,9 +48,9 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     private final TreeBranch treeBranch;
 
-    private final Vector3f translationVector;
+    private final Transform3D transform;
 
-    private final Point3f endPoint;
+    private final float length;
 
     private final BranchGroup bg;
 
@@ -72,11 +74,11 @@ public class BasicTreeBranch3D implements TreeBranch3D {
             throw new IllegalArgumentException("Null tree branch");
         }
         this.state = state;
-        this.translationVector = state.getTranslationVector().toVectorValue();
-        this.endPoint = state.getEndPoint().toPointValue();
+        this.transform = state.getTransform().toTransform3D();
+        this.length = state.getLength();
         this.treeBranch = treeBranch;
 
-        this.tg = TransformerHelper.getTranslationTransformGroup(translationVector);
+        this.tg = new TransformGroup(transform);
         tg.setCapability(Group.ALLOW_CHILDREN_WRITE);
         tg.setCapability(Group.ALLOW_CHILDREN_EXTEND);
 
@@ -106,7 +108,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     private LineArray createBranchLine() {
         LineArray branchLine = new LineArray(2, GeometryArray.COORDINATES);
         branchLine.setCoordinate(0, new Point3f(0, 0, 0));
-        branchLine.setCoordinate(1, endPoint);
+        branchLine.setCoordinate(1, new Point3f(length, 0, 0));
         return branchLine;
     }
 
@@ -115,12 +117,75 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     }
 
     @Override
-    public Point3f getEndPoint() {
-        return endPoint;
+    public float getLength() {
+        return length;
     }
 
-    public Vector3f getTranslationVector() {
-        return translationVector;
+    public Transform3D getTransform() {
+        return transform;
+    }
+
+    public void increaseOneLeafSize() {
+        TreeLeaf3D leaf3D = getRandomLeafToIncrease();
+        leaf3D.increaseSize();
+    }
+
+    /**
+     * Returns one random leaf, with max odd to smallest leaf
+     */
+    protected TreeLeaf3D getRandomLeafToIncrease() {
+        List<TreeLeaf3D> leaves3D = getLeaves();
+
+        // get applicable leaves
+        List<TreeLeaf3D> leaves3DToIncrease = new ArrayList<TreeLeaf3D>(leaves3D.size());
+        for (TreeLeaf3D leaf3D : leaves3D) {
+            if (!leaf3D.isMaxSizeReached()) {
+                leaves3DToIncrease.add(leaf3D);
+            }
+        }
+        if (leaves3DToIncrease.size() == 0) {
+            return null;
+        }
+        if (leaves3DToIncrease.size() == 1) {
+            return leaves3DToIncrease.get(0);
+        }
+
+        // compute areas
+        Map<TreeLeaf3D, Float> areas = new HashMap<TreeLeaf3D, Float>(leaves3DToIncrease.size());
+        for (TreeLeaf3D leaf3D : leaves3DToIncrease) {
+            areas.put(leaf3D, leaf3D.getArea());
+        }
+
+        // compute area sum
+        float sumArea = 0;
+        for (Float area : areas.values()) {
+            sumArea += area;
+        }
+
+        // compute diffArea sum
+        float sumDiffArea = (leaves3DToIncrease.size() - 1) * sumArea;
+
+        // compute ratios
+        // thanks to the use of sumDiffArea, the sum of ratios is equals to 1 (100%)
+        Map<TreeLeaf3D, Float> ratios = new HashMap<TreeLeaf3D, Float>(areas.size());
+        for (Entry<TreeLeaf3D, Float> entry : areas.entrySet()) {
+            ratios.put(entry.getKey(), (sumArea - entry.getValue()) / sumDiffArea);
+        }
+
+        // select one leaf
+        float random = (float) Math.random();
+        float previousMinBound = 0;
+        for (Entry<TreeLeaf3D, Float> entry : ratios.entrySet()) {
+            TreeLeaf3D leaf3D = entry.getKey();
+            Float ratio = entry.getValue();
+            if (random < (previousMinBound + ratio)) {
+                return leaf3D;
+            }
+            previousMinBound += ratio;
+        }
+
+        // return last leaf
+        return null;
     }
 
     @Override
@@ -131,8 +196,8 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     @Override
     public void synchronize() {
-        state.setTranslationVector(new Tuple3fState(translationVector));
-        state.setEndPoint(new Tuple3fState(endPoint));
+        state.setTransform(new Transform3DState(transform));
+        state.setLength(length);
     }
 
     @Override

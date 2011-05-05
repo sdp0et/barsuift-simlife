@@ -21,10 +21,10 @@ package barsuift.simLife.j3d.tree;
 import barsuift.simLife.j3d.Tuple3fState;
 
 
-
 public class Tree3DStateFactory {
 
-    public Tree3DState createRandomTree3DState(Tuple3fState translationVector) {
-        return new Tree3DState(translationVector);
+    public Tree3DState createRandomTree3DState() {
+        return new Tree3DState(new Tuple3fState());
     }
+
 }

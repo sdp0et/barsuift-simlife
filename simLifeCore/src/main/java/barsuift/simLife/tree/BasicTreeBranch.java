@@ -23,23 +23,14 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.media.j3d.Transform3D;
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
-
 import barsuift.simLife.PercentHelper;
-import barsuift.simLife.Randomizer;
-import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.tree.BasicTreeBranch3D;
 import barsuift.simLife.j3d.tree.TreeBranch3D;
-import barsuift.simLife.j3d.util.TransformerHelper;
+import barsuift.simLife.j3d.tree.TreeLeavesOrganizer;
 import barsuift.simLife.message.Publisher;
 import barsuift.simLife.universe.Universe;
 
@@ -138,65 +129,8 @@ public class BasicTreeBranch implements TreeBranch {
     }
 
     protected void increaseOneLeafSize() {
-        TreeLeaf leaf = getRandomLeafToIncrease();
-        leaf.getTreeLeaf3D().increaseSize();
+        branch3D.increaseOneLeafSize();
         energy = energy.subtract(INCREASE_LEAF_COST);
-    }
-
-    /**
-     * Returns one random leaf, with max odd to smallest leaf
-     */
-    protected TreeLeaf getRandomLeafToIncrease() {
-        // get applicable leaves
-        List<TreeLeaf> leavesToIncrease = new ArrayList<TreeLeaf>(leaves.size());
-        for (TreeLeaf leaf : leaves) {
-            if (!leaf.getTreeLeaf3D().isMaxSizeReached()) {
-                leavesToIncrease.add(leaf);
-            }
-        }
-        if (leavesToIncrease.size() == 0) {
-            return null;
-        }
-        if (leavesToIncrease.size() == 1) {
-            return leavesToIncrease.get(0);
-        }
-
-        // compute areas
-        Map<TreeLeaf, Float> areas = new HashMap<TreeLeaf, Float>(leavesToIncrease.size());
-        for (TreeLeaf leaf : leavesToIncrease) {
-            areas.put(leaf, leaf.getTreeLeaf3D().getArea());
-        }
-
-        // compute area sum
-        float sumArea = 0;
-        for (Float area : areas.values()) {
-            sumArea += area;
-        }
-
-        // compute diffArea sum
-        float sumDiffArea = (leavesToIncrease.size() - 1) * sumArea;
-
-        // compute ratios
-        // thanks to the use of sumDiffArea, the sum of ratios is equals to 1 (100%)
-        Map<TreeLeaf, Float> ratios = new HashMap<TreeLeaf, Float>(areas.size());
-        for (Entry<TreeLeaf, Float> entry : areas.entrySet()) {
-            ratios.put(entry.getKey(), (sumArea - entry.getValue()) / sumDiffArea);
-        }
-
-        // select one leaf
-        float random = (float) Math.random();
-        float previousMinBound = 0;
-        for (Entry<TreeLeaf, Float> entry : ratios.entrySet()) {
-            TreeLeaf leaf = entry.getKey();
-            Float ratio = entry.getValue();
-            if (random < (previousMinBound + ratio)) {
-                return leaf;
-            }
-            previousMinBound += ratio;
-        }
-
-        // return last leaf
-        return null;
     }
 
     protected boolean canIncreaseOneLeafSize() {
@@ -281,59 +215,17 @@ public class BasicTreeBranch implements TreeBranch {
     }
 
     protected void createOneNewLeaf() {
-        Transform3D transform = computeTransformForNewLeaf();
         TreeLeafStateFactory treeLeafStateFactory = new TreeLeafStateFactory();
-        TreeLeafState treeLeafState = treeLeafStateFactory.createNewTreeLeafState(transform, NEW_LEAF_ENERGY_PROVIDED,
-                universe.getDate().getTimeInMillis());
+        TreeLeafState treeLeafState = treeLeafStateFactory.createNewTreeLeafState(NEW_LEAF_ENERGY_PROVIDED, universe
+                .getDate().getTimeInMillis());
+        TreeLeavesOrganizer leavesOrganizer = new TreeLeavesOrganizer();
+        leavesOrganizer.placeNewLeaf(treeLeafState.getLeaf3DState(), branch3D);
         TreeLeaf leaf = new BasicTreeLeaf(universe, treeLeafState);
         leaf.addSubscriber(this);
         leaves.add(leaf);
         branch3D.addLeaf(leaf.getTreeLeaf3D());
         BigDecimal totalLeafCreationCost = NEW_LEAF_CREATION_COST.add(NEW_LEAF_ENERGY_PROVIDED);
         energy = energy.subtract(totalLeafCreationCost);
-    }
-
-    private Transform3D computeTransformForNewLeaf() {
-        Point3f leafAttachPoint = computeAttachPointForNewLeaf();
-        double rotation = Randomizer.randomRotation();
-        Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
-        Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
-        transform.mul(rotationT3D);
-        return transform;
-    }
-
-    protected Point3f computeAttachPointForNewLeaf() {
-        Point3f previousAttachPoint = new Point3f(0, 0, 0);
-        Point3f saveAttachPoint1 = null;
-        Point3f saveAttachPoint2 = null;
-        float distance;
-        float maxDistance = -1;
-        List<TreeLeaf> sortedLeaves = new ArrayList<TreeLeaf>(leaves);
-        Collections.sort(sortedLeaves, new TreeLeafComparator());
-
-        // compute which couple of leaves are the most distant
-        for (TreeLeaf leaf : sortedLeaves) {
-            Point3f attachPoint = leaf.getTreeLeaf3D().getPosition();
-            distance = previousAttachPoint.distance(attachPoint);
-            if (distance > maxDistance) {
-                maxDistance = distance;
-                saveAttachPoint1 = previousAttachPoint;
-                saveAttachPoint2 = attachPoint;
-            }
-            previousAttachPoint = attachPoint;
-        }
-        Point3f attachPoint = branch3D.getEndPoint();
-        distance = previousAttachPoint.distance(attachPoint);
-        if (distance > maxDistance) {
-            maxDistance = distance;
-            saveAttachPoint1 = previousAttachPoint;
-            saveAttachPoint2 = attachPoint;
-        }
-
-        // once this couple is found, place the new leaf approximately in the middle +/-10%
-        Point3f newLeafAttachPoint = new Point3f();
-        newLeafAttachPoint.interpolate(saveAttachPoint1, saveAttachPoint2, 0.5f + Randomizer.random1());
-        return newLeafAttachPoint;
     }
 
     @Override

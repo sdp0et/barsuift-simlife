@@ -22,13 +22,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
-
 import barsuift.simLife.Randomizer;
-import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.Tree3DStateFactory;
+import barsuift.simLife.j3d.tree.TreeBranch3DState;
+import barsuift.simLife.j3d.tree.TreeBranchesOrganizer;
 import barsuift.simLife.process.Aging;
 import barsuift.simLife.process.ConditionalTaskState;
 import barsuift.simLife.process.ConditionalTaskStateFactory;
@@ -39,21 +37,23 @@ public class TreeStateFactory {
 
     public static final int HEIGHT_RADIUS_RATIO = 8;
 
-    /**
-     * Ratio between the length of branches compared to the tree height
-     */
-    public static final float HEIGHT_BRANCH_RADIAL_LENGTH_RATIO = 0.5f;
-
-    public TreeState createRandomTreeState(Point3f translationVector) {
+    public TreeState createRandomTreeState() {
         int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
         BigDecimal energy = new BigDecimal(Randomizer.randomBetween(0, 100));
-        int nbBranches = Randomizer.randomBetween(30, 50);
+        int nbBranches = Randomizer.randomBetween(20, 40);
         float height = Randomizer.randomBetween(3, 5);
         float radius = height / HEIGHT_RADIUS_RATIO;
-        List<TreeBranchState> branches = new ArrayList<TreeBranchState>(nbBranches);
+        List<TreeBranchState> branchesStates = new ArrayList<TreeBranchState>(nbBranches);
+        List<TreeBranch3DState> branches3DStates = new ArrayList<TreeBranch3DState>(nbBranches);
+        TreeBranchStateFactory branchStateFactory = new TreeBranchStateFactory();
         for (int i = 0; i < nbBranches; i++) {
-            branches.add(computeRandomBranchState(radius, height));
+            TreeBranchState branchState = branchStateFactory.createRandomBranchState(height);
+            branchesStates.add(branchState);
+            branches3DStates.add(branchState.getBranch3DState());
         }
+        TreeBranchesOrganizer branchesOrganizer = new TreeBranchesOrganizer();
+        branchesOrganizer.organizeBranches(branches3DStates, height);
+
         ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
         ConditionalTaskState photosynthesis = taskStateFactory.createConditionalTaskState(Photosynthesis.class);
         ConditionalTaskState aging = taskStateFactory.createConditionalTaskState(Aging.class);
@@ -62,74 +62,11 @@ public class TreeStateFactory {
         TreeTrunkState trunkState = trunkStateFactory.createRandomTreeTrunkState(radius, height);
 
         Tree3DStateFactory tree3DStateFactory = new Tree3DStateFactory();
-        Tree3DState tree3dState = tree3DStateFactory.createRandomTree3DState(new Tuple3fState(translationVector));
+        Tree3DState tree3dState = tree3DStateFactory.createRandomTree3DState();
 
 
-        return new TreeState(creationMillis, energy, branches, photosynthesis, aging, growth, trunkState, height,
+        return new TreeState(creationMillis, energy, branchesStates, photosynthesis, aging, growth, trunkState, height,
                 tree3dState);
-    }
-
-    // FIXME this code should be in TreeBranchStateFactory pass the tree radius and hieght instead of computation
-    // results (do the same for leaves)
-    protected TreeBranchState computeRandomBranchState(float treeRadius, float treeHeight) {
-        Vector3f branchTranslationVector = computeBranchTranslationVector(treeRadius, treeHeight);
-        Point3f branchEndPoint = computeBranchEndPoint(treeHeight, branchTranslationVector.getX() > 0,
-                branchTranslationVector.getZ() > 0);
-        TreeBranchStateFactory branchStateFactory = new TreeBranchStateFactory();
-        return branchStateFactory.createRandomBranchState(branchTranslationVector, branchEndPoint);
-    }
-
-    /**
-     * Compute the branch translation vector.
-     * <p>
-     * <ul>
-     * <li>x=[-1;1] * treeRadius</li>
-     * <li>y=treeHeight</li>
-     * <li>z=[-1;1] * treeRadius * sin(acos(x))</li>
-     * </ul>
-     * </p>
-     * 
-     * @param treeRadius the tree radius
-     * @param treeHeight the tree height
-     * @return the computed translation vector
-     */
-    protected Vector3f computeBranchTranslationVector(float treeRadius, float treeHeight) {
-        float translationXShift = Randomizer.random3();
-        float translationZShift = Randomizer.random3() * (float) Math.sin(Math.acos(translationXShift));
-        float translationX = translationXShift * treeRadius;
-        float translationZ = translationZShift * treeRadius;
-        Vector3f translationVector = new Vector3f(translationX, treeHeight, translationZ);
-        return translationVector;
-    }
-
-    /**
-     * Compute the branch end point.
-     * <p>
-     * The end point is computed as follows :
-     * <ul>
-     * <li>x=[0-1] * HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight</li>
-     * <li>y=[0-1] * treeHeight</li>
-     * <li>z=[0-1] * HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight</li>
-     * </ul>
-     * </p>
-     * 
-     * @param treeHeight the tree height
-     * @param goingToPositiveX true of the x should be positive, false otherwise
-     * @param goingToPositiveZ true of the z should be positive, false otherwise
-     * @return the computed branch end point
-     */
-    protected Point3f computeBranchEndPoint(float treeHeight, boolean goingToPositiveX, boolean goingToPositiveZ) {
-        float xMove = (float) Math.random() * HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight;
-        if (!goingToPositiveX) {
-            xMove = -xMove;
-        }
-        float yMove = (float) Math.random() * treeHeight;
-        float zMove = (float) Math.random() * HEIGHT_BRANCH_RADIAL_LENGTH_RATIO * treeHeight;
-        if (!goingToPositiveZ) {
-            zMove = -zMove;
-        }
-        Point3f endPoint = new Point3f(xMove, yMove, zMove);
-        return endPoint;
     }
 
 }

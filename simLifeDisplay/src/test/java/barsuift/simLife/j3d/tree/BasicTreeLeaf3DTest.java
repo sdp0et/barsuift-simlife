@@ -224,7 +224,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         Transform3D newTransform = new Transform3D();
         tg.getTransform(newTransform);
         double newRotation = TransformerHelper.getRotationFromTransform(newTransform, Axis.Y);
-        assertEquals((initialRotation + Math.PI / 2) % (2 * Math.PI), newRotation, 0.000001);
+        assertEquals((initialRotation + Math.PI / 2) % (2 * Math.PI), newRotation, 0.00001);
 
     }
 

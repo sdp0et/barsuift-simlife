@@ -18,10 +18,9 @@
  */
 package barsuift.simLife.universe;
 
-import javax.vecmath.Point3f;
-
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.landscape.Landscape3D;
+import barsuift.simLife.j3d.tree.TreeOrganizer;
 import barsuift.simLife.tree.BasicTree;
 import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeState;
@@ -34,6 +33,7 @@ import barsuift.simLife.tree.TreeStateFactory;
 public class BasicUniverseFactory {
 
     public void populateEmptyUniverse(Universe universe) {
+        TreeOrganizer treeOrganizer = new TreeOrganizer();
         Landscape3D landscape3D = universe.getEnvironment().getLandscape().getLandscape3D();
         int size = landscape3D.getSize();
         int maxTrees = size / 5;
@@ -41,12 +41,8 @@ public class BasicUniverseFactory {
         int nbTrees = Randomizer.randomBetween(1, maxTrees);
         TreeStateFactory treeStateFactory = new TreeStateFactory();
         for (int i = 0; i < nbTrees; i++) {
-            // getting 2 meters of margin
-            float x = Randomizer.randomBetween(2, size - 2);
-            float z = Randomizer.randomBetween(2, size - 2);
-            float height = landscape3D.getHeight(x, z);
-            Point3f translationVector = new Point3f(x, height, z);
-            TreeState treeState = treeStateFactory.createRandomTreeState(translationVector);
+            TreeState treeState = treeStateFactory.createRandomTreeState();
+            treeOrganizer.placeNewTree(treeState.getTree3DState(), landscape3D);
             Tree tree = new BasicTree(universe, treeState);
             universe.addTree(tree);
         }

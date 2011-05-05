@@ -175,35 +175,35 @@ public class BasicSun3DTest extends TestCase {
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, 1, 0);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // sun rise
         sun3D.setEarthRotation((float) Math.PI / 2);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(1, 0, 0);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // sun at its zenith
         sun3D.setEarthRotation((float) Math.PI);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, -1, 0);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // 5/8
         sun3D.setEarthRotation((float) (5 * Math.PI / 4));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2, 0);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // sunset
         sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-1, 0, 0);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
     }
 
     public void testUpdateEarthRotation2() {
@@ -221,28 +221,28 @@ public class BasicSun3DTest extends TestCase {
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, (float) Math.sqrt(2) / 2, -(float) Math.sqrt(2) / 2);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // sun rise
         sun3D.setEarthRotation((float) Math.PI / 2);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(1, 0, 0);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // noon
         sun3D.setEarthRotation((float) Math.PI);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, -(float) Math.sqrt(2) / 2, (float) Math.sqrt(2) / 2);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // sunset
         sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-1, 0, 0);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
     }
 
     public void testUpdateEarthRotation3() {
@@ -260,35 +260,35 @@ public class BasicSun3DTest extends TestCase {
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, 0, -1);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // sun rise
         sun3D.setEarthRotation((float) Math.PI / 2);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(1, 0, 0);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // noon
         sun3D.setEarthRotation((float) Math.PI);
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(0, 0, 1);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // 5/8
         sun3D.setEarthRotation((float) (5 * Math.PI / 4));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-(float) Math.sqrt(2) / 2, 0, (float) Math.sqrt(2) / 2);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
 
         // sunset
         sun3D.setEarthRotation((float) (3 * Math.PI / 2));
         sunLight.getDirection(actualDirection);
         expectedDirection = new Vector3f(-1, 0, 0);
         expectedDirection.normalize();
-        VectorTestHelper.assertVectorEquals(expectedDirection, actualDirection);
+        VectorTestHelper.assertEquals(expectedDirection, actualDirection);
     }
 
     public void testUpdateEarthRevolution() {

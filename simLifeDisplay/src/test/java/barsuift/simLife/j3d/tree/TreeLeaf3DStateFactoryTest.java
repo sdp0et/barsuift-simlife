@@ -25,6 +25,7 @@ import javax.vecmath.Vector3f;
 import junit.framework.TestCase;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.Axis;
+import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.util.TransformerHelper;
@@ -48,7 +49,8 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
         Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
         transform.mul(rotationT3D);
 
-        TreeLeaf3DState leaf3DState = factory.createRandomTreeLeaf3DState(transform);
+        TreeLeaf3DState leaf3DState = factory.createRandomTreeLeaf3DState();
+        leaf3DState.setTransform(new Transform3DState(transform));
 
         Transform3D actualTransform = leaf3DState.getTransform().toTransform3D();
         Tuple3fState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
@@ -61,7 +63,7 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
         actualTransform.get(actualTranslation);
         double actualRotation = TransformerHelper.getRotationFromTransform(actualTransform, Axis.Y);
         assertEquals(leafAttachPoint, new Point3f(actualTranslation));
-        assertEquals(rotation, actualRotation, 0.000001);
+        assertEquals(rotation, actualRotation, 0.00001);
 
         // test initial point 2 position
         assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() > 0 - 0.02 - 0.01);
@@ -102,7 +104,8 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
         Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
         transform.mul(rotationT3D);
 
-        TreeLeaf3DState leaf3DState = factory.createNewTreeLeaf3DState(transform);
+        TreeLeaf3DState leaf3DState = factory.createNewTreeLeaf3DState();
+        leaf3DState.setTransform(new Transform3DState(transform));
 
         Transform3D actualTransform = leaf3DState.getTransform().toTransform3D();
         Tuple3fState actualInitialEndPoint1 = leaf3DState.getInitialEndPoint1();
