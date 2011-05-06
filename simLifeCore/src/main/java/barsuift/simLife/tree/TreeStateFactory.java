@@ -35,7 +35,7 @@ import barsuift.simLife.process.TreeGrowth;
 
 public class TreeStateFactory {
 
-    public static final int HEIGHT_RADIUS_RATIO = 8;
+    public static final int HEIGHT_RADIUS_RATIO = 16;
 
     public TreeState createRandomTreeState() {
         int creationMillis = Randomizer.randomBetween(0, 100) * 1000;
