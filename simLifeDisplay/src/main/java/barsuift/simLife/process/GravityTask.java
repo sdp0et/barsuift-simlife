@@ -31,6 +31,9 @@ import barsuift.simLife.j3d.landscape.Landscape3D;
 
 public class GravityTask extends AbstractSplitConditionalTask {
 
+    /**
+     * Fall speed is thus 1m/sec = 0.5m/cycle
+     */
     private static final float FALLING_DISTANCE = 0.5f / BasicSynchronizerFast.RATIO_SLOW_FAST;
 
     private final ConcurrentLinkedQueue<Mobile> mobiles;
