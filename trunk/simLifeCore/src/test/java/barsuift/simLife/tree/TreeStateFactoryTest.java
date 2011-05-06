@@ -47,7 +47,7 @@ public class TreeStateFactoryTest extends TestCase {
         assertTrue(3 <= height);
         assertTrue(5 >= height);
         TreeTrunkState trunkState = treeState.getTrunkState();
-        assertEquals(height / 8, trunkState.getRadius());
+        assertEquals(height / 16, trunkState.getRadius());
         assertNotNull(treeState.getTree3DState());
 
         assertTrue(treeState.getCreationMillis() >= 0);
