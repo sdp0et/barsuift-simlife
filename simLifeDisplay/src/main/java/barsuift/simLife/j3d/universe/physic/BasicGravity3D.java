@@ -24,6 +24,7 @@ import javax.media.j3d.Group;
 import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.process.GravityTask;
+import barsuift.simLife.process.WindTask;
 
 
 public class BasicGravity3D implements Gravity3D {
@@ -34,6 +35,8 @@ public class BasicGravity3D implements Gravity3D {
 
     private GravityTask gravityTask;
 
+    private WindTask windTask;
+
     public BasicGravity3D(Gravity3DState state, Universe3D universe3D) {
         this.state = state;
         group = new BranchGroup();
@@ -41,6 +44,9 @@ public class BasicGravity3D implements Gravity3D {
         group.setCapability(Group.ALLOW_CHILDREN_WRITE);
         gravityTask = new GravityTask(state.getGravityTask(), universe3D.getEnvironment3D().getLandscape3D());
         universe3D.getSynchronizer().scheduleFast(gravityTask);
+        // FIXME not the right state
+        windTask = new WindTask(state.getGravityTask(), universe3D.getEnvironment3D().getLandscape3D());
+        universe3D.getSynchronizer().scheduleFast(windTask);
     }
 
     @Override
@@ -51,6 +57,7 @@ public class BasicGravity3D implements Gravity3D {
     @Override
     public void fall(Mobile mobile) {
         gravityTask.fall(mobile);
+        windTask.fall(mobile);
         group.addChild(mobile.getBranchGroup());
     }
 
@@ -68,6 +75,7 @@ public class BasicGravity3D implements Gravity3D {
     @Override
     public void synchronize() {
         gravityTask.synchronize();
+        windTask.synchronize();
     }
 
 }
