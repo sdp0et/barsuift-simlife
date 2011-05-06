@@ -36,6 +36,7 @@ import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.tree.MockTreeBranch;
 import barsuift.simLife.tree.MockTreeLeaf;
 
+// FIXME update to cylinder
 public class BasicTreeBranch3DTest extends TestCase {
 
     private int nbLeaves;
