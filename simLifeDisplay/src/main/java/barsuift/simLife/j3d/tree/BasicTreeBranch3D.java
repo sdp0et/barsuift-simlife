@@ -27,20 +27,21 @@ import java.util.Map.Entry;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Group;
-import javax.media.j3d.LineArray;
-import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3f;
+import javax.vecmath.Color3f;
+import javax.vecmath.Vector3f;
 
 import barsuift.simLife.j3d.AppearanceFactory;
 import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.universe.Universe3D;
 import barsuift.simLife.j3d.util.ColorConstants;
+import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.TreeBranch;
 import barsuift.simLife.tree.TreeLeaf;
+
+import com.sun.j3d.utils.geometry.Cylinder;
 
 public class BasicTreeBranch3D implements TreeBranch3D {
 
@@ -99,20 +100,15 @@ public class BasicTreeBranch3D implements TreeBranch3D {
     }
 
     private void addBranchShape() {
-        Shape3D branchShape = new Shape3D();
-        LineArray branchLine = createBranchLine();
         Appearance branchAppearance = new Appearance();
-        AppearanceFactory.setColorWithColoringAttributes(branchAppearance, ColorConstants.brown);
-        branchShape.setGeometry(branchLine);
-        branchShape.setAppearance(branchAppearance);
-        tg.addChild(branchShape);
-    }
-
-    private LineArray createBranchLine() {
-        LineArray branchLine = new LineArray(2, GeometryArray.COORDINATES);
-        branchLine.setCoordinate(0, new Point3f(0, 0, 0));
-        branchLine.setCoordinate(1, new Point3f(0, length, 0));
-        return branchLine;
+        AppearanceFactory.setColorWithMaterial(branchAppearance, ColorConstants.brown,
+                new Color3f(0.15f, 0.15f, 0.15f), new Color3f(0.05f, 0.05f, 0.05f));
+        Cylinder branchCylinder = new Cylinder(radius, length, branchAppearance);
+        Vector3f translationVector = new Vector3f();
+        translationVector.setY(length / 2);
+        TransformGroup transformGroup = TransformerHelper.getTranslationTransformGroup(translationVector);
+        transformGroup.addChild(branchCylinder);
+        tg.addChild(transformGroup);
     }
 
     public void addLeaf(TreeLeaf3D leaf) {
