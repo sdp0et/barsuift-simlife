@@ -41,6 +41,7 @@ public final class BasicTreeBranch3DTestHelper extends Assert {
      * @param expectedStartPoint the expected start point
      * @param expectedEndPoint the expected end point
      */
+    // FIXME update to cylinder
     public static void testGeometry(Geometry branchGeometry, Point3f expectedStartPoint, Point3f expectedEndPoint) {
         assertTrue(branchGeometry instanceof LineArray);
         LineArray branchLine = (LineArray) branchGeometry;
