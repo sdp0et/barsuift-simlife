@@ -10,7 +10,9 @@ New features
 ------------
 Merge the tree branch and tree branch part objects
   * only tree branches remain
-
+Add a radius property on the branch
+  * the branch is displayed now as a cylinder, no more as a simple line
+Add a very very very basic Wind effect on falling leaves
 
 Bug fixes
 ---------
