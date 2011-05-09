@@ -27,6 +27,8 @@ import javax.media.j3d.TransformGroup;
 
 import junit.framework.Assert;
 
+import com.sun.j3d.utils.geometry.Primitive;
+
 
 public final class Structure3DHelper extends Assert {
 
@@ -35,7 +37,7 @@ public final class Structure3DHelper extends Assert {
     }
 
     @SuppressWarnings("rawtypes")
-    public static void assertExactlyOneTransformGroup(BranchGroup branchGroup) {
+    public static void assertExactlyOneTransformGroup(Group branchGroup) {
         Enumeration children = branchGroup.getAllChildren();
         assertTrue(children.hasMoreElements());
         assertTrue(children.nextElement().getClass().equals(TransformGroup.class));
@@ -71,6 +73,14 @@ public final class Structure3DHelper extends Assert {
         Enumeration children = transformGroup.getAllChildren();
         assertTrue(children.hasMoreElements());
         assertTrue(children.nextElement() instanceof Shape3D);
+        assertFalse(children.hasMoreElements());
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public static void assertExactlyOnePrimitive(TransformGroup transformGroup) {
+        Enumeration children = transformGroup.getAllChildren();
+        assertTrue(children.hasMoreElements());
+        assertTrue(children.nextElement() instanceof Primitive);
         assertFalse(children.hasMoreElements());
     }
 
