@@ -41,7 +41,6 @@ import barsuift.simLife.tree.MockTreeLeaf;
 import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Primitive;
 
-// FIXME update to cylinder
 public class BasicTreeBranch3DTest extends TestCase {
 
     private int nbLeaves;
