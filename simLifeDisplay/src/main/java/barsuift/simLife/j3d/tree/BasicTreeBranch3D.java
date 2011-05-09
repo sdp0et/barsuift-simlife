@@ -59,6 +59,8 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     private final TransformGroup tg;
 
+    private Cylinder branchCylinder;
+
     /**
      * Creates a 3D tree branch, with data from the model one, and given state.
      * 
@@ -103,7 +105,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
         Appearance branchAppearance = new Appearance();
         AppearanceFactory.setColorWithMaterial(branchAppearance, ColorConstants.brown,
                 new Color3f(0.15f, 0.15f, 0.15f), new Color3f(0.05f, 0.05f, 0.05f));
-        Cylinder branchCylinder = new Cylinder(radius, length, branchAppearance);
+        branchCylinder = new Cylinder(radius, length, branchAppearance);
         Vector3f translationVector = new Vector3f();
         translationVector.setY(length / 2);
         TransformGroup transformGroup = TransformerHelper.getTranslationTransformGroup(translationVector);
@@ -127,6 +129,10 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     public Transform3D getTransform() {
         return transform;
+    }
+
+    public Cylinder getBranchCylinder() {
+        return branchCylinder;
     }
 
     public void increaseOneLeafSize() {
