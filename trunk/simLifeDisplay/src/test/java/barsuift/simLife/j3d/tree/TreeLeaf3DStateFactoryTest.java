@@ -46,7 +46,7 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
         Point3f leafAttachPoint = new Point3f(0.32f, 0.33f, 0.34f);
         double rotation = Randomizer.randomRotation();
         Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
-        Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
+        Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.X);
         transform.mul(rotationT3D);
 
         TreeLeaf3DState leaf3DState = factory.createRandomTreeLeaf3DState();
@@ -61,37 +61,37 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
         // test transform
         Vector3f actualTranslation = new Vector3f();
         actualTransform.get(actualTranslation);
-        double actualRotation = TransformerHelper.getRotationFromTransform(actualTransform, Axis.Y);
+        double actualRotation = TransformerHelper.getRotationFromTransform(actualTransform, Axis.X);
         assertEquals(leafAttachPoint, new Point3f(actualTranslation));
         assertEquals(rotation, actualRotation, 0.00001);
 
         // test initial point 2 position
-        assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() > 0 - 0.02 - 0.01);
-        assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() < 0 - 0.02 + 0.01);
-        assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() > 0 - 0.04 - 0.01);
-        assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() < 0 - 0.04 + 0.01);
+        assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() > 0 + 0.04 - 0.01);
+        assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() < 0 + 0.04 + 0.01);
+        assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() > 0 - 0.02 - 0.01);
+        assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() < 0 - 0.02 + 0.01);
         assertTrue("Wrong Z position for end point 1.", actualInitialEndPoint1.getZ() > 0 - 0.01);
         assertTrue("Wrong Z position for end point 1.", actualInitialEndPoint1.getZ() < 0 + 0.01);
         // test initial point 3 position
-        assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() > 0 + 0.02 - 0.01);
-        assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() < 0 + 0.02 + 0.01);
-        assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() > 0 - 0.04 - 0.01);
-        assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() < 0 - 0.04 + 0.01);
+        assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() > 0 + 0.04 - 0.01);
+        assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() < 0 + 0.04 + 0.01);
+        assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() > 0 + 0.02 - 0.01);
+        assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() < 0 + 0.02 + 0.01);
         assertTrue("Wrong Z position for end point 2.", actualInitialEndPoint2.getZ() > 0 - 0.01);
         assertTrue("Wrong Z position for end point 2.", actualInitialEndPoint2.getZ() < 0 + 0.01);
 
         // test point 2 position
-        assertTrue("Wrong X position for end point 1.", actualEndPoint1.getX() > 0 - 0.2 - 0.1);
-        assertTrue("Wrong X position for end point 1.", actualEndPoint1.getX() < 0 - 0.2 + 0.1);
-        assertTrue("Wrong Y position for end point 1.", actualEndPoint1.getY() > 0 - 0.4 - 0.1);
-        assertTrue("Wrong Y position for end point 1.", actualEndPoint1.getY() < 0 - 0.4 + 0.1);
+        assertTrue("Wrong X position for end point 1.", actualEndPoint1.getX() > 0 + 0.4 - 0.1);
+        assertTrue("Wrong X position for end point 1.", actualEndPoint1.getX() < 0 + 0.4 + 0.1);
+        assertTrue("Wrong Y position for end point 1.", actualEndPoint1.getY() > 0 - 0.2 - 0.1);
+        assertTrue("Wrong Y position for end point 1.", actualEndPoint1.getY() < 0 - 0.2 + 0.1);
         assertTrue("Wrong Z position for end point 1.", actualEndPoint1.getZ() > 0 - 0.1);
         assertTrue("Wrong Z position for end point 1.", actualEndPoint1.getZ() < 0 + 0.1);
         // test point 3 position
-        assertTrue("Wrong X position for end point 2.", actualEndPoint2.getX() > 0 + 0.2 - 0.1);
-        assertTrue("Wrong X position for end point 2.", actualEndPoint2.getX() < 0 + 0.2 + 0.1);
-        assertTrue("Wrong Y position for end point 2.", actualEndPoint2.getY() > 0 - 0.4 - 0.1);
-        assertTrue("Wrong Y position for end point 2.", actualEndPoint2.getY() < 0 - 0.4 + 0.1);
+        assertTrue("Wrong X position for end point 2.", actualEndPoint2.getX() > 0 + 0.4 - 0.1);
+        assertTrue("Wrong X position for end point 2.", actualEndPoint2.getX() < 0 + 0.4 + 0.1);
+        assertTrue("Wrong Y position for end point 2.", actualEndPoint2.getY() > 0 + 0.2 - 0.1);
+        assertTrue("Wrong Y position for end point 2.", actualEndPoint2.getY() < 0 + 0.2 + 0.1);
         assertTrue("Wrong Z position for end point 2.", actualEndPoint2.getZ() > 0 - 0.1);
         assertTrue("Wrong Z position for end point 2.", actualEndPoint2.getZ() < 0 + 0.1);
     }
@@ -101,7 +101,7 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
         Point3f leafAttachPoint = new Point3f(0.32f, 0.33f, 0.34f);
         double rotation = Randomizer.randomRotation();
         Transform3D transform = TransformerHelper.getTranslationTransform3D(new Vector3f(leafAttachPoint));
-        Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.Y);
+        Transform3D rotationT3D = TransformerHelper.getRotationTransform3D(rotation, Axis.X);
         transform.mul(rotationT3D);
 
         TreeLeaf3DState leaf3DState = factory.createNewTreeLeaf3DState();
@@ -116,22 +116,22 @@ public class TreeLeaf3DStateFactoryTest extends TestCase {
         // test transform
         Vector3f actualTranslation = new Vector3f();
         actualTransform.get(actualTranslation);
-        double actualRotation = TransformerHelper.getRotationFromTransform(actualTransform, Axis.Y);
+        double actualRotation = TransformerHelper.getRotationFromTransform(actualTransform, Axis.X);
         assertEquals(leafAttachPoint, new Point3f(actualTranslation));
         assertEquals(rotation, actualRotation, 0.000001);
 
         // test initial point 2 position
-        assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() > 0 - 0.02 - 0.01);
-        assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() < 0 - 0.02 + 0.01);
-        assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() > 0 - 0.04 - 0.01);
-        assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() < 0 - 0.04 + 0.01);
+        assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() > 0 + 0.04 - 0.01);
+        assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() < 0 + 0.04 + 0.01);
+        assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() > 0 - 0.02 - 0.01);
+        assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() < 0 - 0.02 + 0.01);
         assertTrue("Wrong Z position for end point 1.", actualInitialEndPoint1.getZ() > 0 - 0.01);
         assertTrue("Wrong Z position for end point 1.", actualInitialEndPoint1.getZ() < 0 + 0.01);
         // test initial point 3 position
-        assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() > 0 + 0.02 - 0.01);
-        assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() < 0 + 0.02 + 0.01);
-        assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() > 0 - 0.04 - 0.01);
-        assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() < 0 - 0.04 + 0.01);
+        assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() > 0 + 0.04 - 0.01);
+        assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() < 0 + 0.04 + 0.01);
+        assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() > 0 + 0.02 - 0.01);
+        assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() < 0 + 0.02 + 0.01);
         assertTrue("Wrong Z position for end point 2.", actualInitialEndPoint2.getZ() > 0 - 0.01);
         assertTrue("Wrong Z position for end point 2.", actualInitialEndPoint2.getZ() < 0 + 0.01);
 

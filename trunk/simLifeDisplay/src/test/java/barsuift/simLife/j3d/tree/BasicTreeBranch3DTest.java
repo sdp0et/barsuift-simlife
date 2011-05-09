@@ -23,18 +23,23 @@ import java.util.Enumeration;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
-import javax.media.j3d.Shape3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3f;
+import javax.vecmath.Color3f;
+import javax.vecmath.Point3d;
 
 import junit.framework.TestCase;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+import barsuift.simLife.j3d.helper.ColorTestHelper;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.tree.helper.BasicTreeBranch3DTestHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
+import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.tree.MockTreeBranch;
 import barsuift.simLife.tree.MockTreeLeaf;
+
+import com.sun.j3d.utils.geometry.Cylinder;
+import com.sun.j3d.utils.geometry.Primitive;
 
 // FIXME update to cylinder
 public class BasicTreeBranch3DTest extends TestCase {
@@ -101,7 +106,8 @@ public class BasicTreeBranch3DTest extends TestCase {
         CompilerHelper.compile(bg);
         assertEquals(nbLeaves, branch3D.getLeaves().size());
 
-        assertEquals(branch3DState.getLength(), branch3D.getLength());
+        float length = branch3DState.getLength();
+        assertEquals(length, branch3D.getLength());
         Structure3DHelper.assertExactlyOneTransformGroup(bg);
         TransformGroup tg = (TransformGroup) bg.getChild(0);
 
@@ -114,18 +120,34 @@ public class BasicTreeBranch3DTest extends TestCase {
             if (child.getClass().equals(BranchGroup.class)) {
                 nbLeavesFound++;
             } else {
-                if (child.getClass().equals(Shape3D.class)) {
+                if (child.getClass().equals(TransformGroup.class)) {
                     nbTimesNoLeafShapeIsFound++;
-                    Shape3D branchScape = (Shape3D) child;
-                    BasicTreeBranch3DTestHelper.testGeometry(branchScape.getGeometry(), new Point3f(0, 0, 0),
-                            new Point3f(branch3DState.getLength(), 0, 0));
-                    BasicTreeBranch3DTestHelper.testAppearance(branchScape.getAppearance());
+                    TransformGroup branchTg = (TransformGroup) child;
+                    Structure3DHelper.assertExactlyOnePrimitive(branchTg);
+                    Primitive branchPrimitive = (Primitive) branchTg.getChild(0);
+                    assert (branchPrimitive.getClass().equals(Cylinder.class));
+                    Cylinder branchCylinder = (Cylinder) branchPrimitive;
+
+                    float radius = branch3DState.getRadius();
+                    Point3d expectedLowerBottom = new Point3d(-radius, -length / 2, -radius);
+                    Point3d expectedUpperBottom = new Point3d(radius, -length / 2, radius);
+                    Point3d expectedMovedLowerBottom = new Point3d(-radius, 0, -radius);
+                    Point3d expectedMovedUpperBottom = new Point3d(radius, 0, radius);
+                    Point3d expectedLowerTop = new Point3d(-radius, length / 2, -radius);
+                    Point3d expectedUpperTop = new Point3d(radius, length / 2, radius);
+                    Point3d expectedMovedLowerTop = new Point3d(-radius, length, -radius);
+                    Point3d expectedMovedUpperTop = new Point3d(radius, length, radius);
+                    BasicTreeBranch3DTestHelper.checkTreeBranch3D(branch3D, length, radius, expectedLowerBottom,
+                            expectedUpperBottom, expectedMovedLowerBottom, expectedMovedUpperBottom, expectedLowerTop,
+                            expectedUpperTop, expectedMovedLowerTop, expectedMovedUpperTop);
+                    ColorTestHelper.testColorFromMaterial(branchCylinder.getAppearance(), ColorConstants.brown,
+                            new Color3f(0.05f, 0.05f, 0.05f), new Color3f(0.15f, 0.15f, 0.15f));
                 } else {
                     fail("There should be no other children. child is instance of " + child.getClass());
                 }
             }
         }
-        assertEquals("We should have only one shape (the branch)", 1, nbTimesNoLeafShapeIsFound);
+        assertEquals("We should have only one branch", 1, nbTimesNoLeafShapeIsFound);
         assertEquals(nbLeaves, nbLeavesFound);
     }
 
