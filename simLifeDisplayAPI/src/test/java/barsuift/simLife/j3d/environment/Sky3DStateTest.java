@@ -18,30 +18,36 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class Sky3DStateTest extends JaxbTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+public class Sky3DStateTest {
+
+    private final JaxbTester<Sky3DState> tester = new JaxbTester<Sky3DState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d.environment";
-    }
-
-    public void testJaxb() throws Exception {
-        Sky3DState sky3DState = DisplayDataCreatorForTests.createRandomSky3DState();
-        write(sky3DState);
-        Sky3DState sky3DState2 = (Sky3DState) read();
-        assertEquals(sky3DState, sky3DState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        Sky3DState originalState = DisplayDataCreatorForTests.createRandomSky3DState();
+        tester.write(originalState);
+        Sky3DState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

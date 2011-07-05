@@ -18,30 +18,35 @@
  */
 package barsuift.simLife.j3d.universe.physic;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class Gravity3DStateTest extends JaxbTestCase {
+public class Gravity3DStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<Gravity3DState> tester = new JaxbTester<Gravity3DState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d.universe.physic";
-    }
-
+    @Test
     public void testJaxb() throws Exception {
-        Gravity3DState gravity3DState = DisplayDataCreatorForTests.createRandomGravity3DState();
-        write(gravity3DState);
-        Gravity3DState gravity3DState2 = (Gravity3DState) read();
-        assertEquals(gravity3DState, gravity3DState2);
+        Gravity3DState originalState = DisplayDataCreatorForTests.createRandomGravity3DState();
+        tester.write(originalState);
+        Gravity3DState readState = tester.read();
+        assertThat(readState).isEqualTo(readState);
     }
 
 }

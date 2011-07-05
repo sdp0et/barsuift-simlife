@@ -18,30 +18,36 @@
  */
 package barsuift.simLife.environment;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.JaxbTester;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class SunStateTest extends JaxbTestCase {
+public class SunStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<SunState> tester = new JaxbTester<SunState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.environment";
-    }
-
-    public void testJaxb() throws Exception {
-        SunState sunState = CoreDataCreatorForTests.createRandomSunState();
-        write(sunState);
-        SunState sunState2 = (SunState) read();
-        assertEquals(sunState, sunState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        SunState originalState = CoreDataCreatorForTests.createRandomSunState();
+        tester.write(originalState);
+        SunState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

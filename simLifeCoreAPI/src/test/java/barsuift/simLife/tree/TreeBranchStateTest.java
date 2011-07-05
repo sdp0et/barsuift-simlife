@@ -18,31 +18,37 @@
  */
 package barsuift.simLife.tree;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.JaxbTester;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 
-public class TreeBranchStateTest extends JaxbTestCase {
+public class TreeBranchStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<TreeBranchState> tester = new JaxbTester<TreeBranchState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.tree";
-    }
-
-    public void testJaxb() throws Exception {
-        TreeBranchState branchState = CoreDataCreatorForTests.createRandomTreeBranchState();
-        write(branchState);
-        TreeBranchState branchState2 = (TreeBranchState) read();
-        assertEquals(branchState, branchState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        TreeBranchState originalState = CoreDataCreatorForTests.createRandomTreeBranchState();
+        tester.write(originalState);
+        TreeBranchState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

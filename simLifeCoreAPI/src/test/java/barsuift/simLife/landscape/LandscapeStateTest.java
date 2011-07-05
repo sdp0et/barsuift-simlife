@@ -18,31 +18,36 @@
  */
 package barsuift.simLife.landscape;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.JaxbTestCase;
-import barsuift.simLife.landscape.LandscapeState;
+import barsuift.simLife.JaxbTester;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class LandscapeStateTest extends JaxbTestCase {
+public class LandscapeStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<LandscapeState> tester = new JaxbTester<LandscapeState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.landscape";
-    }
-
-    public void testJaxb() throws Exception {
-        LandscapeState landscapeState = CoreDataCreatorForTests.createRandomLandscapeState();
-        write(landscapeState);
-        LandscapeState landscapeState2 = (LandscapeState) read();
-        assertEquals(landscapeState, landscapeState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        LandscapeState originalState = CoreDataCreatorForTests.createRandomLandscapeState();
+        tester.write(originalState);
+        LandscapeState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

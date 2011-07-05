@@ -18,29 +18,35 @@
  */
 package barsuift.simLife.j3d;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class Tuple3fStateTest extends JaxbTestCase {
+public class Tuple3fStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<Tuple3fState> tester = new JaxbTester<Tuple3fState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d";
-    }
-
-    public void testJaxb() throws Exception {
-        Tuple3fState tupleState = DisplayDataCreatorForTests.createRandomTuple3fState();
-        write(tupleState);
-        Tuple3fState tupleState2 = (Tuple3fState) read();
-        assertEquals(tupleState, tupleState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        Tuple3fState originalState = DisplayDataCreatorForTests.createRandomTuple3fState();
+        tester.write(originalState);
+        Tuple3fState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

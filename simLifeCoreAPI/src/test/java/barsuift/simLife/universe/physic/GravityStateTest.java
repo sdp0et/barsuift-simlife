@@ -18,30 +18,36 @@
  */
 package barsuift.simLife.universe.physic;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.JaxbTester;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class GravityStateTest extends JaxbTestCase {
+public class GravityStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<GravityState> tester = new JaxbTester<GravityState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.universe.physic";
-    }
-
+    @Test
     public void testJaxb() throws Exception {
-        GravityState gravityState = CoreDataCreatorForTests.createRandomGravityState();
-        write(gravityState);
-        GravityState gravityState2 = (GravityState) read();
-        assertEquals(gravityState, gravityState2);
+        GravityState originalState = CoreDataCreatorForTests.createRandomGravityState();
+        tester.write(originalState);
+        GravityState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

@@ -18,30 +18,36 @@
  */
 package barsuift.simLife.environment;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.JaxbTester;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class EnvironmentStateTest extends JaxbTestCase {
+public class EnvironmentStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<EnvironmentState> tester = new JaxbTester<EnvironmentState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.environment";
-    }
-
-    public void testJaxb() throws Exception {
-        EnvironmentState envState = CoreDataCreatorForTests.createRandomEnvironmentState();
-        write(envState);
-        EnvironmentState envState2 = (EnvironmentState) read();
-        assertEquals(envState, envState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        EnvironmentState originalState = CoreDataCreatorForTests.createRandomEnvironmentState();
+        tester.write(originalState);
+        EnvironmentState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

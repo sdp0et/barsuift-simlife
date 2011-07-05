@@ -18,29 +18,35 @@
  */
 package barsuift.simLife.universe;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
-import barsuift.simLife.JaxbTestCase;
+import barsuift.simLife.JaxbTester;
 
-public class UniverseStateTest extends JaxbTestCase {
+import static org.fest.assertions.Assertions.assertThat;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+public class UniverseStateTest {
+
+    private final JaxbTester<UniverseState> tester = new JaxbTester<UniverseState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.universe";
-    }
-
+    @Test
     public void testJaxb() throws Exception {
-        UniverseState universeState = CoreDataCreatorForTests.createRandomUniverseState();
-        write(universeState);
-        UniverseState universeState2 = (UniverseState) read();
-        assertEquals(universeState, universeState2);
+        UniverseState originalState = CoreDataCreatorForTests.createRandomUniverseState();
+        tester.write(originalState);
+        UniverseState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

@@ -18,29 +18,35 @@
  */
 package barsuift.simLife.j3d;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class BoundingBoxStateTest extends JaxbTestCase {
+public class BoundingBoxStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<BoundingBoxState> tester = new JaxbTester<BoundingBoxState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d";
-    }
-
-    public void testJaxb() throws Exception {
-        BoundingBoxState boundingBoxState = DisplayDataCreatorForTests.createRandomBoundingBoxState();
-        write(boundingBoxState);
-        BoundingBoxState boundingBoxState2 = (BoundingBoxState) read();
-        assertEquals(boundingBoxState, boundingBoxState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        BoundingBoxState originalState = DisplayDataCreatorForTests.createRandomBoundingBoxState();
+        tester.write(originalState);
+        BoundingBoxState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }
