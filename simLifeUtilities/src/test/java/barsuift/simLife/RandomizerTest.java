@@ -18,87 +18,94 @@
  */
 package barsuift.simLife;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
 
-public class RandomizerTest extends TestCase {
+import static org.fest.assertions.Assertions.assertThat;
 
-    public void testRandom1() {
+public class RandomizerTest {
+
+    @Test
+    public void random1() {
         for (int index = 0; index < 1000; index++) {
             float result = Randomizer.random1();
-            assertTrue(result <= 0.1);
-            assertTrue(result >= -0.1);
+            assertThat(result).isLessThanOrEqualTo(0.1f);
+            assertThat(result).isGreaterThanOrEqualTo(-0.1f);
         }
     }
 
-    public void testRandom2() {
+    @Test
+    public void random2() {
         for (int index = 0; index < 1000; index++) {
             float result = Randomizer.random2();
-            assertTrue(result <= 0.5);
-            assertTrue(result >= -0.5);
+            assertThat(result).isLessThanOrEqualTo(0.5f);
+            assertThat(result).isGreaterThanOrEqualTo(-0.5f);
         }
     }
 
-    public void testRandom3() {
+    @Test
+    public void random3() {
         for (int index = 0; index < 1000; index++) {
             float result = Randomizer.random3();
-            assertTrue(result <= 1);
-            assertTrue(result >= -1);
+            assertThat(result).isLessThanOrEqualTo(1f);
+            assertThat(result).isGreaterThanOrEqualTo(-1f);
         }
     }
 
-    public void testRandom4() {
+    @Test
+    public void random4() {
         for (int index = 0; index < 1000; index++) {
             float result = Randomizer.random4();
-            assertTrue(result <= 0.1);
-            assertTrue(result >= 0);
+            assertThat(result).isLessThanOrEqualTo(0.1f);
+            assertThat(result).isGreaterThanOrEqualTo(0f);
         }
     }
 
-    public void testRandomBetweenInt() {
-        internalTestRandomBetweenInt(5, 10);
-        internalTestRandomBetweenInt(-10, -5);
-        internalTestRandomBetweenInt(-5, 5);
-        try {
-            Randomizer.randomBetween(10, 5);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+    @Test
+    public void randomBetweenInt() {
+        internalTest_randomBetweenInt(5, 10);
+        internalTest_randomBetweenInt(-10, -5);
+        internalTest_randomBetweenInt(-5, 5);
     }
 
-    private void internalTestRandomBetweenInt(int min, int max) {
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void randomBetweenInt_exception() {
+        Randomizer.randomBetween(10, 5);
+    }
+
+    private void internalTest_randomBetweenInt(int min, int max) {
         for (int index = 0; index < 1000; index++) {
             int result = Randomizer.randomBetween(min, max);
-            assertTrue(result + " <= " + max, result <= max);
-            assertTrue(result + " >= " + min, result >= min);
+            assertThat(result).isLessThanOrEqualTo(max);
+            assertThat(result).isGreaterThanOrEqualTo(min);
         }
     }
 
-    public void testRandomBetweenFloat() {
-        internalTestRandomBetweenFloat(0.05f, 0.10f);
-        internalTestRandomBetweenFloat(-0.10f, -0.05f);
-        internalTestRandomBetweenFloat(-1.5f, 1.5f);
-        try {
-            Randomizer.randomBetween(0.10f, 0.05f);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+    @Test
+    public void randomBetweenFloat() {
+        internalTest_randomBetweenFloat(0.05f, 0.10f);
+        internalTest_randomBetweenFloat(-0.10f, -0.05f);
+        internalTest_randomBetweenFloat(-1.5f, 1.5f);
     }
 
-    private void internalTestRandomBetweenFloat(float min, float max) {
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void randomBetweenFloat_exception() {
+        Randomizer.randomBetween(0.10f, 0.05f);
+    }
+
+    private void internalTest_randomBetweenFloat(float min, float max) {
         for (int index = 0; index < 1000; index++) {
             float result = Randomizer.randomBetween(min, max);
-            assertTrue(result + " <= " + max, result <= max);
-            assertTrue(result + " >= " + min, result >= min);
+            assertThat(result).isLessThanOrEqualTo(max);
+            assertThat(result).isGreaterThanOrEqualTo(min);
         }
     }
 
-    public void testRandomRotation() {
+    @Test
+    public void randomRotation() {
         for (int index = 0; index < 1000; index++) {
             double result = Randomizer.randomRotation();
-            assertTrue(result <= Math.PI * 2);
-            assertTrue(result >= 0);
+            assertThat(result).isLessThanOrEqualTo(Math.PI * 2);
+            assertThat(result).isGreaterThanOrEqualTo(0);
         }
 
     }
