@@ -18,30 +18,36 @@
  */
 package barsuift.simLife.process;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
 import barsuift.simLife.UtilDataCreatorForTests;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class SynchronizerFastStateTest extends JaxbTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+public class SynchronizerFastStateTest {
+
+    private final JaxbTester<SynchronizerFastState> tester = new JaxbTester<SynchronizerFastState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.process";
-    }
-
-    public void testJaxb() throws Exception {
-        SynchronizerFastState synchroState = UtilDataCreatorForTests.createRandomSynchronizerFastState();
-        write(synchroState);
-        SynchronizerFastState synchroState2 = (SynchronizerFastState) read();
-        assertEquals(synchroState, synchroState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        SynchronizerFastState originalState = UtilDataCreatorForTests.createRandomSynchronizerFastState();
+        tester.write(originalState);
+        SynchronizerFastState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

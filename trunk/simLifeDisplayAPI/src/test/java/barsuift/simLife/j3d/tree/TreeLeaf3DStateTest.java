@@ -18,30 +18,36 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class TreeLeaf3DStateTest extends JaxbTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+public class TreeLeaf3DStateTest {
+
+    private final JaxbTester<TreeLeaf3DState> tester = new JaxbTester<TreeLeaf3DState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d.tree";
-    }
-
-    public void testJaxb() throws Exception {
-        TreeLeaf3DState leaf3DState = DisplayDataCreatorForTests.createRandomTreeLeaf3DState();
-        write(leaf3DState);
-        TreeLeaf3DState leaf3DState2 = (TreeLeaf3DState) read();
-        assertEquals(leaf3DState, leaf3DState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        TreeLeaf3DState originalState = DisplayDataCreatorForTests.createRandomTreeLeaf3DState();
+        tester.write(originalState);
+        TreeLeaf3DState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

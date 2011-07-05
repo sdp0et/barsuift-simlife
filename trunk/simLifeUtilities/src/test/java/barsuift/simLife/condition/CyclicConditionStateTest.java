@@ -18,29 +18,36 @@
  */
 package barsuift.simLife.condition;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
+import barsuift.simLife.UtilDataCreatorForTests;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class CyclicConditionStateTest extends JaxbTestCase {
+public class CyclicConditionStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<CyclicConditionState> tester = new JaxbTester<CyclicConditionState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.condition";
-    }
-
-    public void testJaxb() throws Exception {
-        CyclicConditionState condition = new CyclicConditionState(3, 2);
-        write(condition);
-        CyclicConditionState condition2 = (CyclicConditionState) read();
-        assertEquals(condition, condition2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        CyclicConditionState originalState = UtilDataCreatorForTests.createRandomCyclicConditionState();
+        tester.write(originalState);
+        CyclicConditionState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

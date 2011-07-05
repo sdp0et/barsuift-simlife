@@ -42,10 +42,10 @@ public class SimLifeDateStateTest {
 
     @Test
     public void readWriteJaxb() throws Exception {
-        SimLifeDateState date1 = new SimLifeDateState(199199000);
-        tester.write(date1);
-        SimLifeDateState date2 = tester.read();
-        assertThat(date2).isEqualTo(date1);
+        SimLifeDateState originalState = new SimLifeDateState(199199000);
+        tester.write(originalState);
+        SimLifeDateState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

@@ -32,21 +32,21 @@ public class UniverseContextStateTest {
     private final JaxbTester<UniverseContextState> tester = new JaxbTester<UniverseContextState>(getClass());
 
     @BeforeMethod
-    protected void setUp() throws Exception {
+    protected void init() throws Exception {
         tester.init();
     }
 
     @AfterMethod
-    protected void tearDown() {
+    protected void clean() {
         tester.clean();
     }
 
     @Test
-    public void testJaxb() throws Exception {
-        UniverseContextState universeContextState = CoreDataCreatorForTests.createRandomUniverseContextState();
-        tester.write(universeContextState);
-        UniverseContextState universeContextState2 = tester.read();
-        assertThat(universeContextState2).isEqualTo(universeContextState);
+    public void readWriteJaxb() throws Exception {
+        UniverseContextState originalState = CoreDataCreatorForTests.createRandomUniverseContextState();
+        tester.write(originalState);
+        UniverseContextState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

@@ -18,30 +18,36 @@
  */
 package barsuift.simLife.j3d.tree;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class TreeTrunk3DStateTest extends JaxbTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+public class TreeTrunk3DStateTest {
+
+    private final JaxbTester<TreeTrunk3DState> tester = new JaxbTester<TreeTrunk3DState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d.tree";
-    }
-
-    public void testJaxb() throws Exception {
-        TreeTrunk3DState trunk3DState = DisplayDataCreatorForTests.createRandomTreeTrunk3DState();
-        write(trunk3DState);
-        TreeTrunk3DState trunk3DState2 = (TreeTrunk3DState) read();
-        assertEquals(trunk3DState, trunk3DState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        TreeTrunk3DState originalState = DisplayDataCreatorForTests.createRandomTreeTrunk3DState();
+        tester.write(originalState);
+        TreeTrunk3DState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

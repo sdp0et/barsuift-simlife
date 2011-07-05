@@ -18,31 +18,36 @@
  */
 package barsuift.simLife.j3d.landscape;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.landscape.Landscape3DState;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class Landscape3DStateTest extends JaxbTestCase {
+public class Landscape3DStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<Landscape3DState> tester = new JaxbTester<Landscape3DState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d.landscape";
-    }
-
-    public void testJaxb() throws Exception {
-        Landscape3DState landscape3DState = DisplayDataCreatorForTests.createRandomLandscape3DState();
-        write(landscape3DState);
-        Landscape3DState landscape3DState2 = (Landscape3DState) read();
-        assertEquals(landscape3DState, landscape3DState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        Landscape3DState originalState = DisplayDataCreatorForTests.createRandomLandscape3DState();
+        tester.write(originalState);
+        Landscape3DState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

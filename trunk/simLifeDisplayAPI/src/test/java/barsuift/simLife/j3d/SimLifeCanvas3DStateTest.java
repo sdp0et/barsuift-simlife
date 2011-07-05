@@ -18,28 +18,35 @@
  */
 package barsuift.simLife.j3d;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class SimLifeCanvas3DStateTest extends JaxbTestCase {
+public class SimLifeCanvas3DStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<SimLifeCanvas3DState> tester = new JaxbTester<SimLifeCanvas3DState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d";
+    @Test
+    public void readWriteJaxb() throws Exception {
+        SimLifeCanvas3DState originalState = DisplayDataCreatorForTests.createSpecificCanvasState();
+        tester.write(originalState);
+        SimLifeCanvas3DState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
-    public void testJaxb() throws Exception {
-        SimLifeCanvas3DState canvasState = DisplayDataCreatorForTests.createSpecificCanvasState();
-        write(canvasState);
-        SimLifeCanvas3DState canvasState2 = (SimLifeCanvas3DState) read();
-        assertEquals(canvasState, canvasState2);
-    }
 }

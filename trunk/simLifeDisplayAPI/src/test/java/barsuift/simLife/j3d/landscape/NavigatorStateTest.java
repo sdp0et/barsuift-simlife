@@ -18,31 +18,36 @@
  */
 package barsuift.simLife.j3d.landscape;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.landscape.NavigatorState;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class NavigatorStateTest extends JaxbTestCase {
+public class NavigatorStateTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    private final JaxbTester<NavigatorState> tester = new JaxbTester<NavigatorState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d.landscape";
-    }
-
-    public void testJaxb() throws Exception {
-        NavigatorState navigatorState = DisplayDataCreatorForTests.createRandomNavigatorState();
-        write(navigatorState);
-        NavigatorState navigatorState2 = (NavigatorState) read();
-        assertEquals(navigatorState, navigatorState2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        NavigatorState originalState = DisplayDataCreatorForTests.createRandomNavigatorState();
+        tester.write(originalState);
+        NavigatorState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }

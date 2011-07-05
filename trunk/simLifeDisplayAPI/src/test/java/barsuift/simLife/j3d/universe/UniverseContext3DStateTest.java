@@ -18,30 +18,36 @@
  */
 package barsuift.simLife.j3d.universe;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import barsuift.simLife.JaxbTester;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class UniverseContext3DStateTest extends JaxbTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+public class UniverseContext3DStateTest {
+
+    private final JaxbTester<UniverseContext3DState> tester = new JaxbTester<UniverseContext3DState>(getClass());
+
+    @BeforeMethod
+    protected void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.j3d.universe";
-    }
-
+    @Test
     public void testJaxb() throws Exception {
-        UniverseContext3DState univ3DState = DisplayDataCreatorForTests.createRandomUniverseContext3DState();
-        write(univ3DState);
-        UniverseContext3DState univ3DState2 = (UniverseContext3DState) read();
-        assertEquals(univ3DState, univ3DState2);
+        UniverseContext3DState originalState = DisplayDataCreatorForTests.createRandomUniverseContext3DState();
+        tester.write(originalState);
+        UniverseContext3DState readState = tester.read();
+        assertThat(readState).isEqualTo(originalState);
     }
 
 }
