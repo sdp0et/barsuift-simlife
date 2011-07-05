@@ -16,25 +16,23 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.environment;
 
-import barsuift.simLife.LivingPart;
+import java.util.HashSet;
+import java.util.Set;
+
+import barsuift.simLife.j3d.environment.Wind3DState;
+import barsuift.simLife.j3d.environment.Wind3DStateFactory;
+import barsuift.simLife.tree.TreeLeafState;
 
 
-public class Aging extends AbstractConditionalTask {
+public class WindStateFactory {
 
-    private LivingPart livingPart;
-
-    public Aging(ConditionalTaskState state) {
-        super(state);
+    public WindState createWindState() {
+        Wind3DStateFactory wind3DFactory = new Wind3DStateFactory();
+        Wind3DState wind3D = wind3DFactory.createWind3DState();
+        Set<TreeLeafState> movingLeaves = new HashSet<TreeLeafState>();
+        return new WindState(wind3D, movingLeaves);
     }
 
-    public void init(LivingPart livingPart) {
-        this.livingPart = livingPart;
-    }
-
-    @Override
-    public void executeConditionalStep() {
-        livingPart.age();
-    }
 }

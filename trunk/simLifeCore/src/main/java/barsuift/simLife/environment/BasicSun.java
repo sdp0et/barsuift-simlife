@@ -29,19 +29,18 @@ public class BasicSun implements Sun {
 
     private final SunState state;
 
-    private final Sun3D sun3D;
+    private final BasicSun3D sun3D;
 
-    /**
-     * Creates a Sun instance with given state
-     * 
-     * @throws IllegalArgumentException if the given sun state is null
-     */
-    public BasicSun(SunState state, Universe universe) throws IllegalArgumentException {
+    public BasicSun(SunState state) {
         if (state == null) {
             throw new IllegalArgumentException("Null sun state");
         }
         this.state = state;
-        sun3D = new BasicSun3D(state.getSun3DState(), universe.getUniverse3D());
+        sun3D = new BasicSun3D(state.getSun3DState());
+    }
+
+    public void init(Universe universe) {
+        sun3D.init(universe.getUniverse3D());
     }
 
     @Override

@@ -34,6 +34,8 @@ public class MockEnvironment3D implements Environment3D {
 
     private Sky3D sky3D;
 
+    private Wind3D wind3D;
+
     private Landscape3D landscape3D;
 
     public MockEnvironment3D() {
@@ -45,6 +47,7 @@ public class MockEnvironment3D implements Environment3D {
         synchronizedCalled = 0;
         group = new Group();
         sky3D = new MockSky3D();
+        wind3D = new MockWind3D();
         landscape3D = new MockLandscape3D();
     }
 
@@ -86,6 +89,15 @@ public class MockEnvironment3D implements Environment3D {
 
     public void setSky3D(Sky3D sky3d) {
         sky3D = sky3d;
+    }
+
+    @Override
+    public Wind3D getWind3D() {
+        return wind3D;
+    }
+
+    public void setWind3D(Wind3D wind3d) {
+        wind3D = wind3d;
     }
 
     @Override

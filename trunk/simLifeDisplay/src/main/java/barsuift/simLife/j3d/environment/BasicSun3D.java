@@ -78,7 +78,7 @@ public class BasicSun3D implements Sun3D {
 
     private BigDecimal brightness;
 
-    public BasicSun3D(Sun3DState state, Universe3D universe3D) {
+    public BasicSun3D(Sun3DState state) {
         super();
         this.state = state;
         this.latitude = state.getLatitude();
@@ -113,11 +113,16 @@ public class BasicSun3D implements Sun3D {
         updateLightDirection();
         // no need to update light color because it is already updated with the sun height
 
-        this.earthRotationTask = new EarthRotationTask(state.getEarthRotationTask(), this, universe3D.getDate());
+        this.earthRotationTask = new EarthRotationTask(state.getEarthRotationTask());
+        this.earthRevolutionTask = new EarthRevolutionTask(state.getEarthRevolutionTask());
+    }
+
+    public void init(Universe3D universe3D) {
+        this.earthRotationTask.init(this, universe3D.getDate());
         universe3D.getSynchronizer().scheduleFast(earthRotationTask);
         setEarthRotationTaskAutomatic(state.isEarthRotationTaskAutomatic());
 
-        this.earthRevolutionTask = new EarthRevolutionTask(state.getEarthRevolutionTask(), this, universe3D.getDate());
+        this.earthRevolutionTask.init(this, universe3D.getDate());
         universe3D.getSynchronizer().scheduleFast(earthRevolutionTask);
         setEarthRevolutionTaskAutomatic(state.isEarthRevolutionTaskAutomatic());
     }

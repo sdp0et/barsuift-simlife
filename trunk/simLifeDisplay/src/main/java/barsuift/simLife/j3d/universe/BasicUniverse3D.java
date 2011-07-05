@@ -42,18 +42,17 @@ public class BasicUniverse3D implements Universe3D {
 
     private Set<Node> elements3D;
 
-    private final Universe universe;
+    private Universe universe;
 
-    public BasicUniverse3D(Universe3DState state, Universe universe) {
+    public BasicUniverse3D(Universe3DState state) {
         this.state = state;
-        this.universe = universe;
         root = new BranchGroup();
         root.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         elements3D = new HashSet<Node>();
     }
 
-    // TODO 901 this might be improved if universe3D is not required anymore in tree components
-    public void initFromUniverse(Universe universe) {
+    public void init(Universe universe) {
+        this.universe = universe;
         addElement3D(universe.getEnvironment().getEnvironment3D().getGroup());
         addElement3D(universe.getPhysics().getPhysics3D().getGroup());
 

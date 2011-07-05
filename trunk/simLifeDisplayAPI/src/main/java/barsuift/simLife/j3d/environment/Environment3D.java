@@ -30,6 +30,8 @@ public interface Environment3D extends Persistent<Environment3DState> {
 
     public Sky3D getSky3D();
 
+    public Wind3D getWind3D();
+
     public Landscape3D getLandscape3D();
 
 }

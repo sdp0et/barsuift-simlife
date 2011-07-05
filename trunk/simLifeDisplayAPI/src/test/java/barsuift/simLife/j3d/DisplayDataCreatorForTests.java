@@ -26,6 +26,7 @@ import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Sky3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
+import barsuift.simLife.j3d.environment.Wind3DState;
 import barsuift.simLife.j3d.landscape.Landscape3DState;
 import barsuift.simLife.j3d.landscape.NavigationMode;
 import barsuift.simLife.j3d.landscape.NavigatorState;
@@ -63,6 +64,16 @@ public final class DisplayDataCreatorForTests {
     public static Gravity3DState createSpecificGravity3DState() {
         SplitConditionalTaskState gravityTask = UtilDataCreatorForTests.createSpecificSplitConditionalTaskState();
         return new Gravity3DState(gravityTask);
+    }
+
+    public static Wind3DState createRandomWind3DState() {
+        SplitConditionalTaskState windTask = UtilDataCreatorForTests.createRandomSplitConditionalTaskState();
+        return new Wind3DState(windTask);
+    }
+
+    public static Wind3DState createSpecificWind3DState() {
+        SplitConditionalTaskState windTask = UtilDataCreatorForTests.createSpecificSplitConditionalTaskState();
+        return new Wind3DState(windTask);
     }
 
     public static Tuple3fState createRandomTuple3fState() {

@@ -22,7 +22,6 @@ import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.landscape.Landscape3D;
 import barsuift.simLife.j3d.tree.TreeOrganizer;
 import barsuift.simLife.tree.BasicTree;
-import barsuift.simLife.tree.Tree;
 import barsuift.simLife.tree.TreeState;
 import barsuift.simLife.tree.TreeStateFactory;
 
@@ -43,7 +42,8 @@ public class BasicUniverseFactory {
         for (int i = 0; i < nbTrees; i++) {
             TreeState treeState = treeStateFactory.createRandomTreeState();
             treeOrganizer.placeNewTree(treeState.getTree3DState(), landscape3D);
-            Tree tree = new BasicTree(universe, treeState);
+            BasicTree tree = new BasicTree(treeState);
+            tree.init(universe);
             universe.addTree(tree);
         }
     }

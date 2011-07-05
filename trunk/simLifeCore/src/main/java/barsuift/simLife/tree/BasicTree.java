@@ -49,14 +49,11 @@ public class BasicTree implements Tree {
 
     private final List<TreeBranch> branches;
 
-    private final TreeTrunk trunk;
+    private final BasicTreeTrunk trunk;
 
-    private final Tree3D tree3D;
+    private final BasicTree3D tree3D;
 
-    public BasicTree(Universe universe, TreeState state) {
-        if (universe == null) {
-            throw new IllegalArgumentException("null universe");
-        }
+    public BasicTree(TreeState state) {
         if (state == null) {
             throw new IllegalArgumentException("null tree state");
         }
@@ -67,15 +64,29 @@ public class BasicTree implements Tree {
         List<TreeBranchState> branchStates = state.getBranches();
         this.branches = new ArrayList<TreeBranch>(branchStates.size());
         for (TreeBranchState treeBranchState : branchStates) {
-            branches.add(new BasicTreeBranch(universe, treeBranchState));
+            branches.add(new BasicTreeBranch(treeBranchState));
         }
-        this.trunk = new BasicTreeTrunk(universe, state.getTrunkState());
-        this.tree3D = new BasicTree3D(universe.getUniverse3D(), state.getTree3DState(), this);
-        this.photosynthesis = new Photosynthesis(state.getPhotosynthesis(), this);
+        this.trunk = new BasicTreeTrunk(state.getTrunkState());
+        this.tree3D = new BasicTree3D(state.getTree3DState());
+        this.photosynthesis = new Photosynthesis(state.getPhotosynthesis());
+        this.aging = new Aging(state.getAging());
+        this.growth = new TreeGrowth(state.getGrowth());
+    }
+
+    public void init(Universe universe) {
+        if (universe == null) {
+            throw new IllegalArgumentException("null universe");
+        }
+        for (TreeBranch treeBranch : branches) {
+            ((BasicTreeBranch) treeBranch).init(universe);
+        }
+        this.trunk.init(universe);
+        this.tree3D.init(universe.getUniverse3D(), this);
+        this.photosynthesis.init(this);
         universe.getSynchronizer().scheduleSlow(photosynthesis);
-        this.aging = new Aging(state.getAging(), this);
+        this.aging.init(this);
         universe.getSynchronizer().scheduleSlow(aging);
-        this.growth = new TreeGrowth(state.getGrowth(), this);
+        this.growth.init(this);
         universe.getSynchronizer().scheduleSlow(growth);
     }
 

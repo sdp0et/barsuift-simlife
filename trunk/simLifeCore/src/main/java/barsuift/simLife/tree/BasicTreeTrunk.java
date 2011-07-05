@@ -32,12 +32,9 @@ public class BasicTreeTrunk implements TreeTrunk {
 
     private float height;
 
-    private final TreeTrunk3D trunk3D;
+    private final BasicTreeTrunk3D trunk3D;
 
-    public BasicTreeTrunk(Universe universe, TreeTrunkState state) {
-        if (universe == null) {
-            throw new IllegalArgumentException("null universe");
-        }
+    public BasicTreeTrunk(TreeTrunkState state) {
         if (state == null) {
             throw new IllegalArgumentException("null trunk state");
         }
@@ -45,7 +42,14 @@ public class BasicTreeTrunk implements TreeTrunk {
         this.creationMillis = state.getCreationMillis();
         this.radius = state.getRadius();
         this.height = state.getHeight();
-        this.trunk3D = new BasicTreeTrunk3D(universe.getUniverse3D(), state.getTrunk3DState(), this);
+        this.trunk3D = new BasicTreeTrunk3D(state.getTrunk3DState());
+    }
+
+    public void init(Universe universe) {
+        if (universe == null) {
+            throw new IllegalArgumentException("null universe");
+        }
+        this.trunk3D.init(universe.getUniverse3D(), this);
     }
 
     @Override

@@ -38,11 +38,14 @@ public class GravityTask extends AbstractSplitConditionalTask {
 
     private final ConcurrentLinkedQueue<Mobile> mobiles;
 
-    private final Landscape3D landscape3D;
+    private Landscape3D landscape3D;
 
-    public GravityTask(SplitConditionalTaskState state, Landscape3D landscape3D) {
+    public GravityTask(SplitConditionalTaskState state) {
         super(state);
         this.mobiles = new ConcurrentLinkedQueue<Mobile>();
+    }
+
+    public void init(Landscape3D landscape3D) {
         this.landscape3D = landscape3D;
     }
 

@@ -27,15 +27,18 @@ public class EarthRevolutionTask extends AbstractSplitConditionalTask implements
     protected final static double REVOLUTION_ANGLE_PER_SECOND = Math.PI * 2
             / (SimLifeDate.SECOND_PER_MINUTE * SimLifeDate.MINUTE_PER_DAY * SimLifeDate.DAY_PER_YEAR);
 
-    private final Sun3D sun3D;
+    private Sun3D sun3D;
 
-    private final SimLifeDate date;
+    private SimLifeDate date;
 
     private boolean automatic;
 
 
-    public EarthRevolutionTask(SplitConditionalTaskState state, Sun3D sun3D, SimLifeDate date) {
+    public EarthRevolutionTask(SplitConditionalTaskState state) {
         super(state);
+    }
+
+    public void init(Sun3D sun3D, SimLifeDate date) {
         this.sun3D = sun3D;
         this.date = date;
         this.automatic = sun3D.isEarthRevolutionTaskAutomatic();

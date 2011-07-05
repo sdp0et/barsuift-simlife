@@ -46,17 +46,21 @@ public class BasicTreeTrunk3D implements TreeTrunk3D {
      * @param height
      * @param centralPoint correspond to the center of the bottom
      */
-    public BasicTreeTrunk3D(Universe3D universe3D, TreeTrunk3DState state, TreeTrunk trunk) {
+    public BasicTreeTrunk3D(TreeTrunk3DState state) {
+        if (state == null) {
+            throw new IllegalArgumentException("Null tree trunk 3D state");
+        }
+        this.state = state;
+        this.group = new Group();
+    }
+
+    public void init(Universe3D universe3D, TreeTrunk trunk) {
         if (universe3D == null) {
             throw new IllegalArgumentException("Null universe 3D");
         }
         if (trunk == null) {
             throw new IllegalArgumentException("Null tree trunk");
         }
-        if (state == null) {
-            throw new IllegalArgumentException("Null tree trunk 3D state");
-        }
-        this.state = state;
         Appearance trunkAppearance = new Appearance();
         AppearanceFactory.setColorWithMaterial(trunkAppearance, ColorConstants.brown, new Color3f(0.15f, 0.15f, 0.15f),
                 new Color3f(0.05f, 0.05f, 0.05f));
@@ -65,7 +69,6 @@ public class BasicTreeTrunk3D implements TreeTrunk3D {
         translationVector.setY(trunk.getHeight() / 2);
         TransformGroup transformGroup = TransformerHelper.getTranslationTransformGroup(translationVector);
         transformGroup.addChild(trunkCylinder);
-        this.group = new Group();
         group.addChild(transformGroup);
     }
 

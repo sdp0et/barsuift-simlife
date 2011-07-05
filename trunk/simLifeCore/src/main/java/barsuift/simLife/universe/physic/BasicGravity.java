@@ -36,20 +36,27 @@ public class BasicGravity implements Gravity {
 
     private final GravityState state;
 
-    private final Gravity3D gravity3D;
+    private final BasicGravity3D gravity3D;
 
     private final Set<TreeLeaf> fallingLeaves;
 
-    private final Universe universe;
+    private Universe universe;
 
-    public BasicGravity(GravityState state, Universe universe) {
+    public BasicGravity(GravityState state) {
         this.state = state;
-        this.universe = universe;
         this.fallingLeaves = new HashSet<TreeLeaf>();
-        this.gravity3D = new BasicGravity3D(state.getGravity3D(), universe.getUniverse3D());
+        this.gravity3D = new BasicGravity3D(state.getGravity3D());
         Set<TreeLeafState> fallingLeafStates = state.getFallingLeaves();
         for (TreeLeafState fallingLeafState : fallingLeafStates) {
-            addFallingLeaf(new BasicTreeLeaf(universe, fallingLeafState));
+            addFallingLeaf(new BasicTreeLeaf(fallingLeafState));
+        }
+    }
+
+    public void init(Universe universe) {
+        this.universe = universe;
+        this.gravity3D.init(universe.getUniverse3D());
+        for (TreeLeaf fallingLeaf : fallingLeaves) {
+            ((BasicTreeLeaf) fallingLeaf).init(universe);
         }
     }
 

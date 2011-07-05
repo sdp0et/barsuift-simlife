@@ -29,7 +29,7 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.j3d.landscape.Landscape3D;
 
-//FIXME unit test, add state, and factory
+// FIXME unit test, for this and state, and factory
 public class WindTask extends AbstractSplitConditionalTask {
 
     private static final Logger logger = Logger.getLogger(WindTask.class.getName());
@@ -41,11 +41,14 @@ public class WindTask extends AbstractSplitConditionalTask {
 
     private final ConcurrentLinkedQueue<Mobile> mobiles;
 
-    private final Landscape3D landscape3D;
+    private Landscape3D landscape3D;
 
-    public WindTask(SplitConditionalTaskState state, Landscape3D landscape3D) {
+    public WindTask(SplitConditionalTaskState state) {
         super(state);
         this.mobiles = new ConcurrentLinkedQueue<Mobile>();
+    }
+
+    public void init(Landscape3D landscape3D) {
         this.landscape3D = landscape3D;
     }
 

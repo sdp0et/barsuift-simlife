@@ -29,11 +29,11 @@ public class BasicUniverseContext implements UniverseContext {
 
     private final UniverseContextState state;
 
-    private final Universe universe;
+    private final BasicUniverse universe;
 
     private boolean fpsShowing;
 
-    private final UniverseContext3D universeContext3D;
+    private final BasicUniverseContext3D universeContext3D;
 
     private final FpsCounter fpsCounter = new FpsCounter();
 
@@ -43,8 +43,13 @@ public class BasicUniverseContext implements UniverseContext {
     public BasicUniverseContext(UniverseContextState state) {
         this.state = state;
         this.universe = new BasicUniverse(state.getUniverse());
-        this.universeContext3D = new BasicUniverseContext3D(state.getUniverseContext3D(), this);
+        this.universeContext3D = new BasicUniverseContext3D(state.getUniverseContext3D());
         setFpsShowing(state.isFpsShowing());
+    }
+
+    public void init() {
+        this.universe.init();
+        this.universeContext3D.init(this);
     }
 
     @Override
@@ -58,7 +63,8 @@ public class BasicUniverseContext implements UniverseContext {
             fpsCounter.reset();
             ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
             ConditionalTaskState fpsTickerState = taskStateFactory.createConditionalTaskState(FpsTicker.class);
-            fpsTicker = new FpsTicker(fpsTickerState, fpsCounter);
+            fpsTicker = new FpsTicker(fpsTickerState);
+            fpsTicker.init(fpsCounter);
             universe.getSynchronizer().scheduleSlow(fpsTicker);
         } else {
             if (this.fpsShowing) {

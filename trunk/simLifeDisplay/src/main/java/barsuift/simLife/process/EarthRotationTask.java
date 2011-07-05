@@ -27,15 +27,18 @@ public class EarthRotationTask extends AbstractSplitConditionalTask implements A
     protected final static double ROTATION_ANGLE_PER_MS = Math.PI * 2
             / (SimLifeDate.MS_PER_SECOND * SimLifeDate.SECOND_PER_MINUTE * SimLifeDate.MINUTE_PER_DAY);
 
-    private final Sun3D sun3D;
+    private Sun3D sun3D;
 
-    private final SimLifeDate date;
+    private SimLifeDate date;
 
     private boolean automatic;
 
 
-    public EarthRotationTask(SplitConditionalTaskState state, Sun3D sun3D, SimLifeDate date) {
+    public EarthRotationTask(SplitConditionalTaskState state) {
         super(state);
+    }
+
+    public void init(Sun3D sun3D, SimLifeDate date) {
         this.sun3D = sun3D;
         this.date = date;
         this.automatic = sun3D.isEarthRotationTaskAutomatic();

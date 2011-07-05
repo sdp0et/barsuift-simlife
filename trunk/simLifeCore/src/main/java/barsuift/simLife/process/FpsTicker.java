@@ -23,10 +23,13 @@ import barsuift.simLife.time.FpsCounter;
 
 public class FpsTicker extends AbstractConditionalTask {
 
-    private final FpsCounter fps;
+    private FpsCounter fps;
 
-    public FpsTicker(ConditionalTaskState state, FpsCounter fps) {
+    public FpsTicker(ConditionalTaskState state) {
         super(state);
+    }
+
+    public void init(FpsCounter fps) {
         this.fps = fps;
     }
 

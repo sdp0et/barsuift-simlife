@@ -47,7 +47,7 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
     private final TreeBranch3DState state;
 
-    private final TreeBranch treeBranch;
+    private TreeBranch treeBranch;
 
     private final Transform3D transform;
 
@@ -68,21 +68,14 @@ public class BasicTreeBranch3D implements TreeBranch3D {
      * @param state the branch 3D state
      * @param treeBranch tree branch data
      */
-    public BasicTreeBranch3D(Universe3D universe3D, TreeBranch3DState state, TreeBranch treeBranch) {
-        if (universe3D == null) {
-            throw new IllegalArgumentException("Null universe 3D");
-        }
+    public BasicTreeBranch3D(TreeBranch3DState state) {
         if (state == null) {
             throw new IllegalArgumentException("Null tree branch 3D state");
-        }
-        if (treeBranch == null) {
-            throw new IllegalArgumentException("Null tree branch");
         }
         this.state = state;
         this.transform = state.getTransform().toTransform3D();
         this.length = state.getLength();
         this.radius = state.getRadius();
-        this.treeBranch = treeBranch;
 
         this.tg = new TransformGroup(transform);
         tg.setCapability(Group.ALLOW_CHILDREN_WRITE);
@@ -90,7 +83,16 @@ public class BasicTreeBranch3D implements TreeBranch3D {
 
         this.bg = new BranchGroup();
         bg.addChild(tg);
+    }
 
+    public void init(Universe3D universe3D, TreeBranch treeBranch) {
+        if (universe3D == null) {
+            throw new IllegalArgumentException("Null universe 3D");
+        }
+        if (treeBranch == null) {
+            throw new IllegalArgumentException("Null tree branch");
+        }
+        this.treeBranch = treeBranch;
         createFullTreeBranch();
     }
 

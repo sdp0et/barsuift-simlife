@@ -28,6 +28,8 @@ public class MockEnvironment implements Environment {
 
     private Sky sky;
 
+    private Wind wind;
+
     private EnvironmentState state;
 
     private int synchronizedCalled;
@@ -42,6 +44,7 @@ public class MockEnvironment implements Environment {
 
     public void reset() {
         sky = new MockSky();
+        wind = new MockWind();
         state = new EnvironmentState();
         synchronizedCalled = 0;
         env3D = new MockEnvironment3D();
@@ -55,6 +58,15 @@ public class MockEnvironment implements Environment {
 
     public void setSky(Sky sky) {
         this.sky = sky;
+    }
+
+    @Override
+    public Wind getWind() {
+        return wind;
+    }
+
+    public void setWind(Wind wind) {
+        this.wind = wind;
     }
 
     @Override

@@ -58,16 +58,13 @@ public class BasicTreeLeaf implements TreeLeaf {
     private BigDecimal freeEnergy;
 
 
-    private final TreeLeaf3D leaf3D;
+    private final BasicTreeLeaf3D leaf3D;
 
-    private final Universe universe;
+    private Universe universe;
 
     private final Publisher publisher = new BasicPublisher(this);
 
-    public BasicTreeLeaf(Universe universe, TreeLeafState leafState) {
-        if (universe == null) {
-            throw new IllegalArgumentException("null universe");
-        }
+    public BasicTreeLeaf(TreeLeafState leafState) {
         if (leafState == null) {
             throw new IllegalArgumentException("null leaf state");
         }
@@ -77,9 +74,16 @@ public class BasicTreeLeaf implements TreeLeaf {
         this.energy = state.getEnergy();
         this.freeEnergy = state.getFreeEnergy();
 
-        this.universe = universe;
-        this.leaf3D = new BasicTreeLeaf3D(universe.getUniverse3D(), leafState.getLeaf3DState(), this);
+        this.leaf3D = new BasicTreeLeaf3D(leafState.getLeaf3DState());
         this.leaf3D.addSubscriber(this);
+    }
+
+    public void init(Universe universe) {
+        if (universe == null) {
+            throw new IllegalArgumentException("null universe");
+        }
+        this.universe = universe;
+        this.leaf3D.init(universe.getUniverse3D(), this);
     }
 
     /**
