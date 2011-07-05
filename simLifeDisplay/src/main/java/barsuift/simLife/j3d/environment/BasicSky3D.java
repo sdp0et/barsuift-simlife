@@ -34,7 +34,7 @@ public class BasicSky3D implements Sky3D, Subscriber {
 
     private final Sky3DState state;
 
-    private final Sky sky;
+    private Sky sky;
 
     private final AmbientLight ambientLight;
 
@@ -49,29 +49,27 @@ public class BasicSky3D implements Sky3D, Subscriber {
      * @param sky the sky
      * @throws IllegalArgumentException if the given sky3D state is null
      */
-    public BasicSky3D(Sky3DState state, Sky sky) {
+    public BasicSky3D(Sky3DState state) {
         if (state == null) {
             throw new IllegalArgumentException("Null sky3D state");
         }
         this.state = state;
-        this.sky = sky;
         ambientLight = new AmbientLight(ColorConstants.grey);
         ambientLight.setInfluencingBounds(state.getAmbientLightBounds().toBoundingBox());
         group = new BranchGroup();
         group.addChild(ambientLight);
-        group.addChild(getSun3D().getLight());
-        getSun3D().addSubscriber(this);
-        background = createSkyBackGround();
-        updateColor();
+        background = new Background();
+        background.setApplicationBounds(state.getSkyBounds().toBoundingBox());
+        background.setCapability(Background.ALLOW_COLOR_WRITE);
         group.addChild(background);
     }
 
-    private Background createSkyBackGround() {
-        Background background = new Background();
-        background.setApplicationBounds(state.getSkyBounds().toBoundingBox());
-        background.setCapability(Background.ALLOW_COLOR_WRITE);
+    public void init(Sky sky) {
+        this.sky = sky;
+        group.addChild(getSun3D().getLight());
+        getSun3D().addSubscriber(this);
         background.setGeometry(getSun3D().getGroup());
-        return background;
+        updateColor();
     }
 
     @Override

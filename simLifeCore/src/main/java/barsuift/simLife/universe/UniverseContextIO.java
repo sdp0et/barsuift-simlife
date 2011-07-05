@@ -36,7 +36,8 @@ public class UniverseContextIO {
         try {
             JaxbIO<UniverseContextState> jaxb = new JaxbIO<UniverseContextState>(getClass().getPackage().getName());
             UniverseContextState universeContextState = jaxb.read(file);
-            UniverseContext universeContext = new BasicUniverseContext(universeContextState);
+            BasicUniverseContext universeContext = new BasicUniverseContext(universeContextState);
+            universeContext.init();
             return universeContext;
         } catch (JAXBException e) {
             throw new OpenException(e);

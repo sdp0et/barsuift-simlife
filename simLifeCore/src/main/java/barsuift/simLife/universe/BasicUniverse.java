@@ -51,9 +51,9 @@ public class BasicUniverse implements Universe {
 
     private final Set<TreeLeaf> fallenLeaves;
 
-    private final Environment environment;
+    private final BasicEnvironment environment;
 
-    private final Physics physics;
+    private final BasicPhysics physics;
 
     private final MainSynchronizer synchronizer;
 
@@ -61,31 +61,45 @@ public class BasicUniverse implements Universe {
 
     private final BasicUniverse3D universe3D;
 
+    private DateUpdater dateUpdater;
+
 
     public BasicUniverse(UniverseState state) {
         this.state = state;
         this.synchronizer = new BasicMainSynchronizer(state.getMainSynchronizerState());
         this.dateHandler = new DateHandler(state.getDateHandler());
-        this.universe3D = new BasicUniverse3D(state.getUniv3DState(), this);
-        this.environment = new BasicEnvironment(state.getEnvironment(), this);
-        this.physics = new BasicPhysics(this, state.getPhysics());
+        this.universe3D = new BasicUniverse3D(state.getUniv3DState());
+        this.environment = new BasicEnvironment(state.getEnvironment());
+        this.physics = new BasicPhysics(state.getPhysics());
         ConditionalTaskStateFactory taskStateFactory = new ConditionalTaskStateFactory();
         SplitConditionalTaskState dateUpdaterState = taskStateFactory
                 .createSplitConditionalTaskState(DateUpdater.class);
-        DateUpdater dateUpdater = new DateUpdater(dateUpdaterState, dateHandler.getDate());
+        this.dateUpdater = new DateUpdater(dateUpdaterState);
         synchronizer.scheduleFast(dateUpdater);
         this.trees = new HashSet<Tree>();
         Set<TreeState> treeStates = state.getTrees();
         for (TreeState treeState : treeStates) {
-            BasicTree newTree = new BasicTree(this, treeState);
+            BasicTree newTree = new BasicTree(treeState);
             trees.add(newTree);
         }
         this.fallenLeaves = new HashSet<TreeLeaf>();
         Set<TreeLeafState> fallenLeavesStates = state.getFallenLeaves();
         for (TreeLeafState fallenLeafState : fallenLeavesStates) {
-            fallenLeaves.add(new BasicTreeLeaf(this, fallenLeafState));
+            fallenLeaves.add(new BasicTreeLeaf(fallenLeafState));
         }
-        this.universe3D.initFromUniverse(this);
+    }
+
+    public void init() {
+        this.universe3D.init(this);
+        this.environment.init(this);
+        this.physics.init(this);
+        this.dateUpdater.init(dateHandler.getDate());
+        for (Tree tree : trees) {
+            ((BasicTree) tree).init(this);
+        }
+        for (TreeLeaf fallenLeaf : fallenLeaves) {
+            ((BasicTreeLeaf) fallenLeaf).init(this);
+        }
     }
 
     @Override

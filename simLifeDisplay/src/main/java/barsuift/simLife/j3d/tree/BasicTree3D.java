@@ -40,30 +40,33 @@ public class BasicTree3D implements Tree3D {
     private final Vector3f translationVector;
 
 
-    private final Tree tree;
+    private Tree tree;
 
     private final BranchGroup branchGroup;
 
     private final TransformGroup tg;
 
-    public BasicTree3D(Universe3D universe3D, Tree3DState state, Tree tree) {
+    public BasicTree3D(Tree3DState state) {
         super();
-        if (universe3D == null) {
-            throw new IllegalArgumentException("Null universe 3D");
-        }
         if (state == null) {
             throw new IllegalArgumentException("Null tree 3D state");
         }
-        if (tree == null) {
-            throw new IllegalArgumentException("Null tree");
-        }
         this.state = state;
         this.translationVector = state.getTranslationVector().toVectorValue();
-        this.tree = tree;
         Transform3D translation = TransformerHelper.getTranslationTransform3D(translationVector);
         this.tg = new TransformGroup(translation);
         this.branchGroup = new BranchGroup();
         branchGroup.addChild(tg);
+    }
+
+    public void init(Universe3D universe3D, Tree tree) {
+        if (universe3D == null) {
+            throw new IllegalArgumentException("Null universe 3D");
+        }
+        if (tree == null) {
+            throw new IllegalArgumentException("Null tree");
+        }
+        this.tree = tree;
         createTrunkAndBranchesBG();
     }
 

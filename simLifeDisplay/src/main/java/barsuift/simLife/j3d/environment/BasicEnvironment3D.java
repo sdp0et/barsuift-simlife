@@ -29,7 +29,7 @@ public class BasicEnvironment3D implements Environment3D {
 
     private final Environment3DState state;
 
-    private final Environment environment;
+    private Environment environment;
 
     private final Group group;
 
@@ -39,13 +39,16 @@ public class BasicEnvironment3D implements Environment3D {
      * @param state the environment3D state
      * @throws IllegalArgumentException if the given environment3D state is null
      */
-    public BasicEnvironment3D(Environment3DState state, Environment environment) {
+    public BasicEnvironment3D(Environment3DState state) {
         if (state == null) {
             throw new IllegalArgumentException("Null environment3D state");
         }
         this.state = state;
-        this.environment = environment;
         group = new BranchGroup();
+    }
+
+    public void init(Environment environment) {
+        this.environment = environment;
         group.addChild(getSky3D().getGroup());
         group.addChild(getLandscape3D().getBranchGroup());
     }
@@ -55,8 +58,14 @@ public class BasicEnvironment3D implements Environment3D {
         return group;
     }
 
+    @Override
     public Sky3D getSky3D() {
         return environment.getSky().getSky3D();
+    }
+
+    @Override
+    public Wind3D getWind3D() {
+        return environment.getWind().getWind3D();
     }
 
     @Override

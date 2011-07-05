@@ -23,10 +23,13 @@ import barsuift.simLife.time.SimLifeDate;
 
 public class DateUpdater extends AbstractSplitConditionalTask {
 
-    private final SimLifeDate date;
+    private SimLifeDate date;
 
-    public DateUpdater(SplitConditionalTaskState state, SimLifeDate date) {
+    public DateUpdater(SplitConditionalTaskState state) {
         super(state);
+    }
+
+    public void init(SimLifeDate date) {
         this.date = date;
     }
 

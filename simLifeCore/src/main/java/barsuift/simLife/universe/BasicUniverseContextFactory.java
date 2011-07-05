@@ -41,7 +41,8 @@ public class BasicUniverseContextFactory {
         UniverseContextStateFactory universeContextStateFactory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = universeContextStateFactory
                 .createEmptyRandomUniverseContextState(parameters);
-        UniverseContext universeContext = new BasicUniverseContext(universeContextState);
+        BasicUniverseContext universeContext = new BasicUniverseContext(universeContextState);
+        universeContext.init();
         return universeContext;
     }
 

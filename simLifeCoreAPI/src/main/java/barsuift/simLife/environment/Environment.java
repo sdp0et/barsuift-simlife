@@ -29,6 +29,8 @@ public interface Environment extends Persistent<EnvironmentState> {
 
     public Sky getSky();
 
+    public Wind getWind();
+
     public Environment3D getEnvironment3D();
 
 }

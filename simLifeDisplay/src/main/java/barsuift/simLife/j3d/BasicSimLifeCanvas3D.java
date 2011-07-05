@@ -47,7 +47,7 @@ public class BasicSimLifeCanvas3D extends SimLifeCanvas3D {
 
     private final FpsCounter graphicFps;
 
-    private final FpsCounter coreFps;
+    private FpsCounter coreFps;
 
     private BufferedImage drawIm;
 
@@ -57,14 +57,17 @@ public class BasicSimLifeCanvas3D extends SimLifeCanvas3D {
 
     private final Font font;
 
-    public BasicSimLifeCanvas3D(FpsCounter coreFpsCounter, SimLifeCanvas3DState state) {
+    public BasicSimLifeCanvas3D(SimLifeCanvas3DState state) {
         super(SimpleUniverse.getPreferredConfiguration());
         this.state = state;
         this.fpsShowing = state.isFpsShowing();
-        this.coreFps = coreFpsCounter;
         graphicFps = new FpsCounter();
         font = new Font(Font.MONOSPACED, Font.BOLD, 18);
         render2d = getGraphics2D();
+    }
+
+    public void init(FpsCounter coreFpsCounter) {
+        this.coreFps = coreFpsCounter;
     }
 
     @Override

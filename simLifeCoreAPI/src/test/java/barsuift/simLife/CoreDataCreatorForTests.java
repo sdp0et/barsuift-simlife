@@ -27,10 +27,12 @@ import java.util.Set;
 import barsuift.simLife.environment.EnvironmentState;
 import barsuift.simLife.environment.SkyState;
 import barsuift.simLife.environment.SunState;
+import barsuift.simLife.environment.WindState;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.environment.Environment3DState;
 import barsuift.simLife.j3d.environment.Sky3DState;
 import barsuift.simLife.j3d.environment.Sun3DState;
+import barsuift.simLife.j3d.environment.Wind3DState;
 import barsuift.simLife.j3d.landscape.Landscape3DState;
 import barsuift.simLife.j3d.tree.Tree3DState;
 import barsuift.simLife.j3d.tree.TreeBranch3DState;
@@ -178,9 +180,10 @@ public final class CoreDataCreatorForTests {
 
     public static EnvironmentState createRandomEnvironmentState() {
         SkyState skyState = createRandomSkyState();
+        WindState windState = createRandomWindState();
         Environment3DState env3DState = DisplayDataCreatorForTests.createRandomEnvironment3DState();
         LandscapeState landscape = createRandomLandscapeState();
-        return new EnvironmentState(skyState, landscape, env3DState);
+        return new EnvironmentState(skyState, windState, landscape, env3DState);
     }
 
     /**
@@ -190,9 +193,10 @@ public final class CoreDataCreatorForTests {
      */
     public static EnvironmentState createSpecificEnvironmentState() {
         SkyState skyState = createSpecificSkyState();
+        WindState windState = createSpecificWindState();
         Environment3DState env3DState = DisplayDataCreatorForTests.createSpecificEnvironment3DState();
         LandscapeState landscape = createSpecificLandscapeState();
-        return new EnvironmentState(skyState, landscape, env3DState);
+        return new EnvironmentState(skyState, windState, landscape, env3DState);
     }
 
     public static SkyState createRandomSkyState() {
@@ -210,6 +214,26 @@ public final class CoreDataCreatorForTests {
         SunState sunState = createSpecificSunState();
         Sky3DState env3DState = DisplayDataCreatorForTests.createSpecificSky3DState();
         return new SkyState(sunState, env3DState);
+    }
+
+    public static WindState createRandomWindState() {
+        Wind3DState wind3D = DisplayDataCreatorForTests.createRandomWind3DState();
+        int nbMovingLeaves = Randomizer.randomBetween(0, 40);
+        Set<TreeLeafState> movingLeaves = new HashSet<TreeLeafState>(nbMovingLeaves);
+        for (int i = 0; i < nbMovingLeaves; i++) {
+            movingLeaves.add(createRandomTreeLeafState());
+        }
+        return new WindState(wind3D, movingLeaves);
+    }
+
+    public static WindState createSpecificWindState() {
+        Wind3DState wind3D = DisplayDataCreatorForTests.createSpecificWind3DState();
+        int nbMovingLeaves = 20;
+        Set<TreeLeafState> movingLeaves = new HashSet<TreeLeafState>(nbMovingLeaves);
+        for (int i = 0; i < nbMovingLeaves; i++) {
+            movingLeaves.add(createSpecificTreeLeafState());
+        }
+        return new WindState(wind3D, movingLeaves);
     }
 
     public static LandscapeState createRandomLandscapeState() {

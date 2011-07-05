@@ -28,10 +28,13 @@ import barsuift.simLife.tree.TreeLeaf;
 
 public class TreeGrowth extends AbstractConditionalTask {
 
-    private final Tree tree;
+    private Tree tree;
 
-    public TreeGrowth(ConditionalTaskState state, Tree tree) {
+    public TreeGrowth(ConditionalTaskState state) {
         super(state);
+    }
+
+    public void init(Tree tree) {
         this.tree = tree;
     }
 

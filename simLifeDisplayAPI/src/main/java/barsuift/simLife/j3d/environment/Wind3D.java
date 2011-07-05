@@ -16,25 +16,30 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.process;
+package barsuift.simLife.j3d.environment;
 
-import barsuift.simLife.LivingPart;
+import javax.media.j3d.Group;
+
+import barsuift.simLife.Persistent;
+import barsuift.simLife.j3d.Mobile;
 
 
-public class Aging extends AbstractConditionalTask {
+public interface Wind3D extends Persistent<Wind3DState> {
 
-    private LivingPart livingPart;
+    public Group getGroup();
 
-    public Aging(ConditionalTaskState state) {
-        super(state);
-    }
+    /**
+     * Make the given mobile move.
+     * 
+     * @param mobile the mobile to move
+     */
+    public void move(Mobile mobile);
 
-    public void init(LivingPart livingPart) {
-        this.livingPart = livingPart;
-    }
+    /**
+     * The given mobile is no more "in the air", so there is no need for Wind3D to deal with it anymore.
+     * 
+     * @param mobile the "grounded" mobile
+     */
+    public void isGrounded(Mobile mobile);
 
-    @Override
-    public void executeConditionalStep() {
-        livingPart.age();
-    }
 }

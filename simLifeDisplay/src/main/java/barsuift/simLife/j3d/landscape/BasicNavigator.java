@@ -108,7 +108,7 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
     private static final Vector3f DOWN = new Vector3f(0, -MOVE_STEP, 0);
 
 
-    private final Landscape3D landscape3D;
+    private Landscape3D landscape3D;
 
     private final NavigatorState state;
 
@@ -121,14 +121,14 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
      */
     private double rotationX = 0;
 
-    private final Transform3D transformRotationX = new Transform3D();
+    private final Transform3D transformRotationX;
 
     /**
      * current Y rotation in radian
      */
     private double rotationY = 0;
 
-    private final Transform3D transformRotationY = new Transform3D();
+    private final Transform3D transformRotationY;
 
     private int oldx = 0;
 
@@ -138,15 +138,15 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
 
     private final WakeupCondition wakeUpCondition;
 
-    public BasicNavigator(NavigatorState state, Landscape3D landscape3D) {
+    public BasicNavigator(NavigatorState state) {
         super();
         this.state = state;
-        this.landscape3D = landscape3D;
+        this.transformRotationX = new Transform3D();
+        this.transformRotationY = new Transform3D();
         this.translation = state.getTranslation().toVectorValue();
         rotateX(state.getRotationX());
         rotateY(state.getRotationY());
         this.navigationMode = state.getNavigationMode();
-        adjustHeight();
         // there is no need to wake up on KEY_RELEASED criterion, as the AWT model won't send anymore KEY_PRESSED event
         // on such case :
         // 1. press a key
@@ -155,9 +155,12 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         // 4. here AWT won't send any more events, even if the first key is still pressed
         wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
                 new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
-        // wakeUpCondition = new WakeupOr(new WakeupCriterion[] { new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED),
-        // new WakeupOnAWTEvent(KeyEvent.KEY_RELEASED), new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED) });
         setSchedulingBounds(state.getBounds().toBoundingBox());
+    }
+
+    public void init(Landscape3D landscape3D) {
+        this.landscape3D = landscape3D;
+        adjustHeight();
     }
 
     public void initialize() {

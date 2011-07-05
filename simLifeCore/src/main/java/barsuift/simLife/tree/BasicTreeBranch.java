@@ -69,7 +69,7 @@ public class BasicTreeBranch implements TreeBranch {
 
     private final ConcurrentLinkedQueue<TreeLeaf> leaves;
 
-    private final TreeBranch3D branch3D;
+    private final BasicTreeBranch3D branch3D;
 
     private final long creationMillis;
 
@@ -77,17 +77,13 @@ public class BasicTreeBranch implements TreeBranch {
 
     private BigDecimal freeEnergy;
 
-    private final Universe universe;
+    private Universe universe;
 
 
-    public BasicTreeBranch(Universe universe, TreeBranchState state) {
-        if (universe == null) {
-            throw new IllegalArgumentException("null universe");
-        }
+    public BasicTreeBranch(TreeBranchState state) {
         if (state == null) {
             throw new IllegalArgumentException("null branch state");
         }
-        this.universe = universe;
         this.state = state;
         this.creationMillis = state.getCreationMillis();
         this.energy = state.getEnergy();
@@ -95,11 +91,22 @@ public class BasicTreeBranch implements TreeBranch {
         List<TreeLeafState> leavesStates = state.getLeavesStates();
         this.leaves = new ConcurrentLinkedQueue<TreeLeaf>();
         for (TreeLeafState treeLeafState : leavesStates) {
-            BasicTreeLeaf leaf = new BasicTreeLeaf(universe, treeLeafState);
+            BasicTreeLeaf leaf = new BasicTreeLeaf(treeLeafState);
             leaf.addSubscriber(this);
             leaves.add(leaf);
         }
-        branch3D = new BasicTreeBranch3D(universe.getUniverse3D(), state.getBranch3DState(), this);
+        branch3D = new BasicTreeBranch3D(state.getBranch3DState());
+    }
+
+    public void init(Universe universe) {
+        if (universe == null) {
+            throw new IllegalArgumentException("null universe");
+        }
+        this.universe = universe;
+        for (TreeLeaf treeLeaf : leaves) {
+            ((BasicTreeLeaf) treeLeaf).init(universe);
+        }
+        branch3D.init(universe.getUniverse3D(), this);
     }
 
     @Override
@@ -220,7 +227,8 @@ public class BasicTreeBranch implements TreeBranch {
                 .getDate().getTimeInMillis());
         TreeLeavesOrganizer leavesOrganizer = new TreeLeavesOrganizer();
         leavesOrganizer.placeNewLeaf(treeLeafState.getLeaf3DState(), branch3D);
-        TreeLeaf leaf = new BasicTreeLeaf(universe, treeLeafState);
+        BasicTreeLeaf leaf = new BasicTreeLeaf(treeLeafState);
+        leaf.init(universe);
         leaf.addSubscriber(this);
         leaves.add(leaf);
         branch3D.addLeaf(leaf.getTreeLeaf3D());

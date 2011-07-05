@@ -28,11 +28,13 @@ public class BasicEnvironment implements Environment {
 
     private final EnvironmentState state;
 
-    private final Sky sky;
+    private final BasicSky sky;
 
-    private final Landscape landscape;
+    private final BasicWind wind;
 
-    private final Environment3D env3D;
+    private final BasicLandscape landscape;
+
+    private final BasicEnvironment3D env3D;
 
     /**
      * Creates the environment with given state
@@ -40,19 +42,31 @@ public class BasicEnvironment implements Environment {
      * @param state the environment state
      * @throws IllegalArgumentException if the given environment state is null
      */
-    public BasicEnvironment(EnvironmentState state, Universe universe) {
+    public BasicEnvironment(EnvironmentState state) {
         if (state == null) {
             throw new IllegalArgumentException("Null environment state");
         }
         this.state = state;
-        this.sky = new BasicSky(state.getSkyState(), universe);
+        this.sky = new BasicSky(state.getSkyState());
         this.landscape = new BasicLandscape(state.getLandscape());
-        this.env3D = new BasicEnvironment3D(state.getEnvironment3DState(), this);
+        this.env3D = new BasicEnvironment3D(state.getEnvironment3DState());
+        this.wind = new BasicWind(state.getWindState());
+    }
+
+    public void init(Universe universe) {
+        this.sky.init(universe);
+        this.env3D.init(this);
+        this.wind.init(universe);
     }
 
     @Override
     public Sky getSky() {
         return sky;
+    }
+
+    @Override
+    public Wind getWind() {
+        return wind;
     }
 
     @Override
@@ -73,6 +87,7 @@ public class BasicEnvironment implements Environment {
     @Override
     public void synchronize() {
         sky.synchronize();
+        wind.synchronize();
         landscape.synchronize();
         env3D.synchronize();
     }

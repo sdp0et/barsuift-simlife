@@ -26,9 +26,9 @@ public class BasicSky implements Sky {
 
     private final SkyState state;
 
-    private final Sun sun;
+    private final BasicSun sun;
 
-    private final Sky3D sky3D;
+    private final BasicSky3D sky3D;
 
     /**
      * Creates the sky with given state
@@ -36,13 +36,18 @@ public class BasicSky implements Sky {
      * @param state the sky state
      * @throws IllegalArgumentException if the given sky state is null
      */
-    public BasicSky(SkyState state, Universe universe) {
+    public BasicSky(SkyState state) {
         if (state == null) {
             throw new IllegalArgumentException("Null sky state");
         }
         this.state = state;
-        this.sun = new BasicSun(state.getSunState(), universe);
-        this.sky3D = new BasicSky3D(state.getSky3DState(), this);
+        this.sun = new BasicSun(state.getSunState());
+        this.sky3D = new BasicSky3D(state.getSky3DState());
+    }
+
+    public void init(Universe universe) {
+        this.sun.init(universe);
+        this.sky3D.init(this);
     }
 
     @Override

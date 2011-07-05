@@ -22,10 +22,13 @@ import barsuift.simLife.tree.Photosynthetic;
 
 public class Photosynthesis extends AbstractConditionalTask {
 
-    private final Photosynthetic photosynthetic;
+    private Photosynthetic photosynthetic;
 
-    public Photosynthesis(ConditionalTaskState state, Photosynthetic photosynthetic) {
+    public Photosynthesis(ConditionalTaskState state) {
         super(state);
+    }
+
+    public void init(Photosynthetic photosynthetic) {
         this.photosynthetic = photosynthetic;
     }
 

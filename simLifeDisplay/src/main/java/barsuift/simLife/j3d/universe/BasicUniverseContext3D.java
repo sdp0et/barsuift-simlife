@@ -46,12 +46,14 @@ public class BasicUniverseContext3D implements UniverseContext3D {
 
     private final Axis3DGroup axisGroup = new Axis3DGroup();
 
-    public BasicUniverseContext3D(UniverseContext3DState state, UniverseContext universeContext) {
+    private SimpleUniverse simpleU;
+
+    public BasicUniverseContext3D(UniverseContext3DState state) {
         this.state = state;
         this.axisShowing = state.isAxisShowing();
 
-        canvas3D = new BasicSimLifeCanvas3D(universeContext.getFpsCounter(), state.getCanvas());
-        SimpleUniverse simpleU = new SimpleUniverse(canvas3D);
+        canvas3D = new BasicSimLifeCanvas3D(state.getCanvas());
+        simpleU = new SimpleUniverse(canvas3D);
 
         // limit the graphic engine to 40 FPS (interval = 1000ms / 40 = 25)
         simpleU.getViewer().getView().setMinimumFrameCycleTime(25);
@@ -65,16 +67,23 @@ public class BasicUniverseContext3D implements UniverseContext3D {
         // allow the remove children from the root
         root.setCapability(Group.ALLOW_CHILDREN_WRITE);
 
+        navigator = new BasicNavigator(state.getNavigator());
+        simpleU.getViewingPlatform().setViewPlatformBehavior(navigator);
+
+        setAxisShowing(state.isAxisShowing());
+    }
+
+    public void init(UniverseContext universeContext) {
+        canvas3D.init(universeContext.getFpsCounter());
+
         Landscape3D landscape3D = universeContext.getUniverse().getEnvironment().getLandscape().getLandscape3D();
-        navigator = new BasicNavigator(state.getNavigator(), landscape3D);
+        navigator.init(landscape3D);
         simpleU.getViewingPlatform().setViewPlatformBehavior(navigator);
 
         root.addChild(universeContext.getUniverse().getUniverse3D().getUniverseRoot());
 
         root.compile();
         simpleU.addBranchGraph(root);
-
-        setAxisShowing(state.isAxisShowing());
     }
 
     @Override

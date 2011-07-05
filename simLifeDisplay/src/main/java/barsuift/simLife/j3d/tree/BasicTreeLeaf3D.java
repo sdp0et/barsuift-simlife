@@ -100,14 +100,7 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
     private final Publisher publisher = new BasicPublisher(this);
 
-    // TODO 900 see if the universe3D is needed or not
-    public BasicTreeLeaf3D(Universe3D universe3D, TreeLeaf3DState state, TreeLeaf leaf) {
-        if (universe3D == null) {
-            throw new IllegalArgumentException("Null universe 3D");
-        }
-        if (leaf == null) {
-            throw new IllegalArgumentException("Null tree leaf");
-        }
+    public BasicTreeLeaf3D(TreeLeaf3DState state) {
         if (state == null) {
             throw new IllegalArgumentException("Null tree leaf 3D state");
         }
@@ -119,14 +112,24 @@ public class BasicTreeLeaf3D implements TreeLeaf3D {
 
         maxEndPoint1 = computeMaxEndPoint(initialEndPoint1);
         maxEndPoint2 = computeMaxEndPoint(initialEndPoint2);
-        leaf.addSubscriber(this);
         leafShape3D = new Shape3D();
         createLeafGeometry();
-        setColor(leaf.getEfficiency());
         leafShape3D.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         maxSizeReached = false;
         this.tg = createLeafTransformGroup();
         this.bg = createLeafBranchGroup();
+    }
+
+    // TODO 900 see if the universe3D is needed or not
+    public void init(Universe3D universe3D, TreeLeaf leaf) {
+        if (universe3D == null) {
+            throw new IllegalArgumentException("Null universe 3D");
+        }
+        if (leaf == null) {
+            throw new IllegalArgumentException("Null tree leaf");
+        }
+        leaf.addSubscriber(this);
+        setColor(leaf.getEfficiency());
     }
 
     private BranchGroup createLeafBranchGroup() {
