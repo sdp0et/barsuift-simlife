@@ -18,29 +18,34 @@
  */
 package barsuift.simLife.time;
 
-import barsuift.simLife.JaxbTestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
+import barsuift.simLife.JaxbTester;
 
-public class SimLifeDateStateTest extends JaxbTestCase {
+import static org.fest.assertions.Assertions.assertThat;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+public class SimLifeDateStateTest {
+
+    private final JaxbTester<SimLifeDateState> tester = new JaxbTester<SimLifeDateState>(getClass());
+
+    @BeforeMethod
+    public void init() throws Exception {
+        tester.init();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    public void clean() {
+        tester.clean();
     }
 
-    @Override
-    protected String getPackage() {
-        return "barsuift.simLife.time";
-    }
-
-    public void testJaxb() throws Exception {
-        SimLifeDateState cal1 = new SimLifeDateState(199199000);
-        write(cal1);
-        SimLifeDateState cal2 = (SimLifeDateState) read();
-        assertEquals(cal1, cal2);
+    @Test
+    public void readWriteJaxb() throws Exception {
+        SimLifeDateState date1 = new SimLifeDateState(199199000);
+        tester.write(date1);
+        SimLifeDateState date2 = tester.read();
+        assertThat(date2).isEqualTo(date1);
     }
 
 }
