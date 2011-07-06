@@ -21,7 +21,6 @@ package barsuift.simLife.process;
 import java.util.concurrent.CyclicBarrier;
 
 import org.testng.Assert;
-import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

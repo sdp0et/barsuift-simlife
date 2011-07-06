@@ -23,7 +23,6 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Vector3f;
 
 import org.fest.assertions.Delta;
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -168,9 +167,8 @@ public class BasicSun3DTest {
 
         actualSunColor = new Color3f();
         sunLight.getColor(actualSunColor);
-        AssertJUnit.assertEquals(
-                new Color3f(1f, (float) Math.sqrt(Math.sqrt(2) / 2), (float) Math.sqrt(Math.sqrt(2) / 2)),
-                actualSunColor);
+        assertThat(actualSunColor).isEqualTo(
+                new Color3f(1f, (float) Math.sqrt(Math.sqrt(2) / 2), (float) Math.sqrt(Math.sqrt(2) / 2)));
     }
 
     @Test
