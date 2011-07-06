@@ -18,13 +18,19 @@
  */
 package barsuift.simLife.process;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class BasicMainSynchronizerTest extends TestCase {
+
+public class BasicMainSynchronizerTest {
 
     private BasicMainSynchronizer synchro;
 
@@ -34,8 +40,8 @@ public class BasicMainSynchronizerTest extends TestCase {
 
     private MockConditionalTask taskSlow;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         Speed speed = Speed.VERY_FAST;
         setUpFromSpeed(speed);
     }
@@ -60,37 +66,41 @@ public class BasicMainSynchronizerTest extends TestCase {
         synchro.scheduleFast(taskFast);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         state = null;
         synchro = null;
         taskFast = null;
         taskSlow = null;
     }
 
-    public void testSetSpeed() {
-        assertEquals(Speed.VERY_FAST, synchro.getSpeed());
-        assertEquals(Speed.VERY_FAST, synchro.getSynchronizerSlow().getSpeed());
-        assertEquals(Speed.VERY_FAST.getSpeed(), synchro.getSynchronizerFast().getStepSize());
+    @Test
+    public void setSpeed() {
+        assertThat(synchro.getSpeed()).isEqualTo(Speed.VERY_FAST);
+        assertThat(synchro.getSynchronizerSlow().getSpeed()).isEqualTo(Speed.VERY_FAST);
+        assertThat(synchro.getSynchronizerFast().getStepSize()).isEqualTo(Speed.VERY_FAST.getSpeed());
         synchro.setSpeed(Speed.FAST);
-        assertEquals(Speed.FAST, synchro.getSpeed());
-        assertEquals(Speed.FAST, synchro.getSynchronizerSlow().getSpeed());
-        assertEquals(Speed.FAST.getSpeed(), synchro.getSynchronizerFast().getStepSize());
+        assertThat(synchro.getSpeed()).isEqualTo(Speed.FAST);
+        assertThat(synchro.getSynchronizerSlow().getSpeed()).isEqualTo(Speed.FAST);
+        assertThat(synchro.getSynchronizerFast().getStepSize()).isEqualTo(Speed.FAST.getSpeed());
         synchro.setSpeed(Speed.NORMAL);
-        assertEquals(Speed.NORMAL, synchro.getSpeed());
-        assertEquals(Speed.NORMAL, synchro.getSynchronizerSlow().getSpeed());
-        assertEquals(Speed.NORMAL.getSpeed(), synchro.getSynchronizerFast().getStepSize());
+        assertThat(synchro.getSpeed()).isEqualTo(Speed.NORMAL);
+        assertThat(synchro.getSynchronizerSlow().getSpeed()).isEqualTo(Speed.NORMAL);
+        assertThat(synchro.getSynchronizerFast().getStepSize()).isEqualTo(Speed.NORMAL.getSpeed());
     }
 
-    public void testOneStepNormal() throws InterruptedException {
+    @Test
+    public void oneStepNormal() throws InterruptedException {
         internalTestOneStep(Speed.NORMAL);
     }
 
-    public void testOneStepFast() throws InterruptedException {
+    @Test
+    public void oneStepFast() throws InterruptedException {
         internalTestOneStep(Speed.FAST);
     }
 
-    public void testOneStepVeryFast() throws InterruptedException {
+    @Test
+    public void oneStepVeryFast() throws InterruptedException {
         internalTestOneStep(Speed.VERY_FAST);
     }
 
@@ -99,179 +109,180 @@ public class BasicMainSynchronizerTest extends TestCase {
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        assertFalse(synchro.isRunning());
-        assertEquals(1, synchro.getNbStarts());
-        assertEquals(1, synchro.getNbStops());
-        assertEquals(1, synchro.getSynchronizerSlow().getNbStarts());
-        assertEquals(1, synchro.getSynchronizerSlow().getNbStops());
-        assertEquals(1, taskSlow.getNbExecuted());
-        assertEquals(1, synchro.getSynchronizerFast().getNbStarts());
-        assertEquals(1, synchro.getSynchronizerFast().getNbStops());
-        assertEquals(20 / synchro.getSpeed().getSpeed(), taskFast.getNbExecuted());
-        assertEquals(20, taskFast.getNbIncrementExecuted());
+        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.getNbStarts()).isEqualTo(1);
+        assertThat(synchro.getNbStops()).isEqualTo(1);
+        assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(1);
+        assertThat(synchro.getSynchronizerSlow().getNbStops()).isEqualTo(1);
+        assertThat(taskSlow.getNbExecuted()).isEqualTo(1);
+        assertThat(synchro.getSynchronizerFast().getNbStarts()).isEqualTo(1);
+        assertThat(synchro.getSynchronizerFast().getNbStops()).isEqualTo(1);
+        assertThat(taskFast.getNbExecuted()).isEqualTo(20 / synchro.getSpeed().getSpeed());
+        assertThat(taskFast.getNbIncrementExecuted()).isEqualTo(20);
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        assertFalse(synchro.isRunning());
-        assertEquals(2, synchro.getNbStarts());
-        assertEquals(2, synchro.getNbStops());
-        assertEquals(2, synchro.getSynchronizerSlow().getNbStarts());
-        assertEquals(2, synchro.getSynchronizerSlow().getNbStops());
-        assertEquals(2, taskSlow.getNbExecuted());
-        assertEquals(2, synchro.getSynchronizerFast().getNbStarts());
-        assertEquals(2, synchro.getSynchronizerFast().getNbStops());
-        assertEquals(40 / synchro.getSpeed().getSpeed(), taskFast.getNbExecuted());
-        assertEquals(40, taskFast.getNbIncrementExecuted());
+        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.getNbStarts()).isEqualTo(2);
+        assertThat(synchro.getNbStops()).isEqualTo(2);
+        assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(2);
+        assertThat(synchro.getSynchronizerSlow().getNbStops()).isEqualTo(2);
+        assertThat(taskSlow.getNbExecuted()).isEqualTo(2);
+        assertThat(synchro.getSynchronizerFast().getNbStarts()).isEqualTo(2);
+        assertThat(synchro.getSynchronizerFast().getNbStops()).isEqualTo(2);
+        assertThat(taskFast.getNbExecuted()).isEqualTo(40 / synchro.getSpeed().getSpeed());
+        assertThat(taskFast.getNbIncrementExecuted()).isEqualTo(40);
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        assertFalse(synchro.isRunning());
-        assertEquals(3, synchro.getNbStarts());
-        assertEquals(3, synchro.getNbStops());
-        assertEquals(3, synchro.getSynchronizerSlow().getNbStarts());
-        assertEquals(3, synchro.getSynchronizerSlow().getNbStops());
-        assertEquals(3, taskSlow.getNbExecuted());
-        assertEquals(3, synchro.getSynchronizerFast().getNbStarts());
-        assertEquals(3, synchro.getSynchronizerFast().getNbStops());
-        assertEquals(60 / synchro.getSpeed().getSpeed(), taskFast.getNbExecuted());
-        assertEquals(60, taskFast.getNbIncrementExecuted());
+        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.getNbStarts()).isEqualTo(3);
+        assertThat(synchro.getNbStops()).isEqualTo(3);
+        assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(3);
+        assertThat(synchro.getSynchronizerSlow().getNbStops()).isEqualTo(3);
+        assertThat(taskSlow.getNbExecuted()).isEqualTo(3);
+        assertThat(synchro.getSynchronizerFast().getNbStarts()).isEqualTo(3);
+        assertThat(synchro.getSynchronizerFast().getNbStops()).isEqualTo(3);
+        assertThat(taskFast.getNbExecuted()).isEqualTo(60 / synchro.getSpeed().getSpeed());
+        assertThat(taskFast.getNbIncrementExecuted()).isEqualTo(60);
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        assertFalse(synchro.isRunning());
-        assertEquals(4, synchro.getNbStarts());
-        assertEquals(4, synchro.getNbStops());
-        assertEquals(4, synchro.getSynchronizerSlow().getNbStarts());
-        assertEquals(4, synchro.getSynchronizerSlow().getNbStops());
-        assertEquals(4, taskSlow.getNbExecuted());
-        assertEquals(4, synchro.getSynchronizerFast().getNbStarts());
-        assertEquals(4, synchro.getSynchronizerFast().getNbStops());
+        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.getNbStarts()).isEqualTo(4);
+        assertThat(synchro.getNbStops()).isEqualTo(4);
+        assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(4);
+        assertThat(synchro.getSynchronizerSlow().getNbStops()).isEqualTo(4);
+        assertThat(taskSlow.getNbExecuted()).isEqualTo(4);
+        assertThat(synchro.getSynchronizerFast().getNbStarts()).isEqualTo(4);
+        assertThat(synchro.getSynchronizerFast().getNbStops()).isEqualTo(4);
         // the task3D should not be executed anymore, as it has reach its bound
-        assertEquals(60 / synchro.getSpeed().getSpeed(), taskFast.getNbExecuted());
-        assertEquals(60, taskFast.getNbIncrementExecuted());
+        assertThat(taskFast.getNbExecuted()).isEqualTo(60 / synchro.getSpeed().getSpeed());
+        assertThat(taskFast.getNbIncrementExecuted()).isEqualTo(60);
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        assertFalse(synchro.isRunning());
-        assertEquals(5, synchro.getNbStarts());
-        assertEquals(5, synchro.getNbStops());
-        assertEquals(5, synchro.getSynchronizerSlow().getNbStarts());
-        assertEquals(5, synchro.getSynchronizerSlow().getNbStops());
+        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.getNbStarts()).isEqualTo(5);
+        assertThat(synchro.getNbStops()).isEqualTo(5);
+        assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(5);
+        assertThat(synchro.getSynchronizerSlow().getNbStops()).isEqualTo(5);
         // the taskCore should not be executed anymore, as it has reach its bound
-        assertEquals(4, taskSlow.getNbExecuted());
-        assertEquals(5, synchro.getSynchronizerFast().getNbStarts());
-        assertEquals(5, synchro.getSynchronizerFast().getNbStops());
+        assertThat(taskSlow.getNbExecuted()).isEqualTo(4);
+        assertThat(synchro.getSynchronizerFast().getNbStarts()).isEqualTo(5);
+        assertThat(synchro.getSynchronizerFast().getNbStops()).isEqualTo(5);
         // the task3D should not be executed anymore, as it has reach its bound
-        assertEquals(60 / synchro.getSpeed().getSpeed(), taskFast.getNbExecuted());
-        assertEquals(60, taskFast.getNbIncrementExecuted());
+        assertThat(taskFast.getNbExecuted()).isEqualTo(60 / synchro.getSpeed().getSpeed());
+        assertThat(taskFast.getNbIncrementExecuted()).isEqualTo(60);
     }
 
-    public void testStartNormal() throws InterruptedException {
+    @Test
+    public void startNormal() throws InterruptedException {
         internalTestStart(Speed.NORMAL);
     }
 
-    public void testStartFast() throws InterruptedException {
+    @Test
+    public void startFast() throws InterruptedException {
         internalTestStart(Speed.FAST);
     }
 
-    public void testStartVeryFast() throws InterruptedException {
+    @Test
+    public void startVeryFast() throws InterruptedException {
         internalTestStart(Speed.VERY_FAST);
     }
 
     private void internalTestStart(Speed speed) throws InterruptedException {
         setUpFromSpeed(speed);
 
-        assertFalse(synchro.isRunning());
+        AssertJUnit.assertFalse(synchro.isRunning());
 
         synchro.start();
         // wait a little longer to be sure the tasks complete (6 core cycles should be enough)
         Thread.sleep(6 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        assertTrue(synchro.isRunning());
-        assertEquals(1, synchro.getNbStarts());
-        assertEquals(0, synchro.getNbStops());
-        assertEquals(1, synchro.getSynchronizerSlow().getNbStarts());
-        assertEquals(0, synchro.getSynchronizerSlow().getNbStops());
-        assertEquals(4, taskSlow.getNbExecuted());
-        assertEquals(1, synchro.getSynchronizerFast().getNbStarts());
-        assertEquals(0, synchro.getSynchronizerFast().getNbStops());
-        assertEquals(60 / synchro.getSpeed().getSpeed(), taskFast.getNbExecuted());
-        assertEquals(60, taskFast.getNbIncrementExecuted());
+        assertThat(synchro.isRunning()).isTrue();
+        assertThat(synchro.getNbStarts()).isEqualTo(1);
+        assertThat(synchro.getNbStops()).isEqualTo(0);
+        assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(1);
+        assertThat(synchro.getSynchronizerSlow().getNbStops()).isEqualTo(0);
+        assertThat(taskSlow.getNbExecuted()).isEqualTo(4);
+        assertThat(synchro.getSynchronizerFast().getNbStarts()).isEqualTo(1);
+        assertThat(synchro.getSynchronizerFast().getNbStops()).isEqualTo(0);
+        assertThat(taskFast.getNbExecuted()).isEqualTo(60 / synchro.getSpeed().getSpeed());
+        assertThat(taskFast.getNbIncrementExecuted()).isEqualTo(60);
 
 
         synchro.stop();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        assertFalse(synchro.isRunning());
-        assertEquals(1, synchro.getNbStarts());
-        assertEquals(1, synchro.getNbStops());
-        assertEquals(1, synchro.getSynchronizerSlow().getNbStarts());
-        assertEquals(1, synchro.getSynchronizerSlow().getNbStops());
-        assertEquals(4, taskSlow.getNbExecuted());
-        assertEquals(1, synchro.getSynchronizerFast().getNbStarts());
-        assertEquals(1, synchro.getSynchronizerFast().getNbStops());
-        assertEquals(60 / synchro.getSpeed().getSpeed(), taskFast.getNbExecuted());
-        assertEquals(60, taskFast.getNbIncrementExecuted());
+        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.getNbStarts()).isEqualTo(1);
+        assertThat(synchro.getNbStops()).isEqualTo(1);
+        assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(1);
+        assertThat(synchro.getSynchronizerSlow().getNbStops()).isEqualTo(1);
+        assertThat(taskSlow.getNbExecuted()).isEqualTo(4);
+        assertThat(synchro.getSynchronizerFast().getNbStarts()).isEqualTo(1);
+        assertThat(synchro.getSynchronizerFast().getNbStops()).isEqualTo(1);
+        assertThat(taskFast.getNbExecuted()).isEqualTo(60 / synchro.getSpeed().getSpeed());
+        assertThat(taskFast.getNbIncrementExecuted()).isEqualTo(60);
     }
 
-    public void testPublisher() throws Exception {
+    @Test
+    public void publisher() throws Exception {
         PublisherTestHelper publisherHelper = new PublisherTestHelper();
         publisherHelper.addSubscriberTo(synchro);
 
         synchro.start();
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertNull(publisherHelper.getUpdateObjects().get(0));
-
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(1);
+        assertThat(publisherHelper.getUpdateObjects().get(0)).isNull();
         publisherHelper.reset();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
         synchro.stop();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertNull(publisherHelper.getUpdateObjects().get(0));
-
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(1);
+        assertThat(publisherHelper.getUpdateObjects().get(0)).isNull();
         publisherHelper.reset();
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        assertEquals(2, publisherHelper.nbUpdated());
-        assertNull(publisherHelper.getUpdateObjects().get(0));
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(2);
+        assertThat(publisherHelper.getUpdateObjects().get(0)).isNull();
     }
 
+    @Test(expectedExceptions = { IllegalStateException.class })
+    public void illegalStateException_onStop() {
+        synchro.stop();
+    }
 
-    public void testIllegalStateException() throws InterruptedException {
-        try {
-            synchro.stop();
-            fail("IllegalStateException expected");
-        } catch (IllegalStateException ise) {
-            // OK expected exception
-        }
+    @Test(expectedExceptions = { IllegalStateException.class })
+    public void illegalStateException_onAlreadyStarted() throws InterruptedException {
         synchro.start();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        try {
-            synchro.start();
-            fail("IllegalStateException expected");
-        } catch (IllegalStateException ise) {
-            // OK expected exception
-        }
-        try {
-            synchro.oneStep();
-            fail("IllegalStateException expected");
-        } catch (IllegalStateException ise) {
-            // OK expected exception
-        }
+        synchro.start();
     }
 
-    public void testGetState() {
-        assertEquals(state, synchro.getState());
-        assertSame(state, synchro.getState());
+    @Test(expectedExceptions = { IllegalStateException.class })
+    public void illegalStateException_oneStep_onAlreadyStarted() throws InterruptedException {
+        synchro.start();
+        Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
+        synchro.oneStep();
+    }
 
-        assertEquals(Speed.VERY_FAST.getSpeed(), synchro.getState().getSynchronizerFastState().getStepSize());
-        assertEquals(Speed.VERY_FAST.getSpeed(), synchro.getState().getSynchronizerSlowState().getSpeed().getSpeed());
+    @Test
+    public void getState() {
+        assertThat(synchro.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, synchro.getState());
+
+        AssertJUnit.assertEquals(Speed.VERY_FAST.getSpeed(), synchro.getState().getSynchronizerFastState()
+                .getStepSize());
+        AssertJUnit.assertEquals(Speed.VERY_FAST.getSpeed(), synchro.getState().getSynchronizerSlowState().getSpeed()
+                .getSpeed());
 
         synchro.setSpeed(Speed.NORMAL);
 
-        assertEquals(state, synchro.getState());
-        assertSame(state, synchro.getState());
+        assertThat(synchro.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, synchro.getState());
 
-        assertEquals(Speed.NORMAL.getSpeed(), synchro.getState().getSynchronizerFastState().getStepSize());
-        assertEquals(Speed.NORMAL.getSpeed(), synchro.getState().getSynchronizerSlowState().getSpeed().getSpeed());
+        assertThat(synchro.getState().getSynchronizerFastState().getStepSize()).isEqualTo(Speed.NORMAL.getSpeed());
+        AssertJUnit.assertEquals(Speed.NORMAL.getSpeed(), synchro.getState().getSynchronizerSlowState().getSpeed()
+                .getSpeed());
 
 
     }

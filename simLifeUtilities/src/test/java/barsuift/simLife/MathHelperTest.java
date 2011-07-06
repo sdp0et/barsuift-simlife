@@ -18,39 +18,45 @@
  */
 package barsuift.simLife;
 
-import junit.framework.TestCase;
+import org.fest.assertions.Delta;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class MathHelperTest extends TestCase {
+public class MathHelperTest {
 
-    public void testIsPowerOfTwo() {
-        assertTrue(MathHelper.isPowerOfTwo(1));
-        assertTrue(MathHelper.isPowerOfTwo(2));
-        assertTrue(MathHelper.isPowerOfTwo(4));
-        assertTrue(MathHelper.isPowerOfTwo(8));
-        assertTrue(MathHelper.isPowerOfTwo(16));
-        assertTrue(MathHelper.isPowerOfTwo(32));
+    @Test
+    public void isPowerOfTwo() {
+        assertThat(MathHelper.isPowerOfTwo(1)).isTrue();
+        assertThat((MathHelper.isPowerOfTwo(2))).isTrue();
+        assertThat((MathHelper.isPowerOfTwo(4))).isTrue();
+        assertThat((MathHelper.isPowerOfTwo(8))).isTrue();
+        assertThat((MathHelper.isPowerOfTwo(16))).isTrue();
+        assertThat((MathHelper.isPowerOfTwo(32))).isTrue();
 
-        assertFalse(MathHelper.isPowerOfTwo(0));
-        assertFalse(MathHelper.isPowerOfTwo(-1));
-        assertFalse(MathHelper.isPowerOfTwo(-2));
-        assertFalse(MathHelper.isPowerOfTwo(-3));
-        assertFalse(MathHelper.isPowerOfTwo(-4));
-        assertFalse(MathHelper.isPowerOfTwo(3));
-        assertFalse(MathHelper.isPowerOfTwo(5));
-        assertFalse(MathHelper.isPowerOfTwo(6));
-        assertFalse(MathHelper.isPowerOfTwo(7));
-        assertFalse(MathHelper.isPowerOfTwo(9));
-        assertFalse(MathHelper.isPowerOfTwo(10));
+        assertThat((MathHelper.isPowerOfTwo(0))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(-1))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(-2))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(-3))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(-4))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(3))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(5))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(6))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(7))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(9))).isFalse();
+        assertThat((MathHelper.isPowerOfTwo(10))).isFalse();
     }
 
+    @Test
     public void testGetPowerOfTwoExponent() {
-        assertEquals(0, MathHelper.getPowerOfTwoExponent(1));
-        assertEquals(1, MathHelper.getPowerOfTwoExponent(2));
-        assertEquals(2, MathHelper.getPowerOfTwoExponent(4));
-        assertEquals(3, MathHelper.getPowerOfTwoExponent(8));
-        assertEquals(4, MathHelper.getPowerOfTwoExponent(16));
-        assertEquals(5, MathHelper.getPowerOfTwoExponent(32));
+        assertThat( MathHelper.getPowerOfTwoExponent(1)).isEqualTo(0);
+        assertThat( MathHelper.getPowerOfTwoExponent(2)).isEqualTo(1);
+        assertThat( MathHelper.getPowerOfTwoExponent(4)).isEqualTo(2);
+        assertThat( MathHelper.getPowerOfTwoExponent(8)).isEqualTo(3);
+        assertThat( MathHelper.getPowerOfTwoExponent(16)).isEqualTo(4);
+        assertThat( MathHelper.getPowerOfTwoExponent(32)).isEqualTo(5);
 
         internalTestGetPowerOfTwoExponentException(0);
         internalTestGetPowerOfTwoExponentException(-1);
@@ -68,38 +74,40 @@ public class MathHelperTest extends TestCase {
     private void internalTestGetPowerOfTwoExponentException(int number) {
         try {
             MathHelper.getPowerOfTwoExponent(number);
-            fail("Should throw an IllegalArgumentException");
+            Assert.fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
     }
 
+    @Test
     public void testToRadian() {
-        double epsilon = 0.00001;
-        assertEquals(0, MathHelper.toRadian(0), epsilon);
-        assertEquals(Math.PI / 4, MathHelper.toRadian(45), epsilon);
-        assertEquals(Math.PI / 2, MathHelper.toRadian(90), epsilon);
-        assertEquals(Math.PI, MathHelper.toRadian(180), epsilon);
-        assertEquals(2 * Math.PI, MathHelper.toRadian(360), epsilon);
+        Delta delta = Delta.delta(0.00001);
+        assertThat(MathHelper.toRadian(0)).isEqualTo(0, delta);
+        assertThat(MathHelper.toRadian(45)).isEqualTo((float) (Math.PI / 4), delta);
+        assertThat(MathHelper.toRadian(90)).isEqualTo((float) (Math.PI / 2), delta);
+        assertThat(MathHelper.toRadian(180)).isEqualTo((float) Math.PI, delta);
+        assertThat(MathHelper.toRadian(360)).isEqualTo((float) (2 * Math.PI), delta);
 
-        assertEquals(-Math.PI / 4, MathHelper.toRadian(-45), epsilon);
-        assertEquals(-Math.PI / 2, MathHelper.toRadian(-90), epsilon);
-        assertEquals(-Math.PI, MathHelper.toRadian(-180), epsilon);
-        assertEquals(-2 * Math.PI, MathHelper.toRadian(-360), epsilon);
+        assertThat(MathHelper.toRadian(-45)).isEqualTo((float) (-Math.PI / 4), delta);
+        assertThat(MathHelper.toRadian(-90)).isEqualTo((float) (-Math.PI / 2), delta);
+        assertThat(MathHelper.toRadian(-180)).isEqualTo((float) -Math.PI, delta);
+        assertThat(MathHelper.toRadian(-360)).isEqualTo((float) (-2 * Math.PI), delta);
     }
 
+    @Test
     public void testToDegree() {
-        double epsilon = 0.00001;
-        assertEquals(0, MathHelper.toDegree(0), epsilon);
-        assertEquals(45, MathHelper.toDegree(Math.PI / 4), epsilon);
-        assertEquals(90, MathHelper.toDegree(Math.PI / 2), epsilon);
-        assertEquals(180, MathHelper.toDegree(Math.PI), epsilon);
-        assertEquals(360, MathHelper.toDegree(2 * Math.PI), epsilon);
+        Delta delta = Delta.delta(0.00001);
+        assertThat(MathHelper.toDegree(0)).isEqualTo(0, delta);
+        assertThat(MathHelper.toDegree(Math.PI / 4)).isEqualTo(45, delta);
+        assertThat(MathHelper.toDegree(Math.PI / 2)).isEqualTo(90, delta);
+        assertThat(MathHelper.toDegree(Math.PI)).isEqualTo(180, delta);
+        assertThat(MathHelper.toDegree(2 * Math.PI)).isEqualTo(360, delta);
 
-        assertEquals(-45, MathHelper.toDegree(-Math.PI / 4), epsilon);
-        assertEquals(-90, MathHelper.toDegree(-Math.PI / 2), epsilon);
-        assertEquals(-180, MathHelper.toDegree(-Math.PI), epsilon);
-        assertEquals(-360, MathHelper.toDegree(-2 * Math.PI), epsilon);
+        assertThat(MathHelper.toDegree(-Math.PI / 4)).isEqualTo(-45, delta);
+        assertThat(MathHelper.toDegree(-Math.PI / 2)).isEqualTo(-90, delta);
+        assertThat(MathHelper.toDegree(-Math.PI)).isEqualTo(-180, delta);
+        assertThat(MathHelper.toDegree(-2 * Math.PI)).isEqualTo(-360, delta);
     }
 
 }

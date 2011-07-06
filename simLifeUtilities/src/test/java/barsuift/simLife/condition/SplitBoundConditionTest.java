@@ -18,17 +18,22 @@
  */
 package barsuift.simLife.condition;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class SplitBoundConditionTest extends TestCase {
+public class SplitBoundConditionTest {
 
     private SplitBoundCondition condition;
 
     private BoundConditionState state;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         setUpFromParams(7, 2);
     }
 
@@ -37,8 +42,8 @@ public class SplitBoundConditionTest extends TestCase {
         condition = new SplitBoundCondition(state);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         state = null;
         condition = null;
     }
@@ -46,88 +51,94 @@ public class SplitBoundConditionTest extends TestCase {
     /*
      * No bound : will always return false
      */
+    @Test
     public void testEvaluate0() {
         setUpFromParams(0, 0);
         // 2/0
-        assertFalse(condition.evaluate(2));
+        AssertJUnit.assertFalse(condition.evaluate(2));
         // 4/0
-        assertFalse(condition.evaluate(2));
+        AssertJUnit.assertFalse(condition.evaluate(2));
         // 6/0
-        assertFalse(condition.evaluate(2));
+        AssertJUnit.assertFalse(condition.evaluate(2));
         // 8/0
-        assertFalse(condition.evaluate(2));
+        AssertJUnit.assertFalse(condition.evaluate(2));
     }
 
     /*
      * One execution : return true the first time
      */
+    @Test
     public void testEvaluate1() {
         setUpFromParams(1, 0);
         // 2/1
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
         // 4/1
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
         // 6/1
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
         // 8/1
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
     }
 
     /*
      * One execution : return true the first time
      */
+    @Test
     public void testEvaluate2() {
         setUpFromParams(2, 0);
         // 2/2
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
         // 4/2
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
         // 6/2
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
         // 8/2
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
     }
 
     /*
      * Two execution : will return false, and true
      */
+    @Test
     public void testEvaluate3() {
         setUpFromParams(4, 0);
         // 2/4
-        assertFalse(condition.evaluate(2));
+        AssertJUnit.assertFalse(condition.evaluate(2));
         // 4/4
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
         // 6/4
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
         // 8/4
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
     }
 
     /*
      * 3 executions : false, false, true
      */
+    @Test
     public void testEvaluate4() {
         setUpFromParams(7, 2);
         // 4/7
-        assertFalse(condition.evaluate(2));
+        AssertJUnit.assertFalse(condition.evaluate(2));
         // 6/7
-        assertFalse(condition.evaluate(2));
+        AssertJUnit.assertFalse(condition.evaluate(2));
         // 8/7
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
         // 10/7
-        assertTrue(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isTrue();
     }
 
+    @Test
     public void testGetState() {
-        assertEquals(state, condition.getState());
-        assertSame(state, condition.getState());
-        assertEquals(2, condition.getState().getCount());
-        assertEquals(7, condition.getState().getBound());
+        assertThat(condition.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState().getCount()).isEqualTo(2);
+        assertThat(condition.getState().getBound()).isEqualTo(7);
         condition.evaluate(2);
-        assertEquals(state, condition.getState());
-        assertSame(state, condition.getState());
-        assertEquals(4, condition.getState().getCount());
-        assertEquals(7, condition.getState().getBound());
+        assertThat(condition.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState().getCount()).isEqualTo(4);
+        assertThat(condition.getState().getBound()).isEqualTo(7);
     }
 
 }

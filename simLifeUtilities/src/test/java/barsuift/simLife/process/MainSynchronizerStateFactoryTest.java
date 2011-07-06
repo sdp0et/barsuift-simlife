@@ -18,25 +18,20 @@
  */
 package barsuift.simLife.process;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class MainSynchronizerStateFactoryTest extends TestCase {
+public class MainSynchronizerStateFactoryTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testCreateEmptyUniverseState() {
         MainSynchronizerStateFactory factory = new MainSynchronizerStateFactory();
         MainSynchronizerState mainSynchroState = factory.createMainSynchronizerState();
 
-        assertNotNull(mainSynchroState.getSynchronizerFastState());
-        assertNotNull(mainSynchroState.getSynchronizerSlowState());
+        assertThat(mainSynchroState.getSynchronizerFastState()).isNotNull();
+        assertThat(mainSynchroState.getSynchronizerSlowState()).isNotNull();
     }
 
 }
