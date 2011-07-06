@@ -55,13 +55,13 @@ public class SplitBoundConditionTest {
     public void testEvaluate0() {
         setUpFromParams(0, 0);
         // 2/0
-        AssertJUnit.assertFalse(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isFalse();
         // 4/0
-        AssertJUnit.assertFalse(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isFalse();
         // 6/0
-        AssertJUnit.assertFalse(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isFalse();
         // 8/0
-        AssertJUnit.assertFalse(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isFalse();
     }
 
     /*
@@ -103,7 +103,7 @@ public class SplitBoundConditionTest {
     public void testEvaluate3() {
         setUpFromParams(4, 0);
         // 2/4
-        AssertJUnit.assertFalse(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isFalse();
         // 4/4
         assertThat(condition.evaluate(2)).isTrue();
         // 6/4
@@ -119,9 +119,9 @@ public class SplitBoundConditionTest {
     public void testEvaluate4() {
         setUpFromParams(7, 2);
         // 4/7
-        AssertJUnit.assertFalse(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isFalse();
         // 6/7
-        AssertJUnit.assertFalse(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isFalse();
         // 8/7
         assertThat(condition.evaluate(2)).isTrue();
         // 10/7

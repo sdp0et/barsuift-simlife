@@ -66,7 +66,7 @@ public class SynchronizedTaskTest {
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        AssertJUnit.assertFalse(synchroTask.isRunning());
+        assertThat(synchroTask.isRunning()).isFalse();
 
         synchroTask.resetNbExecuted();
         // test we can start it again
@@ -95,7 +95,7 @@ public class SynchronizedTaskTest {
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        AssertJUnit.assertFalse(synchroTask.isRunning());
+        assertThat(synchroTask.isRunning()).isFalse();
         // now, the process is stopped, so we can change again the barrier
         synchroTask.changeBarrier(barrier);
 

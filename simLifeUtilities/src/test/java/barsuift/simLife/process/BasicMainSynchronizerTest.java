@@ -109,7 +109,7 @@ public class BasicMainSynchronizerTest {
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         assertThat(synchro.getNbStarts()).isEqualTo(1);
         assertThat(synchro.getNbStops()).isEqualTo(1);
         assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(1);
@@ -122,7 +122,7 @@ public class BasicMainSynchronizerTest {
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         assertThat(synchro.getNbStarts()).isEqualTo(2);
         assertThat(synchro.getNbStops()).isEqualTo(2);
         assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(2);
@@ -135,7 +135,7 @@ public class BasicMainSynchronizerTest {
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         assertThat(synchro.getNbStarts()).isEqualTo(3);
         assertThat(synchro.getNbStops()).isEqualTo(3);
         assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(3);
@@ -148,7 +148,7 @@ public class BasicMainSynchronizerTest {
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         assertThat(synchro.getNbStarts()).isEqualTo(4);
         assertThat(synchro.getNbStops()).isEqualTo(4);
         assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(4);
@@ -162,7 +162,7 @@ public class BasicMainSynchronizerTest {
 
         synchro.oneStep();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         assertThat(synchro.getNbStarts()).isEqualTo(5);
         assertThat(synchro.getNbStops()).isEqualTo(5);
         assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(5);
@@ -194,7 +194,7 @@ public class BasicMainSynchronizerTest {
     private void internalTestStart(Speed speed) throws InterruptedException {
         setUpFromSpeed(speed);
 
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
 
         synchro.start();
         // wait a little longer to be sure the tasks complete (6 core cycles should be enough)
@@ -213,7 +213,7 @@ public class BasicMainSynchronizerTest {
 
         synchro.stop();
         Thread.sleep(3 * BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         assertThat(synchro.getNbStarts()).isEqualTo(1);
         assertThat(synchro.getNbStops()).isEqualTo(1);
         assertThat(synchro.getSynchronizerSlow().getNbStarts()).isEqualTo(1);

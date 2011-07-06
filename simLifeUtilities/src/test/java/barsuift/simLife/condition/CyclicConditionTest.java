@@ -47,20 +47,20 @@ public class CyclicConditionTest {
     @Test
     public void testEvaluate() {
         // 3/5
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
         // 4/5
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
 
         // 5/5
         assertThat(condition.evaluate()).isTrue();
         // 1/5
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
         // 2/5
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
         // 3/5
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
         // 4/5
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
 
         // 5/5
         assertThat(condition.evaluate()).isTrue();

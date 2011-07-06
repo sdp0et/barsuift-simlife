@@ -84,7 +84,7 @@ public class AbstractSplitConditionalTaskTest {
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        AssertJUnit.assertFalse(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isFalse();
 
         // test we can start it again
         (new Thread(splitTask)).start();
@@ -201,7 +201,7 @@ public class AbstractSplitConditionalTaskTest {
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        AssertJUnit.assertFalse(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isFalse();
         // this time, the split task should have stopped
         assertThat(splitTask.getNbExecuted()).isEqualTo(7);
         assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(51);
@@ -215,7 +215,7 @@ public class AbstractSplitConditionalTaskTest {
         // make sure the thread has time to execute
         Thread.sleep(100);
         // still stopped
-        AssertJUnit.assertFalse(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isFalse();
         assertThat(splitTask.getNbExecuted()).isEqualTo(7);
         assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(51);
         assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(0);

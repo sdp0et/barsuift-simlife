@@ -55,13 +55,13 @@ public class BoundConditionTest {
     public void evaluate0() {
         setUpFromParams(0, 0);
         // 1/0
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
         // 2/0
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
         // 3/0
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
         // 4/0
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
     }
 
     /*
@@ -87,7 +87,7 @@ public class BoundConditionTest {
     public void evaluate2() {
         setUpFromParams(2, 0);
         // 1/2
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
         // 2/2
         assertThat(condition.evaluate()).isTrue();
         // 3/2
@@ -103,9 +103,9 @@ public class BoundConditionTest {
     public void evaluate3() {
         setUpFromParams(5, 2);
         // 3/5
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
         // 4/5
-        AssertJUnit.assertFalse(condition.evaluate());
+        assertThat(condition.evaluate()).isFalse();
 
         // 5/5
         assertThat(condition.evaluate()).isTrue();
@@ -115,15 +115,15 @@ public class BoundConditionTest {
 
     @Test
     public void getState() {
-        AssertJUnit.assertEquals(state, condition.getState());
+        assertThat( condition.getState()).isEqualTo(state);
         AssertJUnit.assertSame(state, condition.getState());
-        AssertJUnit.assertEquals(2, condition.getState().getCount());
-        AssertJUnit.assertEquals(5, condition.getState().getBound());
+        assertThat( condition.getState().getCount()).isEqualTo(2);
+        assertThat( condition.getState().getBound()).isEqualTo(5);
         condition.evaluate();
-        AssertJUnit.assertEquals(state, condition.getState());
+        assertThat( condition.getState()).isEqualTo(state);
         AssertJUnit.assertSame(state, condition.getState());
-        AssertJUnit.assertEquals(3, condition.getState().getCount());
-        AssertJUnit.assertEquals(5, condition.getState().getBound());
+        assertThat( condition.getState().getCount()).isEqualTo(3);
+        assertThat( condition.getState().getBound()).isEqualTo(5);
     }
 
 }

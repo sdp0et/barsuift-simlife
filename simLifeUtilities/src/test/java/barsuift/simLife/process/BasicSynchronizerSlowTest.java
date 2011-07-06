@@ -96,7 +96,7 @@ public class BasicSynchronizerSlowTest {
 
     @Test
     public void start() throws InterruptedException {
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         assertThat(task.getNbExecuted()).isEqualTo(0);
 
         synchro.start();
@@ -108,7 +108,7 @@ public class BasicSynchronizerSlowTest {
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         int nbExecuted = task.getNbExecuted();
         Thread.sleep(BasicSynchronizerSlow.CYCLE_LENGTH_SLOW_MS / synchro.getSpeed().getSpeed() + 100);
         // assert the task is not called anymore
@@ -124,10 +124,10 @@ public class BasicSynchronizerSlowTest {
         // with this bound, the tasks should execute only once
         setUpWithBound(1);
 
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         assertThat(task.getNbExecuted()).isEqualTo(0);
         // the task in not yet in the list because the synchronizer is not running
-        AssertJUnit.assertFalse(synchro.getTasks().contains(task));
+        assertThat(synchro.getTasks().contains(task)).isFalse();
 
         synchro.start();
         // the synchronizer should be in the list now
@@ -140,11 +140,11 @@ public class BasicSynchronizerSlowTest {
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
-        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(synchro.isRunning()).isFalse();
         // the task has already stopped anyway
         assertThat(task.getNbExecuted()).isEqualTo(1);
         // the task is not even in the list of tasks
-        AssertJUnit.assertFalse(synchro.getTasks().contains(task));
+        assertThat(synchro.getTasks().contains(task)).isFalse();
     }
 
     @Test
