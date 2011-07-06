@@ -6,7 +6,6 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>simLifeApplication</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
 	<name>simLifeApplication module</name>
 	<description>Application code for the simLife project. This module contains the Swing Java code to display the simLife application.</description>
 	<dependencies>
@@ -137,7 +136,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2-beta-5</version>
 				<executions>
 					<execution>
 						<id>distribution</id>
