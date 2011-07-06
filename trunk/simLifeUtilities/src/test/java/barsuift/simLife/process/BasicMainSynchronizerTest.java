@@ -18,7 +18,6 @@
  */
 package barsuift.simLife.process;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -270,10 +269,8 @@ public class BasicMainSynchronizerTest {
         assertThat(synchro.getState()).isEqualTo(state);
         assertThat(synchro.getState()).isSameAs(state);
 
-        AssertJUnit.assertEquals(Speed.VERY_FAST.getSpeed(), synchro.getState().getSynchronizerFastState()
-                .getStepSize());
-        AssertJUnit.assertEquals(Speed.VERY_FAST.getSpeed(), synchro.getState().getSynchronizerSlowState().getSpeed()
-                .getSpeed());
+        assertThat(synchro.getState().getSynchronizerFastState().getStepSize()).isEqualTo(Speed.VERY_FAST.getSpeed());
+        assertThat(synchro.getState().getSynchronizerSlowState().getSpeed()).isEqualTo(Speed.VERY_FAST);
 
         synchro.setSpeed(Speed.NORMAL);
 
@@ -281,8 +278,7 @@ public class BasicMainSynchronizerTest {
         assertThat(synchro.getState()).isSameAs(state);
 
         assertThat(synchro.getState().getSynchronizerFastState().getStepSize()).isEqualTo(Speed.NORMAL.getSpeed());
-        AssertJUnit.assertEquals(Speed.NORMAL.getSpeed(), synchro.getState().getSynchronizerSlowState().getSpeed()
-                .getSpeed());
+        assertThat(synchro.getState().getSynchronizerSlowState().getSpeed()).isEqualTo(Speed.NORMAL);
 
 
     }
