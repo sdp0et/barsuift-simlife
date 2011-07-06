@@ -51,13 +51,13 @@ public class SplitCyclicConditionTest {
         // 6/3
         assertThat(condition.evaluate(2)).isTrue();
         // 8/3
-        AssertJUnit.assertFalse(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isFalse();
         // 10/3
         assertThat(condition.evaluate(2)).isTrue();
         // 12/3
         assertThat(condition.evaluate(2)).isTrue();
         // 14/3
-        AssertJUnit.assertFalse(condition.evaluate(2));
+        assertThat(condition.evaluate(2)).isFalse();
         // 16/3
         assertThat(condition.evaluate(2)).isTrue();
     }

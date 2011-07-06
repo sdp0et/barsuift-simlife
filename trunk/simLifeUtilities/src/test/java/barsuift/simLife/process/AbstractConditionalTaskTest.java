@@ -95,7 +95,7 @@ public class AbstractConditionalTaskTest {
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        AssertJUnit.assertFalse(conditionalRun.isRunning());
+        assertThat(conditionalRun.isRunning()).isFalse();
 
         // test we can start it again
         (new Thread(conditionalRun)).start();
@@ -151,7 +151,7 @@ public class AbstractConditionalTaskTest {
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        AssertJUnit.assertFalse(conditionalRun.isRunning());
+        assertThat(conditionalRun.isRunning()).isFalse();
         // run 6
         assertThat(conditionalRun.getNbExecuted()).isEqualTo(1);
         assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(2);
