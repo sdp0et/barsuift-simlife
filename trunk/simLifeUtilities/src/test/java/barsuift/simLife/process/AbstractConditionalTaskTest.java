@@ -20,13 +20,19 @@ package barsuift.simLife.process;
 
 import java.util.concurrent.CyclicBarrier;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class AbstractConditionalTaskTest extends TestCase {
+
+public class AbstractConditionalTaskTest {
 
     private MockConditionalTask conditionalRun;
 
@@ -34,8 +40,8 @@ public class AbstractConditionalTaskTest extends TestCase {
 
     private MockSingleSynchronizedTask barrierReleaser;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         // make sure the barrier will block the process as long as the other mock process is not run
         CyclicBarrier barrier = new CyclicBarrier(2);
         CyclicConditionState executionConditionState = new CyclicConditionState(3, 0);
@@ -45,10 +51,6 @@ public class AbstractConditionalTaskTest extends TestCase {
         barrierReleaser.changeBarrier(barrier);
         conditionalRun = new MockConditionalTask(state);
         conditionalRun.changeBarrier(barrier);
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
     }
 
     /**
@@ -64,25 +66,25 @@ public class AbstractConditionalTaskTest extends TestCase {
      * <li>
      * </ol>
      */
-    public void testRun() throws Exception {
+    @Test
+    public void run() throws Exception {
         PublisherTestHelper publisherHelper = new PublisherTestHelper();
         publisherHelper.addSubscriberTo(conditionalRun);
 
         (new Thread(conditionalRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertTrue(conditionalRun.isRunning());
-        // run 1
-        assertEquals(0, conditionalRun.getNbExecuted());
-        assertEquals(1, conditionalRun.getState().getExecutionCondition().getCount());
-        assertEquals(1, conditionalRun.getState().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(conditionalRun.isRunning()).isTrue(); // run 1
+        assertThat(conditionalRun.getNbExecuted()).isEqualTo(0);
+        assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(1);
+        assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(1);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // test we can not run the same task again
         try {
             conditionalRun.run();
-            fail("Should throw an IllegalStateException");
+            Assert.fail("Should throw an IllegalStateException");
         } catch (IllegalStateException ise) {
             // OK expected exception
         }
@@ -93,83 +95,84 @@ public class AbstractConditionalTaskTest extends TestCase {
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        assertFalse(conditionalRun.isRunning());
+        AssertJUnit.assertFalse(conditionalRun.isRunning());
 
         // test we can start it again
         (new Thread(conditionalRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertTrue(conditionalRun.isRunning());
+        assertThat(conditionalRun.isRunning()).isTrue();
         // run 2
-        assertEquals(0, conditionalRun.getNbExecuted());
-        assertEquals(2, conditionalRun.getState().getExecutionCondition().getCount());
-        assertEquals(2, conditionalRun.getState().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(conditionalRun.getNbExecuted()).isEqualTo(0);
+        assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(2);
+        assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(2);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(conditionalRun.isRunning());
+        assertThat(conditionalRun.isRunning()).isTrue();
         // run 3
-        assertEquals(1, conditionalRun.getNbExecuted());
-        assertEquals(0, conditionalRun.getState().getExecutionCondition().getCount());
-        assertEquals(3, conditionalRun.getState().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(conditionalRun.getNbExecuted()).isEqualTo(1);
+        assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(0);
+        assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(3);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
 
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(conditionalRun.isRunning());
+        assertThat(conditionalRun.isRunning()).isTrue();
         // run 4
-        assertEquals(1, conditionalRun.getNbExecuted());
-        assertEquals(1, conditionalRun.getState().getExecutionCondition().getCount());
-        assertEquals(4, conditionalRun.getState().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(conditionalRun.getNbExecuted()).isEqualTo(1);
+        assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(1);
+        assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(4);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(conditionalRun.isRunning());
+        assertThat(conditionalRun.isRunning()).isTrue();
         // run 5
-        assertEquals(1, conditionalRun.getNbExecuted());
-        assertEquals(2, conditionalRun.getState().getExecutionCondition().getCount());
-        assertEquals(5, conditionalRun.getState().getEndingCondition().getCount());
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+        assertThat(conditionalRun.getNbExecuted()).isEqualTo(1);
+        assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(2);
+        assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(5);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(1);
+        assertThat(publisherHelper.getUpdateObjects().get(0)).isEqualTo(null);
 
         publisherHelper.reset();
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertFalse(conditionalRun.isRunning());
+        AssertJUnit.assertFalse(conditionalRun.isRunning());
         // run 6
-        assertEquals(1, conditionalRun.getNbExecuted());
-        assertEquals(2, conditionalRun.getState().getExecutionCondition().getCount());
-        assertEquals(5, conditionalRun.getState().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(conditionalRun.getNbExecuted()).isEqualTo(1);
+        assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(2);
+        assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(5);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
     }
 
-    public void testGetState() throws InterruptedException {
-        assertEquals(state, conditionalRun.getState());
-        assertSame(state, conditionalRun.getState());
-        assertEquals(0, conditionalRun.getState().getEndingCondition().getCount());
-        assertEquals(0, conditionalRun.getState().getExecutionCondition().getCount());
+    @Test
+    public void getState() throws InterruptedException {
+        assertThat(conditionalRun.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, conditionalRun.getState());
+        assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(0);
+        assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(0);
         (new Thread(conditionalRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertEquals(state, conditionalRun.getState());
-        assertSame(state, conditionalRun.getState());
-        assertEquals(1, conditionalRun.getState().getEndingCondition().getCount());
-        assertEquals(1, conditionalRun.getState().getExecutionCondition().getCount());
+        assertThat(conditionalRun.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, conditionalRun.getState());
+        assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(1);
+        assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(1);
     }
 
 }

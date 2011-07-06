@@ -21,9 +21,9 @@ package barsuift.simLife.message;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
+import static org.fest.assertions.Assertions.assertThat;
 
-public class PublisherTestHelper extends Assert {
+public class PublisherTestHelper {
 
     private int nbUpdated;
 
@@ -42,7 +42,7 @@ public class PublisherTestHelper extends Assert {
         publisher.addSubscriber(new Subscriber() {
 
             public void update(Publisher publisher_, Object arg) {
-                assertEquals(publisher, publisher_);
+                assertThat(publisher_).isEqualTo(publisher);
                 nbUpdated++;
                 updateObjects.add(arg);
             }

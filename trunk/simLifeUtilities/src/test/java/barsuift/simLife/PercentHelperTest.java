@@ -20,52 +20,48 @@ package barsuift.simLife;
 
 import java.math.BigDecimal;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class PercentHelperTest extends TestCase {
+public class PercentHelperTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testGetDecimalValue() {
+    @Test
+    public void getDecimalValue() {
         BigDecimal value = PercentHelper.getDecimalValue(12);
-        assertEquals(12, value.multiply(new BigDecimal(100)).intValueExact());
-        try {
-            PercentHelper.getDecimalValue(-1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            PercentHelper.getDecimalValue(101);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+        assertThat(value.multiply(new BigDecimal(100)).intValueExact()).isEqualTo(12);
     }
 
-    public void testGetIntValue() {
-        assertEquals(25, PercentHelper.getIntValue(new BigDecimal("0.25")));
-        assertEquals(99, PercentHelper.getIntValue(new BigDecimal("0.99")));
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void getDecimalValue_exceptionLow() {
+        PercentHelper.getDecimalValue(-1);
     }
 
-    public void testGetStringValueInt() {
-        assertEquals("25.00%", PercentHelper.getStringValue(25));
-        assertEquals("100.00%", PercentHelper.getStringValue(100));
-        assertEquals("0.00%", PercentHelper.getStringValue(0));
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void getDecimalValue_exceptionHigh() {
+        PercentHelper.getDecimalValue(101);
     }
 
-    public void testGetStringValueBigDecimal() {
-        assertEquals("25.00%", PercentHelper.getStringValue(new BigDecimal("0.25")));
-        assertEquals("100.00%", PercentHelper.getStringValue(new BigDecimal("1")));
-        assertEquals("0.00%", PercentHelper.getStringValue(new BigDecimal("0")));
-        assertEquals("25.12%", PercentHelper.getStringValue(new BigDecimal("0.25123")));
+    @Test
+    public void getIntValue() {
+        assertThat(PercentHelper.getIntValue(new BigDecimal("0.25"))).isEqualTo(25);
+        assertThat(PercentHelper.getIntValue(new BigDecimal("0.99"))).isEqualTo(99);
+    }
+
+    @Test
+    public void getStringValueInt() {
+        assertThat(PercentHelper.getStringValue(25)).isEqualTo("25.00%");
+        assertThat(PercentHelper.getStringValue(100)).isEqualTo("100.00%");
+        assertThat(PercentHelper.getStringValue(0)).isEqualTo("0.00%");
+    }
+
+    @Test
+    public void getStringValueBigDecimal() {
+        assertThat(PercentHelper.getStringValue(new BigDecimal("0.25"))).isEqualTo("25.00%");
+        assertThat(PercentHelper.getStringValue(new BigDecimal("1"))).isEqualTo("100.00%");
+        assertThat(PercentHelper.getStringValue(new BigDecimal("0"))).isEqualTo("0.00%");
+        assertThat(PercentHelper.getStringValue(new BigDecimal("0.25123"))).isEqualTo("25.12%");
     }
 
 }

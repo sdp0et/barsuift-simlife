@@ -20,13 +20,19 @@ package barsuift.simLife.process;
 
 import java.util.concurrent.CyclicBarrier;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class AbstractSplitConditionalTaskTest extends TestCase {
+
+public class AbstractSplitConditionalTaskTest {
 
     private MockSplitConditionalTask splitTask;
 
@@ -34,8 +40,8 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
 
     private MockSingleSynchronizedTask barrierReleaser;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         // make sure the barrier will block the process as long as the other mock process is not run
         CyclicBarrier barrier = new CyclicBarrier(2);
         CyclicConditionState executionCondition = new CyclicConditionState(3, 0);
@@ -48,30 +54,26 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         splitTask.changeBarrier(barrier);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testRun() throws Exception {
+    @Test
+    public void run() throws Exception {
         PublisherTestHelper publisherHelper = new PublisherTestHelper();
         publisherHelper.addSubscriberTo(splitTask);
 
         (new Thread(splitTask)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertTrue(splitTask.isRunning());
-        // executed once
-        assertEquals(0, splitTask.getNbExecuted());
-        assertEquals(0, splitTask.getNbIncrementExecuted());
-        assertEquals(2, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(8, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(splitTask.isRunning()).isTrue(); // executed once
+        assertThat(splitTask.getNbExecuted()).isEqualTo(0);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(0);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(2);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(8);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // test we can not run the same task again
         try {
             splitTask.run();
-            fail("Should throw an IllegalStateException");
+            Assert.fail("Should throw an IllegalStateException");
         } catch (IllegalStateException ise) {
             // OK expected exception
         }
@@ -82,33 +84,33 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to stop
         Thread.sleep(100);
-        assertFalse(splitTask.isRunning());
+        AssertJUnit.assertFalse(splitTask.isRunning());
 
         // test we can start it again
         (new Thread(splitTask)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertTrue(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isTrue();
         // executed once again
-        assertEquals(1, splitTask.getNbExecuted());
-        assertEquals(2, splitTask.getNbIncrementExecuted());
-        assertEquals(1, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(10, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(splitTask.getNbExecuted()).isEqualTo(1);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(2);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(1);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(10);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isTrue();
         // executed once again
-        assertEquals(2, splitTask.getNbExecuted());
-        assertEquals(4, splitTask.getNbIncrementExecuted());
-        assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(12, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(splitTask.getNbExecuted()).isEqualTo(2);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(4);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(0);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(12);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         splitTask.setStepSize(3);
 
@@ -116,27 +118,27 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isTrue();
         // executed once again
-        assertEquals(3, splitTask.getNbExecuted());
-        assertEquals(7, splitTask.getNbIncrementExecuted());
-        assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(15, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(splitTask.getNbExecuted()).isEqualTo(3);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(7);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(0);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(15);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isTrue();
         // executed once again
-        assertEquals(4, splitTask.getNbExecuted());
-        assertEquals(10, splitTask.getNbIncrementExecuted());
-        assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(18, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(splitTask.getNbExecuted()).isEqualTo(4);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(10);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(0);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(18);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         splitTask.setStepSize(20);
 
@@ -144,27 +146,27 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isTrue();
         // executed once again
-        assertEquals(5, splitTask.getNbExecuted());
-        assertEquals(30, splitTask.getNbIncrementExecuted());
-        assertEquals(2, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(38, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(splitTask.getNbExecuted()).isEqualTo(5);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(30);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(2);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(38);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isTrue();
         // executed once again
-        assertEquals(6, splitTask.getNbExecuted());
-        assertEquals(50, splitTask.getNbIncrementExecuted());
-        assertEquals(1, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(58, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(splitTask.getNbExecuted()).isEqualTo(6);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(50);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(1);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(58);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         splitTask.setStepSize(1);
 
@@ -172,69 +174,70 @@ public class AbstractSplitConditionalTaskTest extends TestCase {
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isTrue();
         // executed once again
-        assertEquals(6, splitTask.getNbExecuted());
-        assertEquals(50, splitTask.getNbIncrementExecuted());
-        assertEquals(2, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(59, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(splitTask.getNbExecuted()).isEqualTo(6);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(50);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(2);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(59);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertTrue(splitTask.isRunning());
+        assertThat(splitTask.isRunning()).isTrue();
         // executed once again
-        assertEquals(7, splitTask.getNbExecuted());
-        assertEquals(51, splitTask.getNbIncrementExecuted());
-        assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(60, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(null, publisherHelper.getUpdateObjects().get(0));
+        assertThat(splitTask.getNbExecuted()).isEqualTo(7);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(51);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(0);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(60);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(1);
+        assertThat(publisherHelper.getUpdateObjects().get(0)).isEqualTo(null);
 
         publisherHelper.reset();
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
-        assertFalse(splitTask.isRunning());
+        AssertJUnit.assertFalse(splitTask.isRunning());
         // this time, the split task should have stopped
-        assertEquals(7, splitTask.getNbExecuted());
-        assertEquals(51, splitTask.getNbIncrementExecuted());
-        assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(60, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(splitTask.getNbExecuted()).isEqualTo(7);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(51);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(0);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(60);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // release the barrier
         (new Thread(barrierReleaser)).start();
         // make sure the thread has time to execute
         Thread.sleep(100);
         // still stopped
-        assertFalse(splitTask.isRunning());
-        assertEquals(7, splitTask.getNbExecuted());
-        assertEquals(51, splitTask.getNbIncrementExecuted());
-        assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(60, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        AssertJUnit.assertFalse(splitTask.isRunning());
+        assertThat(splitTask.getNbExecuted()).isEqualTo(7);
+        assertThat(splitTask.getNbIncrementExecuted()).isEqualTo(51);
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(0);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(60);
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
     }
 
-    public void testGetState() throws InterruptedException {
-        assertEquals(state, splitTask.getState());
-        assertSame(state, splitTask.getState());
-        assertEquals(0, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(6, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
+    @Test
+    public void getState() throws InterruptedException {
+        assertThat(splitTask.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, splitTask.getState());
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(0);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(6);
         (new Thread(splitTask)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
-        assertEquals(state, splitTask.getState());
-        assertSame(state, splitTask.getState());
+        assertThat(splitTask.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, splitTask.getState());
         // 2 because the counter is reseted every time it is greater than the cycle size
-        assertEquals(2, splitTask.getState().getConditionalTask().getExecutionCondition().getCount());
-        assertEquals(8, splitTask.getState().getConditionalTask().getEndingCondition().getCount());
+        assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(2);
+        assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(8);
     }
 
 }

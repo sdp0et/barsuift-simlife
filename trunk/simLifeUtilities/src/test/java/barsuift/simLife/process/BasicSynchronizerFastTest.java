@@ -20,13 +20,20 @@ package barsuift.simLife.process;
 
 import java.util.concurrent.CyclicBarrier;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.message.PublisherTestHelper;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class BasicSynchronizerFastTest extends TestCase {
+
+public class BasicSynchronizerFastTest {
 
     private BasicSynchronizerFast synchro;
 
@@ -36,8 +43,8 @@ public class BasicSynchronizerFastTest extends TestCase {
 
     private SynchronizedTask barrierReleaser;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         setUpWithBound(0);
     }
 
@@ -55,160 +62,160 @@ public class BasicSynchronizerFastTest extends TestCase {
         barrierReleaser.changeBarrier(barrier);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         state = null;
         synchro = null;
         task = null;
         barrierReleaser = null;
     }
 
-    public void testSetBarrier() {
+    @Test
+    public void setBarrier() {
         try {
             synchro.setBarrier(new CyclicBarrier(1));
-            fail("Should throw an IllegalStateException");
+            Assert.fail("Should throw an IllegalStateException");
         } catch (IllegalStateException ise) {
             // OK expected exception
         }
         synchro = new BasicSynchronizerFast(state);
         try {
             synchro.setBarrier(null);
-            fail("Should throw an IllegalArgumentException");
+            Assert.fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException iae) {
             // OK expected exception
         }
     }
 
-    public void testSetStepSize() throws Exception {
+    @Test
+    public void setStepSize() {
         // test step size on scheduled task
-        assertEquals(10, synchro.getStepSize());
-        assertEquals(10, task.getState().getStepSize());
+        assertThat(synchro.getStepSize()).isEqualTo(10);
+        assertThat(task.getState().getStepSize()).isEqualTo(10);
         synchro.setStepSize(5);
-        assertEquals(5, synchro.getStepSize());
-        assertEquals(5, task.getState().getStepSize());
+        assertThat(synchro.getStepSize()).isEqualTo(5);
+        assertThat(task.getState().getStepSize()).isEqualTo(5);
         synchro.setStepSize(30);
-        assertEquals(30, synchro.getStepSize());
-        assertEquals(30, task.getState().getStepSize());
+        assertThat(synchro.getStepSize()).isEqualTo(30);
+        assertThat(task.getState().getStepSize()).isEqualTo(30);
 
         setUp();
         synchro.start();
 
         // test step size ion started task
-        assertEquals(10, synchro.getStepSize());
-        assertEquals(10, task.getState().getStepSize());
+        assertThat(synchro.getStepSize()).isEqualTo(10);
+        assertThat(task.getState().getStepSize()).isEqualTo(10);
         synchro.setStepSize(5);
-        assertEquals(5, synchro.getStepSize());
-        assertEquals(5, task.getState().getStepSize());
+        assertThat(synchro.getStepSize()).isEqualTo(5);
+        assertThat(task.getState().getStepSize()).isEqualTo(5);
         synchro.setStepSize(30);
-        assertEquals(30, synchro.getStepSize());
-        assertEquals(30, task.getState().getStepSize());
+        assertThat(synchro.getStepSize()).isEqualTo(30);
+        assertThat(task.getState().getStepSize()).isEqualTo(30);
     }
 
-    public void testStart() throws InterruptedException {
-        assertFalse(synchro.isRunning());
-        assertEquals(0, task.getNbExecuted());
-        assertEquals(0, task.getNbIncrementExecuted());
+    @Test
+    public void start() throws InterruptedException {
+        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(task.getNbExecuted()).isEqualTo(0);
+        assertThat(task.getNbIncrementExecuted()).isEqualTo(0);
 
         synchro.start();
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
-        assertTrue(synchro.isRunning());
-        assertTrue(task.getNbExecuted() > 0);
-        assertTrue(task.getNbIncrementExecuted() > 0);
+        assertThat(synchro.isRunning()).isTrue();
+        assertThat(task.getNbExecuted() > 0).isTrue();
+        assertThat(task.getNbIncrementExecuted() > 0).isTrue();
 
         synchro.stop();
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
-        assertFalse(synchro.isRunning());
+        AssertJUnit.assertFalse(synchro.isRunning());
         int nbExecuted = task.getNbExecuted();
         int nbIncrementExecuted = task.getNbIncrementExecuted();
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
         // assert the task is not called anymore
-        assertEquals(nbExecuted, task.getNbExecuted());
-        assertEquals(nbIncrementExecuted, task.getNbIncrementExecuted());
+        assertThat(task.getNbExecuted()).isEqualTo(nbExecuted);
+        assertThat(task.getNbIncrementExecuted()).isEqualTo(nbIncrementExecuted);
         // even if we release the barrier once more
         new Thread(barrierReleaser).start();
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
-        assertEquals(nbExecuted, task.getNbExecuted());
-        assertEquals(nbIncrementExecuted, task.getNbIncrementExecuted());
+        assertThat(task.getNbExecuted()).isEqualTo(nbExecuted);
+        assertThat(task.getNbIncrementExecuted()).isEqualTo(nbIncrementExecuted);
     }
 
-    public void testStartWithBoundedTask() throws InterruptedException {
+    @Test
+    public void startWithBoundedTask() throws InterruptedException {
         // with this bound, the tasks should execute only once
         setUpWithBound(10);
 
-        assertFalse(synchro.isRunning());
-        assertEquals(0, task.getNbExecuted());
-        assertEquals(0, task.getNbIncrementExecuted());
+        AssertJUnit.assertFalse(synchro.isRunning());
+        assertThat(task.getNbExecuted()).isEqualTo(0);
+        assertThat(task.getNbIncrementExecuted()).isEqualTo(0);
         // the task in not yet in the list because the synchronizer is not running
-        assertFalse(synchro.getTasks().contains(task));
+        AssertJUnit.assertFalse(synchro.getTasks().contains(task));
 
         synchro.start();
         // the synchronizer should be in the list now
-        assertTrue(synchro.getTasks().contains(task));
+        assertThat(synchro.getTasks().contains(task)).isTrue();
         Thread.sleep(2 * BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
-        assertTrue(synchro.isRunning());
-        assertEquals(1, task.getNbExecuted());
-        assertEquals(10, task.getNbIncrementExecuted());
+        assertThat(synchro.isRunning()).isTrue();
+        assertThat(task.getNbExecuted()).isEqualTo(1);
+        assertThat(task.getNbIncrementExecuted()).isEqualTo(10);
 
         synchro.stop();
         barrierReleaser.run();
         // make sure the thread has time to stop
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
-        assertFalse(synchro.isRunning());
+        AssertJUnit.assertFalse(synchro.isRunning());
         // the task has already stopped anyway
-        assertEquals(1, task.getNbExecuted());
-        assertEquals(10, task.getNbIncrementExecuted());
+        assertThat(task.getNbExecuted()).isEqualTo(1);
+        assertThat(task.getNbIncrementExecuted()).isEqualTo(10);
         // the task is not even in the list of tasks
-        assertFalse(synchro.getTasks().contains(task));
+        AssertJUnit.assertFalse(synchro.getTasks().contains(task));
     }
 
-    public void testPublisher() throws Exception {
+    @Test
+    public void publisher() throws Exception {
         PublisherTestHelper publisherHelper = new PublisherTestHelper();
         publisherHelper.addSubscriberTo(synchro);
 
         synchro.start();
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertNull(publisherHelper.getUpdateObjects().get(0));
-
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(1);
+        assertThat(publisherHelper.getUpdateObjects().get(0)).isNull();
         publisherHelper.reset();
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
         synchro.stop();
         barrierReleaser.run();
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertNull(publisherHelper.getUpdateObjects().get(0));
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(1);
+        assertThat(publisherHelper.getUpdateObjects().get(0)).isNull();}
+
+
+    @Test(expectedExceptions = { IllegalStateException.class })
+    public void illegalStateException_onStop() {
+        synchro.stop();
     }
 
-
-    public void testIllegalStateException() throws InterruptedException {
-        try {
-            synchro.stop();
-            fail("IllegalStateException expected");
-        } catch (IllegalStateException ise) {
-            // OK expected exception
-        }
+    @Test(expectedExceptions = { IllegalStateException.class })
+    public void illegalStateException_onAlreadyStarted() throws InterruptedException {
         synchro.start();
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
-        try {
-            synchro.start();
-            fail("IllegalStateException expected");
-        } catch (IllegalStateException ise) {
-            // OK expected exception
-        }
+        synchro.start();
     }
 
-    public void testGetState() {
-        assertEquals(state, synchro.getState());
-        assertSame(state, synchro.getState());
-        assertEquals(10, synchro.getState().getStepSize());
+    @Test
+    public void getState() {
+        assertThat(synchro.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, synchro.getState());
+        assertThat(synchro.getState().getStepSize()).isEqualTo(10);
         synchro.setStepSize(35);
-        assertEquals(state, synchro.getState());
-        assertSame(state, synchro.getState());
-        assertEquals(35, synchro.getState().getStepSize());
+        assertThat(synchro.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, synchro.getState());
+        assertThat(synchro.getState().getStepSize()).isEqualTo(35);
     }
 
-    public void testSchedule() throws Exception {
+    @Test
+    public void schedule() throws Exception {
         // create mocks with no bound to be sure they won't stop before the end of the test
         ConditionalTaskState conditionalTaskState = new ConditionalTaskState(new CyclicConditionState(1, 0),
                 new BoundConditionState(0, 0));
@@ -219,7 +226,7 @@ public class BasicSynchronizerFastTest extends TestCase {
 
         try {
             synchro.unschedule(mockRun1);
-            fail("Should throw an IllegalStateException");
+            Assert.fail("Should throw an IllegalStateException");
         } catch (IllegalStateException ise) {
             // OK expected Exception
         }
@@ -231,12 +238,12 @@ public class BasicSynchronizerFastTest extends TestCase {
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
 
         // only mockRun1 is scheduled
-        assertTrue(mockRun1.getNbExecuted() >= 1);
-        assertTrue(mockRun2.getNbExecuted() == 0);
-        assertTrue(mockRun3.getNbExecuted() == 0);
-        assertTrue(mockRun1.getNbIncrementExecuted() >= 10);
-        assertTrue(mockRun2.getNbIncrementExecuted() == 0);
-        assertTrue(mockRun3.getNbIncrementExecuted() == 0);
+        assertThat(mockRun1.getNbExecuted() >= 1).isTrue();
+        assertThat(mockRun2.getNbExecuted() == 0).isTrue();
+        assertThat(mockRun3.getNbExecuted() == 0).isTrue();
+        assertThat(mockRun1.getNbIncrementExecuted() >= 10).isTrue();
+        assertThat(mockRun2.getNbIncrementExecuted() == 0).isTrue();
+        assertThat(mockRun3.getNbIncrementExecuted() == 0).isTrue();
 
         mockRun1.reset();
         synchro.schedule(mockRun2);
@@ -247,12 +254,12 @@ public class BasicSynchronizerFastTest extends TestCase {
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
 
         // only mockRun1 is scheduled
-        assertTrue(mockRun1.getNbExecuted() >= 1);
-        assertTrue(mockRun2.getNbExecuted() == 0);
-        assertTrue(mockRun3.getNbExecuted() == 0);
-        assertTrue(mockRun1.getNbIncrementExecuted() >= 10);
-        assertTrue(mockRun2.getNbIncrementExecuted() == 0);
-        assertTrue(mockRun3.getNbIncrementExecuted() == 0);
+        assertThat(mockRun1.getNbExecuted() >= 1).isTrue();
+        assertThat(mockRun2.getNbExecuted() == 0).isTrue();
+        assertThat(mockRun3.getNbExecuted() == 0).isTrue();
+        assertThat(mockRun1.getNbIncrementExecuted() >= 10).isTrue();
+        assertThat(mockRun2.getNbIncrementExecuted() == 0).isTrue();
+        assertThat(mockRun3.getNbIncrementExecuted() == 0).isTrue();
 
         mockRun1.reset();
         synchro.schedule(mockRun2);
@@ -268,14 +275,14 @@ public class BasicSynchronizerFastTest extends TestCase {
 
         // mockRun1 and mockRun2 have run
         // only mockRun1 is still scheduled
-        assertTrue(mockRun1.getNbExecuted() >= 1);
-        assertTrue(mockRun2.getNbExecuted() >= 1);
-        assertTrue(mockRun3.getNbExecuted() == 0);
-        assertTrue(mockRun1.getNbExecuted() >= mockRun2.getNbExecuted());
-        assertTrue(mockRun1.getNbIncrementExecuted() >= 10);
-        assertTrue(mockRun2.getNbIncrementExecuted() >= 10);
-        assertTrue(mockRun3.getNbIncrementExecuted() == 0);
-        assertTrue(mockRun1.getNbIncrementExecuted() >= mockRun2.getNbIncrementExecuted());
+        assertThat(mockRun1.getNbExecuted() >= 1).isTrue();
+        assertThat(mockRun2.getNbExecuted() >= 1).isTrue();
+        assertThat(mockRun3.getNbExecuted() == 0).isTrue();
+        assertThat(mockRun1.getNbExecuted() >= mockRun2.getNbExecuted()).isTrue();
+        assertThat(mockRun1.getNbIncrementExecuted() >= 10).isTrue();
+        assertThat(mockRun2.getNbIncrementExecuted() >= 10).isTrue();
+        assertThat(mockRun3.getNbIncrementExecuted() == 0).isTrue();
+        assertThat(mockRun1.getNbIncrementExecuted() >= mockRun2.getNbIncrementExecuted()).isTrue();
 
         mockRun1.reset();
         mockRun2.reset();
@@ -287,12 +294,12 @@ public class BasicSynchronizerFastTest extends TestCase {
         Thread.sleep(BasicSynchronizerFast.CYCLE_LENGTH_FAST_MS + 100);
 
         // only mockRun3 is scheduled
-        assertTrue(mockRun1.getNbExecuted() == 0);
-        assertTrue(mockRun2.getNbExecuted() == 0);
-        assertTrue(mockRun3.getNbExecuted() >= 1);
-        assertTrue(mockRun1.getNbIncrementExecuted() == 0);
-        assertTrue(mockRun2.getNbIncrementExecuted() == 0);
-        assertTrue(mockRun3.getNbIncrementExecuted() >= 10);
+        assertThat(mockRun1.getNbExecuted() == 0).isTrue();
+        assertThat(mockRun2.getNbExecuted() == 0).isTrue();
+        assertThat(mockRun3.getNbExecuted() >= 1).isTrue();
+        assertThat(mockRun1.getNbIncrementExecuted() == 0).isTrue();
+        assertThat(mockRun2.getNbIncrementExecuted() == 0).isTrue();
+        assertThat(mockRun3.getNbIncrementExecuted() >= 10).isTrue();
 
     }
 }

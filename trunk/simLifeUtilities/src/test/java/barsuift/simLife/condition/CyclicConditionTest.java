@@ -18,59 +18,65 @@
  */
 package barsuift.simLife.condition;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class CyclicConditionTest extends TestCase {
+public class CyclicConditionTest {
 
     private CyclicCondition condition;
 
     private CyclicConditionState state;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         state = new CyclicConditionState(5, 2);
         condition = new CyclicCondition(state);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         state = null;
         condition = null;
     }
 
+    @Test
     public void testEvaluate() {
         // 3/5
-        assertFalse(condition.evaluate());
+        AssertJUnit.assertFalse(condition.evaluate());
         // 4/5
-        assertFalse(condition.evaluate());
+        AssertJUnit.assertFalse(condition.evaluate());
 
         // 5/5
-        assertTrue(condition.evaluate());
-
+        assertThat(condition.evaluate()).isTrue();
         // 1/5
-        assertFalse(condition.evaluate());
+        AssertJUnit.assertFalse(condition.evaluate());
         // 2/5
-        assertFalse(condition.evaluate());
+        AssertJUnit.assertFalse(condition.evaluate());
         // 3/5
-        assertFalse(condition.evaluate());
+        AssertJUnit.assertFalse(condition.evaluate());
         // 4/5
-        assertFalse(condition.evaluate());
+        AssertJUnit.assertFalse(condition.evaluate());
 
         // 5/5
-        assertTrue(condition.evaluate());
+        assertThat(condition.evaluate()).isTrue();
     }
 
+    @Test
     public void testGetState() {
-        assertEquals(state, condition.getState());
-        assertSame(state, condition.getState());
-        assertEquals(2, condition.getState().getCount());
-        assertEquals(5, condition.getState().getCycle());
+        assertThat(condition.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState().getCount()).isEqualTo(2);
+        assertThat(condition.getState().getCycle()).isEqualTo(5);
         condition.evaluate();
-        assertEquals(state, condition.getState());
-        assertSame(state, condition.getState());
-        assertEquals(3, condition.getState().getCount());
-        assertEquals(5, condition.getState().getCycle());
+        assertThat(condition.getState()).isEqualTo(state);
+        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState().getCount()).isEqualTo(3);
+        assertThat(condition.getState().getCycle()).isEqualTo(5);
     }
 
 }
