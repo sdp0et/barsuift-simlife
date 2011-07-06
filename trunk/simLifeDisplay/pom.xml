@@ -6,7 +6,6 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>simLifeDisplay</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
 	<name>simLifeDisplay module</name>
 	<description>This module is used to render elements for the simLife project, using Java3D</description>
 	<dependencies>
