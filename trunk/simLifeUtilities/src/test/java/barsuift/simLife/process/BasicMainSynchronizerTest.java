@@ -268,7 +268,7 @@ public class BasicMainSynchronizerTest {
     @Test
     public void getState() {
         assertThat(synchro.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, synchro.getState());
+        assertThat(synchro.getState()).isSameAs(state);
 
         AssertJUnit.assertEquals(Speed.VERY_FAST.getSpeed(), synchro.getState().getSynchronizerFastState()
                 .getStepSize());
@@ -278,7 +278,7 @@ public class BasicMainSynchronizerTest {
         synchro.setSpeed(Speed.NORMAL);
 
         assertThat(synchro.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, synchro.getState());
+        assertThat(synchro.getState()).isSameAs(state);
 
         assertThat(synchro.getState().getSynchronizerFastState().getStepSize()).isEqualTo(Speed.NORMAL.getSpeed());
         AssertJUnit.assertEquals(Speed.NORMAL.getSpeed(), synchro.getState().getSynchronizerSlowState().getSpeed()

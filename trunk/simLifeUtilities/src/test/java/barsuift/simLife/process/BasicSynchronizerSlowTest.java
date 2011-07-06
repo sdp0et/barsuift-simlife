@@ -180,11 +180,11 @@ public class BasicSynchronizerSlowTest {
     @Test
     public void getState() {
         assertThat(synchro.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, synchro.getState());
+        assertThat(synchro.getState()).isSameAs(state);
         assertThat(synchro.getState().getSpeed()).isEqualTo(Speed.VERY_FAST);
         synchro.setSpeed(Speed.FAST);
         assertThat(synchro.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, synchro.getState());
+        assertThat(synchro.getState()).isSameAs(state);
         assertThat(synchro.getState().getSpeed()).isEqualTo(Speed.FAST);
     }
 

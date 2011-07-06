@@ -163,14 +163,14 @@ public class AbstractConditionalTaskTest {
     @Test
     public void getState() throws InterruptedException {
         assertThat(conditionalRun.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, conditionalRun.getState());
+        assertThat(conditionalRun.getState()).isSameAs(state);
         assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(0);
         assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(0);
         (new Thread(conditionalRun)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
         assertThat(conditionalRun.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, conditionalRun.getState());
+        assertThat(conditionalRun.getState()).isSameAs(state);
         assertThat(conditionalRun.getState().getEndingCondition().getCount()).isEqualTo(1);
         assertThat(conditionalRun.getState().getExecutionCondition().getCount()).isEqualTo(1);
     }

@@ -565,7 +565,7 @@ public class BasicSun3DTest {
         sun3D.init(universe3D);
 
         assertThat(sun3D.getState()).isEqualTo(sun3DState);
-        AssertJUnit.assertSame(sun3DState, sun3D.getState());
+        assertThat(sun3D.getState()).isSameAs(sun3DState);
         assertThat(sun3D.getState().getLatitude()).isEqualTo((float) (Math.PI / 4), Delta.delta(0.0001));
         assertThat(sun3D.getState().getEclipticObliquity()).isEqualTo((float) (Math.PI / 3), Delta.delta(0.0001));
         // The earth rotation is automatic, the value from the state is not used. the value is recomputed from the date
@@ -580,7 +580,7 @@ public class BasicSun3DTest {
         sun3D.setEarthRotationTaskAutomatic(false);
 
         assertThat(sun3D.getState()).isEqualTo(sun3DState);
-        AssertJUnit.assertSame(sun3DState, sun3D.getState());
+        assertThat(sun3D.getState()).isSameAs(sun3DState);
         assertThat(sun3D.getState().getLatitude()).isEqualTo((float) (Math.PI / 4), Delta.delta(0.0001));
         assertThat(sun3D.getState().getEclipticObliquity()).isEqualTo((float) (Math.PI / 3), Delta.delta(0.0001));
         assertThat(sun3D.getState().getEarthRotation()).isEqualTo(0.47f, Delta.delta(0.0001));

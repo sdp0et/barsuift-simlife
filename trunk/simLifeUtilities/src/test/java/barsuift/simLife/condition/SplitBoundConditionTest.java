@@ -131,12 +131,12 @@ public class SplitBoundConditionTest {
     @Test
     public void testGetState() {
         assertThat(condition.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState()).isSameAs(state);
         assertThat(condition.getState().getCount()).isEqualTo(2);
         assertThat(condition.getState().getBound()).isEqualTo(7);
         condition.evaluate(2);
         assertThat(condition.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState()).isSameAs(state);
         assertThat(condition.getState().getCount()).isEqualTo(4);
         assertThat(condition.getState().getBound()).isEqualTo(7);
     }

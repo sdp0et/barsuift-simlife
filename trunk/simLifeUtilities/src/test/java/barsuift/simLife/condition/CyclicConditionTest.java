@@ -69,12 +69,12 @@ public class CyclicConditionTest {
     @Test
     public void testGetState() {
         assertThat(condition.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState()).isSameAs(state);
         assertThat(condition.getState().getCount()).isEqualTo(2);
         assertThat(condition.getState().getCycle()).isEqualTo(5);
         condition.evaluate();
         assertThat(condition.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState()).isSameAs(state);
         assertThat(condition.getState().getCount()).isEqualTo(3);
         assertThat(condition.getState().getCycle()).isEqualTo(5);
     }

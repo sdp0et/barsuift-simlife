@@ -65,12 +65,12 @@ public class SplitCyclicConditionTest {
     @Test
     public void testGetState() {
         assertThat(condition.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState()).isSameAs(state);
         assertThat(condition.getState().getCount()).isEqualTo(2);
         assertThat(condition.getState().getCycle()).isEqualTo(3);
         condition.evaluate(2);
         assertThat(condition.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState()).isSameAs(state);
         assertThat(condition.getState().getCount()).isEqualTo(1);
         assertThat(condition.getState().getCycle()).isEqualTo(3);
     }

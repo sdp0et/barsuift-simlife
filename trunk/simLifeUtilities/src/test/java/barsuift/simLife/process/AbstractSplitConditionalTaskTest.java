@@ -227,14 +227,14 @@ public class AbstractSplitConditionalTaskTest {
     @Test
     public void getState() throws InterruptedException {
         assertThat(splitTask.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, splitTask.getState());
+        assertThat(splitTask.getState()).isSameAs(state);
         assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(0);
         assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(6);
         (new Thread(splitTask)).start();
         // make sure the thread has time to start
         Thread.sleep(100);
         assertThat(splitTask.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, splitTask.getState());
+        assertThat(splitTask.getState()).isSameAs(state);
         // 2 because the counter is reseted every time it is greater than the cycle size
         assertThat(splitTask.getState().getConditionalTask().getExecutionCondition().getCount()).isEqualTo(2);
         assertThat(splitTask.getState().getConditionalTask().getEndingCondition().getCount()).isEqualTo(8);
