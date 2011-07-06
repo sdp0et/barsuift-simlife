@@ -19,7 +19,6 @@
 package barsuift.simLife.time;
 
 import org.testng.Assert;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.message.PublisherTestHelper;

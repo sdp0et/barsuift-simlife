@@ -70,6 +70,10 @@ public class MockSingleSynchronizedTask implements SynchronizedTask {
         stopCalled++;
     }
 
+    public int getNbStopCalled() {
+        return stopCalled;
+    }
+
     @Override
     public boolean isRunning() {
         return running;
