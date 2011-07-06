@@ -314,11 +314,11 @@ public class SimLifeDateTest {
         SimLifeDateState state = new SimLifeDateState(123);
         SimLifeDate date = new SimLifeDate(state);
         assertThat( date.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, date.getState());
+        assertThat(date.getState()).isSameAs(state);
         assertThat( date.getState().getValue()).isEqualTo(123);
         date.addMillis(1);
         assertThat( date.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, date.getState());
+        assertThat(date.getState()).isSameAs(state);
         assertThat( date.getState().getValue()).isEqualTo(124);
     }
 

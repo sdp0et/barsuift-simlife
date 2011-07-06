@@ -116,12 +116,12 @@ public class BoundConditionTest {
     @Test
     public void getState() {
         assertThat( condition.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState()).isSameAs(state);
         assertThat( condition.getState().getCount()).isEqualTo(2);
         assertThat( condition.getState().getBound()).isEqualTo(5);
         condition.evaluate();
         assertThat( condition.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, condition.getState());
+        assertThat(condition.getState()).isSameAs(state);
         assertThat( condition.getState().getCount()).isEqualTo(3);
         assertThat( condition.getState().getBound()).isEqualTo(5);
     }

@@ -206,11 +206,11 @@ public class BasicSynchronizerFastTest {
     @Test
     public void getState() {
         assertThat(synchro.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, synchro.getState());
+        assertThat(synchro.getState()).isSameAs(state);
         assertThat(synchro.getState().getStepSize()).isEqualTo(10);
         synchro.setStepSize(35);
         assertThat(synchro.getState()).isEqualTo(state);
-        AssertJUnit.assertSame(state, synchro.getState());
+        assertThat(synchro.getState()).isSameAs(state);
         assertThat(synchro.getState().getStepSize()).isEqualTo(35);
     }
 
