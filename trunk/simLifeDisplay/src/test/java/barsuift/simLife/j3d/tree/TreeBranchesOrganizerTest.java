@@ -24,24 +24,27 @@ import java.util.List;
 import javax.media.j3d.Transform3D;
 import javax.vecmath.Vector3f;
 
-import junit.framework.TestCase;
-import barsuift.simLife.j3d.helper.VectorTestHelper;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 
-public class TreeBranchesOrganizerTest extends TestCase {
+public class TreeBranchesOrganizerTest {
 
     private TreeBranchesOrganizer branchesOrganizer;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         branchesOrganizer = new TreeBranchesOrganizer();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         branchesOrganizer = null;
     }
 
+    @Test
     public void testOrganizeBranches() {
         float treeHeight = 4;
         List<TreeBranch3DState> branchesStates = new ArrayList<TreeBranch3DState>();
@@ -56,12 +59,12 @@ public class TreeBranchesOrganizerTest extends TestCase {
         Transform3D transform3D1 = branch3DState1.getTransform().toTransform3D();
         Vector3f translation1 = new Vector3f();
         transform3D1.get(translation1);
-        VectorTestHelper.assertEquals(expectedTranslation, translation1);
+        AssertJUnit.assertEquals(expectedTranslation, translation1);
 
         Transform3D transform3D2 = branch3DState2.getTransform().toTransform3D();
         Vector3f translation2 = new Vector3f();
         transform3D2.get(translation2);
-        VectorTestHelper.assertEquals(expectedTranslation, translation2);
+        AssertJUnit.assertEquals(expectedTranslation, translation2);
     }
 
 }

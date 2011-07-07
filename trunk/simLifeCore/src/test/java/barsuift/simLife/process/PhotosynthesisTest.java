@@ -27,8 +27,8 @@ public class PhotosynthesisTest extends TestCase {
 
     public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
-        Photosynthesis photosynthesis = new Photosynthesis(
-                UtilDataCreatorForTests.createSpecificConditionalTaskState(), mockTree);
+        Photosynthesis photosynthesis = new Photosynthesis(UtilDataCreatorForTests.createSpecificConditionalTaskState());
+        photosynthesis.init(mockTree);
         photosynthesis.executeConditionalStep();
         assertEquals(1, mockTree.getNbCollectSolarEnergyCalled());
     }

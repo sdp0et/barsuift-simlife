@@ -21,20 +21,15 @@ package barsuift.simLife.j3d.util;
 import javax.media.j3d.BoundingBox;
 import javax.vecmath.Point3d;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.landscape.LandscapeParameters;
 
 
-public class BoundingBoxHelperTest extends TestCase {
+public class BoundingBoxHelperTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testCreateBoundingSphere() {
         LandscapeParameters landscapeParameters = new LandscapeParameters();
         BoundingBox boundingBox;
@@ -43,18 +38,18 @@ public class BoundingBoxHelperTest extends TestCase {
         landscapeParameters.setMaximumHeight(10);
         boundingBox = BoundingBoxHelper.createBoundingBox(landscapeParameters).toBoundingBox();
 
-        assertTrue(boundingBox.intersect(new Point3d(0, -1, 0)));
-        assertTrue(boundingBox.intersect(new Point3d(4, 5, 4)));
-        assertTrue(boundingBox.intersect(new Point3d(8, 10, 8)));
-        assertTrue(boundingBox.intersect(new Point3d(8, 60, 8)));
+        AssertJUnit.assertTrue(boundingBox.intersect(new Point3d(0, -1, 0)));
+        AssertJUnit.assertTrue(boundingBox.intersect(new Point3d(4, 5, 4)));
+        AssertJUnit.assertTrue(boundingBox.intersect(new Point3d(8, 10, 8)));
+        AssertJUnit.assertTrue(boundingBox.intersect(new Point3d(8, 60, 8)));
 
-        assertFalse(boundingBox.intersect(new Point3d(-1, 0, 0)));
-        assertFalse(boundingBox.intersect(new Point3d(0, -2, 0)));
-        assertFalse(boundingBox.intersect(new Point3d(0, 0, -1)));
+        AssertJUnit.assertFalse(boundingBox.intersect(new Point3d(-1, 0, 0)));
+        AssertJUnit.assertFalse(boundingBox.intersect(new Point3d(0, -2, 0)));
+        AssertJUnit.assertFalse(boundingBox.intersect(new Point3d(0, 0, -1)));
 
-        assertFalse(boundingBox.intersect(new Point3d(9, 0, 0)));
-        assertFalse(boundingBox.intersect(new Point3d(0, 61, 0)));
-        assertFalse(boundingBox.intersect(new Point3d(0, 0, 9)));
+        AssertJUnit.assertFalse(boundingBox.intersect(new Point3d(9, 0, 0)));
+        AssertJUnit.assertFalse(boundingBox.intersect(new Point3d(0, 61, 0)));
+        AssertJUnit.assertFalse(boundingBox.intersect(new Point3d(0, 0, 9)));
     }
 
 }

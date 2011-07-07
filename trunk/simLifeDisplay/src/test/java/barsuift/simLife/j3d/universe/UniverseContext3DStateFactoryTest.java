@@ -18,22 +18,17 @@
  */
 package barsuift.simLife.j3d.universe;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.landscape.NavigatorState;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 
-public class UniverseContext3DStateFactoryTest extends TestCase {
+public class UniverseContext3DStateFactoryTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testCreateRandomUniverseContext3DState() {
         LandscapeParameters parameters = new LandscapeParameters();
         parameters.random();
@@ -41,19 +36,19 @@ public class UniverseContext3DStateFactoryTest extends TestCase {
         UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
         UniverseContext3DState universeContext3DState = factory.createUniverseContext3DState(parameters);
 
-        assertTrue(universeContext3DState.isAxisShowing());
+        AssertJUnit.assertTrue(universeContext3DState.isAxisShowing());
 
         SimLifeCanvas3DState canvasState = universeContext3DState.getCanvas();
-        assertNotNull(canvasState);
-        assertFalse(canvasState.isFpsShowing());
+        AssertJUnit.assertNotNull(canvasState);
+        AssertJUnit.assertFalse(canvasState.isFpsShowing());
 
         NavigatorState navigatorState = universeContext3DState.getNavigator();
-        assertNotNull(navigatorState);
-        assertEquals(0.0, navigatorState.getRotationX());
-        assertEquals(0.0, navigatorState.getRotationY());
-        assertEquals((float) parameters.getSize() / 2, navigatorState.getTranslation().getX());
-        assertEquals(2.0f, navigatorState.getTranslation().getY());
-        assertEquals((float) parameters.getSize() / 2, navigatorState.getTranslation().getZ());
+        AssertJUnit.assertNotNull(navigatorState);
+        AssertJUnit.assertEquals(0.0, navigatorState.getRotationX());
+        AssertJUnit.assertEquals(0.0, navigatorState.getRotationY());
+        AssertJUnit.assertEquals((float) parameters.getSize() / 2, navigatorState.getTranslation().getX());
+        AssertJUnit.assertEquals(2.0f, navigatorState.getTranslation().getY());
+        AssertJUnit.assertEquals((float) parameters.getSize() / 2, navigatorState.getTranslation().getZ());
 
     }
 

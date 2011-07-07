@@ -19,7 +19,6 @@
 package barsuift.simLife.environment;
 
 import junit.framework.TestCase;
-import barsuift.simLife.universe.MockUniverse;
 
 
 public class BasicEnvironmentTest extends TestCase {
@@ -34,7 +33,7 @@ public class BasicEnvironmentTest extends TestCase {
 
     public void testConstructor() {
         try {
-            new BasicEnvironment(null, new MockUniverse());
+            new BasicEnvironment(null);
             fail("Should throw new IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception

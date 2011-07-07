@@ -26,7 +26,11 @@ import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Group;
 import javax.vecmath.Color3f;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.environment.MockSky;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
@@ -34,7 +38,7 @@ import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import static barsuift.simLife.j3d.assertions.ColorAssert.assertThat;
 
 
-public class BasicSky3DTest extends TestCase {
+public class BasicSky3DTest {
 
     private BasicSky3D sky3D;
 
@@ -42,9 +46,8 @@ public class BasicSky3DTest extends TestCase {
 
     private MockSun3D mockSun3D;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         state = DisplayDataCreatorForTests.createRandomSky3DState();
         MockSky mockSky = new MockSky();
         mockSun3D = (MockSun3D) ((MockSun) mockSky.getSun()).getSun3D();
@@ -53,27 +56,28 @@ public class BasicSky3DTest extends TestCase {
         sky3D.init(mockSky);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         sky3D = null;
         state = null;
         mockSun3D = null;
     }
 
+    @Test
     public void testGetGroup() {
         Group group = sky3D.getGroup();
-        assertEquals(3, group.numChildren());
-        assertTrue(group.getChild(0) instanceof AmbientLight);
-        assertTrue(group.getChild(1) instanceof DirectionalLight);
+        AssertJUnit.assertEquals(3, group.numChildren());
+        AssertJUnit.assertTrue(group.getChild(0) instanceof AmbientLight);
+        AssertJUnit.assertTrue(group.getChild(1) instanceof DirectionalLight);
         Background background = (Background) group.getChild(2);
-        assertTrue(background.getCapability(Background.ALLOW_COLOR_WRITE));
+        AssertJUnit.assertTrue(background.getCapability(Background.ALLOW_COLOR_WRITE));
         Color3f color = new Color3f();
         background.getColor(color);
         // brightness = 0.5 so color should be "half" sky blue, half black
         assertThat(color).isEqualTo(new Color3f(0.125f, 0.25f, 0.5f));
     }
 
+    @Test
     public void testUpdate() {
         Group group = sky3D.getGroup();
         Background background = (Background) group.getChild(2);
@@ -98,16 +102,18 @@ public class BasicSky3DTest extends TestCase {
         assertThat(color).isEqualTo(new Color3f(0.1875f, 0.375f, 0.75f));
     }
 
+    @Test
     public void testSubscribers() {
-        assertEquals(1, mockSun3D.countSubscribers());
+        AssertJUnit.assertEquals(1, mockSun3D.countSubscribers());
         // check the subscriber is the sky3D
         mockSun3D.deleteSubscriber(sky3D);
-        assertEquals(0, mockSun3D.countSubscribers());
+        AssertJUnit.assertEquals(0, mockSun3D.countSubscribers());
     }
 
+    @Test
     public void testGetState() {
-        assertEquals(state, sky3D.getState());
-        assertSame(state, sky3D.getState());
+        AssertJUnit.assertEquals(state, sky3D.getState());
+        AssertJUnit.assertSame(state, sky3D.getState());
     }
 
 }

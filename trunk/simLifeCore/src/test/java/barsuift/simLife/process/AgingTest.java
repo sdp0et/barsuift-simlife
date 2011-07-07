@@ -30,7 +30,8 @@ public class AgingTest extends TestCase {
         ConditionalTaskState conditionalTaskState = UtilDataCreatorForTests.createSpecificConditionalTaskState();
         // this is to ensure the task can be executed exactly once.
         conditionalTaskState.getEndingCondition().setBound(conditionalTaskState.getExecutionCondition().getCycle() + 1);
-        Aging aging = new Aging(conditionalTaskState, mockTree);
+        Aging aging = new Aging(conditionalTaskState);
+        aging.init(mockTree);
         aging.executeConditionalStep();
         assertEquals(1, mockTree.getNbAgeCalled());
 

@@ -18,7 +18,11 @@
  */
 package barsuift.simLife.process;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.j3d.environment.MockSun3D;
@@ -26,7 +30,7 @@ import barsuift.simLife.time.Month;
 import barsuift.simLife.time.SimLifeDate;
 
 
-public class EarthRevolutionTaskTest extends TestCase {
+public class EarthRevolutionTaskTest {
 
     private EarthRevolutionTask task;
 
@@ -40,8 +44,8 @@ public class EarthRevolutionTaskTest extends TestCase {
 
     private ConditionalTaskState conditionalTaskState;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         stepSize = 10;
         CyclicConditionState executionCondition = new CyclicConditionState(20, 0);
         BoundConditionState endingCondition = new BoundConditionState(40, 0);
@@ -54,73 +58,81 @@ public class EarthRevolutionTaskTest extends TestCase {
         date.setDayOfMonth(4);
         date.setMinuteOfDay(3);
         date.setSecondOfMinute(15);
-        task = new EarthRevolutionTask(state, sun3D, date);
+        task = new EarthRevolutionTask(state);
+        task.init(sun3D, date);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         state = null;
         sun3D = null;
         date = null;
         task = null;
     }
 
+    @Test
     public void testExecuteSplitConditionalStepAutomatic() {
         // cycle = 0/20
         // end = 0/40
-        assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
 
         task.executeStep();
         // cycle = 10/20
         // end = 10/40
-        assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
 
         task.executeStep();
         // cycle = 0/20
         // end = 20/40
         // secondOfYear = (((1 * 18) + 3) * 20 + 3) * 60 + 15 = 25 395
-        assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(),
+                0.0001);
 
         task.executeStep();
         // cycle = 10/20
         // end = 30/40
         // secondOfYear = (((2 * 18) + 4) * 20 + 3) * 60 + 15 = 25 395
-        assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(),
+                0.0001);
     }
 
+    @Test
     public void testExecuteSplitConditionalStepManual() {
         task.setAutomatic(false);
         // cycle = 0/20
         // end = 0/40
-        assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
 
         task.executeStep();
         // cycle = 10/20
         // end = 10/40
-        assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
 
         task.executeStep();
         // cycle = 0/20
         // end = 20/40
-        assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
 
         task.executeStep();
         // cycle = 10/20
         // end = 30/40
-        assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
     }
 
+    @Test
     public void testSetAutomatic() {
         task.executeStep();
         task.executeStep();
-        assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(),
+                0.0001);
 
         sun3D.setEarthRevolution(0f);
-        assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
 
         task.setAutomatic(true);
         // this should force the computation of the sun position
-        assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(), 0.0001);
+        AssertJUnit.assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(),
+                0.0001);
     }
 
 }

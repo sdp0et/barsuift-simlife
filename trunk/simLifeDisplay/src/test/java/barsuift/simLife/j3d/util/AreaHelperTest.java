@@ -22,19 +22,13 @@ import javax.media.j3d.GeometryArray;
 import javax.media.j3d.TriangleArray;
 import javax.vecmath.Point3f;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 
-public class AreaHelperTest extends TestCase {
+public class AreaHelperTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testComputeArea() {
         TriangleArray triangle;
         float area;
@@ -45,7 +39,7 @@ public class AreaHelperTest extends TestCase {
         triangle.setCoordinate(1, new Point3f(0, 0, 0));
         triangle.setCoordinate(2, new Point3f(0, 0, 0));
         area = AreaHelper.computeArea(triangle);
-        assertEquals(0d, area, 0.0000001);
+        AssertJUnit.assertEquals(0d, area, 0.0000001);
 
         // second test : right triangle
         triangle = new TriangleArray(3, GeometryArray.COORDINATES);
@@ -53,7 +47,7 @@ public class AreaHelperTest extends TestCase {
         triangle.setCoordinate(1, new Point3f(3, 0, 0));
         triangle.setCoordinate(2, new Point3f(3, 1, 0));
         area = AreaHelper.computeArea(triangle);
-        assertEquals(1.5, area, 0.0000001);
+        AssertJUnit.assertEquals(1.5, area, 0.0000001);
 
         // second test : isosceles triangle
         triangle = new TriangleArray(3, GeometryArray.COORDINATES);
@@ -61,7 +55,7 @@ public class AreaHelperTest extends TestCase {
         triangle.setCoordinate(1, new Point3f(0, 3, 1));
         triangle.setCoordinate(2, new Point3f(0, 2, 8));
         area = AreaHelper.computeArea(triangle);
-        assertEquals(7, area, 0.0000001);
+        AssertJUnit.assertEquals(7, area, 0.0000001);
     }
 
 }

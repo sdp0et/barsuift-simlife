@@ -18,23 +18,17 @@
  */
 package barsuift.simLife.j3d;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 
-public class SimLifeCanvas3DStateFactoryTest extends TestCase {
+public class SimLifeCanvas3DStateFactoryTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testCreateCanvas3DState() {
         SimLifeCanvas3DStateFactory factory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = factory.createCanvas3DState();
-        assertFalse(canvasState.isFpsShowing());
+        AssertJUnit.assertFalse(canvasState.isFpsShowing());
     }
 
 }

@@ -30,7 +30,11 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.Axis;
@@ -38,7 +42,6 @@ import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.Tuple3fState;
-import barsuift.simLife.j3d.helper.ColorTestHelper;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
@@ -47,8 +50,9 @@ import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.LeafEvent;
 import barsuift.simLife.tree.MockTreeLeaf;
+import static barsuift.simLife.j3d.assertions.AppearanceAssert.assertThat;
 
-public class BasicTreeLeaf3DTest extends TestCase {
+public class BasicTreeLeaf3DTest {
 
     private MockTreeLeaf mockLeaf;
 
@@ -56,83 +60,85 @@ public class BasicTreeLeaf3DTest extends TestCase {
 
     private MockUniverse3D mockUniverse3D;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         mockLeaf = new MockTreeLeaf();
         leaf3DState = DisplayDataCreatorForTests.createRandomTreeLeaf3DState();
         mockUniverse3D = new MockUniverse3D();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         mockLeaf = null;
         leaf3DState = null;
         mockUniverse3D = null;
     }
 
-    public void testConstructor() {
-        try {
-            new BasicTreeLeaf3D(mockUniverse3D, null, mockLeaf);
-            fail("Should throw new IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, null);
-            fail("Should throw new IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            new BasicTreeLeaf3D(null, leaf3DState, mockLeaf);
-            fail("Should throw new IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void constructor_exception_onNull() {
+        new BasicTreeLeaf3D(null);
     }
 
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void init_exception_onNullLeaf() {
+        BasicTreeLeaf3D leaf = new BasicTreeLeaf3D(leaf3DState);
+        leaf.init(mockUniverse3D, null);
+    }
+
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void init_exception_onNullUniverse() {
+        BasicTreeLeaf3D leaf = new BasicTreeLeaf3D(leaf3DState);
+        leaf.init(null, mockLeaf);
+    }
+
+    @Test
     public void testGetState() {
         leaf3DState = DisplayDataCreatorForTests.createSpecificTreeLeaf3DState();
-        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
-        assertEquals(leaf3DState, leaf3D.getState());
+        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
+        leaf3D.init(mockUniverse3D, mockLeaf);
+        AssertJUnit.assertEquals(leaf3DState, leaf3D.getState());
 
-        assertEquals(leaf3DState, leaf3D.getState());
-        assertSame(leaf3DState, leaf3D.getState());
-        assertEquals(0.4, leaf3D.getState().getEndPoint1().getX(), 0.00001);
-        assertEquals(0.0, leaf3D.getState().getEndPoint1().getY(), 0.00001);
-        assertEquals(0.0, leaf3D.getState().getEndPoint1().getZ(), 0.00001);
+        AssertJUnit.assertEquals(leaf3DState, leaf3D.getState());
+        AssertJUnit.assertSame(leaf3DState, leaf3D.getState());
+        AssertJUnit.assertEquals(0.4, leaf3D.getState().getEndPoint1().getX(), 0.00001);
+        AssertJUnit.assertEquals(0.0, leaf3D.getState().getEndPoint1().getY(), 0.00001);
+        AssertJUnit.assertEquals(0.0, leaf3D.getState().getEndPoint1().getZ(), 0.00001);
         leaf3D.increaseSize();
-        assertEquals(leaf3DState, leaf3D.getState());
-        assertSame(leaf3DState, leaf3D.getState());
-        assertEquals(0.6, leaf3D.getState().getEndPoint1().getX(), 0.00001);
-        assertEquals(0.2, leaf3D.getState().getEndPoint1().getY(), 0.00001);
-        assertEquals(0.0, leaf3D.getState().getEndPoint1().getZ(), 0.00001);
+        AssertJUnit.assertEquals(leaf3DState, leaf3D.getState());
+        AssertJUnit.assertSame(leaf3DState, leaf3D.getState());
+        AssertJUnit.assertEquals(0.6, leaf3D.getState().getEndPoint1().getX(), 0.00001);
+        AssertJUnit.assertEquals(0.2, leaf3D.getState().getEndPoint1().getY(), 0.00001);
+        AssertJUnit.assertEquals(0.0, leaf3D.getState().getEndPoint1().getZ(), 0.00001);
     }
 
+    @Test
     public void testSubscribers() {
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(80));
-        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
-        assertEquals(1, mockLeaf.countSubscribers());
+        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
+        leaf3D.init(mockUniverse3D, mockLeaf);
+        AssertJUnit.assertEquals(1, mockLeaf.countSubscribers());
         // check the subscriber is the leaf3D
         mockLeaf.deleteSubscriber(leaf3D);
-        assertEquals(0, mockLeaf.countSubscribers());
+        AssertJUnit.assertEquals(0, mockLeaf.countSubscribers());
     }
 
+    @Test
     public void testAppearance() {
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(80));
-        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
+        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
+        leaf3D.init(mockUniverse3D, mockLeaf);
         CompilerHelper.compile(leaf3D.getBranchGroup());
         Shape3D leafShape3D = (Shape3D) ((TransformGroup) leaf3D.getBranchGroup().getChild(0)).getChild(0);
 
         Color3f expectedColor = new Color3f(ColorConstants.brownYellow);
         expectedColor.interpolate(ColorConstants.green, 0.8f);
-        ColorTestHelper.testColorFromMaterial(leafShape3D.getAppearance(), expectedColor, new Color3f(0.05f, 0.05f,
-                0.05f), new Color3f(0.15f, 0.15f, 0.15f));
+        assertThat(leafShape3D.getAppearance()).hasAmbientColor(expectedColor);
+        assertThat(leafShape3D.getAppearance()).hasSpecularColor(new Color3f(0.05f, 0.05f, 0.05f));
+        assertThat(leafShape3D.getAppearance()).hasDiffuseColor(new Color3f(0.15f, 0.15f, 0.15f));
 
         // check the leaves are not culled (transparent) when seen from behind
-        assertEquals(PolygonAttributes.CULL_NONE, leafShape3D.getAppearance().getPolygonAttributes().getCullFace());
+        AssertJUnit.assertEquals(PolygonAttributes.CULL_NONE, leafShape3D.getAppearance().getPolygonAttributes()
+                .getCullFace());
 
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(75));
         leaf3D.update(mockLeaf, LeafEvent.EFFICIENCY);
@@ -140,8 +146,9 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // check that the color has changed as expected
         expectedColor = new Color3f(ColorConstants.brownYellow);
         expectedColor.interpolate(ColorConstants.green, 0.75f);
-        ColorTestHelper.testColorFromMaterial(leafShape3D.getAppearance(), expectedColor, new Color3f(0.05f, 0.05f,
-                0.05f), new Color3f(0.15f, 0.15f, 0.15f));
+        assertThat(leafShape3D.getAppearance()).hasAmbientColor(expectedColor);
+        assertThat(leafShape3D.getAppearance()).hasSpecularColor(new Color3f(0.05f, 0.05f, 0.05f));
+        assertThat(leafShape3D.getAppearance()).hasDiffuseColor(new Color3f(0.15f, 0.15f, 0.15f));
 
 
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(60));
@@ -151,12 +158,15 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // check that the color has NOT changed as expected, because the update code is not the appropriate one
         expectedColor = new Color3f(ColorConstants.brownYellow);
         expectedColor.interpolate(ColorConstants.green, 0.75f); // 75%, not 60%
-        ColorTestHelper.testColorFromMaterial(leafShape3D.getAppearance(), expectedColor, new Color3f(0.05f, 0.05f,
-                0.05f), new Color3f(0.15f, 0.15f, 0.15f));
+        assertThat(leafShape3D.getAppearance()).hasAmbientColor(expectedColor);
+        assertThat(leafShape3D.getAppearance()).hasSpecularColor(new Color3f(0.05f, 0.05f, 0.05f));
+        assertThat(leafShape3D.getAppearance()).hasDiffuseColor(new Color3f(0.15f, 0.15f, 0.15f));
     }
 
+    @Test
     public void testGeometry() {
-        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
+        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
+        leaf3D.init(mockUniverse3D, mockLeaf);
         BranchGroup bg = leaf3D.getBranchGroup();
         CompilerHelper.compile(bg);
 
@@ -166,18 +176,18 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // test translation and rotation
         Transform3D transform3D = new Transform3D();
         transformGroup.getTransform(transform3D);
-        assertEquals(leaf3DState.getTransform(), new Transform3DState(transform3D));
+        AssertJUnit.assertEquals(leaf3DState.getTransform(), new Transform3DState(transform3D));
 
         // test one leaf found
         Structure3DHelper.assertExactlyOneShape3D(transformGroup);
         Shape3D leafShape3D = (Shape3D) transformGroup.getChild(0);
-        assertNotNull(leafShape3D);
+        AssertJUnit.assertNotNull(leafShape3D);
 
         // test position and geometry
         Geometry leafGeometry = leafShape3D.getGeometry();
-        assertTrue(leafGeometry instanceof TriangleArray);
+        AssertJUnit.assertTrue(leafGeometry instanceof TriangleArray);
         TriangleArray leafTriangle = (TriangleArray) leafGeometry;
-        assertEquals(3, leafTriangle.getVertexCount());
+        AssertJUnit.assertEquals(3, leafTriangle.getVertexCount());
 
         Point3f actualStartPoint = new Point3f();
         Point3f actualEndPoint1 = new Point3f();
@@ -190,6 +200,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         PointTestHelper.assertPointEquals(leaf3DState.getEndPoint2().toPointValue(), actualEndPoint2);
     }
 
+    @Test
     public void testFall() {
         double initialRotation = Randomizer.randomRotation();
         Tuple3fState initialLeafAttachPoint = new Tuple3fState(1, 2, 3);
@@ -199,7 +210,8 @@ public class BasicTreeLeaf3DTest extends TestCase {
         initialTransform.mul(initialRotationT3D);
         leaf3DState.setTransform(new Transform3DState(initialTransform));
 
-        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
+        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
+        leaf3D.init(mockUniverse3D, mockLeaf);
 
         // add the leaf into a graph with translation and rotation
         Transform3D parentTransform3D = new Transform3D();
@@ -218,26 +230,30 @@ public class BasicTreeLeaf3DTest extends TestCase {
         // call to the fall() method
         leaf3D.update(null, MobileEvent.FALLING);
 
-        assertEquals(new Point3f(3 + 2, 2 + 3, -1 + 5), leaf3D.getPosition());
+        AssertJUnit.assertEquals(new Point3f(3 + 2, 2 + 3, -1 + 5), leaf3D.getPosition());
 
         TransformGroup tg = (TransformGroup) leaf3D.getBranchGroup().getChild(0);
         Transform3D newTransform = new Transform3D();
         tg.getTransform(newTransform);
         double newRotation = TransformerHelper.getRotationFromTransform(newTransform, Axis.Y);
-        assertEquals((initialRotation + Math.PI / 2) % (2 * Math.PI), newRotation, 0.00001);
+        AssertJUnit.assertEquals((initialRotation + Math.PI / 2) % (2 * Math.PI), newRotation, 0.00001);
 
     }
 
+    @Test
     public void testGetArea() {
         leaf3DState = DisplayDataCreatorForTests.createSpecificTreeLeaf3DState();
-        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
-        assertEquals(0.08, leaf3D.getArea(), 0.000001);
+        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
+        leaf3D.init(mockUniverse3D, mockLeaf);
+        AssertJUnit.assertEquals(0.08, leaf3D.getArea(), 0.000001);
     }
 
+    @Test
     public void testIsMaxSizeReached() {
         leaf3DState = DisplayDataCreatorForTests.createSpecificTreeLeaf3DState();
-        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
-        assertFalse(leaf3D.isMaxSizeReached());
+        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
+        leaf3D.init(mockUniverse3D, mockLeaf);
+        AssertJUnit.assertFalse(leaf3D.isMaxSizeReached());
 
         Tuple3fState initialEndPoint1 = leaf3DState.getInitialEndPoint1();
         leaf3DState.setEndPoint1(new Tuple3fState(10 * initialEndPoint1.getX(), 10 * initialEndPoint1.getY(),
@@ -245,22 +261,25 @@ public class BasicTreeLeaf3DTest extends TestCase {
         Tuple3fState initialEndPoint2 = leaf3DState.getInitialEndPoint2();
         leaf3DState.setEndPoint2(new Tuple3fState(10 * initialEndPoint2.getX(), 10 * initialEndPoint2.getY(),
                 10 * initialEndPoint2.getZ()));
-        leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
-        assertTrue(leaf3D.isMaxSizeReached());
+        leaf3D = new BasicTreeLeaf3D(leaf3DState);
+        leaf3D.init(mockUniverse3D, mockLeaf);
+        AssertJUnit.assertTrue(leaf3D.isMaxSizeReached());
     }
 
+    @Test
     public void testIncreaseSize() {
         leaf3DState = DisplayDataCreatorForTests.createSpecificTreeLeaf3DState();
         leaf3DState.setEndPoint1(leaf3DState.getInitialEndPoint1());
         leaf3DState.setEndPoint2(leaf3DState.getInitialEndPoint2());
         Tuple3fState initialEndPoint1 = leaf3DState.getInitialEndPoint1();
         Tuple3fState initialEndPoint2 = leaf3DState.getInitialEndPoint2();
-        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(mockUniverse3D, leaf3DState, mockLeaf);
+        BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
+        leaf3D.init(mockUniverse3D, mockLeaf);
         Shape3D leafShape = (Shape3D) ((TransformGroup) leaf3D.getBranchGroup().getChild(0)).getChild(0);
         Point3f geomEndPoint1 = new Point3f();
         Point3f geomEndPoint2 = new Point3f();
 
-        assertFalse(leaf3D.isMaxSizeReached());
+        AssertJUnit.assertFalse(leaf3D.isMaxSizeReached());
 
         leaf3D.increaseSize();
 
@@ -306,7 +325,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         leaf3D.increaseSize();
 
         // test state
-        assertTrue(leaf3D.isMaxSizeReached());
+        AssertJUnit.assertTrue(leaf3D.isMaxSizeReached());
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
         expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
                 initialEndPoint1.getZ() * 10);
@@ -325,7 +344,7 @@ public class BasicTreeLeaf3DTest extends TestCase {
         leaf3D.increaseSize();
 
         // test state
-        assertTrue(leaf3D.isMaxSizeReached());
+        AssertJUnit.assertTrue(leaf3D.isMaxSizeReached());
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
         expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
                 initialEndPoint1.getZ() * 10);

@@ -33,6 +33,7 @@ import barsuift.simLife.j3d.tree.BasicTreeBranch3D;
 
 import com.sun.j3d.utils.geometry.Cylinder;
 
+// TODO convert to FEST assertion
 public final class BasicTreeBranch3DTestHelper extends Assert {
 
     private BasicTreeBranch3DTestHelper() {
