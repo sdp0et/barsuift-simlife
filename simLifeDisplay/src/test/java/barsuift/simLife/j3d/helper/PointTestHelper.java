@@ -23,6 +23,7 @@ import javax.vecmath.Point3f;
 
 import junit.framework.Assert;
 
+// TODO convert to FEST assertion
 public final class PointTestHelper extends Assert {
 
     private PointTestHelper() {

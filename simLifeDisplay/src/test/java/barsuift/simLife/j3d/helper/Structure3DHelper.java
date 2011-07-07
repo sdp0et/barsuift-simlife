@@ -29,7 +29,7 @@ import junit.framework.Assert;
 
 import com.sun.j3d.utils.geometry.Primitive;
 
-
+// TODO convert to FEST assertion
 public final class Structure3DHelper extends Assert {
 
     private Structure3DHelper() {
@@ -75,7 +75,7 @@ public final class Structure3DHelper extends Assert {
         assertTrue(children.nextElement() instanceof Shape3D);
         assertFalse(children.hasMoreElements());
     }
-    
+
     @SuppressWarnings("rawtypes")
     public static void assertExactlyOnePrimitive(TransformGroup transformGroup) {
         Enumeration children = transformGroup.getAllChildren();
