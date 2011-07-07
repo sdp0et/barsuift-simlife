@@ -36,6 +36,7 @@ public class BasicUniverseTest extends TestCase {
     public void testGetState() {
         UniverseState state = CoreDataCreatorForTests.createRandomUniverseState();
         BasicUniverse universe = new BasicUniverse(state);
+        universe.init();
         assertEquals(state, universe.getState());
         assertSame(state, universe.getState());
         int nbTrees = universe.getState().getTrees().size();

@@ -20,7 +20,6 @@ package barsuift.simLife.j3d.universe.physic;
 
 import javax.media.j3d.Group;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -30,6 +29,8 @@ import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
 import barsuift.simLife.universe.MockUniverse;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class BasicGravity3DTest {
@@ -60,21 +61,21 @@ public class BasicGravity3DTest {
         BasicGravity3D gravity3D = new BasicGravity3D(gravity3DState);
         gravity3D.init(universe3D);
         // the group should be able to add new children
-        AssertJUnit.assertTrue(gravity3D.getGroup().getCapability(Group.ALLOW_CHILDREN_EXTEND));
+        assertThat(gravity3D.getGroup().getCapability(Group.ALLOW_CHILDREN_EXTEND)).isTrue();
         // the group should be able to remove children
-        AssertJUnit.assertTrue(gravity3D.getGroup().getCapability(Group.ALLOW_CHILDREN_WRITE));
+        assertThat(gravity3D.getGroup().getCapability(Group.ALLOW_CHILDREN_WRITE)).isTrue();
     }
 
     @Test
     public void testFall() {
         BasicGravity3D gravity3D = new BasicGravity3D(gravity3DState);
         gravity3D.init(universe3D);
-        AssertJUnit.assertEquals(0, gravity3D.getGroup().numChildren());
+        assertThat(gravity3D.getGroup().numChildren()).isEqualTo(0);
         MockMobile mobile = new MockMobile();
         gravity3D.fall(mobile);
-        AssertJUnit.assertEquals(1, gravity3D.getGroup().numChildren());
+        assertThat(gravity3D.getGroup().numChildren()).isEqualTo(1);
         gravity3D.isFallen(mobile);
-        AssertJUnit.assertEquals(0, gravity3D.getGroup().numChildren());
+        assertThat(gravity3D.getGroup().numChildren()).isEqualTo(0);
     }
 
 }

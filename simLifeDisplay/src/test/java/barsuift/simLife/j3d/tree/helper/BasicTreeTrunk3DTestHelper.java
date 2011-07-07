@@ -28,10 +28,14 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
 
 import junit.framework.Assert;
-import barsuift.simLife.j3d.helper.PointTestHelper;
+
+import org.fest.assertions.Delta;
+
 import barsuift.simLife.j3d.tree.BasicTreeTrunk3D;
 
 import com.sun.j3d.utils.geometry.Cylinder;
+
+import static barsuift.simLife.j3d.assertions.Point3dAssert.assertThat;
 
 // TODO convert to FEST assertion
 public final class BasicTreeTrunk3DTestHelper extends Assert {
@@ -74,10 +78,12 @@ public final class BasicTreeTrunk3DTestHelper extends Assert {
         bottomBounds.getUpper(upperBottom);
         Point3d movedUpperBottom = new Point3d();
         transform3D.transform(upperBottom, movedUpperBottom);
-        PointTestHelper.assertPointEquals(expectedLowerBottom, lowerBottom, 0.02f, 0.0001f, 0.02f);
-        PointTestHelper.assertPointEquals(expectedMovedLowerBottom, movedLowerBottom, 0.02f, 0.0001f, 0.02f);
-        PointTestHelper.assertPointEquals(expectedUpperBottom, upperBottom, 0.02f, 0.0001f, 0.02f);
-        PointTestHelper.assertPointEquals(expectedMovedUpperBottom, movedUpperBottom, 0.02f, 0.0001f, 0.02f);
+        Delta bigDelta = Delta.delta(0.02);
+        Delta smallDelta = Delta.delta(0.0001);
+        assertThat(lowerBottom).isEqualTo(expectedLowerBottom, bigDelta, smallDelta, bigDelta);
+        assertThat(movedLowerBottom).isEqualTo(expectedMovedLowerBottom, bigDelta, smallDelta, bigDelta);
+        assertThat(upperBottom).isEqualTo(expectedUpperBottom, bigDelta, smallDelta, bigDelta);
+        assertThat(movedUpperBottom).isEqualTo(expectedMovedUpperBottom, bigDelta, smallDelta, bigDelta);
 
         // check top of trunk
         Shape3D top = trunkCylinder.getShape(Cylinder.TOP);
@@ -90,10 +96,10 @@ public final class BasicTreeTrunk3DTestHelper extends Assert {
         topBounds.getUpper(upperTop);
         Point3d movedUpperTop = new Point3d();
         transform3D.transform(upperTop, movedUpperTop);
-        PointTestHelper.assertPointEquals(expectedLowerTop, lowerTop, 0.02, 0.0001, 0.02);
-        PointTestHelper.assertPointEquals(expectedMovedLowerTop, movedLowerTop, 0.02, 0.0001, 0.02);
-        PointTestHelper.assertPointEquals(expectedUpperTop, upperTop, 0.02, 0.0001, 0.02);
-        PointTestHelper.assertPointEquals(expectedMovedUpperTop, movedUpperTop, 0.02, 0.0001, 0.02);
+        assertThat(lowerTop).isEqualTo(expectedLowerTop, bigDelta, smallDelta, bigDelta);
+        assertThat(movedLowerTop).isEqualTo(expectedMovedLowerTop, bigDelta, smallDelta, bigDelta);
+        assertThat(upperTop).isEqualTo(expectedUpperTop, bigDelta, smallDelta, bigDelta);
+        assertThat(movedUpperTop).isEqualTo(expectedMovedUpperTop, bigDelta, smallDelta, bigDelta);
     }
 
 }

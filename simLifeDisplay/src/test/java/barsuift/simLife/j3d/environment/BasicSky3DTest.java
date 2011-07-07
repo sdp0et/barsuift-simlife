@@ -26,7 +26,6 @@ import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Group;
 import javax.vecmath.Color3f;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -36,6 +35,8 @@ import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import static barsuift.simLife.j3d.assertions.ColorAssert.assertThat;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class BasicSky3DTest {
@@ -66,11 +67,11 @@ public class BasicSky3DTest {
     @Test
     public void testGetGroup() {
         Group group = sky3D.getGroup();
-        AssertJUnit.assertEquals(3, group.numChildren());
-        AssertJUnit.assertTrue(group.getChild(0) instanceof AmbientLight);
-        AssertJUnit.assertTrue(group.getChild(1) instanceof DirectionalLight);
+        assertThat(group.numChildren()).isEqualTo(3);
+        assertThat(group.getChild(0)).isInstanceOf(AmbientLight.class);
+        assertThat(group.getChild(1)).isInstanceOf(DirectionalLight.class);
         Background background = (Background) group.getChild(2);
-        AssertJUnit.assertTrue(background.getCapability(Background.ALLOW_COLOR_WRITE));
+        assertThat(background.getCapability(Background.ALLOW_COLOR_WRITE)).isTrue();
         Color3f color = new Color3f();
         background.getColor(color);
         // brightness = 0.5 so color should be "half" sky blue, half black
@@ -104,16 +105,16 @@ public class BasicSky3DTest {
 
     @Test
     public void testSubscribers() {
-        AssertJUnit.assertEquals(1, mockSun3D.countSubscribers());
+        assertThat(mockSun3D.countSubscribers()).isEqualTo(1);
         // check the subscriber is the sky3D
         mockSun3D.deleteSubscriber(sky3D);
-        AssertJUnit.assertEquals(0, mockSun3D.countSubscribers());
+        assertThat(mockSun3D.countSubscribers()).isEqualTo(0);
     }
 
     @Test
     public void testGetState() {
-        AssertJUnit.assertEquals(state, sky3D.getState());
-        AssertJUnit.assertSame(state, sky3D.getState());
+        assertThat(sky3D.getState()).isEqualTo(state);
+        assertThat(sky3D.getState()).isSameAs(state);
     }
 
 }

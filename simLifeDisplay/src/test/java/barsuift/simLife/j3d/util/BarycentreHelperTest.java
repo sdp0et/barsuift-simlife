@@ -18,12 +18,15 @@
  */
 package barsuift.simLife.j3d.util;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
-import org.testng.AssertJUnit;
 import javax.vecmath.Point3f;
 
-import barsuift.simLife.j3d.helper.PointTestHelper;
+import org.fest.assertions.Delta;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import static barsuift.simLife.j3d.assertions.Point3fAssert.assertThat;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class BarycentreHelperTest {
 
@@ -56,80 +59,81 @@ public class BarycentreHelperTest {
         // //////// between p1 and p2
         actualPoint = BarycentreHelper.getBarycentre(p1, p2, d1);
         expectedPoint = new Point3f(1, 0, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p2, d2);
         expectedPoint = new Point3f(0.5f, 0, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p2, d3);
         expectedPoint = new Point3f(1, 0, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p2, d4);
         expectedPoint = new Point3f(0, 0, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         // //////// between p1 and p3
         actualPoint = BarycentreHelper.getBarycentre(p1, p3, d1);
         expectedPoint = new Point3f(0, 1, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p3, d2);
         expectedPoint = new Point3f(0, 0.5f, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p3, d3);
         expectedPoint = new Point3f(0, 1, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p3, d4);
         expectedPoint = new Point3f(0, 0, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         // //////// between p1 and p4
         actualPoint = BarycentreHelper.getBarycentre(p1, p4, d1);
         expectedPoint = new Point3f(0, 0, 1);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p4, d2);
         expectedPoint = new Point3f(0, 0, 0.5f);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p4, d3);
         expectedPoint = new Point3f(0, 0, 1);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p4, d4);
         expectedPoint = new Point3f(0, 0, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         // //////// between p1 and p5
         actualPoint = BarycentreHelper.getBarycentre(p1, p5, d1);
         expectedPoint = new Point3f((float) Math.cos(Math.PI / 4), (float) Math.sin(Math.PI / 4), 0);
-        PointTestHelper.assertPointEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p5, d2);
         expectedPoint = new Point3f((float) Math.cos(Math.PI / 4) / 2, (float) Math.sin(Math.PI / 4) / 2, 0);
-        PointTestHelper.assertPointEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p5, d3);
         expectedPoint = new Point3f(1, 1, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
 
         actualPoint = BarycentreHelper.getBarycentre(p1, p5, d4);
         expectedPoint = new Point3f(0, 0, 0);
-        AssertJUnit.assertEquals(expectedPoint, actualPoint);
+        assertThat(actualPoint).isEqualTo(expectedPoint);
     }
 
     @Test
     public void testComputeDistanceToUse() {
-        AssertJUnit.assertEquals(5f, BarycentreHelper.computeDistanceToUse(10, 5), 0.00001);
-        AssertJUnit.assertEquals(10f, BarycentreHelper.computeDistanceToUse(10, 10), 0.00001);
-        AssertJUnit.assertEquals(10f, BarycentreHelper.computeDistanceToUse(10, 15), 0.00001);
-        AssertJUnit.assertEquals(0f, BarycentreHelper.computeDistanceToUse(10, -5), 0.00001);
-        AssertJUnit.assertEquals(0f, BarycentreHelper.computeDistanceToUse(-10, -5), 0.00001);
-        AssertJUnit.assertEquals(0f, BarycentreHelper.computeDistanceToUse(-1, -5), 0.00001);
+        Delta delta = Delta.delta(0.00001);
+        assertThat(BarycentreHelper.computeDistanceToUse(10, 5)).isEqualTo(5, delta);
+        assertThat(BarycentreHelper.computeDistanceToUse(10, 10)).isEqualTo(10, delta);
+        assertThat(BarycentreHelper.computeDistanceToUse(10, 15)).isEqualTo(10, delta);
+        assertThat(BarycentreHelper.computeDistanceToUse(10, -5)).isEqualTo(0, delta);
+        assertThat(BarycentreHelper.computeDistanceToUse(-10, -5)).isEqualTo(0, delta);
+        assertThat(BarycentreHelper.computeDistanceToUse(-1, -5)).isEqualTo(0, delta);
     }
 
 }

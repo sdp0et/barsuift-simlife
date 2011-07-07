@@ -22,7 +22,6 @@ import javax.media.j3d.Appearance;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -32,6 +31,8 @@ import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.tree.MockTreeTrunk;
 import static barsuift.simLife.j3d.assertions.AppearanceAssert.assertThat;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class BasicTreeTrunk3DTest {
 
@@ -77,8 +78,8 @@ public class BasicTreeTrunk3DTest {
     public void testGetState() {
         BasicTreeTrunk3D trunk3D = new BasicTreeTrunk3D(trunk3DState);
         trunk3D.init(mockUniverse3D, mockTrunk);
-        AssertJUnit.assertEquals(trunk3DState, trunk3D.getState());
-        AssertJUnit.assertSame(trunk3DState, trunk3D.getState());
+        assertThat(trunk3D.getState()).isEqualTo(trunk3DState);
+        assertThat(trunk3D.getState()).isSameAs(trunk3DState);
     }
 
     @Test

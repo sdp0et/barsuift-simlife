@@ -18,11 +18,13 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import org.testng.AssertJUnit;
+import org.fest.assertions.Delta;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.landscape.LandscapeParameters;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class Sun3DStateFactoryTest {
@@ -33,11 +35,11 @@ public class Sun3DStateFactoryTest {
         PlanetParameters planetParameters = new PlanetParameters();
         Sun3DStateFactory factory = new Sun3DStateFactory();
         Sun3DState sunState = factory.createSun3DState(planetParameters, landscapeParameters);
-        AssertJUnit.assertEquals(0.0f, sunState.getEarthRotation(), 0.0001);
-        AssertJUnit.assertEquals(0.0f, sunState.getEarthRevolution(), 0.0001);
-        AssertJUnit.assertNotNull(sunState.getEarthRotationTask());
-        AssertJUnit.assertTrue(sunState.isEarthRotationTaskAutomatic());
-        AssertJUnit.assertTrue(sunState.isEarthRevolutionTaskAutomatic());
+        assertThat(sunState.getEarthRotation()).isEqualTo(0.0f, Delta.delta(0.0001));
+        assertThat(sunState.getEarthRevolution()).isEqualTo(0.0f, Delta.delta(0.0001));
+        assertThat(sunState.getEarthRotationTask()).isNotNull();
+        assertThat(sunState.isEarthRotationTaskAutomatic()).isTrue();
+        assertThat(sunState.isEarthRevolutionTaskAutomatic()).isTrue();
     }
 
 }

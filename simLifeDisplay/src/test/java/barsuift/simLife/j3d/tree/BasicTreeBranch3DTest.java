@@ -28,14 +28,12 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 
 import org.testng.Assert;
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.CompilerHelper;
-import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.tree.helper.BasicTreeBranch3DTestHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.util.ColorConstants;
@@ -46,6 +44,7 @@ import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Primitive;
 
 import static barsuift.simLife.j3d.assertions.AppearanceAssert.assertThat;
+import static barsuift.simLife.j3d.assertions.GroupAssert.assertThat;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -100,8 +99,8 @@ public class BasicTreeBranch3DTest {
     public void testGetState() {
         BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
         branch3D.init(mockUniverse3D, mockBranch);
-        AssertJUnit.assertEquals(branch3DState, branch3D.getState());
-        AssertJUnit.assertSame(branch3DState, branch3D.getState());
+        assertThat(branch3D.getState()).isEqualTo(branch3DState);
+        assertThat(branch3D.getState()).isSameAs(branch3DState);
     }
 
     @Test
@@ -114,12 +113,12 @@ public class BasicTreeBranch3DTest {
         assertThat(branch3D.getLeaves()).hasSize(nbLeaves);
 
         float length = branch3DState.getLength();
-        AssertJUnit.assertEquals(length, branch3D.getLength());
-        Structure3DHelper.assertExactlyOneTransformGroup(bg);
+        assertThat(branch3D.getLength()).isEqualTo(length);
+        assertThat(bg).hasExactlyOneTransformGroup();
         TransformGroup tg = (TransformGroup) bg.getChild(0);
 
-        AssertJUnit.assertTrue(tg.getCapability(Group.ALLOW_CHILDREN_WRITE));
-        AssertJUnit.assertTrue(tg.getCapability(Group.ALLOW_CHILDREN_EXTEND));
+        assertThat(tg.getCapability(Group.ALLOW_CHILDREN_WRITE)).isTrue();
+        assertThat(tg.getCapability(Group.ALLOW_CHILDREN_EXTEND)).isTrue();
         int nbTimesNoLeafShapeIsFound = 0;
         int nbLeavesFound = 0;
         for (Enumeration enumeration = tg.getAllChildren(); enumeration.hasMoreElements();) {
@@ -130,7 +129,7 @@ public class BasicTreeBranch3DTest {
                 if (child.getClass().equals(TransformGroup.class)) {
                     nbTimesNoLeafShapeIsFound++;
                     TransformGroup branchTg = (TransformGroup) child;
-                    Structure3DHelper.assertExactlyOnePrimitive(branchTg);
+                    assertThat(branchTg).hasExactlyOnePrimitive();
                     Primitive branchPrimitive = (Primitive) branchTg.getChild(0);
                     assert (branchPrimitive.getClass().equals(Cylinder.class));
                     Cylinder branchCylinder = (Cylinder) branchPrimitive;
@@ -155,8 +154,8 @@ public class BasicTreeBranch3DTest {
                 }
             }
         }
-        AssertJUnit.assertEquals("We should have only one branch", 1, nbTimesNoLeafShapeIsFound);
-        AssertJUnit.assertEquals(nbLeaves, nbLeavesFound);
+        assertThat(nbTimesNoLeafShapeIsFound).as("We should have exactly one branch").isEqualTo(1);
+        assertThat(nbLeavesFound).isEqualTo(nbLeaves);
     }
 
     private MockTreeLeaf3D getLeaf3D(int index) {
@@ -177,19 +176,19 @@ public class BasicTreeBranch3DTest {
 
         branch3D.increaseOneLeafSize();
 
-        AssertJUnit.assertEquals(0, getLeaf3D(0).getNbTimesIncreaseSizeCalled());
-        AssertJUnit.assertEquals(1, getLeaf3D(1).getNbTimesIncreaseSizeCalled());
-        AssertJUnit.assertEquals(0, getLeaf3D(2).getNbTimesIncreaseSizeCalled());
-        AssertJUnit.assertEquals(0, getLeaf3D(3).getNbTimesIncreaseSizeCalled());
-        AssertJUnit.assertEquals(0, getLeaf3D(4).getNbTimesIncreaseSizeCalled());
+        assertThat(getLeaf3D(0).getNbTimesIncreaseSizeCalled()).isEqualTo(0);
+        assertThat(getLeaf3D(1).getNbTimesIncreaseSizeCalled()).isEqualTo(1);
+        assertThat(getLeaf3D(2).getNbTimesIncreaseSizeCalled()).isEqualTo(0);
+        assertThat(getLeaf3D(3).getNbTimesIncreaseSizeCalled()).isEqualTo(0);
+        assertThat(getLeaf3D(4).getNbTimesIncreaseSizeCalled()).isEqualTo(0);
 
         branch3D.increaseOneLeafSize();
 
-        AssertJUnit.assertEquals(0, getLeaf3D(0).getNbTimesIncreaseSizeCalled());
-        AssertJUnit.assertEquals(2, getLeaf3D(1).getNbTimesIncreaseSizeCalled());
-        AssertJUnit.assertEquals(0, getLeaf3D(2).getNbTimesIncreaseSizeCalled());
-        AssertJUnit.assertEquals(0, getLeaf3D(3).getNbTimesIncreaseSizeCalled());
-        AssertJUnit.assertEquals(0, getLeaf3D(4).getNbTimesIncreaseSizeCalled());
+        assertThat(getLeaf3D(0).getNbTimesIncreaseSizeCalled()).isEqualTo(0);
+        assertThat(getLeaf3D(1).getNbTimesIncreaseSizeCalled()).isEqualTo(2);
+        assertThat(getLeaf3D(2).getNbTimesIncreaseSizeCalled()).isEqualTo(0);
+        assertThat(getLeaf3D(3).getNbTimesIncreaseSizeCalled()).isEqualTo(0);
+        assertThat(getLeaf3D(4).getNbTimesIncreaseSizeCalled()).isEqualTo(0);
     }
 
 
@@ -241,12 +240,12 @@ public class BasicTreeBranch3DTest {
                 sum3++;
             }
         }
-        AssertJUnit.assertTrue("sum1=" + sum1, sum1 > 310);
-        AssertJUnit.assertTrue("sum1=" + sum1, sum1 < 510);
-        AssertJUnit.assertTrue("sum2=" + sum2, sum2 > 280);
-        AssertJUnit.assertTrue("sum2=" + sum2, sum2 < 386);
-        AssertJUnit.assertTrue("sum3=" + sum3, sum3 > 200);
-        AssertJUnit.assertTrue("sum3=" + sum3, sum3 < 300);
+        assertThat(sum1).isGreaterThan(310);
+        assertThat(sum1).isLessThan(510);
+        assertThat(sum2).isGreaterThan(280);
+        assertThat(sum2).isLessThan(386);
+        assertThat(sum3).isGreaterThan(200);
+        assertThat(sum3).isLessThan(300);
     }
 
     /**
@@ -299,11 +298,11 @@ public class BasicTreeBranch3DTest {
                 sum3++;
             }
         }
-        AssertJUnit.assertEquals(0, sum1);
-        AssertJUnit.assertTrue("sum2=" + sum2, sum2 > 540);
-        AssertJUnit.assertTrue("sum2=" + sum2, sum2 < 660);
-        AssertJUnit.assertTrue("sum3=" + sum3, sum3 > 340);
-        AssertJUnit.assertTrue("sum3=" + sum3, sum3 < 460);
+        assertThat(sum1).isZero();
+        assertThat(sum2).isGreaterThan(540);
+        assertThat(sum2).isLessThan(660);
+        assertThat(sum3).isGreaterThan(340);
+        assertThat(sum3).isLessThan(460);
     }
 
     /**
@@ -355,9 +354,9 @@ public class BasicTreeBranch3DTest {
                 sum3++;
             }
         }
-        AssertJUnit.assertEquals(0, sum1);
-        AssertJUnit.assertEquals(0, sum2);
-        AssertJUnit.assertEquals(1000, sum3);
+        assertThat(sum1).isEqualTo(0);
+        assertThat(sum2).isEqualTo(0);
+        assertThat(sum3).isEqualTo(1000);
     }
 
     /**
@@ -411,12 +410,12 @@ public class BasicTreeBranch3DTest {
                 sum3++;
             }
         }
-        AssertJUnit.assertTrue("sum1=" + sum1, sum1 > 450);
-        AssertJUnit.assertTrue("sum1=" + sum1, sum1 < 550);
-        AssertJUnit.assertTrue("sum2=" + sum2, sum2 > 240);
-        AssertJUnit.assertTrue("sum2=" + sum2, sum2 < 360);
-        AssertJUnit.assertTrue("sum3=" + sum3, sum3 > 150);
-        AssertJUnit.assertTrue("sum3=" + sum3, sum3 < 250);
+        assertThat(sum1).isGreaterThan(450);
+        assertThat(sum1).isLessThan(550);
+        assertThat(sum2).isGreaterThan(240);
+        assertThat(sum2).isLessThan(360);
+        assertThat(sum3).isGreaterThan(150);
+        assertThat(sum3).isLessThan(250);
     }
 
     /**
@@ -458,8 +457,8 @@ public class BasicTreeBranch3DTest {
                 sum2++;
             }
         }
-        AssertJUnit.assertEquals(1000, sum1);
-        AssertJUnit.assertEquals(0, sum2);
+        assertThat(sum1).isEqualTo(1000);
+        assertThat(sum2).isEqualTo(0);
     }
 
 }

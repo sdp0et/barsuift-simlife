@@ -24,10 +24,11 @@ import java.util.List;
 import javax.media.j3d.Transform3D;
 import javax.vecmath.Vector3f;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class TreeBranchesOrganizerTest {
@@ -59,12 +60,12 @@ public class TreeBranchesOrganizerTest {
         Transform3D transform3D1 = branch3DState1.getTransform().toTransform3D();
         Vector3f translation1 = new Vector3f();
         transform3D1.get(translation1);
-        AssertJUnit.assertEquals(expectedTranslation, translation1);
+        assertThat(translation1).isEqualTo(expectedTranslation);
 
         Transform3D transform3D2 = branch3DState2.getTransform().toTransform3D();
         Vector3f translation2 = new Vector3f();
         transform3D2.get(translation2);
-        AssertJUnit.assertEquals(expectedTranslation, translation2);
+        assertThat(translation2).isEqualTo(expectedTranslation);
     }
 
 }

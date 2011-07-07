@@ -35,6 +35,7 @@ public class BasicUniverseContextTest extends TestCase {
     public void testGetState() throws Exception {
         UniverseContextState state = CoreDataCreatorForTests.createSpecificUniverseContextState();
         BasicUniverseContext context = new BasicUniverseContext(state);
+        context.init();
         assertEquals(state, context.getState());
         assertSame(state, context.getState());
 
@@ -56,6 +57,7 @@ public class BasicUniverseContextTest extends TestCase {
     public void testSetFpsShowing() {
         UniverseContextState state = CoreDataCreatorForTests.createSpecificUniverseContextState();
         BasicUniverseContext universeContext = new BasicUniverseContext(state);
+        universeContext.init();
 
         assertFalse(universeContext.isFpsShowing());
         assertFalse(universeContext.getUniverseContext3D().isFpsShowing());

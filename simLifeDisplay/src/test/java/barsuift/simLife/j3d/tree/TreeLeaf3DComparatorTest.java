@@ -20,10 +20,11 @@ package barsuift.simLife.j3d.tree;
 
 import javax.vecmath.Point3f;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class TreeLeaf3DComparatorTest {
@@ -51,24 +52,24 @@ public class TreeLeaf3DComparatorTest {
         MockTreeLeaf3D o4 = new MockTreeLeaf3D();
         o4.setPosition(new Point3f(5.001f, 0, 0));
 
-        AssertJUnit.assertEquals(0, comparator.compare(o1, o1));
-        AssertJUnit.assertEquals(-1000, comparator.compare(o1, o2));
-        AssertJUnit.assertEquals(-3000, comparator.compare(o1, o3));
-        AssertJUnit.assertEquals(-3001, comparator.compare(o1, o4));
+        assertThat(comparator.compare(o1, o1)).isEqualTo(0);
+        assertThat(comparator.compare(o1, o2)).isEqualTo(-1000);
+        assertThat(comparator.compare(o1, o3)).isEqualTo(-3000);
+        assertThat(comparator.compare(o1, o4)).isEqualTo(-3001);
 
-        AssertJUnit.assertEquals(1000, comparator.compare(o2, o1));
-        AssertJUnit.assertEquals(0, comparator.compare(o2, o2));
-        AssertJUnit.assertEquals(-2000, comparator.compare(o2, o3));
-        AssertJUnit.assertEquals(-2001, comparator.compare(o2, o4));
+        assertThat(comparator.compare(o2, o1)).isEqualTo(1000);
+        assertThat(comparator.compare(o2, o2)).isEqualTo(0);
+        assertThat(comparator.compare(o2, o3)).isEqualTo(-2000);
+        assertThat(comparator.compare(o2, o4)).isEqualTo(-2001);
 
-        AssertJUnit.assertEquals(3000, comparator.compare(o3, o1));
-        AssertJUnit.assertEquals(2000, comparator.compare(o3, o2));
-        AssertJUnit.assertEquals(0, comparator.compare(o3, o3));
-        AssertJUnit.assertEquals(0, comparator.compare(o3, o4));
+        assertThat(comparator.compare(o3, o1)).isEqualTo(3000);
+        assertThat(comparator.compare(o3, o2)).isEqualTo(2000);
+        assertThat(comparator.compare(o3, o3)).isEqualTo(0);
+        assertThat(comparator.compare(o3, o4)).isEqualTo(0);
 
-        AssertJUnit.assertEquals(3001, comparator.compare(o4, o1));
-        AssertJUnit.assertEquals(2001, comparator.compare(o4, o2));
-        AssertJUnit.assertEquals(0, comparator.compare(o4, o3));
-        AssertJUnit.assertEquals(0, comparator.compare(o4, o4));
+        assertThat(comparator.compare(o4, o1)).isEqualTo(3001);
+        assertThat(comparator.compare(o4, o2)).isEqualTo(2001);
+        assertThat(comparator.compare(o4, o3)).isEqualTo(0);
+        assertThat(comparator.compare(o4, o4)).isEqualTo(0);
     }
 }

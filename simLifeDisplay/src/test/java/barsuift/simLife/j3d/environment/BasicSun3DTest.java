@@ -33,6 +33,8 @@ import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.time.SimLifeDate;
+import static barsuift.simLife.j3d.assertions.ColorAssert.assertThat;
+import static barsuift.simLife.j3d.assertions.VectorAssert.assertThat;
 
 import static org.fest.assertions.Assertions.assertThat;
 

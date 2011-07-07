@@ -57,17 +57,18 @@ public class BasicSky3D implements Sky3D, Subscriber {
         ambientLight = new AmbientLight(ColorConstants.grey);
         ambientLight.setInfluencingBounds(state.getAmbientLightBounds().toBoundingBox());
         group = new BranchGroup();
-        group.addChild(ambientLight);
+
         background = new Background();
         background.setApplicationBounds(state.getSkyBounds().toBoundingBox());
         background.setCapability(Background.ALLOW_COLOR_WRITE);
-        group.addChild(background);
     }
 
     public void init(Sky sky) {
         this.sky = sky;
+        group.addChild(ambientLight);
         group.addChild(getSun3D().getLight());
         getSun3D().addSubscriber(this);
+        group.addChild(background);
         background.setGeometry(getSun3D().getGroup());
         updateColor();
     }

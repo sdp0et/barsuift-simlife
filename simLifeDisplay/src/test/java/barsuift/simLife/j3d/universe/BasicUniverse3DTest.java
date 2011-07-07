@@ -24,7 +24,6 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.Node;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.CoreDataCreatorForTests;
@@ -45,12 +44,13 @@ public class BasicUniverse3DTest {
     public void testBasicUniverse3D() {
         BasicUniverse3D universe3D = new BasicUniverse3D(new Universe3DState());
         universe3D.init(new MockUniverse());
-        AssertJUnit.assertNotNull(universe3D.getElements3D());
-        AssertJUnit.assertNotNull(universe3D.getPhysics3D());
+        assertThat(universe3D.getElements3D()).isNotNull();
+        assertThat(universe3D.getPhysics3D()).isNotNull();
         BranchGroup root = universe3D.getUniverseRoot();
-        AssertJUnit.assertNotNull(root);
-        AssertJUnit.assertEquals(0, root.numChildren());
-        AssertJUnit.assertTrue(root.getCapability(Group.ALLOW_CHILDREN_EXTEND));
+        assertThat(root).isNotNull();
+        // should already contain the environment3D and Physics3D
+        assertThat(root.numChildren()).isEqualTo(2);
+        assertThat(root.getCapability(Group.ALLOW_CHILDREN_EXTEND)).isTrue();
     }
 
     @Test
@@ -65,15 +65,14 @@ public class BasicUniverse3DTest {
         BasicUniverse3D universe3D = new BasicUniverse3D(new Universe3DState());
         universe3D.init(universe);
 
-        AssertJUnit.assertTrue(universe3D.getElements3D().contains(
-                universe.getEnvironment().getEnvironment3D().getGroup()));
-        AssertJUnit.assertTrue(universe3D.getElements3D().contains(universe.getPhysics().getPhysics3D().getGroup()));
+        assertThat(universe3D.getElements3D()).contains(universe.getEnvironment().getEnvironment3D().getGroup());
+        assertThat(universe3D.getElements3D()).contains(universe.getPhysics().getPhysics3D().getGroup());
 
         Set<Node> elements3d = universe3D.getElements3D();
-        AssertJUnit.assertNotNull(elements3d);
+        assertThat(elements3d).isNotNull();
         assertThat(elements3d).hasSize(4);
-        AssertJUnit.assertTrue(elements3d.contains(tree.getTree3D().getBranchGroup()));
-        AssertJUnit.assertTrue(elements3d.contains(treeLeaf.getTreeLeaf3D().getBranchGroup()));
+        assertThat(elements3d).contains(tree.getTree3D().getBranchGroup());
+        assertThat(elements3d).contains(treeLeaf.getTreeLeaf3D().getBranchGroup());
 
     }
 
@@ -83,16 +82,22 @@ public class BasicUniverse3DTest {
         universe3D.init(new MockUniverse());
         TreeLeaf3DStateFactory stateFactory = new TreeLeaf3DStateFactory();
         TreeLeaf3DState leaf3dState = stateFactory.createRandomTreeLeaf3DState();
+        Set<Node> elements3d = universe3D.getElements3D();
+        assertThat(elements3d).isNotNull();
+        // should already contain the environment3D and Physics3D
+        assertThat(elements3d).hasSize(2);
+
         BasicTreeLeaf3D treeLeaf3D = new BasicTreeLeaf3D(leaf3dState);
         treeLeaf3D.init(universe3D, new MockTreeLeaf());
         universe3D.addElement3D(treeLeaf3D.getBranchGroup());
-        Set<Node> elements3d = universe3D.getElements3D();
-        AssertJUnit.assertNotNull(elements3d);
-        assertThat(elements3d).hasSize(1);
-        AssertJUnit.assertTrue(elements3d.contains(treeLeaf3D.getBranchGroup()));
+        elements3d = universe3D.getElements3D();
+        assertThat(elements3d).isNotNull();
+        assertThat(elements3d).hasSize(3);
+        assertThat(elements3d).contains(treeLeaf3D.getBranchGroup());
+
         BranchGroup root = universe3D.getUniverseRoot();
-        AssertJUnit.assertNotNull(root);
-        AssertJUnit.assertEquals(1, root.numChildren());
-        AssertJUnit.assertEquals(treeLeaf3D.getBranchGroup(), root.getChild(0));
+        assertThat(root).isNotNull();
+        assertThat(root.numChildren()).isEqualTo(3);
+        assertThat(root.getChild(2)).isEqualTo(treeLeaf3D.getBranchGroup());
     }
 }
