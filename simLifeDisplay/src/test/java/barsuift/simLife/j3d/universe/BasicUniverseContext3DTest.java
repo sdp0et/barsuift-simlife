@@ -18,65 +18,73 @@
  */
 package barsuift.simLife.j3d.universe;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.landscape.LandscapeParameters;
 import barsuift.simLife.universe.MockUniverseContext;
 
 
-public class BasicUniverseContext3DTest extends TestCase {
+public class BasicUniverseContext3DTest {
 
     private UniverseContext3DState state;
 
-    private UniverseContext3D universeContext3D;
+    private BasicUniverseContext3D universeContext3D;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         LandscapeParameters parameters = new LandscapeParameters();
         parameters.random();
         UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
         state = factory.createUniverseContext3DState(parameters);
-        universeContext3D = new BasicUniverseContext3D(state, new MockUniverseContext());
+        universeContext3D = new BasicUniverseContext3D(state);
+        universeContext3D.init(new MockUniverseContext());
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         state = null;
         universeContext3D = null;
     }
 
+    @Test
     public void testUnsetAxis() {
-        assertTrue(universeContext3D.isAxisShowing());
+        AssertJUnit.assertTrue(universeContext3D.isAxisShowing());
         universeContext3D.setAxisShowing(false);
-        assertFalse(universeContext3D.isAxisShowing());
+        AssertJUnit.assertFalse(universeContext3D.isAxisShowing());
         universeContext3D.setAxisShowing(true);
-        assertTrue(universeContext3D.isAxisShowing());
+        AssertJUnit.assertTrue(universeContext3D.isAxisShowing());
         universeContext3D.setAxisShowing(false);
-        assertFalse(universeContext3D.isAxisShowing());
+        AssertJUnit.assertFalse(universeContext3D.isAxisShowing());
     }
 
+    @Test
     public void testGetState() {
-        assertEquals(state, universeContext3D.getState());
-        assertSame(state, universeContext3D.getState());
+        AssertJUnit.assertEquals(state, universeContext3D.getState());
+        AssertJUnit.assertSame(state, universeContext3D.getState());
 
-        assertTrue(universeContext3D.getState().isAxisShowing());
-        assertFalse(universeContext3D.getState().getCanvas().isFpsShowing());
+        AssertJUnit.assertTrue(universeContext3D.getState().isAxisShowing());
+        AssertJUnit.assertFalse(universeContext3D.getState().getCanvas().isFpsShowing());
         universeContext3D.setAxisShowing(false);
         universeContext3D.setFpsShowing(true);
 
-        assertEquals(state, universeContext3D.getState());
-        assertSame(state, universeContext3D.getState());
-        assertFalse(universeContext3D.getState().isAxisShowing());
-        assertTrue(universeContext3D.getState().getCanvas().isFpsShowing());
+        AssertJUnit.assertEquals(state, universeContext3D.getState());
+        AssertJUnit.assertSame(state, universeContext3D.getState());
+        AssertJUnit.assertFalse(universeContext3D.getState().isAxisShowing());
+        AssertJUnit.assertTrue(universeContext3D.getState().getCanvas().isFpsShowing());
     }
 
 
+    @Test
     public void testSetFpsShowing() {
-        assertFalse(universeContext3D.isFpsShowing());
-        assertFalse(universeContext3D.getCanvas3D().isFpsShowing());
+        AssertJUnit.assertFalse(universeContext3D.isFpsShowing());
+        AssertJUnit.assertFalse(universeContext3D.getCanvas3D().isFpsShowing());
 
         universeContext3D.setFpsShowing(true);
-        assertTrue(universeContext3D.isFpsShowing());
-        assertTrue(universeContext3D.getCanvas3D().isFpsShowing());
+        AssertJUnit.assertTrue(universeContext3D.isFpsShowing());
+        AssertJUnit.assertTrue(universeContext3D.getCanvas3D().isFpsShowing());
     }
 
 }

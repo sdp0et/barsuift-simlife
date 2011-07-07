@@ -61,7 +61,8 @@ public class BasicTreeLeafTest extends TestCase {
         universe = new MockUniverse();
         universe.setEnvironment(mockEnv);
 
-        leaf = new BasicTreeLeaf(universe, leafState);
+        leaf = new BasicTreeLeaf(leafState);
+        leaf.init(universe);
         publisherHelper = new PublisherTestHelper();
     }
 
@@ -76,13 +77,14 @@ public class BasicTreeLeafTest extends TestCase {
 
     public void testBasicTreeLeaf() {
         try {
-            new BasicTreeLeaf(null, leafState);
+            BasicTreeLeaf leaf = new BasicTreeLeaf(leafState);
+            leaf.init(null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
-            new BasicTreeLeaf(universe, null);
+            new BasicTreeLeaf(null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
@@ -106,7 +108,8 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
 
         leafState.setEnergy(new BigDecimal("99"));
-        leaf = new BasicTreeLeaf(universe, leafState);
+        leaf = new BasicTreeLeaf(leafState);
+        leaf.init(universe);
         leaf.collectSolarEnergy();
         // the energy would be more than 100, so it will be capped
         assertEquals(100f, leaf.getEnergy().floatValue(), 0.00001f);
@@ -139,7 +142,8 @@ public class BasicTreeLeafTest extends TestCase {
         assertEquals(0f, leaf.getEnergy().floatValue(), 0.00001f);
 
         leafState.setEnergy(new BigDecimal("35"));
-        leaf = new BasicTreeLeaf(universe, leafState);
+        leaf = new BasicTreeLeaf(leafState);
+        leaf.init(universe);
         leaf.improveEfficiency();
         assertEquals(1.00f, leaf.getEfficiency().floatValue(), 0.0000000001f);
         assertEquals(15f, leaf.getEnergy().floatValue(), 0.00001f);
@@ -148,7 +152,8 @@ public class BasicTreeLeafTest extends TestCase {
     public void testFall() {
         // make sure the leaf only has 10% efficiency (limit before falling)
         leafState.setEfficiency(PercentHelper.getDecimalValue(10));
-        leaf = new BasicTreeLeaf(universe, leafState);
+        leaf = new BasicTreeLeaf(leafState);
+        leaf.init(universe);
         publisherHelper.addSubscriberTo(leaf);
 
         assertFalse(leaf.isTooWeak());

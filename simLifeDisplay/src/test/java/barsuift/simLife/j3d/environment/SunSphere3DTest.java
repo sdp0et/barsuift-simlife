@@ -20,21 +20,14 @@ package barsuift.simLife.j3d.environment;
 
 import javax.vecmath.Point3f;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.j3d.helper.PointTestHelper;
 
 
-public class SunSphere3DTest extends TestCase {
+public class SunSphere3DTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testUpdateForEclipticShift1() {
         SunSphere3D sphere = new SunSphere3D(0, (float) Math.PI / 2, 0);
         PointTestHelper.assertPointEquals(new Point3f(0, 0, -0.15f), sphere.getSunCenter());
@@ -52,6 +45,7 @@ public class SunSphere3DTest extends TestCase {
         PointTestHelper.assertPointEquals(new Point3f(0, -0.15f, 0), sphere.getSunCenter());
     }
 
+    @Test
     public void testUpdateForEclipticShift2() {
         SunSphere3D sphere = new SunSphere3D((float) Math.PI / 4, (float) Math.PI / 2, 0);
         PointTestHelper.assertPointEquals(
@@ -79,6 +73,7 @@ public class SunSphere3DTest extends TestCase {
                 sphere.getSunCenter());
     }
 
+    @Test
     public void testUpdateForEclipticShift3() {
         SunSphere3D sphere = new SunSphere3D((float) Math.PI / 2, (float) Math.PI / 2, 0);
         PointTestHelper.assertPointEquals(new Point3f(0, -0.15f, 0), sphere.getSunCenter());

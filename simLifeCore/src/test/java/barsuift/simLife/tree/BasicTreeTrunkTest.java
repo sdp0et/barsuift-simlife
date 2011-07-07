@@ -35,13 +35,14 @@ public class BasicTreeTrunkTest extends TestCase {
 
     public void testBasicTreeTrunk() {
         try {
-            new BasicTreeTrunk(new MockUniverse(), null);
+            new BasicTreeTrunk(null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
-            new BasicTreeTrunk(null, new TreeTrunkState());
+            BasicTreeTrunk trunk = new BasicTreeTrunk(new TreeTrunkState());
+            trunk.init(null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
@@ -50,7 +51,8 @@ public class BasicTreeTrunkTest extends TestCase {
 
     public void testGetState() {
         TreeTrunkState trunkState = CoreDataCreatorForTests.createSpecificTreeTrunkState();
-        BasicTreeTrunk treeTrunk = new BasicTreeTrunk(new MockUniverse(), trunkState);
+        BasicTreeTrunk treeTrunk = new BasicTreeTrunk(trunkState);
+        treeTrunk.init(new MockUniverse());
         assertEquals(4.0f, treeTrunk.getHeight());
         assertEquals(0.5f, treeTrunk.getRadius());
 

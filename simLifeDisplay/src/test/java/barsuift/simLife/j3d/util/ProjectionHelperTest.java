@@ -18,17 +18,18 @@
  */
 package barsuift.simLife.j3d.util;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.vecmath.Point3f;
 
-import junit.framework.TestCase;
+public class ProjectionHelperTest {
 
-public class ProjectionHelperTest extends TestCase {
-
+    @Test
     public void testGetProjectionPoint3f() {
         Point3f resultPoint1 = ProjectionHelper.getProjectionPoint(new Point3f(0, 0, 0));
-        assertEquals(new Point3f(0, 0, 0), resultPoint1);
+        AssertJUnit.assertEquals(new Point3f(0, 0, 0), resultPoint1);
         Point3f resultPoint2 = ProjectionHelper.getProjectionPoint(new Point3f(1, 2, 3));
-        assertEquals(new Point3f(1, 0, 3), resultPoint2);
+        AssertJUnit.assertEquals(new Point3f(1, 0, 3), resultPoint2);
     }
 
 }

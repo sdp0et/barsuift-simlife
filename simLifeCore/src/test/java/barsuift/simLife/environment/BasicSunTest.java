@@ -31,7 +31,8 @@ public class BasicSunTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         sunState = new SunState();
-        sun = new BasicSun(sunState, new MockUniverse());
+        sun = new BasicSun(sunState);
+        sun.init(new MockUniverse());
     }
 
     protected void tearDown() throws Exception {
@@ -41,7 +42,7 @@ public class BasicSunTest extends TestCase {
 
     public void testConstructor() {
         try {
-            new BasicSun(null, new MockUniverse());
+            new BasicSun(null);
             fail("Should throw new IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception

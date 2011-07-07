@@ -18,18 +18,20 @@
  */
 package barsuift.simLife.j3d.environment;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import barsuift.simLife.landscape.LandscapeParameters;
 
 
-public class Sky3DStateFactoryTest extends TestCase {
+public class Sky3DStateFactoryTest {
 
+    @Test
     public void testCreateSky3DState() {
         LandscapeParameters landscapeParameters = new LandscapeParameters();
         Sky3DStateFactory factory = new Sky3DStateFactory();
         Sky3DState sky3DState = factory.createSky3DState(landscapeParameters);
-        assertNotNull(sky3DState.getAmbientLightBounds());
-        assertNotNull(sky3DState.getSkyBounds());
+        AssertJUnit.assertNotNull(sky3DState.getAmbientLightBounds());
+        AssertJUnit.assertNotNull(sky3DState.getSkyBounds());
     }
 
 }

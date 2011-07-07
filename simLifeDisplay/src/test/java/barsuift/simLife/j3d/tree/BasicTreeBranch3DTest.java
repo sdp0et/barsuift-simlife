@@ -27,9 +27,13 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.helper.ColorTestHelper;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.tree.helper.BasicTreeBranch3DTestHelper;
@@ -41,7 +45,11 @@ import barsuift.simLife.tree.MockTreeLeaf;
 import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Primitive;
 
-public class BasicTreeBranch3DTest extends TestCase {
+import static barsuift.simLife.j3d.assertions.AppearanceAssert.assertThat;
+
+import static org.fest.assertions.Assertions.assertThat;
+
+public class BasicTreeBranch3DTest {
 
     private int nbLeaves;
 
@@ -51,8 +59,8 @@ public class BasicTreeBranch3DTest extends TestCase {
 
     private TreeBranch3DState branch3DState;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         mockBranch = new MockTreeBranch();
         nbLeaves = 5;
         for (int index = 0; index < nbLeaves; index++) {
@@ -63,55 +71,55 @@ public class BasicTreeBranch3DTest extends TestCase {
         branch3DState = DisplayDataCreatorForTests.createRandomTreeBranch3DState();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         nbLeaves = 0;
         mockUniverse3D = null;
         mockBranch = null;
         branch3DState = null;
     }
 
-    public void testConstructor() {
-        try {
-            new BasicTreeBranch3D(mockUniverse3D, null, mockBranch);
-            fail("Should throw new IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            new BasicTreeBranch3D(mockUniverse3D, branch3DState, null);
-            fail("Should throw new IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            new BasicTreeBranch3D(null, branch3DState, mockBranch);
-            fail("Should throw new IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void constructor_exception() {
+        new BasicTreeBranch3D(null);
     }
 
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void init_exception_onNullBranch() {
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, null);
+    }
+
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void init_exception_onNullUniverse() {
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(null, mockBranch);
+    }
+
+    @Test
     public void testGetState() {
-        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
-        assertEquals(branch3DState, branch3D.getState());
-        assertSame(branch3DState, branch3D.getState());
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, mockBranch);
+        AssertJUnit.assertEquals(branch3DState, branch3D.getState());
+        AssertJUnit.assertSame(branch3DState, branch3D.getState());
     }
 
+    @Test
     @SuppressWarnings("rawtypes")
     public void testTreeBranch3D() {
-        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, mockBranch);
         BranchGroup bg = branch3D.getBranchGroup();
         CompilerHelper.compile(bg);
-        assertEquals(nbLeaves, branch3D.getLeaves().size());
+        assertThat(branch3D.getLeaves()).hasSize(nbLeaves);
 
         float length = branch3DState.getLength();
-        assertEquals(length, branch3D.getLength());
+        AssertJUnit.assertEquals(length, branch3D.getLength());
         Structure3DHelper.assertExactlyOneTransformGroup(bg);
         TransformGroup tg = (TransformGroup) bg.getChild(0);
 
-        assertTrue(tg.getCapability(Group.ALLOW_CHILDREN_WRITE));
-        assertTrue(tg.getCapability(Group.ALLOW_CHILDREN_EXTEND));
+        AssertJUnit.assertTrue(tg.getCapability(Group.ALLOW_CHILDREN_WRITE));
+        AssertJUnit.assertTrue(tg.getCapability(Group.ALLOW_CHILDREN_EXTEND));
         int nbTimesNoLeafShapeIsFound = 0;
         int nbLeavesFound = 0;
         for (Enumeration enumeration = tg.getAllChildren(); enumeration.hasMoreElements();) {
@@ -139,21 +147,23 @@ public class BasicTreeBranch3DTest extends TestCase {
                     BasicTreeBranch3DTestHelper.checkTreeBranch3D(branch3D, length, radius, expectedLowerBottom,
                             expectedUpperBottom, expectedMovedLowerBottom, expectedMovedUpperBottom, expectedLowerTop,
                             expectedUpperTop, expectedMovedLowerTop, expectedMovedUpperTop);
-                    ColorTestHelper.testColorFromMaterial(branchCylinder.getAppearance(), ColorConstants.brown,
-                            new Color3f(0.05f, 0.05f, 0.05f), new Color3f(0.15f, 0.15f, 0.15f));
+                    assertThat(branchCylinder.getAppearance()).hasAmbientColor(ColorConstants.brown);
+                    assertThat(branchCylinder.getAppearance()).hasSpecularColor(new Color3f(0.05f, 0.05f, 0.05f));
+                    assertThat(branchCylinder.getAppearance()).hasDiffuseColor(new Color3f(0.15f, 0.15f, 0.15f));
                 } else {
-                    fail("There should be no other children. child is instance of " + child.getClass());
+                    Assert.fail("There should be no other children. child is instance of " + child.getClass());
                 }
             }
         }
-        assertEquals("We should have only one branch", 1, nbTimesNoLeafShapeIsFound);
-        assertEquals(nbLeaves, nbLeavesFound);
+        AssertJUnit.assertEquals("We should have only one branch", 1, nbTimesNoLeafShapeIsFound);
+        AssertJUnit.assertEquals(nbLeaves, nbLeavesFound);
     }
 
     private MockTreeLeaf3D getLeaf3D(int index) {
         return (MockTreeLeaf3D) ((MockTreeLeaf) mockBranch.getLeaves().get(index)).getTreeLeaf3D();
     }
 
+    @Test
     public void testIncreaseOneLeafSize() {
         mockBranch.setEnergy(new BigDecimal(150));
         // set all the leaves at their maximum size, so that they can not be increased anymore
@@ -162,26 +172,28 @@ public class BasicTreeBranch3DTest extends TestCase {
         }
         // ensure the second leaf can be increased
         getLeaf3D(1).setMaxSizeReached(false);
-        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, mockBranch);
 
         branch3D.increaseOneLeafSize();
 
-        assertEquals(0, getLeaf3D(0).getNbTimesIncreaseSizeCalled());
-        assertEquals(1, getLeaf3D(1).getNbTimesIncreaseSizeCalled());
-        assertEquals(0, getLeaf3D(2).getNbTimesIncreaseSizeCalled());
-        assertEquals(0, getLeaf3D(3).getNbTimesIncreaseSizeCalled());
-        assertEquals(0, getLeaf3D(4).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(0, getLeaf3D(0).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(1, getLeaf3D(1).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(0, getLeaf3D(2).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(0, getLeaf3D(3).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(0, getLeaf3D(4).getNbTimesIncreaseSizeCalled());
 
         branch3D.increaseOneLeafSize();
 
-        assertEquals(0, getLeaf3D(0).getNbTimesIncreaseSizeCalled());
-        assertEquals(2, getLeaf3D(1).getNbTimesIncreaseSizeCalled());
-        assertEquals(0, getLeaf3D(2).getNbTimesIncreaseSizeCalled());
-        assertEquals(0, getLeaf3D(3).getNbTimesIncreaseSizeCalled());
-        assertEquals(0, getLeaf3D(4).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(0, getLeaf3D(0).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(2, getLeaf3D(1).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(0, getLeaf3D(2).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(0, getLeaf3D(3).getNbTimesIncreaseSizeCalled());
+        AssertJUnit.assertEquals(0, getLeaf3D(4).getNbTimesIncreaseSizeCalled());
     }
 
 
+    @Test
     public void testGetRandomLeafToIncrease1() {
         mockBranch = new MockTreeBranch();
 
@@ -200,7 +212,8 @@ public class BasicTreeBranch3DTest extends TestCase {
         leaf3D3.setArea(6);
         mockBranch.addLeaf(leaf3);
 
-        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, mockBranch);
         // area1 = 2
         // area2 = 4
         // area3 = 6
@@ -228,17 +241,18 @@ public class BasicTreeBranch3DTest extends TestCase {
                 sum3++;
             }
         }
-        assertTrue("sum1=" + sum1, sum1 > 310);
-        assertTrue("sum1=" + sum1, sum1 < 510);
-        assertTrue("sum2=" + sum2, sum2 > 280);
-        assertTrue("sum2=" + sum2, sum2 < 386);
-        assertTrue("sum3=" + sum3, sum3 > 200);
-        assertTrue("sum3=" + sum3, sum3 < 300);
+        AssertJUnit.assertTrue("sum1=" + sum1, sum1 > 310);
+        AssertJUnit.assertTrue("sum1=" + sum1, sum1 < 510);
+        AssertJUnit.assertTrue("sum2=" + sum2, sum2 > 280);
+        AssertJUnit.assertTrue("sum2=" + sum2, sum2 < 386);
+        AssertJUnit.assertTrue("sum3=" + sum3, sum3 > 200);
+        AssertJUnit.assertTrue("sum3=" + sum3, sum3 < 300);
     }
 
     /**
      * Test with one leaf at its maximum size
      */
+    @Test
     public void testGetRandomLeafToIncrease2() {
         mockBranch = new MockTreeBranch();
 
@@ -258,7 +272,8 @@ public class BasicTreeBranch3DTest extends TestCase {
         leaf3D3.setArea(6);
         mockBranch.addLeaf(leaf3);
 
-        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, mockBranch);
         // area1 = 2 (not taken into account, because leaf is already at its maximum size)
         // area2 = 4
         // area3 = 6
@@ -284,16 +299,17 @@ public class BasicTreeBranch3DTest extends TestCase {
                 sum3++;
             }
         }
-        assertEquals(0, sum1);
-        assertTrue("sum2=" + sum2, sum2 > 540);
-        assertTrue("sum2=" + sum2, sum2 < 660);
-        assertTrue("sum3=" + sum3, sum3 > 340);
-        assertTrue("sum3=" + sum3, sum3 < 460);
+        AssertJUnit.assertEquals(0, sum1);
+        AssertJUnit.assertTrue("sum2=" + sum2, sum2 > 540);
+        AssertJUnit.assertTrue("sum2=" + sum2, sum2 < 660);
+        AssertJUnit.assertTrue("sum3=" + sum3, sum3 > 340);
+        AssertJUnit.assertTrue("sum3=" + sum3, sum3 < 460);
     }
 
     /**
      * Test with all but one leaves at their maximum sizes
      */
+    @Test
     public void testGetRandomLeafToIncrease3() {
         mockBranch = new MockTreeBranch();
 
@@ -314,7 +330,8 @@ public class BasicTreeBranch3DTest extends TestCase {
         leaf3D3.setArea(6);
         mockBranch.addLeaf(leaf3);
 
-        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, mockBranch);
         // area1 = 2 (not taken into account, because leaf is already at its maximum size)
         // area2 = 4 (not taken into account, because leaf is already at its maximum size)
         // area3 = 6
@@ -338,14 +355,15 @@ public class BasicTreeBranch3DTest extends TestCase {
                 sum3++;
             }
         }
-        assertEquals(0, sum1);
-        assertEquals(0, sum2);
-        assertEquals(1000, sum3);
+        AssertJUnit.assertEquals(0, sum1);
+        AssertJUnit.assertEquals(0, sum2);
+        AssertJUnit.assertEquals(1000, sum3);
     }
 
     /**
      * Test with 3 leaves, one of which has 0 for area
      */
+    @Test
     public void testGetRandomLeafToIncrease4() {
         mockBranch = new MockTreeBranch();
 
@@ -364,7 +382,8 @@ public class BasicTreeBranch3DTest extends TestCase {
         leaf3D3.setArea(6);
         mockBranch.addLeaf(leaf3);
 
-        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, mockBranch);
         // area1 = 0
         // area2 = 4
         // area3 = 6
@@ -392,17 +411,18 @@ public class BasicTreeBranch3DTest extends TestCase {
                 sum3++;
             }
         }
-        assertTrue("sum1=" + sum1, sum1 > 450);
-        assertTrue("sum1=" + sum1, sum1 < 550);
-        assertTrue("sum2=" + sum2, sum2 > 240);
-        assertTrue("sum2=" + sum2, sum2 < 360);
-        assertTrue("sum3=" + sum3, sum3 > 150);
-        assertTrue("sum3=" + sum3, sum3 < 250);
+        AssertJUnit.assertTrue("sum1=" + sum1, sum1 > 450);
+        AssertJUnit.assertTrue("sum1=" + sum1, sum1 < 550);
+        AssertJUnit.assertTrue("sum2=" + sum2, sum2 > 240);
+        AssertJUnit.assertTrue("sum2=" + sum2, sum2 < 360);
+        AssertJUnit.assertTrue("sum3=" + sum3, sum3 > 150);
+        AssertJUnit.assertTrue("sum3=" + sum3, sum3 < 250);
     }
 
     /**
      * Test with 2 leaves, one of which has 0 for area
      */
+    @Test
     public void testGetRandomLeafToIncrease5() {
         mockBranch = new MockTreeBranch();
 
@@ -416,7 +436,8 @@ public class BasicTreeBranch3DTest extends TestCase {
         leaf3D2.setArea(4);
         mockBranch.addLeaf(leaf2);
 
-        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(mockUniverse3D, branch3DState, mockBranch);
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, mockBranch);
         // area1 = 0
         // area2 = 4
         // sum (area) = 4
@@ -437,8 +458,8 @@ public class BasicTreeBranch3DTest extends TestCase {
                 sum2++;
             }
         }
-        assertEquals(1000, sum1);
-        assertEquals(0, sum2);
+        AssertJUnit.assertEquals(1000, sum1);
+        AssertJUnit.assertEquals(0, sum2);
     }
 
 }

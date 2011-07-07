@@ -22,31 +22,28 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3f;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.MockMobile;
-import barsuift.simLife.j3d.helper.VectorTestHelper;
 import barsuift.simLife.j3d.landscape.Landscape3D;
 import barsuift.simLife.j3d.landscape.MockLandscape3D;
 import barsuift.simLife.message.PublisherTestHelper;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class GravityTaskTest extends TestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+public class GravityTaskTest {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testExecuteSplitConditionalStep_WithHeight() {
         SplitConditionalTaskState state = UtilDataCreatorForTests.createSpecificSplitConditionalTaskState();
         MockLandscape3D landscape3D = new MockLandscape3D();
         landscape3D.setHeight(5);
-        GravityTask gravity = new GravityTask(state, landscape3D);
+        GravityTask gravity = new GravityTask(state);
+        gravity.init(landscape3D);
 
         // add mobile instances
         PublisherTestHelper publisher = new PublisherTestHelper();
@@ -57,28 +54,30 @@ public class GravityTaskTest extends TestCase {
         // with stepSize=3, the movement should be y-=0.075
         gravity.executeSplitConditionalStep(state.getStepSize());
 
-        VectorTestHelper.assertEquals(new Vector3f(1, 5.025f, 3), getTranslation(mobile));
+        AssertJUnit.assertEquals(new Vector3f(1, 5.025f, 3), getTranslation(mobile));
         // not yet FALLEN
-        assertEquals(0, publisher.nbUpdated());
-        assertEquals(0, publisher.getUpdateObjects().size());
+        AssertJUnit.assertEquals(0, publisher.nbUpdated());
+        assertThat(publisher.getUpdateObjects()).isEmpty();
         // mobile should still be in the list of mobile
-        assertTrue(gravity.getMobiles().contains(mobile));
+        AssertJUnit.assertTrue(gravity.getMobiles().contains(mobile));
 
         // with stepSize=3, the movement should be y-=0.075
         gravity.executeSplitConditionalStep(state.getStepSize());
 
-        VectorTestHelper.assertEquals(new Vector3f(1, 5.0f, 3), getTranslation(mobile));
+        AssertJUnit.assertEquals(new Vector3f(1, 5.0f, 3), getTranslation(mobile));
         // it is now FALLEN, with height=5
-        assertEquals(1, publisher.nbUpdated());
-        assertEquals(MobileEvent.FALLEN, publisher.getUpdateObjects().get(0));
+        AssertJUnit.assertEquals(1, publisher.nbUpdated());
+        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher.getUpdateObjects().get(0));
         // mobile should still be in the list of mobile
-        assertFalse(gravity.getMobiles().contains(mobile));
+        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile));
     }
 
+    @Test
     public void testExecuteSplitConditionalStep() {
         SplitConditionalTaskState state = UtilDataCreatorForTests.createSpecificSplitConditionalTaskState();
         Landscape3D landscape3D = new MockLandscape3D();
-        GravityTask gravity = new GravityTask(state, landscape3D);
+        GravityTask gravity = new GravityTask(state);
+        gravity.init(landscape3D);
 
         // test with no mobile : nothing special should happen
         gravity.executeSplitConditionalStep(state.getStepSize());
@@ -120,39 +119,39 @@ public class GravityTaskTest extends TestCase {
 
 
 
-        VectorTestHelper.assertEquals(new Vector3f(1, 1.925f, 3), getTranslation(mobile1));
-        VectorTestHelper.assertEquals(new Vector3f(1, 0.001f, 3), getTranslation(mobile2));
-        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile3));
-        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile4));
-        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile5));
-        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile6));
-        VectorTestHelper.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile7));
+        AssertJUnit.assertEquals(new Vector3f(1, 1.925f, 3), getTranslation(mobile1));
+        AssertJUnit.assertEquals(new Vector3f(1, 0.001f, 3), getTranslation(mobile2));
+        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile3));
+        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile4));
+        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile5));
+        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile6));
+        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile7));
 
         // every mobile except mobile1 and mobile2 should notify a FALLEN event
-        assertEquals(0, publisher1.nbUpdated());
-        assertEquals(0, publisher1.getUpdateObjects().size());
-        assertEquals(0, publisher2.nbUpdated());
-        assertEquals(0, publisher2.getUpdateObjects().size());
+        AssertJUnit.assertEquals(0, publisher1.nbUpdated());
+        assertThat(publisher1.getUpdateObjects()).isEmpty();
+        AssertJUnit.assertEquals(0, publisher2.nbUpdated());
+        assertThat(publisher2.getUpdateObjects()).isEmpty();
 
-        assertEquals(1, publisher3.nbUpdated());
-        assertEquals(MobileEvent.FALLEN, publisher3.getUpdateObjects().get(0));
-        assertEquals(1, publisher4.nbUpdated());
-        assertEquals(MobileEvent.FALLEN, publisher4.getUpdateObjects().get(0));
-        assertEquals(1, publisher5.nbUpdated());
-        assertEquals(MobileEvent.FALLEN, publisher5.getUpdateObjects().get(0));
-        assertEquals(1, publisher6.nbUpdated());
-        assertEquals(MobileEvent.FALLEN, publisher6.getUpdateObjects().get(0));
-        assertEquals(1, publisher7.nbUpdated());
-        assertEquals(MobileEvent.FALLEN, publisher7.getUpdateObjects().get(0));
+        AssertJUnit.assertEquals(1, publisher3.nbUpdated());
+        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher3.getUpdateObjects().get(0));
+        AssertJUnit.assertEquals(1, publisher4.nbUpdated());
+        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher4.getUpdateObjects().get(0));
+        AssertJUnit.assertEquals(1, publisher5.nbUpdated());
+        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher5.getUpdateObjects().get(0));
+        AssertJUnit.assertEquals(1, publisher6.nbUpdated());
+        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher6.getUpdateObjects().get(0));
+        AssertJUnit.assertEquals(1, publisher7.nbUpdated());
+        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher7.getUpdateObjects().get(0));
 
         // only mobile1 and mobile2 should still be in the list of mobile
-        assertTrue(gravity.getMobiles().contains(mobile1));
-        assertTrue(gravity.getMobiles().contains(mobile2));
-        assertFalse(gravity.getMobiles().contains(mobile3));
-        assertFalse(gravity.getMobiles().contains(mobile4));
-        assertFalse(gravity.getMobiles().contains(mobile5));
-        assertFalse(gravity.getMobiles().contains(mobile6));
-        assertFalse(gravity.getMobiles().contains(mobile7));
+        AssertJUnit.assertTrue(gravity.getMobiles().contains(mobile1));
+        AssertJUnit.assertTrue(gravity.getMobiles().contains(mobile2));
+        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile3));
+        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile4));
+        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile5));
+        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile6));
+        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile7));
 
     }
 

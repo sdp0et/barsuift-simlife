@@ -6,24 +6,29 @@ import java.util.List;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
-import junit.framework.TestCase;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.j3d.helper.PointTestHelper;
 
 
-public class TreeLeavesOrganizerTest extends TestCase {
+public class TreeLeavesOrganizerTest {
 
     private TreeLeavesOrganizer leavesOrganizer;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         leavesOrganizer = new TreeLeavesOrganizer();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         leavesOrganizer = null;
     }
 
+    @Test
     public void testOrganizeLeaves() {
         float branchLength = 6;
         List<TreeLeaf3DState> leavesStates = new ArrayList<TreeLeaf3DState>();
@@ -35,21 +40,22 @@ public class TreeLeavesOrganizerTest extends TestCase {
 
         Vector3f translation1 = new Vector3f();
         leaf1.getTransform().toTransform3D().get(translation1);
-        assertEquals(0f, translation1.getX(), 0.0001);
-        assertTrue(translation1.getY() >= 0);
-        assertTrue(translation1.getY() < 3);
-        assertEquals(0f, translation1.getZ(), 0.0001);
+        AssertJUnit.assertEquals(0f, translation1.getX(), 0.0001);
+        AssertJUnit.assertTrue(translation1.getY() >= 0);
+        AssertJUnit.assertTrue(translation1.getY() < 3);
+        AssertJUnit.assertEquals(0f, translation1.getZ(), 0.0001);
 
         Vector3f translation2 = new Vector3f();
         leaf2.getTransform().toTransform3D().get(translation2);
-        assertEquals(0f, translation2.getX(), 0.0001);
-        assertTrue(translation2.getY() >= 3);
-        assertTrue(translation2.getY() < 6);
-        assertEquals(0f, translation2.getZ(), 0.0001);
+        AssertJUnit.assertEquals(0f, translation2.getX(), 0.0001);
+        AssertJUnit.assertTrue(translation2.getY() >= 3);
+        AssertJUnit.assertTrue(translation2.getY() < 6);
+        AssertJUnit.assertEquals(0f, translation2.getZ(), 0.0001);
 
     }
 
 
+    @Test
     public void testComputeNewLeafTranslation1() {
         // create objects
         MockTreeLeaf3D leaf3D1 = new MockTreeLeaf3D();
@@ -73,6 +79,7 @@ public class TreeLeavesOrganizerTest extends TestCase {
         PointTestHelper.assertPointIsWithinBounds(new Point3f(newLeafTranslation), boundsStartPoint, boundsEndPoint);
     }
 
+    @Test
     public void testComputeNewLeafTranslation2() {
         // create objects
         MockTreeLeaf3D leaf3D1 = new MockTreeLeaf3D();
@@ -96,6 +103,7 @@ public class TreeLeavesOrganizerTest extends TestCase {
         PointTestHelper.assertPointIsWithinBounds(new Point3f(newLeafTranslation), boundsStartPoint, boundsEndPoint);
     }
 
+    @Test
     public void testComputeNewLeafTranslation3() {
         // create objects
         MockTreeLeaf3D leaf3D1 = new MockTreeLeaf3D();
@@ -122,6 +130,7 @@ public class TreeLeavesOrganizerTest extends TestCase {
     /**
      * Test if the leaves are not created in the order based on the distance to the branch start.
      */
+    @Test
     public void testComputeNewLeafTranslation4() {
         // create objects
         MockTreeLeaf3D leaf3D1 = new MockTreeLeaf3D();

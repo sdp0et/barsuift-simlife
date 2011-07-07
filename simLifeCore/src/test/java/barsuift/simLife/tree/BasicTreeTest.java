@@ -44,7 +44,8 @@ public class BasicTreeTest extends TestCase {
         super.setUp();
         universe = new MockUniverse();
         treeState = CoreDataCreatorForTests.createSpecificTreeState();
-        tree = new BasicTree(universe, treeState);
+        tree = new BasicTree(treeState);
+        tree.init(universe);
     }
 
     protected void tearDown() throws Exception {
@@ -57,13 +58,14 @@ public class BasicTreeTest extends TestCase {
     public void testBasicTree() {
         assertEquals(treeState.getBranches().size(), tree.getNbBranches());
         try {
-            new BasicTree(null, treeState);
+            BasicTree tree = new BasicTree(treeState);
+            tree.init(null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
-            new BasicTree(universe, null);
+            new BasicTree(null);
             fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception

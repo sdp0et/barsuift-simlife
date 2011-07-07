@@ -60,7 +60,8 @@ public class BasicGravityTest extends TestCase {
         fallingLeaves.add(CoreDataCreatorForTests.createRandomTreeLeafState());
         gravityState.setFallingLeaves(fallingLeaves);
 
-        BasicGravity gravity = new BasicGravity(gravityState, universe);
+        BasicGravity gravity = new BasicGravity(gravityState);
+        gravity.init(universe);
         assertEquals(2, gravity.getFallingLeaves().size());
         assertEquals(2, gravity.getGravity3D().getGroup().numChildren());
         for (TreeLeaf treeLeaf : gravity.getFallingLeaves()) {
@@ -97,7 +98,8 @@ public class BasicGravityTest extends TestCase {
     }
 
     public void testUpdate() {
-        BasicGravity gravity = new BasicGravity(gravityState, universe);
+        BasicGravity gravity = new BasicGravity(gravityState);
+        gravity.init(universe);
         MockTreeLeaf treeLeaf = new MockTreeLeaf();
 
         gravity.addFallingLeaf(treeLeaf);
@@ -131,7 +133,8 @@ public class BasicGravityTest extends TestCase {
     }
 
     public void testGetState() {
-        BasicGravity gravity = new BasicGravity(gravityState, universe);
+        BasicGravity gravity = new BasicGravity(gravityState);
+        gravity.init(universe);
 
         assertEquals(gravityState, gravity.getState());
         assertSame(gravityState, gravity.getState());

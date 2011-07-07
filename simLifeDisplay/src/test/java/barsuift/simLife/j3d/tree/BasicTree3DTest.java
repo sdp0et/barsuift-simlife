@@ -24,7 +24,12 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
 import javax.media.j3d.TransformGroup;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.CompilerHelper;
 import barsuift.simLife.j3d.helper.Structure3DHelper;
@@ -32,7 +37,9 @@ import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.tree.MockTree;
 import barsuift.simLife.tree.MockTreeBranch;
 
-public class BasicTree3DTest extends TestCase {
+import static org.fest.assertions.Assertions.assertThat;
+
+public class BasicTree3DTest {
 
     private int nbBranches;
 
@@ -42,8 +49,8 @@ public class BasicTree3DTest extends TestCase {
 
     private Tree3DState tree3DState;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         mockTree = new MockTree();
         nbBranches = 5;
         for (int index = 0; index < nbBranches; index++) {
@@ -53,47 +60,54 @@ public class BasicTree3DTest extends TestCase {
         tree3DState = DisplayDataCreatorForTests.createRandomTree3DState();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         nbBranches = 0;
         mockUniverse3D = null;
         mockTree = null;
         tree3DState = null;
     }
 
+    @Test
     public void testConstructor() {
         try {
-            new BasicTree3D(mockUniverse3D, null, mockTree);
-            fail("Should throw new IllegalArgumentException");
+            new BasicTree3D(null);
+            Assert.fail("Should throw new IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
-            new BasicTree3D(mockUniverse3D, tree3DState, null);
-            fail("Should throw new IllegalArgumentException");
+            BasicTree3D tree3D = new BasicTree3D(tree3DState);
+            tree3D.init(mockUniverse3D, null);
+            Assert.fail("Should throw new IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
-            new BasicTree3D(null, tree3DState, mockTree);
-            fail("Should throw new IllegalArgumentException");
+            BasicTree3D tree3D = new BasicTree3D(tree3DState);
+            tree3D.init(null, mockTree);
+            Assert.fail("Should throw new IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
     }
 
+    @Test
     public void testGetState() {
-        BasicTree3D tree3D = new BasicTree3D(mockUniverse3D, tree3DState, mockTree);
-        assertEquals(tree3DState, tree3D.getState());
-        assertSame(tree3DState, tree3D.getState());
+        BasicTree3D tree3D = new BasicTree3D(tree3DState);
+        tree3D.init(mockUniverse3D, mockTree);
+        AssertJUnit.assertEquals(tree3DState, tree3D.getState());
+        AssertJUnit.assertSame(tree3DState, tree3D.getState());
     }
 
+    @Test
     @SuppressWarnings("rawtypes")
     public void testTree3D() {
-        BasicTree3D tree3D = new BasicTree3D(mockUniverse3D, tree3DState, mockTree);
+        BasicTree3D tree3D = new BasicTree3D(tree3DState);
+        tree3D.init(mockUniverse3D, mockTree);
         BranchGroup branchGroup = tree3D.getBranchGroup();
         CompilerHelper.compile(branchGroup);
-        assertEquals(nbBranches, tree3D.getBranches().size());
+        assertThat(tree3D.getBranches()).hasSize(nbBranches);
 
         Structure3DHelper.assertExactlyOneTransformGroup(branchGroup);
         TransformGroup tg = (TransformGroup) branchGroup.getChild(0);
@@ -109,12 +123,12 @@ public class BasicTree3DTest extends TestCase {
                     // we found the trunk
                     nbTimesTrunkGroupIsFound++;
                 } else {
-                    fail("There should be no other children. child is instance of " + child.getClass());
+                    Assert.fail("There should be no other children. child is instance of " + child.getClass());
                 }
             }
         }
-        assertEquals("We should have exactly one trunk", 1, nbTimesTrunkGroupIsFound);
-        assertEquals(nbBranches, nbBranchesFound);
+        AssertJUnit.assertEquals("We should have exactly one trunk", 1, nbTimesTrunkGroupIsFound);
+        AssertJUnit.assertEquals(nbBranches, nbBranchesFound);
     }
 
 }

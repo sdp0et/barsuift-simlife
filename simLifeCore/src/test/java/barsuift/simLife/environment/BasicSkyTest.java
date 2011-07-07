@@ -27,7 +27,8 @@ public class BasicSkyTest extends TestCase {
 
     public void testGetState() {
         SkyState state = CoreDataCreatorForTests.createRandomSkyState();
-        BasicSky sky = new BasicSky(state, new MockUniverse());
+        BasicSky sky = new BasicSky(state);
+        sky.init(new MockUniverse());
         assertEquals(state, sky.getState());
         assertSame(state, sky.getState());
         assertEquals(state.getSunState().getSun3DState().getEarthRevolution(), sky.getSun().getSun3D()
