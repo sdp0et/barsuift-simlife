@@ -22,6 +22,7 @@ import javax.vecmath.Matrix3d;
 
 import junit.framework.Assert;
 
+// TODO convert to FEST assertion
 public final class MatrixTestHelper extends Assert {
 
     private MatrixTestHelper() {

@@ -22,6 +22,7 @@ import javax.vecmath.Vector3f;
 
 import junit.framework.Assert;
 
+// TODO convert to FEST assertion
 public final class VectorTestHelper extends Assert {
 
     private VectorTestHelper() {
@@ -32,8 +33,7 @@ public final class VectorTestHelper extends Assert {
         assertEquals(v1, v2, 0.0001f, 0.0001f, 0.0001f);
     }
 
-    public static final void assertEquals(Vector3f v1, Vector3f v2, float xPrecision, float yPrecision,
-            float zPrecision) {
+    public static final void assertEquals(Vector3f v1, Vector3f v2, float xPrecision, float yPrecision, float zPrecision) {
         assertEquals(v1.getX(), v2.getX(), xPrecision);
         assertEquals(v1.getY(), v2.getY(), yPrecision);
         assertEquals(v1.getZ(), v2.getZ(), zPrecision);
