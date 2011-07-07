@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.process;
 
-import org.testng.AssertJUnit;
+import org.fest.assertions.Delta;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -28,6 +28,8 @@ import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.j3d.environment.MockSun3D;
 import barsuift.simLife.time.Month;
 import barsuift.simLife.time.SimLifeDate;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class EarthRevolutionTaskTest {
@@ -74,26 +76,25 @@ public class EarthRevolutionTaskTest {
     public void testExecuteSplitConditionalStepAutomatic() {
         // cycle = 0/20
         // end = 0/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 10/20
         // end = 10/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 0/20
         // end = 20/40
         // secondOfYear = (((1 * 18) + 3) * 20 + 3) * 60 + 15 = 25 395
-        AssertJUnit.assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(),
-                0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(
+                (float) (EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395), Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 10/20
         // end = 30/40
-        // secondOfYear = (((2 * 18) + 4) * 20 + 3) * 60 + 15 = 25 395
-        AssertJUnit.assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(),
-                0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(
+                (float) (EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395), Delta.delta(0.0001));
     }
 
     @Test
@@ -101,38 +102,38 @@ public class EarthRevolutionTaskTest {
         task.setAutomatic(false);
         // cycle = 0/20
         // end = 0/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 10/20
         // end = 10/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 0/20
         // end = 20/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 10/20
         // end = 30/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(0f, Delta.delta(0.0001));
     }
 
     @Test
     public void testSetAutomatic() {
         task.executeStep();
         task.executeStep();
-        AssertJUnit.assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(),
-                0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(
+                (float) (EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395), Delta.delta(0.0001));
 
         sun3D.setEarthRevolution(0f);
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRevolution(), 0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.setAutomatic(true);
         // this should force the computation of the sun position
-        AssertJUnit.assertEquals(EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395, sun3D.getEarthRevolution(),
-                0.0001);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(
+                (float) (EarthRevolutionTask.REVOLUTION_ANGLE_PER_SECOND * 25395), Delta.delta(0.0001));
     }
 
 }

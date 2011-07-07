@@ -19,8 +19,10 @@
 package barsuift.simLife.j3d.environment;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+
 import barsuift.simLife.landscape.LandscapeParameters;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class Sky3DStateFactoryTest {
@@ -30,8 +32,8 @@ public class Sky3DStateFactoryTest {
         LandscapeParameters landscapeParameters = new LandscapeParameters();
         Sky3DStateFactory factory = new Sky3DStateFactory();
         Sky3DState sky3DState = factory.createSky3DState(landscapeParameters);
-        AssertJUnit.assertNotNull(sky3DState.getAmbientLightBounds());
-        AssertJUnit.assertNotNull(sky3DState.getSkyBounds());
+        assertThat(sky3DState.getAmbientLightBounds()).isNotNull();
+        assertThat(sky3DState.getSkyBounds()).isNotNull();
     }
 
 }

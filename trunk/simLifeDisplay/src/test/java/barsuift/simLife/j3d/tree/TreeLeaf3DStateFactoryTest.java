@@ -22,15 +22,17 @@ import javax.media.j3d.Transform3D;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
-import org.testng.AssertJUnit;
+import org.fest.assertions.Delta;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.Axis;
 import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.Tuple3fState;
-import barsuift.simLife.j3d.helper.PointTestHelper;
 import barsuift.simLife.j3d.util.TransformerHelper;
+import static barsuift.simLife.j3d.assertions.Point3fAssert.assertThat;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class TreeLeaf3DStateFactoryTest {
@@ -57,38 +59,28 @@ public class TreeLeaf3DStateFactoryTest {
         Vector3f actualTranslation = new Vector3f();
         actualTransform.get(actualTranslation);
         double actualRotation = TransformerHelper.getRotationFromTransform(actualTransform, Axis.X);
-        AssertJUnit.assertEquals(leafAttachPoint, new Point3f(actualTranslation));
-        AssertJUnit.assertEquals(rotation, actualRotation, 0.00001);
+        assertThat(new Point3f(actualTranslation)).isEqualTo(leafAttachPoint);
+        assertThat(actualRotation).isEqualTo(rotation, Delta.delta(0.00001));
 
         // test initial point 2 position
-        AssertJUnit.assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() > 0 + 0.04 - 0.01);
-        AssertJUnit.assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() < 0 + 0.04 + 0.01);
-        AssertJUnit.assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() > 0 - 0.02 - 0.01);
-        AssertJUnit.assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() < 0 - 0.02 + 0.01);
-        AssertJUnit.assertTrue("Wrong Z position for end point 1.", actualInitialEndPoint1.getZ() > 0 - 0.01);
-        AssertJUnit.assertTrue("Wrong Z position for end point 1.", actualInitialEndPoint1.getZ() < 0 + 0.01);
+        Point3f initialPoint1MinBound = new Point3f(0 + 0.04f - 0.01f, 0 - 0.02f - 0.01f, 0 - 0.01f);
+        Point3f initialPoint1MaxBound = new Point3f(0 + 0.04f + 0.01f, 0 - 0.02f + 0.01f, 0 + 0.01f);
+        assertThat(actualInitialEndPoint1.toPointValue()).isWithin(initialPoint1MinBound, initialPoint1MaxBound);
+
         // test initial point 3 position
-        AssertJUnit.assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() > 0 + 0.04 - 0.01);
-        AssertJUnit.assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() < 0 + 0.04 + 0.01);
-        AssertJUnit.assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() > 0 + 0.02 - 0.01);
-        AssertJUnit.assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() < 0 + 0.02 + 0.01);
-        AssertJUnit.assertTrue("Wrong Z position for end point 2.", actualInitialEndPoint2.getZ() > 0 - 0.01);
-        AssertJUnit.assertTrue("Wrong Z position for end point 2.", actualInitialEndPoint2.getZ() < 0 + 0.01);
+        Point3f initialPoint2MinBound = new Point3f(0 + 0.04f - 0.01f, 0 + 0.02f - 0.01f, 0 - 0.01f);
+        Point3f initialPoint2MaxBound = new Point3f(0 + 0.04f + 0.01f, 0 + 0.02f + 0.01f, 0 + 0.01f);
+        assertThat(actualInitialEndPoint2.toPointValue()).isWithin(initialPoint2MinBound, initialPoint2MaxBound);
 
         // test point 2 position
-        AssertJUnit.assertTrue("Wrong X position for end point 1.", actualEndPoint1.getX() > 0 + 0.4 - 0.1);
-        AssertJUnit.assertTrue("Wrong X position for end point 1.", actualEndPoint1.getX() < 0 + 0.4 + 0.1);
-        AssertJUnit.assertTrue("Wrong Y position for end point 1.", actualEndPoint1.getY() > 0 - 0.2 - 0.1);
-        AssertJUnit.assertTrue("Wrong Y position for end point 1.", actualEndPoint1.getY() < 0 - 0.2 + 0.1);
-        AssertJUnit.assertTrue("Wrong Z position for end point 1.", actualEndPoint1.getZ() > 0 - 0.1);
-        AssertJUnit.assertTrue("Wrong Z position for end point 1.", actualEndPoint1.getZ() < 0 + 0.1);
+        Point3f point1MinBound = new Point3f(0 + 0.4f - 0.1f, 0 - 0.2f - 0.1f, 0 - 0.1f);
+        Point3f point1MaxBound = new Point3f(0 + 0.4f + 0.1f, 0 - 0.2f + 0.1f, 0 + 0.1f);
+        assertThat(actualEndPoint1.toPointValue()).isWithin(point1MinBound, point1MaxBound);
+
         // test point 3 position
-        AssertJUnit.assertTrue("Wrong X position for end point 2.", actualEndPoint2.getX() > 0 + 0.4 - 0.1);
-        AssertJUnit.assertTrue("Wrong X position for end point 2.", actualEndPoint2.getX() < 0 + 0.4 + 0.1);
-        AssertJUnit.assertTrue("Wrong Y position for end point 2.", actualEndPoint2.getY() > 0 + 0.2 - 0.1);
-        AssertJUnit.assertTrue("Wrong Y position for end point 2.", actualEndPoint2.getY() < 0 + 0.2 + 0.1);
-        AssertJUnit.assertTrue("Wrong Z position for end point 2.", actualEndPoint2.getZ() > 0 - 0.1);
-        AssertJUnit.assertTrue("Wrong Z position for end point 2.", actualEndPoint2.getZ() < 0 + 0.1);
+        Point3f point2MinBound = new Point3f(0 + 0.4f - 0.1f, 0 + 0.2f - 0.1f, 0 - 0.1f);
+        Point3f point2MaxBound = new Point3f(0 + 0.4f + 0.1f, 0 + 0.2f + 0.1f, 0 + 0.1f);
+        assertThat(actualEndPoint2.toPointValue()).isWithin(point2MinBound, point2MaxBound);
     }
 
     @Test
@@ -113,28 +105,23 @@ public class TreeLeaf3DStateFactoryTest {
         Vector3f actualTranslation = new Vector3f();
         actualTransform.get(actualTranslation);
         double actualRotation = TransformerHelper.getRotationFromTransform(actualTransform, Axis.X);
-        AssertJUnit.assertEquals(leafAttachPoint, new Point3f(actualTranslation));
-        AssertJUnit.assertEquals(rotation, actualRotation, 0.000001);
+        assertThat(new Point3f(actualTranslation)).isEqualTo(leafAttachPoint);
+        assertThat(actualRotation).isEqualTo(rotation, Delta.delta(0.000001));
 
         // test initial point 2 position
-        AssertJUnit.assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() > 0 + 0.04 - 0.01);
-        AssertJUnit.assertTrue("Wrong X position for end point 1.", actualInitialEndPoint1.getX() < 0 + 0.04 + 0.01);
-        AssertJUnit.assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() > 0 - 0.02 - 0.01);
-        AssertJUnit.assertTrue("Wrong Y position for end point 1.", actualInitialEndPoint1.getY() < 0 - 0.02 + 0.01);
-        AssertJUnit.assertTrue("Wrong Z position for end point 1.", actualInitialEndPoint1.getZ() > 0 - 0.01);
-        AssertJUnit.assertTrue("Wrong Z position for end point 1.", actualInitialEndPoint1.getZ() < 0 + 0.01);
+        Point3f initialPoint1MinBound = new Point3f(0 + 0.04f - 0.01f, 0 - 0.02f - 0.01f, 0 - 0.01f);
+        Point3f initialPoint1MaxBound = new Point3f(0 + 0.04f + 0.01f, 0 - 0.02f + 0.01f, 0 + 0.01f);
+        assertThat(actualInitialEndPoint1.toPointValue()).isWithin(initialPoint1MinBound, initialPoint1MaxBound);
+
         // test initial point 3 position
-        AssertJUnit.assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() > 0 + 0.04 - 0.01);
-        AssertJUnit.assertTrue("Wrong X position for end point 2.", actualInitialEndPoint2.getX() < 0 + 0.04 + 0.01);
-        AssertJUnit.assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() > 0 + 0.02 - 0.01);
-        AssertJUnit.assertTrue("Wrong Y position for end point 2.", actualInitialEndPoint2.getY() < 0 + 0.02 + 0.01);
-        AssertJUnit.assertTrue("Wrong Z position for end point 2.", actualInitialEndPoint2.getZ() > 0 - 0.01);
-        AssertJUnit.assertTrue("Wrong Z position for end point 2.", actualInitialEndPoint2.getZ() < 0 + 0.01);
+        Point3f initialPoint2MinBound = new Point3f(0 + 0.04f - 0.01f, 0 + 0.02f - 0.01f, 0 - 0.01f);
+        Point3f initialPoint2MaxBound = new Point3f(0 + 0.04f + 0.01f, 0 + 0.02f + 0.01f, 0 + 0.01f);
+        assertThat(actualInitialEndPoint2.toPointValue()).isWithin(initialPoint2MinBound, initialPoint2MaxBound);
 
         // test point 2 position
-        PointTestHelper.assertPointEquals(actualInitialEndPoint1.toPointValue(), actualEndPoint1.toPointValue());
+        assertThat(actualEndPoint1.toPointValue()).isEqualTo(actualInitialEndPoint1.toPointValue());
         // test point 3 position
-        PointTestHelper.assertPointEquals(actualInitialEndPoint2.toPointValue(), actualEndPoint2.toPointValue());
+        assertThat(actualEndPoint2.toPointValue()).isEqualTo(actualInitialEndPoint2.toPointValue());
     }
 
 }

@@ -30,7 +30,7 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
-import org.testng.AssertJUnit;
+import org.fest.assertions.Delta;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -43,14 +43,16 @@ import barsuift.simLife.j3d.MobileEvent;
 import barsuift.simLife.j3d.Transform3DState;
 import barsuift.simLife.j3d.Tuple3fState;
 import barsuift.simLife.j3d.helper.CompilerHelper;
-import barsuift.simLife.j3d.helper.PointTestHelper;
-import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.j3d.util.TransformerHelper;
 import barsuift.simLife.tree.LeafEvent;
 import barsuift.simLife.tree.MockTreeLeaf;
 import static barsuift.simLife.j3d.assertions.AppearanceAssert.assertThat;
+import static barsuift.simLife.j3d.assertions.GroupAssert.assertThat;
+import static barsuift.simLife.j3d.assertions.Point3fAssert.assertThat;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class BasicTreeLeaf3DTest {
 
@@ -96,19 +98,15 @@ public class BasicTreeLeaf3DTest {
         leaf3DState = DisplayDataCreatorForTests.createSpecificTreeLeaf3DState();
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
         leaf3D.init(mockUniverse3D, mockLeaf);
-        AssertJUnit.assertEquals(leaf3DState, leaf3D.getState());
+        assertThat(leaf3D.getState()).isEqualTo(leaf3DState);
 
-        AssertJUnit.assertEquals(leaf3DState, leaf3D.getState());
-        AssertJUnit.assertSame(leaf3DState, leaf3D.getState());
-        AssertJUnit.assertEquals(0.4, leaf3D.getState().getEndPoint1().getX(), 0.00001);
-        AssertJUnit.assertEquals(0.0, leaf3D.getState().getEndPoint1().getY(), 0.00001);
-        AssertJUnit.assertEquals(0.0, leaf3D.getState().getEndPoint1().getZ(), 0.00001);
+        assertThat(leaf3D.getState()).isEqualTo(leaf3DState);
+        assertThat(leaf3D.getState()).isSameAs(leaf3DState);
+        assertThat(leaf3D.getState().getEndPoint1().toPointValue()).isEqualTo(new Point3f(0.4f, 0, 0));
         leaf3D.increaseSize();
-        AssertJUnit.assertEquals(leaf3DState, leaf3D.getState());
-        AssertJUnit.assertSame(leaf3DState, leaf3D.getState());
-        AssertJUnit.assertEquals(0.6, leaf3D.getState().getEndPoint1().getX(), 0.00001);
-        AssertJUnit.assertEquals(0.2, leaf3D.getState().getEndPoint1().getY(), 0.00001);
-        AssertJUnit.assertEquals(0.0, leaf3D.getState().getEndPoint1().getZ(), 0.00001);
+        assertThat(leaf3D.getState()).isEqualTo(leaf3DState);
+        assertThat(leaf3D.getState()).isSameAs(leaf3DState);
+        assertThat(leaf3D.getState().getEndPoint1().toPointValue()).isEqualTo(new Point3f(0.6f, 0.2f, 0));
     }
 
     @Test
@@ -116,10 +114,10 @@ public class BasicTreeLeaf3DTest {
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(80));
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
         leaf3D.init(mockUniverse3D, mockLeaf);
-        AssertJUnit.assertEquals(1, mockLeaf.countSubscribers());
+        assertThat(mockLeaf.countSubscribers()).isEqualTo(1);
         // check the subscriber is the leaf3D
         mockLeaf.deleteSubscriber(leaf3D);
-        AssertJUnit.assertEquals(0, mockLeaf.countSubscribers());
+        assertThat(mockLeaf.countSubscribers()).isEqualTo(0);
     }
 
     @Test
@@ -137,8 +135,8 @@ public class BasicTreeLeaf3DTest {
         assertThat(leafShape3D.getAppearance()).hasDiffuseColor(new Color3f(0.15f, 0.15f, 0.15f));
 
         // check the leaves are not culled (transparent) when seen from behind
-        AssertJUnit.assertEquals(PolygonAttributes.CULL_NONE, leafShape3D.getAppearance().getPolygonAttributes()
-                .getCullFace());
+        assertThat(leafShape3D.getAppearance().getPolygonAttributes().getCullFace()).isEqualTo(
+                PolygonAttributes.CULL_NONE);
 
         mockLeaf.setEfficiency(PercentHelper.getDecimalValue(75));
         leaf3D.update(mockLeaf, LeafEvent.EFFICIENCY);
@@ -170,24 +168,24 @@ public class BasicTreeLeaf3DTest {
         BranchGroup bg = leaf3D.getBranchGroup();
         CompilerHelper.compile(bg);
 
-        Structure3DHelper.assertExactlyOneTransformGroup(bg);
+        assertThat(bg).hasExactlyOneTransformGroup();
         TransformGroup transformGroup = (TransformGroup) bg.getChild(0);
 
         // test translation and rotation
         Transform3D transform3D = new Transform3D();
         transformGroup.getTransform(transform3D);
-        AssertJUnit.assertEquals(leaf3DState.getTransform(), new Transform3DState(transform3D));
+        assertThat(new Transform3DState(transform3D)).isEqualTo(leaf3DState.getTransform());
 
         // test one leaf found
-        Structure3DHelper.assertExactlyOneShape3D(transformGroup);
+        assertThat(transformGroup).hasExactlyOneShape3D();
         Shape3D leafShape3D = (Shape3D) transformGroup.getChild(0);
-        AssertJUnit.assertNotNull(leafShape3D);
+        assertThat(leafShape3D).isNotNull();
 
         // test position and geometry
         Geometry leafGeometry = leafShape3D.getGeometry();
-        AssertJUnit.assertTrue(leafGeometry instanceof TriangleArray);
+        assertThat(leafGeometry instanceof TriangleArray).isTrue();
         TriangleArray leafTriangle = (TriangleArray) leafGeometry;
-        AssertJUnit.assertEquals(3, leafTriangle.getVertexCount());
+        assertThat(leafTriangle.getVertexCount()).isEqualTo(3);
 
         Point3f actualStartPoint = new Point3f();
         Point3f actualEndPoint1 = new Point3f();
@@ -195,9 +193,9 @@ public class BasicTreeLeaf3DTest {
         leafTriangle.getCoordinate(0, actualStartPoint);
         leafTriangle.getCoordinate(1, actualEndPoint1);
         leafTriangle.getCoordinate(2, actualEndPoint2);
-        PointTestHelper.assertPointEquals(new Point3f(0, 0, 0), actualStartPoint);
-        PointTestHelper.assertPointEquals(leaf3DState.getEndPoint1().toPointValue(), actualEndPoint1);
-        PointTestHelper.assertPointEquals(leaf3DState.getEndPoint2().toPointValue(), actualEndPoint2);
+        assertThat(actualStartPoint).isEqualTo(new Point3f(0, 0, 0));
+        assertThat(actualEndPoint1).isEqualTo(leaf3DState.getEndPoint1().toPointValue());
+        assertThat(actualEndPoint2).isEqualTo(leaf3DState.getEndPoint2().toPointValue());
     }
 
     @Test
@@ -230,13 +228,13 @@ public class BasicTreeLeaf3DTest {
         // call to the fall() method
         leaf3D.update(null, MobileEvent.FALLING);
 
-        AssertJUnit.assertEquals(new Point3f(3 + 2, 2 + 3, -1 + 5), leaf3D.getPosition());
+        assertThat(leaf3D.getPosition()).isEqualTo(new Point3f(3 + 2, 2 + 3, -1 + 5));
 
         TransformGroup tg = (TransformGroup) leaf3D.getBranchGroup().getChild(0);
         Transform3D newTransform = new Transform3D();
         tg.getTransform(newTransform);
         double newRotation = TransformerHelper.getRotationFromTransform(newTransform, Axis.Y);
-        AssertJUnit.assertEquals((initialRotation + Math.PI / 2) % (2 * Math.PI), newRotation, 0.00001);
+        assertThat(newRotation).isEqualTo((initialRotation + Math.PI / 2) % (2 * Math.PI), Delta.delta(0.00001));
 
     }
 
@@ -245,7 +243,7 @@ public class BasicTreeLeaf3DTest {
         leaf3DState = DisplayDataCreatorForTests.createSpecificTreeLeaf3DState();
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
         leaf3D.init(mockUniverse3D, mockLeaf);
-        AssertJUnit.assertEquals(0.08, leaf3D.getArea(), 0.000001);
+        assertThat(leaf3D.getArea()).isEqualTo(0.08f, Delta.delta(0.000001));
     }
 
     @Test
@@ -253,7 +251,7 @@ public class BasicTreeLeaf3DTest {
         leaf3DState = DisplayDataCreatorForTests.createSpecificTreeLeaf3DState();
         BasicTreeLeaf3D leaf3D = new BasicTreeLeaf3D(leaf3DState);
         leaf3D.init(mockUniverse3D, mockLeaf);
-        AssertJUnit.assertFalse(leaf3D.isMaxSizeReached());
+        assertThat(leaf3D.isMaxSizeReached()).isFalse();
 
         Tuple3fState initialEndPoint1 = leaf3DState.getInitialEndPoint1();
         leaf3DState.setEndPoint1(new Tuple3fState(10 * initialEndPoint1.getX(), 10 * initialEndPoint1.getY(),
@@ -263,7 +261,7 @@ public class BasicTreeLeaf3DTest {
                 10 * initialEndPoint2.getZ()));
         leaf3D = new BasicTreeLeaf3D(leaf3DState);
         leaf3D.init(mockUniverse3D, mockLeaf);
-        AssertJUnit.assertTrue(leaf3D.isMaxSizeReached());
+        assertThat(leaf3D.isMaxSizeReached()).isTrue();
     }
 
     @Test
@@ -279,7 +277,7 @@ public class BasicTreeLeaf3DTest {
         Point3f geomEndPoint1 = new Point3f();
         Point3f geomEndPoint2 = new Point3f();
 
-        AssertJUnit.assertFalse(leaf3D.isMaxSizeReached());
+        assertThat(leaf3D.isMaxSizeReached()).isFalse();
 
         leaf3D.increaseSize();
 
@@ -287,16 +285,16 @@ public class BasicTreeLeaf3DTest {
         Point3f endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
         Point3f expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 2, initialEndPoint1.getY() * 2,
                 initialEndPoint1.getZ() * 2);
-        PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
+        assertThat(endPoint1).isEqualTo(expectedEndPoint1);
         Point3f endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
         Point3f expectedEndPoint2 = new Point3f(initialEndPoint2.getX() * 2, initialEndPoint2.getY() * 2,
                 initialEndPoint2.getZ() * 2);
-        PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
+        assertThat(endPoint2).isEqualTo(expectedEndPoint2);
         // test geometry
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint1);
-        PointTestHelper.assertPointEquals(leaf3D.getState().getEndPoint1().toPointValue(), geomEndPoint1);
+        assertThat(geomEndPoint1).isEqualTo(leaf3D.getState().getEndPoint1().toPointValue());
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint2);
-        PointTestHelper.assertPointEquals(leaf3D.getState().getEndPoint1().toPointValue(), geomEndPoint2);
+        assertThat(geomEndPoint2).isEqualTo(leaf3D.getState().getEndPoint1().toPointValue());
 
         leaf3D.increaseSize();
 
@@ -304,16 +302,16 @@ public class BasicTreeLeaf3DTest {
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
         expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 3, initialEndPoint1.getY() * 3,
                 initialEndPoint1.getZ() * 3);
-        PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
+        assertThat(endPoint1).isEqualTo(expectedEndPoint1);
         endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
         expectedEndPoint2 = new Point3f(initialEndPoint2.getX() * 3, initialEndPoint2.getY() * 3,
                 initialEndPoint2.getZ() * 3);
-        PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
+        assertThat(endPoint2).isEqualTo(expectedEndPoint2);
         // test geometry
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint1);
-        PointTestHelper.assertPointEquals(leaf3D.getState().getEndPoint1().toPointValue(), geomEndPoint1);
+        assertThat(geomEndPoint1).isEqualTo(leaf3D.getState().getEndPoint1().toPointValue());
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint2);
-        PointTestHelper.assertPointEquals(leaf3D.getState().getEndPoint1().toPointValue(), geomEndPoint2);
+        assertThat(geomEndPoint2).isEqualTo(leaf3D.getState().getEndPoint1().toPointValue());
 
         // increase up to the max size
         leaf3D.increaseSize();
@@ -325,38 +323,38 @@ public class BasicTreeLeaf3DTest {
         leaf3D.increaseSize();
 
         // test state
-        AssertJUnit.assertTrue(leaf3D.isMaxSizeReached());
+        assertThat(leaf3D.isMaxSizeReached()).isTrue();
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
         expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
                 initialEndPoint1.getZ() * 10);
-        PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
+        assertThat(endPoint1).isEqualTo(expectedEndPoint1);
         endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
         expectedEndPoint2 = new Point3f(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
                 initialEndPoint2.getZ() * 10);
-        PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
+        assertThat(endPoint2).isEqualTo(expectedEndPoint2);
         // test geometry
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint1);
-        PointTestHelper.assertPointEquals(leaf3D.getState().getEndPoint1().toPointValue(), geomEndPoint1);
+        assertThat(geomEndPoint1).isEqualTo(leaf3D.getState().getEndPoint1().toPointValue());
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint2);
-        PointTestHelper.assertPointEquals(leaf3D.getState().getEndPoint1().toPointValue(), geomEndPoint2);
+        assertThat(geomEndPoint2).isEqualTo(leaf3D.getState().getEndPoint1().toPointValue());
 
         // nothing changes if we increase the leaf again
         leaf3D.increaseSize();
 
         // test state
-        AssertJUnit.assertTrue(leaf3D.isMaxSizeReached());
+        assertThat(leaf3D.isMaxSizeReached()).isTrue();
         endPoint1 = leaf3D.getState().getEndPoint1().toPointValue();
         expectedEndPoint1 = new Point3f(initialEndPoint1.getX() * 10, initialEndPoint1.getY() * 10,
                 initialEndPoint1.getZ() * 10);
-        PointTestHelper.assertPointEquals(expectedEndPoint1, endPoint1);
+        assertThat(endPoint1).isEqualTo(expectedEndPoint1);
         endPoint2 = leaf3D.getState().getEndPoint2().toPointValue();
         expectedEndPoint2 = new Point3f(initialEndPoint2.getX() * 10, initialEndPoint2.getY() * 10,
                 initialEndPoint2.getZ() * 10);
-        PointTestHelper.assertPointEquals(expectedEndPoint2, endPoint2);
+        assertThat(endPoint2).isEqualTo(expectedEndPoint2);
         // test geometry
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint1);
-        PointTestHelper.assertPointEquals(leaf3D.getState().getEndPoint1().toPointValue(), geomEndPoint1);
+        assertThat(geomEndPoint1).isEqualTo(leaf3D.getState().getEndPoint1().toPointValue());
         ((TriangleArray) leafShape.getGeometry()).getCoordinate(1, geomEndPoint2);
-        PointTestHelper.assertPointEquals(leaf3D.getState().getEndPoint1().toPointValue(), geomEndPoint2);
+        assertThat(geomEndPoint2).isEqualTo(leaf3D.getState().getEndPoint1().toPointValue());
     }
 }

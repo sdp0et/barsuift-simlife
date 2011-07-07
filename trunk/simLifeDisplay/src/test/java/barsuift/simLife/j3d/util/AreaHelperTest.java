@@ -22,8 +22,10 @@ import javax.media.j3d.GeometryArray;
 import javax.media.j3d.TriangleArray;
 import javax.vecmath.Point3f;
 
-import org.testng.AssertJUnit;
+import org.fest.assertions.Delta;
 import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class AreaHelperTest {
@@ -39,7 +41,7 @@ public class AreaHelperTest {
         triangle.setCoordinate(1, new Point3f(0, 0, 0));
         triangle.setCoordinate(2, new Point3f(0, 0, 0));
         area = AreaHelper.computeArea(triangle);
-        AssertJUnit.assertEquals(0d, area, 0.0000001);
+        assertThat(area).isEqualTo(0, Delta.delta(0.0000001));
 
         // second test : right triangle
         triangle = new TriangleArray(3, GeometryArray.COORDINATES);
@@ -47,7 +49,7 @@ public class AreaHelperTest {
         triangle.setCoordinate(1, new Point3f(3, 0, 0));
         triangle.setCoordinate(2, new Point3f(3, 1, 0));
         area = AreaHelper.computeArea(triangle);
-        AssertJUnit.assertEquals(1.5, area, 0.0000001);
+        assertThat(area).isEqualTo(1.5f, Delta.delta(0.0000001));
 
         // second test : isosceles triangle
         triangle = new TriangleArray(3, GeometryArray.COORDINATES);
@@ -55,7 +57,7 @@ public class AreaHelperTest {
         triangle.setCoordinate(1, new Point3f(0, 3, 1));
         triangle.setCoordinate(2, new Point3f(0, 2, 8));
         area = AreaHelper.computeArea(triangle);
-        AssertJUnit.assertEquals(7, area, 0.0000001);
+        assertThat(area).isEqualTo(7, Delta.delta(0.0000001));
     }
 
 }

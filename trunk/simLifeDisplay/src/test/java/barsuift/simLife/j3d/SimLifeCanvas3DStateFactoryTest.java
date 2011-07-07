@@ -18,8 +18,9 @@
  */
 package barsuift.simLife.j3d;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class SimLifeCanvas3DStateFactoryTest {
@@ -28,7 +29,7 @@ public class SimLifeCanvas3DStateFactoryTest {
     public void testCreateCanvas3DState() {
         SimLifeCanvas3DStateFactory factory = new SimLifeCanvas3DStateFactory();
         SimLifeCanvas3DState canvasState = factory.createCanvas3DState();
-        AssertJUnit.assertFalse(canvasState.isFpsShowing());
+        assertThat(canvasState.isFpsShowing()).isFalse();
     }
 
 }

@@ -18,12 +18,13 @@
  */
 package barsuift.simLife.j3d;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.time.FpsCounter;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class BasicSimLifeCanvas3DTest {
@@ -48,20 +49,20 @@ public class BasicSimLifeCanvas3DTest {
 
     @Test
     public void testIsFpsShowing() {
-        AssertJUnit.assertFalse(canvas.isFpsShowing());
+        assertThat(canvas.isFpsShowing()).isFalse();
         canvas.setFpsShowing(true);
-        AssertJUnit.assertTrue(canvas.isFpsShowing());
+        assertThat(canvas.isFpsShowing()).isTrue();
     }
 
     @Test
     public void testGetState() {
-        AssertJUnit.assertEquals(state, canvas.getState());
-        AssertJUnit.assertSame(state, canvas.getState());
-        AssertJUnit.assertFalse(canvas.getState().isFpsShowing());
+        assertThat(canvas.getState()).isEqualTo(state);
+        assertThat(canvas.getState()).isSameAs(state);
+        assertThat(canvas.getState().isFpsShowing()).isFalse();
         canvas.setFpsShowing(true);
-        AssertJUnit.assertEquals(state, canvas.getState());
-        AssertJUnit.assertSame(state, canvas.getState());
-        AssertJUnit.assertTrue(canvas.getState().isFpsShowing());
+        assertThat(canvas.getState()).isEqualTo(state);
+        assertThat(canvas.getState()).isSameAs(state);
+        assertThat(canvas.getState().isFpsShowing()).isTrue();
     }
 
 }

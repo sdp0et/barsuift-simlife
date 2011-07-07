@@ -29,7 +29,7 @@ import javax.vecmath.Vector3f;
 import barsuift.simLife.j3d.Mobile;
 import barsuift.simLife.j3d.landscape.Landscape3D;
 
-// FIXME unit test, for this and state, and factory
+// TODO unit test, for this and state, and factory
 public class WindTask extends AbstractSplitConditionalTask {
 
     private static final Logger logger = Logger.getLogger(WindTask.class.getName());

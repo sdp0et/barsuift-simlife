@@ -20,11 +20,13 @@ package barsuift.simLife.j3d.util;
 
 import javax.media.j3d.Transform3D;
 
-import org.testng.AssertJUnit;
+import org.fest.assertions.Delta;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.Randomizer;
 import barsuift.simLife.j3d.Axis;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class TransformerHelperTest {
@@ -35,7 +37,7 @@ public class TransformerHelperTest {
         double rotationAngle = Randomizer.randomRotation();
         transform3D.rotX(rotationAngle);
         double angle = TransformerHelper.getRotationFromTransform(transform3D, Axis.X);
-        AssertJUnit.assertEquals(rotationAngle, angle, 0.000001);
+        assertThat(angle).isEqualTo(rotationAngle, Delta.delta(0.000001));
     }
 
     @Test
@@ -44,7 +46,7 @@ public class TransformerHelperTest {
         double rotationAngle = Randomizer.randomRotation();
         transform3D.rotY(rotationAngle);
         double angle = TransformerHelper.getRotationFromTransform(transform3D, Axis.Y);
-        AssertJUnit.assertEquals(rotationAngle, angle, 0.000001);
+        assertThat(angle).isEqualTo(rotationAngle, Delta.delta(0.000001));
     }
 
     @Test
@@ -53,7 +55,7 @@ public class TransformerHelperTest {
         double rotationAngle = Randomizer.randomRotation();
         transform3D.rotZ(rotationAngle);
         double angle = TransformerHelper.getRotationFromTransform(transform3D, Axis.Z);
-        AssertJUnit.assertEquals(rotationAngle, angle, 0.000001);
+        assertThat(angle).isEqualTo(rotationAngle, Delta.delta(0.000001));
     }
 
 }

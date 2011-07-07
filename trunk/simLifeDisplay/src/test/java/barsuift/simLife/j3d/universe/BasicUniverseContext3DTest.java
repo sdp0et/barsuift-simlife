@@ -18,13 +18,14 @@
  */
 package barsuift.simLife.j3d.universe;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.landscape.LandscapeParameters;
 import barsuift.simLife.universe.MockUniverseContext;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class BasicUniverseContext3DTest {
@@ -51,40 +52,40 @@ public class BasicUniverseContext3DTest {
 
     @Test
     public void testUnsetAxis() {
-        AssertJUnit.assertTrue(universeContext3D.isAxisShowing());
+        assertThat(universeContext3D.isAxisShowing()).isTrue();
         universeContext3D.setAxisShowing(false);
-        AssertJUnit.assertFalse(universeContext3D.isAxisShowing());
+        assertThat(universeContext3D.isAxisShowing()).isFalse();
         universeContext3D.setAxisShowing(true);
-        AssertJUnit.assertTrue(universeContext3D.isAxisShowing());
+        assertThat(universeContext3D.isAxisShowing()).isTrue();
         universeContext3D.setAxisShowing(false);
-        AssertJUnit.assertFalse(universeContext3D.isAxisShowing());
+        assertThat(universeContext3D.isAxisShowing()).isFalse();
     }
 
     @Test
     public void testGetState() {
-        AssertJUnit.assertEquals(state, universeContext3D.getState());
-        AssertJUnit.assertSame(state, universeContext3D.getState());
+        assertThat(universeContext3D.getState()).isEqualTo(state);
+        assertThat(universeContext3D.getState()).isSameAs(state);
 
-        AssertJUnit.assertTrue(universeContext3D.getState().isAxisShowing());
-        AssertJUnit.assertFalse(universeContext3D.getState().getCanvas().isFpsShowing());
+        assertThat(universeContext3D.getState().isAxisShowing()).isTrue();
+        assertThat(universeContext3D.getState().getCanvas().isFpsShowing()).isFalse();
         universeContext3D.setAxisShowing(false);
         universeContext3D.setFpsShowing(true);
 
-        AssertJUnit.assertEquals(state, universeContext3D.getState());
-        AssertJUnit.assertSame(state, universeContext3D.getState());
-        AssertJUnit.assertFalse(universeContext3D.getState().isAxisShowing());
-        AssertJUnit.assertTrue(universeContext3D.getState().getCanvas().isFpsShowing());
+        assertThat(universeContext3D.getState()).isEqualTo(state);
+        assertThat(universeContext3D.getState()).isSameAs(state);
+        assertThat(universeContext3D.getState().isAxisShowing()).isFalse();
+        assertThat(universeContext3D.getState().getCanvas().isFpsShowing()).isTrue();
     }
 
 
     @Test
     public void testSetFpsShowing() {
-        AssertJUnit.assertFalse(universeContext3D.isFpsShowing());
-        AssertJUnit.assertFalse(universeContext3D.getCanvas3D().isFpsShowing());
+        assertThat(universeContext3D.isFpsShowing()).isFalse();
+        assertThat(universeContext3D.getCanvas3D().isFpsShowing()).isFalse();
 
         universeContext3D.setFpsShowing(true);
-        AssertJUnit.assertTrue(universeContext3D.isFpsShowing());
-        AssertJUnit.assertTrue(universeContext3D.getCanvas3D().isFpsShowing());
+        assertThat(universeContext3D.isFpsShowing()).isTrue();
+        assertThat(universeContext3D.getCanvas3D().isFpsShowing()).isTrue();
     }
 
 }

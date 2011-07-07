@@ -43,6 +43,7 @@ public class BasicGravityTest extends TestCase {
         super.setUp();
         UniverseState universeState = CoreDataCreatorForTests.createRandomUniverseState();
         universe = new BasicUniverse(universeState);
+        universe.init();
 
         GravityStateFactory gravityStateFactory = new GravityStateFactory();
         gravityState = gravityStateFactory.createGravityState();

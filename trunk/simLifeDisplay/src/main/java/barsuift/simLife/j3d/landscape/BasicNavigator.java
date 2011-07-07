@@ -417,6 +417,18 @@ public class BasicNavigator extends ViewPlatformBehavior implements Persistent<N
         return navigationMode;
     }
 
+    public Vector3f getTranslation() {
+        return translation;
+    }
+
+    public double getRotationX() {
+        return rotationX;
+    }
+
+    public double getRotationY() {
+        return rotationY;
+    }
+
     public void setNavigationMode(NavigationMode navigationMode) {
         this.navigationMode = navigationMode;
         adjustHeight();

@@ -18,12 +18,14 @@
  */
 package barsuift.simLife.j3d.landscape;
 
-import org.testng.AssertJUnit;
+import org.fest.assertions.Delta;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class BasicLandscape3DTest {
@@ -43,10 +45,10 @@ public class BasicLandscape3DTest {
 
     @Test
     public void testGetVertexIndix() {
-        AssertJUnit.assertEquals(0, landscape3D.getVertexIndix(0, 0));
-        AssertJUnit.assertEquals(1, landscape3D.getVertexIndix(1, 0));
-        AssertJUnit.assertEquals(2, landscape3D.getVertexIndix(0, 1));
-        AssertJUnit.assertEquals(3, landscape3D.getVertexIndix(1, 1));
+        assertThat(landscape3D.getVertexIndix(0, 0)).isEqualTo(0);
+        assertThat(landscape3D.getVertexIndix(1, 0)).isEqualTo(1);
+        assertThat(landscape3D.getVertexIndix(0, 1)).isEqualTo(2);
+        assertThat(landscape3D.getVertexIndix(1, 1)).isEqualTo(3);
 
         // the following points are not in landscape
         // we don't actually care about the returned values. The only assertion is that this method won't fail.
@@ -61,56 +63,56 @@ public class BasicLandscape3DTest {
     public void testInLandscape() {
         float epsilon = 0.00001f;
 
-        AssertJUnit.assertFalse(landscape3D.inLandscape(0, -1));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(epsilon, -1));
+        assertThat(landscape3D.inLandscape(0, -1)).isFalse();
+        assertThat(landscape3D.inLandscape(epsilon, -1)).isFalse();
 
-        AssertJUnit.assertFalse(landscape3D.inLandscape(0, -epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(epsilon, -epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1 - epsilon, -epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1, -epsilon));
+        assertThat(landscape3D.inLandscape(0, -epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(epsilon, -epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(1 - epsilon, -epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(1, -epsilon)).isFalse();
 
-        AssertJUnit.assertFalse(landscape3D.inLandscape(-1, 0));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(-epsilon, 0));
-        AssertJUnit.assertTrue(landscape3D.inLandscape(0, 0));
-        AssertJUnit.assertTrue(landscape3D.inLandscape(epsilon, 0));
-        AssertJUnit.assertTrue(landscape3D.inLandscape(1 - epsilon, 0));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1, 0));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1 + epsilon, 0));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(2, 0));
+        assertThat(landscape3D.inLandscape(-1, 0)).isFalse();
+        assertThat(landscape3D.inLandscape(-epsilon, 0)).isFalse();
+        assertThat(landscape3D.inLandscape(0, 0)).isTrue();
+        assertThat(landscape3D.inLandscape(epsilon, 0)).isTrue();
+        assertThat(landscape3D.inLandscape(1 - epsilon, 0)).isTrue();
+        assertThat(landscape3D.inLandscape(1, 0)).isFalse();
+        assertThat(landscape3D.inLandscape(1 + epsilon, 0)).isFalse();
+        assertThat(landscape3D.inLandscape(2, 0)).isFalse();
 
-        AssertJUnit.assertFalse(landscape3D.inLandscape(-1, epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(-epsilon, epsilon));
-        AssertJUnit.assertTrue(landscape3D.inLandscape(0, epsilon));
-        AssertJUnit.assertTrue(landscape3D.inLandscape(epsilon, epsilon));
-        AssertJUnit.assertTrue(landscape3D.inLandscape(1 - epsilon, epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1, epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1 + epsilon, epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(2, epsilon));
+        assertThat(landscape3D.inLandscape(-1, epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(-epsilon, epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(0, epsilon)).isTrue();
+        assertThat(landscape3D.inLandscape(epsilon, epsilon)).isTrue();
+        assertThat(landscape3D.inLandscape(1 - epsilon, epsilon)).isTrue();
+        assertThat(landscape3D.inLandscape(1, epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(1 + epsilon, epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(2, epsilon)).isFalse();
 
-        AssertJUnit.assertFalse(landscape3D.inLandscape(-1, 1 - epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(-epsilon, 1 - epsilon));
-        AssertJUnit.assertTrue(landscape3D.inLandscape(0, 1 - epsilon));
-        AssertJUnit.assertTrue(landscape3D.inLandscape(epsilon, 1 - epsilon));
-        AssertJUnit.assertTrue(landscape3D.inLandscape(1 - epsilon, 1 - epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1, 1 - epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1 + epsilon, 1 - epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(2, 1 - epsilon));
+        assertThat(landscape3D.inLandscape(-1, 1 - epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(-epsilon, 1 - epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(0, 1 - epsilon)).isTrue();
+        assertThat(landscape3D.inLandscape(epsilon, 1 - epsilon)).isTrue();
+        assertThat(landscape3D.inLandscape(1 - epsilon, 1 - epsilon)).isTrue();
+        assertThat(landscape3D.inLandscape(1, 1 - epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(1 + epsilon, 1 - epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(2, 1 - epsilon)).isFalse();
 
-        AssertJUnit.assertFalse(landscape3D.inLandscape(-1, 1));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(-epsilon, 1));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(0, 1));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(epsilon, 1));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1 - epsilon, 1));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1, 1));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1 + epsilon, 1));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(2, 1));
+        assertThat(landscape3D.inLandscape(-1, 1)).isFalse();
+        assertThat(landscape3D.inLandscape(-epsilon, 1)).isFalse();
+        assertThat(landscape3D.inLandscape(0, 1)).isFalse();
+        assertThat(landscape3D.inLandscape(epsilon, 1)).isFalse();
+        assertThat(landscape3D.inLandscape(1 - epsilon, 1)).isFalse();
+        assertThat(landscape3D.inLandscape(1, 1)).isFalse();
+        assertThat(landscape3D.inLandscape(1 + epsilon, 1)).isFalse();
+        assertThat(landscape3D.inLandscape(2, 1)).isFalse();
 
-        AssertJUnit.assertFalse(landscape3D.inLandscape(0, 1 + epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(epsilon, 1 + epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1 - epsilon, 1 + epsilon));
-        AssertJUnit.assertFalse(landscape3D.inLandscape(1, 1 + epsilon));
+        assertThat(landscape3D.inLandscape(0, 1 + epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(epsilon, 1 + epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(1 - epsilon, 1 + epsilon)).isFalse();
+        assertThat(landscape3D.inLandscape(1, 1 + epsilon)).isFalse();
 
-        AssertJUnit.assertFalse(landscape3D.inLandscape(0, 2));
+        assertThat(landscape3D.inLandscape(0, 2)).isFalse();
     }
 
     @Test
@@ -118,39 +120,40 @@ public class BasicLandscape3DTest {
         float epsilon = 0.00001f;
         float delta = 0.001f;
 
-        AssertJUnit.assertEquals(0.0, landscape3D.getHeight(0.0f, 0.0f), delta);
-        AssertJUnit.assertEquals(0.2, landscape3D.getHeight(0.5f, 0.0f), delta);
-        AssertJUnit.assertEquals(0.4, landscape3D.getHeight(1.0f - epsilon, 0.0f), delta);
+        assertThat(landscape3D.getHeight(0.0f, 0.0f)).isEqualTo(0.0f, Delta.delta(delta));
+        assertThat(landscape3D.getHeight(0.0f, 0.0f)).isEqualTo(0.0f, Delta.delta(delta));
+        assertThat(landscape3D.getHeight(0.5f, 0.0f)).isEqualTo(0.2f, Delta.delta(delta));
+        assertThat(landscape3D.getHeight(1.0f - epsilon, 0.0f)).isEqualTo(0.4f, Delta.delta(delta));
 
-        AssertJUnit.assertEquals(0.3, landscape3D.getHeight(0.0f, 0.5f), delta);
-        AssertJUnit.assertEquals(0.5, landscape3D.getHeight(0.5f, 0.5f), delta);
-        AssertJUnit.assertEquals(0.8, landscape3D.getHeight(1.0f - epsilon, 0.5f), delta);
+        assertThat(landscape3D.getHeight(0.0f, 0.5f)).isEqualTo(0.3f, Delta.delta(delta));
+        assertThat(landscape3D.getHeight(0.5f, 0.5f)).isEqualTo(0.5f, Delta.delta(delta));
+        assertThat(landscape3D.getHeight(1.0f - epsilon, 0.5f)).isEqualTo(0.8f, Delta.delta(delta));
 
-        AssertJUnit.assertEquals(0.6, landscape3D.getHeight(0.0f, 1.0f - epsilon), delta);
-        AssertJUnit.assertEquals(0.9, landscape3D.getHeight(0.5f, 1.0f - epsilon), delta);
-        AssertJUnit.assertEquals(1.2, landscape3D.getHeight(1.0f - epsilon, 1.0f - epsilon), delta);
+        assertThat(landscape3D.getHeight(0.0f, 1.0f - epsilon)).isEqualTo(0.6f, Delta.delta(delta));
+        assertThat(landscape3D.getHeight(0.5f, 1.0f - epsilon)).isEqualTo(0.9f, Delta.delta(delta));
+        assertThat(landscape3D.getHeight(1.0f - epsilon, 1.0f - epsilon)).isEqualTo(1.2f, Delta.delta(delta));
 
-        AssertJUnit.assertEquals(0.28, landscape3D.getHeight(0.4f, 0.2f), delta);
-        AssertJUnit.assertEquals(0.32, landscape3D.getHeight(0.2f, 0.4f), delta);
+        assertThat(landscape3D.getHeight(0.4f, 0.2f)).isEqualTo(0.28f, Delta.delta(delta));
+        assertThat(landscape3D.getHeight(0.2f, 0.4f)).isEqualTo(0.32f, Delta.delta(delta));
 
-        AssertJUnit.assertEquals(0.6, landscape3D.getHeight(0.8f, 0.4f), delta);
-        AssertJUnit.assertEquals(0.68, landscape3D.getHeight(0.4f, 0.8f), delta);
+        assertThat(landscape3D.getHeight(0.8f, 0.4f)).isEqualTo(0.6f, Delta.delta(delta));
+        assertThat(landscape3D.getHeight(0.4f, 0.8f)).isEqualTo(0.68f, Delta.delta(delta));
 
 
         // when the position is not in the landscape, we simply return 0
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(-1, 0));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(0, -1));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(2, 0));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(0, 2));
+        assertThat(landscape3D.getHeight(-1, 0)).isZero();
+        assertThat(landscape3D.getHeight(0, -1)).isZero();
+        assertThat(landscape3D.getHeight(2, 0)).isZero();
+        assertThat(landscape3D.getHeight(0, 2)).isZero();
 
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(0, -epsilon));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(1, -epsilon));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(-epsilon, 0));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(1f + epsilon, 0));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(-epsilon, 1));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(1 + epsilon, 1));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(0, 1 + epsilon));
-        AssertJUnit.assertEquals(0f, landscape3D.getHeight(1, 1 + epsilon));
+        assertThat(landscape3D.getHeight(0, -epsilon)).isZero();
+        assertThat(landscape3D.getHeight(1, -epsilon)).isZero();
+        assertThat(landscape3D.getHeight(-epsilon, 0)).isZero();
+        assertThat(landscape3D.getHeight(1f + epsilon, 0)).isZero();
+        assertThat(landscape3D.getHeight(-epsilon, 1)).isZero();
+        assertThat(landscape3D.getHeight(1 + epsilon, 1)).isZero();
+        assertThat(landscape3D.getHeight(0, 1 + epsilon)).isZero();
+        assertThat(landscape3D.getHeight(1, 1 + epsilon)).isZero();
     }
 
 }

@@ -6,12 +6,14 @@ import java.util.List;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
-import org.testng.AssertJUnit;
+import org.fest.assertions.Delta;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import barsuift.simLife.j3d.helper.PointTestHelper;
+import static barsuift.simLife.j3d.assertions.Point3fAssert.assertThat;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class TreeLeavesOrganizerTest {
@@ -40,17 +42,17 @@ public class TreeLeavesOrganizerTest {
 
         Vector3f translation1 = new Vector3f();
         leaf1.getTransform().toTransform3D().get(translation1);
-        AssertJUnit.assertEquals(0f, translation1.getX(), 0.0001);
-        AssertJUnit.assertTrue(translation1.getY() >= 0);
-        AssertJUnit.assertTrue(translation1.getY() < 3);
-        AssertJUnit.assertEquals(0f, translation1.getZ(), 0.0001);
+        assertThat(translation1.getX()).isEqualTo(0f, Delta.delta(0.0001));
+        assertThat(translation1.getY()).isGreaterThanOrEqualTo(0);
+        assertThat(translation1.getY()).isLessThan(3);
+        assertThat(translation1.getZ()).isEqualTo(0f, Delta.delta(0.0001));
 
         Vector3f translation2 = new Vector3f();
         leaf2.getTransform().toTransform3D().get(translation2);
-        AssertJUnit.assertEquals(0f, translation2.getX(), 0.0001);
-        AssertJUnit.assertTrue(translation2.getY() >= 3);
-        AssertJUnit.assertTrue(translation2.getY() < 6);
-        AssertJUnit.assertEquals(0f, translation2.getZ(), 0.0001);
+        assertThat(translation2.getX()).isEqualTo(0f, Delta.delta(0.0001));
+        assertThat(translation2.getY()).isGreaterThanOrEqualTo(3);
+        assertThat(translation2.getY()).isLessThan(6);
+        assertThat(translation2.getZ()).isEqualTo(0f, Delta.delta(0.0001));
 
     }
 
@@ -76,7 +78,7 @@ public class TreeLeavesOrganizerTest {
         Point3f boundsEndPoint = new Point3f(0, 1.2f, 0);
         TreeLeavesOrganizer leavesOrganizer = new TreeLeavesOrganizer();
         Vector3f newLeafTranslation = leavesOrganizer.computeNewLeafTranslation(leaves3D, branchLength);
-        PointTestHelper.assertPointIsWithinBounds(new Point3f(newLeafTranslation), boundsStartPoint, boundsEndPoint);
+        assertThat(new Point3f(newLeafTranslation)).isWithin(boundsStartPoint, boundsEndPoint);
     }
 
     @Test
@@ -100,7 +102,7 @@ public class TreeLeavesOrganizerTest {
         Point3f boundsEndPoint = new Point3f(0, 3.4f, 0);
         TreeLeavesOrganizer leavesOrganizer = new TreeLeavesOrganizer();
         Vector3f newLeafTranslation = leavesOrganizer.computeNewLeafTranslation(leaves3D, branchLength);
-        PointTestHelper.assertPointIsWithinBounds(new Point3f(newLeafTranslation), boundsStartPoint, boundsEndPoint);
+        assertThat(new Point3f(newLeafTranslation)).isWithin(boundsStartPoint, boundsEndPoint);
     }
 
     @Test
@@ -124,7 +126,7 @@ public class TreeLeavesOrganizerTest {
         Point3f boundsEndPoint = new Point3f(0, 4.8f, 0);
         TreeLeavesOrganizer leavesOrganizer = new TreeLeavesOrganizer();
         Vector3f newLeafTranslation = leavesOrganizer.computeNewLeafTranslation(leaves3D, branchLength);
-        PointTestHelper.assertPointIsWithinBounds(new Point3f(newLeafTranslation), boundsStartPoint, boundsEndPoint);
+        assertThat(new Point3f(newLeafTranslation)).isWithin(boundsStartPoint, boundsEndPoint);
     }
 
     /**
@@ -152,7 +154,7 @@ public class TreeLeavesOrganizerTest {
         Point3f boundsEndPoint = new Point3f(0, 1.2f, 0);
         TreeLeavesOrganizer leavesOrganizer = new TreeLeavesOrganizer();
         Vector3f newLeafTranslation = leavesOrganizer.computeNewLeafTranslation(leaves3D, branchLength);
-        PointTestHelper.assertPointIsWithinBounds(new Point3f(newLeafTranslation), boundsStartPoint, boundsEndPoint);
+        assertThat(new Point3f(newLeafTranslation)).isWithin(boundsStartPoint, boundsEndPoint);
     }
 
 }

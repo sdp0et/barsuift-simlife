@@ -61,7 +61,7 @@ public class ColorAssert extends GenericAssert<ColorAssert, Color3f> {
         String errorMessage = String.format("Expected color to be <%s> but was <%s>", color, actual);
 
         // check that actual color is (epsilon) equal to the given color
-        Assertions.assertThat(actual.epsilonEquals(color, 0.0001f)).overridingErrorMessage(errorMessage).isTrue();
+        Assertions.assertThat(actual.epsilonEquals(color, 0.001f)).overridingErrorMessage(errorMessage).isTrue();
 
         // return the current assertion for method chaining
         return this;

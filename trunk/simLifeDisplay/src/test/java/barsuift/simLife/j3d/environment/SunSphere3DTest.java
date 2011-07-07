@@ -22,7 +22,7 @@ import javax.vecmath.Point3f;
 
 import org.testng.annotations.Test;
 
-import barsuift.simLife.j3d.helper.PointTestHelper;
+import static barsuift.simLife.j3d.assertions.Point3fAssert.assertThat;
 
 
 public class SunSphere3DTest {
@@ -30,65 +30,60 @@ public class SunSphere3DTest {
     @Test
     public void testUpdateForEclipticShift1() {
         SunSphere3D sphere = new SunSphere3D(0, (float) Math.PI / 2, 0);
-        PointTestHelper.assertPointEquals(new Point3f(0, 0, -0.15f), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, 0, -0.15f));
 
         sphere.updateForEclipticShift(0);
-        PointTestHelper.assertPointEquals(new Point3f(0, 0, -0.15f), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, 0, -0.15f));
 
         sphere.updateForEclipticShift((float) Math.PI / 2);
-        PointTestHelper.assertPointEquals(new Point3f(0, -0.15f, 0), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, -0.15f, 0));
 
         sphere.updateForEclipticShift((float) Math.PI);
-        PointTestHelper.assertPointEquals(new Point3f(0, 0, 0.15f), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, 0, 0.15f));
 
         sphere.updateForEclipticShift(3 * (float) Math.PI / 2);
-        PointTestHelper.assertPointEquals(new Point3f(0, -0.15f, 0), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, -0.15f, 0));
     }
 
     @Test
     public void testUpdateForEclipticShift2() {
         SunSphere3D sphere = new SunSphere3D((float) Math.PI / 4, (float) Math.PI / 2, 0);
-        PointTestHelper.assertPointEquals(
-                new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, -0.15f * (float) Math.sqrt(2) / 2),
-                sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(
+                new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, -0.15f * (float) Math.sqrt(2) / 2));
 
         sphere.updateForEclipticShift(0);
-        PointTestHelper.assertPointEquals(
-                new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, -0.15f * (float) Math.sqrt(2) / 2),
-                sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(
+                new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, -0.15f * (float) Math.sqrt(2) / 2));
 
         sphere.updateForEclipticShift((float) Math.PI / 2);
-        PointTestHelper.assertPointEquals(
-                new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, 0.15f * (float) Math.sqrt(2) / 2),
-                sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(
+                new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, 0.15f * (float) Math.sqrt(2) / 2));
 
         sphere.updateForEclipticShift((float) Math.PI);
-        PointTestHelper.assertPointEquals(new Point3f(0, 0.15f * (float) Math.sqrt(2) / 2,
-                0.15f * (float) Math.sqrt(2) / 2), sphere.getSunCenter());
-
+        assertThat(sphere.getSunCenter()).isEqualTo(
+                new Point3f(0, 0.15f * (float) Math.sqrt(2) / 2, 0.15f * (float) Math.sqrt(2) / 2));
 
         sphere.updateForEclipticShift(3 * (float) Math.PI / 2);
-        PointTestHelper.assertPointEquals(
-                new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, 0.15f * (float) Math.sqrt(2) / 2),
-                sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(
+                new Point3f(0, -0.15f * (float) Math.sqrt(2) / 2, 0.15f * (float) Math.sqrt(2) / 2));
     }
 
     @Test
     public void testUpdateForEclipticShift3() {
         SunSphere3D sphere = new SunSphere3D((float) Math.PI / 2, (float) Math.PI / 2, 0);
-        PointTestHelper.assertPointEquals(new Point3f(0, -0.15f, 0), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, -0.15f, 0));
 
         sphere.updateForEclipticShift(0);
-        PointTestHelper.assertPointEquals(new Point3f(0, -0.15f, 0), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, -0.15f, 0));
 
         sphere.updateForEclipticShift((float) Math.PI / 2);
-        PointTestHelper.assertPointEquals(new Point3f(0, 0, 0.15f), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, 0, 0.15f));
 
         sphere.updateForEclipticShift((float) Math.PI);
-        PointTestHelper.assertPointEquals(new Point3f(0, 0.15f, 0), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, 0.15f, 0));
 
         sphere.updateForEclipticShift(3 * (float) Math.PI / 2);
-        PointTestHelper.assertPointEquals(new Point3f(0, 0, 0.15f), sphere.getSunCenter());
+        assertThat(sphere.getSunCenter()).isEqualTo(new Point3f(0, 0, 0.15f));
     }
 
 }

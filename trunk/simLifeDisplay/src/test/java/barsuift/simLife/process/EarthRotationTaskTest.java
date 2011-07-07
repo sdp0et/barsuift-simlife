@@ -18,7 +18,7 @@
  */
 package barsuift.simLife.process;
 
-import org.testng.AssertJUnit;
+import org.fest.assertions.Delta;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -27,6 +27,8 @@ import barsuift.simLife.condition.BoundConditionState;
 import barsuift.simLife.condition.CyclicConditionState;
 import barsuift.simLife.j3d.environment.MockSun3D;
 import barsuift.simLife.time.SimLifeDate;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class EarthRotationTaskTest {
@@ -72,24 +74,26 @@ public class EarthRotationTaskTest {
     public void testExecuteSplitConditionalStepAutomatic() {
         // cycle = 0/20
         // end = 0/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 10/20
         // end = 10/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 0/20
         // end = 20/40
         // msOfDay = (3*60 + 15) * 1000 + 100 = 195 100
-        AssertJUnit.assertEquals(EarthRotationTask.ROTATION_ANGLE_PER_MS * 195100, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo((float) (EarthRotationTask.ROTATION_ANGLE_PER_MS * 195100),
+                Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 10/20
         // end = 30/40
         // msOfDay = (3*60 + 15) * 1000 + 100 = 195 100
-        AssertJUnit.assertEquals(EarthRotationTask.ROTATION_ANGLE_PER_MS * 195100, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo((float) (EarthRotationTask.ROTATION_ANGLE_PER_MS * 195100),
+                Delta.delta(0.0001));
     }
 
     @Test
@@ -97,36 +101,38 @@ public class EarthRotationTaskTest {
         task.setAutomatic(false);
         // cycle = 0/20
         // end = 0/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 10/20
         // end = 10/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 0/20
         // end = 20/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.executeStep();
         // cycle = 10/20
         // end = 30/40
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo(0f, Delta.delta(0.0001));
     }
 
     @Test
     public void testSetAutomatic() {
         task.executeStep();
         task.executeStep();
-        AssertJUnit.assertEquals(EarthRotationTask.ROTATION_ANGLE_PER_MS * 195100, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo((float) (EarthRotationTask.ROTATION_ANGLE_PER_MS * 195100),
+                Delta.delta(0.0001));
 
         sun3D.setEarthRotation(0f);
-        AssertJUnit.assertEquals(0f, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo(0f, Delta.delta(0.0001));
 
         task.setAutomatic(true);
         // this should force the computation of the sun position
-        AssertJUnit.assertEquals(EarthRotationTask.ROTATION_ANGLE_PER_MS * 195100, sun3D.getEarthRotation(), 0.0001);
+        assertThat(sun3D.getEarthRotation()).isEqualTo((float) (EarthRotationTask.ROTATION_ANGLE_PER_MS * 195100),
+                Delta.delta(0.0001));
     }
 
 }

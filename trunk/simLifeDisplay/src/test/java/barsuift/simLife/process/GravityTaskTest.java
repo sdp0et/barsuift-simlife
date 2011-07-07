@@ -22,7 +22,6 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3f;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.UtilDataCreatorForTests;
@@ -31,6 +30,7 @@ import barsuift.simLife.j3d.MockMobile;
 import barsuift.simLife.j3d.landscape.Landscape3D;
 import barsuift.simLife.j3d.landscape.MockLandscape3D;
 import barsuift.simLife.message.PublisherTestHelper;
+import static barsuift.simLife.j3d.assertions.VectorAssert.assertThat;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -54,22 +54,22 @@ public class GravityTaskTest {
         // with stepSize=3, the movement should be y-=0.075
         gravity.executeSplitConditionalStep(state.getStepSize());
 
-        AssertJUnit.assertEquals(new Vector3f(1, 5.025f, 3), getTranslation(mobile));
+        assertThat(getTranslation(mobile)).isEqualTo(new Vector3f(1, 5.025f, 3));
         // not yet FALLEN
-        AssertJUnit.assertEquals(0, publisher.nbUpdated());
+        assertThat(publisher.nbUpdated()).isEqualTo(0);
         assertThat(publisher.getUpdateObjects()).isEmpty();
         // mobile should still be in the list of mobile
-        AssertJUnit.assertTrue(gravity.getMobiles().contains(mobile));
+        assertThat(gravity.getMobiles().contains(mobile)).isTrue();
 
         // with stepSize=3, the movement should be y-=0.075
         gravity.executeSplitConditionalStep(state.getStepSize());
 
-        AssertJUnit.assertEquals(new Vector3f(1, 5.0f, 3), getTranslation(mobile));
+        assertThat(getTranslation(mobile)).isEqualTo(new Vector3f(1, 5.0f, 3));
         // it is now FALLEN, with height=5
-        AssertJUnit.assertEquals(1, publisher.nbUpdated());
-        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher.getUpdateObjects().get(0));
+        assertThat(publisher.nbUpdated()).isEqualTo(1);
+        assertThat(publisher.getUpdateObjects().get(0)).isEqualTo(MobileEvent.FALLEN);
         // mobile should still be in the list of mobile
-        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile));
+        assertThat(gravity.getMobiles().contains(mobile)).isFalse();
     }
 
     @Test
@@ -119,39 +119,39 @@ public class GravityTaskTest {
 
 
 
-        AssertJUnit.assertEquals(new Vector3f(1, 1.925f, 3), getTranslation(mobile1));
-        AssertJUnit.assertEquals(new Vector3f(1, 0.001f, 3), getTranslation(mobile2));
-        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile3));
-        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile4));
-        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile5));
-        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile6));
-        AssertJUnit.assertEquals(new Vector3f(1, 0, 3), getTranslation(mobile7));
+        assertThat(getTranslation(mobile1)).isEqualTo(new Vector3f(1, 1.925f, 3));
+        assertThat(getTranslation(mobile2)).isEqualTo(new Vector3f(1, 0.001f, 3));
+        assertThat(getTranslation(mobile3)).isEqualTo(new Vector3f(1, 0, 3));
+        assertThat(getTranslation(mobile4)).isEqualTo(new Vector3f(1, 0, 3));
+        assertThat(getTranslation(mobile5)).isEqualTo(new Vector3f(1, 0, 3));
+        assertThat(getTranslation(mobile6)).isEqualTo(new Vector3f(1, 0, 3));
+        assertThat(getTranslation(mobile7)).isEqualTo(new Vector3f(1, 0, 3));
 
         // every mobile except mobile1 and mobile2 should notify a FALLEN event
-        AssertJUnit.assertEquals(0, publisher1.nbUpdated());
+        assertThat(publisher1.nbUpdated()).isEqualTo(0);
         assertThat(publisher1.getUpdateObjects()).isEmpty();
-        AssertJUnit.assertEquals(0, publisher2.nbUpdated());
+        assertThat(publisher2.nbUpdated()).isEqualTo(0);
         assertThat(publisher2.getUpdateObjects()).isEmpty();
 
-        AssertJUnit.assertEquals(1, publisher3.nbUpdated());
-        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher3.getUpdateObjects().get(0));
-        AssertJUnit.assertEquals(1, publisher4.nbUpdated());
-        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher4.getUpdateObjects().get(0));
-        AssertJUnit.assertEquals(1, publisher5.nbUpdated());
-        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher5.getUpdateObjects().get(0));
-        AssertJUnit.assertEquals(1, publisher6.nbUpdated());
-        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher6.getUpdateObjects().get(0));
-        AssertJUnit.assertEquals(1, publisher7.nbUpdated());
-        AssertJUnit.assertEquals(MobileEvent.FALLEN, publisher7.getUpdateObjects().get(0));
+        assertThat(publisher3.nbUpdated()).isEqualTo(1);
+        assertThat(publisher3.getUpdateObjects().get(0)).isEqualTo(MobileEvent.FALLEN);
+        assertThat(publisher4.nbUpdated()).isEqualTo(1);
+        assertThat(publisher4.getUpdateObjects().get(0)).isEqualTo(MobileEvent.FALLEN);
+        assertThat(publisher5.nbUpdated()).isEqualTo(1);
+        assertThat(publisher5.getUpdateObjects().get(0)).isEqualTo(MobileEvent.FALLEN);
+        assertThat(publisher6.nbUpdated()).isEqualTo(1);
+        assertThat(publisher6.getUpdateObjects().get(0)).isEqualTo(MobileEvent.FALLEN);
+        assertThat(publisher7.nbUpdated()).isEqualTo(1);
+        assertThat(publisher7.getUpdateObjects().get(0)).isEqualTo(MobileEvent.FALLEN);
 
         // only mobile1 and mobile2 should still be in the list of mobile
-        AssertJUnit.assertTrue(gravity.getMobiles().contains(mobile1));
-        AssertJUnit.assertTrue(gravity.getMobiles().contains(mobile2));
-        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile3));
-        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile4));
-        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile5));
-        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile6));
-        AssertJUnit.assertFalse(gravity.getMobiles().contains(mobile7));
+        assertThat(gravity.getMobiles().contains(mobile1)).isTrue();
+        assertThat(gravity.getMobiles().contains(mobile2)).isTrue();
+        assertThat(gravity.getMobiles().contains(mobile3)).isFalse();
+        assertThat(gravity.getMobiles().contains(mobile4)).isFalse();
+        assertThat(gravity.getMobiles().contains(mobile5)).isFalse();
+        assertThat(gravity.getMobiles().contains(mobile6)).isFalse();
+        assertThat(gravity.getMobiles().contains(mobile7)).isFalse();
 
     }
 

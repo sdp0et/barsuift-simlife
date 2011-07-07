@@ -18,9 +18,11 @@
  */
 package barsuift.simLife.j3d.util;
 
-import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
 import javax.vecmath.Point3f;
+
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class PointHelperTest {
 
@@ -28,39 +30,39 @@ public class PointHelperTest {
     public void testShiftPoint() {
         Point3f p1 = new Point3f(0, 0, 0);
         Point3f actualPoint = PointHelper.shiftPoint(p1, 10);
-        AssertJUnit.assertTrue(actualPoint.getX() <= 10);
-        AssertJUnit.assertTrue(actualPoint.getX() >= -10);
-        AssertJUnit.assertTrue(actualPoint.getY() <= 10);
-        AssertJUnit.assertTrue(actualPoint.getY() >= -10);
-        AssertJUnit.assertTrue(actualPoint.getZ() <= 10);
-        AssertJUnit.assertTrue(actualPoint.getZ() >= -10);
+        assertThat(actualPoint.getX() <= 10).isTrue();
+        assertThat(actualPoint.getX() >= -10).isTrue();
+        assertThat(actualPoint.getY() <= 10).isTrue();
+        assertThat(actualPoint.getY() >= -10).isTrue();
+        assertThat(actualPoint.getZ() <= 10).isTrue();
+        assertThat(actualPoint.getZ() >= -10).isTrue();
 
         Point3f p2 = new Point3f(1, -1, 2);
         Point3f actualPoint2 = PointHelper.shiftPoint(p2, 5);
-        AssertJUnit.assertTrue(actualPoint2.getX() <= 6);
-        AssertJUnit.assertTrue(actualPoint2.getX() >= -4);
-        AssertJUnit.assertTrue(actualPoint2.getY() <= 4);
-        AssertJUnit.assertTrue(actualPoint2.getY() >= -6);
-        AssertJUnit.assertTrue(actualPoint2.getZ() <= 7);
-        AssertJUnit.assertTrue(actualPoint2.getZ() >= -3);
+        assertThat(actualPoint2.getX() <= 6).isTrue();
+        assertThat(actualPoint2.getX() >= -4).isTrue();
+        assertThat(actualPoint2.getY() <= 4).isTrue();
+        assertThat(actualPoint2.getY() >= -6).isTrue();
+        assertThat(actualPoint2.getZ() <= 7).isTrue();
+        assertThat(actualPoint2.getZ() >= -3).isTrue();
 
         Point3f p3 = new Point3f(0, 0, 0);
         Point3f actualPoint3 = PointHelper.shiftPoint(p3, 0.6f);
-        AssertJUnit.assertTrue(actualPoint3.getX() <= 0.6);
-        AssertJUnit.assertTrue(actualPoint3.getX() >= -0.6);
-        AssertJUnit.assertTrue(actualPoint3.getY() <= 0.6);
-        AssertJUnit.assertTrue(actualPoint3.getY() >= -0.6);
-        AssertJUnit.assertTrue(actualPoint3.getZ() <= 0.6);
-        AssertJUnit.assertTrue(actualPoint3.getZ() >= -0.6);
+        assertThat(actualPoint3.getX() <= 0.6).isTrue();
+        assertThat(actualPoint3.getX() >= -0.6).isTrue();
+        assertThat(actualPoint3.getY() <= 0.6).isTrue();
+        assertThat(actualPoint3.getY() >= -0.6).isTrue();
+        assertThat(actualPoint3.getZ() <= 0.6).isTrue();
+        assertThat(actualPoint3.getZ() >= -0.6).isTrue();
 
         Point3f p4 = new Point3f(1, -1, 2);
         Point3f actualPoint4 = PointHelper.shiftPoint(p4, 0.6f);
-        AssertJUnit.assertTrue(actualPoint4.getX() <= 1.6);
-        AssertJUnit.assertTrue(actualPoint4.getX() >= 0.4);
-        AssertJUnit.assertTrue(actualPoint4.getY() <= -0.4);
-        AssertJUnit.assertTrue(actualPoint4.getY() >= -1.6);
-        AssertJUnit.assertTrue(actualPoint4.getZ() <= 2.6);
-        AssertJUnit.assertTrue(actualPoint4.getZ() >= 1.4);
+        assertThat(actualPoint4.getX() <= 1.6).isTrue();
+        assertThat(actualPoint4.getX() >= 0.4).isTrue();
+        assertThat(actualPoint4.getY() <= -0.4).isTrue();
+        assertThat(actualPoint4.getY() >= -1.6).isTrue();
+        assertThat(actualPoint4.getZ() <= 2.6).isTrue();
+        assertThat(actualPoint4.getZ() >= 1.4).isTrue();
     }
 
 }

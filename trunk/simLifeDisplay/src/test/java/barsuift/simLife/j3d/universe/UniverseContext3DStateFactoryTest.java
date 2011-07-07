@@ -18,12 +18,13 @@
  */
 package barsuift.simLife.j3d.universe;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.j3d.SimLifeCanvas3DState;
 import barsuift.simLife.j3d.landscape.NavigatorState;
 import barsuift.simLife.landscape.LandscapeParameters;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
 public class UniverseContext3DStateFactoryTest {
@@ -36,19 +37,19 @@ public class UniverseContext3DStateFactoryTest {
         UniverseContext3DStateFactory factory = new UniverseContext3DStateFactory();
         UniverseContext3DState universeContext3DState = factory.createUniverseContext3DState(parameters);
 
-        AssertJUnit.assertTrue(universeContext3DState.isAxisShowing());
+        assertThat(universeContext3DState.isAxisShowing()).isTrue();
 
         SimLifeCanvas3DState canvasState = universeContext3DState.getCanvas();
-        AssertJUnit.assertNotNull(canvasState);
-        AssertJUnit.assertFalse(canvasState.isFpsShowing());
+        assertThat(canvasState).isNotNull();
+        assertThat(canvasState.isFpsShowing()).isFalse();
 
         NavigatorState navigatorState = universeContext3DState.getNavigator();
-        AssertJUnit.assertNotNull(navigatorState);
-        AssertJUnit.assertEquals(0.0, navigatorState.getRotationX());
-        AssertJUnit.assertEquals(0.0, navigatorState.getRotationY());
-        AssertJUnit.assertEquals((float) parameters.getSize() / 2, navigatorState.getTranslation().getX());
-        AssertJUnit.assertEquals(2.0f, navigatorState.getTranslation().getY());
-        AssertJUnit.assertEquals((float) parameters.getSize() / 2, navigatorState.getTranslation().getZ());
+        assertThat(navigatorState).isNotNull();
+        assertThat(navigatorState.getRotationX()).isEqualTo(0.0);
+        assertThat(navigatorState.getRotationY()).isEqualTo(0.0);
+        assertThat(navigatorState.getTranslation().getX()).isEqualTo((float) parameters.getSize() / 2);
+        assertThat(navigatorState.getTranslation().getY()).isEqualTo(2.0f);
+        assertThat(navigatorState.getTranslation().getZ()).isEqualTo((float) parameters.getSize() / 2);
 
     }
 

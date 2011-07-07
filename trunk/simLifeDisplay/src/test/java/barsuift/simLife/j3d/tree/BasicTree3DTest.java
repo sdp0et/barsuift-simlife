@@ -25,17 +25,16 @@ import javax.media.j3d.Group;
 import javax.media.j3d.TransformGroup;
 
 import org.testng.Assert;
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.CompilerHelper;
-import barsuift.simLife.j3d.helper.Structure3DHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.tree.MockTree;
 import barsuift.simLife.tree.MockTreeBranch;
+import static barsuift.simLife.j3d.assertions.GroupAssert.assertThat;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -96,8 +95,8 @@ public class BasicTree3DTest {
     public void testGetState() {
         BasicTree3D tree3D = new BasicTree3D(tree3DState);
         tree3D.init(mockUniverse3D, mockTree);
-        AssertJUnit.assertEquals(tree3DState, tree3D.getState());
-        AssertJUnit.assertSame(tree3DState, tree3D.getState());
+        assertThat(tree3D.getState()).isEqualTo(tree3DState);
+        assertThat(tree3D.getState()).isSameAs(tree3DState);
     }
 
     @Test
@@ -109,7 +108,7 @@ public class BasicTree3DTest {
         CompilerHelper.compile(branchGroup);
         assertThat(tree3D.getBranches()).hasSize(nbBranches);
 
-        Structure3DHelper.assertExactlyOneTransformGroup(branchGroup);
+        assertThat(branchGroup).hasExactlyOneTransformGroup();
         TransformGroup tg = (TransformGroup) branchGroup.getChild(0);
         int nbTimesTrunkGroupIsFound = 0;
         int nbBranchesFound = 0;
@@ -127,8 +126,8 @@ public class BasicTree3DTest {
                 }
             }
         }
-        AssertJUnit.assertEquals("We should have exactly one trunk", 1, nbTimesTrunkGroupIsFound);
-        AssertJUnit.assertEquals(nbBranches, nbBranchesFound);
+        assertThat(nbTimesTrunkGroupIsFound).as("We should have exactly one trunk").isEqualTo(1);
+        assertThat(nbBranchesFound).isEqualTo(nbBranches);
     }
 
 }
