@@ -31,7 +31,7 @@ import barsuift.simLife.environment.MockSky;
 import barsuift.simLife.environment.MockSun;
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
-import barsuift.simLife.j3d.helper.ColorTestHelper;
+import static barsuift.simLife.j3d.assertions.ColorAssert.assertThat;
 
 
 public class BasicSky3DTest extends TestCase {
@@ -49,7 +49,8 @@ public class BasicSky3DTest extends TestCase {
         MockSky mockSky = new MockSky();
         mockSun3D = (MockSun3D) ((MockSun) mockSky.getSun()).getSun3D();
         mockSun3D.setBrightness(new BigDecimal("0.5"));
-        sky3D = new BasicSky3D(state, mockSky);
+        sky3D = new BasicSky3D(state);
+        sky3D.init(mockSky);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class BasicSky3DTest extends TestCase {
         Color3f color = new Color3f();
         background.getColor(color);
         // brightness = 0.5 so color should be "half" sky blue, half black
-        ColorTestHelper.assertEquals(new Color3f(0.125f, 0.25f, 0.5f), color);
+        assertThat(color).isEqualTo(new Color3f(0.125f, 0.25f, 0.5f));
     }
 
     public void testUpdate() {
@@ -79,22 +80,22 @@ public class BasicSky3DTest extends TestCase {
         Color3f color = new Color3f();
         background.getColor(color);
         // brightness = 0.5 so color should be "half" sky blue, half black
-        ColorTestHelper.assertEquals(new Color3f(0.125f, 0.25f, 0.5f), color);
+        assertThat(color).isEqualTo(new Color3f(0.125f, 0.25f, 0.5f));
 
         mockSun3D.setBrightness(new BigDecimal("0.75"));
         background.getColor(color);
         // update method not called, so the color should not have changed yet
-        ColorTestHelper.assertEquals(new Color3f(0.125f, 0.25f, 0.5f), color);
+        assertThat(color).isEqualTo(new Color3f(0.125f, 0.25f, 0.5f));
 
         sky3D.update(mockSun3D, SunUpdateCode.EARTH_REVOLUTION);
         background.getColor(color);
         // update method called with another update code, so the color should not change
-        ColorTestHelper.assertEquals(new Color3f(0.125f, 0.25f, 0.5f), color);
+        assertThat(color).isEqualTo(new Color3f(0.125f, 0.25f, 0.5f));
 
         sky3D.update(mockSun3D, SunUpdateCode.BRIGHTNESS);
         background.getColor(color);
         // brightness = 0.75 so color should be 75% sky blue, 25% black
-        ColorTestHelper.assertEquals(new Color3f(0.1875f, 0.375f, 0.75f), color);
+        assertThat(color).isEqualTo(new Color3f(0.1875f, 0.375f, 0.75f));
     }
 
     public void testSubscribers() {
