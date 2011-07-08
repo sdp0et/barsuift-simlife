@@ -18,142 +18,145 @@
  */
 package barsuift.simLife.landscape;
 
-import junit.framework.TestCase;
+import org.fest.assertions.Delta;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class LandscapeParametersTest extends TestCase {
+public class LandscapeParametersTest {
 
     private LandscapeParameters param;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         param = new LandscapeParameters();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         param = null;
     }
 
-    public void testSetSize() {
+    @Test
+    public void setSize() {
         param.setSize(LandscapeParameters.SIZE_MIN);
-        assertEquals(LandscapeParameters.SIZE_MIN, param.getSize(), 0.0001);
+        assertThat(param.getSize()).isEqualTo(LandscapeParameters.SIZE_MIN);
         param.setSize(LandscapeParameters.SIZE_DEFAULT);
-        assertEquals(LandscapeParameters.SIZE_DEFAULT, param.getSize(), 0.0001);
+        assertThat(param.getSize()).isEqualTo(LandscapeParameters.SIZE_DEFAULT);
         param.setSize(LandscapeParameters.SIZE_MAX);
-        assertEquals(LandscapeParameters.SIZE_MAX, param.getSize(), 0.0001);
-        try {
-            param.setSize(LandscapeParameters.SIZE_MIN - 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            param.setSize(LandscapeParameters.SIZE_MAX + 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            param.setSize(3);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+        assertThat(param.getSize()).isEqualTo(LandscapeParameters.SIZE_MAX);
     }
 
-    public void testSetMaxHeight() {
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void setSize_exception_onTooSmallSize() {
+        param.setSize(LandscapeParameters.SIZE_MIN / 2);
+    }
+
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void setSize_exception_onTooBigSize() {
+        param.setSize(LandscapeParameters.SIZE_MAX * 2);
+    }
+
+    @Test(expectedExceptions = { IllegalArgumentException.class })
+    public void setSize_exception_onNonPowerOfTwoSize() {
+        param.setSize(3);
+    }
+
+    @Test
+    public void setMaxHeight() {
         param.setMaximumHeight(LandscapeParameters.MAX_HEIGHT_MIN);
-        assertEquals(LandscapeParameters.MAX_HEIGHT_MIN, param.getMaximumHeight(), 0.0001);
+        assertThat(param.getMaximumHeight()).isEqualTo(LandscapeParameters.MAX_HEIGHT_MIN, Delta.delta(0.0001));
         param.setMaximumHeight(LandscapeParameters.MAX_HEIGHT_DEFAULT);
-        assertEquals(LandscapeParameters.MAX_HEIGHT_DEFAULT, param.getMaximumHeight(), 0.0001);
+        assertThat(param.getMaximumHeight()).isEqualTo(LandscapeParameters.MAX_HEIGHT_DEFAULT, Delta.delta(0.0001));
         param.setMaximumHeight(LandscapeParameters.MAX_HEIGHT_MAX);
-        assertEquals(LandscapeParameters.MAX_HEIGHT_MAX, param.getMaximumHeight(), 0.0001);
-        try {
-            param.setMaximumHeight(LandscapeParameters.MAX_HEIGHT_MIN - 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            param.setMaximumHeight(LandscapeParameters.MAX_HEIGHT_MAX + 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+        assertThat(param.getMaximumHeight()).isEqualTo(LandscapeParameters.MAX_HEIGHT_MAX, Delta.delta(0.0001));
     }
 
-    public void testSetRoughness() {
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setMaxHeight_exception_onTooSmallHeight() {
+        param.setMaximumHeight(LandscapeParameters.MAX_HEIGHT_MIN - 1);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setMaxHeight_exception_onTooBigHeight() {
+        param.setMaximumHeight(LandscapeParameters.MAX_HEIGHT_MAX + 1);
+    }
+
+    @Test
+    public void setRoughness() {
         param.setRoughness(LandscapeParameters.ROUGHNESS_MIN);
-        assertEquals(LandscapeParameters.ROUGHNESS_MIN, param.getRoughness(), 0.0001);
+        assertThat(param.getRoughness()).isEqualTo(LandscapeParameters.ROUGHNESS_MIN, Delta.delta(0.0001));
         param.setRoughness(LandscapeParameters.ROUGHNESS_DEFAULT);
-        assertEquals(LandscapeParameters.ROUGHNESS_DEFAULT, param.getRoughness(), 0.0001);
+        assertThat(param.getRoughness()).isEqualTo(LandscapeParameters.ROUGHNESS_DEFAULT, Delta.delta(0.0001));
         param.setRoughness(LandscapeParameters.ROUGHNESS_MAX);
-        assertEquals(LandscapeParameters.ROUGHNESS_MAX, param.getRoughness(), 0.0001);
-        try {
-            param.setRoughness(LandscapeParameters.ROUGHNESS_MIN - 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            param.setRoughness(LandscapeParameters.ROUGHNESS_MAX + 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+        assertThat(param.getRoughness()).isEqualTo(LandscapeParameters.ROUGHNESS_MAX, Delta.delta(0.0001));
     }
 
-    public void testSetErosion() {
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setRoughness_exception_onTooSmallRoughness() {
+        param.setRoughness(LandscapeParameters.ROUGHNESS_MIN - 1);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setRoughness_exception_onTooBigRoughness() {
+        param.setRoughness(LandscapeParameters.ROUGHNESS_MIN - 1);
+    }
+
+    @Test
+    public void setErosion() {
         param.setErosion(LandscapeParameters.EROSION_MIN);
-        assertEquals(LandscapeParameters.EROSION_MIN, param.getErosion(), 0.0001);
+        assertThat(param.getErosion()).isEqualTo(LandscapeParameters.EROSION_MIN, Delta.delta(0.0001));
         param.setErosion(LandscapeParameters.EROSION_DEFAULT);
-        assertEquals(LandscapeParameters.EROSION_DEFAULT, param.getErosion(), 0.0001);
+        assertThat(param.getErosion()).isEqualTo(LandscapeParameters.EROSION_DEFAULT, Delta.delta(0.0001));
         param.setErosion(LandscapeParameters.EROSION_MAX);
-        assertEquals(LandscapeParameters.EROSION_MAX, param.getErosion(), 0.0001);
-        try {
-            param.setErosion(LandscapeParameters.EROSION_MIN - 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            param.setErosion(LandscapeParameters.EROSION_MAX + 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+        assertThat(param.getErosion()).isEqualTo(LandscapeParameters.EROSION_MAX, Delta.delta(0.0001));
     }
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setErosion_exception_onTooSmallErosion() {
+        param.setErosion(LandscapeParameters.EROSION_MIN - 1);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setErosion_exception_onTooBigErosion() {
+        param.setErosion(LandscapeParameters.EROSION_MAX + 1);
+    }
+
+    @Test
     public void testResetToDefaults() {
         param.resetToDefaults();
-        assertEquals(LandscapeParameters.SIZE_DEFAULT, param.getSize(), 0.0001);
-        assertEquals(LandscapeParameters.MAX_HEIGHT_DEFAULT, param.getMaximumHeight(), 0.0001);
-        assertEquals(LandscapeParameters.ROUGHNESS_DEFAULT, param.getRoughness(), 0.0001);
-        assertEquals(LandscapeParameters.EROSION_DEFAULT, param.getErosion(), 0.0001);
+        assertThat(param.getSize()).isEqualTo(LandscapeParameters.SIZE_DEFAULT);
+        assertThat(param.getMaximumHeight()).isEqualTo(LandscapeParameters.MAX_HEIGHT_DEFAULT, Delta.delta(0.0001));
+        assertThat(param.getRoughness()).isEqualTo(LandscapeParameters.ROUGHNESS_DEFAULT, Delta.delta(0.0001));
+        assertThat(param.getErosion()).isEqualTo(LandscapeParameters.EROSION_DEFAULT, Delta.delta(0.0001));
     }
 
+    @Test
     public void testRandom() {
         param.random();
-        assertTrue(param.getSize() >= LandscapeParameters.SIZE_MIN);
-        assertTrue(param.getSize() <= LandscapeParameters.SIZE_MAX);
-        assertTrue(param.getMaximumHeight() >= LandscapeParameters.MAX_HEIGHT_MIN);
-        assertTrue(param.getMaximumHeight() <= LandscapeParameters.MAX_HEIGHT_MAX);
-        assertTrue(param.getRoughness() >= LandscapeParameters.ROUGHNESS_MIN);
-        assertTrue(param.getRoughness() <= LandscapeParameters.ROUGHNESS_MAX);
-        assertTrue(param.getErosion() >= LandscapeParameters.EROSION_MIN);
-        assertTrue(param.getErosion() <= LandscapeParameters.EROSION_MAX);
+        assertThat(param.getSize()).isGreaterThanOrEqualTo(LandscapeParameters.SIZE_MIN);
+        assertThat(param.getSize()).isLessThanOrEqualTo(LandscapeParameters.SIZE_MAX);
+        assertThat(param.getMaximumHeight()).isGreaterThanOrEqualTo(LandscapeParameters.MAX_HEIGHT_MIN);
+        assertThat(param.getMaximumHeight()).isLessThanOrEqualTo(LandscapeParameters.MAX_HEIGHT_MAX);
+        assertThat(param.getRoughness()).isGreaterThanOrEqualTo(LandscapeParameters.ROUGHNESS_MIN);
+        assertThat(param.getRoughness()).isLessThanOrEqualTo(LandscapeParameters.ROUGHNESS_MAX);
+        assertThat(param.getErosion()).isGreaterThanOrEqualTo(LandscapeParameters.EROSION_MIN);
+        assertThat(param.getErosion()).isLessThanOrEqualTo(LandscapeParameters.EROSION_MAX);
     }
 
+    @Test
     public void testValidity() {
-        assertTrue(LandscapeParameters.SIZE_DEFAULT >= LandscapeParameters.SIZE_MIN);
-        assertTrue(LandscapeParameters.SIZE_DEFAULT <= LandscapeParameters.SIZE_MAX);
-        assertTrue(LandscapeParameters.MAX_HEIGHT_DEFAULT >= LandscapeParameters.MAX_HEIGHT_MIN);
-        assertTrue(LandscapeParameters.MAX_HEIGHT_DEFAULT <= LandscapeParameters.MAX_HEIGHT_MAX);
-        assertTrue(LandscapeParameters.ROUGHNESS_DEFAULT >= LandscapeParameters.ROUGHNESS_MIN);
-        assertTrue(LandscapeParameters.ROUGHNESS_DEFAULT <= LandscapeParameters.ROUGHNESS_MAX);
-        assertTrue(LandscapeParameters.EROSION_DEFAULT >= LandscapeParameters.EROSION_MIN);
-        assertTrue(LandscapeParameters.EROSION_DEFAULT <= LandscapeParameters.EROSION_MAX);
+        assertThat(LandscapeParameters.SIZE_DEFAULT).isGreaterThanOrEqualTo(LandscapeParameters.SIZE_MIN);
+        assertThat(LandscapeParameters.SIZE_DEFAULT).isLessThanOrEqualTo(LandscapeParameters.SIZE_MAX);
+        assertThat(LandscapeParameters.MAX_HEIGHT_DEFAULT).isGreaterThanOrEqualTo(LandscapeParameters.MAX_HEIGHT_MIN);
+        assertThat(LandscapeParameters.MAX_HEIGHT_DEFAULT).isLessThanOrEqualTo(LandscapeParameters.MAX_HEIGHT_MAX);
+        assertThat(LandscapeParameters.ROUGHNESS_DEFAULT).isGreaterThanOrEqualTo(LandscapeParameters.ROUGHNESS_MIN);
+        assertThat(LandscapeParameters.ROUGHNESS_DEFAULT).isLessThanOrEqualTo(LandscapeParameters.ROUGHNESS_MAX);
+        assertThat(LandscapeParameters.EROSION_DEFAULT).isGreaterThanOrEqualTo(LandscapeParameters.EROSION_MIN);
+        assertThat(LandscapeParameters.EROSION_DEFAULT).isLessThanOrEqualTo(LandscapeParameters.EROSION_MAX);
     }
 
 }
