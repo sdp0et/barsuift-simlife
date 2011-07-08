@@ -20,7 +20,11 @@ package barsuift.simLife;
 
 import java.io.File;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.universe.AllParameters;
 import barsuift.simLife.universe.BasicUniverseContextFactory;
@@ -28,30 +32,33 @@ import barsuift.simLife.universe.Universe;
 import barsuift.simLife.universe.UniverseContext;
 import barsuift.simLife.universe.UniverseContextIO;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class ApplicationTest extends TestCase {
+
+public class ApplicationTest {
 
     private Application application;
 
     private File saveFile;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         application = new Application();
         saveFile = new File("target/test/testUniverse.xml");
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         application = null;
         saveFile.delete();
         saveFile = null;
     }
 
+    @Test
     public void testSaveUniverse() throws Exception {
         try {
             application.saveUniverse();
-            fail("Should throw an IllegalStateException");
+            Assert.fail("Should throw an IllegalStateException");
         } catch (IllegalStateException e) {
             // OK expected exception
         }
@@ -65,7 +72,7 @@ public class ApplicationTest extends TestCase {
         // now there is a current universe, but still no current save file
         try {
             application.saveUniverse();
-            fail("Should throw an IllegalStateException");
+            Assert.fail("Should throw an IllegalStateException");
         } catch (IllegalStateException e) {
             // OK expected exception
         }
@@ -80,12 +87,13 @@ public class ApplicationTest extends TestCase {
         // now we should have reset the current save file and thus throw an Exception
         try {
             application.saveUniverse();
-            fail("Should throw an IllegalStateException");
+            Assert.fail("Should throw an IllegalStateException");
         } catch (IllegalStateException e) {
             // OK expected exception
         }
     }
 
+    @Test
     public void testOpen() throws Exception {
         AllParameters parameters = new AllParameters();
         parameters.random();
@@ -100,7 +108,7 @@ public class ApplicationTest extends TestCase {
         // now try to read it
         application.openUniverse(saveFile);
         UniverseContext universeContext2 = application.getUniverseContext();
-        assertEquals(universeContext.getState(), universeContext2.getState());
+        assertThat(universeContext2.getState()).isEqualTo(universeContext.getState());
     }
 
 }

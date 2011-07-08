@@ -18,13 +18,18 @@
  */
 package barsuift.simLife.j2d.panel;
 
-import junit.framework.TestCase;
+import org.fest.assertions.Delta;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.MathHelper;
 import barsuift.simLife.landscape.LandscapeParameters;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class LandscapeParametersPanelTest extends TestCase {
 
+public class LandscapeParametersPanelTest {
+
+    @Test
     public void testReadWriteParameters() {
         LandscapeParameters parameters = new LandscapeParameters();
         parameters.random();
@@ -35,39 +40,42 @@ public class LandscapeParametersPanelTest extends TestCase {
         originalParameters.setErosion(parameters.getErosion());
 
         LandscapeParametersPanel panel = new LandscapeParametersPanel(parameters);
-        assertEquals(originalParameters, parameters);
-        assertEquals(originalParameters.getSize(), parameters.getSize(), 0.0001);
-        assertEquals(originalParameters.getMaximumHeight(), parameters.getMaximumHeight(), 0.0001);
-        assertEquals(originalParameters.getRoughness(), parameters.getRoughness(), 0.0001);
-        assertEquals(originalParameters.getErosion(), parameters.getErosion(), 0.0001);
+        assertThat(parameters).isEqualTo(originalParameters);
+        assertThat(parameters.getSize()).isEqualTo(originalParameters.getSize());
+        assertThat(parameters.getMaximumHeight()).isEqualTo(originalParameters.getMaximumHeight(), Delta.delta(0.0001));
+        assertThat(parameters.getRoughness()).isEqualTo(originalParameters.getRoughness(), Delta.delta(0.0001));
+        assertThat(parameters.getErosion()).isEqualTo(originalParameters.getErosion(), Delta.delta(0.0001));
 
         // due to conversions (from float to int and vice versa), the precision is low
 
         panel.writeIntoParameters();
-        assertEquals(originalParameters.getSize(), parameters.getSize(), 0.01);
-        assertEquals(originalParameters.getMaximumHeight(), parameters.getMaximumHeight(), 0.01);
-        assertEquals(originalParameters.getRoughness(), parameters.getRoughness(), 0.01);
-        assertEquals(originalParameters.getErosion(), parameters.getErosion(), 0.01);
+        assertThat(parameters.getSize()).isEqualTo(originalParameters.getSize());
+        assertThat(parameters.getMaximumHeight()).isEqualTo(originalParameters.getMaximumHeight(), Delta.delta(0.01));
+        assertThat(parameters.getRoughness()).isEqualTo(originalParameters.getRoughness(), Delta.delta(0.01));
+        assertThat(parameters.getErosion()).isEqualTo(originalParameters.getErosion(), Delta.delta(0.01));
 
         panel.writeIntoParameters();
-        assertEquals(originalParameters.getSize(), parameters.getSize(), 0.01);
-        assertEquals(originalParameters.getMaximumHeight(), parameters.getMaximumHeight(), 0.01);
-        assertEquals(originalParameters.getRoughness(), parameters.getRoughness(), 0.01);
-        assertEquals(originalParameters.getErosion(), parameters.getErosion(), 0.01);
+        assertThat(parameters.getSize()).isEqualTo(originalParameters.getSize());
+        assertThat(parameters.getMaximumHeight()).isEqualTo(originalParameters.getMaximumHeight(), Delta.delta(0.01));
+        assertThat(parameters.getRoughness()).isEqualTo(originalParameters.getRoughness(), Delta.delta(0.01));
+        assertThat(parameters.getErosion()).isEqualTo(originalParameters.getErosion(), Delta.delta(0.01));
     }
 
+    @Test
     public void testInit() {
         LandscapeParameters parameters = new LandscapeParameters();
         LandscapeParametersPanel panel = new LandscapeParametersPanel(parameters);
 
-        assertEquals("Size (128 meters)", panel.getSizeText());
-        assertEquals(parameters.getSize(), 1 << panel.getSizeSlider().getValue());
-        assertEquals("Maximum height (20 meters)", panel.getMaxHeightText());
-        assertEquals(parameters.getMaximumHeight(), panel.getMaxHeightSlider().getValue(), 0.000001);
-        assertEquals("Roughness (50%)", panel.getRoughnessText());
-        assertEquals(parameters.getRoughness(), panel.getRoughnessSlider().getValue() / 100f, 0.0051);
-        assertEquals("Erosion (50%)", panel.getErosionText());
-        assertEquals(parameters.getErosion(), panel.getErosionSlider().getValue() / 100f, 0.0051);
+        assertThat(panel.getSizeText()).isEqualTo("Size (128 meters)");
+        assertThat(1 << panel.getSizeSlider().getValue()).isEqualTo(parameters.getSize());
+        assertThat(panel.getMaxHeightText()).isEqualTo("Maximum height (20 meters)");
+        assertThat((float) panel.getMaxHeightSlider().getValue()).isEqualTo(parameters.getMaximumHeight(),
+                Delta.delta(0.000001));
+        assertThat(panel.getRoughnessText()).isEqualTo("Roughness (50%)");
+        assertThat(panel.getRoughnessSlider().getValue() / 100f).isEqualTo(parameters.getRoughness(),
+                Delta.delta(0.0051));
+        assertThat(panel.getErosionText()).isEqualTo("Erosion (50%)");
+        assertThat(panel.getErosionSlider().getValue() / 100f).isEqualTo(parameters.getErosion(), Delta.delta(0.0051));
 
 
         parameters = new LandscapeParameters();
@@ -77,53 +85,56 @@ public class LandscapeParametersPanelTest extends TestCase {
         parameters.setErosion(0.7f);
         panel = new LandscapeParametersPanel(parameters);
 
-        assertEquals("Size (32 meters)", panel.getSizeText());
-        assertEquals(parameters.getSize(), 1 << panel.getSizeSlider().getValue());
-        assertEquals("Maximum height (30 meters)", panel.getMaxHeightText());
-        assertEquals(parameters.getMaximumHeight(), panel.getMaxHeightSlider().getValue(), 0.000001);
-        assertEquals("Roughness (20%)", panel.getRoughnessText());
-        assertEquals(parameters.getRoughness(), panel.getRoughnessSlider().getValue() / 100f, 0.0051);
-        assertEquals("Erosion (70%)", panel.getErosionText());
-        assertEquals(parameters.getErosion(), panel.getErosionSlider().getValue() / 100f, 0.0051);
+        assertThat(panel.getSizeText()).isEqualTo("Size (32 meters)");
+        assertThat(1 << panel.getSizeSlider().getValue()).isEqualTo(parameters.getSize());
+        assertThat(panel.getMaxHeightText()).isEqualTo("Maximum height (30 meters)");
+        assertThat((float) panel.getMaxHeightSlider().getValue()).isEqualTo(parameters.getMaximumHeight(),
+                Delta.delta(0.000001));
+        assertThat(panel.getRoughnessText()).isEqualTo("Roughness (20%)");
+        assertThat(panel.getRoughnessSlider().getValue() / 100f).isEqualTo(parameters.getRoughness(),
+                Delta.delta(0.0051));
+        assertThat(panel.getErosionText()).isEqualTo("Erosion (70%)");
+        assertThat(panel.getErosionSlider().getValue() / 100f).isEqualTo(parameters.getErosion(), Delta.delta(0.0051));
     }
 
+    @Test
     public void testStateChanged() {
         LandscapeParameters parameters = new LandscapeParameters();
         LandscapeParametersPanel panel = new LandscapeParametersPanel(parameters);
 
         // initial value
-        assertEquals("Size (128 meters)", panel.getSizeText());
-        assertEquals("Maximum height (20 meters)", panel.getMaxHeightText());
-        assertEquals("Roughness (50%)", panel.getRoughnessText());
-        assertEquals("Erosion (50%)", panel.getErosionText());
+        assertThat(panel.getSizeText()).isEqualTo("Size (128 meters)");
+        assertThat(panel.getMaxHeightText()).isEqualTo("Maximum height (20 meters)");
+        assertThat(panel.getRoughnessText()).isEqualTo("Roughness (50%)");
+        assertThat(panel.getErosionText()).isEqualTo("Erosion (50%)");
 
         // stateChanged is automatically called
         panel.getSizeSlider().setValue(MathHelper.getPowerOfTwoExponent(32));
-        assertEquals("Size (32 meters)", panel.getSizeText());
-        assertEquals("Maximum height (20 meters)", panel.getMaxHeightText());
-        assertEquals("Roughness (50%)", panel.getRoughnessText());
-        assertEquals("Erosion (50%)", panel.getErosionText());
+        assertThat(panel.getSizeText()).isEqualTo("Size (32 meters)");
+        assertThat(panel.getMaxHeightText()).isEqualTo("Maximum height (20 meters)");
+        assertThat(panel.getRoughnessText()).isEqualTo("Roughness (50%)");
+        assertThat(panel.getErosionText()).isEqualTo("Erosion (50%)");
 
         // stateChanged is automatically called
         panel.getMaxHeightSlider().setValue(30);
-        assertEquals("Size (32 meters)", panel.getSizeText());
-        assertEquals("Maximum height (30 meters)", panel.getMaxHeightText());
-        assertEquals("Roughness (50%)", panel.getRoughnessText());
-        assertEquals("Erosion (50%)", panel.getErosionText());
+        assertThat(panel.getSizeText()).isEqualTo("Size (32 meters)");
+        assertThat(panel.getMaxHeightText()).isEqualTo("Maximum height (30 meters)");
+        assertThat(panel.getRoughnessText()).isEqualTo("Roughness (50%)");
+        assertThat(panel.getErosionText()).isEqualTo("Erosion (50%)");
 
         // stateChanged is automatically called
         panel.getRoughnessSlider().setValue(45);
-        assertEquals("Size (32 meters)", panel.getSizeText());
-        assertEquals("Maximum height (30 meters)", panel.getMaxHeightText());
-        assertEquals("Roughness (45%)", panel.getRoughnessText());
-        assertEquals("Erosion (50%)", panel.getErosionText());
+        assertThat(panel.getSizeText()).isEqualTo("Size (32 meters)");
+        assertThat(panel.getMaxHeightText()).isEqualTo("Maximum height (30 meters)");
+        assertThat(panel.getRoughnessText()).isEqualTo("Roughness (45%)");
+        assertThat(panel.getErosionText()).isEqualTo("Erosion (50%)");
 
         // stateChanged is automatically called
         panel.getErosionSlider().setValue(98);
-        assertEquals("Size (32 meters)", panel.getSizeText());
-        assertEquals("Maximum height (30 meters)", panel.getMaxHeightText());
-        assertEquals("Roughness (45%)", panel.getRoughnessText());
-        assertEquals("Erosion (98%)", panel.getErosionText());
+        assertThat(panel.getSizeText()).isEqualTo("Size (32 meters)");
+        assertThat(panel.getMaxHeightText()).isEqualTo("Maximum height (30 meters)");
+        assertThat(panel.getRoughnessText()).isEqualTo("Roughness (45%)");
+        assertThat(panel.getErosionText()).isEqualTo("Erosion (98%)");
     }
 
 }

@@ -18,55 +18,71 @@
  */
 package barsuift.simLife.j2d.panel;
 
-import junit.framework.TestCase;
+import org.fest.assertions.Delta;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.environment.SunUpdateCode;
 import barsuift.simLife.j3d.environment.MockSun3D;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class SunColorPanelTest extends TestCase {
+
+public class SunColorPanelTest {
 
     private MockSun3D mockSun;
 
     private SunColorPanel display;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         mockSun = new MockSun3D();
         display = new SunColorPanel(mockSun);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         mockSun = null;
         display = null;
     }
 
+    @Test
     public void testInit() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        assertThat((float) display.getSlider().getValue() / 100).isEqualTo(mockSun.getWhiteFactor(),
+                Delta.delta(0.0050001));
         mockSun.setWhiteFactor(0.9f);
         display = new SunColorPanel(mockSun);
-        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        assertThat((float) display.getSlider().getValue() / 100).isEqualTo(mockSun.getWhiteFactor(),
+                Delta.delta(0.0050001));
         mockSun.setWhiteFactor(0.8f);
         display = new SunColorPanel(mockSun);
-        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        assertThat((float) display.getSlider().getValue() / 100).isEqualTo(mockSun.getWhiteFactor(),
+                Delta.delta(0.0050001));
         mockSun.setWhiteFactor(1f);
         display = new SunColorPanel(mockSun);
-        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        assertThat((float) display.getSlider().getValue() / 100).isEqualTo(mockSun.getWhiteFactor(),
+                Delta.delta(0.0050001));
     }
 
+    @Test
     public void testUpdate() {
         // allow +/- 0.5 difference, as the slider rounds the value to an integer
-        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        assertThat((float) display.getSlider().getValue() / 100).isEqualTo(mockSun.getWhiteFactor(),
+                Delta.delta(0.0050001));
         mockSun.setWhiteFactor(0.9f);
         display.update(mockSun, SunUpdateCode.COLOR);
-        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        assertThat((float) display.getSlider().getValue() / 100).isEqualTo(mockSun.getWhiteFactor(),
+                Delta.delta(0.0050001));
         mockSun.setWhiteFactor(0.8f);
         display.update(mockSun, SunUpdateCode.COLOR);
-        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        assertThat((float) display.getSlider().getValue() / 100).isEqualTo(mockSun.getWhiteFactor(),
+                Delta.delta(0.0050001));
         mockSun.setWhiteFactor(1f);
         display.update(mockSun, SunUpdateCode.COLOR);
-        assertEquals(mockSun.getWhiteFactor(), (float) display.getSlider().getValue() / 100, 0.0050001);
+        assertThat((float) display.getSlider().getValue() / 100).isEqualTo(mockSun.getWhiteFactor(),
+                Delta.delta(0.0050001));
     }
 
 }

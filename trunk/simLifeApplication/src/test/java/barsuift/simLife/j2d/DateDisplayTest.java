@@ -20,39 +20,45 @@ package barsuift.simLife.j2d;
 
 import java.text.ParseException;
 
-import junit.framework.TestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.time.SimLifeDate;
 import barsuift.simLife.time.SimLifeDateState;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class DateDisplayTest extends TestCase {
+
+public class DateDisplayTest {
 
     private DateDisplay display;
 
     private SimLifeDate date;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         date = new SimLifeDate(new SimLifeDateState());
         display = new DateDisplay(date);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         date = null;
         display = null;
     }
 
+    @Test
     public void testUpdate() throws ParseException {
-        assertEquals("00:00:000 Nosday 01 Wim 0001", display.getText());
+        assertThat(display.getText()).isEqualTo("00:00:000 Nosday 01 Wim 0001");
         date.setTime("19:59:999 Winday 18 Tom 0455");
-        assertEquals("19:59:999 Winday 18 Tom 0455", display.getText());
+        assertThat(display.getText()).isEqualTo("19:59:999 Winday 18 Tom 0455");
         date.addMillis(1);
-        assertEquals("00:00:000 Nosday 01 Wim 0456", display.getText());
+        assertThat(display.getText()).isEqualTo("00:00:000 Nosday 01 Wim 0456");
         date.addMillis(100);
-        assertEquals("00:00:100 Nosday 01 Wim 0456", display.getText());
+        assertThat(display.getText()).isEqualTo("00:00:100 Nosday 01 Wim 0456");
         date.addSeconds(1);
-        assertEquals("00:01:100 Nosday 01 Wim 0456", display.getText());
+        assertThat(display.getText()).isEqualTo("00:01:100 Nosday 01 Wim 0456");
     }
 
 }
