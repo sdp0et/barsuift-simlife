@@ -18,19 +18,14 @@
  */
 package barsuift.simLife.universe;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class BasicUniverseFactoryTest extends TestCase {
+public class BasicUniverseFactoryTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testPopulateEmptyUniverse() {
         AllParameters parameters = new AllParameters();
         parameters.random();
@@ -42,18 +37,18 @@ public class BasicUniverseFactoryTest extends TestCase {
         BasicUniverse universe = new BasicUniverse(universeState);
         universe.init();
 
-        assertNotNull(universe.getEnvironment());
-        assertEquals(0, universe.getTrees().size());
-        assertEquals(0, universe.getFallenLeaves().size());
+        assertThat(universe.getEnvironment()).isNotNull();
+        assertThat(universe.getTrees()).isEmpty();
+        assertThat(universe.getFallenLeaves()).isEmpty();
 
         BasicUniverseFactory factory = new BasicUniverseFactory();
         factory.populateEmptyUniverse(universe);
 
-        assertNotNull(universe.getEnvironment());
+        assertThat(universe.getEnvironment()).isNotNull();
         int nbTrees = universe.getTrees().size();
-        assertTrue(nbTrees >= 1);
-        assertTrue(nbTrees <= parameters.getLandscape().getSize() / 5);
-        assertEquals(0, universe.getFallenLeaves().size());
+        assertThat(nbTrees).isGreaterThanOrEqualTo(1);
+        assertThat(nbTrees).isLessThanOrEqualTo(parameters.getLandscape().getSize() / 5);
+        assertThat(universe.getFallenLeaves()).isEmpty();
     }
 
 }

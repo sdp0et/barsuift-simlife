@@ -20,30 +20,36 @@ package barsuift.simLife.universe;
 
 import java.io.File;
 
-import junit.framework.TestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.FileTestHelper;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class UniverseContextIOTest extends TestCase {
+
+public class UniverseContextIOTest {
 
     private UniverseContextIO universeIo;
 
     private File file;
 
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         file = new File("target/test-data/simlife.xml");
         FileTestHelper.deleteAllFiles(file.getParentFile());
         universeIo = new UniverseContextIO(file);
     }
 
+    @AfterMethod
     protected void tearDown() throws Exception {
-        super.tearDown();
         universeIo = null;
         FileTestHelper.deleteAllFiles(file.getParentFile());
         file = null;
     }
 
+    @Test
     public void testWriteAndReadRandom() throws Exception {
         AllParameters parameters = new AllParameters();
         parameters.random();
@@ -54,9 +60,10 @@ public class UniverseContextIOTest extends TestCase {
         UniverseContext universeContext = factory.createPopulatedRandom(parameters);
         universeIo.write(universeContext);
         UniverseContext universeContext2 = universeIo.read();
-        assertEquals(universeContext.getState(), universeContext2.getState());
+        assertThat(universeContext2.getState()).isEqualTo(universeContext.getState());
     }
 
+    @Test
     public void testWriteAndReadEmpty() throws Exception {
         AllParameters parameters = new AllParameters();
         parameters.random();
@@ -67,7 +74,7 @@ public class UniverseContextIOTest extends TestCase {
         UniverseContext universeContext = factory.createEmptyRandom(parameters);
         universeIo.write(universeContext);
         UniverseContext universeContext2 = universeIo.read();
-        assertEquals(universeContext.getState(), universeContext2.getState());
+        assertThat(universeContext2.getState()).isEqualTo(universeContext.getState());
     }
 
 }

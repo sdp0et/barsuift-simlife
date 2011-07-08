@@ -20,7 +20,12 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 
-import junit.framework.TestCase;
+import org.fest.assertions.Delta;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.environment.MockEnvironment;
@@ -32,7 +37,9 @@ import barsuift.simLife.j3d.tree.TreeLeaf3D;
 import barsuift.simLife.message.PublisherTestHelper;
 import barsuift.simLife.universe.MockUniverse;
 
-public class BasicTreeLeafTest extends TestCase {
+import static org.fest.assertions.Assertions.assertThat;
+
+public class BasicTreeLeafTest {
 
     private BasicTreeLeaf leaf;
 
@@ -44,9 +51,8 @@ public class BasicTreeLeafTest extends TestCase {
 
     private MockSun3D mockSun3D;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeMethod
+    protected void setUp() {
         leafState = CoreDataCreatorForTests.createSpecificTreeLeafState();
 
         BigDecimal lightRate = PercentHelper.getDecimalValue(70);
@@ -66,8 +72,8 @@ public class BasicTreeLeafTest extends TestCase {
         publisherHelper = new PublisherTestHelper();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         mockSun3D = null;
         leaf = null;
         publisherHelper = null;
@@ -75,22 +81,24 @@ public class BasicTreeLeafTest extends TestCase {
         leafState = null;
     }
 
+    @Test
     public void testBasicTreeLeaf() {
         try {
             BasicTreeLeaf leaf = new BasicTreeLeaf(leafState);
             leaf.init(null);
-            fail("Should throw an IllegalArgumentException");
+            Assert.fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
             new BasicTreeLeaf(null);
-            fail("Should throw an IllegalArgumentException");
+            Assert.fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
     }
 
+    @Test
     public void testCollectSolarEnergy() {
         leaf.collectSolarEnergy();
         // efficiency at the beginning = 0.80
@@ -101,54 +109,57 @@ public class BasicTreeLeafTest extends TestCase {
         // free energy = 6.7200002002716114 - 4.435200132179263524 = 2.284800068092347876
         // total free energy = 3 + 2.284800068092347876 = 5.284800068092347876 (scale 5 -> 5.2848)
 
-        assertEquals(0.80f, leaf.getEfficiency().floatValue(), 0.0000000001f);
-        assertEquals(14.43520013f, leaf.getEnergy().floatValue(), 0.00001f);
-        assertEquals(5.2848f, leaf.collectFreeEnergy().floatValue(), 0.00001f);
+        assertThat(leaf.getEfficiency().floatValue()).isEqualTo(0.80f, Delta.delta(0.0000000001f));
+        assertThat(leaf.getEnergy().floatValue()).isEqualTo(14.43520013f, Delta.delta(0.00001f));
+        assertThat(leaf.collectFreeEnergy().floatValue()).isEqualTo(5.2848f, Delta.delta(0.00001f));
         // can not collect the free energy more than once
-        assertEquals(new BigDecimal(0), leaf.collectFreeEnergy());
+        assertThat(leaf.collectFreeEnergy()).isEqualTo(new BigDecimal(0));
 
         leafState.setEnergy(new BigDecimal("99"));
         leaf = new BasicTreeLeaf(leafState);
         leaf.init(universe);
         leaf.collectSolarEnergy();
         // the energy would be more than 100, so it will be capped
-        assertEquals(100f, leaf.getEnergy().floatValue(), 0.00001f);
+        assertThat(leaf.getEnergy().floatValue()).isEqualTo(100f, Delta.delta(0.00001f));
     }
 
+    @Test
     public void testAge() {
         publisherHelper.addSubscriberTo(leaf);
-        assertEquals(0, publisherHelper.nbUpdated());
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
 
         // efficiency before aging = 0.80
-        assertEquals(0.80f, leaf.getEfficiency().floatValue(), 0.0000000001f);
+        assertThat(leaf.getEfficiency().floatValue()).isEqualTo(0.80f, Delta.delta(0.0000000001f));
 
         leaf.age();
 
         // /efficiency after aging = 0.80 * 0.95 = 0.76
-        assertEquals(0.76f, leaf.getEfficiency().floatValue(), 0.0000000001f);
+        assertThat(leaf.getEfficiency().floatValue()).isEqualTo(0.76f, Delta.delta(0.0000000001f));
 
-        assertEquals(1, publisherHelper.nbUpdated());
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(1);
         Object updateParam = publisherHelper.getUpdateObjects().get(0);
-        assertEquals(LeafEvent.EFFICIENCY, updateParam);
+        assertThat(updateParam).isEqualTo(LeafEvent.EFFICIENCY);
     }
 
+    @Test
     public void testImproveEfficiency() {
         publisherHelper.addSubscriberTo(leaf);
-        assertEquals(0.80f, leaf.getEfficiency().floatValue(), 0.0000000001f);
-        assertEquals(10f, leaf.getEnergy().floatValue(), 0.00001f);
+        assertThat(leaf.getEfficiency().floatValue()).isEqualTo(0.80f, Delta.delta(0.0000000001f));
+        assertThat(leaf.getEnergy().floatValue()).isEqualTo(10f, Delta.delta(0.00001f));
 
         leaf.improveEfficiency();
-        assertEquals(0.90f, leaf.getEfficiency().floatValue(), 0.0000000001f);
-        assertEquals(0f, leaf.getEnergy().floatValue(), 0.00001f);
+        assertThat(leaf.getEfficiency().floatValue()).isEqualTo(0.90f, Delta.delta(0.0000000001f));
+        assertThat(leaf.getEnergy().floatValue()).isEqualTo(0f, Delta.delta(0.00001f));
 
         leafState.setEnergy(new BigDecimal("35"));
         leaf = new BasicTreeLeaf(leafState);
         leaf.init(universe);
         leaf.improveEfficiency();
-        assertEquals(1.00f, leaf.getEfficiency().floatValue(), 0.0000000001f);
-        assertEquals(15f, leaf.getEnergy().floatValue(), 0.00001f);
+        assertThat(leaf.getEfficiency().floatValue()).isEqualTo(1.00f, Delta.delta(0.0000000001f));
+        assertThat(leaf.getEnergy().floatValue()).isEqualTo(15f, Delta.delta(0.00001f));
     }
 
+    @Test
     public void testFall() {
         // make sure the leaf only has 10% efficiency (limit before falling)
         leafState.setEfficiency(PercentHelper.getDecimalValue(10));
@@ -156,69 +167,71 @@ public class BasicTreeLeafTest extends TestCase {
         leaf.init(universe);
         publisherHelper.addSubscriberTo(leaf);
 
-        assertFalse(leaf.isTooWeak());
-        assertEquals(0, universe.getPhysics().getGravity().getFallingLeaves().size());
+        assertThat(leaf.isTooWeak()).isFalse();
+        assertThat(universe.getPhysics().getGravity().getFallingLeaves()).isEmpty();
 
         leaf.age();
 
-        assertTrue(leaf.getEfficiency().floatValue() < 0.1f);
-        assertTrue(leaf.isTooWeak());
+        assertThat(leaf.getEfficiency().floatValue()).isLessThan(0.1f);
+        assertThat(leaf.isTooWeak()).isTrue();
 
-        assertEquals(2, publisherHelper.nbUpdated());
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(2);
         // first the age method notifies about efficiency
         Object updateParam1 = publisherHelper.getUpdateObjects().get(0);
-        assertEquals(LeafEvent.EFFICIENCY, updateParam1);
+        assertThat(updateParam1).isEqualTo(LeafEvent.EFFICIENCY);
         // then the fall method notifies about fall
         Object updateParam2 = publisherHelper.getUpdateObjects().get(1);
-        assertEquals(MobileEvent.FALLING, updateParam2);
+        assertThat(updateParam2).isEqualTo(MobileEvent.FALLING);
 
-        assertEquals(1, universe.getPhysics().getGravity().getFallingLeaves().size());
-        assertTrue(universe.getPhysics().getGravity().getFallingLeaves().contains(leaf));
+        assertThat(universe.getPhysics().getGravity().getFallingLeaves()).hasSize(1);
+        assertThat(universe.getPhysics().getGravity().getFallingLeaves()).contains(leaf);
     }
 
+    @Test
     public void testUpdate() {
         TreeLeaf3D leaf3D = leaf.getTreeLeaf3D();
         // the leaf should be a subscriber of the leaf3D
-        assertEquals(1, leaf3D.countSubscribers());
+        assertThat(leaf3D.countSubscribers()).isEqualTo(1);
         // assert the leaf is really one of the subscribers of the leaf3D
         leaf3D.deleteSubscriber(leaf);
-        assertEquals(0, leaf3D.countSubscribers());
+        assertThat(leaf3D.countSubscribers()).isEqualTo(0);
 
 
         publisherHelper.addSubscriberTo(leaf);
 
         // test with wrong argument
         leaf.update(leaf3D, MobileEvent.FALLING);
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // test with wrong argument
         leaf.update(leaf3D, null);
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // test with wrong argument
         leaf.update(leaf3D, LeafEvent.EFFICIENCY);
-        assertEquals(0, publisherHelper.nbUpdated());
-        assertEquals(0, publisherHelper.getUpdateObjects().size());
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(0);
+        assertThat(publisherHelper.getUpdateObjects()).isEmpty();
 
         // test with good argument
         leaf.update(leaf3D, MobileEvent.FALLEN);
-        assertEquals(1, publisherHelper.nbUpdated());
-        assertEquals(MobileEvent.FALLEN, publisherHelper.getUpdateObjects().get(0));
+        assertThat(publisherHelper.nbUpdated()).isEqualTo(1);
+        assertThat(publisherHelper.getUpdateObjects().get(0)).isEqualTo(MobileEvent.FALLEN);
     }
 
+    @Test
     public void testGetState() {
-        assertEquals(leafState, leaf.getState());
-        assertSame(leafState, leaf.getState());
+        assertThat(leaf.getState()).isEqualTo(leafState);
+        assertThat(leaf.getState()).isSameAs(leafState);
         BigDecimal energy = leaf.getState().getEnergy();
         BigDecimal efficiency = leaf.getState().getEfficiency();
         leaf.improveEfficiency();
-        assertEquals(leafState, leaf.getState());
-        assertSame(leafState, leaf.getState());
+        assertThat(leaf.getState()).isEqualTo(leafState);
+        assertThat(leaf.getState()).isSameAs(leafState);
         // the energy and efficiency should have change in the state
-        assertFalse(energy.equals(leaf.getState().getEnergy()));
-        assertFalse(efficiency.equals(leaf.getState().getEfficiency()));
+        assertThat(leaf.getState().getEnergy()).isNotEqualTo(energy);
+        assertThat(leaf.getState().getEfficiency()).isNotEqualTo(efficiency);
     }
 
 }

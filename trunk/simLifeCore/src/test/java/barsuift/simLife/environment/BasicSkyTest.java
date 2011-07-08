@@ -18,27 +18,32 @@
  */
 package barsuift.simLife.environment;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
+import barsuift.simLife.j3d.environment.Sun3D;
 import barsuift.simLife.universe.MockUniverse;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class BasicSkyTest extends TestCase {
 
+public class BasicSkyTest {
+
+    @Test
     public void testGetState() {
         SkyState state = CoreDataCreatorForTests.createRandomSkyState();
         BasicSky sky = new BasicSky(state);
         sky.init(new MockUniverse());
-        assertEquals(state, sky.getState());
-        assertSame(state, sky.getState());
-        assertEquals(state.getSunState().getSun3DState().getEarthRevolution(), sky.getSun().getSun3D()
-                .getEarthRevolution());
+        assertThat(sky.getState()).isEqualTo(state);
+        assertThat(sky.getState()).isSameAs(state);
+        Sun3D sun3D = sky.getSun().getSun3D();
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(state.getSunState().getSun3DState().getEarthRevolution());
 
-        sky.getSun().getSun3D().setEarthRevolution(sky.getSun().getSun3D().getEarthRevolution() / 2);
-        assertEquals(state, sky.getState());
-        assertSame(state, sky.getState());
-        assertEquals(state.getSunState().getSun3DState().getEarthRevolution(), sky.getSun().getSun3D()
-                .getEarthRevolution());
+        sun3D.setEarthRevolution(sun3D.getEarthRevolution() / 2);
+
+        assertThat(sky.getState()).isEqualTo(state);
+        assertThat(sky.getState()).isSameAs(state);
+        assertThat(sun3D.getEarthRevolution()).isEqualTo(state.getSunState().getSun3DState().getEarthRevolution());
     }
 
 }

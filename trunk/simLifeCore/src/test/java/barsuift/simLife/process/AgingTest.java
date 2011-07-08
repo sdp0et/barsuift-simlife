@@ -18,13 +18,17 @@
  */
 package barsuift.simLife.process;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.tree.MockTree;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class AgingTest extends TestCase {
 
+public class AgingTest {
+
+    @Test
     public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
         ConditionalTaskState conditionalTaskState = UtilDataCreatorForTests.createSpecificConditionalTaskState();
@@ -33,22 +37,22 @@ public class AgingTest extends TestCase {
         Aging aging = new Aging(conditionalTaskState);
         aging.init(mockTree);
         aging.executeConditionalStep();
-        assertEquals(1, mockTree.getNbAgeCalled());
+        assertThat(mockTree.getNbAgeCalled()).isEqualTo(1);
 
         // cyclic condition = 2/5
         aging.executeStep();
         // the cyclic condition does not return true
-        assertEquals(1, mockTree.getNbAgeCalled());
+        assertThat(mockTree.getNbAgeCalled()).isEqualTo(1);
 
         // cyclic condition = 3/5
         aging.executeStep();
         // the cyclic condition does not return true
-        assertEquals(1, mockTree.getNbAgeCalled());
+        assertThat(mockTree.getNbAgeCalled()).isEqualTo(1);
 
         // cyclic condition = 4/5
         aging.executeStep();
         // the cyclic condition return true
-        assertEquals(2, mockTree.getNbAgeCalled());
+        assertThat(mockTree.getNbAgeCalled()).isEqualTo(2);
     }
 
 }

@@ -21,7 +21,12 @@ package barsuift.simLife.tree;
 import java.math.BigDecimal;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.fest.assertions.Delta;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.environment.MockSun3D;
@@ -32,7 +37,9 @@ import barsuift.simLife.process.Photosynthesis;
 import barsuift.simLife.process.TreeGrowth;
 import barsuift.simLife.universe.MockUniverse;
 
-public class BasicTreeTest extends TestCase {
+import static org.fest.assertions.Assertions.assertThat;
+
+public class BasicTreeTest {
 
     private MockUniverse universe;
 
@@ -40,70 +47,73 @@ public class BasicTreeTest extends TestCase {
 
     private BasicTree tree;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         universe = new MockUniverse();
         treeState = CoreDataCreatorForTests.createSpecificTreeState();
         tree = new BasicTree(treeState);
         tree.init(universe);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         universe = null;
         treeState = null;
         tree = null;
     }
 
+    @Test
     public void testBasicTree() {
-        assertEquals(treeState.getBranches().size(), tree.getNbBranches());
+        assertThat(tree.getNbBranches()).isEqualTo(treeState.getBranches().size());
         try {
             BasicTree tree = new BasicTree(treeState);
             tree.init(null);
-            fail("Should throw an IllegalArgumentException");
+            Assert.fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
             new BasicTree(null);
-            fail("Should throw an IllegalArgumentException");
+            Assert.fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         MockMainSynchronizer synchronizer = (MockMainSynchronizer) universe.getSynchronizer();
         List<ConditionalTask> slowScheduled = synchronizer.getSlowScheduled();
-        assertEquals(3, slowScheduled.size());
-        assertEquals(Photosynthesis.class, slowScheduled.get(0).getClass());
-        assertEquals(Aging.class, slowScheduled.get(1).getClass());
-        assertEquals(TreeGrowth.class, slowScheduled.get(2).getClass());
+        assertThat(slowScheduled).hasSize(3);
+        assertThat(slowScheduled.get(0).getClass()).isEqualTo(Photosynthesis.class);
+        assertThat(slowScheduled.get(1).getClass()).isEqualTo(Aging.class);
+        assertThat(slowScheduled.get(2).getClass()).isEqualTo(TreeGrowth.class);
     }
 
+    @Test
     public void testGetState() {
-        assertEquals(treeState, tree.getState());
-        assertSame(treeState, tree.getState());
+        assertThat(tree.getState()).isEqualTo(treeState);
+        assertThat(tree.getState()).isSameAs(treeState);
         BigDecimal energy = tree.getState().getEnergy();
         tree.collectSolarEnergy();
-        assertEquals(treeState, tree.getState());
-        assertSame(treeState, tree.getState());
+        assertThat(tree.getState()).isEqualTo(treeState);
+        assertThat(tree.getState()).isSameAs(treeState);
         // the energy should have change in the state
-        assertFalse(energy.equals(tree.getState().getEnergy()));
+        assertThat(tree.getState().getEnergy()).isNotEqualTo(energy);
     }
 
 
+    @Test
     public void testCollectSolarEnergy() {
         ((MockSun3D) universe.getEnvironment().getSky().getSun().getSun3D()).setBrightness(PercentHelper
                 .getDecimalValue(70));
         tree.collectSolarEnergy();
-        assertEquals(40, tree.getNbBranches());
+        assertThat(tree.getNbBranches()).isEqualTo(40);
 
         // as computed in BasicTreeBranchTest#testCollectSolarEnergy
         // -> freeEnergy in branches = 42.636
         // collected energy from branches = 40 * 42.636 + 10 = 1715.44
 
-        assertEquals(1715.44f, tree.getEnergy().floatValue(), 0.00001f);
-        assertEquals(0f, tree.collectFreeEnergy().floatValue(), 0.00001f);
+        assertThat(tree.getEnergy().floatValue()).isEqualTo(1715.44f, Delta.delta(0.00001f));
+        assertThat(tree.collectFreeEnergy().floatValue()).isEqualTo(0f, Delta.delta(0.00001f));
         // can not collect the free energy more than once
-        assertEquals(new BigDecimal(0), tree.collectFreeEnergy());
+        assertThat(tree.collectFreeEnergy()).isEqualTo(new BigDecimal(0));
     }
 
 }

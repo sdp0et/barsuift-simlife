@@ -18,20 +18,24 @@
  */
 package barsuift.simLife.environment;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.landscape.LandscapeParameters;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class SkyStateFactoryTest extends TestCase {
 
+public class SkyStateFactoryTest {
+
+    @Test
     public void testCreateRandomSkyState() {
         LandscapeParameters landscapeParameters = new LandscapeParameters();
         PlanetParameters planetParameters = new PlanetParameters();
         SkyStateFactory factory = new SkyStateFactory();
         SkyState skyState = factory.createRandomSkyState(planetParameters, landscapeParameters);
-        assertNotNull(skyState.getSky3DState());
-        assertNotNull(skyState.getSunState());
+        assertThat(skyState.getSky3DState()).isNotNull();
+        assertThat(skyState.getSunState()).isNotNull();
     }
 
 }

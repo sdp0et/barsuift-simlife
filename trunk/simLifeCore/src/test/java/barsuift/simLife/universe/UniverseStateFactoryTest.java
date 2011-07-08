@@ -18,19 +18,14 @@
  */
 package barsuift.simLife.universe;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class UniverseStateFactoryTest extends TestCase {
+public class UniverseStateFactoryTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testCreateEmptyUniverseState() {
         AllParameters parameters = new AllParameters();
         parameters.random();
@@ -40,14 +35,14 @@ public class UniverseStateFactoryTest extends TestCase {
         UniverseStateFactory factory = new UniverseStateFactory();
         UniverseState universeState = factory.createEmptyRandomUniverseState(parameters);
 
-        assertNotNull(universeState.getEnvironment());
-        assertNotNull(universeState.getDateHandler());
-        assertNotNull(universeState.getPhysics());
-        assertNotNull(universeState.getMainSynchronizerState());
-        assertNotNull(universeState.getUniv3DState());
+        assertThat(universeState.getEnvironment()).isNotNull();
+        assertThat(universeState.getDateHandler()).isNotNull();
+        assertThat(universeState.getPhysics()).isNotNull();
+        assertThat(universeState.getMainSynchronizerState()).isNotNull();
+        assertThat(universeState.getUniv3DState()).isNotNull();
 
-        assertEquals(0, universeState.getTrees().size());
-        assertEquals(0, universeState.getFallenLeaves().size());
+        assertThat(universeState.getTrees()).isEmpty();
+        assertThat(universeState.getFallenLeaves()).isEmpty();
     }
 
 }

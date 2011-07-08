@@ -18,19 +18,23 @@
  */
 package barsuift.simLife.process;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.tree.MockTree;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class PhotosynthesisTest extends TestCase {
 
+public class PhotosynthesisTest {
+
+    @Test
     public void testExecuteCyclicStep() {
         MockTree mockTree = new MockTree();
         Photosynthesis photosynthesis = new Photosynthesis(UtilDataCreatorForTests.createSpecificConditionalTaskState());
         photosynthesis.init(mockTree);
         photosynthesis.executeConditionalStep();
-        assertEquals(1, mockTree.getNbCollectSolarEnergyCalled());
+        assertThat(mockTree.getNbCollectSolarEnergyCalled()).isEqualTo(1);
     }
 
 }
