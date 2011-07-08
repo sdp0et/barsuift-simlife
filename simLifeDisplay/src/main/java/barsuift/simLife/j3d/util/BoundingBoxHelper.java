@@ -31,8 +31,9 @@ public final class BoundingBoxHelper {
 
     /**
      * Create a bounding box from given size and height. The box width and length are equal to the size. The box height
-     * is equal to the given height + 50. This is to ensure any objects up to 50 meters above the highest point is still
-     * under the influence of the generated bounding box.
+     * is equal to the given height + 50 + 1. This is to ensure any objects up to 50 meters above the highest point is
+     * still under the influence of the generated bounding box. The same rule applies for objects one meter under the
+     * lowest point.
      * 
      * @param landscapeParameters the landscape parameters for which to create the bounds
      * @return a bounding box
