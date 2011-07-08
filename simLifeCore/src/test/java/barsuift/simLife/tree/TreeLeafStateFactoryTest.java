@@ -20,52 +20,51 @@ package barsuift.simLife.tree;
 
 import java.math.BigDecimal;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.PercentHelper;
 import barsuift.simLife.j3d.tree.TreeLeaf3DState;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class TreeLeafStateFactoryTest extends TestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+public class TreeLeafStateFactoryTest {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testCreateRandomTreeLeafState() {
         TreeLeafStateFactory factory = new TreeLeafStateFactory();
         TreeLeafState treeLeafState = factory.createRandomTreeLeafState();
-        assertNotNull(treeLeafState);
-        assertNotNull(treeLeafState.getLeaf3DState());
-        assertTrue(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency()) <= 0);
-        assertTrue(PercentHelper.getDecimalValue(100).compareTo(treeLeafState.getEfficiency()) >= 0);
-        assertTrue(treeLeafState.getCreationMillis() >= 0);
-        assertTrue(treeLeafState.getCreationMillis() <= 100000);
-        assertTrue(treeLeafState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
-        assertTrue(treeLeafState.getEnergy().compareTo(new BigDecimal(100)) <= 0);
-        assertTrue(treeLeafState.getFreeEnergy().compareTo(new BigDecimal(0)) >= 0);
-        assertTrue(treeLeafState.getFreeEnergy().compareTo(new BigDecimal(50)) <= 0);
+        assertThat(treeLeafState).isNotNull();
+        assertThat(treeLeafState.getLeaf3DState()).isNotNull();
+        assertThat(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency())).isLessThanOrEqualTo(0);
+        assertThat(PercentHelper.getDecimalValue(100).compareTo(treeLeafState.getEfficiency())).isGreaterThanOrEqualTo(
+                0);
+        assertThat(treeLeafState.getCreationMillis()).isGreaterThanOrEqualTo(0);
+        assertThat(treeLeafState.getCreationMillis()).isLessThanOrEqualTo(100000);
+        assertThat(treeLeafState.getEnergy().compareTo(new BigDecimal(0))).isGreaterThanOrEqualTo(0);
+        assertThat(treeLeafState.getEnergy().compareTo(new BigDecimal(100))).isLessThanOrEqualTo(0);
+        assertThat(treeLeafState.getFreeEnergy().compareTo(new BigDecimal(0))).isGreaterThanOrEqualTo(0);
+        assertThat(treeLeafState.getFreeEnergy().compareTo(new BigDecimal(50))).isLessThanOrEqualTo(0);
     }
 
+    @Test
     public void testCreateNewTreeLeafState() {
         TreeLeafStateFactory factory = new TreeLeafStateFactory();
         BigDecimal energy = new BigDecimal(30);
         long creationMillis = 200;
         TreeLeafState treeLeafState = factory.createNewTreeLeafState(energy, creationMillis);
-        assertNotNull(treeLeafState);
-        assertEquals(creationMillis, treeLeafState.getCreationMillis());
+        assertThat(treeLeafState).isNotNull();
+        assertThat(treeLeafState.getCreationMillis()).isEqualTo(creationMillis);
         TreeLeaf3DState leaf3dState = treeLeafState.getLeaf3DState();
-        assertNotNull(leaf3dState);
+        assertThat(leaf3dState).isNotNull();
         // check it is an newly created leaf 3D
-        assertEquals(leaf3dState.getInitialEndPoint1(), leaf3dState.getEndPoint1());
-        assertEquals(leaf3dState.getInitialEndPoint2(), leaf3dState.getEndPoint2());
-        assertTrue(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency()) <= 0);
-        assertTrue(PercentHelper.getDecimalValue(100).compareTo(treeLeafState.getEfficiency()) >= 0);
-        assertEquals(energy, treeLeafState.getEnergy());
-        assertEquals(new BigDecimal(0), treeLeafState.getFreeEnergy());
+        assertThat(leaf3dState.getEndPoint1()).isEqualTo(leaf3dState.getInitialEndPoint1());
+        assertThat(leaf3dState.getEndPoint2()).isEqualTo(leaf3dState.getInitialEndPoint2());
+        assertThat(PercentHelper.getDecimalValue(90).compareTo(treeLeafState.getEfficiency())).isLessThanOrEqualTo(0);
+        assertThat(PercentHelper.getDecimalValue(100).compareTo(treeLeafState.getEfficiency())).isGreaterThanOrEqualTo(
+                0);
+        assertThat(treeLeafState.getEnergy()).isEqualTo(energy);
+        assertThat(treeLeafState.getFreeEnergy()).isEqualTo(new BigDecimal(0));
     }
 
 }

@@ -21,39 +21,43 @@ package barsuift.simLife.tree;
 import java.math.BigDecimal;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class TreeStateFactoryTest extends TestCase {
+public class TreeStateFactoryTest {
 
     private TreeStateFactory factory;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         factory = new TreeStateFactory();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         factory = null;
     }
 
+    @Test
     public void testCreateRandomTreeState() {
         TreeState treeState = factory.createRandomTreeState();
         List<TreeBranchState> branches = treeState.getBranches();
-        assertTrue(20 <= branches.size());
-        assertTrue(40 >= branches.size());
+        assertThat(branches.size()).isGreaterThanOrEqualTo(20);
+        assertThat(branches.size()).isLessThanOrEqualTo(40);
         float height = treeState.getHeight();
-        assertTrue(3 <= height);
-        assertTrue(5 >= height);
+        assertThat(height).isGreaterThanOrEqualTo(3);
+        assertThat(height).isLessThanOrEqualTo(5);
         TreeTrunkState trunkState = treeState.getTrunkState();
-        assertEquals(height / 16, trunkState.getRadius());
-        assertNotNull(treeState.getTree3DState());
+        assertThat(trunkState.getRadius()).isEqualTo(height / 16);
+        assertThat(treeState.getTree3DState()).isNotNull();
 
-        assertTrue(treeState.getCreationMillis() >= 0);
-        assertTrue(treeState.getCreationMillis() <= 100000);
-        assertTrue(treeState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
-        assertTrue(treeState.getEnergy().compareTo(new BigDecimal(100)) <= 0);
+        assertThat(treeState.getCreationMillis()).isGreaterThanOrEqualTo(0);
+        assertThat(treeState.getCreationMillis()).isLessThanOrEqualTo(100000);
+        assertThat(treeState.getEnergy().compareTo(new BigDecimal(0))).isGreaterThanOrEqualTo(0);
+        assertThat(treeState.getEnergy().compareTo(new BigDecimal(100))).isLessThanOrEqualTo(0);
     }
-
 }

@@ -18,23 +18,17 @@
  */
 package barsuift.simLife.environment;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 
-public class BasicEnvironmentTest extends TestCase {
+public class BasicEnvironmentTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testConstructor() {
         try {
             new BasicEnvironment(null);
-            fail("Should throw new IllegalArgumentException");
+            Assert.fail("Should throw new IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }

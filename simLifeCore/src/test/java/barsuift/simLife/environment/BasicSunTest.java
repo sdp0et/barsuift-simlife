@@ -18,46 +18,54 @@
  */
 package barsuift.simLife.environment;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.universe.MockUniverse;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class BasicSunTest extends TestCase {
+
+public class BasicSunTest {
 
     private SunState sunState;
 
     private BasicSun sun;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         sunState = new SunState();
         sun = new BasicSun(sunState);
         sun.init(new MockUniverse());
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         sun = null;
     }
 
+    @Test
     public void testConstructor() {
         try {
             new BasicSun(null);
-            fail("Should throw new IllegalArgumentException");
+            Assert.fail("Should throw new IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
     }
 
+    @Test
     public void testGetState() {
-        assertEquals(sunState, sun.getState());
-        assertSame(sunState, sun.getState());
-        assertEquals(0.0f, sun.getState().getSun3DState().getEarthRevolution());
+        assertThat(sun.getState()).isEqualTo(sunState);
+        assertThat(sun.getState()).isSameAs(sunState);
+        assertThat(sun.getState().getSun3DState().getEarthRevolution()).isEqualTo(0.0f);
 
         sun.getSun3D().setEarthRevolution(0.123f);
-        assertEquals(sunState, sun.getState());
-        assertSame(sunState, sun.getState());
-        assertEquals(0.123f, sun.getState().getSun3DState().getEarthRevolution());
+        assertThat(sun.getState()).isEqualTo(sunState);
+        assertThat(sun.getState()).isSameAs(sunState);
+        assertThat(sun.getState().getSun3DState().getEarthRevolution()).isEqualTo(0.123f);
     }
 
 }

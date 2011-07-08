@@ -18,32 +18,28 @@
  */
 package barsuift.simLife.universe;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.tree.MockTree;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class BasicUniverseTest extends TestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+public class BasicUniverseTest {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testGetState() {
         UniverseState state = CoreDataCreatorForTests.createRandomUniverseState();
         BasicUniverse universe = new BasicUniverse(state);
         universe.init();
-        assertEquals(state, universe.getState());
-        assertSame(state, universe.getState());
+        assertThat(universe.getState()).isEqualTo(state);
+        assertThat(universe.getState()).isSameAs(state);
         int nbTrees = universe.getState().getTrees().size();
         universe.addTree(new MockTree());
-        assertEquals(state, universe.getState());
-        assertSame(state, universe.getState());
-        assertEquals(nbTrees + 1, universe.getState().getTrees().size());
+        assertThat(universe.getState()).isEqualTo(state);
+        assertThat(universe.getState()).isSameAs(state);
+        assertThat(universe.getState().getTrees()).hasSize(nbTrees + 1);
     }
 
 }

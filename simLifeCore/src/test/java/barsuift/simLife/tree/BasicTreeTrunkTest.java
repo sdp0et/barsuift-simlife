@@ -18,49 +18,47 @@
  */
 package barsuift.simLife.tree;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
 import barsuift.simLife.universe.MockUniverse;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class BasicTreeTrunkTest extends TestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+public class BasicTreeTrunkTest {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testBasicTreeTrunk() {
         try {
             new BasicTreeTrunk(null);
-            fail("Should throw an IllegalArgumentException");
+            Assert.fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
         try {
             BasicTreeTrunk trunk = new BasicTreeTrunk(new TreeTrunkState());
             trunk.init(null);
-            fail("Should throw an IllegalArgumentException");
+            Assert.fail("Should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // OK expected exception
         }
     }
 
+    @Test
     public void testGetState() {
         TreeTrunkState trunkState = CoreDataCreatorForTests.createSpecificTreeTrunkState();
         BasicTreeTrunk treeTrunk = new BasicTreeTrunk(trunkState);
         treeTrunk.init(new MockUniverse());
-        assertEquals(4.0f, treeTrunk.getHeight());
-        assertEquals(0.5f, treeTrunk.getRadius());
+        assertThat(treeTrunk.getHeight()).isEqualTo(4.0f);
+        assertThat(treeTrunk.getRadius()).isEqualTo(0.5f);
 
-        assertEquals(trunkState, treeTrunk.getState());
-        assertSame(trunkState, treeTrunk.getState());
+        assertThat(treeTrunk.getState()).isEqualTo(trunkState);
+        assertThat(treeTrunk.getState()).isSameAs(trunkState);
         // nothing to do here
-        assertEquals(trunkState, treeTrunk.getState());
-        assertSame(trunkState, treeTrunk.getState());
+        assertThat(treeTrunk.getState()).isEqualTo(trunkState);
+        assertThat(treeTrunk.getState()).isSameAs(trunkState);
     }
 
 }

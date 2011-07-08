@@ -18,31 +18,27 @@
  */
 package barsuift.simLife.environment;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.PlanetParameters;
 import barsuift.simLife.j3d.environment.Sun3DState;
 import barsuift.simLife.landscape.LandscapeParameters;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class SunStateFactoryTest extends TestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+public class SunStateFactoryTest {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testCreateSunState() {
         LandscapeParameters landscapeParameters = new LandscapeParameters();
         PlanetParameters planetParameters = new PlanetParameters();
         SunStateFactory factory = new SunStateFactory();
         SunState sunState = factory.createSunState(planetParameters, landscapeParameters);
-        assertNotNull(sunState);
+        assertThat(sunState).isNotNull();
         Sun3DState sun3DState = sunState.getSun3DState();
-        assertNotNull(sun3DState);
-        assertEquals(planetParameters.getLatitude(), sun3DState.getLatitude());
+        assertThat(sun3DState).isNotNull();
+        assertThat(sun3DState.getLatitude()).isEqualTo(planetParameters.getLatitude());
     }
 
 }

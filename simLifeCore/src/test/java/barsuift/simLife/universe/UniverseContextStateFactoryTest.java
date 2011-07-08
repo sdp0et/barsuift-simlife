@@ -18,20 +18,16 @@
  */
 package barsuift.simLife.universe;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.j3d.universe.UniverseContext3DState;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class UniverseContextStateFactoryTest extends TestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+public class UniverseContextStateFactoryTest {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testCreateEmptyUniverseContextState() {
         AllParameters parameters = new AllParameters();
         parameters.random();
@@ -40,16 +36,16 @@ public class UniverseContextStateFactoryTest extends TestCase {
 
         UniverseContextStateFactory factory = new UniverseContextStateFactory();
         UniverseContextState universeContextState = factory.createEmptyRandomUniverseContextState(parameters);
-        assertFalse(universeContextState.isFpsShowing());
+        assertThat(universeContextState.isFpsShowing()).isFalse();
 
         UniverseState universeState = universeContextState.getUniverse();
-        assertNotNull(universeState);
+        assertThat(universeState).isNotNull();
 
-        assertEquals(0, universeState.getTrees().size());
-        assertEquals(0, universeState.getFallenLeaves().size());
+        assertThat(universeState.getTrees()).isEmpty();
+        assertThat(universeState.getFallenLeaves()).isEmpty();
 
         UniverseContext3DState universeContext3D = universeContextState.getUniverseContext3D();
-        assertNotNull(universeContext3D);
+        assertThat(universeContext3D).isNotNull();
 
     }
 }

@@ -18,15 +18,19 @@
  */
 package barsuift.simLife.process;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.UtilDataCreatorForTests;
 import barsuift.simLife.tree.MockTree;
 import barsuift.simLife.tree.MockTreeBranch;
 import barsuift.simLife.tree.MockTreeLeaf;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class TreeGrowthTest extends TestCase {
 
+public class TreeGrowthTest {
+
+    @Test
     public void testExecuteCyclicStep() {
         MockTreeLeaf mockLeaf = new MockTreeLeaf();
 
@@ -40,9 +44,9 @@ public class TreeGrowthTest extends TestCase {
         treeGrowth.init(mockTree);
         treeGrowth.executeConditionalStep();
 
-        assertEquals(1, mockLeaf.getNbImproveEfficiencyCalled());
+        assertThat(mockLeaf.getNbImproveEfficiencyCalled()).isEqualTo(1);
 
-        assertEquals(1, mockBranch.getNbGrowCalled());
+        assertThat(mockBranch.getNbGrowCalled()).isEqualTo(1);
     }
 
 }

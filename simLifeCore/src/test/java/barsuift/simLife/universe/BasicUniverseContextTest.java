@@ -18,53 +18,50 @@
  */
 package barsuift.simLife.universe;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.CoreDataCreatorForTests;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class BasicUniverseContextTest extends TestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+public class BasicUniverseContextTest {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testGetState() throws Exception {
         UniverseContextState state = CoreDataCreatorForTests.createSpecificUniverseContextState();
         BasicUniverseContext context = new BasicUniverseContext(state);
         context.init();
-        assertEquals(state, context.getState());
-        assertSame(state, context.getState());
+        assertThat(context.getState()).isEqualTo(state);
+        assertThat(context.getState()).isSameAs(state);
 
-        assertFalse(context.getState().isFpsShowing());
-        assertEquals(100000, context.getState().getUniverse().getDateHandler().getDate().getValue());
+        assertThat(context.getState().isFpsShowing()).isFalse();
+        assertThat(context.getState().getUniverse().getDateHandler().getDate().getValue()).isEqualTo(100000);
         context.setFpsShowing(true);
         context.getUniverse().getUniverse3D().getSynchronizer().start();
         context.getUniverse().getUniverse3D().getSynchronizer().stop();
         // wait a little bit to ensure the time controller ends its treatments
         Thread.sleep(1500);
 
-        assertEquals(state, context.getState());
-        assertSame(state, context.getState());
-        assertTrue(context.getState().isFpsShowing());
-        assertEquals(100500, context.getState().getUniverse().getDateHandler().getDate().getValue());
+        assertThat(context.getState()).isEqualTo(state);
+        assertThat(context.getState()).isSameAs(state);
+        assertThat(context.getState().isFpsShowing()).isTrue();
+        assertThat(context.getState().getUniverse().getDateHandler().getDate().getValue()).isEqualTo(100500);
     }
 
 
+    @Test
     public void testSetFpsShowing() {
         UniverseContextState state = CoreDataCreatorForTests.createSpecificUniverseContextState();
         BasicUniverseContext universeContext = new BasicUniverseContext(state);
         universeContext.init();
 
-        assertFalse(universeContext.isFpsShowing());
-        assertFalse(universeContext.getUniverseContext3D().isFpsShowing());
+        assertThat(universeContext.isFpsShowing()).isFalse();
+        assertThat(universeContext.getUniverseContext3D().isFpsShowing()).isFalse();
 
         universeContext.setFpsShowing(true);
-        assertTrue(universeContext.isFpsShowing());
-        assertTrue(universeContext.getUniverseContext3D().isFpsShowing());
+        assertThat(universeContext.isFpsShowing()).isTrue();
+        assertThat(universeContext.getUniverseContext3D().isFpsShowing()).isTrue();
     }
 
 }

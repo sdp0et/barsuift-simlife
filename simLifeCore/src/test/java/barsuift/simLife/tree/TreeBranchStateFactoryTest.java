@@ -21,10 +21,15 @@ package barsuift.simLife.tree;
 import java.math.BigDecimal;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.fest.assertions.Delta;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class TreeBranchStateFactoryTest extends TestCase {
+public class TreeBranchStateFactoryTest {
 
     private float treeHeight;
 
@@ -32,44 +37,47 @@ public class TreeBranchStateFactoryTest extends TestCase {
 
     private TreeBranchStateFactory factory;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         treeHeight = 6;
         factory = new TreeBranchStateFactory();
         branchState = factory.createRandomBranchState(treeHeight);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         treeHeight = 0;
         factory = null;
         branchState = null;
     }
 
+    @Test
     public void testCreateBranchState() {
-        assertNotNull(branchState.getBranch3DState());
+        assertThat(branchState.getBranch3DState()).isNotNull();
         List<TreeLeafState> leavesStates = branchState.getLeavesStates();
         int nbLeaves = leavesStates.size();
-        assertTrue(nbLeaves >= 6);
-        assertTrue(nbLeaves <= 12);
-        assertEquals(branchState.getBranch3DState().getLength() / 40, branchState.getBranch3DState().getRadius(), 0.0001);
-        assertTrue(branchState.getCreationMillis() >= 0);
-        assertTrue(branchState.getCreationMillis() <= 100000);
-        assertTrue(branchState.getEnergy().compareTo(new BigDecimal(0)) >= 0);
-        assertTrue(branchState.getEnergy().compareTo(new BigDecimal(100)) <= 0);
-        assertTrue(branchState.getFreeEnergy().compareTo(new BigDecimal(0)) >= 0);
-        assertTrue(branchState.getFreeEnergy().compareTo(new BigDecimal(50)) <= 0);
+        assertThat(nbLeaves).isGreaterThanOrEqualTo(6);
+        assertThat(nbLeaves).isLessThanOrEqualTo(12);
+        float expectedRadius = branchState.getBranch3DState().getLength() / 40;
+        assertThat(branchState.getBranch3DState().getRadius()).isEqualTo(expectedRadius, Delta.delta(0.0001));
+        assertThat(branchState.getCreationMillis()).isGreaterThanOrEqualTo(0);
+        assertThat(branchState.getCreationMillis()).isLessThanOrEqualTo(100000);
+        assertThat(branchState.getEnergy().compareTo(new BigDecimal(0))).isGreaterThanOrEqualTo(0);
+        assertThat(branchState.getEnergy().compareTo(new BigDecimal(100))).isLessThanOrEqualTo(0);
+        assertThat(branchState.getFreeEnergy().compareTo(new BigDecimal(0))).isGreaterThanOrEqualTo(0);
+        assertThat(branchState.getFreeEnergy().compareTo(new BigDecimal(50))).isLessThanOrEqualTo(0);
     }
 
+    @Test
     public void testComputeLength() {
         float treeHeight = 12;
         float branchLength = factory.computeLength(treeHeight);
-        assertTrue(branchLength >= 3);
-        assertTrue(branchLength <= 6);
+        assertThat(branchLength).isGreaterThanOrEqualTo(3);
+        assertThat(branchLength).isLessThanOrEqualTo(6);
         treeHeight = 2.4f;
         branchLength = factory.computeLength(treeHeight);
-        assertTrue(branchLength >= 0.6);
-        assertTrue(branchLength <= 1.2);
+        assertThat(branchLength).isGreaterThanOrEqualTo(0.6f);
+        assertThat(branchLength).isLessThanOrEqualTo(1.2f);
     }
 
 }
