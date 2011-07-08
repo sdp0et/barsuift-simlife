@@ -27,7 +27,6 @@ import barsuift.simLife.JaxbTester;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-
 public class DateHandlerStateTest {
 
     private final JaxbTester<DateHandlerState> tester = new JaxbTester<DateHandlerState>(getClass());
