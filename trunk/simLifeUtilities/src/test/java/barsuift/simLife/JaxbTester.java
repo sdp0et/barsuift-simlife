@@ -31,15 +31,13 @@ public class JaxbTester<E extends State> {
 
     private final Class<?> clazz;
 
-    private final String fileName;
-
     private final File file;
 
     private JAXBContext context;
 
     public JaxbTester(Class<?> clazz) {
         this.clazz = clazz;
-        this.fileName = "testJAXB_" + clazz.getName() + ".xml";
+        String fileName = "testJAXB_" + clazz.getName() + ".xml";
         this.file = new File(fileName);
     }
 
@@ -50,7 +48,6 @@ public class JaxbTester<E extends State> {
     public void clean() {
         context = null;
         file.delete();
-
     }
 
     @SuppressWarnings("unchecked")
