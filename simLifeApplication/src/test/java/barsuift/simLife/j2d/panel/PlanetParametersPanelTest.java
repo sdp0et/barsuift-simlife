@@ -18,13 +18,18 @@
  */
 package barsuift.simLife.j2d.panel;
 
-import junit.framework.TestCase;
+import org.fest.assertions.Delta;
+import org.testng.annotations.Test;
+
 import barsuift.simLife.MathHelper;
 import barsuift.simLife.PlanetParameters;
 
+import static org.fest.assertions.Assertions.assertThat;
 
-public class PlanetParametersPanelTest extends TestCase {
 
+public class PlanetParametersPanelTest {
+
+    @Test
     public void testReadWriteParameters() {
         PlanetParameters parameters = new PlanetParameters();
         parameters.random();
@@ -33,30 +38,35 @@ public class PlanetParametersPanelTest extends TestCase {
         originalParameters.setEclipticObliquity(parameters.getEclipticObliquity());
 
         PlanetParametersPanel panel = new PlanetParametersPanel(parameters);
-        assertEquals(originalParameters, parameters);
-        assertEquals(originalParameters.getLatitude(), parameters.getLatitude(), 0.0001);
-        assertEquals(originalParameters.getEclipticObliquity(), parameters.getEclipticObliquity(), 0.0001);
+        assertThat(parameters).isEqualTo(originalParameters);
+        assertThat(parameters.getLatitude()).isEqualTo(originalParameters.getLatitude(), Delta.delta(0.0001));
+        assertThat(parameters.getEclipticObliquity()).isEqualTo(originalParameters.getEclipticObliquity(),
+                Delta.delta(0.0001));
 
         // due to conversions (from radian (float) to degree (int) and vice versa), the precision is low
 
         panel.writeIntoParameters();
-        assertEquals(originalParameters.getLatitude(), parameters.getLatitude(), 0.01);
-        assertEquals(originalParameters.getEclipticObliquity(), parameters.getEclipticObliquity(), 0.01);
+        assertThat(parameters.getLatitude()).isEqualTo(originalParameters.getLatitude(), Delta.delta(0.01));
+        assertThat(parameters.getEclipticObliquity()).isEqualTo(originalParameters.getEclipticObliquity(),
+                Delta.delta(0.01));
 
         panel.writeIntoParameters();
-        assertEquals(originalParameters.getLatitude(), parameters.getLatitude(), 0.01);
-        assertEquals(originalParameters.getEclipticObliquity(), parameters.getEclipticObliquity(), 0.01);
+        assertThat(parameters.getLatitude()).isEqualTo(originalParameters.getLatitude(), Delta.delta(0.01));
+        assertThat(parameters.getEclipticObliquity()).isEqualTo(originalParameters.getEclipticObliquity(),
+                Delta.delta(0.01));
     }
 
+    @Test
     public void testInit() {
         PlanetParameters parameters = new PlanetParameters();
         PlanetParametersPanel panel = new PlanetParametersPanel(parameters);
 
-        assertEquals("Latitude (45°)", panel.getLatitudeText());
-        assertEquals(parameters.getLatitude(), MathHelper.toRadian(panel.getLatitudeSlider().getValue()), 0.01);
-        assertEquals("Planet Ecliptic Obliquity (23°)", panel.getEclipticObliquityText());
-        assertEquals(parameters.getEclipticObliquity(),
-                MathHelper.toRadian(panel.getEclipticObliquitySlider().getValue()), 0.01);
+        assertThat(panel.getLatitudeText()).isEqualTo("Latitude (45°)");
+        assertThat(MathHelper.toRadian(panel.getLatitudeSlider().getValue())).isEqualTo(parameters.getLatitude(),
+                Delta.delta(0.01));
+        assertThat(panel.getEclipticObliquityText()).isEqualTo("Planet Ecliptic Obliquity (23°)");
+        assertThat(MathHelper.toRadian(panel.getEclipticObliquitySlider().getValue())).isEqualTo(
+                parameters.getEclipticObliquity(), Delta.delta(0.01));
 
 
         parameters = new PlanetParameters();
@@ -64,30 +74,32 @@ public class PlanetParametersPanelTest extends TestCase {
         parameters.setEclipticObliquity((float) (Math.PI / 4));
         panel = new PlanetParametersPanel(parameters);
 
-        assertEquals("Latitude (60°)", panel.getLatitudeText());
-        assertEquals(parameters.getLatitude(), MathHelper.toRadian(panel.getLatitudeSlider().getValue()), 0.01);
-        assertEquals("Planet Ecliptic Obliquity (45°)", panel.getEclipticObliquityText());
-        assertEquals(parameters.getEclipticObliquity(),
-                MathHelper.toRadian(panel.getEclipticObliquitySlider().getValue()), 0.01);
+        assertThat(panel.getLatitudeText()).isEqualTo("Latitude (60°)");
+        assertThat(MathHelper.toRadian(panel.getLatitudeSlider().getValue())).isEqualTo(parameters.getLatitude(),
+                Delta.delta(0.01));
+        assertThat(panel.getEclipticObliquityText()).isEqualTo("Planet Ecliptic Obliquity (45°)");
+        assertThat(MathHelper.toRadian(panel.getEclipticObliquitySlider().getValue())).isEqualTo(
+                parameters.getEclipticObliquity(), Delta.delta(0.01));
     }
 
+    @Test
     public void testStateChanged() {
         PlanetParameters parameters = new PlanetParameters();
         PlanetParametersPanel panel = new PlanetParametersPanel(parameters);
 
         // initial value
-        assertEquals("Latitude (45°)", panel.getLatitudeText());
-        assertEquals("Planet Ecliptic Obliquity (23°)", panel.getEclipticObliquityText());
+        assertThat(panel.getLatitudeText()).isEqualTo("Latitude (45°)");
+        assertThat(panel.getEclipticObliquityText()).isEqualTo("Planet Ecliptic Obliquity (23°)");
 
         // stateChanged is automatically called
         panel.getLatitudeSlider().setValue(60);
-        assertEquals("Latitude (60°)", panel.getLatitudeText());
-        assertEquals("Planet Ecliptic Obliquity (23°)", panel.getEclipticObliquityText());
+        assertThat(panel.getLatitudeText()).isEqualTo("Latitude (60°)");
+        assertThat(panel.getEclipticObliquityText()).isEqualTo("Planet Ecliptic Obliquity (23°)");
 
         // stateChanged is automatically called
         panel.getEclipticObliquitySlider().setValue(88);
-        assertEquals("Latitude (60°)", panel.getLatitudeText());
-        assertEquals("Planet Ecliptic Obliquity (88°)", panel.getEclipticObliquityText());
+        assertThat(panel.getLatitudeText()).isEqualTo("Latitude (60°)");
+        assertThat(panel.getEclipticObliquityText()).isEqualTo("Planet Ecliptic Obliquity (88°)");
     }
 
 }
