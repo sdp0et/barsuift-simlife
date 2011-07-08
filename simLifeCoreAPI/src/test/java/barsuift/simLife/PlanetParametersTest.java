@@ -18,84 +18,97 @@
  */
 package barsuift.simLife;
 
-import junit.framework.TestCase;
+import org.fest.assertions.Delta;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import static barsuift.simLife.PlanetParameters.ECLIPTIC_OBLIQUITY_DEFAULT;
+import static barsuift.simLife.PlanetParameters.ECLIPTIC_OBLIQUITY_MAX;
+import static barsuift.simLife.PlanetParameters.ECLIPTIC_OBLIQUITY_MIN;
+import static barsuift.simLife.PlanetParameters.LATITUDE_DEFAULT;
+import static barsuift.simLife.PlanetParameters.LATITUDE_MAX;
+import static barsuift.simLife.PlanetParameters.LATITUDE_MIN;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 
-public class PlanetParametersTest extends TestCase {
+public class PlanetParametersTest {
 
     private PlanetParameters param;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void setUp() {
         param = new PlanetParameters();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterMethod
+    protected void tearDown() {
         param = null;
     }
 
-    public void testSetLatitude() {
-        param.setLatitude(PlanetParameters.LATITUDE_MIN);
-        assertEquals(PlanetParameters.LATITUDE_MIN, param.getLatitude(), 0.0001);
-        param.setLatitude(PlanetParameters.LATITUDE_DEFAULT);
-        assertEquals(PlanetParameters.LATITUDE_DEFAULT, param.getLatitude(), 0.0001);
-        param.setLatitude(PlanetParameters.LATITUDE_MAX);
-        assertEquals(PlanetParameters.LATITUDE_MAX, param.getLatitude(), 0.0001);
-        try {
-            param.setLatitude(PlanetParameters.LATITUDE_MIN - 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            param.setLatitude(PlanetParameters.LATITUDE_MAX + 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+    @Test
+    public void setLatitude() {
+        param.setLatitude(LATITUDE_MIN);
+        assertThat(param.getLatitude()).isEqualTo(LATITUDE_MIN, Delta.delta(0.0001));
+        param.setLatitude(LATITUDE_DEFAULT);
+        assertThat(param.getLatitude()).isEqualTo(LATITUDE_DEFAULT, Delta.delta(0.0001));
+        param.setLatitude(LATITUDE_MAX);
+        assertThat(param.getLatitude()).isEqualTo(LATITUDE_MAX, Delta.delta(0.0001));
     }
 
-    public void testSetEclipticObliquity() {
-        param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_MIN);
-        assertEquals(PlanetParameters.ECLIPTIC_OBLIQUITY_MIN, param.getEclipticObliquity(), 0.0001);
-        param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_DEFAULT);
-        assertEquals(PlanetParameters.ECLIPTIC_OBLIQUITY_DEFAULT, param.getEclipticObliquity(), 0.0001);
-        param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_MAX);
-        assertEquals(PlanetParameters.ECLIPTIC_OBLIQUITY_MAX, param.getEclipticObliquity(), 0.0001);
-        try {
-            param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_MIN - 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
-        try {
-            param.setEclipticObliquity(PlanetParameters.ECLIPTIC_OBLIQUITY_MAX + 1);
-            fail("Should throw an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // OK expected exception
-        }
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setLatitude_exception_onTooSmallLatitude() {
+        param.setLatitude(LATITUDE_MIN - 1);
     }
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setLatitude_exception_onTooBigLatitude() {
+        param.setLatitude(LATITUDE_MAX + 1);
+    }
+
+    @Test
+    public void setEclipticObliquity() {
+        param.setEclipticObliquity(ECLIPTIC_OBLIQUITY_MIN);
+        assertThat(param.getEclipticObliquity()).isEqualTo(ECLIPTIC_OBLIQUITY_MIN, Delta.delta(0.0001));
+        param.setEclipticObliquity(ECLIPTIC_OBLIQUITY_DEFAULT);
+        assertThat(param.getEclipticObliquity()).isEqualTo(ECLIPTIC_OBLIQUITY_DEFAULT, Delta.delta(0.0001));
+        param.setEclipticObliquity(ECLIPTIC_OBLIQUITY_MAX);
+        assertThat(param.getEclipticObliquity()).isEqualTo(ECLIPTIC_OBLIQUITY_MAX, Delta.delta(0.0001));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setEclipticObliquity_exception_onTooSmallValue() {
+        param.setEclipticObliquity(ECLIPTIC_OBLIQUITY_MIN - 1);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void setEclipticObliquity_exception_onTooBigValue() {
+        param.setEclipticObliquity(ECLIPTIC_OBLIQUITY_MAX + 1);
+    }
+
+    @Test
     public void testResetToDefaults() {
         param.resetToDefaults();
-        assertEquals(PlanetParameters.LATITUDE_DEFAULT, param.getLatitude(), 0.0001);
-        assertEquals(PlanetParameters.ECLIPTIC_OBLIQUITY_DEFAULT, param.getEclipticObliquity(), 0.0001);
+        assertThat(param.getLatitude()).isEqualTo(LATITUDE_DEFAULT, Delta.delta(0.0001));
+        assertThat(param.getEclipticObliquity()).isEqualTo(ECLIPTIC_OBLIQUITY_DEFAULT, Delta.delta(0.0001));
     }
 
+    @Test
     public void testRandom() {
         param.random();
-        assertTrue(param.getLatitude() >= PlanetParameters.LATITUDE_MIN);
-        assertTrue(param.getLatitude() <= PlanetParameters.LATITUDE_MAX);
-        assertTrue(param.getEclipticObliquity() >= PlanetParameters.ECLIPTIC_OBLIQUITY_MIN);
-        assertTrue(param.getEclipticObliquity() <= PlanetParameters.ECLIPTIC_OBLIQUITY_MAX);
+        assertThat(param.getLatitude()).isGreaterThanOrEqualTo(LATITUDE_MIN);
+        assertThat(param.getLatitude()).isLessThanOrEqualTo(LATITUDE_MAX);
+        assertThat(param.getEclipticObliquity()).isGreaterThanOrEqualTo(ECLIPTIC_OBLIQUITY_MIN);
+        assertThat(param.getEclipticObliquity()).isLessThanOrEqualTo(ECLIPTIC_OBLIQUITY_MAX);
     }
 
+    @Test
     public void testValidity() {
-        assertTrue(PlanetParameters.LATITUDE_DEFAULT >= PlanetParameters.LATITUDE_MIN);
-        assertTrue(PlanetParameters.LATITUDE_DEFAULT <= PlanetParameters.LATITUDE_MAX);
-        assertTrue(PlanetParameters.ECLIPTIC_OBLIQUITY_DEFAULT >= PlanetParameters.ECLIPTIC_OBLIQUITY_MIN);
-        assertTrue(PlanetParameters.ECLIPTIC_OBLIQUITY_DEFAULT <= PlanetParameters.ECLIPTIC_OBLIQUITY_MAX);
+        assertThat(LATITUDE_DEFAULT).isGreaterThanOrEqualTo(LATITUDE_MIN);
+        assertThat(LATITUDE_DEFAULT).isLessThanOrEqualTo(LATITUDE_MAX);
+        assertThat(ECLIPTIC_OBLIQUITY_DEFAULT).isGreaterThanOrEqualTo(ECLIPTIC_OBLIQUITY_MIN);
+        assertThat(ECLIPTIC_OBLIQUITY_DEFAULT).isLessThanOrEqualTo(ECLIPTIC_OBLIQUITY_MAX);
     }
 
 }

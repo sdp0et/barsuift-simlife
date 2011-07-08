@@ -115,6 +115,12 @@ public class LandscapeParameters implements Parameters {
         if (!MathHelper.isPowerOfTwo(size)) {
             throw new IllegalArgumentException("Size must be (2^N) sized and positive");
         }
+        if (size < SIZE_MIN) {
+            throw new IllegalArgumentException("Size must be greater than " + SIZE_MIN);
+        }
+        if (size > SIZE_MAX) {
+            throw new IllegalArgumentException("Size must be less than " + SIZE_MAX);
+        }
         this.size = size;
     }
 
