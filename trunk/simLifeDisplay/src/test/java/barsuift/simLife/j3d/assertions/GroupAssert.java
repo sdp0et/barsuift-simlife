@@ -18,6 +18,7 @@
  */
 package barsuift.simLife.j3d.assertions;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 
 import javax.media.j3d.BranchGroup;
@@ -122,6 +123,92 @@ public class GroupAssert extends GenericAssert<GroupAssert, Group> {
      */
     public GroupAssert hasExactlyOnePrimitive() {
         return hasExactlyOne(Primitive.class);
+    }
+
+    /**
+     * Verifies that the actual group has the given number of children of the given class. It may have other children,
+     * of other types.
+     * 
+     * @return this assertion object.
+     * @throws AssertionError - if the actual group does not have the expected count of children of the given class.
+     */
+    @SuppressWarnings("rawtypes")
+    public GroupAssert has(int count, Class<?> type) {
+        // check that actual Group we want to make assertions on is not null.
+        isNotNull();
+
+        int actualCount = 0;
+        Enumeration children = actual.getAllChildren();
+        while (children.hasMoreElements()) {
+            if (children.nextElement().getClass().equals(type)) {
+                actualCount++;
+            }
+        }
+
+        String errorMessage = String.format("Expected count of type <%s> to be <%s> but was <%s>", type, count,
+                actualCount);
+        Assertions.assertThat(actualCount).overridingErrorMessage(errorMessage).isEqualTo(count);
+
+        // return the current assertion for method chaining
+        return this;
+    }
+
+    /**
+     * Verifies that the actual group has only children of the given types.
+     * 
+     * @return this assertion object.
+     * @throws AssertionError - if the actual group has a child of an unexpected type.
+     */
+    @SuppressWarnings("rawtypes")
+    public GroupAssert hasOnlyTypes(Class<?>... types) {
+        // check that actual Group we want to make assertions on is not null.
+        isNotNull();
+
+        Enumeration children = actual.getAllChildren();
+        while (children.hasMoreElements()) {
+            Object nextElement = children.nextElement();
+            Class<?> nextelementClass = nextElement.getClass();
+            String errorMessage = String.format("Expected children to be of type <%s> but was <%s>",
+                    Arrays.toString(types), nextelementClass);
+            Assertions.assertThat(nextelementClass).overridingErrorMessage(errorMessage).isIn(types);
+        }
+
+        // return the current assertion for method chaining
+        return this;
+    }
+
+    /**
+     * Verifies that the actual group has the given number of children of the given class. It may have other children,
+     * of other types.
+     * 
+     * @return this assertion object.
+     * @throws AssertionError - if the actual group does not have the expected count of children of the given class.
+     */
+    public GroupAssert hasSize(int count) {
+        // check that actual Group we want to make assertions on is not null.
+        isNotNull();
+        Assertions.assertThat(actual.numChildren()).isEqualTo(count);
+        // return the current assertion for method chaining
+        return this;
+    }
+
+    @SuppressWarnings("rawtypes")
+    public TransformGroup getSingleTransformGroup() {
+        // check that actual Group is not null.
+        isNotNull();
+
+        // check that actual Group has exactly one TransformGroup
+        assertThat(actual).has(1, TransformGroup.class);
+
+        Enumeration children = actual.getAllChildren();
+        while (children.hasMoreElements()) {
+            Object nextElement = children.nextElement();
+            if (nextElement.getClass().equals(TransformGroup.class)) {
+                return (TransformGroup) nextElement;
+            }
+        }
+        fail("Unable to find the TransformGroup child");
+        return null;
     }
 
 }
