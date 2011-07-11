@@ -19,22 +19,23 @@
 package barsuift.simLife.j3d.tree;
 
 import java.math.BigDecimal;
-import java.util.Enumeration;
 
+import javax.media.j3d.BoundingBox;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Group;
+import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector3f;
 
-import org.testng.Assert;
+import org.fest.assertions.Delta;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import barsuift.simLife.j3d.DisplayDataCreatorForTests;
 import barsuift.simLife.j3d.helper.CompilerHelper;
-import barsuift.simLife.j3d.tree.helper.BasicTreeBranch3DTestHelper;
 import barsuift.simLife.j3d.universe.MockUniverse3D;
 import barsuift.simLife.j3d.util.ColorConstants;
 import barsuift.simLife.tree.MockTreeBranch;
@@ -44,7 +45,10 @@ import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Primitive;
 
 import static barsuift.simLife.j3d.assertions.AppearanceAssert.assertThat;
+import static barsuift.simLife.j3d.assertions.BoundingBoxAssert.assertThat;
+import static barsuift.simLife.j3d.assertions.CylinderAssert.assertThat;
 import static barsuift.simLife.j3d.assertions.GroupAssert.assertThat;
+import static barsuift.simLife.j3d.assertions.Transform3DAssert.assertThat;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -104,7 +108,6 @@ public class BasicTreeBranch3DTest {
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
     public void testTreeBranch3D() {
         BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
         branch3D.init(mockUniverse3D, mockBranch);
@@ -113,49 +116,57 @@ public class BasicTreeBranch3DTest {
         assertThat(branch3D.getLeaves()).hasSize(nbLeaves);
 
         float length = branch3DState.getLength();
+        float radius = branch3DState.getRadius();
         assertThat(branch3D.getLength()).isEqualTo(length);
+        Cylinder branchCylinder = branch3D.getBranchCylinder();
+        assertThat(branchCylinder).hasRadius(radius);
+        assertThat(branchCylinder).hasHeight(length);
+
+        assertThat(branchCylinder.getAppearance()).hasAmbientColor(ColorConstants.brown);
+        assertThat(branchCylinder.getAppearance()).hasSpecularColor(new Color3f(0.05f, 0.05f, 0.05f));
+        assertThat(branchCylinder.getAppearance()).hasDiffuseColor(new Color3f(0.15f, 0.15f, 0.15f));
+
         assertThat(bg).hasExactlyOneTransformGroup();
         TransformGroup tg = (TransformGroup) bg.getChild(0);
 
         assertThat(tg.getCapability(Group.ALLOW_CHILDREN_WRITE)).isTrue();
         assertThat(tg.getCapability(Group.ALLOW_CHILDREN_EXTEND)).isTrue();
-        int nbTimesNoLeafShapeIsFound = 0;
-        int nbLeavesFound = 0;
-        for (Enumeration enumeration = tg.getAllChildren(); enumeration.hasMoreElements();) {
-            Object child = enumeration.nextElement();
-            if (child.getClass().equals(BranchGroup.class)) {
-                nbLeavesFound++;
-            } else {
-                if (child.getClass().equals(TransformGroup.class)) {
-                    nbTimesNoLeafShapeIsFound++;
-                    TransformGroup branchTg = (TransformGroup) child;
-                    assertThat(branchTg).hasExactlyOnePrimitive();
-                    Primitive branchPrimitive = (Primitive) branchTg.getChild(0);
-                    assert (branchPrimitive.getClass().equals(Cylinder.class));
-                    Cylinder branchCylinder = (Cylinder) branchPrimitive;
 
-                    float radius = branch3DState.getRadius();
-                    Point3d expectedLowerBottom = new Point3d(-radius, -length / 2, -radius);
-                    Point3d expectedUpperBottom = new Point3d(radius, -length / 2, radius);
-                    Point3d expectedMovedLowerBottom = new Point3d(-radius, 0, -radius);
-                    Point3d expectedMovedUpperBottom = new Point3d(radius, 0, radius);
-                    Point3d expectedLowerTop = new Point3d(-radius, length / 2, -radius);
-                    Point3d expectedUpperTop = new Point3d(radius, length / 2, radius);
-                    Point3d expectedMovedLowerTop = new Point3d(-radius, length, -radius);
-                    Point3d expectedMovedUpperTop = new Point3d(radius, length, radius);
-                    BasicTreeBranch3DTestHelper.checkTreeBranch3D(branch3D, length, radius, expectedLowerBottom,
-                            expectedUpperBottom, expectedMovedLowerBottom, expectedMovedUpperBottom, expectedLowerTop,
-                            expectedUpperTop, expectedMovedLowerTop, expectedMovedUpperTop);
-                    assertThat(branchCylinder.getAppearance()).hasAmbientColor(ColorConstants.brown);
-                    assertThat(branchCylinder.getAppearance()).hasSpecularColor(new Color3f(0.05f, 0.05f, 0.05f));
-                    assertThat(branchCylinder.getAppearance()).hasDiffuseColor(new Color3f(0.15f, 0.15f, 0.15f));
-                } else {
-                    Assert.fail("There should be no other children. child is instance of " + child.getClass());
-                }
-            }
-        }
-        assertThat(nbTimesNoLeafShapeIsFound).as("We should have exactly one branch").isEqualTo(1);
-        assertThat(nbLeavesFound).isEqualTo(nbLeaves);
+        assertThat(tg).hasOnlyTypes(BranchGroup.class, TransformGroup.class);
+        assertThat(tg).has(nbLeaves, BranchGroup.class);
+        assertThat(tg).has(1, TransformGroup.class);
+
+        TransformGroup branchTg = assertThat(tg).getSingleTransformGroup();
+        assertThat(branchTg).hasExactlyOnePrimitive();
+        Primitive branchPrimitive = (Primitive) branchTg.getChild(0);
+        assertThat(branchPrimitive).isEqualTo(branchCylinder);
+
+        Transform3D transform3D = new Transform3D();
+        branchTg.getTransform(transform3D);
+        assertThat(transform3D).hasTranslation(new Vector3f(0, length / 2, 0));
+    }
+
+    @Test
+    public void branchCylinderBounds() {
+        BasicTreeBranch3D branch3D = new BasicTreeBranch3D(branch3DState);
+        branch3D.init(mockUniverse3D, mockBranch);
+        Cylinder branchCylinder = branch3D.getBranchCylinder();
+        float length = branch3DState.getLength();
+        float radius = branch3DState.getRadius();
+        Delta bigDelta = Delta.delta(0.02f);
+        Delta smallDelta = Delta.delta(0.0001f);
+
+        Point3d expectedLowerBottom = new Point3d(-radius, -length / 2, -radius);
+        Point3d expectedUpperBottom = new Point3d(radius, -length / 2, radius);
+        BoundingBox bottomBounds = (BoundingBox) branchCylinder.getShape(Cylinder.BOTTOM).getBounds();
+        assertThat(bottomBounds).hasLowerBound(expectedLowerBottom, bigDelta, smallDelta, bigDelta);
+        assertThat(bottomBounds).hasUpperBound(expectedUpperBottom, bigDelta, smallDelta, bigDelta);
+
+        Point3d expectedLowerTop = new Point3d(-radius, length / 2, -radius);
+        Point3d expectedUpperTop = new Point3d(radius, length / 2, radius);
+        BoundingBox topBounds = (BoundingBox) branchCylinder.getShape(Cylinder.TOP).getBounds();
+        assertThat(topBounds).hasLowerBound(expectedLowerTop, bigDelta, smallDelta, bigDelta);
+        assertThat(topBounds).hasUpperBound(expectedUpperTop, bigDelta, smallDelta, bigDelta);
     }
 
     private MockTreeLeaf3D getLeaf3D(int index) {

@@ -27,18 +27,19 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
 
-import junit.framework.Assert;
-
 import org.fest.assertions.Delta;
 
 import barsuift.simLife.j3d.tree.BasicTreeTrunk3D;
 
 import com.sun.j3d.utils.geometry.Cylinder;
 
+import static barsuift.simLife.j3d.assertions.CylinderAssert.assertThat;
 import static barsuift.simLife.j3d.assertions.Point3dAssert.assertThat;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 // TODO convert to FEST assertion
-public final class BasicTreeTrunk3DTestHelper extends Assert {
+public final class BasicTreeTrunk3DTestHelper {
 
     private BasicTreeTrunk3DTestHelper() {
         // private constructor to enforce static access
@@ -51,17 +52,17 @@ public final class BasicTreeTrunk3DTestHelper extends Assert {
             Point3d expectedMovedLowerTop, Point3d expectedMovedUpperTop) {
 
         Cylinder trunkCylinder = trunk3D.getTrunk();
-        assertEquals(expectedHeight, trunkCylinder.getHeight());
-        assertEquals(expectedRadius, trunkCylinder.getRadius());
+        assertThat(trunkCylinder).hasRadius(expectedRadius);
+        assertThat(trunkCylinder).hasHeight(expectedHeight);
 
         TransformGroup trunkTransformGroup = (TransformGroup) trunk3D.getGroup().getChild(0);
         Enumeration transformChilds = trunkTransformGroup.getAllChildren();
         // check at least one element
-        assertTrue(transformChilds.hasMoreElements());
+        assertThat(transformChilds.hasMoreElements()).isTrue();
         SceneGraphObject child = (SceneGraphObject) transformChilds.nextElement();
-        assertEquals(trunkCylinder, child);
+        assertThat(child).isEqualTo(trunkCylinder);
         // check only one element
-        assertFalse(transformChilds.hasMoreElements());
+        assertThat(transformChilds.hasMoreElements()).isFalse();
 
         // get transform object
         Transform3D transform3D = new Transform3D();
