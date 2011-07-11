@@ -38,7 +38,6 @@ import barsuift.simLife.universe.MockUniverse;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-// TODO see if there is a reason to create new MockUniverse every time
 public class BasicTreeBranchTest {
 
     private MockUniverse universe;
@@ -156,7 +155,7 @@ public class BasicTreeBranchTest {
         TreeBranchState branchState = new TreeBranchState();
         branchState.setEnergy(new BigDecimal(150));
         BasicTreeBranch branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
 
         assertThat(branch.getNbLeaves()).isEqualTo(0);
         assertThat(branch.getBranch3D().getLeaves()).isEmpty();
@@ -179,12 +178,12 @@ public class BasicTreeBranchTest {
         TreeBranchState branchState = new TreeBranchState();
         branchState.setEnergy(new BigDecimal(89));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.canCreateOneNewLeaf()).isFalse();
 
         branchState.setEnergy(new BigDecimal(150));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.canCreateOneNewLeaf()).isTrue();
 
         // add some leaves, but let some room for one leaf
@@ -194,13 +193,13 @@ public class BasicTreeBranchTest {
         }
         branchState.setLeavesStates(leavesStates);
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.canCreateOneNewLeaf()).isTrue();
 
         // add the last possible leaf
         leavesStates.add(new TreeLeafState());
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.canCreateOneNewLeaf()).isFalse();
     }
 
@@ -210,14 +209,14 @@ public class BasicTreeBranchTest {
         TreeBranchState branchState = new TreeBranchState();
         branchState.setEnergy(new BigDecimal(89));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.shouldCreateOneNewLeaf()).isFalse();
 
         // 90 = 90 + (0% * 90)
         // so we should have 0% odd to create a new leaf
         branchState.setEnergy(new BigDecimal(90));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         int sum = 0;
         for (int i = 0; i < 1000; i++) {
             boolean result = branch.shouldCreateOneNewLeaf();
@@ -230,7 +229,7 @@ public class BasicTreeBranchTest {
         // so we should have 70% odd to create a new leaf
         branchState.setEnergy(new BigDecimal(153));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         sum = 0;
         for (int i = 0; i < 1000; i++) {
             boolean result = branch.shouldCreateOneNewLeaf();
@@ -243,7 +242,7 @@ public class BasicTreeBranchTest {
         // so we should have 100% odd to create a new leaf
         branchState.setEnergy(new BigDecimal(180));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         sum = 0;
         for (int i = 0; i < 1000; i++) {
             boolean result = branch.shouldCreateOneNewLeaf();
@@ -255,7 +254,7 @@ public class BasicTreeBranchTest {
         // so we should have 100% odd to create a new leaf
         branchState.setEnergy(new BigDecimal(250));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         sum = 0;
         for (int i = 0; i < 1000; i++) {
             boolean result = branch.shouldCreateOneNewLeaf();
@@ -270,12 +269,12 @@ public class BasicTreeBranchTest {
         TreeBranchState branchState = CoreDataCreatorForTests.createSpecificTreeBranchState();
         branchState.setEnergy(new BigDecimal(19));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.canIncreaseOneLeafSize()).isFalse();
 
         branchState.setEnergy(new BigDecimal(20));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.canIncreaseOneLeafSize()).isTrue();
 
         // set all the leaves at their maximum size, so that they can not be increased anymore
@@ -289,14 +288,14 @@ public class BasicTreeBranchTest {
                     initialEndPoint2.getZ() * 10));
         }
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.canIncreaseOneLeafSize()).isFalse();
 
         // reset the end point 1 of leaf 1, so that it can be increased again
         branchState.getLeavesStates().get(0).getLeaf3DState()
                 .setEndPoint1(branchState.getLeavesStates().get(0).getLeaf3DState().getInitialEndPoint1());
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.canIncreaseOneLeafSize()).isTrue();
     }
 
@@ -306,14 +305,14 @@ public class BasicTreeBranchTest {
         TreeBranchState branchState = CoreDataCreatorForTests.createSpecificTreeBranchState();
         branchState.setEnergy(new BigDecimal(19));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         assertThat(branch.shouldIncreaseOneLeafSize()).isFalse();
 
         // 20 = 20 + (0% * 80)
         // so we should have 0% odd to create a new leaf
         branchState.setEnergy(new BigDecimal(20));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         int sum = 0;
         for (int i = 0; i < 1000; i++) {
             boolean result = branch.shouldIncreaseOneLeafSize();
@@ -326,7 +325,7 @@ public class BasicTreeBranchTest {
         // so we should have 70% odd to create a new leaf
         branchState.setEnergy(new BigDecimal(76));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         sum = 0;
         for (int i = 0; i < 1000; i++) {
             boolean result = branch.shouldIncreaseOneLeafSize();
@@ -339,7 +338,7 @@ public class BasicTreeBranchTest {
         // so we should have 100% odd to create a new leaf
         branchState.setEnergy(new BigDecimal(100));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         sum = 0;
         for (int i = 0; i < 1000; i++) {
             boolean result = branch.shouldIncreaseOneLeafSize();
@@ -351,7 +350,7 @@ public class BasicTreeBranchTest {
         // so we should have 100% odd to create a new leaf
         branchState.setEnergy(new BigDecimal(250));
         branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
         sum = 0;
         for (int i = 0; i < 1000; i++) {
             boolean result = branch.shouldIncreaseOneLeafSize();
@@ -377,7 +376,7 @@ public class BasicTreeBranchTest {
         // set the first leaf end point to (0,0,0) so that it can be increased
         firstLeafState.getLeaf3DState().setEndPoint1(new Tuple3fState());
         BasicTreeBranch branch = new BasicTreeBranch(branchState);
-        branch.init(new MockUniverse());
+        branch.init(universe);
 
         branch.increaseOneLeafSize();
         assertThat(branch.getEnergy()).isEqualTo(new BigDecimal(130));
