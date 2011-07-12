@@ -32,6 +32,9 @@ import barsuift.simLife.tree.TreeTrunk;
 
 import com.sun.j3d.utils.geometry.Cylinder;
 
+/**
+ * Group -> TransformGroup -> Cylinder
+ */
 public class BasicTreeTrunk3D implements TreeTrunk3D {
 
     private final TreeTrunk3DState state;
@@ -40,12 +43,6 @@ public class BasicTreeTrunk3D implements TreeTrunk3D {
 
     private final Group group;
 
-    /**
-     * 
-     * @param radius
-     * @param height
-     * @param centralPoint correspond to the center of the bottom
-     */
     public BasicTreeTrunk3D(TreeTrunk3DState state) {
         if (state == null) {
             throw new IllegalArgumentException("Null tree trunk 3D state");
