@@ -76,7 +76,7 @@ public class GroupAssert extends GenericAssert<GroupAssert, Group> {
     }
 
     /**
-     * Verifies that the actual group has exactly one Group.
+     * Verifies that the actual group has exactly one child, and this child is a Group.
      * 
      * @return this assertion object.
      * @throws AssertionError - if the actual group does not have exactly one Group.
@@ -86,7 +86,7 @@ public class GroupAssert extends GenericAssert<GroupAssert, Group> {
     }
 
     /**
-     * Verifies that the actual group has exactly one BranchGroup.
+     * Verifies that the actual group has exactly one child, and this child is a BranchGroup.
      * 
      * @return this assertion object.
      * @throws AssertionError - if the actual group does not have exactly one BranchGroup.
@@ -96,7 +96,7 @@ public class GroupAssert extends GenericAssert<GroupAssert, Group> {
     }
 
     /**
-     * Verifies that the actual group has exactly one TransformGroup.
+     * Verifies that the actual group has exactly one child, and this child is a TransformGroup.
      * 
      * @return this assertion object.
      * @throws AssertionError - if the actual group does not have exactly one TransformGroup.
@@ -106,7 +106,7 @@ public class GroupAssert extends GenericAssert<GroupAssert, Group> {
     }
 
     /**
-     * Verifies that the actual group has exactly one Shape3D.
+     * Verifies that the actual group has exactly one child, and this child is a Shape3D.
      * 
      * @return this assertion object.
      * @throws AssertionError - if the actual group does not have exactly one Shape3D.
@@ -116,7 +116,7 @@ public class GroupAssert extends GenericAssert<GroupAssert, Group> {
     }
 
     /**
-     * Verifies that the actual group has exactly one Primitive.
+     * Verifies that the actual group has exactly one child, and this child is a Primitive.
      * 
      * @return this assertion object.
      * @throws AssertionError - if the actual group does not have exactly one Primitive.
