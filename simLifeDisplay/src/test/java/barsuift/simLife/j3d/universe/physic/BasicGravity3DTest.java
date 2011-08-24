@@ -29,8 +29,7 @@ import barsuift.simLife.j3d.universe.BasicUniverse3D;
 import barsuift.simLife.j3d.universe.Universe3DState;
 import barsuift.simLife.j3d.universe.Universe3DStateFactory;
 import barsuift.simLife.universe.MockUniverse;
-
-import static org.fest.assertions.Assertions.assertThat;
+import static barsuift.simLife.j3d.assertions.GroupAssert.assertThat;
 
 
 public class BasicGravity3DTest {
@@ -61,21 +60,23 @@ public class BasicGravity3DTest {
         BasicGravity3D gravity3D = new BasicGravity3D(gravity3DState);
         gravity3D.init(universe3D);
         // the group should be able to add new children
-        assertThat(gravity3D.getGroup().getCapability(Group.ALLOW_CHILDREN_EXTEND)).isTrue();
+        assertThat(gravity3D.getGroup()).hasCapability(Group.ALLOW_CHILDREN_EXTEND);
         // the group should be able to remove children
-        assertThat(gravity3D.getGroup().getCapability(Group.ALLOW_CHILDREN_WRITE)).isTrue();
+        assertThat(gravity3D.getGroup()).hasCapability(Group.ALLOW_CHILDREN_WRITE);
     }
 
     @Test
     public void testFall() {
         BasicGravity3D gravity3D = new BasicGravity3D(gravity3DState);
         gravity3D.init(universe3D);
-        assertThat(gravity3D.getGroup().numChildren()).isEqualTo(0);
         MockMobile mobile = new MockMobile();
+        assertThat(gravity3D.getGroup()).hasSize(0);
+
         gravity3D.fall(mobile);
-        assertThat(gravity3D.getGroup().numChildren()).isEqualTo(1);
+        assertThat(gravity3D.getGroup()).hasSize(1);
+
         gravity3D.isFallen(mobile);
-        assertThat(gravity3D.getGroup().numChildren()).isEqualTo(0);
+        assertThat(gravity3D.getGroup()).hasSize(0);
     }
 
 }

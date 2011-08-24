@@ -178,16 +178,29 @@ public class GroupAssert extends GenericAssert<GroupAssert, Group> {
     }
 
     /**
-     * Verifies that the actual group has the given number of children of the given class. It may have other children,
-     * of other types.
+     * Verifies that the actual group has the given number of children.
      * 
      * @return this assertion object.
-     * @throws AssertionError - if the actual group does not have the expected count of children of the given class.
+     * @throws AssertionError - if the actual group does not have the expected count of children.
      */
     public GroupAssert hasSize(int count) {
         // check that actual Group we want to make assertions on is not null.
         isNotNull();
         Assertions.assertThat(actual.numChildren()).isEqualTo(count);
+        // return the current assertion for method chaining
+        return this;
+    }
+
+    /**
+     * Verifies that the actual group has the given capability.
+     * 
+     * @return this assertion object.
+     * @throws AssertionError - if the actual group does not have the expected capability.
+     */
+    public GroupAssert hasCapability(int capability) {
+        // check that actual Group we want to make assertions on is not null.
+        isNotNull();
+        Assertions.assertThat(actual.getCapability(capability)).isTrue();
         // return the current assertion for method chaining
         return this;
     }

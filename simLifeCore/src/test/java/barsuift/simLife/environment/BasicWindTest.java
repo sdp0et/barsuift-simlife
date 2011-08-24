@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with barsuift-simlife. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package barsuift.simLife.universe.physic;
+package barsuift.simLife.environment;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,11 +39,11 @@ import static barsuift.simLife.j3d.assertions.GroupAssert.assertThat;
 import static org.fest.assertions.Assertions.assertThat;
 
 
-public class BasicGravityTest {
+public class BasicWindTest {
 
     private BasicUniverse universe;
 
-    private GravityState gravityState;
+    private WindState windState;
 
     @BeforeMethod
     protected void setUp() {
@@ -51,38 +51,38 @@ public class BasicGravityTest {
         universe = new BasicUniverse(universeState);
         universe.init();
 
-        GravityStateFactory gravityStateFactory = new GravityStateFactory();
-        gravityState = gravityStateFactory.createGravityState();
+        WindStateFactory windStateFactory = new WindStateFactory();
+        windState = windStateFactory.createWindState();
     }
 
     @AfterMethod
     protected void tearDown() {
         universe = null;
-        gravityState = null;
+        windState = null;
     }
 
     @Test
-    public void testAddFallingLeaf() {
-        Set<TreeLeafState> fallingLeaves = new HashSet<TreeLeafState>();
-        fallingLeaves.add(CoreDataCreatorForTests.createRandomTreeLeafState());
-        fallingLeaves.add(CoreDataCreatorForTests.createRandomTreeLeafState());
-        gravityState.setFallingLeaves(fallingLeaves);
+    public void testAddMovingLeaf() {
+        Set<TreeLeafState> movingLeaves = new HashSet<TreeLeafState>();
+        movingLeaves.add(CoreDataCreatorForTests.createRandomTreeLeafState());
+        movingLeaves.add(CoreDataCreatorForTests.createRandomTreeLeafState());
+        windState.setMovingLeaves(movingLeaves);
 
-        BasicGravity gravity = new BasicGravity(gravityState);
-        gravity.init(universe);
-        assertThat(gravity.getFallingLeaves()).hasSize(2);
-        assertThat(gravity.getGravity3D().getGroup()).hasSize(2);
-        for (TreeLeaf treeLeaf : gravity.getFallingLeaves()) {
+        BasicWind wind = new BasicWind(windState);
+        wind.init(universe);
+        assertThat(wind.getMovingLeaves()).hasSize(2);
+        assertThat(wind.getWind3D().getGroup()).hasSize(2);
+        for (TreeLeaf treeLeaf : wind.getMovingLeaves()) {
             TreeLeaf3D treeLeaf3D = treeLeaf.getTreeLeaf3D();
 
-            // leaf3D and gravity are subscribers of the leaf
+            // leaf3D and wind are subscribers of the leaf
             assertThat(treeLeaf.countSubscribers()).isEqualTo(2);
 
             // leaf is subscriber of the leaf3D
             assertThat(treeLeaf3D.countSubscribers()).isEqualTo(1);
 
-            // assert the gravity is really one of the subscribers of the leaf
-            treeLeaf.deleteSubscriber(gravity);
+            // assert the wind is really one of the subscribers of the leaf
+            treeLeaf.deleteSubscriber(wind);
             assertThat(treeLeaf.countSubscribers()).isEqualTo(1);
             // assert the leaf3D is really one of the subscribers of the leaf
             treeLeaf.deleteSubscriber(treeLeaf3D);
@@ -95,64 +95,64 @@ public class BasicGravityTest {
         }
 
         MockTreeLeaf treeLeaf = new MockTreeLeaf();
-        gravity.addFallingLeaf(treeLeaf);
-        assertThat(gravity.getFallingLeaves()).hasSize(3);
-        assertThat(gravity.getGravity3D().getGroup()).hasSize(3);
-        // gravity is subscriber of the leaf
+        wind.addMovingLeaf(treeLeaf);
+        assertThat(wind.getMovingLeaves()).hasSize(3);
+        assertThat(wind.getWind3D().getGroup()).hasSize(3);
+        // wind is subscriber of the leaf
         assertThat(treeLeaf.countSubscribers()).isEqualTo(1);
-        treeLeaf.deleteSubscriber(gravity);
-        // assert the gravity is really one of the subscribers of the leaf
+        treeLeaf.deleteSubscriber(wind);
+        // assert the wind is really one of the subscribers of the leaf
         assertThat(treeLeaf.countSubscribers()).isEqualTo(0);
     }
 
     @Test
     public void testUpdate() {
-        BasicGravity gravity = new BasicGravity(gravityState);
-        gravity.init(universe);
+        BasicWind wind = new BasicWind(windState);
+        wind.init(universe);
         MockTreeLeaf treeLeaf = new MockTreeLeaf();
 
-        gravity.addFallingLeaf(treeLeaf);
-        assertThat(gravity.getFallingLeaves()).contains(treeLeaf);
+        wind.addMovingLeaf(treeLeaf);
+        assertThat(wind.getMovingLeaves()).contains(treeLeaf);
         assertThat(universe.getFallenLeaves()).excludes(treeLeaf);
-        assertThat(gravity.getGravity3D().getGroup()).hasSize(1);
+        assertThat(wind.getWind3D().getGroup()).hasSize(1);
 
         // test with wrong argument
-        gravity.update(treeLeaf, MobileEvent.FALLING);
-        assertThat(gravity.getFallingLeaves()).contains(treeLeaf);
+        wind.update(treeLeaf, MobileEvent.FALLING);
+        assertThat(wind.getMovingLeaves()).contains(treeLeaf);
         assertThat(universe.getFallenLeaves()).excludes(treeLeaf);
-        assertThat(gravity.getGravity3D().getGroup()).hasSize(1);
+        assertThat(wind.getWind3D().getGroup()).hasSize(1);
 
         // test with wrong argument
-        gravity.update(treeLeaf, null);
-        assertThat(gravity.getFallingLeaves()).contains(treeLeaf);
+        wind.update(treeLeaf, null);
+        assertThat(wind.getMovingLeaves()).contains(treeLeaf);
         assertThat(universe.getFallenLeaves()).excludes(treeLeaf);
-        assertThat(gravity.getGravity3D().getGroup()).hasSize(1);
+        assertThat(wind.getWind3D().getGroup()).hasSize(1);
 
         // test with wrong argument
-        gravity.update(treeLeaf, LeafEvent.EFFICIENCY);
-        assertThat(gravity.getFallingLeaves()).contains(treeLeaf);
+        wind.update(treeLeaf, LeafEvent.EFFICIENCY);
+        assertThat(wind.getMovingLeaves()).contains(treeLeaf);
         assertThat(universe.getFallenLeaves()).excludes(treeLeaf);
-        assertThat(gravity.getGravity3D().getGroup()).hasSize(1);
+        assertThat(wind.getWind3D().getGroup()).hasSize(1);
 
         // test with good argument
-        gravity.update(treeLeaf, MobileEvent.FALLEN);
-        assertThat(gravity.getFallingLeaves()).excludes(treeLeaf);
+        wind.update(treeLeaf, MobileEvent.FALLEN);
+        assertThat(wind.getMovingLeaves()).excludes(treeLeaf);
         assertThat(universe.getFallenLeaves()).contains(treeLeaf);
-        assertThat(gravity.getGravity3D().getGroup()).hasSize(0);
+        assertThat(wind.getWind3D().getGroup()).hasSize(0);
     }
 
     @Test
     public void testGetState() {
-        BasicGravity gravity = new BasicGravity(gravityState);
-        gravity.init(universe);
+        BasicWind wind = new BasicWind(windState);
+        wind.init(universe);
 
-        assertThat(gravity.getState()).isEqualTo(gravityState);
-        assertThat(gravity.getState()).isSameAs(gravityState);
-        assertThat(gravity.getState().getFallingLeaves()).isEmpty();
-        gravity.addFallingLeaf(new MockTreeLeaf());
-        assertThat(gravity.getState()).isEqualTo(gravityState);
-        assertThat(gravity.getState()).isSameAs(gravityState);
-        assertThat(gravity.getState().getFallingLeaves()).hasSize(1);
+        assertThat(wind.getState()).isEqualTo(windState);
+        assertThat(wind.getState()).isSameAs(windState);
+        assertThat(wind.getState().getMovingLeaves()).isEmpty();
+        wind.addMovingLeaf(new MockTreeLeaf());
+        assertThat(wind.getState()).isEqualTo(windState);
+        assertThat(wind.getState()).isSameAs(windState);
+        assertThat(wind.getState().getMovingLeaves()).hasSize(1);
     }
 
 }
