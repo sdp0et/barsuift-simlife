@@ -47,4 +47,5 @@ public interface Mobile extends Publisher {
      * @return the mobile branch group
      */
     public BranchGroup getBranchGroup();
+
 }

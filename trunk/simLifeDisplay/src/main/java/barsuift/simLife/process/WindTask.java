@@ -35,7 +35,7 @@ public class WindTask extends AbstractSplitConditionalTask {
     private static final Logger logger = Logger.getLogger(WindTask.class.getName());
 
     /**
-     * Wind speed is thus 2m/sec = 1m/cycle
+     * Wind speed is thus 1m/cycle = 2m/sec
      */
     private static final float WIND_SPEED = 1f / BasicSynchronizerFast.RATIO_SLOW_FAST;
 
